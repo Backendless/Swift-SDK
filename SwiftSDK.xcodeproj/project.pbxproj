@@ -6,6 +6,20 @@
 	objectVersion = 50;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		5E89DD6D21AEF02A005E4B02 /* Package-iOS */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 5E89DD7021AEF02A005E4B02 /* Build configuration list for PBXAggregateTarget "Package-iOS" */;
+			buildPhases = (
+				5E89DD7121AEF02E005E4B02 /* Make Universal iOS Library */,
+			);
+			dependencies = (
+			);
+			name = "Package-iOS";
+			productName = "Package-iOS";
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		5E41A91221AEEA5200FDE358 /* MyClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E41A91121AEEA5200FDE358 /* MyClass.swift */; };
 		5E9C573221AEEA0400877870 /* SwiftSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9C572821AEEA0400877870 /* SwiftSDK.framework */; };
@@ -156,6 +170,9 @@
 				LastSwiftUpdateCheck = 1010;
 				LastUpgradeCheck = 1010;
 				TargetAttributes = {
+					5E89DD6D21AEF02A005E4B02 = {
+						CreatedOnToolsVersion = 10.1;
+					};
 					5E9C572721AEEA0400877870 = {
 						CreatedOnToolsVersion = 10.1;
 						LastSwiftMigration = 1010;
@@ -179,6 +196,7 @@
 			targets = (
 				5E9C572721AEEA0400877870 /* SwiftSDK-iOS */,
 				5E9C573021AEEA0400877870 /* SwiftSDK-iOSTests */,
+				5E89DD6D21AEF02A005E4B02 /* Package-iOS */,
 			);
 		};
 /* End PBXProject section */
@@ -199,6 +217,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5E89DD7121AEF02E005E4B02 /* Make Universal iOS Library */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Make Universal iOS Library";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Define Macros\nRELEASE_TYPE=\"\"\nFRAMEWORK_VERSION=\"NOTRIAL_VERSION\"\n\n# Define OS and directories\nUNIVERSAL_TARGET=\"iOS\"\nUNIVERSAL_OUTPUTFOLDER=${BUILD_DIR}/${CONFIGURATION}-universal-${UNIVERSAL_TARGET}\nUNIVERSAL_FRAMEWORKFOLDER=${PROJECT_NAME}${RELEASE_TYPE}/${UNIVERSAL_TARGET}\nDEVICE_OS=\"iphoneos\"\nDEVICE_SIMULATOR=\"iphonesimulator\"\n\n# Make sure the output directories exists\nmkdir -p \"${UNIVERSAL_OUTPUTFOLDER}\"\nmkdir -p \"${UNIVERSAL_FRAMEWORKFOLDER}\"\n\n# Build Device and Simulator versions\nxcodebuild -target \"${PROJECT_NAME}-${UNIVERSAL_TARGET}\" ONLY_ACTIVE_ARCH=NO -configuration ${CONFIGURATION} -sdk ${DEVICE_OS}  BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" OTHER_SWIFT_FLAGS=\"-D ${FRAMEWORK_VERSION}\" clean build\nxcodebuild -target \"${PROJECT_NAME}-${UNIVERSAL_TARGET}\" VALID_ARCHS=\"x86_64 i386\" -configuration ${CONFIGURATION} -sdk ${DEVICE_SIMULATOR} ONLY_ACTIVE_ARCH=NO BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" OTHER_SWIFT_FLAGS=\"-D ${FRAMEWORK_VERSION}\" clean build\n\n# Copy the framework structure (from iphoneos build) to the universal folder\ncp -R \"${BUILD_DIR}/${CONFIGURATION}-${DEVICE_OS}/${PROJECT_NAME}.framework\" \"${UNIVERSAL_OUTPUTFOLDER}/\"\n\n# Copy Swift modules from iphonesimulator build (if it exists) to the copied framework directory\nSIMULATOR_SWIFT_MODULES_DIR=\"${BUILD_DIR}/${CONFIGURATION}-${DEVICE_SIMULATOR}/${PROJECT_NAME}.framework/Modules/${PROJECT_NAME}.swiftmodule/.\"\nif [ -d \"${SIMULATOR_SWIFT_MODULES_DIR}\" ]; then\ncp -R \"${SIMULATOR_SWIFT_MODULES_DIR}\" \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework/Modules/${PROJECT_NAME}.swiftmodule\"\nfi\n\n# Create universal binary file using lipo and place the combined executable in the copied framework directory\nlipo -create -output \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework/${PROJECT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-${DEVICE_SIMULATOR}/${PROJECT_NAME}.framework/${PROJECT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-${DEVICE_OS}/${PROJECT_NAME}.framework/${PROJECT_NAME}\"\n\n# Convenience step to copy the framework to the project's directory\ncp -R \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework\" \"${UNIVERSAL_FRAMEWORKFOLDER}/\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		5E9C572421AEEA0400877870 /* Sources */ = {
@@ -228,6 +267,26 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		5E89DD6E21AEF02A005E4B02 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 73FSJC7BUF;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		5E89DD6F21AEF02A005E4B02 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 73FSJC7BUF;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+			};
+			name = Release;
+		};
 		5E9C573A21AEEA0400877870 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -543,6 +602,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		5E89DD7021AEF02A005E4B02 /* Build configuration list for PBXAggregateTarget "Package-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5E89DD6E21AEF02A005E4B02 /* Debug */,
+				5E89DD6F21AEF02A005E4B02 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		5E9C573E21AEEA0400877870 /* Build configuration list for PBXNativeTarget "SwiftSDK-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
