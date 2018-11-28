@@ -1,7 +1,5 @@
 language: objective-c
 osx_image: xcode10.1
 xcode_project: SwiftSDK.xcodeproj
-xcode_scheme: SwiftSDK-iOS
-xcode_destination: platform=iOS Simulator,OS=12.1,name=iPhone Xs Max
-
-
+xcode_scheme: Package-iOS
+xcode_destination: platform=macOS

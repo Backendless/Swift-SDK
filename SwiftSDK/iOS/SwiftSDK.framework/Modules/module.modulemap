@@ -1,0 +1,4 @@
+framework module SwiftSDK {
+  header "SwiftSDK-Swift.h"
+  requires objc
+}
