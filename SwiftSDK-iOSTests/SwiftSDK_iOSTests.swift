@@ -27,5 +27,9 @@ class SwiftSDK_iOSTests: XCTestCase {
     func testStringMethodNotNil() {
         XCTAssertNotNil(MyClass.shared.stringMethod("Hello World"))
     }
+    
+    func testAlamofireMethod() {
+        MyClass.shared.alamofireMethod()
+    }
 
 }
