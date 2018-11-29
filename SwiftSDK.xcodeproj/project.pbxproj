@@ -6,20 +6,6 @@
 	objectVersion = 50;
 	objects = {
 
-/* Begin PBXAggregateTarget section */
-		5E89DD6D21AEF02A005E4B02 /* Package-iOS */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = 5E89DD7021AEF02A005E4B02 /* Build configuration list for PBXAggregateTarget "Package-iOS" */;
-			buildPhases = (
-				5E89DD7121AEF02E005E4B02 /* Make Universal iOS Library */,
-			);
-			dependencies = (
-			);
-			name = "Package-iOS";
-			productName = "Package-iOS";
-		};
-/* End PBXAggregateTarget section */
-
 /* Begin PBXBuildFile section */
 		5E41A91221AEEA5200FDE358 /* MyClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E41A91121AEEA5200FDE358 /* MyClass.swift */; };
 		5E9C573221AEEA0400877870 /* SwiftSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9C572821AEEA0400877870 /* SwiftSDK.framework */; };
@@ -45,7 +31,7 @@
 		5E9C572821AEEA0400877870 /* SwiftSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E9C572B21AEEA0400877870 /* SwiftSDK_iOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftSDK_iOS.h; sourceTree = "<group>"; };
 		5E9C572C21AEEA0400877870 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5E9C573121AEEA0400877870 /* SwiftSDK-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SwiftSDK-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E9C573121AEEA0400877870 /* SwiftSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E9C573621AEEA0400877870 /* SwiftSDK_iOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftSDK_iOSTests.swift; sourceTree = "<group>"; };
 		5E9C573821AEEA0400877870 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		64825F5E5FD1CF693EFB59A0 /* Pods-SwiftSDK-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSDK-iOS.release.xcconfig"; path = "Target Support Files/Pods-SwiftSDK-iOS/Pods-SwiftSDK-iOS.release.xcconfig"; sourceTree = "<group>"; };
@@ -108,7 +94,7 @@
 			isa = PBXGroup;
 			children = (
 				5E9C572821AEEA0400877870 /* SwiftSDK.framework */,
-				5E9C573121AEEA0400877870 /* SwiftSDK-iOSTests.xctest */,
+				5E9C573121AEEA0400877870 /* SwiftSDKTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -157,9 +143,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		5E9C572721AEEA0400877870 /* SwiftSDK-iOS */ = {
+		5E9C572721AEEA0400877870 /* SwiftSDK */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5E9C573E21AEEA0400877870 /* Build configuration list for PBXNativeTarget "SwiftSDK-iOS" */;
+			buildConfigurationList = 5E9C573E21AEEA0400877870 /* Build configuration list for PBXNativeTarget "SwiftSDK" */;
 			buildPhases = (
 				62E3E75EEAB4749FBA5E3C1B /* [CP] Check Pods Manifest.lock */,
 				5E9C572321AEEA0400877870 /* Headers */,
@@ -171,14 +157,14 @@
 			);
 			dependencies = (
 			);
-			name = "SwiftSDK-iOS";
+			name = SwiftSDK;
 			productName = "SwiftSDK-iOS";
 			productReference = 5E9C572821AEEA0400877870 /* SwiftSDK.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		5E9C573021AEEA0400877870 /* SwiftSDK-iOSTests */ = {
+		5E9C573021AEEA0400877870 /* SwiftSDKTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5E9C573F21AEEA0400877870 /* Build configuration list for PBXNativeTarget "SwiftSDK-iOSTests" */;
+			buildConfigurationList = 5E9C573F21AEEA0400877870 /* Build configuration list for PBXNativeTarget "SwiftSDKTests" */;
 			buildPhases = (
 				495100BBA2626EE1A15BA758 /* [CP] Check Pods Manifest.lock */,
 				5E9C572D21AEEA0400877870 /* Sources */,
@@ -191,9 +177,9 @@
 			dependencies = (
 				5E9C573421AEEA0400877870 /* PBXTargetDependency */,
 			);
-			name = "SwiftSDK-iOSTests";
+			name = SwiftSDKTests;
 			productName = "SwiftSDK-iOSTests";
-			productReference = 5E9C573121AEEA0400877870 /* SwiftSDK-iOSTests.xctest */;
+			productReference = 5E9C573121AEEA0400877870 /* SwiftSDKTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -205,9 +191,6 @@
 				LastSwiftUpdateCheck = 1010;
 				LastUpgradeCheck = 1010;
 				TargetAttributes = {
-					5E89DD6D21AEF02A005E4B02 = {
-						CreatedOnToolsVersion = 10.1;
-					};
 					5E9C572721AEEA0400877870 = {
 						CreatedOnToolsVersion = 10.1;
 						LastSwiftMigration = 1010;
@@ -229,9 +212,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				5E9C572721AEEA0400877870 /* SwiftSDK-iOS */,
-				5E9C573021AEEA0400877870 /* SwiftSDK-iOSTests */,
-				5E89DD6D21AEF02A005E4B02 /* Package-iOS */,
+				5E9C572721AEEA0400877870 /* SwiftSDK */,
+				5E9C573021AEEA0400877870 /* SwiftSDKTests */,
 			);
 		};
 /* End PBXProject section */
@@ -298,24 +280,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		5E89DD7121AEF02E005E4B02 /* Make Universal iOS Library */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Make Universal iOS Library";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Define Macros\nRELEASE_TYPE=\"\"\nFRAMEWORK_VERSION=\"NOTRIAL_VERSION\"\n\n# Define OS and directories\nUNIVERSAL_TARGET=\"iOS\"\nUNIVERSAL_OUTPUTFOLDER=${BUILD_DIR}/${CONFIGURATION}-universal-${UNIVERSAL_TARGET}\nUNIVERSAL_FRAMEWORKFOLDER=${PROJECT_NAME}${RELEASE_TYPE}/${UNIVERSAL_TARGET}\nDEVICE_OS=\"iphoneos\"\nDEVICE_SIMULATOR=\"iphonesimulator\"\n\n# Make sure the output directories exists\nmkdir -p \"${UNIVERSAL_OUTPUTFOLDER}\"\nmkdir -p \"${UNIVERSAL_FRAMEWORKFOLDER}\"\n\n# Build Device and Simulator versions\nxcodebuild -target \"${PROJECT_NAME}-${UNIVERSAL_TARGET}\" ONLY_ACTIVE_ARCH=NO -configuration ${CONFIGURATION} -sdk ${DEVICE_OS}  BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" OTHER_SWIFT_FLAGS=\"-D ${FRAMEWORK_VERSION}\" clean build\nxcodebuild -target \"${PROJECT_NAME}-${UNIVERSAL_TARGET}\" VALID_ARCHS=\"x86_64 i386\" -configuration ${CONFIGURATION} -sdk ${DEVICE_SIMULATOR} ONLY_ACTIVE_ARCH=NO BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" OTHER_SWIFT_FLAGS=\"-D ${FRAMEWORK_VERSION}\" clean build\n\n# Copy the framework structure (from iphoneos build) to the universal folder\ncp -R \"${BUILD_DIR}/${CONFIGURATION}-${DEVICE_OS}/${PROJECT_NAME}.framework\" \"${UNIVERSAL_OUTPUTFOLDER}/\"\n\n# Copy Swift modules from iphonesimulator build (if it exists) to the copied framework directory\nSIMULATOR_SWIFT_MODULES_DIR=\"${BUILD_DIR}/${CONFIGURATION}-${DEVICE_SIMULATOR}/${PROJECT_NAME}.framework/Modules/${PROJECT_NAME}.swiftmodule/.\"\nif [ -d \"${SIMULATOR_SWIFT_MODULES_DIR}\" ]; then\ncp -R \"${SIMULATOR_SWIFT_MODULES_DIR}\" \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework/Modules/${PROJECT_NAME}.swiftmodule\"\nfi\n\n# Create universal binary file using lipo and place the combined executable in the copied framework directory\nlipo -create -output \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework/${PROJECT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-${DEVICE_SIMULATOR}/${PROJECT_NAME}.framework/${PROJECT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-${DEVICE_OS}/${PROJECT_NAME}.framework/${PROJECT_NAME}\"\n\n# Convenience step to copy the framework to the project's directory\ncp -R \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework\" \"${UNIVERSAL_FRAMEWORKFOLDER}/\"\n";
-		};
 		62E3E75EEAB4749FBA5E3C1B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -362,34 +326,12 @@
 /* Begin PBXTargetDependency section */
 		5E9C573421AEEA0400877870 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 5E9C572721AEEA0400877870 /* SwiftSDK-iOS */;
+			target = 5E9C572721AEEA0400877870 /* SwiftSDK */;
 			targetProxy = 5E9C573321AEEA0400877870 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		5E89DD6E21AEF02A005E4B02 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 73FSJC7BUF;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-			};
-			name = Debug;
-		};
-		5E89DD6F21AEF02A005E4B02 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 73FSJC7BUF;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-			};
-			name = Release;
-		};
 		5E9C573A21AEEA0400877870 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8A5FFB47701AC8E4858CDEC4 /* Pods-SwiftSDK-iOS.debug.xcconfig */;
@@ -760,16 +702,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5E89DD7021AEF02A005E4B02 /* Build configuration list for PBXAggregateTarget "Package-iOS" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				5E89DD6E21AEF02A005E4B02 /* Debug */,
-				5E89DD6F21AEF02A005E4B02 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		5E9C573E21AEEA0400877870 /* Build configuration list for PBXNativeTarget "SwiftSDK-iOS" */ = {
+		5E9C573E21AEEA0400877870 /* Build configuration list for PBXNativeTarget "SwiftSDK" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5E9C573A21AEEA0400877870 /* Debug */,
@@ -778,7 +711,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5E9C573F21AEEA0400877870 /* Build configuration list for PBXNativeTarget "SwiftSDK-iOSTests" */ = {
+		5E9C573F21AEEA0400877870 /* Build configuration list for PBXNativeTarget "SwiftSDKTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5E9C573C21AEEA0400877870 /* Debug */,
