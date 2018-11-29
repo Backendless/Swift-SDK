@@ -28,6 +28,10 @@ class SwiftSDKTests: XCTestCase {
         XCTAssertNotNil(MyClass.shared.stringMethod("Hello World"))
     }
     
+    func testStringMethodNil() {
+        XCTAssertNil(MyClass.shared.stringMethod(nil))
+    }
+    
     func testAlamofireMethod() {
         MyClass.shared.alamofireMethod()
     }
