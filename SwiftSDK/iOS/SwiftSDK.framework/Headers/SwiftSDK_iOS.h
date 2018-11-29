@@ -5,7 +5,7 @@
 //  Created by Olha Danylova on 11/28/18.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 //! Project version number for SwiftSDK_iOS.
 FOUNDATION_EXPORT double SwiftSDK_iOSVersionNumber;
