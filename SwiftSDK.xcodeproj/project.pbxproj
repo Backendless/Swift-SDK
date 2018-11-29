@@ -13,8 +13,6 @@
 		5E9C573721AEEA0400877870 /* SwiftSDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9C573621AEEA0400877870 /* SwiftSDKTests.swift */; };
 		5E9C573921AEEA0400877870 /* SwiftSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E9C572B21AEEA0400877870 /* SwiftSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		799BD7D41D80CE863CAAB100 /* Pods_SwiftSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B0489AADDF73F8DCAD9ED64 /* Pods_SwiftSDK.framework */; };
-		A80D92ADD9A7C605BA6C7E50 /* Pods_SwiftSDK_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D25346E736006326F3FF232 /* Pods_SwiftSDK_iOS.framework */; };
-		B730AB7824A16644D6A538C9 /* Pods_SwiftSDK_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B59E092674F76E4191B7EA55 /* Pods_SwiftSDK_iOSTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,7 +28,6 @@
 /* Begin PBXFileReference section */
 		2498C7948DEDE02D4B7DF619 /* Pods-SwiftSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSDK.debug.xcconfig"; path = "Target Support Files/Pods-SwiftSDK/Pods-SwiftSDK.debug.xcconfig"; sourceTree = "<group>"; };
 		2E41F15845D4492BA383B1F5 /* Pods-SwiftSDKTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSDKTests.release.xcconfig"; path = "Target Support Files/Pods-SwiftSDKTests/Pods-SwiftSDKTests.release.xcconfig"; sourceTree = "<group>"; };
-		4D25346E736006326F3FF232 /* Pods_SwiftSDK_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftSDK_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		585E424A2F44477E350D396B /* Pods_SwiftSDKTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftSDKTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		58AB04380B91FBC5C9538B5B /* Pods-SwiftSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSDK.release.xcconfig"; path = "Target Support Files/Pods-SwiftSDK/Pods-SwiftSDK.release.xcconfig"; sourceTree = "<group>"; };
 		5B0489AADDF73F8DCAD9ED64 /* Pods_SwiftSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -44,7 +41,6 @@
 		64825F5E5FD1CF693EFB59A0 /* Pods-SwiftSDK-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSDK-iOS.release.xcconfig"; path = "Target Support Files/Pods-SwiftSDK-iOS/Pods-SwiftSDK-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		8A5FFB47701AC8E4858CDEC4 /* Pods-SwiftSDK-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSDK-iOS.debug.xcconfig"; path = "Target Support Files/Pods-SwiftSDK-iOS/Pods-SwiftSDK-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		97155E5840AC384EA32A9393 /* Pods-SwiftSDK-iOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSDK-iOSTests.release.xcconfig"; path = "Target Support Files/Pods-SwiftSDK-iOSTests/Pods-SwiftSDK-iOSTests.release.xcconfig"; sourceTree = "<group>"; };
-		B59E092674F76E4191B7EA55 /* Pods_SwiftSDK_iOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftSDK_iOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB93B24F831D64E376519235 /* Pods-SwiftSDKTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSDKTests.debug.xcconfig"; path = "Target Support Files/Pods-SwiftSDKTests/Pods-SwiftSDKTests.debug.xcconfig"; sourceTree = "<group>"; };
 		EBA5EFF4B973249924BD302C /* Pods-SwiftSDK-iOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSDK-iOSTests.debug.xcconfig"; path = "Target Support Files/Pods-SwiftSDK-iOSTests/Pods-SwiftSDK-iOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -54,7 +50,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A80D92ADD9A7C605BA6C7E50 /* Pods_SwiftSDK_iOS.framework in Frameworks */,
 				799BD7D41D80CE863CAAB100 /* Pods_SwiftSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -64,7 +59,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E9C573221AEEA0400877870 /* SwiftSDK.framework in Frameworks */,
-				B730AB7824A16644D6A538C9 /* Pods_SwiftSDK_iOSTests.framework in Frameworks */,
 				0C5080CC97C7712B4D88C0E6 /* Pods_SwiftSDKTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -90,8 +84,6 @@
 		506BCE92910BEACA86F11E31 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4D25346E736006326F3FF232 /* Pods_SwiftSDK_iOS.framework */,
-				B59E092674F76E4191B7EA55 /* Pods_SwiftSDK_iOSTests.framework */,
 				5B0489AADDF73F8DCAD9ED64 /* Pods_SwiftSDK.framework */,
 				585E424A2F44477E350D396B /* Pods_SwiftSDKTests.framework */,
 			);
