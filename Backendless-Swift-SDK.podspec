@@ -1,5 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "Backendless-Swift-SDK"
+  s.module_name  = "Backendless"
   s.version      = "1.0.0-beta1"
   s.license      = { :type => 'MIT', :text => 'Copyright (c) 2013-2018 by Backendless Corp' }
   s.homepage     = "http://backendless.com"
