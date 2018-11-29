@@ -1,5 +1,5 @@
 
-import UIKit
+import Foundation
 import Alamofire
 
 open class MyClass: NSObject {
