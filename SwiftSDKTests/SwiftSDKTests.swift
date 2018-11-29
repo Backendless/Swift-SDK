@@ -2,7 +2,7 @@
 import XCTest
 @testable import SwiftSDK
 
-class SwiftSDK_iOSTests: XCTestCase {
+class SwiftSDKTests: XCTestCase {
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
