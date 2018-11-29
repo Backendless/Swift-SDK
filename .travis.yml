@@ -6,3 +6,5 @@ matrix:
   include:
   - xcode_scheme: SwiftSDK-iOS
     xcode_destination: platform=iOS Simulator,OS=12.1,name=iPhone Xs Max
+
+    
