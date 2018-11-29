@@ -7,4 +7,6 @@ matrix:
   - xcode_scheme: SwiftSDK-iOS
     xcode_destination: platform=iOS Simulator,OS=12.1,name=iPhone Xs Max
 
-    
+before_install:
+  - gem install cocoapods --pre
+  - pod install --repo-update
