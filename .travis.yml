@@ -1,11 +1,8 @@
 language: objective-c
 osx_image: xcode10.1
 xcode_workspace: SwiftSDK.xcworkspace
-
-matrix:
-  include:
-  - xcode_scheme: SwiftSDK-iOS
-    xcode_destination: platform=iOS Simulator,OS=12.1,name=iPhone Xs Max
+xcode_scheme: SwiftSDK
+xcode_destination: platform=iOS Simulator,OS=12.1,name=iPhone Xs Max
 
 before_install:
   - gem install cocoapods --pre
