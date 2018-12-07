@@ -1,5 +1,5 @@
 //
-//  Backendless.swift
+//  IResponseAdapter.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,38 +19,11 @@
  *  ********************************************************************************************************************
  */
 
-@objc open class Backendless: NSObject {
+public protocol IResponseAdapter {
     
-    @objc public static let shared = Backendless()
+    func adapt(object: Any, toObject: Any) -> Any?
+    func adapt<T: Any>(jsonArray: NSArray, toArrayOfType: T) -> Array<T>?
     
-    var hostUrl = "https://api.backendless.com"
-    var applicationId = "AppId"
-    var apiKey = "APIKey"
-    
-    @objc open lazy var userService: UserService = {
-        let _userSevice = UserService()
-        // userService.getPersistentUser() // !!!!!!!!!!!!!!!
-        return _userSevice
-    }()
-    
-    @objc open func initApp(applicationId: String, apiKey: String) {
-        self.applicationId = applicationId
-        self.apiKey = apiKey
-    }
-    
-    @objc open func setHostUrl(_ hostUrl: String) {
-        self.hostUrl = hostUrl
-    }
-    
-    @objc open func getHostUrl() -> String {
-        return hostUrl
-    }
-    
-    @objc open func getApplictionId() -> String? {
-        return applicationId
-    }
-    
-    @objc open func getApiKey() -> String? {
-        return apiKey
-    }
+    // remove later
+    func adapt(jsonArray: NSArray) -> [UserProperty]
 }

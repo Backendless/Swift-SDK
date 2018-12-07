@@ -18,7 +18,7 @@
  *  ********************************************************************************************************************
  */
 
-public enum DataTypeEnum: Int {
+@objc public enum DataTypeEnum: Int {
     case UNKNOWN
     case INT
     case STRING
@@ -48,33 +48,33 @@ public enum DataTypeEnum: Int {
     }
 }
 
-open class AbstractProperty: NSObject {
+@objc open class AbstractProperty: NSObject {
     
     var name: String!
     var required = false
     var type: DataTypeEnum!
     
-    open func getName() -> String {
+    @objc open func getName() -> String {
         return self.name
     }
     
-    open func setName(_ name: String) {
+    @objc open func setName(_ name: String) {
         self.name = name
     }
     
-    open func isRequired() -> Bool {
+    @objc open func isRequired() -> Bool {
         return self.required
     }
     
-    open func setRequired(_ required: Bool) {
+    @objc open func setRequired(_ required: Bool) {
         self.required = required
     }
     
-    open func getType() -> DataTypeEnum {
-        return self.type ?? DataTypeEnum.UNKNOWN
+    @objc open func getType() -> String {
+        return self.type.stringValue
     }
     
-    open func setType(_ type: DataTypeEnum) {
+    @objc open func setType(_ type: DataTypeEnum) {
         self.type = type
     }
 }

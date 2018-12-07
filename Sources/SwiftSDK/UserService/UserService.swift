@@ -21,35 +21,36 @@
 
 import Alamofire
 
-open class UserService: NSObject {
+@objc open class UserService: NSObject {
     
     let backendless = Backendless.shared
     let processResponse = ProcessResponse.shared
     let userServiceResponseHandlers = UserServiceResponseHandlers.shared
+    let defaultAdapter = DefaultAdapter.shared
     
     // sync methods
     
-    open func describeUserClass() throws -> [UserProperty] {
-        let urlString = "\(backendless.hostUrl)/\(backendless.applicationId)/\(backendless.apiKey)/users/userclassprops"
-        let response = Alamofire.request(urlString).responseJSON()
-        let result = processResponse.processResponse(response)
-        if result is Fault {
-            throw result as! Fault
-        }
-        return userServiceResponseHandlers.describeUserClassResponseHandler(jsonArray: result as! NSArray)
-    }
+    //    open func describeUserClass() throws -> [UserProperty] {
+    //        let urlString = "\(backendless.hostUrl)/\(backendless.applicationId)/\(backendless.apiKey)/users/userclassprops"
+    //        let response = Alamofire.request(urlString).responseJSON()
+    //        let result = processResponse.processResponse(response)
+    //        if result is Fault {
+    //            throw result as! Fault
+    //        }
+    //        return userServiceResponseHandlers.describeUserClassResponseHandler(jsonArray: result as! NSArray)
+    //    }
     
     // async methods
     
-    open func describeUserClass(responseBlock: (([UserProperty]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+    @objc open func describeUserClass(responseBlock: (([UserProperty]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let urlString = "\(backendless.hostUrl)/\(backendless.applicationId)/\(backendless.apiKey)/users/userclassprops"
         Alamofire.request(urlString).responseJSON(completionHandler: { response in
-            let result = self.processResponse.processResponse(response)
+            let result = self.processResponse.getResponseResult(response)
             if result is Fault {
                 errorBlock(result as! Fault)
             }
             else {
-                responseBlock(self.userServiceResponseHandlers.describeUserClassResponseHandler(jsonArray: result as! NSArray))
+                responseBlock(self.defaultAdapter.adapt(jsonArray: result as! NSArray))
             }
         })
     }

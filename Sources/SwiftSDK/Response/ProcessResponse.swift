@@ -25,18 +25,18 @@ open class ProcessResponse: NSObject {
     
     public static let shared = ProcessResponse()
     
-    open func processResponse(_ response: DataResponse<Any>) -> Any? {
+    open func getResponseResult(_ response: DataResponse<Any>) -> Any? {
         switch response.result {
         case .success(let result):
             if (response.response?.statusCode)! >= 400 {
-                if let faultDictionary = result as? NSDictionary {
-                    return Fault(message: faultDictionary["message"] as? String, faultCode: faultDictionary["code"] as? String)
+                if let faultDictionary = result as? [String : Any] {
+                    return Fault(message: faultDictionary["message"] as? String, faultCode: faultDictionary["code"] as! Int)
                 }
             }
             return result
             
         case .failure(let error):
-            return Fault(message: error.localizedDescription, faultCode: String((error as NSError).code))
+            return Fault(domain: (error as NSError).domain, code: (error as NSError).code, userInfo: (error as NSError).userInfo)
         }
     }
 }

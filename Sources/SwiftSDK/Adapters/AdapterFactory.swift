@@ -1,5 +1,5 @@
 //
-//  ErrorExtension.swift
+//  AdapterFactory.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,15 +19,17 @@
  *  ********************************************************************************************************************
  */
 
-import Foundation
+import UIKit
 
-extension Error {
+open class AdapterFactory: NSObject {
     
-    public var message: String? {
-        return (self as! Fault).message
-    }
-    
-    public var faultCode: String? {
-        return (self as! Fault).faultCode
+    open func adapterForClassName(_ className: String) -> IResponseAdapter {
+        if className == "DeviceRegistration" {
+            
+        }
+        else if className == "Users" {
+            
+        }
+        return DefaultAdapter()
     }
 }

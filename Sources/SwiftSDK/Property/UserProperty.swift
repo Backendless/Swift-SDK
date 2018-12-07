@@ -19,15 +19,15 @@
  *  ********************************************************************************************************************
  */
 
-open class UserProperty: AbstractProperty {
+@objc open class UserProperty: AbstractProperty {
     
     var identity = false
     
-    open func isIdentity() -> Bool {
+    @objc open func isIdentity() -> Bool {
         return identity
     }
     
-    open func setIdentity(_ identity: Bool) {
+    @objc open func setIdentity(_ identity: Bool) {
         self.identity = identity
     }
 }

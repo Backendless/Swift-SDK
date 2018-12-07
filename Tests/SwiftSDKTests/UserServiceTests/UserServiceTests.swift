@@ -27,28 +27,27 @@ class UserServiceTests: XCTestCase {
     
     // *****************************************
     
-    func testDescribeUserClassSync() {
-        backendless.setHostUrl("http://api.backendless.com")
-        backendless.initApp(applicationId: "EEE9F1BF-2820-7143-FF1A-C812061E2400", apiKey: "E1043F31-7C0C-F349-FF9F-2A836F16BA00")
-        do {
-            let userClassDesc = try backendless.userService.describeUserClass()
-            XCTAssertNotNil(userClassDesc)
-            print(userClassDesc)
-        } catch let fault {
-            XCTAssertNotNil(fault)
-            print("Error \(fault.faultCode ?? "NO CODE"): \(fault.message ?? "SERVER ERROR")")
-        }
-    }
+//    func testDescribeUserClassSync() {
+//        backendless.setHostUrl("http://api.backendless.com")
+//        backendless.initApp(applicationId: "EEE9F1BF-2820-7143-FF1A-C812061E2400", apiKey: "E1043F31-7C0C-F349-FF9F-2A836F16BA00")
+//        do {
+//            let userClassDesc = try backendless.userService.describeUserClass()
+//            XCTAssertNotNil(userClassDesc)
+//            print(userClassDesc)
+//        } catch let fault {
+//            XCTAssertNotNil(fault)
+//            print("Error \(fault.faultCode ?? "NO CODE"): \(fault.message ?? "SERVER ERROR")")
+//        }
+//    }
     
     func testDescribeUserClassAsync() {
         backendless.setHostUrl("http://api.backendless.com")
         backendless.initApp(applicationId: "EEE9F1BF-2820-7143-FF1A-C812061E2400", apiKey: "E1043F31-7C0C-F349-FF9F-2A836F16BA00")
         backendless.userService.describeUserClass(responseBlock: { userClassDesc in
             XCTAssertNotNil(userClassDesc)
-            XCTAssertNotNil(userClassDesc)
         }, errorBlock: { fault in
             XCTAssertNotNil(fault)
-            print("Error \(fault.faultCode ?? "NO CODE"): \(fault.message ?? "SERVER ERROR")")
+            print("Error \(fault.faultCode): \(fault.message ?? "SERVER ERROR")")
         })
     }
     

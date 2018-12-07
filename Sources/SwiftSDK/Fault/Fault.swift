@@ -21,17 +21,26 @@
 
 import UIKit
 
-open class Fault: Error {
+@objc open class Fault: NSError {
     
-    open var message: String?
-    open var faultCode: String?
+    @objc open var message: String?
+    @objc open var faultCode: Int = 0
     
-    init(message: String?) {
-        self.message = message
+    let backendlessDomain = "BackendlessErrorDomain"
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
     }
     
-    init(message: String?, faultCode: String?) {
+    @objc init(message: String?, faultCode: Int) {
+        super.init(domain: backendlessDomain, code: faultCode, userInfo: [NSLocalizedDescriptionKey:message ?? "Unrecognized Backendless Server Error"])
         self.message = message
         self.faultCode = faultCode
+    }
+    
+    override init(domain: String, code: Int, userInfo dict: [String : Any]? = nil) {
+        super.init(domain: domain, code: code, userInfo: dict)
+        self.message = super.localizedDescription
+        self.faultCode = super.code
     }
 }
