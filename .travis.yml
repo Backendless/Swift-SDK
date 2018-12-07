@@ -4,6 +4,11 @@ xcode_workspace: SwiftSDK.xcworkspace
 xcode_scheme: SwiftSDK
 xcode_destination: platform=iOS Simulator,OS=12.1,name=iPhone Xs Max
 
+notifications:
+  slack:
+    rooms:
+      - backendless:H83v3dKWMcg6F0OWDjFbwYRh#ios_github
+
 before_install:
   - gem install cocoapods --pre
   - pod install --repo-update
