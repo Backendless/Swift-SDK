@@ -19,38 +19,30 @@
  *  ********************************************************************************************************************
  */
 
-@objc open class Backendless: NSObject {
+@objcMembers open class Backendless: NSObject {
     
-    @objc public static let shared = Backendless()
+    public static let shared = Backendless()
     
-    var hostUrl = "https://api.backendless.com"
+    open var hostUrl = "https://api.backendless.com"
     var applicationId = "AppId"
     var apiKey = "APIKey"
     
-    @objc open lazy var userService: UserService = {
+    open lazy var userService: UserService = {
         let _userSevice = UserService()
-        // userService.getPersistentUser() // !!!!!!!!!!!!!!!
+        // userService.getPersistentUser()
         return _userSevice
     }()
     
-    @objc open func initApp(applicationId: String, apiKey: String) {
+    open func initApp(applicationId: String, apiKey: String) {
         self.applicationId = applicationId
         self.apiKey = apiKey
     }
     
-    @objc open func setHostUrl(_ hostUrl: String) {
-        self.hostUrl = hostUrl
-    }
-    
-    @objc open func getHostUrl() -> String {
-        return hostUrl
-    }
-    
-    @objc open func getApplictionId() -> String? {
+    open func getApplictionId() -> String? {
         return applicationId
     }
     
-    @objc open func getApiKey() -> String? {
+    open func getApiKey() -> String? {
         return apiKey
     }
 }
