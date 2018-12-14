@@ -1,4 +1,5 @@
-//  AbstractProperty.swift
+//
+//  DataTypeEnum.swift
 //
 /*
  * *********************************************************************************************************************
@@ -18,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-@objc public enum DataTypeEnum: Int {
+@objc public enum DataTypeEnum: Int, Codable {
     case UNKNOWN
     case INT
     case STRING
@@ -31,7 +32,9 @@
     case STRING_ID
     case TEXT
     
-    var stringValue : String {
+    public typealias RawValue = String
+    
+    public var rawValue: RawValue {
         switch self {
         case .UNKNOWN: return "UNKNOWN"
         case .INT: return "INT"
@@ -46,35 +49,21 @@
         case .TEXT: return "TEXT"
         }
     }
-}
-
-@objc open class AbstractProperty: NSObject {
     
-    var name: String!
-    var required = false
-    var type: DataTypeEnum!
-    
-    @objc open func getName() -> String {
-        return self.name
-    }
-    
-    @objc open func setName(_ name: String) {
-        self.name = name
-    }
-    
-    @objc open func isRequired() -> Bool {
-        return self.required
-    }
-    
-    @objc open func setRequired(_ required: Bool) {
-        self.required = required
-    }
-    
-    @objc open func getType() -> String {
-        return self.type.stringValue
-    }
-    
-    @objc open func setType(_ type: DataTypeEnum) {
-        self.type = type
+    public init?(rawValue: RawValue) {
+        switch rawValue {
+        case "UNKNOWN": self = .UNKNOWN
+        case "INT": self = .INT
+        case "STRING": self = .STRING
+        case "BOOLEAN": self = .BOOLEAN
+        case "DATETIME": self = .DATETIME
+        case "DOUBLE": self = .DOUBLE
+        case "RELATION": self = .RELATION
+        case "COLLECTION": self = .COLLECTION
+        case "RELATION_LIST": self = .RELATION_LIST
+        case "STRING_ID": self = .STRING_ID
+        case "TEXT": self = .TEXT
+        default: self = .UNKNOWN
+        }
     }
 }

@@ -19,15 +19,43 @@
  *  ********************************************************************************************************************
  */
 
-@objc open class UserProperty: AbstractProperty {
-    
-    var identity = false
-    
-    @objc open func isIdentity() -> Bool {
-        return identity
+@objcMembers open class UserProperty: NSObject, NSCoding, Codable {    
+
+    open var name: String
+    open var required = false
+    open var identity = false
+    open var type: DataTypeEnum
+
+    enum Key:String {
+        case name = "name"
+        case required = "required"
+        case identity = "identity"
+        case type = "type"
     }
-    
-    @objc open func setIdentity(_ identity: Bool) {
+
+    init(name: String, required: Bool, identity: Bool, type: DataTypeEnum) {
+        self.name = name
+        self.required = required
         self.identity = identity
+        self.type = type
+    }
+
+    convenience required public init?(coder aDecoder: NSCoder) {
+        let name = aDecoder.decodeObject(forKey: Key.name.rawValue) as! String
+        let required = aDecoder.decodeBool(forKey: Key.required.rawValue)
+        let identity = aDecoder.decodeBool(forKey: Key.identity.rawValue)
+        let type = aDecoder.decodeObject(forKey: Key.type.rawValue) as! DataTypeEnum
+        self.init(name: name, required: required, identity: identity, type: type)
+    }
+
+    public func encode(with aCoder: NSCoder) {
+        aCoder.encode(name, forKey: Key.name.rawValue)
+        aCoder.encode(required, forKey: Key.required.rawValue)
+        aCoder.encode(identity, forKey: Key.identity.rawValue)
+        aCoder.encode(type, forKey: Key.type.rawValue)
+    }
+
+    open func getTypeName(_ type: DataTypeEnum) -> String {
+        return type.rawValue
     }
 }

@@ -20,37 +20,75 @@
  */
 
 import Alamofire
+import SwiftyJSON
 
-@objc open class UserService: NSObject {
+@objcMembers open class UserService: NSObject {
+    
+    open var currentUser: BackendlessUser?
+    open var stayLoggedIn = false
     
     let backendless = Backendless.shared
     let processResponse = ProcessResponse.shared
-    let userServiceResponseHandlers = UserServiceResponseHandlers.shared
-    let defaultAdapter = DefaultAdapter.shared
     
-    // sync methods
-    
-    //    open func describeUserClass() throws -> [UserProperty] {
-    //        let urlString = "\(backendless.hostUrl)/\(backendless.applicationId)/\(backendless.apiKey)/users/userclassprops"
-    //        let response = Alamofire.request(urlString).responseJSON()
-    //        let result = processResponse.processResponse(response)
-    //        if result is Fault {
-    //            throw result as! Fault
-    //        }
-    //        return userServiceResponseHandlers.describeUserClassResponseHandler(jsonArray: result as! NSArray)
-    //    }
-    
-    // async methods
-    
-    @objc open func describeUserClass(responseBlock: (([UserProperty]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+    open func describeUserClass(responseBlock: (([UserProperty]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let urlString = "\(backendless.hostUrl)/\(backendless.applicationId)/\(backendless.apiKey)/users/userclassprops"
         Alamofire.request(urlString).responseJSON(completionHandler: { response in
-            let result = self.processResponse.getResponseResult(response)
-            if result is Fault {
-                errorBlock(result as! Fault)
+            if let result = self.processResponse.defaultAdapt(response: response, to: [UserProperty].self) {
+                if result is Fault {
+                    errorBlock(result as! Fault)
+                }
+                else {
+                    responseBlock(result as! [UserProperty])
+                }
             }
-            else {
-                responseBlock(self.defaultAdapter.adapt(jsonArray: result as! NSArray))
+        })
+    }
+    
+    open func registerUser(_ user: BackendlessUser, responseBlock: ((BackendlessUser) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        let headers = ["Content-Type": "application/json"]
+        let parameters = ["email": user.email, "password": user._password, "name": user.name]
+        let urlString = "\(backendless.hostUrl)/\(backendless.applicationId)/\(backendless.apiKey)/users/register"
+        Alamofire.request(urlString, method: .post, parameters: parameters as Parameters, encoding: JSONEncoding.default, headers: headers).responseJSON(completionHandler: { response in
+            if let result = self.processResponse.backendlessUserAdapt(response: response) {
+                if result is Fault {
+                    errorBlock(result as! Fault)
+                }
+                else {
+                    responseBlock(result as! BackendlessUser)
+                }
+            }
+        })
+    }
+    
+    open func login(_ login: String, password: String, responseBlock: ((BackendlessUser) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        let headers = ["Content-Type": "application/json"]
+        let parameters = ["login": login, "password": password]
+        let urlString = "\(backendless.hostUrl)/\(backendless.applicationId)/\(backendless.apiKey)/users/login"
+        Alamofire.request(urlString, method: .post, parameters: parameters as Parameters, encoding: JSONEncoding.default, headers: headers).responseJSON(completionHandler: { response in
+            if let result = self.processResponse.backendlessUserAdapt(response: response) {
+                if result is Fault {
+                    errorBlock(result as! Fault)
+                }
+                else {
+                    self.currentUser = result as? BackendlessUser
+                    responseBlock(result as! BackendlessUser)
+                }
+            }
+        })
+    }
+    
+    open func update(_ user: BackendlessUser,  responseBlock: ((BackendlessUser) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        let headers = ["Content-Type": "application/json", "user-token": user.userToken!]
+        let urlString = "\(backendless.hostUrl)/\(backendless.applicationId)/\(backendless.apiKey)/users/\(user.objectId)"
+        let parameters = user.getProperties()        
+        Alamofire.request(urlString, method: .put, parameters: parameters as Parameters, encoding: JSONEncoding.default, headers: headers).responseJSON(completionHandler: { response in
+            if let result = self.processResponse.backendlessUserAdapt(response: response) {
+                if result is Fault {
+                    errorBlock(result as! Fault)
+                }
+                else {
+                    responseBlock(result as! BackendlessUser)
+                }
             }
         })
     }

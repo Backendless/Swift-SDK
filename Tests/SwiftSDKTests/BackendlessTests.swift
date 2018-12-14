@@ -26,9 +26,9 @@ class BackendlessTests: XCTestCase {
     private let backendless = Backendless.shared
     
     func testInitApp() {
-        backendless.setHostUrl("http://api.backendless.com")
+        backendless.hostUrl = "http://api.backendless.com"
         backendless.initApp(applicationId: "TestAppId", apiKey: "TestApiKey")
-        XCTAssertNotNil(backendless.getHostUrl())
+        XCTAssertNotNil(backendless.hostUrl) 
         XCTAssertNotNil(backendless.getApplictionId())
         XCTAssertNotNil(backendless.getApiKey())
     }
