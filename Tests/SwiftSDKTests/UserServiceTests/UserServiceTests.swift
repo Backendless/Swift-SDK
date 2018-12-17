@@ -110,4 +110,40 @@ class UserServiceTests: XCTestCase {
             }
         })
     }
+    
+    // ******************************************************
+    
+    func testLoginWithFacebookSDK() {
+    
+    }
+    
+    func testLoginWithTwitterSDK() {
+        
+    }
+    
+    func testLoginWithGoogleSDK() {
+        
+    }
+    
+    // ******************************************************
+    
+    func testLogout() {
+        let expectation = self.expectation(description: "*** userService.logout test passed ***")
+        backendless.userService.login("testUser@test.com", password: "111", responseBlock: { loggedInUser in
+            self.backendless.userService.logout({
+                self.fulfillExpectation(expectation)
+            }, errorBlock: { fault in
+                XCTAssertNotNil(fault)
+                self.fulfillExpectation(expectation)
+            })
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            self.fulfillExpectation(expectation)
+        })
+        waitForExpectations(timeout: 10, handler: { error in
+            if let error = error {
+                print("*** userService.update test failed: \(error.localizedDescription) ***")
+            }
+        })
+    }
 }
