@@ -1,5 +1,5 @@
 //
-//  SwiftSDK.h
+//  AlamofireManager.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,14 +19,25 @@
  *  ********************************************************************************************************************
  */
 
-#import <Foundation/Foundation.h>
+import UIKit
+import Alamofire
 
-//! Project version number for SwiftSDK.
-FOUNDATION_EXPORT double SwiftSDKVersionNumber;
-
-//! Project version string for SwiftSDK.
-FOUNDATION_EXPORT const unsigned char SwiftSDKVersionString[];
-
-// In this header, you should import all the public headers of your framework using statements like #import <SwiftSDK/PublicHeader.h>
-
-
+class AlamofireManager: NSObject {
+    
+    var urlString = "\(Backendless.shared.hostUrl)/\(Backendless.shared.applicationId)/\(Backendless.shared.apiKey)/"
+    var restMethod: String
+    var httpMethod: HTTPMethod
+    var headers: HTTPHeaders?
+    var parameters: Parameters?
+    
+    init(restMethod: String, httpMethod: HTTPMethod, headers: HTTPHeaders?, parameters: Parameters?) {
+        self.restMethod = restMethod
+        self.httpMethod = httpMethod
+        self.headers = headers
+        self.parameters = parameters
+    }
+    
+    func makeRequest() -> DataRequest {
+        return Alamofire.request(urlString+restMethod, method: httpMethod, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+    }
+}
