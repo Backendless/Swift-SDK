@@ -27,6 +27,7 @@ open class ProcessResponse: NSObject {
     
     func adapt<T>(response: DataResponse<Any>, to: T.Type) -> Any? where T : Decodable {
         if let responseResult = getResponseResult(response) {
+            
             if responseResult is Fault {
                 return responseResult as! Fault
             }
