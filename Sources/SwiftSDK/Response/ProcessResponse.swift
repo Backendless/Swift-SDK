@@ -27,7 +27,6 @@ open class ProcessResponse: NSObject {
     
     func adapt<T>(response: DataResponse<Any>, to: T.Type) -> Any? where T : Decodable {
         if let responseResult = getResponseResult(response) {
-            
             if responseResult is Fault {
                 return responseResult as! Fault
             }
@@ -44,9 +43,23 @@ open class ProcessResponse: NSObject {
                         return responseObject
                     }
                 }
-                catch {
-                    return Fault(domain: (error as NSError).domain, code: (error as NSError).code, userInfo: (error as NSError).userInfo)
+                catch let DecodingError.dataCorrupted(context) {
+                    print(context)
+                } catch let DecodingError.keyNotFound(key, context) {
+                    print("Key '\(key)' not found:", context.debugDescription)
+                    print("codingPath:", context.codingPath)
+                } catch let DecodingError.valueNotFound(value, context) {
+                    print("Value '\(value)' not found:", context.debugDescription)
+                    print("codingPath:", context.codingPath)
+                } catch let DecodingError.typeMismatch(type, context)  {
+                    print("Type '\(type)' mismatch:", context.debugDescription)
+                    print("codingPath:", context.codingPath)
+                } catch {
+                    print("error: ", error)
                 }
+//                catch {
+//                    return Fault(domain: (error as NSError).domain, code: (error as NSError).code, userInfo: (error as NSError).userInfo)
+//                }
             }
         }
         return nil

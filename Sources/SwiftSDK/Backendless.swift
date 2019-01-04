@@ -27,12 +27,6 @@
     var applicationId = "AppId"
     var apiKey = "APIKey"
     
-    open lazy var userService: UserService = {
-        let _userSevice = UserService()
-        // userService.getPersistentUser()
-        return _userSevice
-    }()
-    
     open func initApp(applicationId: String, apiKey: String) {
         self.applicationId = applicationId
         self.apiKey = apiKey
@@ -45,4 +39,19 @@
     open func getApiKey() -> String? {
         return apiKey
     }
+    
+    open lazy var userService: UserService = {
+        let _userSevice = UserService()
+        // userService.getPersistentUser()
+        return _userSevice
+    }()
+    
+    open lazy var geo: GeoService = {
+        return self.geoService
+    }()
+    
+    open lazy var geoService: GeoService = {
+        let _geoSevice = GeoService()
+        return _geoSevice
+    }()
 }

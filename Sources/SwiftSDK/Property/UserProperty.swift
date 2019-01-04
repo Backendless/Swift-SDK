@@ -26,11 +26,18 @@
     open var identity = false
     open var type: DataTypeEnum
 
-    enum Key:String {
-        case name = "name"
-        case required = "required"
-        case identity = "identity"
-        case type = "type"
+//    enum Key: String {
+//        case name = "name"
+//        case required = "required"
+//        case identity = "identity"
+//        case type = "type"
+//    }
+    
+    enum CodingKeys: String, CodingKey {
+        case name
+        case required
+        case identity
+        case type
     }
 
     init(name: String, required: Bool, identity: Bool, type: DataTypeEnum) {
@@ -41,18 +48,18 @@
     }
 
     convenience required public init?(coder aDecoder: NSCoder) {
-        let name = aDecoder.decodeObject(forKey: Key.name.rawValue) as! String
-        let required = aDecoder.decodeBool(forKey: Key.required.rawValue)
-        let identity = aDecoder.decodeBool(forKey: Key.identity.rawValue)
-        let type = aDecoder.decodeObject(forKey: Key.type.rawValue) as! DataTypeEnum
+        let name = aDecoder.decodeObject(forKey: CodingKeys.name.rawValue) as! String
+        let required = aDecoder.decodeBool(forKey: CodingKeys.required.rawValue)
+        let identity = aDecoder.decodeBool(forKey: CodingKeys.identity.rawValue)
+        let type = aDecoder.decodeObject(forKey: CodingKeys.type.rawValue) as! DataTypeEnum
         self.init(name: name, required: required, identity: identity, type: type)
     }
 
     public func encode(with aCoder: NSCoder) {
-        aCoder.encode(name, forKey: Key.name.rawValue)
-        aCoder.encode(required, forKey: Key.required.rawValue)
-        aCoder.encode(identity, forKey: Key.identity.rawValue)
-        aCoder.encode(type, forKey: Key.type.rawValue)
+        aCoder.encode(name, forKey: CodingKeys.name.rawValue)
+        aCoder.encode(required, forKey: CodingKeys.required.rawValue)
+        aCoder.encode(identity, forKey: CodingKeys.identity.rawValue)
+        aCoder.encode(type, forKey: CodingKeys.type.rawValue)
     }
 
     open func getTypeName(_ type: DataTypeEnum) -> String {
