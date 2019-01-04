@@ -27,7 +27,6 @@ import SwiftyJSON
     open var currentUser: BackendlessUser?
     open var stayLoggedIn = false
     
-    let backendless = Backendless.shared
     let processResponse = ProcessResponse.shared
     
     struct NoReply: Decodable {}
@@ -81,7 +80,7 @@ import SwiftyJSON
     
     // ******************************************************
     
-    open func logingWithFacebook(_ accessToken: String, fieldsMapping: [String: String], responseBlock: ((BackendlessUser) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+    open func logingWithFacebook(accessToken: String, fieldsMapping: [String: String], responseBlock: ((BackendlessUser) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = ["accessToken": accessToken, "fieldsMapping": fieldsMapping] as [String : Any]
         let request = AlamofireManager(restMethod: "users/social/facebook/sdk/login", httpMethod: .post, headers: headers, parameters: parameters).makeRequest()
@@ -98,7 +97,7 @@ import SwiftyJSON
         })
     }
     
-    open func loginWithTwitter(_ fieldsMapping: [String: String], responseBlock: ((BackendlessUser) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+    open func loginWithTwitter(fieldsMapping: [String: String], responseBlock: ((BackendlessUser) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = ["fieldsMapping": fieldsMapping, "redirect": true] as [String : Any]
         let request = AlamofireManager(restMethod: "users/social/oauth/twitter/request_url", httpMethod: .post, headers: headers, parameters: parameters).makeRequest()

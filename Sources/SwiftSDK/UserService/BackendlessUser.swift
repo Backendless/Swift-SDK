@@ -19,7 +19,6 @@
  *  ********************************************************************************************************************
  */
 
-import UIKit
 import SwiftyJSON
 
 @objcMembers open class BackendlessUser: NSObject, NSCoding, Codable {
@@ -37,13 +36,20 @@ import SwiftyJSON
     open var name: String?
     open private(set) var objectId: String
     open private(set) var userToken: String?
-    var properties = JSON()
+    private var properties = JSON()
     
-    enum Key:String {
-        case email = "email"
-        case name = "name"
-        case objectId = "objectId"
-        case userToken = "userToken"
+    //    enum Key: String {
+    //        case email = "email"
+    //        case name = "name"
+    //        case objectId = "objectId"
+    //        case userToken = "userToken"
+    //    }
+    
+    enum CodingKeys: String, CodingKey {
+    case email
+    case name
+    case objectId
+    case userToken
     }
     
     init(email: String, name: String?, objectId: String, userToken: String?) {
@@ -53,10 +59,10 @@ import SwiftyJSON
     }
     
     convenience required public init?(coder aDecoder: NSCoder) {
-        let email = aDecoder.decodeObject(forKey: Key.email.rawValue) as! String
-        let name = aDecoder.decodeObject(forKey: Key.name.rawValue) as? String
-        let objectId = aDecoder.decodeObject(forKey: Key.objectId.rawValue) as! String
-        let userToken = aDecoder.decodeObject(forKey: Key.userToken.rawValue) as? String
+        let email = aDecoder.decodeObject(forKey: CodingKeys.email.rawValue) as! String
+        let name = aDecoder.decodeObject(forKey: CodingKeys.name.rawValue) as? String
+        let objectId = aDecoder.decodeObject(forKey: CodingKeys.objectId.rawValue) as! String
+        let userToken = aDecoder.decodeObject(forKey: CodingKeys.userToken.rawValue) as? String
         self.init(email: email, name: name, objectId: objectId, userToken: userToken)
     }
     
@@ -66,10 +72,10 @@ import SwiftyJSON
     }
     
     public func encode(with aCoder: NSCoder) {
-        aCoder.encode(email, forKey: Key.email.rawValue)
-        aCoder.encode(name, forKey: Key.name.rawValue)
-        aCoder.encode(objectId, forKey: Key.objectId.rawValue)
-        aCoder.encode(userToken, forKey: Key.userToken.rawValue)
+        aCoder.encode(email, forKey: CodingKeys.email.rawValue)
+        aCoder.encode(name, forKey: CodingKeys.name.rawValue)
+        aCoder.encode(objectId, forKey: CodingKeys.objectId.rawValue)
+        aCoder.encode(userToken, forKey: CodingKeys.userToken.rawValue)
     }
     
     open func getProperty(_ propertyName: String) -> Any? {
