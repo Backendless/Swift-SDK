@@ -25,7 +25,71 @@ open class ProcessResponse: NSObject {
     
     public static let shared = ProcessResponse()
     
-    open func getResponseResult(_ response: DataResponse<Any>) -> Any? {
+    func adapt<T>(response: DataResponse<Any>, to: T.Type) -> Any? where T : Decodable {
+        if let responseResult = getResponseResult(response) {
+            if responseResult is Fault {
+                return responseResult as! Fault
+            }
+            else if let responseData = response.data, responseData.count > 0 {
+                do {
+                    if to == BackendlessUser.self {
+                        return adaptToBackendlessUser(responseResult: responseResult)
+                    }
+                    /*else if to == [BackendlessUser].self {
+                        // array of users
+                    }*/
+                    else {
+                        let responseObject = try JSONDecoder().decode(to, from: responseData)
+                        return responseObject
+                    }
+                }
+                catch let DecodingError.dataCorrupted(context) {
+                    print(context)
+                } catch let DecodingError.keyNotFound(key, context) {
+                    print("Key '\(key)' not found:", context.debugDescription)
+                    print("codingPath:", context.codingPath)
+                } catch let DecodingError.valueNotFound(value, context) {
+                    print("Value '\(value)' not found:", context.debugDescription)
+                    print("codingPath:", context.codingPath)
+                } catch let DecodingError.typeMismatch(type, context)  {
+                    print("Type '\(type)' mismatch:", context.debugDescription)
+                    print("codingPath:", context.codingPath)
+                } catch {
+                    print("error: ", error)
+                }
+//                catch {
+//                    return Fault(domain: (error as NSError).domain, code: (error as NSError).code, userInfo: (error as NSError).userInfo)
+//                }
+            }
+        }
+        return nil
+    }
+    
+    func adaptToBackendlessUser(responseResult: Any) -> Any? {
+        if let responseResult = responseResult as? [String: Any] {
+            var properties = ["email": responseResult["email"], "name": responseResult["name"], "objectId": responseResult["objectId"], "userToken": responseResult["user-token"]]
+            properties["properties"] = responseResult
+            do {
+                let responseData = try JSONSerialization.data(withJSONObject: properties)
+                do {
+                    let responseObject = try JSONDecoder().decode(BackendlessUser.self, from: responseData)
+                    return responseObject
+                }
+                catch {
+                    return Fault(domain: (error as NSError).domain, code: (error as NSError).code, userInfo: (error as NSError).userInfo)
+                }
+            }
+            catch {
+                return Fault(domain: (error as NSError).domain, code: (error as NSError).code, userInfo: (error as NSError).userInfo)
+            }
+        }
+        /*if let responseResult = responseResult as? [[String: Any]] {
+            // array of users
+        }*/
+        return nil
+    }
+    
+    func getResponseResult(_ response: DataResponse<Any>) -> Any? {
         switch response.result {
         case .success(let result):
             if (response.response?.statusCode)! >= 400 {
@@ -33,8 +97,7 @@ open class ProcessResponse: NSObject {
                     return Fault(message: faultDictionary["message"] as? String, faultCode: faultDictionary["code"] as! Int)
                 }
             }
-            return result
-            
+            return result            
         case .failure(let error):
             return Fault(domain: (error as NSError).domain, code: (error as NSError).code, userInfo: (error as NSError).userInfo)
         }

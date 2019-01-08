@@ -1,5 +1,5 @@
 //
-//  AdapterFactory.swift
+//  AlamofireManager.swift
 //
 /*
  * *********************************************************************************************************************
@@ -20,16 +20,24 @@
  */
 
 import UIKit
+import Alamofire
 
-open class AdapterFactory: NSObject {
+class AlamofireManager: NSObject {
     
-    open func adapterForClassName(_ className: String) -> IResponseAdapter {
-        if className == "DeviceRegistration" {
-            
-        }
-        else if className == "Users" {
-            
-        }
-        return DefaultAdapter()
+    var urlString = "\(Backendless.shared.hostUrl)/\(Backendless.shared.applicationId)/\(Backendless.shared.apiKey)/"
+    var restMethod: String
+    var httpMethod: HTTPMethod
+    var headers: HTTPHeaders?
+    var parameters: Parameters?
+    
+    init(restMethod: String, httpMethod: HTTPMethod, headers: HTTPHeaders?, parameters: Parameters?) {
+        self.restMethod = restMethod
+        self.httpMethod = httpMethod
+        self.headers = headers
+        self.parameters = parameters
+    }
+    
+    func makeRequest() -> DataRequest {
+        return Alamofire.request(urlString+restMethod, method: httpMethod, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
     }
 }

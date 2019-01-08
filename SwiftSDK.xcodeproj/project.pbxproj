@@ -9,20 +9,23 @@
 /* Begin PBXBuildFile section */
 		0C5080CC97C7712B4D88C0E6 /* Pods_SwiftSDKTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 585E424A2F44477E350D396B /* Pods_SwiftSDKTests.framework */; };
 		5E11113721B532450044CAED /* UserProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E11113621B532450044CAED /* UserProperty.swift */; };
-		5E11113A21B532D10044CAED /* AbstractProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E11113921B532D10044CAED /* AbstractProperty.swift */; };
 		5E11113C21B542BA0044CAED /* UserServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E11113B21B542BA0044CAED /* UserServiceTests.swift */; };
+		5E545EEC21DFB87A00881ED0 /* GeoServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E545EEB21DFB87A00881ED0 /* GeoServiceTests.swift */; };
+		5E545EEE21DFBA4400881ED0 /* GeoPointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E545EED21DFBA4400881ED0 /* GeoPointTests.swift */; };
 		5E572D4B21B8043E000713B0 /* ProcessResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E572D4A21B8043E000713B0 /* ProcessResponse.swift */; };
-		5E572D4F21B81541000713B0 /* UserServiceResponseHandlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E572D4E21B81541000713B0 /* UserServiceResponseHandlers.swift */; };
+		5E64F0BF21C50D8E00590B04 /* AlamofireManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E64F0BE21C50D8E00590B04 /* AlamofireManager.swift */; };
+		5E722B5E21BE9DE800AA9A8F /* DataTypeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E722B5D21BE9DE800AA9A8F /* DataTypeEnum.swift */; };
 		5E84136321B5265200869794 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E84136221B5265200869794 /* UserService.swift */; };
 		5E90721121B66E9E00619C0D /* Fault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E90721021B66E9E00619C0D /* Fault.swift */; };
-		5E946FE121BA6D7C00667FC0 /* AdapterFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E946FE021BA6D7C00667FC0 /* AdapterFactory.swift */; };
-		5E946FE321BA6DFB00667FC0 /* DefaultAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E946FE221BA6DFB00667FC0 /* DefaultAdapter.swift */; };
-		5E946FE521BA6E4A00667FC0 /* IResponseAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E946FE421BA6E4A00667FC0 /* IResponseAdapter.swift */; };
 		5E9C573221AEEA0400877870 /* SwiftSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9C572821AEEA0400877870 /* SwiftSDK.framework */; };
 		5E9C573921AEEA0400877870 /* SwiftSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E9C572B21AEEA0400877870 /* SwiftSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5EB28E1921B1799A0007AC30 /* Backendless.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB28E1821B1799A0007AC30 /* Backendless.swift */; };
 		5EB28E2021B1833A0007AC30 /* BackendlessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB28E1F21B1833A0007AC30 /* BackendlessTests.swift */; };
+		5ECD9C7E21DE57DA002CBB7D /* GeoPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECD9C7D21DE57DA002CBB7D /* GeoPoint.swift */; };
+		5ECD9C8021DE57E7002CBB7D /* GeoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECD9C7F21DE57E7002CBB7D /* GeoService.swift */; };
+		5EE2B40721C25EC600F90723 /* BackendlessUserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE2B40621C25EC600F90723 /* BackendlessUserTests.swift */; };
 		5EE6920121B67791002E72A9 /* FaultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE6920021B67791002E72A9 /* FaultTests.swift */; };
+		5EFBA8FE21C1011E007B3BB0 /* BackendlessUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFBA8FD21C1011E007B3BB0 /* BackendlessUser.swift */; };
 		799BD7D41D80CE863CAAB100 /* Pods_SwiftSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B0489AADDF73F8DCAD9ED64 /* Pods_SwiftSDK.framework */; };
 /* End PBXBuildFile section */
 
@@ -43,23 +46,26 @@
 		58AB04380B91FBC5C9538B5B /* Pods-SwiftSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSDK.release.xcconfig"; path = "Target Support Files/Pods-SwiftSDK/Pods-SwiftSDK.release.xcconfig"; sourceTree = "<group>"; };
 		5B0489AADDF73F8DCAD9ED64 /* Pods_SwiftSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E11113621B532450044CAED /* UserProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProperty.swift; sourceTree = "<group>"; };
-		5E11113921B532D10044CAED /* AbstractProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractProperty.swift; sourceTree = "<group>"; };
 		5E11113B21B542BA0044CAED /* UserServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserServiceTests.swift; sourceTree = "<group>"; };
+		5E545EEB21DFB87A00881ED0 /* GeoServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoServiceTests.swift; sourceTree = "<group>"; };
+		5E545EED21DFBA4400881ED0 /* GeoPointTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoPointTests.swift; sourceTree = "<group>"; };
 		5E572D4A21B8043E000713B0 /* ProcessResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessResponse.swift; sourceTree = "<group>"; };
-		5E572D4E21B81541000713B0 /* UserServiceResponseHandlers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserServiceResponseHandlers.swift; sourceTree = "<group>"; };
+		5E64F0BE21C50D8E00590B04 /* AlamofireManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireManager.swift; sourceTree = "<group>"; };
+		5E722B5D21BE9DE800AA9A8F /* DataTypeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTypeEnum.swift; sourceTree = "<group>"; };
 		5E84136221B5265200869794 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		5E90721021B66E9E00619C0D /* Fault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fault.swift; sourceTree = "<group>"; };
-		5E946FE021BA6D7C00667FC0 /* AdapterFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdapterFactory.swift; sourceTree = "<group>"; };
-		5E946FE221BA6DFB00667FC0 /* DefaultAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAdapter.swift; sourceTree = "<group>"; };
-		5E946FE421BA6E4A00667FC0 /* IResponseAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IResponseAdapter.swift; sourceTree = "<group>"; };
 		5E9C572821AEEA0400877870 /* SwiftSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E9C572B21AEEA0400877870 /* SwiftSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftSDK.h; sourceTree = "<group>"; };
 		5E9C572C21AEEA0400877870 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5E9C573121AEEA0400877870 /* SwiftSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EB28E1821B1799A0007AC30 /* Backendless.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backendless.swift; sourceTree = "<group>"; };
 		5EB28E1F21B1833A0007AC30 /* BackendlessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessTests.swift; sourceTree = "<group>"; };
+		5ECD9C7D21DE57DA002CBB7D /* GeoPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoPoint.swift; sourceTree = "<group>"; };
+		5ECD9C7F21DE57E7002CBB7D /* GeoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoService.swift; sourceTree = "<group>"; };
 		5ECE680E21B0248B00839120 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5EE2B40621C25EC600F90723 /* BackendlessUserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessUserTests.swift; sourceTree = "<group>"; };
 		5EE6920021B67791002E72A9 /* FaultTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaultTests.swift; sourceTree = "<group>"; };
+		5EFBA8FD21C1011E007B3BB0 /* BackendlessUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessUser.swift; sourceTree = "<group>"; };
 		EB93B24F831D64E376519235 /* Pods-SwiftSDKTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSDKTests.debug.xcconfig"; path = "Target Support Files/Pods-SwiftSDKTests/Pods-SwiftSDKTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -107,10 +113,19 @@
 		5E11113821B532BD0044CAED /* Property */ = {
 			isa = PBXGroup;
 			children = (
-				5E11113921B532D10044CAED /* AbstractProperty.swift */,
 				5E11113621B532450044CAED /* UserProperty.swift */,
+				5E722B5D21BE9DE800AA9A8F /* DataTypeEnum.swift */,
 			);
 			path = Property;
+			sourceTree = "<group>";
+		};
+		5E545EEA21DFAF1D00881ED0 /* GeoServiceTests */ = {
+			isa = PBXGroup;
+			children = (
+				5E545EEB21DFB87A00881ED0 /* GeoServiceTests.swift */,
+				5E545EED21DFBA4400881ED0 /* GeoPointTests.swift */,
+			);
+			path = GeoServiceTests;
 			sourceTree = "<group>";
 		};
 		5E572D4921B8042B000713B0 /* Response */ = {
@@ -121,10 +136,19 @@
 			path = Response;
 			sourceTree = "<group>";
 		};
+		5E64F0BD21C50D7D00590B04 /* Alamofire */ = {
+			isa = PBXGroup;
+			children = (
+				5E64F0BE21C50D8E00590B04 /* AlamofireManager.swift */,
+			);
+			path = Alamofire;
+			sourceTree = "<group>";
+		};
 		5E90720E21B66DA300619C0D /* UserServiceTests */ = {
 			isa = PBXGroup;
 			children = (
 				5E11113B21B542BA0044CAED /* UserServiceTests.swift */,
+				5EE2B40621C25EC600F90723 /* BackendlessUserTests.swift */,
 			);
 			path = UserServiceTests;
 			sourceTree = "<group>";
@@ -135,17 +159,6 @@
 				5E90721021B66E9E00619C0D /* Fault.swift */,
 			);
 			path = Fault;
-			sourceTree = "<group>";
-		};
-		5E946FDF21BA6C4A00667FC0 /* Adapters */ = {
-			isa = PBXGroup;
-			children = (
-				5E946FE421BA6E4A00667FC0 /* IResponseAdapter.swift */,
-				5E946FE021BA6D7C00667FC0 /* AdapterFactory.swift */,
-				5E946FE221BA6DFB00667FC0 /* DefaultAdapter.swift */,
-				5E572D4E21B81541000713B0 /* UserServiceResponseHandlers.swift */,
-			);
-			path = Adapters;
 			sourceTree = "<group>";
 		};
 		5E9C572921AEEA0400877870 /* Products */ = {
@@ -182,13 +195,24 @@
 			isa = PBXGroup;
 			children = (
 				5E84136221B5265200869794 /* UserService.swift */,
+				5EFBA8FD21C1011E007B3BB0 /* BackendlessUser.swift */,
 			);
 			path = UserService;
+			sourceTree = "<group>";
+		};
+		5ECD9C7C21DE57C2002CBB7D /* GeoService */ = {
+			isa = PBXGroup;
+			children = (
+				5ECD9C7F21DE57E7002CBB7D /* GeoService.swift */,
+				5ECD9C7D21DE57DA002CBB7D /* GeoPoint.swift */,
+			);
+			path = GeoService;
 			sourceTree = "<group>";
 		};
 		5ECE680C21B0248B00839120 /* SwiftSDKTests */ = {
 			isa = PBXGroup;
 			children = (
+				5E545EEA21DFAF1D00881ED0 /* GeoServiceTests */,
 				5ECE680E21B0248B00839120 /* Info.plist */,
 				5EB28E1F21B1833A0007AC30 /* BackendlessTests.swift */,
 				5EE691FF21B67770002E72A9 /* FaultTests */,
@@ -210,8 +234,9 @@
 			isa = PBXGroup;
 			children = (
 				5EB28E1821B1799A0007AC30 /* Backendless.swift */,
-				5E946FDF21BA6C4A00667FC0 /* Adapters */,
+				5E64F0BD21C50D7D00590B04 /* Alamofire */,
 				5E90720F21B66E6000619C0D /* Fault */,
+				5ECD9C7C21DE57C2002CBB7D /* GeoService */,
 				5E11113821B532BD0044CAED /* Property */,
 				5E572D4921B8042B000713B0 /* Response */,
 				5EB28E1A21B17A490007AC30 /* UserService */,
@@ -345,12 +370,14 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-SwiftSDKTests/Pods-SwiftSDKTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -408,16 +435,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5E946FE521BA6E4A00667FC0 /* IResponseAdapter.swift in Sources */,
-				5E946FE121BA6D7C00667FC0 /* AdapterFactory.swift in Sources */,
-				5E572D4F21B81541000713B0 /* UserServiceResponseHandlers.swift in Sources */,
 				5E84136321B5265200869794 /* UserService.swift in Sources */,
 				5E11113721B532450044CAED /* UserProperty.swift in Sources */,
-				5E11113A21B532D10044CAED /* AbstractProperty.swift in Sources */,
+				5EFBA8FE21C1011E007B3BB0 /* BackendlessUser.swift in Sources */,
+				5ECD9C8021DE57E7002CBB7D /* GeoService.swift in Sources */,
+				5E722B5E21BE9DE800AA9A8F /* DataTypeEnum.swift in Sources */,
+				5E64F0BF21C50D8E00590B04 /* AlamofireManager.swift in Sources */,
 				5E90721121B66E9E00619C0D /* Fault.swift in Sources */,
+				5ECD9C7E21DE57DA002CBB7D /* GeoPoint.swift in Sources */,
 				5E572D4B21B8043E000713B0 /* ProcessResponse.swift in Sources */,
 				5EB28E1921B1799A0007AC30 /* Backendless.swift in Sources */,
-				5E946FE321BA6DFB00667FC0 /* DefaultAdapter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -426,7 +453,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				5EE6920121B67791002E72A9 /* FaultTests.swift in Sources */,
+				5E545EEC21DFB87A00881ED0 /* GeoServiceTests.swift in Sources */,
+				5E545EEE21DFBA4400881ED0 /* GeoPointTests.swift in Sources */,
 				5E11113C21B542BA0044CAED /* UserServiceTests.swift in Sources */,
+				5EE2B40721C25EC600F90723 /* BackendlessUserTests.swift in Sources */,
 				5EB28E2021B1833A0007AC30 /* BackendlessTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
