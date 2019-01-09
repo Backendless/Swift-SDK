@@ -41,7 +41,7 @@ import SwiftyJSON
     
     struct NoReply: Decodable {}
     
-    private let persistentUserToken = "persistentUserToken"
+    private let persistentUserTokenKey = "persistentUserToken"
     
     open func describeUserClass(responseBlock: (([UserProperty]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let request = AlamofireManager(restMethod: "users/userclassprops", httpMethod: .get, headers: nil, parameters: nil).makeRequest()
@@ -209,19 +209,19 @@ import SwiftyJSON
         self.currentUser?.setProperties(properties!)
         let defaults = UserDefaults.standard
         let userToken: [String: String] = ["userToken": currentUser.userToken!]
-        defaults.setValue(userToken, forKey: persistentUserToken)
+        defaults.setValue(userToken, forKey: persistentUserTokenKey)
         defaults.synchronize()
     }
     
     func getPersistentUserToken() -> String? {
         let userDefaults = UserDefaults.standard
-        if let userToken = userDefaults.value(forKey: persistentUserToken) {
+        if let userToken = userDefaults.value(forKey: persistentUserTokenKey) {
             return userToken as? String
         }
         return nil
     }
     
     func removePersistentUser() {
-        UserDefaults.standard.removeObject(forKey: persistentUserToken)
+        UserDefaults.standard.removeObject(forKey: persistentUserTokenKey)
     }
 }
