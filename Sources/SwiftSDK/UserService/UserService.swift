@@ -26,10 +26,22 @@ import SwiftyJSON
     
     open var currentUser: BackendlessUser?
     open var stayLoggedIn = false
+    open private(set) var isValidUserToken: Bool {
+        get {
+            if getPersistentUserToken() != nil {
+                return true
+            }
+            return false
+        }
+        set {
+        }
+    }
     
     let processResponse = ProcessResponse.shared
     
     struct NoReply: Decodable {}
+    
+    private let persistentUserToken = "persistentUserToken"
     
     open func describeUserClass(responseBlock: (([UserProperty]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let request = AlamofireManager(restMethod: "users/userclassprops", httpMethod: .get, headers: nil, parameters: nil).makeRequest()
@@ -70,8 +82,8 @@ import SwiftyJSON
                 if result is Fault {
                     errorBlock(result as! Fault)
                 }
-                else {
-                    self.currentUser = result as? BackendlessUser
+                else {                    
+                    self.setPersistentUser(result as! BackendlessUser)
                     responseBlock(result as! BackendlessUser)
                 }
             }
@@ -90,7 +102,7 @@ import SwiftyJSON
                     errorBlock(result as! Fault)
                 }
                 else {
-                    self.currentUser = result as? BackendlessUser
+                    self.setPersistentUser(result as! BackendlessUser)
                     responseBlock(result as! BackendlessUser)
                 }
             }
@@ -107,7 +119,7 @@ import SwiftyJSON
                     errorBlock(result as! Fault)
                 }
                 else {
-                    self.currentUser = result as? BackendlessUser
+                    self.setPersistentUser(result as! BackendlessUser)
                     responseBlock(result as! BackendlessUser)
                 }
             }
@@ -115,8 +127,8 @@ import SwiftyJSON
     }
     
     /*open func loginWithGoogleSDK(responseBlock: ((BackendlessUser) -> Void)!, errorBlock: ((Fault) -> Void)!) {
-        
-    }*/
+     
+     }*/
     
     // ******************************************************
     
@@ -145,7 +157,7 @@ import SwiftyJSON
                     errorBlock(result as! Fault)
                 }
                 else {
-                    self.currentUser = nil
+                    self.resetPersistentUser()
                     responseBlock()
                 }
             })
@@ -161,7 +173,7 @@ import SwiftyJSON
                 errorBlock(result as! Fault)
             }
             else {
-                self.currentUser = nil
+                self.resetPersistentUser()
                 responseBlock()
             }
         })
@@ -179,5 +191,37 @@ import SwiftyJSON
                 responseBlock(result as! [String])
             }
         })
+    }
+    
+    func setPersistentUser(_ currentUser: BackendlessUser) {
+        self.currentUser = currentUser
+        savePersistentUser(self.currentUser!)
+    }
+    
+    func resetPersistentUser() {
+        removePersistentUser()
+        self.currentUser = nil
+    }
+    
+    func savePersistentUser(_ currentUser: BackendlessUser) {
+        var properties = self.currentUser?.getProperties()
+        properties?["user-token"] = self.currentUser?.userToken
+        self.currentUser?.setProperties(properties!)
+        let defaults = UserDefaults.standard
+        let userToken: [String: String] = ["userToken": currentUser.userToken!]
+        defaults.setValue(userToken, forKey: persistentUserToken)
+        defaults.synchronize()
+    }
+    
+    func getPersistentUserToken() -> String? {
+        let userDefaults = UserDefaults.standard
+        if let userToken = userDefaults.value(forKey: persistentUserToken) {
+            return userToken as? String
+        }
+        return nil
+    }
+    
+    func removePersistentUser() {
+        UserDefaults.standard.removeObject(forKey: persistentUserToken)
     }
 }
