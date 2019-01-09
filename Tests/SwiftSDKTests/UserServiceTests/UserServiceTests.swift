@@ -80,6 +80,7 @@ class UserServiceTests: XCTestCase {
         backendless.userService.login("testUser@test.com", password: "111", responseBlock: { loggedInUser in
             XCTAssertNotNil(loggedInUser)
             XCTAssertNotNil(self.backendless.userService.currentUser)
+            XCTAssertNotNil(self.backendless.userService.isValidUserToken)
             self.fulfillExpectation(expectation)
         }, errorBlock: { fault in
             XCTAssertNotNil(fault)
@@ -136,6 +137,7 @@ class UserServiceTests: XCTestCase {
             XCTAssertNotNil(self.backendless.userService.currentUser)
             self.backendless.userService.logout({
                 XCTAssertNil(self.backendless.userService.currentUser)
+                XCTAssertNil(self.backendless.userService.isValidUserToken)
                 self.fulfillExpectation(expectation)
             }, errorBlock: { fault in
                 XCTAssertNotNil(fault)
