@@ -24,19 +24,20 @@
     public static let shared = Backendless()
     
     open var hostUrl = "https://api.backendless.com"
-    var applicationId = "AppId"
-    var apiKey = "APIKey"
+    
+    private var applicationId = "AppId"
+    private var apiKey = "APIKey"
     
     open func initApp(applicationId: String, apiKey: String) {
         self.applicationId = applicationId
         self.apiKey = apiKey
     }
     
-    open func getApplictionId() -> String? {
+    open func getApplictionId() -> String {
         return applicationId
     }
     
-    open func getApiKey() -> String? {
+    open func getApiKey() -> String {
         return apiKey
     }
     
@@ -53,5 +54,14 @@
     open lazy var geoService: GeoService = {
         let _geoSevice = GeoService()
         return _geoSevice
+    }()
+    
+    open lazy var data: PersistenceService = {
+        return self.persistenceService
+    }()
+    
+    open lazy var persistenceService: PersistenceService = {
+        let _persistenceSevice = PersistenceService()
+        return _persistenceSevice
     }()
 }

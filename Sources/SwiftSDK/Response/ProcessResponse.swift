@@ -21,11 +21,11 @@
 
 import Alamofire
 
-open class ProcessResponse: NSObject {
+class ProcessResponse: NSObject {
     
-    public static let shared = ProcessResponse()
+    static let shared = ProcessResponse()
     
-    func adapt<T>(response: DataResponse<Any>, to: T.Type) -> Any? where T : Decodable {
+    func adapt<T>(response: DataResponse<Any>, to: T.Type) -> Any? where T: Decodable {
         if let responseResult = getResponseResult(response) {
             if responseResult is Fault {
                 return responseResult as! Fault
@@ -99,7 +99,7 @@ open class ProcessResponse: NSObject {
             }
             return result            
         case .failure(let error):
-            return Fault(domain: (error as NSError).domain, code: (error as NSError).code, userInfo: (error as NSError).userInfo)
+            return Fault(message: (error as NSError).localizedDescription, faultCode: (error as NSError).code)
         }
     }
 }

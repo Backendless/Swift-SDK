@@ -37,11 +37,10 @@ import SwiftyJSON
         }
     }
     
-    let processResponse = ProcessResponse.shared
-    
-    struct NoReply: Decodable {}
-    
+    private let processResponse = ProcessResponse.shared
     private let persistentUserTokenKey = "persistentUserToken"
+    
+    private struct NoReply: Decodable {}
     
     open func describeUserClass(responseBlock: (([UserProperty]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let request = AlamofireManager(restMethod: "users/userclassprops", httpMethod: .get, headers: nil, parameters: nil).makeRequest()

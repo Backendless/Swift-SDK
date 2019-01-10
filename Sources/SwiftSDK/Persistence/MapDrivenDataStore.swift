@@ -1,5 +1,5 @@
 //
-//  AlamofireManager.swift
+//  MapDrivenDataStore.swift
 //
 /*
  * *********************************************************************************************************************
@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2018 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -19,24 +19,20 @@
  *  ********************************************************************************************************************
  */
 
-import Alamofire
-
-class AlamofireManager: NSObject {
+@objcMembers open class MapDrivenDataStore: NSObject, IDataStore {
     
-    private var urlString = "\(Backendless.shared.hostUrl)/\(Backendless.shared.getApplictionId())/\(Backendless.shared.getApiKey())/"
-    private var restMethod: String
-    private var httpMethod: HTTPMethod
-    private var headers: HTTPHeaders?
-    private var parameters: Parameters?
+    typealias CustomType = [String: Any]
     
-    init(restMethod: String, httpMethod: HTTPMethod, headers: HTTPHeaders?, parameters: Parameters?) {
-        self.restMethod = restMethod
-        self.httpMethod = httpMethod
-        self.headers = headers
-        self.parameters = parameters
+    private var tableName: String
+    
+    private let persistenceServiceUtils = PersistenceServiceUtils.shared
+    
+    init(tableName: String) {
+        self.tableName = tableName
+        persistenceServiceUtils.setup(tableName)
     }
     
-    func makeRequest() -> DataRequest {
-        return Alamofire.request(urlString+restMethod, method: httpMethod, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+    open func save(_ entity: [String : Any], responseBlock: (([String : Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.save(entity: entity as [String : AnyObject], responseBlock: responseBlock, errorBlock: errorBlock)
     }
 }

@@ -23,7 +23,7 @@ import Alamofire
 
 @objcMembers open class GeoService: NSObject {
     
-    let processResponse = ProcessResponse.shared
+    private let processResponse = ProcessResponse.shared
 
     open func savePoint(_ geoPoint: GeoPoint, responseBlock: ((GeoPoint) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]

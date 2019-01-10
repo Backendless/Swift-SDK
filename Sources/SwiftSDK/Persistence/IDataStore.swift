@@ -1,5 +1,5 @@
 //
-//  AlamofireManager.swift
+//  IDataStore.swift
 //
 /*
  * *********************************************************************************************************************
@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2018 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -19,24 +19,11 @@
  *  ********************************************************************************************************************
  */
 
-import Alamofire
+import Foundation
 
-class AlamofireManager: NSObject {
+protocol IDataStore {
     
-    private var urlString = "\(Backendless.shared.hostUrl)/\(Backendless.shared.getApplictionId())/\(Backendless.shared.getApiKey())/"
-    private var restMethod: String
-    private var httpMethod: HTTPMethod
-    private var headers: HTTPHeaders?
-    private var parameters: Parameters?
+    associatedtype CustomType
     
-    init(restMethod: String, httpMethod: HTTPMethod, headers: HTTPHeaders?, parameters: Parameters?) {
-        self.restMethod = restMethod
-        self.httpMethod = httpMethod
-        self.headers = headers
-        self.parameters = parameters
-    }
-    
-    func makeRequest() -> DataRequest {
-        return Alamofire.request(urlString+restMethod, method: httpMethod, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
-    }
+    func save(_ entity: CustomType, responseBlock: ((CustomType) -> Void)!, errorBlock: ((Fault) -> Void)!)
 }

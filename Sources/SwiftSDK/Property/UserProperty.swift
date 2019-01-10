@@ -25,13 +25,6 @@
     open var required = false
     open var identity = false
     open var type: DataTypeEnum
-
-//    enum Key: String {
-//        case name = "name"
-//        case required = "required"
-//        case identity = "identity"
-//        case type = "type"
-//    }
     
     enum CodingKeys: String, CodingKey {
         case name
