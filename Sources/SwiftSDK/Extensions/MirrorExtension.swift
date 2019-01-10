@@ -1,5 +1,5 @@
 //
-//  AlamofireManager.swift
+//  MirrorExtension.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,24 +19,24 @@
  *  ********************************************************************************************************************
  */
 
-import Alamofire
-
-class AlamofireManager: NSObject {
+extension Mirror {
     
-    private var urlString = "\(Backendless.shared.hostUrl)/\(Backendless.shared.getApplictionId())/\(Backendless.shared.getApiKey())/"
-    private var restMethod: String
-    private var httpMethod: HTTPMethod
-    private var headers: HTTPHeaders?
-    private var parameters: Parameters?
-    
-    init(restMethod: String, httpMethod: HTTPMethod, headers: HTTPHeaders?, parameters: Parameters?) {
-        self.restMethod = restMethod
-        self.httpMethod = httpMethod
-        self.headers = headers
-        self.parameters = parameters
-    }
-    
-    func makeRequest() -> DataRequest {
-        return Alamofire.request(urlString+restMethod, method: httpMethod, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+    func toDictionary() -> [String: AnyObject] {
+        var resultDictionary = [String: AnyObject]()
+        
+        // properties of instance
+        for attribute in self.children {
+            if let propertyName = attribute.label {
+                resultDictionary[propertyName] = attribute.value as AnyObject
+            }
+        }
+        
+        // properties of superclass
+        if let parent = self.superclassMirror {
+            for (propertyName, value) in parent.toDictionary() {
+                resultDictionary[propertyName] = value
+            }
+        }
+        return resultDictionary
     }
 }

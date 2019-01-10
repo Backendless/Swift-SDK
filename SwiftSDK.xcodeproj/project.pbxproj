@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		0C5080CC97C7712B4D88C0E6 /* Pods_SwiftSDKTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 585E424A2F44477E350D396B /* Pods_SwiftSDKTests.framework */; };
+		5A2A784D21E6104F00EC8007 /* IDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2A784C21E6104F00EC8007 /* IDataStore.swift */; };
+		5A2A784F21E610D700EC8007 /* MapDrivenDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2A784E21E610D700EC8007 /* MapDrivenDataStore.swift */; };
+		5A2A785121E6114800EC8007 /* PersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2A785021E6114800EC8007 /* PersistenceService.swift */; };
+		5A2A785321E61D1700EC8007 /* DataStoreFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2A785221E61D1700EC8007 /* DataStoreFactory.swift */; };
+		5AC54CA621E7373400EC1F8C /* PersistenceServiceUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC54CA521E7373400EC1F8C /* PersistenceServiceUtils.swift */; };
+		5AC54CA921E7460F00EC1F8C /* MirrorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC54CA821E7460F00EC1F8C /* MirrorExtension.swift */; };
 		5E11113721B532450044CAED /* UserProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E11113621B532450044CAED /* UserProperty.swift */; };
 		5E11113C21B542BA0044CAED /* UserServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E11113B21B542BA0044CAED /* UserServiceTests.swift */; };
 		5E545EEC21DFB87A00881ED0 /* GeoServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E545EEB21DFB87A00881ED0 /* GeoServiceTests.swift */; };
@@ -44,6 +50,12 @@
 		2E41F15845D4492BA383B1F5 /* Pods-SwiftSDKTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSDKTests.release.xcconfig"; path = "Target Support Files/Pods-SwiftSDKTests/Pods-SwiftSDKTests.release.xcconfig"; sourceTree = "<group>"; };
 		585E424A2F44477E350D396B /* Pods_SwiftSDKTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftSDKTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		58AB04380B91FBC5C9538B5B /* Pods-SwiftSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSDK.release.xcconfig"; path = "Target Support Files/Pods-SwiftSDK/Pods-SwiftSDK.release.xcconfig"; sourceTree = "<group>"; };
+		5A2A784C21E6104F00EC8007 /* IDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDataStore.swift; sourceTree = "<group>"; };
+		5A2A784E21E610D700EC8007 /* MapDrivenDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDrivenDataStore.swift; sourceTree = "<group>"; };
+		5A2A785021E6114800EC8007 /* PersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceService.swift; sourceTree = "<group>"; };
+		5A2A785221E61D1700EC8007 /* DataStoreFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStoreFactory.swift; sourceTree = "<group>"; };
+		5AC54CA521E7373400EC1F8C /* PersistenceServiceUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceServiceUtils.swift; sourceTree = "<group>"; };
+		5AC54CA821E7460F00EC1F8C /* MirrorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MirrorExtension.swift; sourceTree = "<group>"; };
 		5B0489AADDF73F8DCAD9ED64 /* Pods_SwiftSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E11113621B532450044CAED /* UserProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProperty.swift; sourceTree = "<group>"; };
 		5E11113B21B542BA0044CAED /* UserServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserServiceTests.swift; sourceTree = "<group>"; };
@@ -108,6 +120,26 @@
 				585E424A2F44477E350D396B /* Pods_SwiftSDKTests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5A2A784B21E6103100EC8007 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				5A2A785021E6114800EC8007 /* PersistenceService.swift */,
+				5AC54CA521E7373400EC1F8C /* PersistenceServiceUtils.swift */,
+				5A2A784C21E6104F00EC8007 /* IDataStore.swift */,
+				5A2A784E21E610D700EC8007 /* MapDrivenDataStore.swift */,
+				5A2A785221E61D1700EC8007 /* DataStoreFactory.swift */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
+		5AC54CA721E745F200EC1F8C /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				5AC54CA821E7460F00EC1F8C /* MirrorExtension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		5E11113821B532BD0044CAED /* Property */ = {
@@ -235,8 +267,10 @@
 			children = (
 				5EB28E1821B1799A0007AC30 /* Backendless.swift */,
 				5E64F0BD21C50D7D00590B04 /* Alamofire */,
+				5AC54CA721E745F200EC1F8C /* Extensions */,
 				5E90720F21B66E6000619C0D /* Fault */,
 				5ECD9C7C21DE57C2002CBB7D /* GeoService */,
+				5A2A784B21E6103100EC8007 /* Persistence */,
 				5E11113821B532BD0044CAED /* Property */,
 				5E572D4921B8042B000713B0 /* Response */,
 				5EB28E1A21B17A490007AC30 /* UserService */,
@@ -439,9 +473,15 @@
 				5E11113721B532450044CAED /* UserProperty.swift in Sources */,
 				5EFBA8FE21C1011E007B3BB0 /* BackendlessUser.swift in Sources */,
 				5ECD9C8021DE57E7002CBB7D /* GeoService.swift in Sources */,
+				5A2A784F21E610D700EC8007 /* MapDrivenDataStore.swift in Sources */,
+				5A2A785121E6114800EC8007 /* PersistenceService.swift in Sources */,
 				5E722B5E21BE9DE800AA9A8F /* DataTypeEnum.swift in Sources */,
+				5AC54CA621E7373400EC1F8C /* PersistenceServiceUtils.swift in Sources */,
+				5AC54CA921E7460F00EC1F8C /* MirrorExtension.swift in Sources */,
 				5E64F0BF21C50D8E00590B04 /* AlamofireManager.swift in Sources */,
+				5A2A785321E61D1700EC8007 /* DataStoreFactory.swift in Sources */,
 				5E90721121B66E9E00619C0D /* Fault.swift in Sources */,
+				5A2A784D21E6104F00EC8007 /* IDataStore.swift in Sources */,
 				5ECD9C7E21DE57DA002CBB7D /* GeoPoint.swift in Sources */,
 				5E572D4B21B8043E000713B0 /* ProcessResponse.swift in Sources */,
 				5EB28E1921B1799A0007AC30 /* Backendless.swift in Sources */,
