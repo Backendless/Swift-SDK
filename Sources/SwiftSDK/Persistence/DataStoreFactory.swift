@@ -39,35 +39,21 @@ import SwiftyJSON
     }
     
     open func save(_ entity: Any, responseBlock: ((Any) -> Void)!, errorBlock: ((Fault) -> Void)!) {
-        if let entityDictionary = persistenceServiceUtils.entityToDictionary(entity) {
-            
-            
-            
-            let wrappedResponseBlock: ([String: Any]) -> () = { (dict) in
-                //                print("THIS DICT WILL BE TRANSORMED")
-                //                print(dict)
-                
-                // ********************************************
-                if dict["___class"] as? String == self.tableName {
-                    let resultClass = self.persistenceServiceUtils.classFromString(self.tableName) as! NSObject.Type
+        let resultClass = type(of: entity) as! NSObject.Type
+        let entityDictionary = persistenceServiceUtils.entityToDictionary(entity)
         
-                    let resultEntity = resultClass.init()
-                    
-                    let resultEntityFields = self.persistenceServiceUtils.entityToDictionary(resultEntity)?.keys
-                    for key in dict.keys {
-                        if (resultEntityFields!.contains(key)) {
-                            resultEntity.setValue(dict[key], forKey: key)
-                        }
+        let dictionaryToCustomObjectBlock: ([String: Any]) -> () = { (responseDictionary) in
+            if responseDictionary["___class"] as? String == self.tableName {
+                let resultEntity = resultClass.init()                
+                for field in responseDictionary.keys {
+                    if (entityDictionary.keys.contains(field)) {
+                        resultEntity.setValue(responseDictionary[field], forKey: field)
                     }
-                    responseBlock(resultEntity)
                 }
-                // ********************************************
+                responseBlock(resultEntity)
             }
-            
-            
-            
-            
-            persistenceServiceUtils.save(entity: entityDictionary, responseBlock: wrappedResponseBlock, errorBlock: errorBlock)
         }
+        
+        persistenceServiceUtils.save(entity: entityDictionary, responseBlock: dictionaryToCustomObjectBlock, errorBlock: errorBlock)
     }
 }

@@ -35,7 +35,7 @@ class PersistenceServiceUtils: NSObject {
         }
     }
     
-    func save(entity: [String : AnyObject], responseBlock: (([String : Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+    func save(entity: [String : Any], responseBlock: (([String : Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = entity
         let request = AlamofireManager(restMethod: "data/\(tableName)", httpMethod: .post, headers: headers, parameters: parameters).makeRequest()
@@ -60,15 +60,17 @@ class PersistenceServiceUtils: NSObject {
         return nil
     }
     
-    func entityToDictionary(_ entity: Any?) -> [String: AnyObject]? {
-        if let entity = entity {
-            return Mirror(reflecting: entity).toDictionary()
+    func entityToDictionary(_ entity: Any) -> [String: Any] {
+        let resultClass = type(of: entity) as! NSObject.Type
+        var entityDictionary = [String: Any]()
+        var outCount : UInt32 = 0
+        if let properties = class_copyPropertyList(resultClass.self, &outCount) {
+            for i : UInt32 in 0..<outCount {
+                if let key = NSString(cString: property_getName(properties[Int(i)]), encoding: String.Encoding.utf8.rawValue) as String?, let value = (entity as! NSObject).value(forKey: key) {
+                    entityDictionary[key] = value
+                }
+            }
         }
-        return nil
-    }
-    
-    func classFromString(_ className: String) -> AnyClass {
-        let namespace = Bundle.main.infoDictionary!["CFBundleExecutable"] as! String
-        return NSClassFromString("\(namespace).\(className)")!
+        return entityDictionary
     }
 }

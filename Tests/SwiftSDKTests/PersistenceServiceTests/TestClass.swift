@@ -1,5 +1,5 @@
 //
-//  MirrorExtension.swift
+//  TestClass.swift
 //
 /*
  * *********************************************************************************************************************
@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2018 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -19,24 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-extension Mirror {
-    
-    func toDictionary() -> [String: AnyObject] {
-        var resultDictionary = [String: AnyObject]()
-        
-        // properties of instance
-        for attribute in self.children {
-            if let propertyName = attribute.label {
-                resultDictionary[propertyName] = attribute.value as AnyObject
-            }
-        }
-        
-        // properties of superclass
-        if let parent = self.superclassMirror {
-            for (propertyName, value) in parent.toDictionary() {
-                resultDictionary[propertyName] = value
-            }
-        }
-        return resultDictionary
-    }
+@objcMembers class TestClass: NSObject {
+    var name: String?
+    var age: Int = 0
 }
