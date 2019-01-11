@@ -1,5 +1,5 @@
 //
-//  GeoServiceTests.swift
+//  DataStoreFactoryTests.swift
 //
 /*
  * *********************************************************************************************************************
@@ -22,8 +22,8 @@
 import XCTest
 @testable import SwiftSDK
 
-class GeoServiceTests: XCTestCase {
-
+class DataStoreFactoryTests: XCTestCase {
+    
     private let backendless = Backendless.shared
     
     override func setUp() {
@@ -36,18 +36,17 @@ class GeoServiceTests: XCTestCase {
         print(expectation.description)
     }
     
-    func testSavePoint() {
-        let expectation = self.expectation(description: "*** geoService.savePoint test passed ***")
-        let geoPoint = GeoPoint(latitude: 0.0, longitude: 0.0, categories: ["My UnitTest Category"], metadata: ["foo": "bar", "foo1": 123])
-        backendless.geo.savePoint(geoPoint, responseBlock: { savedPoint in
-            XCTAssertNotNil(savedPoint)
-            XCTAssertNotNil(savedPoint.latitude)
-            XCTAssertNotNil(savedPoint.longitude)
-            XCTAssertNotNil(savedPoint.categories)
-            XCTAssert(savedPoint.categories.count > 0)
-            XCTAssertNotNil(savedPoint.metadata)
-            XCTAssert(savedPoint.metadata?.keys.count ?? 0 > 0)
-            XCTAssert(savedPoint.metadata?.values.count ?? 0 > 0)
+    func testSave() {
+        let expectation = self.expectation(description: "*** dataStoreFactory.save test passed ***")
+        let objectToSave = TestClass()
+        objectToSave.name = "Bob"
+        objectToSave.age = 25
+        let dataStore = backendless.data.of(TestClass.self)
+        dataStore.save(objectToSave, responseBlock: { savedObject in
+            XCTAssertNotNil(savedObject)
+            XCTAssert(type(of: savedObject) == TestClass.self)
+            XCTAssertEqual((savedObject as! TestClass).name, "Bob")
+            XCTAssertEqual((savedObject as! TestClass).age, 25)
             self.fulfillExpectation(expectation)
         }, errorBlock: { fault in
             XCTAssertNotNil(fault)
@@ -55,7 +54,7 @@ class GeoServiceTests: XCTestCase {
         })
         waitForExpectations(timeout: 10, handler: { error in
             if let error = error {
-                print("*** geoService.savePoint test failed: \(error.localizedDescription) ***")
+                print("*** dataStoreFactory.save test failed: \(error.localizedDescription) ***")
             }
         })
     }
