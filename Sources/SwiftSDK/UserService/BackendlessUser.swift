@@ -36,7 +36,7 @@ import SwiftyJSON
     open private(set) var objectId: String
     open private(set) var userToken: String?
     
-    internal var _password: String?
+    var _password: String?
     
     private var properties = JSON()
     

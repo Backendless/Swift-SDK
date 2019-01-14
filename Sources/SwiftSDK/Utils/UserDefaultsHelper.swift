@@ -1,5 +1,5 @@
 //
-//  PersistenceServiceTests.swift
+//  UserDefaultsHelper.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,20 +19,31 @@
  *  ********************************************************************************************************************
  */
 
-import XCTest
-@testable import SwiftSDK
-
-class PersistenceServiceTests: XCTestCase {
+class UserDefaultsHelper: NSObject {
     
-    func testCreateMapDrivenDataStore() {
-        let dataStore = Backendless.shared.data.ofTable("TestClass")
-        XCTAssertNotNil(dataStore)
-        XCTAssert(type(of: dataStore) == MapDrivenDataStore.self)
+    public static let shared = UserDefaultsHelper()
+    
+    private let PERSISTENT_USER_TOKEN_KEY = "userTokenKey"
+    
+    func savePersistentUserToken(_ userToken: String) {
+        let defaults = UserDefaults.standard
+        let userToken: [String: String] = ["userToken": userToken]
+        defaults.setValue(userToken, forKey: PERSISTENT_USER_TOKEN_KEY)
+        defaults.synchronize()
     }
     
-    func testCreateDataStoreFactory() {
-        let dataStore = Backendless.shared.data.of(TestClass.self)
-        XCTAssertNotNil(dataStore)
-        XCTAssert(type(of: dataStore) == DataStoreFactory.self)
+    func getPersistentUserToken() -> String? {
+        let userDefaults = UserDefaults.standard
+        if let userToken = userDefaults.value(forKey: PERSISTENT_USER_TOKEN_KEY),
+            let token = (userToken as! [String: String])["userToken"] {
+            return token
+        }
+        return nil
+    }
+    
+    func removePersistentUser() {
+        UserDefaults.standard.removeObject(forKey: PERSISTENT_USER_TOKEN_KEY)
     }
 }
+
+

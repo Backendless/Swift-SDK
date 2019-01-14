@@ -43,7 +43,6 @@
     
     open lazy var userService: UserService = {
         let _userSevice = UserService()
-        // userService.getPersistentUser()
         return _userSevice
     }()
     

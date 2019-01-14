@@ -24,7 +24,7 @@ import SwiftyJSON
 
 @objcMembers open class UserService: NSObject {
     
-    open var currentUser: BackendlessUser?
+    open private(set) var currentUser: BackendlessUser?
     open var stayLoggedIn = false
     open private(set) var isValidUserToken: Bool {
         get {
@@ -38,13 +38,13 @@ import SwiftyJSON
     }
     
     private let processResponse = ProcessResponse.shared
-    private let persistentUserTokenKey = "persistentUserToken"
+    private let userDefaultsHelper = UserDefaultsHelper.shared
     
     private struct NoReply: Decodable {}
     
     open func describeUserClass(responseBlock: (([UserProperty]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let request = AlamofireManager(restMethod: "users/userclassprops", httpMethod: .get, headers: nil, parameters: nil).makeRequest()
-        request.responseJSON(completionHandler: { response in
+        request.responseData(completionHandler: { response in
             if let result = self.processResponse.adapt(response: response, to: [UserProperty].self) {
                 if result is Fault {
                     errorBlock(result as! Fault)
@@ -60,7 +60,7 @@ import SwiftyJSON
         let headers = ["Content-Type": "application/json"]
         let parameters = ["email": user.email, "password": user._password, "name": user.name]
         let request = AlamofireManager(restMethod: "users/register", httpMethod: .post, headers: headers, parameters: parameters as Parameters).makeRequest()
-        request.responseJSON(completionHandler: { response in
+        request.responseData(completionHandler: { response in
             if let result = self.processResponse.adapt(response: response, to: BackendlessUser.self) {
                 if result is Fault {
                     errorBlock(result as! Fault)
@@ -76,12 +76,12 @@ import SwiftyJSON
         let headers = ["Content-Type": "application/json"]
         let parameters = ["login": login, "password": password]
         let request = AlamofireManager(restMethod: "users/login", httpMethod: .post, headers: headers, parameters: parameters as Parameters).makeRequest()
-        request.responseJSON(completionHandler: { response in
+        request.responseData(completionHandler: { response in
             if let result = self.processResponse.adapt(response: response, to: BackendlessUser.self) {
                 if result is Fault {
                     errorBlock(result as! Fault)
                 }
-                else {                    
+                else {
                     self.setPersistentUser(result as! BackendlessUser)
                     responseBlock(result as! BackendlessUser)
                 }
@@ -95,7 +95,7 @@ import SwiftyJSON
         let headers = ["Content-Type": "application/json"]
         let parameters = ["accessToken": accessToken, "fieldsMapping": fieldsMapping] as [String : Any]
         let request = AlamofireManager(restMethod: "users/social/facebook/sdk/login", httpMethod: .post, headers: headers, parameters: parameters).makeRequest()
-        request.responseJSON(completionHandler: { response in
+        request.responseData(completionHandler: { response in
             if let result = self.processResponse.adapt(response: response, to: BackendlessUser.self) {
                 if result is Fault {
                     errorBlock(result as! Fault)
@@ -112,7 +112,7 @@ import SwiftyJSON
         let headers = ["Content-Type": "application/json"]
         let parameters = ["fieldsMapping": fieldsMapping, "redirect": true] as [String : Any]
         let request = AlamofireManager(restMethod: "users/social/oauth/twitter/request_url", httpMethod: .post, headers: headers, parameters: parameters).makeRequest()
-        request.responseJSON(completionHandler: { response in
+        request.responseData(completionHandler: { response in
             if let result = self.processResponse.adapt(response: response, to: BackendlessUser.self) {
                 if result is Fault {
                     errorBlock(result as! Fault)
@@ -135,7 +135,7 @@ import SwiftyJSON
         let headers = ["Content-Type": "application/json", "user-token": user.userToken!]
         let parameters = user.getProperties()
         let request = AlamofireManager(restMethod: "users/\(user.objectId)", httpMethod: .put, headers: headers, parameters: parameters).makeRequest()
-        request.responseJSON(completionHandler: { response in
+        request.responseData(completionHandler: { response in
             let result = self.processResponse.adapt(response: response, to: BackendlessUser.self)
             if result is Fault {
                 errorBlock(result as! Fault)
@@ -147,10 +147,10 @@ import SwiftyJSON
     }
     
     open func logout(_ responseBlock: (() -> Void)!, errorBlock: ((Fault) -> Void)!) {
-        if self.currentUser != nil {
+      if self.currentUser != nil {
             let headers = ["Content-Type": "application/json", "user-token": currentUser!.userToken!]
             let request = AlamofireManager(restMethod: "users/logout", httpMethod: .get, headers: headers, parameters: nil).makeRequest()
-            request.responseJSON(completionHandler: { response in
+            request.responseData(completionHandler: { response in
                 let result = self.processResponse.adapt(response: response, to: NoReply.self)
                 if result is Fault {
                     errorBlock(result as! Fault)
@@ -166,7 +166,7 @@ import SwiftyJSON
     open func restorePassword(_ login: String, responseBlock: (() -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let request = AlamofireManager(restMethod: "users/restorepassword/\(login)", httpMethod: .get, headers: headers, parameters: nil).makeRequest()
-        request.responseJSON(completionHandler: { response in
+        request.responseData(completionHandler: { response in
             let result = self.processResponse.adapt(response: response, to: NoReply.self)
             if result is Fault {
                 errorBlock(result as! Fault)
@@ -181,7 +181,7 @@ import SwiftyJSON
     open func getUserRoles(responseBlock: (([String]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let request = AlamofireManager(restMethod: "users/userroles", httpMethod: .get, headers: headers, parameters: nil).makeRequest()
-        request.responseJSON(completionHandler: { response in
+        request.responseData(completionHandler: { response in
             let result = self.processResponse.adapt(response: response, to: [String].self)
             if result is Fault {
                 errorBlock(result as! Fault)
@@ -198,29 +198,25 @@ import SwiftyJSON
     }
     
     func resetPersistentUser() {
-        removePersistentUser()
         self.currentUser = nil
+        removePersistentUser()        
     }
     
     func savePersistentUser(_ currentUser: BackendlessUser) {
         var properties = self.currentUser?.getProperties()
         properties?["user-token"] = self.currentUser?.userToken
         self.currentUser?.setProperties(properties!)
-        let defaults = UserDefaults.standard
-        let userToken: [String: String] = ["userToken": currentUser.userToken!]
-        defaults.setValue(userToken, forKey: persistentUserTokenKey)
-        defaults.synchronize()
+        userDefaultsHelper.savePersistentUserToken(currentUser.userToken!)
     }
     
     func getPersistentUserToken() -> String? {
-        let userDefaults = UserDefaults.standard
-        if let userToken = userDefaults.value(forKey: persistentUserTokenKey) {
-            return userToken as? String
+        if let userToken = userDefaultsHelper.getPersistentUserToken() {
+            return userToken
         }
         return nil
     }
     
     func removePersistentUser() {
-        UserDefaults.standard.removeObject(forKey: persistentUserTokenKey)
+        userDefaultsHelper.removePersistentUser()
     }
 }

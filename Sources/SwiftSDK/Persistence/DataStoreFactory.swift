@@ -38,6 +38,11 @@ import SwiftyJSON
         persistenceServiceUtils.setup(tableName)
     }
     
+    open func mapColumn(_ columnName: String, toProperty: String) {
+        // на устройстве должен быть Dictionary [columnName: propertyName]
+        // когда прилетает объект DSF, нужно проверить, есть ли какие-то маппинги
+    }
+    
     open func save(_ entity: Any, responseBlock: ((Any) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let resultClass = type(of: entity) as! NSObject.Type
         let entityDictionary = persistenceServiceUtils.entityToDictionary(entity)
@@ -52,8 +57,15 @@ import SwiftyJSON
                 }
                 responseBlock(resultEntity)
             }
-        }
-        
+        }        
         persistenceServiceUtils.save(entity: entityDictionary, responseBlock: dictionaryToCustomObjectBlock, errorBlock: errorBlock)
+    }
+    
+    open func createBulk(_ entities: [Any], responseBlock: (([String]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        var entitiesDictionaries = [[String: Any]]()
+        for entity in entities {
+            entitiesDictionaries.append(persistenceServiceUtils.entityToDictionary(entity))
+        }
+        persistenceServiceUtils.createBulk(entities: entitiesDictionaries, responseBlock: responseBlock, errorBlock: errorBlock)
     }
 }
