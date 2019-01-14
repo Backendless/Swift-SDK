@@ -56,4 +56,23 @@ class MapDrivenDataStoreTests: XCTestCase {
             }
         })
     }
+    
+    func testCreateBulk() {
+        let expectation = self.expectation(description: "*** mapDrivenDataStore.createBulk test passed ***")
+        let objectsToSave = [["name": "Bob", "age": 25], ["name": "Ann", "age": 45]]
+        let dataStore = backendless.data.ofTable("TestClass")
+        dataStore.createBulk(objectsToSave, responseBlock: { savedObjects in
+            XCTAssertNotNil(savedObjects)
+            XCTAssert(type(of: savedObjects) == [String].self)
+            self.fulfillExpectation(expectation)
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            self.fulfillExpectation(expectation)
+        })
+        waitForExpectations(timeout: 10, handler: { error in
+            if let error = error {
+                print("*** mapDrivenDataStore.createBulk test failed: \(error.localizedDescription) ***")
+            }
+        })
+    }
 }

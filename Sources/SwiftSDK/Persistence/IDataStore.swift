@@ -26,4 +26,5 @@ protocol IDataStore {
     associatedtype CustomType
     
     func save(_ entity: CustomType, responseBlock: ((CustomType) -> Void)!, errorBlock: ((Fault) -> Void)!)
+    func createBulk(_ entities: [CustomType], responseBlock: (([String]) -> Void)!, errorBlock: ((Fault) -> Void)!)
 }

@@ -29,7 +29,7 @@ import Alamofire
         let headers = ["Content-Type": "application/json"]
         let parameters = ["latitude": geoPoint.latitude, "longitude": geoPoint.longitude, "categories": geoPoint.categories as Any, "metadata": geoPoint.metadata as Any] as [String : Any]
         let request = AlamofireManager(restMethod: "geo/points?lat=10&lon=20&metadata=%20%7B%20%22foo%22%3A%22bar%22%20%7D", httpMethod: .post, headers: headers, parameters: parameters as Parameters).makeRequest()
-        request.responseJSON(completionHandler: { response in
+        request.responseData(completionHandler: { response in
             if let result = self.processResponse.adapt(response: response, to: [String: GeoPoint].self) {
                 if result is Fault {
                     errorBlock(result as! Fault)

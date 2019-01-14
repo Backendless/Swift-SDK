@@ -39,13 +39,29 @@ class PersistenceServiceUtils: NSObject {
         let headers = ["Content-Type": "application/json"]
         let parameters = entity
         let request = AlamofireManager(restMethod: "data/\(tableName)", httpMethod: .post, headers: headers, parameters: parameters).makeRequest()
-        request.responseJSON(completionHandler: { response in
+        request.responseData(completionHandler: { response in
             if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                 if result is Fault {
                     errorBlock(result as! Fault)
                 }
                 else {
                     responseBlock((result as! JSON).dictionaryObject!)
+                }
+            }
+        })
+    }
+    
+    func createBulk(entities: [[String: Any]], responseBlock: (([String]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        let headers = ["Content-Type": "application/json"]
+        let parameters = entities
+        let request = AlamofireManager(restMethod: "data/bulk/\(tableName)", httpMethod: .post, headers: headers, parameters: parameters).makeRequestWithArrayParams()
+        request.responseData(completionHandler: { response in
+            if let result = self.processResponse.adapt(response: response, to: [String].self) {
+                if result is Fault {
+                    errorBlock(result as! Fault)
+                }
+                else {
+                    responseBlock(result as! [String])
                 }
             }
         })

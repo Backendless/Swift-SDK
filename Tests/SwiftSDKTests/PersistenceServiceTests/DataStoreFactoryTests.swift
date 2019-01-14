@@ -58,4 +58,32 @@ class DataStoreFactoryTests: XCTestCase {
             }
         })
     }
+    
+    func testCreateBulk() {
+        let expectation = self.expectation(description: "*** dataStoreFactory.createBulk test passed ***")
+        
+        let objectToSave1 = TestClass()
+        objectToSave1.name = "Bob"
+        objectToSave1.age = 25
+        
+        let objectToSave2 = TestClass()
+        objectToSave2.name = "Ann"
+        objectToSave2.age = 45
+        
+        let objectsToSave = [objectToSave1, objectToSave2]        
+        let dataStore = backendless.data.of(TestClass.self)
+        dataStore.createBulk(objectsToSave, responseBlock: { savedObjects in
+            XCTAssertNotNil(savedObjects)
+            XCTAssert(type(of: savedObjects) == [String].self)
+            self.fulfillExpectation(expectation)
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            self.fulfillExpectation(expectation)
+        })
+        waitForExpectations(timeout: 10, handler: { error in
+            if let error = error {
+                print("*** dataStoreFactory.createBulk test failed: \(error.localizedDescription) ***")
+            }
+        })
+    }
 }
