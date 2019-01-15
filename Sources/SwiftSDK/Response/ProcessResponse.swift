@@ -101,14 +101,23 @@ class ProcessResponse: NSObject {
         let responseResult =  try? JSONSerialization.jsonObject(with: responseData.data!, options: []) as? [String: Any]
         switch responseData.result {
         case .success( _):
-            if (responseData.response?.statusCode)! >= 400 {
-                if let faultDictionary = responseResult as? [String : Any] {
-                    return Fault(message: faultDictionary["message"] as? String, faultCode: faultDictionary["code"] as! Int)
-                }
+            if let responseResult = responseResult {
+                return responseResult as Any
             }
-            return responseResult as Any?
-        case .failure(let error):
-            return Fault(message: (error as NSError).localizedDescription, faultCode: (error as NSError).code)
+            
+        case .failure (let error):
+            if let faultDictionary = responseResult {
+                return Fault(message: faultDictionary!["message"] as? String, faultCode: faultDictionary!["code"] as! Int)
+            }
+            else {
+                let faultCode = responseData.response?.statusCode
+                var faultMessage = error.localizedDescription
+                if faultCode == 404 {
+                    faultMessage = "Not Found"
+                }
+                return Fault(message: faultMessage, faultCode: faultCode!)
+            }
         }
+        return nil
     }
 }

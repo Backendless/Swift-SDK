@@ -27,28 +27,16 @@ class AlamofireManager: NSObject {
     private var restMethod: String
     private var httpMethod: HTTPMethod
     private var headers: HTTPHeaders?
-    private var parameters: Parameters?
-    private var parametersArray: [[String: Any]]?
+    private var parameters: Any?
     
-    init(restMethod: String, httpMethod: HTTPMethod, headers: HTTPHeaders?, parameters: Parameters?) {
+    init(restMethod: String, httpMethod: HTTPMethod, headers: HTTPHeaders?, parameters: Any?) {
         self.restMethod = restMethod
         self.httpMethod = httpMethod
         self.headers = headers
         self.parameters = parameters
     }
     
-    init(restMethod: String, httpMethod: HTTPMethod, headers: HTTPHeaders?, parameters: [[String: Any]]) {
-        self.restMethod = restMethod
-        self.httpMethod = httpMethod
-        self.headers = headers
-        self.parametersArray = parameters
-    }
-    
     func makeRequest() -> DataRequest {
-        return Alamofire.request(urlString+restMethod, method: httpMethod, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
-    }
-    
-    func makeRequestWithArrayParams() -> DataRequest {
         var request = URLRequest(url: URL(string: urlString+restMethod)!)
         request.httpMethod = httpMethod.rawValue
         if let headers = headers, headers.count > 0 {
@@ -58,9 +46,9 @@ class AlamofireManager: NSObject {
                 }
             }
         }
-        if let parametersArray = parametersArray {
+        if let parametersArray = parameters {
             request.httpBody = try? JSONSerialization.data(withJSONObject: parametersArray, options: [])
-        }        
-        return Alamofire.request(request)
+        }
+        return Alamofire.request(request).validate(statusCode:  200..<400)
     }
 }
