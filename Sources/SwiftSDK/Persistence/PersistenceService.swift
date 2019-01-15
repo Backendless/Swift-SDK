@@ -1,5 +1,5 @@
 //
-//  FaultTests.swift
+//  PersistenceService.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,15 +19,13 @@
  *  ********************************************************************************************************************
  */
 
-import XCTest
-@testable import SwiftSDK
+@objcMembers open class PersistenceService: NSObject {
 
-class FaultTests: XCTestCase {
+    open func ofTable(_ tableName: String) -> MapDrivenDataStore {
+        return MapDrivenDataStore(tableName: tableName)
+    }
     
-    func testFaultInit() {
-        let fault = Fault(message: "Fault message", faultCode: 0)
-        XCTAssertNotNil(fault)
-        XCTAssertNotNil(fault.message)
-        XCTAssertNotNil(fault.faultCode)
+    open func of(_ entityClass: AnyClass) -> DataStoreFactory {
+        return DataStoreFactory(entityClass: entityClass)
     }
 }

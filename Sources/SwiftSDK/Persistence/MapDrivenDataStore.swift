@@ -1,5 +1,5 @@
 //
-//  FaultTests.swift
+//  MapDrivenDataStore.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,15 +19,24 @@
  *  ********************************************************************************************************************
  */
 
-import XCTest
-@testable import SwiftSDK
-
-class FaultTests: XCTestCase {
+@objcMembers open class MapDrivenDataStore: NSObject, IDataStore {
     
-    func testFaultInit() {
-        let fault = Fault(message: "Fault message", faultCode: 0)
-        XCTAssertNotNil(fault)
-        XCTAssertNotNil(fault.message)
-        XCTAssertNotNil(fault.faultCode)
+    typealias CustomType = [String: Any]
+    
+    private var tableName: String
+    
+    private let persistenceServiceUtils = PersistenceServiceUtils.shared
+    
+    init(tableName: String) {
+        self.tableName = tableName
+        persistenceServiceUtils.setup(tableName)
+    }
+    
+    open func save(_ entity: [String : Any], responseBlock: (([String : Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.save(entity: entity as [String : AnyObject], responseBlock: responseBlock, errorBlock: errorBlock)
+    }
+    
+    open func createBulk(_ entities: [[String : Any]], responseBlock: (([String]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.createBulk(entities: entities, responseBlock: responseBlock, errorBlock: errorBlock)
     }
 }

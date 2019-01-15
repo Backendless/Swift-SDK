@@ -1,5 +1,5 @@
 //
-//  FaultTests.swift
+//  PersistenceServiceTests.swift
 //
 /*
  * *********************************************************************************************************************
@@ -22,12 +22,17 @@
 import XCTest
 @testable import SwiftSDK
 
-class FaultTests: XCTestCase {
+class PersistenceServiceTests: XCTestCase {
     
-    func testFaultInit() {
-        let fault = Fault(message: "Fault message", faultCode: 0)
-        XCTAssertNotNil(fault)
-        XCTAssertNotNil(fault.message)
-        XCTAssertNotNil(fault.faultCode)
+    func testCreateMapDrivenDataStore() {
+        let dataStore = Backendless.shared.data.ofTable("TestClass")
+        XCTAssertNotNil(dataStore)
+        XCTAssert(type(of: dataStore) == MapDrivenDataStore.self)
+    }
+    
+    func testCreateDataStoreFactory() {
+        let dataStore = Backendless.shared.data.of(TestClass.self)
+        XCTAssertNotNil(dataStore)
+        XCTAssert(type(of: dataStore) == DataStoreFactory.self)
     }
 }

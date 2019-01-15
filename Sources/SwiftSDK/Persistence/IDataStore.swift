@@ -1,5 +1,5 @@
 //
-//  FaultTests.swift
+//  IDataStore.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,15 +19,12 @@
  *  ********************************************************************************************************************
  */
 
-import XCTest
-@testable import SwiftSDK
+import Foundation
 
-class FaultTests: XCTestCase {
+protocol IDataStore {
     
-    func testFaultInit() {
-        let fault = Fault(message: "Fault message", faultCode: 0)
-        XCTAssertNotNil(fault)
-        XCTAssertNotNil(fault.message)
-        XCTAssertNotNil(fault.faultCode)
-    }
+    associatedtype CustomType
+    
+    func save(_ entity: CustomType, responseBlock: ((CustomType) -> Void)!, errorBlock: ((Fault) -> Void)!)
+    func createBulk(_ entities: [CustomType], responseBlock: (([String]) -> Void)!, errorBlock: ((Fault) -> Void)!)
 }

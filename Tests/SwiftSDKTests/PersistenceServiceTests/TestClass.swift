@@ -1,5 +1,5 @@
 //
-//  FaultTests.swift
+//  TestClass.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,15 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-import XCTest
-@testable import SwiftSDK
-
-class FaultTests: XCTestCase {
-    
-    func testFaultInit() {
-        let fault = Fault(message: "Fault message", faultCode: 0)
-        XCTAssertNotNil(fault)
-        XCTAssertNotNil(fault.message)
-        XCTAssertNotNil(fault.faultCode)
-    }
+@objcMembers class TestClass: NSObject {
+    var name: String?
+    var age: Int = 0
 }

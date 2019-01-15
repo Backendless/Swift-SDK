@@ -1,5 +1,5 @@
 //
-//  FaultTests.swift
+//  UserDefaultsHelper.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,15 +19,31 @@
  *  ********************************************************************************************************************
  */
 
-import XCTest
-@testable import SwiftSDK
-
-class FaultTests: XCTestCase {
+class UserDefaultsHelper: NSObject {
     
-    func testFaultInit() {
-        let fault = Fault(message: "Fault message", faultCode: 0)
-        XCTAssertNotNil(fault)
-        XCTAssertNotNil(fault.message)
-        XCTAssertNotNil(fault.faultCode)
+    public static let shared = UserDefaultsHelper()
+    
+    private let PERSISTENT_USER_TOKEN_KEY = "userTokenKey"
+    
+    func savePersistentUserToken(_ userToken: String) {
+        let defaults = UserDefaults.standard
+        let userToken: [String: String] = ["userToken": userToken]
+        defaults.setValue(userToken, forKey: PERSISTENT_USER_TOKEN_KEY)
+        defaults.synchronize()
+    }
+    
+    func getPersistentUserToken() -> String? {
+        let userDefaults = UserDefaults.standard
+        if let userToken = userDefaults.value(forKey: PERSISTENT_USER_TOKEN_KEY),
+            let token = (userToken as! [String: String])["userToken"] {
+            return token
+        }
+        return nil
+    }
+    
+    func removePersistentUser() {
+        UserDefaults.standard.removeObject(forKey: PERSISTENT_USER_TOKEN_KEY)
     }
 }
+
+

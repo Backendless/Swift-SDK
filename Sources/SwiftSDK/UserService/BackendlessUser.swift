@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2018 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -24,7 +24,6 @@ import SwiftyJSON
 @objcMembers open class BackendlessUser: NSObject, NSCoding, Codable {
     
     open var email: String
-    var _password: String?
     open var password: String? {
         get {
             return nil
@@ -36,20 +35,16 @@ import SwiftyJSON
     open var name: String?
     open private(set) var objectId: String
     open private(set) var userToken: String?
+    
+    var _password: String?
+    
     private var properties = JSON()
     
-    //    enum Key: String {
-    //        case email = "email"
-    //        case name = "name"
-    //        case objectId = "objectId"
-    //        case userToken = "userToken"
-    //    }
-    
     enum CodingKeys: String, CodingKey {
-    case email
-    case name
-    case objectId
-    case userToken
+        case email
+        case name
+        case objectId
+        case userToken
     }
     
     init(email: String, name: String?, objectId: String, userToken: String?) {

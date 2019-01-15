@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2018 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -25,13 +25,10 @@ import XCTest
 class UserServiceTests: XCTestCase {
     
     private let backendless = Backendless.shared
-    private let hostUrl = "http://api.backendless.com"
-    private let appId = "EEE9F1BF-2820-7143-FF1A-C812061E2400"
-    private let apiKey = "E1043F31-7C0C-F349-FF9F-2A836F16BA00"
     
     override func setUp() {
-        backendless.hostUrl = hostUrl
-        backendless.initApp(applicationId: appId, apiKey: apiKey)
+        backendless.hostUrl = BackendlessAppConfig.hostUrl
+        backendless.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
     }
     
     func fulfillExpectation(_ expectation: XCTestExpectation) {
@@ -80,6 +77,7 @@ class UserServiceTests: XCTestCase {
         backendless.userService.login("testUser@test.com", password: "111", responseBlock: { loggedInUser in
             XCTAssertNotNil(loggedInUser)
             XCTAssertNotNil(self.backendless.userService.currentUser)
+            XCTAssertNotNil(self.backendless.userService.isValidUserToken)
             self.fulfillExpectation(expectation)
         }, errorBlock: { fault in
             XCTAssertNotNil(fault)
@@ -136,6 +134,7 @@ class UserServiceTests: XCTestCase {
             XCTAssertNotNil(self.backendless.userService.currentUser)
             self.backendless.userService.logout({
                 XCTAssertNil(self.backendless.userService.currentUser)
+                XCTAssertNil(self.backendless.userService.isValidUserToken)
                 self.fulfillExpectation(expectation)
             }, errorBlock: { fault in
                 XCTAssertNotNil(fault)

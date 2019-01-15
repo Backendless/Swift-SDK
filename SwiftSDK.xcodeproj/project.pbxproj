@@ -8,6 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		0C5080CC97C7712B4D88C0E6 /* Pods_SwiftSDKTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 585E424A2F44477E350D396B /* Pods_SwiftSDKTests.framework */; };
+		5A2A784D21E6104F00EC8007 /* IDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2A784C21E6104F00EC8007 /* IDataStore.swift */; };
+		5A2A784F21E610D700EC8007 /* MapDrivenDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2A784E21E610D700EC8007 /* MapDrivenDataStore.swift */; };
+		5A2A785121E6114800EC8007 /* PersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2A785021E6114800EC8007 /* PersistenceService.swift */; };
+		5A2A785321E61D1700EC8007 /* DataStoreFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2A785221E61D1700EC8007 /* DataStoreFactory.swift */; };
+		5AC54CA621E7373400EC1F8C /* PersistenceServiceUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC54CA521E7373400EC1F8C /* PersistenceServiceUtils.swift */; };
+		5AFE8E5E21E8D7410003477B /* PersistenceServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFE8E5D21E8D7410003477B /* PersistenceServiceTests.swift */; };
+		5AFE8E6021E8E2150003477B /* TestClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFE8E5F21E8E2150003477B /* TestClass.swift */; };
+		5AFE8E6221E8E2620003477B /* MapDrivenDataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFE8E6121E8E2620003477B /* MapDrivenDataStoreTests.swift */; };
+		5AFE8E6421E8E3430003477B /* TestsConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFE8E6321E8E3430003477B /* TestsConfig.swift */; };
+		5AFE8E6621E8E5C00003477B /* DataStoreFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFE8E6521E8E5C00003477B /* DataStoreFactoryTests.swift */; };
 		5E11113721B532450044CAED /* UserProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E11113621B532450044CAED /* UserProperty.swift */; };
 		5E11113C21B542BA0044CAED /* UserServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E11113B21B542BA0044CAED /* UserServiceTests.swift */; };
 		5E545EEC21DFB87A00881ED0 /* GeoServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E545EEB21DFB87A00881ED0 /* GeoServiceTests.swift */; };
@@ -15,6 +25,7 @@
 		5E572D4B21B8043E000713B0 /* ProcessResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E572D4A21B8043E000713B0 /* ProcessResponse.swift */; };
 		5E64F0BF21C50D8E00590B04 /* AlamofireManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E64F0BE21C50D8E00590B04 /* AlamofireManager.swift */; };
 		5E722B5E21BE9DE800AA9A8F /* DataTypeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E722B5D21BE9DE800AA9A8F /* DataTypeEnum.swift */; };
+		5E7E8A6021ECC94A00AA04E1 /* UserDefaultsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7E8A5F21ECC94A00AA04E1 /* UserDefaultsHelper.swift */; };
 		5E84136321B5265200869794 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E84136221B5265200869794 /* UserService.swift */; };
 		5E90721121B66E9E00619C0D /* Fault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E90721021B66E9E00619C0D /* Fault.swift */; };
 		5E9C573221AEEA0400877870 /* SwiftSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9C572821AEEA0400877870 /* SwiftSDK.framework */; };
@@ -44,6 +55,16 @@
 		2E41F15845D4492BA383B1F5 /* Pods-SwiftSDKTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSDKTests.release.xcconfig"; path = "Target Support Files/Pods-SwiftSDKTests/Pods-SwiftSDKTests.release.xcconfig"; sourceTree = "<group>"; };
 		585E424A2F44477E350D396B /* Pods_SwiftSDKTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftSDKTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		58AB04380B91FBC5C9538B5B /* Pods-SwiftSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSDK.release.xcconfig"; path = "Target Support Files/Pods-SwiftSDK/Pods-SwiftSDK.release.xcconfig"; sourceTree = "<group>"; };
+		5A2A784C21E6104F00EC8007 /* IDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDataStore.swift; sourceTree = "<group>"; };
+		5A2A784E21E610D700EC8007 /* MapDrivenDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDrivenDataStore.swift; sourceTree = "<group>"; };
+		5A2A785021E6114800EC8007 /* PersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceService.swift; sourceTree = "<group>"; };
+		5A2A785221E61D1700EC8007 /* DataStoreFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStoreFactory.swift; sourceTree = "<group>"; };
+		5AC54CA521E7373400EC1F8C /* PersistenceServiceUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceServiceUtils.swift; sourceTree = "<group>"; };
+		5AFE8E5D21E8D7410003477B /* PersistenceServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceServiceTests.swift; sourceTree = "<group>"; };
+		5AFE8E5F21E8E2150003477B /* TestClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestClass.swift; sourceTree = "<group>"; };
+		5AFE8E6121E8E2620003477B /* MapDrivenDataStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDrivenDataStoreTests.swift; sourceTree = "<group>"; };
+		5AFE8E6321E8E3430003477B /* TestsConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestsConfig.swift; sourceTree = "<group>"; };
+		5AFE8E6521E8E5C00003477B /* DataStoreFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStoreFactoryTests.swift; sourceTree = "<group>"; };
 		5B0489AADDF73F8DCAD9ED64 /* Pods_SwiftSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E11113621B532450044CAED /* UserProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProperty.swift; sourceTree = "<group>"; };
 		5E11113B21B542BA0044CAED /* UserServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserServiceTests.swift; sourceTree = "<group>"; };
@@ -52,6 +73,7 @@
 		5E572D4A21B8043E000713B0 /* ProcessResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessResponse.swift; sourceTree = "<group>"; };
 		5E64F0BE21C50D8E00590B04 /* AlamofireManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireManager.swift; sourceTree = "<group>"; };
 		5E722B5D21BE9DE800AA9A8F /* DataTypeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTypeEnum.swift; sourceTree = "<group>"; };
+		5E7E8A5F21ECC94A00AA04E1 /* UserDefaultsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsHelper.swift; sourceTree = "<group>"; };
 		5E84136221B5265200869794 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		5E90721021B66E9E00619C0D /* Fault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fault.swift; sourceTree = "<group>"; };
 		5E9C572821AEEA0400877870 /* SwiftSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -110,6 +132,29 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		5A2A784B21E6103100EC8007 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				5A2A785021E6114800EC8007 /* PersistenceService.swift */,
+				5AC54CA521E7373400EC1F8C /* PersistenceServiceUtils.swift */,
+				5A2A784C21E6104F00EC8007 /* IDataStore.swift */,
+				5A2A784E21E610D700EC8007 /* MapDrivenDataStore.swift */,
+				5A2A785221E61D1700EC8007 /* DataStoreFactory.swift */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
+		5AFE8E5C21E8D7010003477B /* PersistenceServiceTests */ = {
+			isa = PBXGroup;
+			children = (
+				5AFE8E5F21E8E2150003477B /* TestClass.swift */,
+				5AFE8E5D21E8D7410003477B /* PersistenceServiceTests.swift */,
+				5AFE8E6121E8E2620003477B /* MapDrivenDataStoreTests.swift */,
+				5AFE8E6521E8E5C00003477B /* DataStoreFactoryTests.swift */,
+			);
+			path = PersistenceServiceTests;
+			sourceTree = "<group>";
+		};
 		5E11113821B532BD0044CAED /* Property */ = {
 			isa = PBXGroup;
 			children = (
@@ -142,6 +187,14 @@
 				5E64F0BE21C50D8E00590B04 /* AlamofireManager.swift */,
 			);
 			path = Alamofire;
+			sourceTree = "<group>";
+		};
+		5E7E8A5E21ECC92F00AA04E1 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				5E7E8A5F21ECC94A00AA04E1 /* UserDefaultsHelper.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		5E90720E21B66DA300619C0D /* UserServiceTests */ = {
@@ -212,10 +265,12 @@
 		5ECE680C21B0248B00839120 /* SwiftSDKTests */ = {
 			isa = PBXGroup;
 			children = (
-				5E545EEA21DFAF1D00881ED0 /* GeoServiceTests */,
 				5ECE680E21B0248B00839120 /* Info.plist */,
+				5AFE8E6321E8E3430003477B /* TestsConfig.swift */,
 				5EB28E1F21B1833A0007AC30 /* BackendlessTests.swift */,
+				5AFE8E5C21E8D7010003477B /* PersistenceServiceTests */,
 				5EE691FF21B67770002E72A9 /* FaultTests */,
+				5E545EEA21DFAF1D00881ED0 /* GeoServiceTests */,
 				5E90720E21B66DA300619C0D /* UserServiceTests */,
 			);
 			name = SwiftSDKTests;
@@ -237,9 +292,11 @@
 				5E64F0BD21C50D7D00590B04 /* Alamofire */,
 				5E90720F21B66E6000619C0D /* Fault */,
 				5ECD9C7C21DE57C2002CBB7D /* GeoService */,
+				5A2A784B21E6103100EC8007 /* Persistence */,
 				5E11113821B532BD0044CAED /* Property */,
 				5E572D4921B8042B000713B0 /* Response */,
 				5EB28E1A21B17A490007AC30 /* UserService */,
+				5E7E8A5E21ECC92F00AA04E1 /* Utils */,
 			);
 			path = SwiftSDK;
 			sourceTree = "<group>";
@@ -435,13 +492,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E7E8A6021ECC94A00AA04E1 /* UserDefaultsHelper.swift in Sources */,
+				5AFE8E6021E8E2150003477B /* TestClass.swift in Sources */,
 				5E84136321B5265200869794 /* UserService.swift in Sources */,
 				5E11113721B532450044CAED /* UserProperty.swift in Sources */,
 				5EFBA8FE21C1011E007B3BB0 /* BackendlessUser.swift in Sources */,
 				5ECD9C8021DE57E7002CBB7D /* GeoService.swift in Sources */,
+				5A2A784F21E610D700EC8007 /* MapDrivenDataStore.swift in Sources */,
+				5AFE8E6421E8E3430003477B /* TestsConfig.swift in Sources */,
+				5A2A785121E6114800EC8007 /* PersistenceService.swift in Sources */,
 				5E722B5E21BE9DE800AA9A8F /* DataTypeEnum.swift in Sources */,
+				5AC54CA621E7373400EC1F8C /* PersistenceServiceUtils.swift in Sources */,
 				5E64F0BF21C50D8E00590B04 /* AlamofireManager.swift in Sources */,
+				5A2A785321E61D1700EC8007 /* DataStoreFactory.swift in Sources */,
 				5E90721121B66E9E00619C0D /* Fault.swift in Sources */,
+				5A2A784D21E6104F00EC8007 /* IDataStore.swift in Sources */,
 				5ECD9C7E21DE57DA002CBB7D /* GeoPoint.swift in Sources */,
 				5E572D4B21B8043E000713B0 /* ProcessResponse.swift in Sources */,
 				5EB28E1921B1799A0007AC30 /* Backendless.swift in Sources */,
@@ -452,11 +517,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5AFE8E6621E8E5C00003477B /* DataStoreFactoryTests.swift in Sources */,
+				5AFE8E6221E8E2620003477B /* MapDrivenDataStoreTests.swift in Sources */,
 				5EE6920121B67791002E72A9 /* FaultTests.swift in Sources */,
 				5E545EEC21DFB87A00881ED0 /* GeoServiceTests.swift in Sources */,
 				5E545EEE21DFBA4400881ED0 /* GeoPointTests.swift in Sources */,
 				5E11113C21B542BA0044CAED /* UserServiceTests.swift in Sources */,
 				5EE2B40721C25EC600F90723 /* BackendlessUserTests.swift in Sources */,
+				5AFE8E5E21E8D7410003477B /* PersistenceServiceTests.swift in Sources */,
 				5EB28E2021B1833A0007AC30 /* BackendlessTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

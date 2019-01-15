@@ -56,5 +56,4 @@ class GeoPointTests: XCTestCase {
         XCTAssert(geoPoint4.metadata?.keys.count ?? 0 > 0)
         XCTAssert(geoPoint4.metadata?.values.count ?? 0 > 0)
     }
-
 }

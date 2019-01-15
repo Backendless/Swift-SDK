@@ -17,6 +17,6 @@ Pod::Spec.new do |s|
   s.source = { :git => 'https://github.com/Backendless/Swift-SDK.git', :tag => '1.0.0-beta1' }
   s.source_files  = "Sources/SwiftSDK/**/*.swift", "Sources/SwiftSDK/*.swift"
   s.dependency "Alamofire"
-  s.dependency pod "SwiftyJSON"
+  s.dependency "SwiftyJSON"
   
 end

@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2018 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -25,13 +25,6 @@
     open var required = false
     open var identity = false
     open var type: DataTypeEnum
-
-//    enum Key: String {
-//        case name = "name"
-//        case required = "required"
-//        case identity = "identity"
-//        case type = "type"
-//    }
     
     enum CodingKeys: String, CodingKey {
         case name
