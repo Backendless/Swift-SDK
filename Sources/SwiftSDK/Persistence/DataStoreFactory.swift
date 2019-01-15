@@ -30,12 +30,17 @@ import SwiftyJSON
     
     private let persistenceServiceUtils = PersistenceServiceUtils.shared
     private let processResponse = ProcessResponse.shared
+    private let userDefaultsHelper = UserDefaultsHelper.shared
     
     init(entityClass: Any) {
         self.entityClass = entityClass
         let tableName = persistenceServiceUtils.getTableName(self.entityClass)
         self.tableName = tableName!
         persistenceServiceUtils.setup(tableName)
+    }
+    
+    open func mapTable(_ tableName: String, toClass: AnyClass) {
+        userDefaultsHelper.mapTable(tableName, toClass: toClass)
     }
     
     open func mapColumn(_ columnName: String, toProperty: String) {
@@ -46,19 +51,15 @@ import SwiftyJSON
     open func save(_ entity: Any, responseBlock: ((Any) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let resultClass = type(of: entity) as! NSObject.Type
         let entityDictionary = persistenceServiceUtils.entityToDictionary(entity)
-        
-        let dictionaryToCustomObjectBlock: ([String: Any]) -> () = { (responseDictionary) in
+       
+        let wrappedBlock: ([String: Any]) -> () = { (responseDictionary) in
             if responseDictionary["___class"] as? String == self.tableName {
-                let resultEntity = resultClass.init()                
-                for field in responseDictionary.keys {
-                    if (entityDictionary.keys.contains(field)) {
-                        resultEntity.setValue(responseDictionary[field], forKey: field)
-                    }
+                if let resultEntity = self.persistenceServiceUtils.dictionaryToEntity(responseDictionary, resultClass) {
+                     responseBlock(resultEntity)
                 }
-                responseBlock(resultEntity)
             }
         }        
-        persistenceServiceUtils.save(entity: entityDictionary, responseBlock: dictionaryToCustomObjectBlock, errorBlock: errorBlock)
+        persistenceServiceUtils.save(entity: entityDictionary, responseBlock: wrappedBlock, errorBlock: errorBlock)
     }
     
     open func createBulk(_ entities: [Any], responseBlock: (([String]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
