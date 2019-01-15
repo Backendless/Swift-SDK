@@ -24,12 +24,13 @@ class UserDefaultsHelper: NSObject {
     public static let shared = UserDefaultsHelper()
     
     private let PERSISTENT_USER_TOKEN_KEY = "userTokenKey"
+    private let TABLE_CLASS_MAPPINGS_KEY = "tableClassMapping"
     
     func savePersistentUserToken(_ userToken: String) {
-        let defaults = UserDefaults.standard
+        let userDefaults = UserDefaults.standard
         let userToken: [String: String] = ["userToken": userToken]
-        defaults.setValue(userToken, forKey: PERSISTENT_USER_TOKEN_KEY)
-        defaults.synchronize()
+        userDefaults.setValue(userToken, forKey: PERSISTENT_USER_TOKEN_KEY)
+        userDefaults.synchronize()
     }
     
     func getPersistentUserToken() -> String? {
@@ -43,6 +44,25 @@ class UserDefaultsHelper: NSObject {
     
     func removePersistentUser() {
         UserDefaults.standard.removeObject(forKey: PERSISTENT_USER_TOKEN_KEY)
+    }
+    
+    func mapTable(_ tableName: String, toClass: AnyClass) {
+        var tableToClassMappings = [String: AnyClass]()
+        let userDefaults = UserDefaults.standard
+        if userDefaults.value(forKey: TABLE_CLASS_MAPPINGS_KEY) != nil {
+            tableToClassMappings = userDefaults.value(forKey: TABLE_CLASS_MAPPINGS_KEY) as! [String : AnyClass]
+        }
+        tableToClassMappings[tableName] = toClass
+        userDefaults.setValue(tableToClassMappings, forKey: TABLE_CLASS_MAPPINGS_KEY)
+        userDefaults.synchronize()
+    }
+    
+    func getTableToClassMappings() -> [String: AnyClass]? {
+        let userDefaults = UserDefaults.standard
+        if let tableToClassMappings = userDefaults.value(forKey: TABLE_CLASS_MAPPINGS_KEY) {
+            print(tableToClassMappings)
+        }
+        return nil
     }
 }
 

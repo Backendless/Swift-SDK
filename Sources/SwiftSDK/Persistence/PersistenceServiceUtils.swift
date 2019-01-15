@@ -76,6 +76,20 @@ class PersistenceServiceUtils: NSObject {
         return nil
     }
     
+    func getClassProperties(_ entity: Any) -> [String] {
+        let resultClass = type(of: entity) as! NSObject.Type
+        var classProperties = [String]()
+        var outCount : UInt32 = 0
+        if let properties = class_copyPropertyList(resultClass.self, &outCount) {
+            for i : UInt32 in 0..<outCount {
+                if let key = NSString(cString: property_getName(properties[Int(i)]), encoding: String.Encoding.utf8.rawValue) as String? {
+                    classProperties.append(key)
+                }
+            }
+        }
+        return classProperties
+    }
+    
     func entityToDictionary(_ entity: Any) -> [String: Any] {
         let resultClass = type(of: entity) as! NSObject.Type
         var entityDictionary = [String: Any]()
@@ -88,5 +102,19 @@ class PersistenceServiceUtils: NSObject {
             }
         }
         return entityDictionary
+    }
+    
+    func dictionaryToEntity(_ dictionary: [String: Any], _ entityType: NSObject.Type) -> Any? {
+        
+        // check table to class mappings here
+        
+        let entity = entityType.init()
+        let entityFields = getClassProperties(entity)
+        for propertyName in dictionary.keys {
+            if (entityFields.contains(propertyName)) {
+                entity.setValue(dictionary[propertyName], forKey: propertyName)
+            }
+        }
+        return entity
     }
 }

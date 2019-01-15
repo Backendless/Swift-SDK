@@ -148,7 +148,7 @@ import SwiftyJSON
     
     open func logout(_ responseBlock: (() -> Void)!, errorBlock: ((Fault) -> Void)!) {
       if self.currentUser != nil {
-            let headers = ["Content-Type": "application/json", "user-token": currentUser!.userToken!]
+            let headers = ["user-token": currentUser!.userToken!]
             let request = AlamofireManager(restMethod: "users/logout", httpMethod: .get, headers: headers, parameters: nil).makeRequest()
             request.responseData(completionHandler: { response in
                 let result = self.processResponse.adapt(response: response, to: NoReply.self)
@@ -164,8 +164,7 @@ import SwiftyJSON
     }
     
     open func restorePassword(_ login: String, responseBlock: (() -> Void)!, errorBlock: ((Fault) -> Void)!) {
-        let headers = ["Content-Type": "application/json"]
-        let request = AlamofireManager(restMethod: "users/restorepassword/\(login)", httpMethod: .get, headers: headers, parameters: nil).makeRequest()
+        let request = AlamofireManager(restMethod: "users/restorepassword/\(login)", httpMethod: .get, headers: nil, parameters: nil).makeRequest()
         request.responseData(completionHandler: { response in
             let result = self.processResponse.adapt(response: response, to: NoReply.self)
             if result is Fault {
@@ -179,8 +178,7 @@ import SwiftyJSON
     }
     
     open func getUserRoles(responseBlock: (([String]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
-        let headers = ["Content-Type": "application/json"]
-        let request = AlamofireManager(restMethod: "users/userroles", httpMethod: .get, headers: headers, parameters: nil).makeRequest()
+        let request = AlamofireManager(restMethod: "users/userroles", httpMethod: .get, headers: nil, parameters: nil).makeRequest()
         request.responseData(completionHandler: { response in
             let result = self.processResponse.adapt(response: response, to: [String].self)
             if result is Fault {
