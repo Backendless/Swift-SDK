@@ -20,6 +20,7 @@
  */
 
 import Alamofire
+import SwiftyJSON
 
 class ProcessResponse: NSObject {
     
@@ -32,8 +33,8 @@ class ProcessResponse: NSObject {
             }
             return nil
         }
-        else {
-            if let responseResult = getResponseResult(response) {
+        else {            
+            if let responseResult = getResponseResult(response) {                
                 if responseResult is Fault {
                     return responseResult as! Fault
                 }

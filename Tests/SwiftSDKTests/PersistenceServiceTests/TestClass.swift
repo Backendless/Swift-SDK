@@ -20,6 +20,7 @@
  */
 
 @objcMembers class TestClass: NSObject {
+    var objectId: String?
     var name: String?
     var age: Int = 0
 }

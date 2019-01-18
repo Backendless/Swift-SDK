@@ -1,5 +1,5 @@
 //
-//  UserDefaultsHelper.swift
+//  Mappings.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,31 +19,36 @@
  *  ********************************************************************************************************************
  */
 
-import SwiftyJSON
+class Mappings: NSObject {
+    
+    static let shared = Mappings()
+    
+    var tableToClassMappings = [String: String]()
+    var columnToPropertyMappings = [String: [String: String]]()
 
-class UserDefaultsHelper: NSObject {
-    
-    static let shared = UserDefaultsHelper()
-    
-    private let PERSISTENT_USER_TOKEN_KEY = "userTokenKey"
-    
-    func savePersistentUserToken(_ userToken: String) {
-        let userDefaults = UserDefaults.standard
-        let userToken: [String: String] = ["userToken": userToken]
-        userDefaults.setValue(userToken, forKey: PERSISTENT_USER_TOKEN_KEY)
-        userDefaults.synchronize()
+    func mapTable(_ tableName: String, toClassNamed: String) {
+        tableToClassMappings[tableName] = toClassNamed
     }
     
-    func getPersistentUserToken() -> String? {
-        let userDefaults = UserDefaults.standard
-        if let userToken = userDefaults.value(forKey: PERSISTENT_USER_TOKEN_KEY),
-            let token = (userToken as! [String: String])["userToken"] {
-            return token
+    func getTableToClassMappings() -> [String: String] {
+        return tableToClassMappings
+    }
+    
+    func mapColumn(_ columnName: String, toProperty: String, ofClassNamed: String) {
+        if var mappings = columnToPropertyMappings[ofClassNamed] {
+            mappings[columnName] = toProperty
+            columnToPropertyMappings[ofClassNamed] = mappings
         }
-        return nil
+        else {
+            let mappings = [columnName: toProperty]
+            columnToPropertyMappings[ofClassNamed] = mappings
+        }
     }
     
-    func removePersistentUser() {
-        UserDefaults.standard.removeObject(forKey: PERSISTENT_USER_TOKEN_KEY)
+    func getColumnToPropertyMappings(className: String) -> [String: String] {
+        if let mappings = columnToPropertyMappings[className] {
+            return mappings
+        }
+        return [String: String]()
     }
 }

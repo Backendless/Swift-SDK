@@ -1,5 +1,5 @@
 //
-//  UserDefaultsHelper.swift
+//  StoredObjects.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,31 +19,39 @@
  *  ********************************************************************************************************************
  */
 
-import SwiftyJSON
-
-class UserDefaultsHelper: NSObject {
+class StoredObjects: NSObject {
     
-    static let shared = UserDefaultsHelper()
+    static let shared = StoredObjects()
     
-    private let PERSISTENT_USER_TOKEN_KEY = "userTokenKey"
+    var storedObjects = [AnyHashable: String]()
     
-    func savePersistentUserToken(_ userToken: String) {
-        let userDefaults = UserDefaults.standard
-        let userToken: [String: String] = ["userToken": userToken]
-        userDefaults.setValue(userToken, forKey: PERSISTENT_USER_TOKEN_KEY)
-        userDefaults.synchronize()
+    func rememberObjectId(_ objectId: String, forObject: AnyHashable) {
+        storedObjects[forObject] = objectId
     }
     
-    func getPersistentUserToken() -> String? {
-        let userDefaults = UserDefaults.standard
-        if let userToken = userDefaults.value(forKey: PERSISTENT_USER_TOKEN_KEY),
-            let token = (userToken as! [String: String])["userToken"] {
-            return token
+    func getObjectId(forObject: AnyHashable) -> String? {
+        if let objectId = storedObjects[forObject] {
+            return objectId
         }
         return nil
     }
     
-    func removePersistentUser() {
-        UserDefaults.standard.removeObject(forKey: PERSISTENT_USER_TOKEN_KEY)
+    func removeObjectId(forObject: AnyHashable) {
+        if storedObjects.keys.contains(forObject) {
+            storedObjects.removeValue(forKey: forObject)
+        }
+    }
+    
+    func removeObjectId(_ objectId: String) {
+        if let index = storedObjects.firstIndex(where: {$0.value == objectId}) {
+            storedObjects.remove(at: index)
+        }
+    }
+    
+    func getObjectForId(_ objectId: String) -> AnyHashable? {
+        if let index = storedObjects.firstIndex(where: {$0.value == objectId}) {
+            return storedObjects.keys[index]
+        }
+        return nil
     }
 }
