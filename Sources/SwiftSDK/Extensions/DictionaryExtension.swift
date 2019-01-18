@@ -1,5 +1,5 @@
 //
-//  UserDefaultsHelper.swift
+//  DictionaryExtension.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,31 +19,10 @@
  *  ********************************************************************************************************************
  */
 
-import SwiftyJSON
 
-class UserDefaultsHelper: NSObject {
+extension Dictionary where Value: Equatable {
     
-    static let shared = UserDefaultsHelper()
-    
-    private let PERSISTENT_USER_TOKEN_KEY = "userTokenKey"
-    
-    func savePersistentUserToken(_ userToken: String) {
-        let userDefaults = UserDefaults.standard
-        let userToken: [String: String] = ["userToken": userToken]
-        userDefaults.setValue(userToken, forKey: PERSISTENT_USER_TOKEN_KEY)
-        userDefaults.synchronize()
-    }
-    
-    func getPersistentUserToken() -> String? {
-        let userDefaults = UserDefaults.standard
-        if let userToken = userDefaults.value(forKey: PERSISTENT_USER_TOKEN_KEY),
-            let token = (userToken as! [String: String])["userToken"] {
-            return token
-        }
-        return nil
-    }
-    
-    func removePersistentUser() {
-        UserDefaults.standard.removeObject(forKey: PERSISTENT_USER_TOKEN_KEY)
+    func getKey(forValue val: Value) -> Key? {
+        return first(where: { $1 == val })?.key
     }
 }

@@ -36,8 +36,8 @@ class AlamofireManager: NSObject {
         self.parameters = parameters
     }
     
-    func makeRequest() -> DataRequest {
-        var request = URLRequest(url: URL(string: urlString+restMethod)!)
+    func makeRequest() -> DataRequest {     
+        var request = URLRequest(url: URL(string: urlString+restMethod)!)        
         request.httpMethod = httpMethod.rawValue
         if let headers = headers, headers.count > 0 {
             for key in headers.keys {

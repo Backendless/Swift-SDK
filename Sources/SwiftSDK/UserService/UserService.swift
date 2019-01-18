@@ -72,9 +72,9 @@ import SwiftyJSON
         })
     }
     
-    open func login(_ login: String, password: String, responseBlock: ((BackendlessUser) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+    open func login(identity: String, password: String, responseBlock: ((BackendlessUser) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
-        let parameters = ["login": login, "password": password]
+        let parameters = ["login": identity, "password": password]
         let request = AlamofireManager(restMethod: "users/login", httpMethod: .post, headers: headers, parameters: parameters as Parameters).makeRequest()
         request.responseData(completionHandler: { response in
             if let result = self.processResponse.adapt(response: response, to: BackendlessUser.self) {

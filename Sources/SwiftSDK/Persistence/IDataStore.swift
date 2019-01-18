@@ -27,4 +27,6 @@ protocol IDataStore {
     
     func save(_ entity: CustomType, responseBlock: ((CustomType) -> Void)!, errorBlock: ((Fault) -> Void)!)
     func createBulk(_ entities: [CustomType], responseBlock: (([String]) -> Void)!, errorBlock: ((Fault) -> Void)!)
+    func updateBulk(whereClause: String, changes: [String: Any], responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!)
+    func removeById(_ objectId: String, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!)
 }

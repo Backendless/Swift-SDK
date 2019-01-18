@@ -74,7 +74,7 @@ class UserServiceTests: XCTestCase {
     
     func testLogin() {
         let expectation = self.expectation(description: "*** userService.login test passed ***")
-        backendless.userService.login("testUser@test.com", password: "111", responseBlock: { loggedInUser in
+        backendless.userService.login(identity: "testUser@test.com", password: "111", responseBlock: { loggedInUser in
             XCTAssertNotNil(loggedInUser)
             XCTAssertNotNil(self.backendless.userService.currentUser)
             XCTAssertNotNil(self.backendless.userService.isValidUserToken)
@@ -108,7 +108,7 @@ class UserServiceTests: XCTestCase {
     
     func testUpdate() {
         let expectation = self.expectation(description: "*** userService.update test passed ***")
-        backendless.userService.login("testUser@test.com", password: "111", responseBlock: { loggedInUser in
+        backendless.userService.login(identity: "testUser@test.com", password: "111", responseBlock: { loggedInUser in
             loggedInUser.name = "New name"
             self.backendless.userService.update(loggedInUser, responseBlock: { updatedUser in
                 XCTAssertNotNil(updatedUser)
@@ -130,7 +130,7 @@ class UserServiceTests: XCTestCase {
     
     func testLogout() {
         let expectation = self.expectation(description: "*** userService.logout test passed ***")        
-        backendless.userService.login("testUser@test.com", password: "111", responseBlock: { loggedInUser in
+        backendless.userService.login(identity: "testUser@test.com", password: "111", responseBlock: { loggedInUser in
             XCTAssertNotNil(self.backendless.userService.currentUser)
             self.backendless.userService.logout({
                 XCTAssertNil(self.backendless.userService.currentUser)
@@ -153,7 +153,7 @@ class UserServiceTests: XCTestCase {
     
     func testRestoreUserPassword() {
         let expectation = self.expectation(description: "*** userService.restoreUserPassword test passed ***")
-        backendless.userService.login("testUser@test.com", password: "111", responseBlock: { loggedInUser in
+        backendless.userService.login(identity: "testUser@test.com", password: "111", responseBlock: { loggedInUser in
             XCTAssertNotNil(self.backendless.userService.currentUser)
             self.backendless.userService.restorePassword(loggedInUser.email, responseBlock: {
                 self.fulfillExpectation(expectation)
@@ -174,7 +174,7 @@ class UserServiceTests: XCTestCase {
     
     func testGetUserRoles() {
         let expectation = self.expectation(description: "*** userService.getUserRoles test passed ***")
-        backendless.userService.login("testUser@test.com", password: "111", responseBlock: { loggedInUser in
+        backendless.userService.login(identity: "testUser@test.com", password: "111", responseBlock: { loggedInUser in
             XCTAssertNotNil(self.backendless.userService.currentUser)
             self.backendless.userService.getUserRoles(responseBlock: { roles in
                 XCTAssertNotNil(roles)

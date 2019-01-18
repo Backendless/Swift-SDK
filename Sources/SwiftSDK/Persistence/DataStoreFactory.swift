@@ -30,33 +30,34 @@ import SwiftyJSON
     
     private let persistenceServiceUtils = PersistenceServiceUtils.shared
     private let processResponse = ProcessResponse.shared
-    private let userDefaultsHelper = UserDefaultsHelper.shared
+    private let mappings = Mappings.shared
     
     init(entityClass: Any) {
         self.entityClass = entityClass
-        let tableName = persistenceServiceUtils.getTableName(self.entityClass)
-        self.tableName = tableName!
-        persistenceServiceUtils.setup(tableName)
+        let tableName = persistenceServiceUtils.getTableName(self.entityClass)        
+        self.tableName = tableName
+        persistenceServiceUtils.setup(self.tableName)
     }
     
-    open func mapTable(_ tableName: String, toClass: AnyClass) {
-        userDefaultsHelper.mapTable(tableName, toClass: toClass)
+    open func mapToTable(_ tableName: String) {
+        self.tableName = tableName
+        persistenceServiceUtils.setup(self.tableName)
+        mappings.mapTable(tableName, toClassNamed: persistenceServiceUtils.getClassName(self.entityClass))
     }
     
     open func mapColumn(_ columnName: String, toProperty: String) {
-        // на устройстве должен быть Dictionary [columnName: propertyName]
-        // когда прилетает объект DSF, нужно проверить, есть ли какие-то маппинги
+        mappings.mapColumn(columnName, toProperty: toProperty, ofClassNamed: persistenceServiceUtils.getClassName(self.entityClass))
+    }
+    
+    open func getObjectId(_ entity: Any) -> String? {
+        return persistenceServiceUtils.getObjectId(entity)
     }
     
     open func save(_ entity: Any, responseBlock: ((Any) -> Void)!, errorBlock: ((Fault) -> Void)!) {
-        let resultClass = type(of: entity) as! NSObject.Type
-        let entityDictionary = persistenceServiceUtils.entityToDictionary(entity)
-       
+        let entityDictionary = persistenceServiceUtils.entityToDictionary(entity.self)
         let wrappedBlock: ([String: Any]) -> () = { (responseDictionary) in
-            if responseDictionary["___class"] as? String == self.tableName {
-                if let resultEntity = self.persistenceServiceUtils.dictionaryToEntity(responseDictionary, resultClass) {
-                     responseBlock(resultEntity)
-                }
+            if let resultEntity = self.persistenceServiceUtils.dictionaryToEntity(responseDictionary, self.persistenceServiceUtils.getClassName(self.entityClass)) {
+                responseBlock(resultEntity)
             }
         }        
         persistenceServiceUtils.save(entity: entityDictionary, responseBlock: wrappedBlock, errorBlock: errorBlock)
@@ -68,5 +69,13 @@ import SwiftyJSON
             entitiesDictionaries.append(persistenceServiceUtils.entityToDictionary(entity))
         }
         persistenceServiceUtils.createBulk(entities: entitiesDictionaries, responseBlock: responseBlock, errorBlock: errorBlock)
+    }
+    
+    open func updateBulk(whereClause: String, changes: [String : Any], responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.updateBulk(whereClause: whereClause, changes: changes, responseBlock: responseBlock, errorBlock: errorBlock)
+    }
+    
+    open func removeById(_ objectId: String, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.removeById(objectId, responseBlock: responseBlock, errorBlock: errorBlock)
     }
 }
