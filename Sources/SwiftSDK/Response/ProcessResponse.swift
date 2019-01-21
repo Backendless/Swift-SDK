@@ -28,20 +28,20 @@ class ProcessResponse: NSObject {
     
     func adapt<T>(response: DataResponse<Data>, to: T.Type) -> Any? where T: Decodable {
         if response.data?.count == 0 {
-            if let responseResult = getResponseResult(response), responseResult is Fault {
+            if let responseResult = getResponseResult(responseData: response), responseResult is Fault {
                 return responseResult as! Fault
             }
             return nil
         }
         else {            
-            if let responseResult = getResponseResult(response) {                
+            if let responseResult = getResponseResult(responseData: response) {
                 if responseResult is Fault {
                     return responseResult as! Fault
                 }
                 else {
                     do {
                         if to == BackendlessUser.self {
-                            return adaptToBackendlessUser(responseResult)
+                            return adaptToBackendlessUser(responseResult: responseResult)
                         }
                             /*else if to == [BackendlessUser].self {
                              // array of users
@@ -51,20 +51,20 @@ class ProcessResponse: NSObject {
                             return responseObject
                         }
                     }
-                        //                catch let DecodingError.dataCorrupted(context) {
-                        //                    print(context)
-                        //                } catch let DecodingError.keyNotFound(key, context) {
-                        //                    print("Key '\(key)' not found:", context.debugDescription)
-                        //                    print("codingPath:", context.codingPath)
-                        //                } catch let DecodingError.valueNotFound(value, context) {
-                        //                    print("Value '\(value)' not found:", context.debugDescription)
-                        //                    print("codingPath:", context.codingPath)
-                        //                } catch let DecodingError.typeMismatch(type, context)  {
-                        //                    print("Type '\(type)' mismatch:", context.debugDescription)
-                        //                    print("codingPath:", context.codingPath)
-                        //                } catch {
-                        //                    print("error: ", error)
-                        //                }
+                        //                                        catch let DecodingError.dataCorrupted(context) {
+                        //                                            print(context)
+                        //                                        } catch let DecodingError.keyNotFound(key, context) {
+                        //                                            print("Key '\(key)' not found:", context.debugDescription)
+                        //                                            print("codingPath:", context.codingPath)
+                        //                                        } catch let DecodingError.valueNotFound(value, context) {
+                        //                                            print("Value '\(value)' not found:", context.debugDescription)
+                        //                                            print("codingPath:", context.codingPath)
+                        //                                        } catch let DecodingError.typeMismatch(type, context)  {
+                        //                                            print("Type '\(type)' mismatch:", context.debugDescription)
+                        //                                            print("codingPath:", context.codingPath)
+                        //                                        } catch {
+                        //                                            print("error: ", error)
+                        //                                        }
                     catch {
                         return Fault(domain: (error as NSError).domain, code: (error as NSError).code, userInfo: (error as NSError).userInfo)
                     }
@@ -74,14 +74,14 @@ class ProcessResponse: NSObject {
         }
     }
     
-    func adaptToBackendlessUser(_ responseResult: Any?) -> Any? {
+    func adaptToBackendlessUser(responseResult: Any?) -> Any? {
         if let responseResult = responseResult as? [String: Any] {
             let properties = ["email": responseResult["email"], "name": responseResult["name"], "objectId": responseResult["objectId"], "userToken": responseResult["user-token"]]
             do {
                 let responseData = try JSONSerialization.data(withJSONObject: properties)
                 do {
                     let responseObject = try JSONDecoder().decode(BackendlessUser.self, from: responseData)
-                    responseObject.setProperties(responseResult)
+                    responseObject.setProperties(properties: responseResult)
                     return responseObject
                 }
                 catch {
@@ -98,7 +98,7 @@ class ProcessResponse: NSObject {
         return nil
     }
     
-    func getResponseResult(_ responseData: DataResponse<Data>) -> Any? {
+    func getResponseResult(responseData: DataResponse<Data>) -> Any? {
         let responseResult =  try? JSONSerialization.jsonObject(with: responseData.data!, options: []) as? [String: Any]
         switch responseData.result {
         case .success( _):

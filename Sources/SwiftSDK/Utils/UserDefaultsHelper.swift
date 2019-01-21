@@ -27,7 +27,7 @@ class UserDefaultsHelper: NSObject {
     
     private let PERSISTENT_USER_TOKEN_KEY = "userTokenKey"
     
-    func savePersistentUserToken(_ userToken: String) {
+    func savePersistentUserToken(userToken: String) {
         let userDefaults = UserDefaults.standard
         let userToken: [String: String] = ["userToken": userToken]
         userDefaults.setValue(userToken, forKey: PERSISTENT_USER_TOKEN_KEY)

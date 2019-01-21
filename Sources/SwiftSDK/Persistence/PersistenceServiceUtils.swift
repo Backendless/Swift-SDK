@@ -31,16 +31,30 @@ class PersistenceServiceUtils: NSObject {
     private let mappings = Mappings.shared
     private let storedObjects = StoredObjects.shared
     
-    func setup(_ tableName: String?) {
+    func setup(tableName: String?) {
         if let tableName = tableName {
             self.tableName = tableName
         }
-    } 
+    }
+    
+    func describe(tableName: String, responseBlock: (([ObjectProperty]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        let request = AlamofireManager(restMethod: "data/\(tableName)/properties", httpMethod: .get, headers: nil, parameters: nil).makeRequest()
+        request.responseData(completionHandler: { response in
+            if let result = self.processResponse.adapt(response: response, to: [ObjectProperty].self) {
+                if result is Fault {
+                    errorBlock(result as! Fault)
+                }
+                else {
+                    responseBlock(result as! [ObjectProperty])
+                }
+            }
+        })
+    }
     
     func save(entity: [String : Any], responseBlock: (([String : Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = entity
-        let request = AlamofireManager(restMethod: "data/\(self.tableName)", httpMethod: .post, headers: headers, parameters: parameters).makeRequest()
+        let request = AlamofireManager(restMethod: "data/\(tableName)", httpMethod: .post, headers: headers, parameters: parameters).makeRequest()
         request.responseData(completionHandler: { response in
             if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                 if result is Fault {
@@ -69,10 +83,32 @@ class PersistenceServiceUtils: NSObject {
         })
     }
     
-    func updateBulk(whereClause: String, changes: [String : Any], responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+    func update(entity: [String : Any], responseBlock: (([String : Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        let headers = ["Content-Type": "application/json"]
+        let parameters = entity
+        if let objectId = entity["objectId"] as? String {
+            let request = AlamofireManager(restMethod: "data/\(tableName)/\(objectId)", httpMethod: .put, headers: headers, parameters: parameters).makeRequest()
+            request.responseData(completionHandler: { response in
+                if let result = self.processResponse.adapt(response: response, to: JSON.self) {
+                    if result is Fault {
+                        errorBlock(result as! Fault)
+                    }
+                    else {
+                        responseBlock((result as! JSON).dictionaryObject!)
+                    }
+                }
+            })
+        }        
+    }
+    
+    func updateBulk(whereClause: String?, changes: [String : Any], responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = changes
-        let request = AlamofireManager(restMethod: "data/bulk/\(tableName)?where=\(stringToUrlString(whereClause))", httpMethod: .put, headers: headers, parameters: parameters).makeRequest()
+        var restMethod = "data/bulk/\(tableName)"
+        if whereClause != nil, whereClause?.count ?? 0 > 0 {
+            restMethod += "?where=\(stringToUrlString(originalString: whereClause!))"
+        }
+        let request = AlamofireManager(restMethod: restMethod, httpMethod: .put, headers: headers, parameters: parameters).makeRequest()
         request.responseData(completionHandler: { response in
             if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
@@ -87,7 +123,7 @@ class PersistenceServiceUtils: NSObject {
         })
     }
     
-    func removeById(_ objectId: String, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+    func removeById(objectId: String, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let request = AlamofireManager(restMethod: "data/\(tableName)/\(objectId)", httpMethod: .delete, headers: nil, parameters: nil).makeRequest()
         request.responseData(completionHandler: { response in
             if let result = self.processResponse.adapt(response: response, to: JSON.self) {
@@ -95,20 +131,41 @@ class PersistenceServiceUtils: NSObject {
                     errorBlock(result as! Fault)
                 }
                 else if let resultValue = (result as! JSON).dictionaryObject?.first?.value as? Int {
-                    self.storedObjects.removeObjectId(objectId)
+                    self.storedObjects.removeObjectId(objectId: objectId)
                     responseBlock(NSNumber(value: resultValue))
                 }
             }
         })
     }
     
-    // additional methods
+    func removeBulk(whereClause: String?, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        var restMethod = "data/bulk/\(tableName)"
+        if whereClause != nil, whereClause?.count ?? 0 > 0 {
+            restMethod += "?where=\(stringToUrlString(originalString: whereClause!))"
+        }
+        let request = AlamofireManager(restMethod: restMethod, httpMethod: .delete, headers: nil, parameters: nil).makeRequest()
+        request.responseData(completionHandler: { response in
+            if let result = self.processResponse.adapt(response: response, to: Int.self) {
+                if result is Fault {
+                    errorBlock(result as! Fault)
+                }
+            }
+            else {
+                if let stringInt = String(bytes: response.data!, encoding: .utf8) {
+                    self.storedObjects.removeObjectIds(tableName: self.tableName)
+                    responseBlock(NSNumber(value: Int(stringInt)!))
+                }
+            }
+        })
+    }
     
-    func getTableName(_ entity: Any) -> String {
+    // ******************** additional methods ********************
+    
+    func getTableName(entity: Any) -> String {
         return String(describing: entity)
     }
     
-    func getClassName(_ entity: Any) -> String {
+    func getClassName(entity: Any) -> String {
         if Bundle.main.infoDictionary![kCFBundleNameKey as String] == nil {
             // for unit tests
             let testBundle = Bundle(for: TestClass.self)
@@ -117,7 +174,7 @@ class PersistenceServiceUtils: NSObject {
         return Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String + "." + String(describing: entity)
     }
     
-    func getClassProperties(_ entity: Any) -> [String] {
+    func getClassProperties(entity: Any) -> [String] {
         let resultClass = type(of: entity) as! NSObject.Type
         var classProperties = [String]()
         var outCount : UInt32 = 0
@@ -131,13 +188,13 @@ class PersistenceServiceUtils: NSObject {
         return classProperties
     }
     
-    func entityToDictionary(_ entity: Any) -> [String: Any] {        
+    func entityToDictionary(entity: Any) -> [String: Any] {
         let resultClass = type(of: entity) as! NSObject.Type
         var entityDictionary = [String: Any]()
         var outCount : UInt32 = 0
         if let properties = class_copyPropertyList(resultClass.self, &outCount) {
             
-            let entityClassName = getClassName((entity as! NSObject).classForCoder)
+            let entityClassName = getClassName(entity: (entity as! NSObject).classForCoder)
             let columnToPropertyMappings = mappings.getColumnToPropertyMappings(className: entityClassName)
             
             for i : UInt32 in 0..<outCount {
@@ -148,13 +205,16 @@ class PersistenceServiceUtils: NSObject {
                     else {
                         entityDictionary[key] = value
                     }
+                    if let objectId = storedObjects.getObjectId(forObject: entity as! AnyHashable) {
+                        entityDictionary["objectId"] = objectId
+                    }
                 }
             }
         }
         return entityDictionary
     }
     
-    func dictionaryToEntity(_ dictionary: [String: Any], _ className: String) -> Any? {
+    func dictionaryToEntity(dictionary: [String: Any], className: String) -> Any? {
         var resultEntityTypeName = ""
         let classMappings = mappings.getTableToClassMappings()
         if classMappings.keys.contains(tableName) {
@@ -165,9 +225,9 @@ class PersistenceServiceUtils: NSObject {
         }
         if let resultEntityType = NSClassFromString(resultEntityTypeName) as? NSObject.Type {
             let entity = (resultEntityType).init()
-            let entityFields = getClassProperties(entity)
+            let entityFields = getClassProperties(entity: entity)
             
-            let entityClassName = getClassName(entity.classForCoder)
+            let entityClassName = getClassName(entity: entity.classForCoder)
             let columnToPropertyMappings = mappings.getColumnToPropertyMappings(className: entityClassName)
             
             for dictionaryField in dictionary.keys {
@@ -181,21 +241,21 @@ class PersistenceServiceUtils: NSObject {
                 }
             }
             if let objectId = dictionary["objectId"] as? String {
-                storedObjects.rememberObjectId(objectId, forObject: entity)
+                storedObjects.rememberObjectId(objectId: objectId, forObject: entity)                
             }
             return entity
         }       
         return nil
     }
     
-    func getObjectId(_ entity: Any) -> String? {
+    func getObjectId(entity: Any) -> String? {
         if let objectId = storedObjects.getObjectId(forObject: entity as! AnyHashable) {
             return objectId
         }
         return nil
     }
     
-    private func stringToUrlString(_ originalString: String) -> String {
+    private func stringToUrlString(originalString: String) -> String {
         if let resultString = originalString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) {
             return resultString
         }

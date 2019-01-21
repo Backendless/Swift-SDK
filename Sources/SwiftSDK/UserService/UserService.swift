@@ -56,7 +56,7 @@ import SwiftyJSON
         })
     }
     
-    open func registerUser(_ user: BackendlessUser, responseBlock: ((BackendlessUser) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+    open func registerUser(user: BackendlessUser, responseBlock: ((BackendlessUser) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = ["email": user.email, "password": user._password, "name": user.name]
         let request = AlamofireManager(restMethod: "users/register", httpMethod: .post, headers: headers, parameters: parameters as Parameters).makeRequest()
@@ -82,7 +82,7 @@ import SwiftyJSON
                     errorBlock(result as! Fault)
                 }
                 else {
-                    self.setPersistentUser(result as! BackendlessUser)
+                    self.setPersistentUser(currentUser: result as! BackendlessUser)
                     responseBlock(result as! BackendlessUser)
                 }
             }
@@ -101,7 +101,7 @@ import SwiftyJSON
                     errorBlock(result as! Fault)
                 }
                 else {
-                    self.setPersistentUser(result as! BackendlessUser)
+                    self.setPersistentUser(currentUser: result as! BackendlessUser)
                     responseBlock(result as! BackendlessUser)
                 }
             }
@@ -118,7 +118,7 @@ import SwiftyJSON
                     errorBlock(result as! Fault)
                 }
                 else {
-                    self.setPersistentUser(result as! BackendlessUser)
+                    self.setPersistentUser(currentUser: result as! BackendlessUser)
                     responseBlock(result as! BackendlessUser)
                 }
             }
@@ -131,7 +131,7 @@ import SwiftyJSON
     
     // ******************************************************
     
-    open func update(_ user: BackendlessUser, responseBlock: ((BackendlessUser) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+    open func update(user: BackendlessUser, responseBlock: ((BackendlessUser) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json", "user-token": user.userToken!]
         let parameters = user.getProperties()
         let request = AlamofireManager(restMethod: "users/\(user.objectId)", httpMethod: .put, headers: headers, parameters: parameters).makeRequest()
@@ -146,7 +146,7 @@ import SwiftyJSON
         })
     }
     
-    open func logout(_ responseBlock: (() -> Void)!, errorBlock: ((Fault) -> Void)!) {
+    open func logout(responseBlock: (() -> Void)!, errorBlock: ((Fault) -> Void)!) {
       if self.currentUser != nil {
             let headers = ["user-token": currentUser!.userToken!]
             let request = AlamofireManager(restMethod: "users/logout", httpMethod: .get, headers: headers, parameters: nil).makeRequest()
@@ -163,7 +163,7 @@ import SwiftyJSON
         }
     }
     
-    open func restorePassword(_ login: String, responseBlock: (() -> Void)!, errorBlock: ((Fault) -> Void)!) {
+    open func restorePassword(login: String, responseBlock: (() -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let request = AlamofireManager(restMethod: "users/restorepassword/\(login)", httpMethod: .get, headers: nil, parameters: nil).makeRequest()
         request.responseData(completionHandler: { response in
             let result = self.processResponse.adapt(response: response, to: NoReply.self)
@@ -190,9 +190,9 @@ import SwiftyJSON
         })
     }
     
-    func setPersistentUser(_ currentUser: BackendlessUser) {
+    func setPersistentUser(currentUser: BackendlessUser) {
         self.currentUser = currentUser
-        savePersistentUser(self.currentUser!)
+        savePersistentUser(currentUser: self.currentUser!)
     }
     
     func resetPersistentUser() {
@@ -200,11 +200,11 @@ import SwiftyJSON
         removePersistentUser()        
     }
     
-    func savePersistentUser(_ currentUser: BackendlessUser) {
+    func savePersistentUser(currentUser: BackendlessUser) {
         var properties = self.currentUser?.getProperties()
         properties?["user-token"] = self.currentUser?.userToken
-        self.currentUser?.setProperties(properties!)
-        userDefaultsHelper.savePersistentUserToken(currentUser.userToken!)
+        self.currentUser?.setProperties(properties: properties!)
+        userDefaultsHelper.savePersistentUserToken(userToken: currentUser.userToken!)
     }
     
     func getPersistentUserToken() -> String? {

@@ -1,5 +1,5 @@
 //
-//  UserProperty.swift
+//  ObjectProperty.swift
 //
 /*
  * *********************************************************************************************************************
@@ -21,10 +21,10 @@
 
 import SwiftyJSON
 
-@objcMembers open class UserProperty: NSObject, NSCoding, Codable {    
-
+@objcMembers open class ObjectProperty: NSObject, NSCoding, Codable {
+    
     open var name: String
-    open var required = false
+    open var required: Bool = false
     open var type: DataTypeEnum
     open var defaultValue: Any? {
         get {
@@ -36,11 +36,10 @@ import SwiftyJSON
             }
         }
     }
-    private var _defaultValue: JSON?
+    var _defaultValue: JSON?
     open var relatedTable: String?
     open var customRegex: String?
-    //open var autoLoad: Bool = false
-    open var identity = false
+    open var autoLoad: Bool = false
     open var isPrimaryKey: Bool = false
     
     enum CodingKeys: String, CodingKey {
@@ -50,23 +49,21 @@ import SwiftyJSON
         case _defaultValue = "defaultValue"
         case relatedTable
         case customRegex
-        //case autoLoad
-        case identity
+        case autoLoad
         case isPrimaryKey
     }
-
-    init(name: String, required: Bool, type: DataTypeEnum, defaultValue: JSON?, relatedTable: String?, customRegex: String?, /*autoLoad: Bool,*/ identity: Bool, isPrimaryKey: Bool) {
+    
+    init (name: String, required: Bool, type: DataTypeEnum, defaultValue: JSON?, relatedTable: String?, customRegex: String?, autoLoad: Bool, isPrimaryKey: Bool) {
         self.name = name
         self.required = required
         self.type = type
         self._defaultValue = defaultValue
         self.relatedTable = relatedTable
         self.customRegex = customRegex
-        //self.autoLoad = autoLoad
-        self.identity = identity
+        self.autoLoad = autoLoad
         self.isPrimaryKey = isPrimaryKey
     }
-
+    
     convenience required public init?(coder aDecoder: NSCoder) {
         let name = aDecoder.decodeObject(forKey: CodingKeys.name.rawValue) as! String
         let required = aDecoder.decodeBool(forKey: CodingKeys.required.rawValue)
@@ -74,12 +71,11 @@ import SwiftyJSON
         let _defaultValue = aDecoder.decodeObject(forKey: CodingKeys._defaultValue.rawValue) as? JSON
         let relatedTable = aDecoder.decodeObject(forKey: CodingKeys.relatedTable.rawValue) as? String
         let customRegex = aDecoder.decodeObject(forKey: CodingKeys.customRegex.rawValue) as? String
-        //let autoload = aDecoder.decodeBool(forKey: CodingKeys.autoLoad.rawValue)
-        let identity = aDecoder.decodeBool(forKey: CodingKeys.identity.rawValue)
+        let autoLoad = aDecoder.decodeBool(forKey: CodingKeys.autoLoad.rawValue)
         let isPrimaryKey = aDecoder.decodeBool(forKey: CodingKeys.isPrimaryKey.rawValue)
-        self.init(name: name, required: required, type: type, defaultValue: _defaultValue, relatedTable: relatedTable, customRegex: customRegex, /*autoLoad: autoload,*/ identity: identity, isPrimaryKey: isPrimaryKey)
+        self.init(name: name, required: required, type:type, defaultValue: _defaultValue, relatedTable: relatedTable, customRegex: customRegex, autoLoad: autoLoad, isPrimaryKey: isPrimaryKey)
     }
-
+    
     public func encode(with aCoder: NSCoder) {
         aCoder.encode(name, forKey: CodingKeys.name.rawValue)
         aCoder.encode(required, forKey: CodingKeys.required.rawValue)
@@ -87,11 +83,10 @@ import SwiftyJSON
         aCoder.encode(_defaultValue, forKey: CodingKeys._defaultValue.rawValue)
         aCoder.encode(relatedTable, forKey: CodingKeys.relatedTable.rawValue)
         aCoder.encode(customRegex, forKey: CodingKeys.customRegex.rawValue)
-        //aCoder.encode(autoLoad, forKey: CodingKeys.autoLoad.rawValue)
-        aCoder.encode(identity, forKey: CodingKeys.identity.rawValue)
+        aCoder.encode(autoLoad, forKey: CodingKeys.autoLoad.rawValue)
         aCoder.encode(isPrimaryKey, forKey: CodingKeys.isPrimaryKey.rawValue)
     }
-
+    
     open func getTypeName(type: DataTypeEnum) -> String {
         return type.rawValue
     }

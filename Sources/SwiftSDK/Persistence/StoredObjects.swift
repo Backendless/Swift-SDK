@@ -25,7 +25,7 @@ class StoredObjects: NSObject {
     
     var storedObjects = [AnyHashable: String]()
     
-    func rememberObjectId(_ objectId: String, forObject: AnyHashable) {
+    func rememberObjectId(objectId: String, forObject: AnyHashable) {
         storedObjects[forObject] = objectId
     }
     
@@ -42,13 +42,21 @@ class StoredObjects: NSObject {
         }
     }
     
-    func removeObjectId(_ objectId: String) {
+    func removeObjectId(objectId: String) {
         if let index = storedObjects.firstIndex(where: {$0.value == objectId}) {
             storedObjects.remove(at: index)
         }
     }
     
-    func getObjectForId(_ objectId: String) -> AnyHashable? {
+    func removeObjectIds(tableName: String) {
+        for storedObjectEntity in storedObjects.keys {
+            if PersistenceServiceUtils.shared.getTableName(entity: storedObjectEntity) == tableName {
+                storedObjects.removeValue(forKey: storedObjectEntity)
+            }
+        }
+    }
+    
+    func getObjectForId(objectId: String) -> AnyHashable? {
         if let index = storedObjects.firstIndex(where: {$0.value == objectId}) {
             return storedObjects.keys[index]
         }

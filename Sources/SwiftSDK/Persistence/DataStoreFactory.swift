@@ -34,48 +34,68 @@ import SwiftyJSON
     
     init(entityClass: Any) {
         self.entityClass = entityClass
-        let tableName = persistenceServiceUtils.getTableName(self.entityClass)        
+        let tableName = persistenceServiceUtils.getTableName(entity: self.entityClass)
         self.tableName = tableName
-        persistenceServiceUtils.setup(self.tableName)
+        persistenceServiceUtils.setup(tableName: self.tableName)
     }
     
-    open func mapToTable(_ tableName: String) {
+    open func mapToTable(tableName: String) {
         self.tableName = tableName
-        persistenceServiceUtils.setup(self.tableName)
-        mappings.mapTable(tableName, toClassNamed: persistenceServiceUtils.getClassName(self.entityClass))
+        persistenceServiceUtils.setup(tableName: self.tableName)
+        mappings.mapTable(tableName: tableName, toClassNamed: persistenceServiceUtils.getClassName(entity: self.entityClass))
     }
     
-    open func mapColumn(_ columnName: String, toProperty: String) {
-        mappings.mapColumn(columnName, toProperty: toProperty, ofClassNamed: persistenceServiceUtils.getClassName(self.entityClass))
+    open func mapColumn(columnName: String, toProperty: String) {
+        mappings.mapColumn(columnName: columnName, toProperty: toProperty, ofClassNamed: persistenceServiceUtils.getClassName(entity: self.entityClass))
     }
     
-    open func getObjectId(_ entity: Any) -> String? {
-        return persistenceServiceUtils.getObjectId(entity)
+    open func getObjectId(entity: Any) -> String? {
+        return persistenceServiceUtils.getObjectId(entity: entity)
     }
     
-    open func save(_ entity: Any, responseBlock: ((Any) -> Void)!, errorBlock: ((Fault) -> Void)!) {
-        let entityDictionary = persistenceServiceUtils.entityToDictionary(entity.self)
+    open func save(entity: Any, responseBlock: ((Any) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        let entityDictionary = persistenceServiceUtils.entityToDictionary(entity: entity)
         let wrappedBlock: ([String: Any]) -> () = { (responseDictionary) in
-            if let resultEntity = self.persistenceServiceUtils.dictionaryToEntity(responseDictionary, self.persistenceServiceUtils.getClassName(self.entityClass)) {
+            if let resultEntity = self.persistenceServiceUtils.dictionaryToEntity(dictionary: responseDictionary, className: self.persistenceServiceUtils.getClassName(entity: self.entityClass)) {
                 responseBlock(resultEntity)
             }
         }        
         persistenceServiceUtils.save(entity: entityDictionary, responseBlock: wrappedBlock, errorBlock: errorBlock)
     }
     
-    open func createBulk(_ entities: [Any], responseBlock: (([String]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+    open func createBulk(entities: [Any], responseBlock: (([String]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         var entitiesDictionaries = [[String: Any]]()
         for entity in entities {
-            entitiesDictionaries.append(persistenceServiceUtils.entityToDictionary(entity))
+            entitiesDictionaries.append(persistenceServiceUtils.entityToDictionary(entity: entity))
         }
         persistenceServiceUtils.createBulk(entities: entitiesDictionaries, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    open func updateBulk(whereClause: String, changes: [String : Any], responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+    open func update(entity: Any, responseBlock: ((Any) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        let entityDictionary = persistenceServiceUtils.entityToDictionary(entity: entity)
+        let wrappedBlock: ([String: Any]) -> () = { (responseDictionary) in
+            if let resultEntity = self.persistenceServiceUtils.dictionaryToEntity(dictionary: responseDictionary, className: self.persistenceServiceUtils.getClassName(entity: self.entityClass)) {
+                responseBlock(resultEntity)
+            }
+        }
+        persistenceServiceUtils.update(entity: entityDictionary, responseBlock: wrappedBlock, errorBlock: errorBlock)
+    }
+    
+    open func updateBulk(whereClause: String?, changes: [String : Any], responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         persistenceServiceUtils.updateBulk(whereClause: whereClause, changes: changes, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    open func removeById(_ objectId: String, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
-        persistenceServiceUtils.removeById(objectId, responseBlock: responseBlock, errorBlock: errorBlock)
+    open func removeById(objectId: String, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.removeById(objectId: objectId, responseBlock: responseBlock, errorBlock: errorBlock)
+    }
+    
+    open func remove(entity: Any, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        if let objectId = persistenceServiceUtils.getObjectId(entity: entity) {
+            persistenceServiceUtils.removeById(objectId: objectId, responseBlock: responseBlock, errorBlock: errorBlock)
+        }
+    }
+    
+    open func removeBulk(whereClause: String?, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.removeBulk(whereClause: whereClause, responseBlock: responseBlock, errorBlock: errorBlock)
     }
 }

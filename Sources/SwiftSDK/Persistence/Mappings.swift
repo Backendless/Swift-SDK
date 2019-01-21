@@ -26,7 +26,7 @@ class Mappings: NSObject {
     var tableToClassMappings = [String: String]()
     var columnToPropertyMappings = [String: [String: String]]()
 
-    func mapTable(_ tableName: String, toClassNamed: String) {
+    func mapTable(tableName: String, toClassNamed: String) {
         tableToClassMappings[tableName] = toClassNamed
     }
     
@@ -34,7 +34,7 @@ class Mappings: NSObject {
         return tableToClassMappings
     }
     
-    func mapColumn(_ columnName: String, toProperty: String, ofClassNamed: String) {
+    func mapColumn(columnName: String, toProperty: String, ofClassNamed: String) {
         if var mappings = columnToPropertyMappings[ofClassNamed] {
             mappings[columnName] = toProperty
             columnToPropertyMappings[ofClassNamed] = mappings

@@ -73,7 +73,7 @@ import SwiftyJSON
         aCoder.encode(userToken, forKey: CodingKeys.userToken.rawValue)
     }
     
-    open func getProperty(_ propertyName: String) -> Any? {
+    open func getProperty(propertyName: String) -> Any? {
         let userProperties = getProperties()
         return userProperties[propertyName] as Any?
     }
@@ -86,7 +86,7 @@ import SwiftyJSON
         return userProperties
     }
     
-    open func setProperties(_ newProperties: [String: Any]) {
+    open func setProperties(properties: [String: Any]) {
         var userProperties = getProperties()
         for propertyName in userProperties.keys {
             if propertyName != "ownerId" && propertyName != "socialAccount" && propertyName != "___class" &&
@@ -96,13 +96,13 @@ import SwiftyJSON
                 userProperties[propertyName] = NSNull()
             }
         }
-        for newProperty in newProperties {
-            userProperties[newProperty.key] = newProperties[newProperty.key]
+        for newProperty in properties {
+            userProperties[newProperty.key] = properties[newProperty.key]
         }
         self.properties = JSON(userProperties)
     }
     
-    open func addProperty(_ propertyName: String, propertyValue: Any) {
+    open func addProperty(propertyName: String, propertyValue: Any) {
         var userProperties = getProperties()
         if !(userProperties.keys.contains(propertyName)) {
             userProperties[propertyName] = propertyValue
@@ -110,17 +110,17 @@ import SwiftyJSON
         self.properties = JSON(userProperties)
     }
     
-    open func addProperties(_ propertiesToAdd: [String: Any]) {
+    open func addProperties(properties: [String: Any]) {
         var userProperties = getProperties()
-        for propertyName in propertiesToAdd.keys {
+        for propertyName in properties.keys {
             if !(userProperties.keys.contains(propertyName)) {
-                userProperties[propertyName] = propertiesToAdd[propertyName]
+                userProperties[propertyName] = properties[propertyName]
             }
         }
         self.properties = JSON(userProperties)
     }
     
-    open func updateProperty(_ propertyName: String, propertyValue: Any) {
+    open func updateProperty(propertyName: String, propertyValue: Any) {
         var userProperties = getProperties()
         if userProperties.keys.contains(propertyName) {
             userProperties[propertyName] = propertyValue
@@ -128,7 +128,7 @@ import SwiftyJSON
         self.properties = JSON(userProperties)
     }
     
-    open func updateProperties(_ propertiesToUpdate: [String: Any]) {
+    open func updateProperties(propertiesToUpdate: [String: Any]) {
         var userProperties = getProperties()
         for propertyName in propertiesToUpdate.keys {
             if userProperties.keys.contains(propertyName) {
@@ -138,15 +138,15 @@ import SwiftyJSON
         }
     }
     
-    open func removeProperty(_ propertyName: String) {
+    open func removeProperty(propertyName: String) {
         var userProperties = getProperties()
         userProperties[propertyName] = NSNull()
         self.properties = JSON(userProperties)
     }
     
-    open func removeProperties(_ propertiesToRemove: [String]) {
+    open func removeProperties(propertiesToRemove: [String]) {
         for propertyName in propertiesToRemove {
-            removeProperty(propertyName)
+            removeProperty(propertyName: propertyName)
         }
     }
 }
