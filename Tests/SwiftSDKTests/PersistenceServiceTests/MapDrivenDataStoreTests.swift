@@ -27,13 +27,30 @@ class MapDrivenDataStoreTests: XCTestCase {
     private let backendless = Backendless.shared
     private var dataStore: MapDrivenDataStore!
     
+    // call before all tests
+    override class func setUp() {
+        Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
+        Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
+        Backendless.shared.data.ofTable("TestClass").removeBulk(whereClause: nil, responseBlock: { removedObjects in
+        }, errorBlock: { fault in
+            print("MAP DRIVEN DATA STORE TEST SETUP ERROR \(fault.faultCode): \(fault.message ?? "")")
+        })
+    }
+    
+    // call before each test
     override func setUp() {
-        backendless.hostUrl = BackendlessAppConfig.hostUrl
-        backendless.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
         dataStore = backendless.data.ofTable("TestClass")
     }
     
-    func fulfillExpectation(_ expectation: XCTestExpectation) {
+    // call after all tests
+    override class func tearDown() {
+        Backendless.shared.data.ofTable("TestClass").removeBulk(whereClause: nil, responseBlock: { removedObjects in
+        }, errorBlock: { fault in
+            print("MAP DRIVEN DATA STORE TEST SETUP ERROR \(fault.faultCode): \(fault.message ?? "")")
+        })
+    }
+    
+    func fulfillExpectation(expectation: XCTestExpectation) {
         expectation.fulfill()
         print(expectation.description)
     }
@@ -41,15 +58,15 @@ class MapDrivenDataStoreTests: XCTestCase {
     func testSave() {
         let expectation = self.expectation(description: "*** mapDrivenDataStore.save test passed ***")
         let objectToSave = ["name": "Bob", "age": 25] as [String : Any]
-        dataStore.save(objectToSave, responseBlock: { savedObject in
+        dataStore.save(entity: objectToSave, responseBlock: { savedObject in
             XCTAssertNotNil(savedObject)
             XCTAssert(type(of: savedObject) == [String: Any].self)
             XCTAssertEqual(savedObject["name"] as? String, "Bob")
-            XCTAssertEqual(savedObject["age"] as? Int, 25)            
-            self.fulfillExpectation(expectation)
+            XCTAssertEqual(savedObject["age"] as? Int, 25)
+            self.fulfillExpectation(expectation: expectation)
         }, errorBlock: { fault in
             XCTAssertNotNil(fault)
-            self.fulfillExpectation(expectation)
+            self.fulfillExpectation(expectation: expectation)
         })
         waitForExpectations(timeout: 10, handler: { error in
             if let error = error {
@@ -61,17 +78,49 @@ class MapDrivenDataStoreTests: XCTestCase {
     func testCreateBulk() {
         let expectation = self.expectation(description: "*** mapDrivenDataStore.createBulk test passed ***")
         let objectsToSave = [["name": "Bob", "age": 25], ["name": "Ann", "age": 45]]
-        dataStore.createBulk(objectsToSave, responseBlock: { savedObjects in
+        dataStore.createBulk(entities: objectsToSave, responseBlock: { savedObjects in
             XCTAssertNotNil(savedObjects)
             XCTAssert(type(of: savedObjects) == [String].self)
-            self.fulfillExpectation(expectation)
+            XCTAssert(savedObjects.count == 2)
+            self.fulfillExpectation(expectation: expectation)
         }, errorBlock: { fault in
             XCTAssertNotNil(fault)
-            self.fulfillExpectation(expectation)
+            self.fulfillExpectation(expectation: expectation)
         })
         waitForExpectations(timeout: 10, handler: { error in
             if let error = error {
                 print("*** mapDrivenDataStore.createBulk test failed: \(error.localizedDescription) ***")
+            }
+        })
+    }
+    
+    func testUpdate() {
+        let expectation = self.expectation(description: "*** mapDrivenDataStore.update test passed ***")
+        let objectToSave = ["name": "Bob", "age": 25] as [String : Any]
+        dataStore.save(entity: objectToSave, responseBlock: { savedObject in
+            XCTAssertNotNil(savedObject)
+            XCTAssert(type(of: savedObject) == [String: Any].self)
+            XCTAssertEqual(savedObject["name"] as? String, "Bob")
+            XCTAssertEqual(savedObject["age"] as? Int, 25)
+            var savedObject = savedObject
+            savedObject["age"] = 55
+            self.dataStore.update(entity: savedObject, responseBlock: { resavedObject in
+                XCTAssertNotNil(resavedObject)
+                XCTAssert(type(of: resavedObject) == [String: Any].self)
+                XCTAssertEqual(resavedObject["name"] as? String, "Bob")
+                XCTAssertEqual(resavedObject["age"] as? Int, 55)
+                self.fulfillExpectation(expectation: expectation)
+            }, errorBlock: { fault in
+                XCTAssertNotNil(fault)
+                self.fulfillExpectation(expectation: expectation)
+            })
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            self.fulfillExpectation(expectation: expectation)
+        })
+        waitForExpectations(timeout: 10, handler: { error in
+            if let error = error {
+                print("*** mapDrivenDataStore.update test failed: \(error.localizedDescription) ***")
             }
         })
     }
@@ -81,10 +130,10 @@ class MapDrivenDataStoreTests: XCTestCase {
         dataStore.updateBulk(whereClause: "age>20", changes: ["name": "NewName"], responseBlock: { updatedObjects in
             XCTAssertNotNil(updatedObjects)
             XCTAssert(Int(exactly: updatedObjects)! >= 0)
-            self.fulfillExpectation(expectation)
+            self.fulfillExpectation(expectation: expectation)
         }, errorBlock: { fault in
             XCTAssertNotNil(fault)
-            self.fulfillExpectation(expectation)
+            self.fulfillExpectation(expectation: expectation)
         })
         waitForExpectations(timeout: 10, handler: { error in
             if let error = error {
@@ -96,22 +145,71 @@ class MapDrivenDataStoreTests: XCTestCase {
     func testRemoveById() {
         let expectation = self.expectation(description: "*** mapDrivenDataStore.removeById test passed ***")
         let objectToSave = ["name": "Bob", "age": 25] as [String : Any]
-        dataStore.save(objectToSave, responseBlock: { savedObject in
-            self.dataStore.removeById(savedObject["objectId"] as! String, responseBlock: { removed in
-                XCTAssertNotNil(removed)
-                XCTAssert(Int(exactly: removed)! >= 0)
-                self.fulfillExpectation(expectation)
+        dataStore.save(entity: objectToSave, responseBlock: { savedObject in
+            self.dataStore.removeById(objectId: savedObject["objectId"] as! String, responseBlock: { removedObjects in
+                XCTAssertNotNil(removedObjects)
+                XCTAssert(Int(exactly: removedObjects)! >= 0)
+                self.fulfillExpectation(expectation: expectation)
             }, errorBlock: { fault in
                 XCTAssertNotNil(fault)
-                self.fulfillExpectation(expectation)
+                self.fulfillExpectation(expectation: expectation)
             })
         }, errorBlock: { fault in
             XCTAssertNotNil(fault)
-            self.fulfillExpectation(expectation)
+            self.fulfillExpectation(expectation: expectation)
         })
         waitForExpectations(timeout: 10, handler: { error in
             if let error = error {
                 print("*** mapDrivenDataStore.removeById test failed: \(error.localizedDescription) ***")
+            }
+        })
+    }
+    
+    func testRemove() {
+        let expectation = self.expectation(description: "*** mapDrivenDataStore.remove test passed ***")
+        let objectToSave = ["name": "Bob", "age": 25] as [String : Any]
+        dataStore.save(entity: objectToSave, responseBlock: { savedObject in
+            self.dataStore.remove(entity: savedObject, responseBlock: { removedObjects in
+                XCTAssertNotNil(removedObjects)
+                XCTAssert(Int(exactly: removedObjects)! >= 0)
+                self.fulfillExpectation(expectation: expectation)
+            }, errorBlock: { fault in
+                XCTAssertNotNil(fault)
+                self.fulfillExpectation(expectation: expectation)
+            })
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            self.fulfillExpectation(expectation: expectation)
+        })
+        waitForExpectations(timeout: 10, handler: { error in
+            if let error = error {
+                print("*** mapDrivenDataStore.remove test failed: \(error.localizedDescription) ***")
+            }
+        })
+    }
+    
+    func testRemoveBulk() {
+        let expectation = self.expectation(description: "*** mapDrivenDataStore.removeBulk test passed ***")
+        let objectsToSave = [["name": "Bob", "age": 25], ["name": "Ann", "age": 45], ["name": "Jack", "age": 26]]
+        dataStore.createBulk(entities: objectsToSave, responseBlock: { savedObjects in
+            XCTAssertNotNil(savedObjects)
+            XCTAssert(type(of: savedObjects) == [String].self)
+            XCTAssert(savedObjects.count == 3)
+            self.dataStore.removeBulk(whereClause: "age>25", responseBlock: { removedObjects in
+                XCTAssertNotNil(removedObjects)
+                XCTAssert(Int(exactly: removedObjects)! >= 0)
+                self.fulfillExpectation(expectation: expectation)
+            }, errorBlock: { fault in
+                XCTAssertNotNil(fault)
+                self.fulfillExpectation(expectation: expectation)
+            })
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            self.fulfillExpectation(expectation: expectation)
+        })
+        waitForExpectations(timeout: 10, handler: { error in
+            if let error = error {
+                print("*** mapDrivenDataStore.removeBulk test failed: \(error.localizedDescription) ***")
             }
         })
     }

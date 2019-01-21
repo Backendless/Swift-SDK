@@ -25,8 +25,11 @@ protocol IDataStore {
     
     associatedtype CustomType
     
-    func save(_ entity: CustomType, responseBlock: ((CustomType) -> Void)!, errorBlock: ((Fault) -> Void)!)
-    func createBulk(_ entities: [CustomType], responseBlock: (([String]) -> Void)!, errorBlock: ((Fault) -> Void)!)
-    func updateBulk(whereClause: String, changes: [String: Any], responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!)
-    func removeById(_ objectId: String, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!)
+    func save(entity: CustomType, responseBlock: ((CustomType) -> Void)!, errorBlock: ((Fault) -> Void)!)
+    func createBulk(entities: [CustomType], responseBlock: (([String]) -> Void)!, errorBlock: ((Fault) -> Void)!)
+    func update(entity: CustomType, responseBlock: ((CustomType) -> Void)!, errorBlock: ((Fault) -> Void)!)
+    func updateBulk(whereClause: String?, changes: [String: Any], responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!)
+    func removeById(objectId: String, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!)
+    func remove(entity: CustomType, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!)
+    func removeBulk(whereClause: String?, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!)
 }

@@ -28,4 +28,10 @@
     open func of(_ entityClass: AnyClass) -> DataStoreFactory {
         return DataStoreFactory(entityClass: entityClass)
     }
+    
+    open func describe(tableName: String, responseBlock: (([ObjectProperty]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        PersistenceServiceUtils.shared.describe(tableName: tableName, responseBlock: responseBlock, errorBlock: errorBlock)
+    }
 }
+
+

@@ -26,24 +26,25 @@ class UserServiceTests: XCTestCase {
     
     private let backendless = Backendless.shared
     
-    override func setUp() {
-        backendless.hostUrl = BackendlessAppConfig.hostUrl
-        backendless.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
+    override class func setUp() {
+        Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
+        Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
     }
     
-    func fulfillExpectation(_ expectation: XCTestExpectation) {
+    func fulfillExpectation(expectation: XCTestExpectation) {
         expectation.fulfill()
         print(expectation.description)
     }
     
     func testDescribeUserClass() {
         let expectation = self.expectation(description: "*** userService.describeUserClass test passed ***")
-        backendless.userService.describeUserClass(responseBlock: { userClassDesc in
-            XCTAssertNotNil(userClassDesc)
-            self.fulfillExpectation(expectation)
+        backendless.userService.describeUserClass(responseBlock: { properties in
+            XCTAssertNotNil(properties)
+            XCTAssert(properties.count > 0)
+            self.fulfillExpectation(expectation: expectation)
         }, errorBlock: { fault in
             XCTAssertNotNil(fault)
-            self.fulfillExpectation(expectation)
+            self.fulfillExpectation(expectation: expectation)
         })
         waitForExpectations(timeout: 10, handler: { error in
             if let error = error {
@@ -58,12 +59,12 @@ class UserServiceTests: XCTestCase {
         user.email = "testUser@test.com"
         user.password = "111"
         user.name = "Test User"
-        backendless.userService.registerUser(user, responseBlock: { registredUser in
+        backendless.userService.registerUser(user: user, responseBlock: { registredUser in
             XCTAssertNotNil(registredUser)
-            self.fulfillExpectation(expectation)
+            self.fulfillExpectation(expectation: expectation)
         }, errorBlock: { fault in
             XCTAssertNotNil(fault)
-            self.fulfillExpectation(expectation)
+            self.fulfillExpectation(expectation: expectation)
         })        
         waitForExpectations(timeout: 10, handler: { error in
             if let error = error {
@@ -78,10 +79,10 @@ class UserServiceTests: XCTestCase {
             XCTAssertNotNil(loggedInUser)
             XCTAssertNotNil(self.backendless.userService.currentUser)
             XCTAssertNotNil(self.backendless.userService.isValidUserToken)
-            self.fulfillExpectation(expectation)
+            self.fulfillExpectation(expectation: expectation)
         }, errorBlock: { fault in
             XCTAssertNotNil(fault)
-            self.fulfillExpectation(expectation)
+            self.fulfillExpectation(expectation: expectation)
         })
         waitForExpectations(timeout: 10, handler: { error in
             if let error = error {
@@ -110,16 +111,16 @@ class UserServiceTests: XCTestCase {
         let expectation = self.expectation(description: "*** userService.update test passed ***")
         backendless.userService.login(identity: "testUser@test.com", password: "111", responseBlock: { loggedInUser in
             loggedInUser.name = "New name"
-            self.backendless.userService.update(loggedInUser, responseBlock: { updatedUser in
+            self.backendless.userService.update(user: loggedInUser, responseBlock: { updatedUser in
                 XCTAssertNotNil(updatedUser)
-                self.fulfillExpectation(expectation)
+                self.fulfillExpectation(expectation: expectation)
             }, errorBlock: { fault in
                 XCTAssertNotNil(fault)
-                self.fulfillExpectation(expectation)
+                self.fulfillExpectation(expectation: expectation)
             })
         }, errorBlock: { fault in
             XCTAssertNotNil(fault)
-            self.fulfillExpectation(expectation)
+            self.fulfillExpectation(expectation: expectation)
         })
         waitForExpectations(timeout: 10, handler: { error in
             if let error = error {
@@ -132,17 +133,17 @@ class UserServiceTests: XCTestCase {
         let expectation = self.expectation(description: "*** userService.logout test passed ***")        
         backendless.userService.login(identity: "testUser@test.com", password: "111", responseBlock: { loggedInUser in
             XCTAssertNotNil(self.backendless.userService.currentUser)
-            self.backendless.userService.logout({
+            self.backendless.userService.logout(responseBlock: {
                 XCTAssertNil(self.backendless.userService.currentUser)
                 XCTAssertNil(self.backendless.userService.isValidUserToken)
-                self.fulfillExpectation(expectation)
+                self.fulfillExpectation(expectation: expectation)
             }, errorBlock: { fault in
                 XCTAssertNotNil(fault)
-                self.fulfillExpectation(expectation)
+                self.fulfillExpectation(expectation: expectation)
             })
         }, errorBlock: { fault in
             XCTAssertNotNil(fault)
-            self.fulfillExpectation(expectation)
+            self.fulfillExpectation(expectation: expectation)
         })
         waitForExpectations(timeout: 10, handler: { error in
             if let error = error {
@@ -155,15 +156,15 @@ class UserServiceTests: XCTestCase {
         let expectation = self.expectation(description: "*** userService.restoreUserPassword test passed ***")
         backendless.userService.login(identity: "testUser@test.com", password: "111", responseBlock: { loggedInUser in
             XCTAssertNotNil(self.backendless.userService.currentUser)
-            self.backendless.userService.restorePassword(loggedInUser.email, responseBlock: {
-                self.fulfillExpectation(expectation)
+            self.backendless.userService.restorePassword(login: loggedInUser.email, responseBlock: {
+                self.fulfillExpectation(expectation: expectation)
             }, errorBlock: { fault in
                 XCTAssertNotNil(fault)
-                self.fulfillExpectation(expectation)
+                self.fulfillExpectation(expectation: expectation)
             })
         }, errorBlock: { fault in
             XCTAssertNotNil(fault)
-            self.fulfillExpectation(expectation)
+            self.fulfillExpectation(expectation: expectation)
         })
         waitForExpectations(timeout: 10, handler: { error in
             if let error = error {
@@ -178,14 +179,14 @@ class UserServiceTests: XCTestCase {
             XCTAssertNotNil(self.backendless.userService.currentUser)
             self.backendless.userService.getUserRoles(responseBlock: { roles in
                 XCTAssertNotNil(roles)
-                self.fulfillExpectation(expectation)
+                self.fulfillExpectation(expectation: expectation)
             }, errorBlock: { fault in
                 XCTAssertNotNil(fault)
-                self.fulfillExpectation(expectation)
+                self.fulfillExpectation(expectation: expectation)
             })
         }, errorBlock: { fault in
             XCTAssertNotNil(fault)
-            self.fulfillExpectation(expectation)
+            self.fulfillExpectation(expectation: expectation)
         })
         waitForExpectations(timeout: 10, handler: { error in
             if let error = error {
