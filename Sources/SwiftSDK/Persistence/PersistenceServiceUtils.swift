@@ -19,12 +19,11 @@
  *  ********************************************************************************************************************
  */
 
+import Alamofire
 import SwiftyJSON
 
 class PersistenceServiceUtils: NSObject {
-    
-    static let shared = PersistenceServiceUtils()
-    
+
     private var tableName: String = ""
     
     private let processResponse = ProcessResponse.shared
@@ -116,9 +115,7 @@ class PersistenceServiceUtils: NSObject {
                 }
             }
             else {
-                if let stringInt = String(bytes: response.data!, encoding: .utf8) {
-                    responseBlock(NSNumber(value: Int(stringInt)!))
-                }
+                responseBlock(self.dataToNSNumber(data: response.data!))
             }
         })
     }
@@ -151,10 +148,107 @@ class PersistenceServiceUtils: NSObject {
                 }
             }
             else {
-                if let stringInt = String(bytes: response.data!, encoding: .utf8) {
-                    self.storedObjects.removeObjectIds(tableName: self.tableName)
-                    responseBlock(NSNumber(value: Int(stringInt)!))
+                self.storedObjects.removeObjectIds(tableName: self.tableName)
+                responseBlock(self.dataToNSNumber(data: response.data!))
+            }
+        })
+    }
+    
+    func getObjectCount(queryBuilder: DataQueryBuilder?, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        var restMethod = "data/\(tableName)/count"
+        if let whereClause = queryBuilder?.whereClause, whereClause.count > 0 {
+            restMethod += "?where=\(stringToUrlString(originalString: whereClause))"
+        }
+        let request = AlamofireManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest()
+        request.responseData(completionHandler: { response in
+            if let result = self.processResponse.adapt(response: response, to: Int.self) {
+                if result is Fault {
+                    errorBlock(result as! Fault)
                 }
+            }
+            else {
+                self.storedObjects.removeObjectIds(tableName: self.tableName)
+                responseBlock(self.dataToNSNumber(data: response.data!))
+            }
+        })        
+    }
+    
+    func find(responseBlock: (([[String : Any]]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        let request = AlamofireManager(restMethod: "data/\(tableName)", httpMethod: .get, headers: nil, parameters: nil).makeRequest()
+        request.responseData(completionHandler: { response in
+            if let result = self.processResponse.adapt(response: response, to: [JSON].self) {
+                if result is Fault {
+                    errorBlock(result as! Fault)
+                }
+                else {
+                    var resultArray = [[String: Any]]()
+                    for resultObject in result as! [JSON] {
+                        if let resultDictionary = resultObject.dictionaryObject {
+                            resultArray.append(resultDictionary)
+                        }
+                    }
+                    responseBlock(resultArray)
+                }
+            }
+        })
+    }
+    
+    func findFirstOrLastOrById(first: Bool, last: Bool, objectId: String?, responseBlock: (([String : Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        var restMethod = "data/\(tableName)"
+        if first {
+            restMethod += "/first"
+        }
+        else if last {
+            restMethod += "/last"
+        }
+        else if let objectId = objectId {
+            restMethod += "/\(objectId)"
+        }
+        let request = AlamofireManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest()
+        request.responseData(completionHandler: { response in
+            if let result = self.processResponse.adapt(response: response, to: JSON.self) {
+                if result is Fault {
+                    errorBlock(result as! Fault)
+                }
+                else {
+                    responseBlock((result as! JSON).dictionaryObject!)
+                }
+            }
+        })
+    }
+    
+    func setOrAddRelation(columnName: String, parentObjectId: String, childrenObjectIds: [String], httpMethod: HTTPMethod, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        let headers = ["Content-Type": "application/json"]
+        let parameters = childrenObjectIds
+        let request = AlamofireManager(restMethod: "data/\(tableName)/\(parentObjectId)/\(columnName)", httpMethod: httpMethod, headers: headers, parameters: parameters).makeRequest()
+        request.responseData(completionHandler: { response in
+            if let result = self.processResponse.adapt(response: response, to: Int.self) {
+                if result is Fault {
+                    errorBlock(result as! Fault)
+                }
+            }
+            else {
+                self.storedObjects.removeObjectIds(tableName: self.tableName)
+                responseBlock(self.dataToNSNumber(data: response.data!))
+            }
+        })
+    }
+    
+    func setOrAddRelation(columnName: String, parentObjectId: String, whereClause: String?, httpMethod: HTTPMethod, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        var restMethod = "data/\(tableName)/\(parentObjectId)/\(columnName)"
+        if whereClause != nil, whereClause?.count ?? 0 > 0 {
+            restMethod += "?whereClause=\(stringToUrlString(originalString: whereClause!))"
+        }
+        let request = AlamofireManager(restMethod: restMethod, httpMethod: httpMethod, headers: nil, parameters: nil).makeRequest()
+        request.responseData(completionHandler: { response in
+            if let result = self.processResponse.adapt(response: response, to: Int.self) {
+                if result is Fault {
+                    errorBlock(result as! Fault)
+                }
+            }
+            else {
+                self.storedObjects.removeObjectIds(tableName: self.tableName)
+                responseBlock(self.dataToNSNumber(data: response.data!))
             }
         })
     }
@@ -255,8 +349,15 @@ class PersistenceServiceUtils: NSObject {
         return nil
     }
     
+    private func dataToNSNumber(data: Data) -> NSNumber {
+        if let stringInt = String(bytes: data, encoding: .utf8) {
+            return (NSNumber(value: Int(stringInt)!))
+        }
+        return 0
+    }
+    
     private func stringToUrlString(originalString: String) -> String {
-        if let resultString = originalString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) {
+        if let resultString = originalString.addingPercentEncoding(withAllowedCharacters: .alphanumerics) {
             return resultString
         }
         return originalString

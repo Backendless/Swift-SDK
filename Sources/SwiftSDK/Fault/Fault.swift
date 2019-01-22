@@ -19,8 +19,6 @@
  *  ********************************************************************************************************************
  */
 
-import UIKit
-
 @objcMembers open class Fault: NSError {
     
     open var message: String?

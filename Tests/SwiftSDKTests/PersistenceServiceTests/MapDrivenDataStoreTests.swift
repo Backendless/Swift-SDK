@@ -26,6 +26,7 @@ class MapDrivenDataStoreTests: XCTestCase {
     
     private let backendless = Backendless.shared
     private var dataStore: MapDrivenDataStore!
+    private var childDataStore: MapDrivenDataStore!
     
     // call before all tests
     override class func setUp() {
@@ -35,16 +36,25 @@ class MapDrivenDataStoreTests: XCTestCase {
         }, errorBlock: { fault in
             print("MAP DRIVEN DATA STORE TEST SETUP ERROR \(fault.faultCode): \(fault.message ?? "")")
         })
+        Backendless.shared.data.ofTable("ChildTestClass").removeBulk(whereClause: nil, responseBlock: { removedObjects in
+        }, errorBlock: { fault in
+            print("MAP DRIVEN DATA STORE TEST SETUP ERROR \(fault.faultCode): \(fault.message ?? "")")
+        })
     }
     
     // call before each test
     override func setUp() {
         dataStore = backendless.data.ofTable("TestClass")
+        childDataStore = backendless.data.ofTable("ChildTestClass")
     }
     
     // call after all tests
     override class func tearDown() {
         Backendless.shared.data.ofTable("TestClass").removeBulk(whereClause: nil, responseBlock: { removedObjects in
+        }, errorBlock: { fault in
+            print("MAP DRIVEN DATA STORE TEST SETUP ERROR \(fault.faultCode): \(fault.message ?? "")")
+        })
+        Backendless.shared.data.ofTable("ChildTestClass").removeBulk(whereClause: nil, responseBlock: { removedObjects in
         }, errorBlock: { fault in
             print("MAP DRIVEN DATA STORE TEST SETUP ERROR \(fault.faultCode): \(fault.message ?? "")")
         })
@@ -210,6 +220,288 @@ class MapDrivenDataStoreTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: { error in
             if let error = error {
                 print("*** mapDrivenDataStore.removeBulk test failed: \(error.localizedDescription) ***")
+            }
+        })
+    }
+    
+    func testGetObjectCount() {
+        let expectation = self.expectation(description: "*** mapDrivenDataStore.getObjectCount test passed ***")
+        let objectsToSave = [["name": "Bob", "age": 25], ["name": "Ann", "age": 45]]
+        dataStore.createBulk(entities: objectsToSave, responseBlock: { savedObjects in
+            XCTAssertNotNil(savedObjects)
+            XCTAssert(type(of: savedObjects) == [String].self)
+            XCTAssert(savedObjects.count == 2)            
+            self.dataStore.getObjectCount(responseBlock: { count in
+                XCTAssertNotNil(count)
+                XCTAssert(Int(exactly: count)! >= 0)
+                self.fulfillExpectation(expectation: expectation)
+            }, errorBlock: { fault in
+                XCTAssertNotNil(fault)
+                self.fulfillExpectation(expectation: expectation)
+            })
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            self.fulfillExpectation(expectation: expectation)
+        })
+        waitForExpectations(timeout: 10, handler: { error in
+            if let error = error {
+                print("*** mapDrivenDataStore.getObjectCount test failed: \(error.localizedDescription) ***")
+            }
+        })
+    }
+    
+    func testGetObjectCountWithCondition() {
+        let expectation = self.expectation(description: "*** mapDrivenDataStore.getObjectCountWithCondition test passed ***")
+        let objectsToSave = [["name": "Bob", "age": 25], ["name": "Ann", "age": 45], ["name": "Bob", "age": 35]]
+        dataStore.createBulk(entities: objectsToSave, responseBlock: { savedObjects in
+            XCTAssertNotNil(savedObjects)
+            XCTAssert(type(of: savedObjects) == [String].self)
+            XCTAssert(savedObjects.count == 3)            
+            let queryBuilder = DataQueryBuilder()
+            queryBuilder.whereClause = "name = 'Bob' and age> 30"
+            self.dataStore.getObjectCount(queryBuilder: queryBuilder, responseBlock: { count in
+                XCTAssertNotNil(count)
+                XCTAssert(Int(exactly: count)! >= 0)
+                self.fulfillExpectation(expectation: expectation)
+            }, errorBlock: { fault in
+                XCTAssertNotNil(fault)
+                self.fulfillExpectation(expectation: expectation)
+            })
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            self.fulfillExpectation(expectation: expectation)
+        })
+        waitForExpectations(timeout: 10, handler: { error in
+            if let error = error {
+                print("*** mapDrivenDataStore.getObjectCountWithCondition test failed: \(error.localizedDescription) ***")
+            }
+        })
+    }
+    
+    func testFind() {
+        let expectation = self.expectation(description: "*** mapDrivenDataStore.find test passed ***")
+        let objectsToSave = [["name": "Bob", "age": 25], ["name": "Ann", "age": 45]]
+        dataStore.createBulk(entities: objectsToSave, responseBlock: { savedObjects in
+            XCTAssertNotNil(savedObjects)
+            self.dataStore.find(responseBlock: { foundObjects in
+                XCTAssertNotNil(foundObjects)
+                XCTAssert(foundObjects.count >= 0)
+                self.fulfillExpectation(expectation: expectation)
+            }, errorBlock: { fault in
+                XCTAssertNotNil(fault)
+                self.fulfillExpectation(expectation: expectation)
+            })
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            self.fulfillExpectation(expectation: expectation)
+        })
+        waitForExpectations(timeout: 10, handler: { error in
+            if let error = error {
+                print("*** mapDrivenDataStore.find test failed: \(error.localizedDescription) ***")
+            }
+        })
+    }
+    
+    func testFindFirst() {
+        let expectation = self.expectation(description: "*** mapDrivenDataStore.findFirst test passed ***")
+        let objectToSave = ["name": "Bob", "age": 25] as [String : Any]
+        dataStore.save(entity: objectToSave, responseBlock: { savedObject in
+            XCTAssertNotNil(savedObject)
+            self.dataStore.findFirst(responseBlock: { first in
+                XCTAssertNotNil(first)
+                XCTAssert(type(of: first) == [String: Any].self)
+                self.fulfillExpectation(expectation: expectation)
+            }, errorBlock: { fault in
+                XCTAssertNotNil(fault)
+                self.fulfillExpectation(expectation: expectation)
+            })
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            self.fulfillExpectation(expectation: expectation)
+        })
+        waitForExpectations(timeout: 10, handler: { error in
+            if let error = error {
+                print("*** mapDrivenDataStore.findFirst test failed: \(error.localizedDescription) ***")
+            }
+        })
+    }
+    
+    func testFindLast() {
+        let expectation = self.expectation(description: "*** mapDrivenDataStore.findLast test passed ***")
+        let objectToSave = ["name": "Bob", "age": 25] as [String : Any]
+        dataStore.save(entity: objectToSave, responseBlock: { savedObject in
+            XCTAssertNotNil(savedObject)
+            self.dataStore.findLast(responseBlock: { last in
+                XCTAssertNotNil(last)
+                XCTAssert(type(of: last) == [String: Any].self)
+                self.fulfillExpectation(expectation: expectation)
+            }, errorBlock: { fault in
+                XCTAssertNotNil(fault)
+                self.fulfillExpectation(expectation: expectation)
+            })
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            self.fulfillExpectation(expectation: expectation)
+        })
+        waitForExpectations(timeout: 10, handler: { error in
+            if let error = error {
+                print("*** mapDrivenDataStore.findLast test failed: \(error.localizedDescription) ***")
+            }
+        })
+    }
+    
+    func testFindById() {
+        let expectation = self.expectation(description: "*** mapDrivenDataStore.findById test passed ***")
+        let objectToSave = ["name": "Bob", "age": 25] as [String : Any]
+        dataStore.save(entity: objectToSave, responseBlock: { savedObject in
+            XCTAssertNotNil(savedObject)
+            if let objectId = savedObject["objectId"] as? String {
+                self.dataStore.findById(objectId: objectId, responseBlock: { foundObject in
+                    XCTAssertNotNil(foundObject)
+                    XCTAssert(type(of: foundObject) == [String: Any].self)
+                    self.fulfillExpectation(expectation: expectation)
+                    }, errorBlock: { fault in
+                        XCTAssertNotNil(fault)
+                        self.fulfillExpectation(expectation: expectation)
+                })
+            }
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            self.fulfillExpectation(expectation: expectation)
+        })
+        waitForExpectations(timeout: 10, handler: { error in
+            if let error = error {
+                print("*** mapDrivenDataStore.findById test failed: \(error.localizedDescription) ***")
+            }
+        })
+    }
+    
+    // *******************************************
+    
+    func testSetRelationWithObjects() {
+        let expectation = self.expectation(description: "*** mapDrivenDataStore.setRelationWithObjects test passed ***")
+        let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
+        childDataStore.createBulk(entities: childObjectsToSave, responseBlock: { savedChildrenIds in
+            let parentObjectToSave = ["name": "Bob", "age": 25] as [String : Any]
+            self.dataStore.save(entity: parentObjectToSave, responseBlock: { savedParentObject in
+                if let parentObjectId = savedParentObject["objectId"] as? String {
+                    // 1:N
+                    self.dataStore.setRelation(columnName: "children:ChildTestClass:n", parentObjectId: parentObjectId, childrenObjectIds: savedChildrenIds, responseBlock: { relations in
+                        XCTAssertNotNil(relations)
+                        XCTAssert(Int(exactly: relations) == 2)
+                        self.fulfillExpectation(expectation: expectation)
+                    }, errorBlock: { fault in
+                        XCTAssertNotNil(fault)
+                        self.fulfillExpectation(expectation: expectation)
+                    })
+                }
+            }, errorBlock: { fault in
+                XCTAssertNotNil(fault)
+                self.fulfillExpectation(expectation: expectation)
+            })
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            self.fulfillExpectation(expectation: expectation)
+        })
+        waitForExpectations(timeout: 10, handler: { error in
+            if let error = error {
+                print("*** mapDrivenDataStore.setRelationWithObjects test failed: \(error.localizedDescription) ***")
+            }
+        })
+    }
+    
+    func testSetRelationWithCondition() {
+        let expectation = self.expectation(description: "*** mapDrivenDataStore.setRelationWithCondition test passed ***")
+        let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
+        childDataStore.createBulk(entities: childObjectsToSave, responseBlock: { savedChildrenIds in
+            let parentObjectToSave = ["name": "Bob", "age": 25] as [String : Any]
+            self.dataStore.save(entity: parentObjectToSave, responseBlock: { savedParentObject in
+                if let parentObjectId = savedParentObject["objectId"] as? String {
+                    // 1:N
+                    self.dataStore.setRelation(columnName: "children:ChildTestClass:n", parentObjectId: parentObjectId, whereClause: "foo = 'bar' or foo = 'bar1'", responseBlock: { relations in
+                        XCTAssertNotNil(relations)
+                        XCTAssert(Int(exactly: relations)! >= 0)
+                        self.fulfillExpectation(expectation: expectation)
+                    }, errorBlock: { fault in
+                        XCTAssertNotNil(fault)
+                        self.fulfillExpectation(expectation: expectation)
+                    })
+                }
+            }, errorBlock: { fault in
+                XCTAssertNotNil(fault)
+                self.fulfillExpectation(expectation: expectation)
+            })
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            self.fulfillExpectation(expectation: expectation)
+        })
+        waitForExpectations(timeout: 10, handler: { error in
+            if let error = error {
+                print("*** mapDrivenDataStore.setRelationWithCondition test failed: \(error.localizedDescription) ***")
+            }
+        })
+    }
+    
+    func testAddRelationWithObjects() {
+        let expectation = self.expectation(description: "*** mapDrivenDataStore.addRelationWithObjects test passed ***")
+        let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
+        childDataStore.createBulk(entities: childObjectsToSave, responseBlock: { savedChildrenIds in
+            let parentObjectToSave = ["name": "Bob", "age": 25] as [String : Any]
+            self.dataStore.save(entity: parentObjectToSave, responseBlock: { savedParentObject in
+                if let parentObjectId = savedParentObject["objectId"] as? String {
+                    // 1:N
+                    self.dataStore.addRelation(columnName: "children:ChildTestClass:n", parentObjectId: parentObjectId, childrenObjectIds: savedChildrenIds, responseBlock: { relations in
+                        XCTAssertNotNil(relations)
+                        XCTAssert(Int(exactly: relations)! == 2)
+                        self.fulfillExpectation(expectation: expectation)
+                    }, errorBlock: { fault in
+                        XCTAssertNotNil(fault)
+                        self.fulfillExpectation(expectation: expectation)
+                    })
+                }
+            }, errorBlock: { fault in
+                XCTAssertNotNil(fault)
+                self.fulfillExpectation(expectation: expectation)
+            })
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            self.fulfillExpectation(expectation: expectation)
+        })
+        waitForExpectations(timeout: 10, handler: { error in
+            if let error = error {
+                print("*** mapDrivenDataStore.addRelationWithObjects test failed: \(error.localizedDescription) ***")
+            }
+        })
+    }
+    
+    func testAddRelationWithCondition() {
+        let expectation = self.expectation(description: "*** mapDrivenDataStore.addRelationWithCondition test passed ***")
+        let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
+        childDataStore.createBulk(entities: childObjectsToSave, responseBlock: { savedChildrenIds in
+            let parentObjectToSave = ["name": "Bob", "age": 25] as [String : Any]
+            self.dataStore.save(entity: parentObjectToSave, responseBlock: { savedParentObject in
+                if let parentObjectId = savedParentObject["objectId"] as? String {
+                    // 1:N
+                    self.dataStore.addRelation(columnName: "children:ChildTestClass:n", parentObjectId: parentObjectId, whereClause: "foo = 'bar' or foo = 'bar1'", responseBlock: { relations in
+                        XCTAssertNotNil(relations)
+                        XCTAssert(Int(exactly: relations)! >= 0)
+                        self.fulfillExpectation(expectation: expectation)
+                    }, errorBlock: { fault in
+                        XCTAssertNotNil(fault)
+                        self.fulfillExpectation(expectation: expectation)
+                    })
+                }
+            }, errorBlock: { fault in
+                XCTAssertNotNil(fault)
+                self.fulfillExpectation(expectation: expectation)
+            })
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            self.fulfillExpectation(expectation: expectation)
+        })
+        waitForExpectations(timeout: 10, handler: { error in
+            if let error = error {
+                print("*** mapDrivenDataStore.addRelationWithCondition test failed: \(error.localizedDescription) ***")
             }
         })
     }

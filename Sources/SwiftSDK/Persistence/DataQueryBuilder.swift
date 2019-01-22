@@ -1,5 +1,5 @@
 //
-//  PersistenceService.swift
+//  DataQueryBuilder.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,19 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class PersistenceService: NSObject {
-
-    open func ofTable(_ tableName: String) -> MapDrivenDataStore {
-        return MapDrivenDataStore(tableName: tableName)
-    }
+@objcMembers open class DataQueryBuilder: NSObject {
     
-    open func of(_ entityClass: AnyClass) -> DataStoreFactory {
-        return DataStoreFactory(entityClass: entityClass)
-    }
-    
-    open func describe(tableName: String, responseBlock: (([ObjectProperty]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
-        PersistenceServiceUtils().describe(tableName: tableName, responseBlock: responseBlock, errorBlock: errorBlock)
-    }
+    open var whereClause: String?
 }
-
-

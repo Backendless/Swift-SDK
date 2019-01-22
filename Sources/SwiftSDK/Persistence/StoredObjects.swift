@@ -50,7 +50,7 @@ class StoredObjects: NSObject {
     
     func removeObjectIds(tableName: String) {
         for storedObjectEntity in storedObjects.keys {
-            if PersistenceServiceUtils.shared.getTableName(entity: storedObjectEntity) == tableName {
+            if PersistenceServiceUtils().getTableName(entity: storedObjectEntity) == tableName {
                 storedObjects.removeValue(forKey: storedObjectEntity)
             }
         }

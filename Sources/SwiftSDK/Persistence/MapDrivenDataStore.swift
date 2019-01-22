@@ -25,7 +25,7 @@
     
     private var tableName: String
     
-    private let persistenceServiceUtils = PersistenceServiceUtils.shared
+    private let persistenceServiceUtils = PersistenceServiceUtils()
     
     init(tableName: String) {
         self.tableName = tableName
@@ -60,5 +60,47 @@
     
     open func removeBulk(whereClause: String?, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         persistenceServiceUtils.removeBulk(whereClause: whereClause, responseBlock: responseBlock, errorBlock: errorBlock)
+    }
+    
+    open func getObjectCount(responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.getObjectCount(queryBuilder: nil, responseBlock: responseBlock, errorBlock: errorBlock)
+    }
+    
+    open func getObjectCount(queryBuilder: DataQueryBuilder, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.getObjectCount(queryBuilder: queryBuilder, responseBlock: responseBlock, errorBlock: errorBlock)
+    }
+    
+    open func find(responseBlock: (([[String : Any]]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.find(responseBlock: responseBlock, errorBlock: errorBlock)
+    }
+    
+    open func findFirst(responseBlock: (([String : Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.findFirstOrLastOrById(first: true, last: false, objectId: nil, responseBlock: responseBlock, errorBlock: errorBlock)
+    }
+    
+    open func findLast(responseBlock: (([String : Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.findFirstOrLastOrById(first: false, last: true, objectId: nil, responseBlock: responseBlock, errorBlock: errorBlock)
+    }
+    
+    open func findById(objectId: String, responseBlock: (([String : Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.findFirstOrLastOrById(first: false, last: false, objectId: objectId, responseBlock: responseBlock, errorBlock: errorBlock)
+    }
+    
+    // *******************************************
+    
+    open func setRelation(columnName: String, parentObjectId: String, childrenObjectIds: [String], responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, childrenObjectIds: childrenObjectIds, httpMethod: .post, responseBlock: responseBlock, errorBlock: errorBlock)
+    }
+    
+    open func setRelation(columnName: String, parentObjectId: String, whereClause: String?, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, whereClause: whereClause, httpMethod: .post, responseBlock: responseBlock, errorBlock: errorBlock)
+    }
+    
+    open func addRelation(columnName: String, parentObjectId: String, childrenObjectIds: [String], responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, childrenObjectIds: childrenObjectIds, httpMethod: .put, responseBlock: responseBlock, errorBlock: errorBlock)
+    }
+    
+    open func addRelation(columnName: String, parentObjectId: String, whereClause: String?, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, whereClause: whereClause, httpMethod: .put, responseBlock: responseBlock, errorBlock: errorBlock)
     }
 }
