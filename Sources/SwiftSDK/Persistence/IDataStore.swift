@@ -32,4 +32,15 @@ protocol IDataStore {
     func removeById(objectId: String, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!)
     func remove(entity: CustomType, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!)
     func removeBulk(whereClause: String?, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!)
+    func getObjectCount(responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!)
+    func getObjectCount(queryBuilder: DataQueryBuilder, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!)
+    func find(responseBlock: (([CustomType]) -> Void)!, errorBlock: ((Fault) -> Void)!)
+    func findFirst(responseBlock: ((CustomType) -> Void)!, errorBlock: ((Fault) -> Void)!)
+    func findLast(responseBlock: ((CustomType) -> Void)!, errorBlock: ((Fault) -> Void)!)
+    func findById(objectId: String, responseBlock: ((CustomType) -> Void)!, errorBlock: ((Fault) -> Void)!)
+    
+    func setRelation(columnName: String, parentObjectId: String, childrenObjectIds: [String], responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!)
+    func setRelation(columnName: String, parentObjectId: String, whereClause: String?, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!)
+    func addRelation(columnName: String, parentObjectId: String, childrenObjectIds: [String], responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!)
+    func addRelation(columnName: String, parentObjectId: String, whereClause: String?, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!)
 }
