@@ -30,7 +30,7 @@ import SwiftyJSON
     
     private let persistenceServiceUtils = PersistenceServiceUtils()
     private let processResponse = ProcessResponse.shared
-    private let mappings = Mappings.shared
+    private let mappings = Mappings()
     
     init(entityClass: Any) {
         self.entityClass = entityClass
@@ -117,34 +117,59 @@ import SwiftyJSON
             }
             responseBlock(resultArray)
         }
-        persistenceServiceUtils.find(responseBlock: wrappedBlock, errorBlock: errorBlock)
+        persistenceServiceUtils.find(queryBuilder: nil, responseBlock: wrappedBlock, errorBlock: errorBlock)
+    }
+    
+    open func find(queryBuilder: DataQueryBuilder, responseBlock: (([Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        let wrappedBlock: ([[String: Any]]) -> () = { (responseArray) in
+            var resultArray = [Any]()
+            for responseObject in responseArray {
+                if let resultObject = self.persistenceServiceUtils.dictionaryToEntity(dictionary: responseObject, className: self.persistenceServiceUtils.getClassName(entity: self.entityClass)) {
+                    resultArray.append(resultObject)
+                }
+            }
+            responseBlock(resultArray)
+        }
+        persistenceServiceUtils.find(queryBuilder: queryBuilder, responseBlock: wrappedBlock, errorBlock: errorBlock)
     }
     
     open func findFirst(responseBlock: ((Any) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        findFirst(queryBuilder: DataQueryBuilder(), responseBlock: responseBlock, errorBlock: errorBlock)
+    }
+    
+    open func findFirst(queryBuilder: DataQueryBuilder, responseBlock: ((Any) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let wrappedBlock: ([String: Any]) -> () = { (responseDictionary) in
             if let resultEntity = self.persistenceServiceUtils.dictionaryToEntity(dictionary: responseDictionary, className: self.persistenceServiceUtils.getClassName(entity: self.entityClass)) {
                 responseBlock(resultEntity)
             }
         }
-        persistenceServiceUtils.findFirstOrLastOrById(first: true, last: false, objectId: nil, responseBlock: wrappedBlock, errorBlock: errorBlock)
+        persistenceServiceUtils.findFirstOrLastOrById(first: true, last: false, objectId: nil, queryBuilder: queryBuilder, responseBlock: wrappedBlock, errorBlock: errorBlock)
     }
     
     open func findLast(responseBlock: ((Any) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        findLast(queryBuilder: DataQueryBuilder(), responseBlock: responseBlock, errorBlock: errorBlock)
+    }
+    
+    open func findLast(queryBuilder: DataQueryBuilder, responseBlock: ((Any) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let wrappedBlock: ([String: Any]) -> () = { (responseDictionary) in
             if let resultEntity = self.persistenceServiceUtils.dictionaryToEntity(dictionary: responseDictionary, className: self.persistenceServiceUtils.getClassName(entity: self.entityClass)) {
                 responseBlock(resultEntity)
             }
         }
-        persistenceServiceUtils.findFirstOrLastOrById(first: false, last: true, objectId: nil, responseBlock: wrappedBlock, errorBlock: errorBlock)
+        persistenceServiceUtils.findFirstOrLastOrById(first: false, last: true, objectId: nil, queryBuilder: queryBuilder, responseBlock: wrappedBlock, errorBlock: errorBlock)
     }
     
     open func findById(objectId: String, responseBlock: ((Any) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        findById(objectId: objectId, queryBuilder: DataQueryBuilder(), responseBlock: responseBlock, errorBlock: errorBlock)
+    }
+    
+    open func findById(objectId: String, queryBuilder: DataQueryBuilder, responseBlock: ((Any) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let wrappedBlock: ([String: Any]) -> () = { (responseDictionary) in
             if let resultEntity = self.persistenceServiceUtils.dictionaryToEntity(dictionary: responseDictionary, className: self.persistenceServiceUtils.getClassName(entity: self.entityClass)) {
                 responseBlock(resultEntity)
             }
         }
-        persistenceServiceUtils.findFirstOrLastOrById(first: false, last: false, objectId: objectId, responseBlock: wrappedBlock, errorBlock: errorBlock)
+        persistenceServiceUtils.findFirstOrLastOrById(first: false, last: false, objectId: objectId, queryBuilder: queryBuilder, responseBlock: wrappedBlock, errorBlock: errorBlock)
     }
     
     // *******************************************

@@ -71,19 +71,35 @@
     }
     
     open func find(responseBlock: (([[String : Any]]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
-        persistenceServiceUtils.find(responseBlock: responseBlock, errorBlock: errorBlock)
+        persistenceServiceUtils.find(queryBuilder: nil, responseBlock: responseBlock, errorBlock: errorBlock)
+    }
+    
+    open func find(queryBuilder: DataQueryBuilder, responseBlock: (([[String : Any]]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.find(queryBuilder: queryBuilder, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
     open func findFirst(responseBlock: (([String : Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
-        persistenceServiceUtils.findFirstOrLastOrById(first: true, last: false, objectId: nil, responseBlock: responseBlock, errorBlock: errorBlock)
+        findFirst(queryBuilder: DataQueryBuilder(), responseBlock: responseBlock, errorBlock: errorBlock)
+    }
+    
+    open func findFirst(queryBuilder: DataQueryBuilder, responseBlock: (([String : Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.findFirstOrLastOrById(first: true, last: false, objectId: nil, queryBuilder: queryBuilder, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
     open func findLast(responseBlock: (([String : Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
-        persistenceServiceUtils.findFirstOrLastOrById(first: false, last: true, objectId: nil, responseBlock: responseBlock, errorBlock: errorBlock)
+        findLast(queryBuilder: DataQueryBuilder(), responseBlock: responseBlock, errorBlock: errorBlock)
+    }
+    
+    open func findLast(queryBuilder: DataQueryBuilder, responseBlock: (([String : Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.findFirstOrLastOrById(first: false, last: true, objectId: nil, queryBuilder: queryBuilder, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
     open func findById(objectId: String, responseBlock: (([String : Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
-        persistenceServiceUtils.findFirstOrLastOrById(first: false, last: false, objectId: objectId, responseBlock: responseBlock, errorBlock: errorBlock)
+        findById(objectId: objectId, queryBuilder: DataQueryBuilder(), responseBlock: responseBlock, errorBlock: errorBlock)
+    }
+    
+    open func findById(objectId: String, queryBuilder: DataQueryBuilder, responseBlock: (([String : Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.findFirstOrLastOrById(first: false, last: false, objectId: objectId, queryBuilder: queryBuilder, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
     // *******************************************

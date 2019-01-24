@@ -28,6 +28,7 @@ class DataStoreFactoryTests: XCTestCase {
     private let storedObjects = StoredObjects.shared
     private var dataStore: DataStoreFactory!
     private var childDataStore: DataStoreFactory!
+    private var mappedDataStore: DataStoreFactory!
     
     // call before all tests
     override class func setUp() {
@@ -41,21 +42,30 @@ class DataStoreFactoryTests: XCTestCase {
         }, errorBlock: { fault in
             print("DATA STORE FACTORY TEST SETUP ERROR \(fault.faultCode): \(fault.message ?? "")")
         })
+        Backendless.shared.data.of(TestClassForMappings.self).removeBulk(whereClause: nil, responseBlock: { removedObjects in
+        }, errorBlock: { fault in
+            print("DATA STORE FACTORY TEST SETUP ERROR \(fault.faultCode): \(fault.message ?? "")")
+        })
     }
     
     // call before each test
     override func setUp() {
         dataStore = backendless.data.of(TestClass.self)
         childDataStore = backendless.data.of(ChildTestClass.self)
+        mappedDataStore = backendless.data.of(TestClassForMappings.self)
     }
     
     // call after all tests
     override class func tearDown() {
-        Backendless.shared.data.ofTable("TestClass").removeBulk(whereClause: nil, responseBlock: { removedObjects in
+        Backendless.shared.data.of(TestClass.self).removeBulk(whereClause: nil, responseBlock: { removedObjects in
         }, errorBlock: { fault in
             print("DATA STORE FACTORY TEST SETUP ERROR \(fault.faultCode): \(fault.message ?? "")")
         })
         Backendless.shared.data.of(ChildTestClass.self).removeBulk(whereClause: nil, responseBlock: { removedObjects in
+        }, errorBlock: { fault in
+            print("DATA STORE FACTORY TEST SETUP ERROR \(fault.faultCode): \(fault.message ?? "")")
+        })
+        Backendless.shared.data.of(TestClassForMappings.self).removeBulk(whereClause: nil, responseBlock: { removedObjects in
         }, errorBlock: { fault in
             print("DATA STORE FACTORY TEST SETUP ERROR \(fault.faultCode): \(fault.message ?? "")")
         })
@@ -64,6 +74,33 @@ class DataStoreFactoryTests: XCTestCase {
     func fulfillExpectation(expectation: XCTestExpectation) {
         expectation.fulfill()
         print(expectation.description)
+    }
+    
+    func testMappings() {
+        let expectation = self.expectation(description: "*** dataStoreFactory.mapToTable/mapColumnToProperty test passed ***")
+        mappedDataStore.mapToTable(tableName: "TestClass")
+        mappedDataStore.mapColumn(columnName: "name", toProperty: "nameProperty")
+        mappedDataStore.mapColumn(columnName: "age", toProperty: "ageProperty")
+        
+        let objectToSave = TestClassForMappings()
+        objectToSave.nameProperty = "Bob"
+        objectToSave.ageProperty = 25
+        
+        mappedDataStore.save(entity: objectToSave, responseBlock: { savedObject in
+            XCTAssertNotNil(savedObject)
+            XCTAssert(type(of: savedObject) == TestClassForMappings.self)
+            XCTAssertEqual((savedObject as! TestClassForMappings).nameProperty, "Bob")
+            XCTAssertEqual((savedObject as! TestClassForMappings).ageProperty, 25)
+            self.fulfillExpectation(expectation: expectation)
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            self.fulfillExpectation(expectation: expectation)
+        })
+        waitForExpectations(timeout: 10, handler: { error in
+            if let error = error {
+                print("*** dataStoreFactory.mapToTable/mapColumnToProperty test failed: \(error.localizedDescription) ***")
+            }
+        })
     }
     
     func testSave() {
@@ -90,15 +127,15 @@ class DataStoreFactoryTests: XCTestCase {
     
     func testCreateBulk() {
         let expectation = self.expectation(description: "*** dataStoreFactory.createBulk test passed ***")
-        
+
         let objectToSave1 = TestClass()
         objectToSave1.name = "Bob"
         objectToSave1.age = 25
-        
+
         let objectToSave2 = TestClass()
         objectToSave2.name = "Ann"
         objectToSave2.age = 45
-        
+
         let objectsToSave = [objectToSave1, objectToSave2]
         dataStore.createBulk(entities: objectsToSave, responseBlock: { savedObjects in
             XCTAssertNotNil(savedObjects)
@@ -312,7 +349,7 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssert(type(of: savedObjects) == [String].self)
             XCTAssert(savedObjects.count == 3)
             let queryBuilder = DataQueryBuilder()
-            queryBuilder.whereClause = "name = 'Bob' and age> 30"
+            queryBuilder.setWhereClause(whereClause: "name = 'Bob' and age> 30")
             self.dataStore.getObjectCount(queryBuilder: queryBuilder, responseBlock: { count in
                 XCTAssertNotNil(count)
                 XCTAssert(Int(exactly: count)! >= 0)

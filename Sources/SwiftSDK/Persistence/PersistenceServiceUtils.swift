@@ -23,11 +23,11 @@ import Alamofire
 import SwiftyJSON
 
 class PersistenceServiceUtils: NSObject {
-
+    
     private var tableName: String = ""
     
     private let processResponse = ProcessResponse.shared
-    private let mappings = Mappings.shared
+    private let mappings = Mappings()
     private let storedObjects = StoredObjects.shared
     
     func setup(tableName: String?) {
@@ -136,11 +136,12 @@ class PersistenceServiceUtils: NSObject {
     }
     
     func removeBulk(whereClause: String?, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
-        var restMethod = "data/bulk/\(tableName)"
-        if whereClause != nil, whereClause?.count ?? 0 > 0 {
-            restMethod += "?where=\(stringToUrlString(originalString: whereClause!))"
-        }
-        let request = AlamofireManager(restMethod: restMethod, httpMethod: .delete, headers: nil, parameters: nil).makeRequest()
+        let headers = ["Content-Type": "application/json"]
+        var parameters = ["where": whereClause]
+        if whereClause == nil {
+            parameters = ["where": "objectId != NULL"]
+        }        
+        let request = AlamofireManager(restMethod: "data/bulk/\(tableName)/delete", httpMethod: .post, headers: headers, parameters: parameters).makeRequest()
         request.responseData(completionHandler: { response in
             if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
@@ -156,7 +157,7 @@ class PersistenceServiceUtils: NSObject {
     
     func getObjectCount(queryBuilder: DataQueryBuilder?, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         var restMethod = "data/\(tableName)/count"
-        if let whereClause = queryBuilder?.whereClause, whereClause.count > 0 {
+        if let whereClause = queryBuilder?.getWhereClause(), whereClause.count > 0 {
             restMethod += "?where=\(stringToUrlString(originalString: whereClause))"
         }
         let request = AlamofireManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest()
@@ -173,8 +174,28 @@ class PersistenceServiceUtils: NSObject {
         })        
     }
     
-    func find(responseBlock: (([[String : Any]]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
-        let request = AlamofireManager(restMethod: "data/\(tableName)", httpMethod: .get, headers: nil, parameters: nil).makeRequest()
+    func find(queryBuilder: DataQueryBuilder?, responseBlock: (([[String : Any]]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        let headers = ["Content-Type": "application/json"]
+        var parameters = [String: Any]()
+        if let whereClause = queryBuilder?.getWhereClause() {
+            parameters["where"] = whereClause
+        }
+        if let relationsDepth = queryBuilder?.getRelationsDepth() {
+            parameters["relationsDepth"] = String(relationsDepth)
+        }
+        if let sortBy = queryBuilder?.getSortBy(), sortBy.count > 0 {
+            parameters["sortBy"] = arrayToString(array: sortBy)
+        }
+        if let related = queryBuilder?.getRelated() {
+            parameters["loadRelations"] = arrayToString(array: related)
+        }
+        if let groupBy = queryBuilder?.getGroupBy() {
+            parameters["groupBy"] = arrayToString(array: groupBy)
+        }
+        if let havingClause = queryBuilder?.getHavingClause() {
+            parameters["having"] = havingClause
+        }
+        let request = AlamofireManager(restMethod: "data/\(tableName)/find", httpMethod: .post, headers: headers, parameters: parameters).makeRequest()
         request.responseData(completionHandler: { response in
             if let result = self.processResponse.adapt(response: response, to: [JSON].self) {
                 if result is Fault {
@@ -193,7 +214,7 @@ class PersistenceServiceUtils: NSObject {
         })
     }
     
-    func findFirstOrLastOrById(first: Bool, last: Bool, objectId: String?, responseBlock: (([String : Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+    func findFirstOrLastOrById(first: Bool, last: Bool, objectId: String?, queryBuilder: DataQueryBuilder?, responseBlock: (([String : Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         var restMethod = "data/\(tableName)"
         if first {
             restMethod += "/first"
@@ -204,6 +225,22 @@ class PersistenceServiceUtils: NSObject {
         else if let objectId = objectId {
             restMethod += "/\(objectId)"
         }
+        
+        let related = queryBuilder?.getRelated()
+        let relationsDepth = queryBuilder?.getRelationsDepth()
+        
+        if related != nil && relationsDepth! > 0 {
+            let relatedString = stringToUrlString(originalString: arrayToString(array: related!))
+            restMethod += "?loadRelations=" + relatedString + "&relationsDepth=" + String(relationsDepth!)
+        }
+        else if related != nil && relationsDepth == 0 {
+            let relatedString = stringToUrlString(originalString: arrayToString(array: related!))
+            restMethod += "?loadRelations=" + relatedString
+        }
+        else if related == nil && relationsDepth! > 0 {
+            restMethod += "?relationsDepth=" + String(relationsDepth!)
+        }
+        
         let request = AlamofireManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest()
         request.responseData(completionHandler: { response in
             if let result = self.processResponse.adapt(response: response, to: JSON.self) {
@@ -350,8 +387,8 @@ class PersistenceServiceUtils: NSObject {
     }
     
     private func dataToNSNumber(data: Data) -> NSNumber {
-        if let stringInt = String(bytes: data, encoding: .utf8) {
-            return (NSNumber(value: Int(stringInt)!))
+        if let stringValue = String(bytes: data, encoding: .utf8) {
+            return (NSNumber(value: Int(stringValue)!))
         }
         return 0
     }
@@ -361,5 +398,16 @@ class PersistenceServiceUtils: NSObject {
             return resultString
         }
         return originalString
+    }
+    
+    private func arrayToString(array: [String]) -> String {
+        var resultString = ""
+        for i in 0..<array.count {
+            resultString += array[i] + ","
+        }
+        if resultString.count >= 1 {
+            resultString.removeLast(1)
+        }
+        return resultString
     }
 }
