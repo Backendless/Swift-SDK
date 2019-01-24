@@ -258,7 +258,7 @@ class MapDrivenDataStoreTests: XCTestCase {
             XCTAssert(type(of: savedObjects) == [String].self)
             XCTAssert(savedObjects.count == 3)            
             let queryBuilder = DataQueryBuilder()
-            queryBuilder.whereClause = "name = 'Bob' and age> 30"
+            queryBuilder.setWhereClause(whereClause: "name = 'Bob' and age> 30")
             self.dataStore.getObjectCount(queryBuilder: queryBuilder, responseBlock: { count in
                 XCTAssertNotNil(count)
                 XCTAssert(Int(exactly: count)! >= 0)

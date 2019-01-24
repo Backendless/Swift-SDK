@@ -21,8 +21,6 @@
 
 class Mappings: NSObject {
     
-    static let shared = Mappings()
-    
     var tableToClassMappings = [String: String]()
     var columnToPropertyMappings = [String: [String: String]]()
 
