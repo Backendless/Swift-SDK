@@ -195,6 +195,12 @@ class PersistenceServiceUtils: NSObject {
         if let havingClause = queryBuilder?.getHavingClause() {
             parameters["having"] = havingClause
         }
+        if let pageSize = queryBuilder?.getPageSize() {
+            parameters["pageSize"] = pageSize
+        }
+        if let offset = queryBuilder?.getOffset() {
+            parameters["offset"] = offset
+        }
         let request = AlamofireManager(restMethod: "data/\(tableName)/find", httpMethod: .post, headers: headers, parameters: parameters).makeRequest()
         request.responseData(completionHandler: { response in
             if let result = self.processResponse.adapt(response: response, to: [JSON].self) {

@@ -24,71 +24,72 @@ import XCTest
 
 class UserServiceTests: XCTestCase {
     
+    private let USER_EMAIL = "testUser@test.com"
+    private let USER_PASSWORD = "111"
+    private let USER_NAME = "Test User"
+    
     private let backendless = Backendless.shared
     
+    // call before all tests
     override class func setUp() {
         Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
         Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
+        clearTables()
     }
     
-    func fulfillExpectation(expectation: XCTestExpectation) {
-        expectation.fulfill()
-        print(expectation.description)
+    // call after all tests
+    override class func tearDown() {
+        clearTables()
     }
     
-    func testDescribeUserClass() {
-        let expectation = self.expectation(description: "*** userService.describeUserClass test passed ***")
+    class func clearTables() {
+        Backendless.shared.data.ofTable("Users").removeBulk(whereClause: nil, responseBlock: { removedObjects in
+        }, errorBlock: { fault in
+            print("ERROR \(fault.faultCode): \(fault.message!)")
+        })
+    }
+    
+    func test_01_DescribeUserClass() {
+        let expectation = self.expectation(description: "PASSED: userService.describeUserClass")
         backendless.userService.describeUserClass(responseBlock: { properties in
             XCTAssertNotNil(properties)
             XCTAssert(properties.count > 0)
-            self.fulfillExpectation(expectation: expectation)
+            expectation.fulfill()
         }, errorBlock: { fault in
             XCTAssertNotNil(fault)
-            self.fulfillExpectation(expectation: expectation)
+            XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: { error in
-            if let error = error {
-                print("*** userService.describeUserClass test failed: \(error.localizedDescription) ***")
-            }
-        })
+        waitForExpectations(timeout: 10, handler: nil)
     }
     
-    func testRegisterUser() {
-        let expectation = self.expectation(description: "*** userService.registerUser test passed ***")
+    func test_02_RegisterUser() {
+        let expectation = self.expectation(description: "PASSED: userService.registerUser")
         let user = BackendlessUser()
-        user.email = "testUser@test.com"
-        user.password = "111"
-        user.name = "Test User"
+        user.email = USER_EMAIL
+        user.password = USER_PASSWORD
+        user.name = USER_NAME
         backendless.userService.registerUser(user: user, responseBlock: { registredUser in
             XCTAssertNotNil(registredUser)
-            self.fulfillExpectation(expectation: expectation)
+            expectation.fulfill()
         }, errorBlock: { fault in
             XCTAssertNotNil(fault)
-            self.fulfillExpectation(expectation: expectation)
+            XCTFail("\(fault.code): \(fault.message!)")
         })        
-        waitForExpectations(timeout: 10, handler: { error in
-            if let error = error {
-                print("*** userService.registerUser test failed: \(error.localizedDescription) ***")
-            }
-        })
+        waitForExpectations(timeout: 10, handler: nil)
     }
     
-    func testLogin() {
-        let expectation = self.expectation(description: "*** userService.login test passed ***")
-        backendless.userService.login(identity: "testUser@test.com", password: "111", responseBlock: { loggedInUser in
+    func test_03_Login() {
+        let expectation = self.expectation(description: "PASSED: userService.login")
+        backendless.userService.login(identity: USER_EMAIL, password: USER_PASSWORD, responseBlock: { loggedInUser in
             XCTAssertNotNil(loggedInUser)
             XCTAssertNotNil(self.backendless.userService.currentUser)
             XCTAssertNotNil(self.backendless.userService.isValidUserToken)
-            self.fulfillExpectation(expectation: expectation)
+            expectation.fulfill()
         }, errorBlock: { fault in
             XCTAssertNotNil(fault)
-            self.fulfillExpectation(expectation: expectation)
+            XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: { error in
-            if let error = error {
-                print("*** userService.login test failed: \(error.localizedDescription) ***")
-            }
-        })
+        waitForExpectations(timeout: 10, handler: nil)
     }
     
     // ******************************************************
@@ -107,91 +108,63 @@ class UserServiceTests: XCTestCase {
     
     // ******************************************************
     
-    func testUpdate() {
-        let expectation = self.expectation(description: "*** userService.update test passed ***")
-        backendless.userService.login(identity: "testUser@test.com", password: "111", responseBlock: { loggedInUser in
+    func test_04_Update() {
+        let expectation = self.expectation(description: "PASSED: userService.update")
+        backendless.userService.login(identity: USER_EMAIL, password: USER_PASSWORD, responseBlock: { loggedInUser in
             loggedInUser.name = "New name"
             self.backendless.userService.update(user: loggedInUser, responseBlock: { updatedUser in
                 XCTAssertNotNil(updatedUser)
-                self.fulfillExpectation(expectation: expectation)
+                expectation.fulfill()
             }, errorBlock: { fault in
                 XCTAssertNotNil(fault)
-                self.fulfillExpectation(expectation: expectation)
+                XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorBlock: { fault in
             XCTAssertNotNil(fault)
-            self.fulfillExpectation(expectation: expectation)
+            XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: { error in
-            if let error = error {
-                print("*** userService.update test failed: \(error.localizedDescription) ***")
-            }
-        })
+        waitForExpectations(timeout: 10, handler: nil)
     }
     
-    func testLogout() {
-        let expectation = self.expectation(description: "*** userService.logout test passed ***")        
-        backendless.userService.login(identity: "testUser@test.com", password: "111", responseBlock: { loggedInUser in
-            XCTAssertNotNil(self.backendless.userService.currentUser)
-            self.backendless.userService.logout(responseBlock: {
-                XCTAssertNil(self.backendless.userService.currentUser)
-                XCTAssertNil(self.backendless.userService.isValidUserToken)
-                self.fulfillExpectation(expectation: expectation)
-            }, errorBlock: { fault in
-                XCTAssertNotNil(fault)
-                self.fulfillExpectation(expectation: expectation)
-            })
+    func test_05_Logout() {
+        let expectation = self.expectation(description: "PASSED: userService.logout")
+        backendless.userService.logout(responseBlock: {
+            XCTAssertNil(self.backendless.userService.currentUser)
+            XCTAssertFalse(self.backendless.userService.isValidUserToken)
+            expectation.fulfill()
         }, errorBlock: { fault in
             XCTAssertNotNil(fault)
-            self.fulfillExpectation(expectation: expectation)
+            XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: { error in
-            if let error = error {
-                print("*** userService.logout test failed: \(error.localizedDescription) ***")
-            }
-        })
+        waitForExpectations(timeout: 10, handler: nil)
     }
     
-    func testRestoreUserPassword() {
-        let expectation = self.expectation(description: "*** userService.restoreUserPassword test passed ***")
-        backendless.userService.login(identity: "testUser@test.com", password: "111", responseBlock: { loggedInUser in
-            XCTAssertNotNil(self.backendless.userService.currentUser)
-            self.backendless.userService.restorePassword(login: loggedInUser.email, responseBlock: {
-                self.fulfillExpectation(expectation: expectation)
-            }, errorBlock: { fault in
-                XCTAssertNotNil(fault)
-                self.fulfillExpectation(expectation: expectation)
-            })
+    func test_06_RestoreUserPassword() {
+        let expectation = self.expectation(description: "PASSED: userService.restoreUserPassword")
+        backendless.userService.restorePassword(login: USER_EMAIL, responseBlock: {
+            expectation.fulfill()
         }, errorBlock: { fault in
             XCTAssertNotNil(fault)
-            self.fulfillExpectation(expectation: expectation)
+            XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: { error in
-            if let error = error {
-                print("*** userService.restoreUserPassword test failed: \(error.localizedDescription) ***")
-            }
-        })
+        waitForExpectations(timeout: 10, handler: nil)
     }
     
-    func testGetUserRoles() {
-        let expectation = self.expectation(description: "*** userService.getUserRoles test passed ***")
-        backendless.userService.login(identity: "testUser@test.com", password: "111", responseBlock: { loggedInUser in
+    func test_07_GetUserRoles() {
+        let expectation = self.expectation(description: "PASSED: userService.getUserRoles")
+        backendless.userService.login(identity: USER_EMAIL, password: USER_PASSWORD, responseBlock: { loggedInUser in
             XCTAssertNotNil(self.backendless.userService.currentUser)
-            self.backendless.userService.getUserRoles(responseBlock: { roles in
-                XCTAssertNotNil(roles)
-                self.fulfillExpectation(expectation: expectation)
-            }, errorBlock: { fault in
-                XCTAssertNotNil(fault)
-                self.fulfillExpectation(expectation: expectation)
-            })
+//            self.backendless.userService.getUserRoles(responseBlock: { roles in
+//                XCTAssertNotNil(roles)
+//                expectation.fulfill()
+//            }, errorBlock: { fault in
+//                XCTAssertNotNil(fault)
+//                XCTFail("\(fault.code): \(fault.message!)")
+//            })
         }, errorBlock: { fault in
             XCTAssertNotNil(fault)
-            self.fulfillExpectation(expectation: expectation)
+            XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: { error in
-            if let error = error {
-                print("*** userService.getUserRoles test failed: \(error.localizedDescription) ***")
-            }
-        })
+        waitForExpectations(timeout: 10, handler: nil)
     }
 }

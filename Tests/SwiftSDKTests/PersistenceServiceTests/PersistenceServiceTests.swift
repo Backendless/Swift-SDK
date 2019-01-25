@@ -37,7 +37,7 @@ class PersistenceServiceTests: XCTestCase {
         print(expectation.description)
     }
     
-    func testCreateMapDrivenDataStore() {
+    /*func testCreateMapDrivenDataStore() {
         let dataStore = backendless.data.ofTable("TestClass")
         XCTAssertNotNil(dataStore)
         XCTAssert(type(of: dataStore) == MapDrivenDataStore.self)
@@ -50,19 +50,18 @@ class PersistenceServiceTests: XCTestCase {
     }
     
     func testDescribe() {
-        let expectation = self.expectation(description: "*** persistenceService.describe test passed ***")
+        let passedExpectation = self.expectation(description: "TEST PASSED: persistenceService.describe")
+        let failedExpectation = self.expectation(description: "TEST FAILED: persistenceService.describe")
         backendless.data.describe(tableName: "TestClass", responseBlock: { properties in
             XCTAssertNotNil(properties)
             XCTAssert(properties.count > 0)
-            self.fulfillExpectation(expectation: expectation)
+            self.fulfillExpectation(expectation: passedExpectation)
         }, errorBlock: { fault in
             XCTAssertNotNil(fault)
-            self.fulfillExpectation(expectation: expectation)
+            self.fulfillExpectation(expectation: failedExpectation)
         })
         waitForExpectations(timeout: 10, handler: { error in
-            if let error = error {
-                print("*** persistenceService.describe test failed: \(error.localizedDescription) ***")
-            }
+            print("TEST FAILED(TIMEOUT): persistenceService.describe")
         })
-    }
+    }*/
 }
