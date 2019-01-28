@@ -33,7 +33,7 @@ class BackendlessUserTests: XCTestCase {
         return user
     }
     
-    func testSetProperties() {
+    func test_01_setProperties() {
         let user = backendlessUser()
         user.setProperties(properties: ["foo": "bar", "foo1": "bar1"])
         XCTAssertNotNil(user.getProperty(propertyName: "foo"))
@@ -43,13 +43,13 @@ class BackendlessUserTests: XCTestCase {
         XCTAssertTrue(user.getProperty(propertyName: "city") is NSNull)
     }
     
-    func testGetProperty() {
+    func test_02_getProperty() {
         let user = backendlessUser()
         XCTAssertNotNil(user.getProperty(propertyName: "name"))
         XCTAssertFalse(user.getProperty(propertyName: "name") is NSNull)
     }
     
-    func testGetProperties() {
+    func test_03_getProperties() {
         let properties = backendlessUser().getProperties()
         for property in properties {
             XCTAssertNotNil(property.value)
@@ -57,14 +57,14 @@ class BackendlessUserTests: XCTestCase {
         }
     }
     
-    func testAddProperty() {
+    func test_04_addProperty() {
         let user = backendlessUser()
         user.addProperty(propertyName: "foo", propertyValue: "bar")
         XCTAssertNotNil(user.getProperty(propertyName: "foo"))
         XCTAssertFalse(user.getProperty(propertyName: "foo") is NSNull)
     }
     
-    func testAddProperties() {
+    func test_05_addProperties() {
         let user = backendlessUser()
         user.addProperties(properties: ["foo": "bar", "foo1": "bar1"])
         XCTAssertNotNil(user.getProperty(propertyName: "foo"))
@@ -73,26 +73,26 @@ class BackendlessUserTests: XCTestCase {
         XCTAssertFalse(user.getProperty(propertyName: "foo1") is NSNull)
     }
     
-    func testUpdateProperty() {
+    func test_06_updateProperty() {
         let user = backendlessUser()
         user.updateProperty(propertyName: "age", propertyValue: 55)
         XCTAssertEqual(user.getProperty(propertyName: "age") as? Int, 55)
     }
     
-    func testUpdateProperties() {
+    func test_07_updateProperties() {
         let user = backendlessUser()
         user.updateProperties(propertiesToUpdate: ["name": "Bob", "age": 55])
         XCTAssertEqual(user.getProperty(propertyName: "name") as? String, "Bob")
         XCTAssertEqual(user.getProperty(propertyName: "age") as? Int, 55)
     }
     
-    func testRemoveProperty() {
+    func test_08_removeProperty() {
         let user = backendlessUser()
         user.removeProperty(propertyName: "city")
         XCTAssertTrue(user.getProperty(propertyName: "city") is NSNull)
     }
     
-    func testRemoveProperties() {
+    func test_09_removeProperties() {
         let user = backendlessUser()
         user.removeProperties(propertiesToRemove: ["age", "city"])
         XCTAssertTrue(user.getProperty(propertyName: "age") is NSNull)

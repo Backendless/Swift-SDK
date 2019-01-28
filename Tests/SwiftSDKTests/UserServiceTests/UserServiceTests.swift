@@ -49,7 +49,7 @@ class UserServiceTests: XCTestCase {
         })
     }
     
-    func test_01_DescribeUserClass() {
+    func test_01_describeUserClass() {
         let expectation = self.expectation(description: "PASSED: userService.describeUserClass")
         backendless.userService.describeUserClass(responseBlock: { properties in
             XCTAssertNotNil(properties)
@@ -62,7 +62,7 @@ class UserServiceTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
     
-    func test_02_RegisterUser() {
+    func test_02_registerUser() {
         let expectation = self.expectation(description: "PASSED: userService.registerUser")
         let user = BackendlessUser()
         user.email = USER_EMAIL
@@ -78,7 +78,7 @@ class UserServiceTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
     
-    func test_03_Login() {
+    func test_03_login() {
         let expectation = self.expectation(description: "PASSED: userService.login")
         backendless.userService.login(identity: USER_EMAIL, password: USER_PASSWORD, responseBlock: { loggedInUser in
             XCTAssertNotNil(loggedInUser)
@@ -108,7 +108,25 @@ class UserServiceTests: XCTestCase {
     
     // ******************************************************
     
-    func test_04_Update() {
+    func test_04_getUserRoles() {
+        let expectation = self.expectation(description: "PASSED: userService.getUserRoles")
+        backendless.userService.login(identity: USER_EMAIL, password: USER_PASSWORD, responseBlock: { loggedInUser in
+            XCTAssertNotNil(self.backendless.userService.currentUser)
+            self.backendless.userService.getUserRoles(responseBlock: { roles in
+                XCTAssertNotNil(roles)
+                expectation.fulfill()
+            }, errorBlock: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+    
+    func test_05_update() {
         let expectation = self.expectation(description: "PASSED: userService.update")
         backendless.userService.login(identity: USER_EMAIL, password: USER_PASSWORD, responseBlock: { loggedInUser in
             loggedInUser.name = "New name"
@@ -126,7 +144,7 @@ class UserServiceTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
     
-    func test_05_Logout() {
+    func test_06_logout() {
         let expectation = self.expectation(description: "PASSED: userService.logout")
         backendless.userService.logout(responseBlock: {
             XCTAssertNil(self.backendless.userService.currentUser)
@@ -139,28 +157,10 @@ class UserServiceTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
     
-    func test_06_RestoreUserPassword() {
+    func test_07_restoreUserPassword() {
         let expectation = self.expectation(description: "PASSED: userService.restoreUserPassword")
         backendless.userService.restorePassword(login: USER_EMAIL, responseBlock: {
             expectation.fulfill()
-        }, errorBlock: { fault in
-            XCTAssertNotNil(fault)
-            XCTFail("\(fault.code): \(fault.message!)")
-        })
-        waitForExpectations(timeout: 10, handler: nil)
-    }
-    
-    func test_07_GetUserRoles() {
-        let expectation = self.expectation(description: "PASSED: userService.getUserRoles")
-        backendless.userService.login(identity: USER_EMAIL, password: USER_PASSWORD, responseBlock: { loggedInUser in
-            XCTAssertNotNil(self.backendless.userService.currentUser)
-//            self.backendless.userService.getUserRoles(responseBlock: { roles in
-//                XCTAssertNotNil(roles)
-//                expectation.fulfill()
-//            }, errorBlock: { fault in
-//                XCTAssertNotNil(fault)
-//                XCTFail("\(fault.code): \(fault.message!)")
-//            })
         }, errorBlock: { fault in
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")

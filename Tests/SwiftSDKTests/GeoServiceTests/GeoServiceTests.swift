@@ -31,10 +31,7 @@ class GeoServiceTests: XCTestCase {
         Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
     }
     
-    func fulfillExpectation(expectation: XCTestExpectation) {
-        expectation.fulfill()
-        print(expectation.description)
-    }
+    // remove all points before tests
     
     /*func testSavePoint() {
         let passedExpectation = self.expectation(description: "TEST PASSED: geoService.savePoint")

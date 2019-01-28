@@ -32,7 +32,12 @@ class PersistenceServiceUtils: NSObject {
     
     func setup(tableName: String?) {
         if let tableName = tableName {
-            self.tableName = tableName
+            if tableName == "BackendlessUser" {
+                self.tableName = "Users"
+            }
+            else {
+                self.tableName = tableName
+            }
         }
     }
     
@@ -249,7 +254,7 @@ class PersistenceServiceUtils: NSObject {
         
         let request = AlamofireManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest()
         request.responseData(completionHandler: { response in
-            if let result = self.processResponse.adapt(response: response, to: JSON.self) {
+            if let result = self.processResponse.adapt(response: response, to: JSON.self) {                
                 if result is Fault {
                     errorBlock(result as! Fault)
                 }
@@ -311,6 +316,15 @@ class PersistenceServiceUtils: NSObject {
         return Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String + "." + String(describing: entity)
     }
     
+    func getClassName(className: String) -> String? {
+        if Bundle.main.infoDictionary![kCFBundleNameKey as String] == nil {
+            // for unit tests
+            let testBundle = Bundle(for: TestClass.self)
+            return testBundle.infoDictionary![kCFBundleNameKey as String] as! String + "." + className
+        }
+        return Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String + "." + className
+    }
+    
     func getClassProperties(entity: Any) -> [String] {
         let resultClass = type(of: entity) as! NSObject.Type
         var classProperties = [String]()
@@ -351,7 +365,10 @@ class PersistenceServiceUtils: NSObject {
         return entityDictionary
     }
     
-    func dictionaryToEntity(dictionary: [String: Any], className: String) -> Any? {
+    func dictionaryToEntity(dictionary: [String: Any], className: String) -> Any? {        
+        if tableName == "Users" {
+            return processResponse.adaptToBackendlessUser(responseResult: dictionary)
+        }
         var resultEntityTypeName = ""
         let classMappings = mappings.getTableToClassMappings()
         if classMappings.keys.contains(tableName) {
@@ -372,8 +389,27 @@ class PersistenceServiceUtils: NSObject {
                     if columnToPropertyMappings.keys.contains(dictionaryField) {
                         entity.setValue(dictionary[dictionaryField], forKey: columnToPropertyMappings[dictionaryField]!)
                     }
-                    else if entityFields.contains(dictionaryField) {
-                        entity.setValue(dictionary[dictionaryField], forKey: dictionaryField)
+                    else if entityFields.contains(dictionaryField) {        
+                        if let relationDictionary = dictionary[dictionaryField] as? [String: Any] {
+                            if let relationClassName = getClassName(className: relationDictionary["___class"] as! String) {
+                                let relationObject = dictionaryToEntity(dictionary: relationDictionary, className: relationClassName)
+                                entity.setValue(relationObject, forKey: dictionaryField)
+                            }
+                        }
+                        else if let relationArrayOfDictionaries = dictionary[dictionaryField] as? [[String: Any]] {
+                            var relationsArray = [Any]()
+                            for relationDictionary in relationArrayOfDictionaries {
+                                if let relationClassName = getClassName(className: relationDictionary["___class"] as! String) {
+                                    if let relationObject = dictionaryToEntity(dictionary: relationDictionary, className: relationClassName) {
+                                        relationsArray.append(relationObject)
+                                    }
+                                }
+                                entity.setValue(relationsArray, forKey: dictionaryField)
+                            }
+                        }
+                        else {
+                            entity.setValue(dictionary[dictionaryField], forKey: dictionaryField)
+                        }
                     }
                 }
             }
