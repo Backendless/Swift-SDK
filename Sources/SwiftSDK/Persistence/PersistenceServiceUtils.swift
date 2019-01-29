@@ -301,28 +301,76 @@ class PersistenceServiceUtils: NSObject {
         })
     }
     
+    func deleteRelation(columnName: String, parentObjectId: String, childrenObjectIds: [String], responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        let headers = ["Content-Type": "application/json"]
+        let parameters = childrenObjectIds
+        let request = AlamofireManager(restMethod: "data/\(tableName)/\(parentObjectId)/\(columnName)", httpMethod: .delete, headers: headers, parameters: parameters).makeRequest()
+        request.responseData(completionHandler: { response in
+            if let result = self.processResponse.adapt(response: response, to: Int.self) {
+                if result is Fault {
+                    errorBlock(result as! Fault)
+                }
+            }
+            else {
+                self.storedObjects.removeObjectIds(tableName: self.tableName)
+                responseBlock(self.dataToNSNumber(data: response.data!))
+            }
+        })
+    }
+    
+    func deleteRelation(columnName: String, parentObjectId: String, whereClause: String?, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        var whereClause = whereClause
+        if whereClause == nil {
+            whereClause = "objectId != NULL"
+        }
+        let request = AlamofireManager(restMethod: "data/\(tableName)/\(parentObjectId)/\(columnName)?whereClause=\(stringToUrlString(originalString: whereClause!))", httpMethod: .delete, headers: nil, parameters: nil).makeRequest()
+        request.responseData(completionHandler: { response in
+            if let result = self.processResponse.adapt(response: response, to: Int.self) {
+                if result is Fault {
+                    errorBlock(result as! Fault)
+                }
+            }
+            else {
+                self.storedObjects.removeObjectIds(tableName: self.tableName)
+                responseBlock(self.dataToNSNumber(data: response.data!))
+            }
+        })
+    }
+    
     // ******************** additional methods ********************
     
     func getTableName(entity: Any) -> String {
-        return String(describing: entity)
+        var name = String(describing: entity)
+        if name == "BackendlessUser" {
+            name = "Users"
+        }
+        return name
     }
     
     func getClassName(entity: Any) -> String {
+        var name = String(describing: entity)
+        if name == "Users" {
+            name = "BackendessUser"
+        }
         if Bundle.main.infoDictionary![kCFBundleNameKey as String] == nil {
             // for unit tests
             let testBundle = Bundle(for: TestClass.self)
-            return testBundle.infoDictionary![kCFBundleNameKey as String] as! String + "." + String(describing: entity)
+            return testBundle.infoDictionary![kCFBundleNameKey as String] as! String + "." + name
         }
-        return Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String + "." + String(describing: entity)
+        return Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String + "." + name
     }
     
     func getClassName(className: String) -> String? {
+        var name = className
+        if name == "Users" {
+            name = "BackendlessUser"
+        }
         if Bundle.main.infoDictionary![kCFBundleNameKey as String] == nil {
             // for unit tests
             let testBundle = Bundle(for: TestClass.self)
-            return testBundle.infoDictionary![kCFBundleNameKey as String] as! String + "." + className
+            return testBundle.infoDictionary![kCFBundleNameKey as String] as! String + "." + name
         }
-        return Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String + "." + className
+        return Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String + "." + name
     }
     
     func getClassProperties(entity: Any) -> [String] {
@@ -392,15 +440,25 @@ class PersistenceServiceUtils: NSObject {
                     else if entityFields.contains(dictionaryField) {        
                         if let relationDictionary = dictionary[dictionaryField] as? [String: Any] {
                             if let relationClassName = getClassName(className: relationDictionary["___class"] as! String) {
-                                let relationObject = dictionaryToEntity(dictionary: relationDictionary, className: relationClassName)
-                                entity.setValue(relationObject, forKey: dictionaryField)
+                                if relationDictionary["___class"] as? String == "Users",
+                                    let userObject = processResponse.adaptToBackendlessUser(responseResult: relationDictionary) {
+                                    entity.setValue(userObject as! BackendlessUser, forKey: dictionaryField)
+                                }
+                                    
+                                else if let relationObject = dictionaryToEntity(dictionary: relationDictionary, className: relationClassName) {
+                                    entity.setValue(relationObject, forKey: dictionaryField)
+                                }
                             }
                         }
                         else if let relationArrayOfDictionaries = dictionary[dictionaryField] as? [[String: Any]] {
                             var relationsArray = [Any]()
                             for relationDictionary in relationArrayOfDictionaries {
                                 if let relationClassName = getClassName(className: relationDictionary["___class"] as! String) {
-                                    if let relationObject = dictionaryToEntity(dictionary: relationDictionary, className: relationClassName) {
+                                    if relationDictionary["___class"] as? String == "Users",
+                                        let userObject = processResponse.adaptToBackendlessUser(responseResult: relationDictionary) {
+                                        relationsArray.append(userObject as! BackendlessUser)
+                                    }
+                                    else if let relationObject = dictionaryToEntity(dictionary: relationDictionary, className: relationClassName) {
                                         relationsArray.append(relationObject)
                                     }
                                 }
@@ -414,10 +472,10 @@ class PersistenceServiceUtils: NSObject {
                 }
             }
             if let objectId = dictionary["objectId"] as? String {
-                storedObjects.rememberObjectId(objectId: objectId, forObject: entity)                
+                storedObjects.rememberObjectId(objectId: objectId, forObject: entity)
             }
             return entity
-        }       
+        }
         return nil
     }
     

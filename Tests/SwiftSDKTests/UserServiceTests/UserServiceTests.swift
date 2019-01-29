@@ -49,7 +49,8 @@ class UserServiceTests: XCTestCase {
         })
     }
     
-    func test_01_describeUserClass() {
+    // add this test after BKNDLSS-18007 is on prod
+    /*func test_01_describeUserClass() {
         let expectation = self.expectation(description: "PASSED: userService.describeUserClass")
         backendless.userService.describeUserClass(responseBlock: { properties in
             XCTAssertNotNil(properties)
@@ -60,7 +61,7 @@ class UserServiceTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: 10, handler: nil)
-    }
+    }*/
     
     func test_02_registerUser() {
         let expectation = self.expectation(description: "PASSED: userService.registerUser")

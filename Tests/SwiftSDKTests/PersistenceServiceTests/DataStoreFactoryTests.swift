@@ -468,182 +468,215 @@ class DataStoreFactoryTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
     
-    // *******************************************
+    func test_19_setRelationWithObjects() {
+        let expectation = self.expectation(description: "PASSED: dataStoreFactory.setRelationWithObjects")
+        
+        let childObjectToSave = ChildTestClass()
+        childObjectToSave.foo = "bar"
+        
+        childDataStore.save(entity: childObjectToSave, responseBlock: { savedChildObject in
+            let parentObjectToSave = self.createTestClassObject()
+            self.dataStore.save(entity: parentObjectToSave, responseBlock: { savedParentObject in
+                // 1:1
+                if let parentObjectId = (savedParentObject as! TestClass).objectId,
+                    let childObjectId = (savedChildObject as! ChildTestClass).objectId {
+                    self.dataStore.setRelation(columnName: "child:ChildTestClass:1", parentObjectId: parentObjectId, childrenObjectIds: [childObjectId], responseBlock: { relations in
+                        XCTAssertNotNil(relations)
+                        XCTAssert(Int(exactly: relations) == 1)
+                        expectation.fulfill()
+                    }, errorBlock: { fault in
+                        XCTAssertNotNil(fault)
+                        XCTFail("\(fault.code): \(fault.message!)")
+                    })
+                }
+            }, errorBlock: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: 10, handler: nil)
+    }
     
-    /*
-     func test_15_setRelationWithObjects() {
-     let expectation = self.expectation(description: "PASSED: dataStoreFactory.setRelationWithObjects")
-     
-     let childObjectToSave = ChildTestClass()
-     childObjectToSave.foo = "bar"
-     
-     childDataStore.save(entity: childObjectToSave, responseBlock: { savedChildObject in
-     let parentObjectToSave = self.createTestClassObject()
-     self.dataStore.save(entity: parentObjectToSave, responseBlock: { savedParentObject in
-     // 1:1
-     if let parentObjectId = (savedParentObject as! TestClass).objectId,
-     let childObjectId = (savedChildObject as! ChildTestClass).objectId {
-     self.dataStore.setRelation(columnName: "child:ChildTestClass:1", parentObjectId: parentObjectId, childrenObjectIds: [childObjectId], responseBlock: { relations in
-     XCTAssertNotNil(relations)
-     XCTAssert(Int(exactly: relations) == 1)
-     expectation.fulfill()
-     }, errorBlock: { fault in
-     XCTAssertNotNil(fault)
-     XCTFail("\(fault.code): \(fault.message!)")
-     })
-     }
-     }, errorBlock: { fault in
-     XCTAssertNotNil(fault)
-     XCTFail("\(fault.code): \(fault.message!)")
-     })
-     }, errorBlock: { fault in
-     XCTAssertNotNil(fault)
-     XCTFail("\(fault.code): \(fault.message!)")
-     })
-     waitForExpectations(timeout: 10, handler: nil)
-     }
-     
-     func testSetRelationWithObjects() {
-     let expectation = self.expectation(description: "*** dataStoreFactory.setRelationWithObjects test passed ***")
-     
-     let childObjectToSave = ChildTestClass()
-     childObjectToSave.foo = "bar"
-     
-     childDataStore.save(entity: childObjectToSave, responseBlock: { savedChildObject in
-     let parentObjectToSave = self.createTestClassObject()
-     self.dataStore.save(entity: parentObjectToSave, responseBlock: { savedParentObject in
-     // 1:1
-     if let parentObjectId = (savedParentObject as! TestClass).objectId,
-     let childObjectId = (savedChildObject as! ChildTestClass).objectId {
-     self.dataStore.setRelation(columnName: "child:ChildTestClass:1", parentObjectId: parentObjectId, childrenObjectIds: [childObjectId], responseBlock: { relations in
-     XCTAssertNotNil(relations)
-     XCTAssert(Int(exactly: relations) == 1)
-     self.fulfillExpectation(expectation: expectation)
-     }, errorBlock: { fault in
-     XCTAssertNotNil(fault)
-     self.fulfillExpectation(expectation: expectation)
-     })
-     }
-     }, errorBlock: { fault in
-     XCTAssertNotNil(fault)
-     self.fulfillExpectation(expectation: expectation)
-     })
-     }, errorBlock: { fault in
-     XCTAssertNotNil(fault)
-     self.fulfillExpectation(expectation: expectation)
-     })
-     waitForExpectations(timeout: 10, handler: { error in
-     if let error = error {
-     print("*** dataStoreFactory.setRelationWithObjects test failed: \(error.localizedDescription) ***")
-     }
-     })
-     }
-     
-     func testSetRelationWithCondition() {
-     let expectation = self.expectation(description: "*** dataStoreFactory.setRelationWithCondition test passed ***")
-     
-     let childObjectToSave = ChildTestClass()
-     childObjectToSave.foo = "bar"
-     
-     childDataStore.save(entity: childObjectToSave, responseBlock: { savedChildObject in
-     let parentObjectToSave = self.createTestClassObject()
-     self.dataStore.save(entity: parentObjectToSave, responseBlock: { savedParentObject in
-     // 1:1
-     if let parentObjectId = (savedParentObject as! TestClass).objectId {
-     self.dataStore.setRelation(columnName: "child:ChildTestClass:1", parentObjectId: parentObjectId, whereClause: "foo = 'bar'", responseBlock: { relations in
-     XCTAssertNotNil(relations)
-     XCTAssert(Int(exactly: relations) == 1)
-     self.fulfillExpectation(expectation: expectation)
-     }, errorBlock: { fault in
-     XCTAssertNotNil(fault)
-     self.fulfillExpectation(expectation: expectation)
-     })
-     }
-     }, errorBlock: { fault in
-     XCTAssertNotNil(fault)
-     self.fulfillExpectation(expectation: expectation)
-     })
-     }, errorBlock: { fault in
-     XCTAssertNotNil(fault)
-     self.fulfillExpectation(expectation: expectation)
-     })
-     waitForExpectations(timeout: 10, handler: { error in
-     if let error = error {
-     print("*** dataStoreFactory.setRelationWithCondition test failed: \(error.localizedDescription) ***")
-     }
-     })
-     }
-     
-     func testAddRelationWithObjects() {
-     let expectation = self.expectation(description: "*** dataStoreFactory.addRelationWithObjects test passed ***")
-     
-     let childObjectToSave = ChildTestClass()
-     childObjectToSave.foo = "bar"
-     
-     childDataStore.save(entity: childObjectToSave, responseBlock: { savedChildObject in
-     let parentObjectToSave = self.createTestClassObject()
-     self.dataStore.save(entity: parentObjectToSave, responseBlock: { savedParentObject in
-     // 1:1
-     if let parentObjectId = (savedParentObject as! TestClass).objectId,
-     let childObjectId = (savedChildObject as! ChildTestClass).objectId {
-     self.dataStore.addRelation(columnName: "child:ChildTestClass:1", parentObjectId: parentObjectId, childrenObjectIds: [childObjectId], responseBlock: { relations in
-     XCTAssertNotNil(relations)
-     XCTAssert(Int(exactly: relations) == 1)
-     self.fulfillExpectation(expectation: expectation)
-     }, errorBlock: { fault in
-     XCTAssertNotNil(fault)
-     self.fulfillExpectation(expectation: expectation)
-     })
-     }
-     }, errorBlock: { fault in
-     XCTAssertNotNil(fault)
-     self.fulfillExpectation(expectation: expectation)
-     })
-     }, errorBlock: { fault in
-     XCTAssertNotNil(fault)
-     self.fulfillExpectation(expectation: expectation)
-     })
-     waitForExpectations(timeout: 10, handler: { error in
-     if let error = error {
-     print("*** dataStoreFactory.addRelationWithObjects test failed: \(error.localizedDescription) ***")
-     }
-     })
-     }
-     
-     func testAddRelationWithCondition() {
-     let expectation = self.expectation(description: "*** dataStoreFactory.addRelationWithCondition test passed ***")
-     
-     let childObjectToSave = ChildTestClass()
-     childObjectToSave.foo = "bar"
-     
-     childDataStore.save(entity: childObjectToSave, responseBlock: { savedChildObject in
-     let parentObjectToSave = self.createTestClassObject()
-     self.dataStore.save(entity: parentObjectToSave, responseBlock: { savedParentObject in
-     // 1:1
-     if let parentObjectId = (savedParentObject as! TestClass).objectId {
-     self.dataStore.addRelation(columnName: "child:ChildTestClass:1", parentObjectId: parentObjectId, whereClause: "foo = 'bar'", responseBlock: { relations in
-     XCTAssertNotNil(relations)
-     XCTAssert(Int(exactly: relations)! >= 0)
-     self.fulfillExpectation(expectation: expectation)
-     }, errorBlock: { fault in
-     XCTAssertNotNil(fault)
-     self.fulfillExpectation(expectation: expectation)
-     })
-     }
-     }, errorBlock: { fault in
-     XCTAssertNotNil(fault)
-     self.fulfillExpectation(expectation: expectation)
-     })
-     }, errorBlock: { fault in
-     XCTAssertNotNil(fault)
-     self.fulfillExpectation(expectation: expectation)
-     })
-     waitForExpectations(timeout: 10, handler: { error in
-     if let error = error {
-     print("*** dataStoreFactory.dataStoreFactory.addRelationWithCondition test failed: \(error.localizedDescription) ***")
-     }
-     })
-     } */
+    func test_20_setRelationWithCondition() {
+        let expectation = self.expectation(description: "*** dataStoreFactory.setRelationWithCondition test passed ***")
+        
+        let childObjectToSave = ChildTestClass()
+        childObjectToSave.foo = "bar"
+        
+        childDataStore.save(entity: childObjectToSave, responseBlock: { savedChildObject in
+            if let childObjectId = (savedChildObject as! ChildTestClass).objectId {
+                let parentObjectToSave = self.createTestClassObject()
+                self.dataStore.save(entity: parentObjectToSave, responseBlock: { savedParentObject in
+                    // 1:1
+                    if let parentObjectId = (savedParentObject as! TestClass).objectId {
+                        self.dataStore.setRelation(columnName: "child:ChildTestClass:1", parentObjectId: parentObjectId, whereClause: "objectId = '\(childObjectId)'", responseBlock: { relations in
+                            XCTAssertNotNil(relations)
+                            XCTAssert(Int(exactly: relations) == 1)
+                            expectation.fulfill()
+                        }, errorBlock: { fault in
+                            XCTAssertNotNil(fault)
+                            XCTFail("\(fault.code): \(fault.message!)")
+                        })
+                    }
+                }, errorBlock: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
+            }
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+    
+    func test_21_addRelationWithObjects() {
+        let expectation = self.expectation(description: "PASSED: dataStoreFactory.addRelationWithObjects")
+        
+        let childObjectToSave = ChildTestClass()
+        childObjectToSave.foo = "bar"
+        
+        childDataStore.save(entity: childObjectToSave, responseBlock: { savedChildObject in
+            let parentObjectToSave = self.createTestClassObject()
+            self.dataStore.save(entity: parentObjectToSave, responseBlock: { savedParentObject in
+                // 1:1
+                if let parentObjectId = (savedParentObject as! TestClass).objectId,
+                    let childObjectId = (savedChildObject as! ChildTestClass).objectId {
+                    self.dataStore.addRelation(columnName: "child:ChildTestClass:1", parentObjectId: parentObjectId, childrenObjectIds: [childObjectId], responseBlock: { relations in
+                        XCTAssertNotNil(relations)
+                        XCTAssert(Int(exactly: relations) == 1)
+                        expectation.fulfill()
+                    }, errorBlock: { fault in
+                        XCTAssertNotNil(fault)
+                        XCTFail("\(fault.code): \(fault.message!)")
+                    })
+                }
+            }, errorBlock: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+    
+    func test_22_addRelationWithCondition() {
+        let expectation = self.expectation(description: "PASSED: dataStoreFactory.addRelationWithCondition")
+        
+        let childObjectToSave = ChildTestClass()
+        childObjectToSave.foo = "bar"
+        
+        childDataStore.save(entity: childObjectToSave, responseBlock: { savedChildObject in
+            if let childObjectId = (savedChildObject as! ChildTestClass).objectId {
+                let parentObjectToSave = self.createTestClassObject()
+                self.dataStore.save(entity: parentObjectToSave, responseBlock: { savedParentObject in
+                    // 1:1
+                    if let parentObjectId = (savedParentObject as! TestClass).objectId {
+                        self.dataStore.addRelation(columnName: "child:ChildTestClass:1", parentObjectId: parentObjectId, whereClause: "objectId = '\(childObjectId)'", responseBlock: { relations in
+                            XCTAssertNotNil(relations)
+                            XCTAssert(Int(exactly: relations)! >= 0)
+                            expectation.fulfill()
+                        }, errorBlock: { fault in
+                            XCTAssertNotNil(fault)
+                            XCTFail("\(fault.code): \(fault.message!)")
+                        })
+                    }
+                }, errorBlock: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
+            }
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+    
+    func test_23_deleteRelationWithObjects() {
+        let expectation = self.expectation(description: "PASSED: dataStoreFactory.deleteRelationWithObjects")
+        
+        let childObjectToSave = ChildTestClass()
+        childObjectToSave.foo = "bar"
+        
+        childDataStore.save(entity: childObjectToSave, responseBlock: { savedChildObject in
+            let parentObjectToSave = self.createTestClassObject()
+            self.dataStore.save(entity: parentObjectToSave, responseBlock: { savedParentObject in
+                // 1:1
+                if let parentObjectId = (savedParentObject as! TestClass).objectId,
+                    let childObjectId = (savedChildObject as! ChildTestClass).objectId {
+                    self.dataStore.setRelation(columnName: "child:ChildTestClass:1", parentObjectId: parentObjectId, childrenObjectIds: [childObjectId], responseBlock: { relations in
+                        XCTAssertNotNil(relations)
+                        XCTAssert(Int(exactly: relations) == 1)
+                        // remove relation
+                        self.dataStore.deleteRelation(columnName: "child", parentObjectId: parentObjectId, childrenObjectIds: [childObjectId], responseBlock: { removed in
+                            XCTAssertNotNil(removed)
+                            XCTAssert(Int(exactly: removed) == 1)
+                            expectation.fulfill()
+                        }, errorBlock: { fault in
+                            XCTAssertNotNil(fault)
+                            XCTFail("\(fault.code): \(fault.message!)")
+                        })
+                    }, errorBlock: { fault in
+                        XCTAssertNotNil(fault)
+                        XCTFail("\(fault.code): \(fault.message!)")
+                    })
+                }
+            }, errorBlock: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+    
+    func test_24_deleteRelationWithCondition() {
+        let expectation = self.expectation(description: "PASSED: dataStoreFactory.deleteRelationWithCondition")
+        
+        let childObjectToSave = ChildTestClass()
+        childObjectToSave.foo = "bar"
+        
+        childDataStore.save(entity: childObjectToSave, responseBlock: { savedChildObject in
+            let parentObjectToSave = self.createTestClassObject()
+            self.dataStore.save(entity: parentObjectToSave, responseBlock: { savedParentObject in
+                // 1:1
+                if let parentObjectId = (savedParentObject as! TestClass).objectId,
+                    let childObjectId = (savedChildObject as! ChildTestClass).objectId {
+                    self.dataStore.setRelation(columnName: "child:ChildTestClass:1", parentObjectId: parentObjectId, childrenObjectIds: [childObjectId], responseBlock: { relations in
+                        XCTAssertNotNil(relations)
+                        XCTAssert(Int(exactly: relations) == 1)
+                        // remove relation
+                        self.dataStore.deleteRelation(columnName: "child", parentObjectId: parentObjectId, whereClause: "objectId = '\(childObjectId)'", responseBlock: { removed in
+                            XCTAssertNotNil(removed)
+                            XCTAssert(Int(exactly: removed) == 1)
+                            expectation.fulfill()
+                        }, errorBlock: { fault in
+                            XCTAssertNotNil(fault)
+                            XCTFail("\(fault.code): \(fault.message!)")
+                        })
+                    }, errorBlock: { fault in
+                        XCTAssertNotNil(fault)
+                        XCTFail("\(fault.code): \(fault.message!)")
+                    })
+                }
+            }, errorBlock: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: 10, handler: nil)
+    }
     
     // ***************************************
     
@@ -725,7 +758,7 @@ class DataStoreFactoryTests: XCTestCase {
             let objectToSave10 = TestClass()
             objectToSave10.name = "Bruce"
             objectToSave10.age = 60
-
+            
             objects.append(objectToSave1)
             objects.append(objectToSave2)
             objects.append(objectToSave3)

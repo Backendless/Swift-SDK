@@ -87,7 +87,7 @@ import SwiftyJSON
         aCoder.encode(isPrimaryKey, forKey: CodingKeys.isPrimaryKey.rawValue)
     }
     
-    open func getTypeName(type: DataTypeEnum) -> String {
-        return type.rawValue
+    open func getTypeName() -> String {
+        return self.type.rawValue
     }
 }

@@ -395,135 +395,189 @@ class MapDrivenDataStoreTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
     
-    // *******************************************
+    func test_18_setRelationWithObjects() {
+        let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.setRelationWithObjects")
+        let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
+        childDataStore.createBulk(entities: childObjectsToSave, responseBlock: { savedChildrenIds in
+            let parentObjectToSave = self.createDictionary()
+            self.dataStore.save(entity: parentObjectToSave, responseBlock: { savedParentObject in
+                if let parentObjectId = savedParentObject["objectId"] as? String {
+                    // 1:N
+                    self.dataStore.setRelation(columnName: "children:ChildTestClass:n", parentObjectId: parentObjectId, childrenObjectIds: savedChildrenIds, responseBlock: { relations in
+                        XCTAssertNotNil(relations)
+                        XCTAssert(Int(exactly: relations) == 2)
+                        expectation.fulfill()
+                    }, errorBlock: { fault in
+                        XCTAssertNotNil(fault)
+                        XCTFail("\(fault.code): \(fault.message!)")
+                    })
+                }
+            }, errorBlock: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: 10, handler: nil)
+    }
     
-    /*func testSetRelationWithObjects() {
-     let expectation = self.expectation(description: "*** mapDrivenDataStore.setRelationWithObjects test passed ***")
-     let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
-     childDataStore.createBulk(entities: childObjectsToSave, responseBlock: { savedChildrenIds in
-     let parentObjectToSave = self.createDictionary()
-     self.dataStore.save(entity: parentObjectToSave, responseBlock: { savedParentObject in
-     if let parentObjectId = savedParentObject["objectId"] as? String {
-     // 1:N
-     self.dataStore.setRelation(columnName: "children:ChildTestClass:n", parentObjectId: parentObjectId, childrenObjectIds: savedChildrenIds, responseBlock: { relations in
-     XCTAssertNotNil(relations)
-     XCTAssert(Int(exactly: relations) == 2)
-     self.fulfillExpectation(expectation: expectation)
-     }, errorBlock: { fault in
-     XCTAssertNotNil(fault)
-     self.fulfillExpectation(expectation: expectation)
-     })
-     }
-     }, errorBlock: { fault in
-     XCTAssertNotNil(fault)
-     self.fulfillExpectation(expectation: expectation)
-     })
-     }, errorBlock: { fault in
-     XCTAssertNotNil(fault)
-     self.fulfillExpectation(expectation: expectation)
-     })
-     waitForExpectations(timeout: 10, handler: { error in
-     if let error = error {
-     print("*** mapDrivenDataStore.setRelationWithObjects test failed: \(error.localizedDescription) ***")
-     }
-     })
-     }
-     
-     func testSetRelationWithCondition() {
-     let expectation = self.expectation(description: "*** mapDrivenDataStore.setRelationWithCondition test passed ***")
-     let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
-     childDataStore.createBulk(entities: childObjectsToSave, responseBlock: { savedChildrenIds in
-     let parentObjectToSave = self.createDictionary()
-     self.dataStore.save(entity: parentObjectToSave, responseBlock: { savedParentObject in
-     if let parentObjectId = savedParentObject["objectId"] as? String {
-     // 1:N
-     self.dataStore.setRelation(columnName: "children:ChildTestClass:n", parentObjectId: parentObjectId, whereClause: "foo = 'bar' or foo = 'bar1'", responseBlock: { relations in
-     XCTAssertNotNil(relations)
-     XCTAssert(Int(exactly: relations)! >= 0)
-     self.fulfillExpectation(expectation: expectation)
-     }, errorBlock: { fault in
-     XCTAssertNotNil(fault)
-     self.fulfillExpectation(expectation: expectation)
-     })
-     }
-     }, errorBlock: { fault in
-     XCTAssertNotNil(fault)
-     self.fulfillExpectation(expectation: expectation)
-     })
-     }, errorBlock: { fault in
-     XCTAssertNotNil(fault)
-     self.fulfillExpectation(expectation: expectation)
-     })
-     waitForExpectations(timeout: 10, handler: { error in
-     if let error = error {
-     print("*** mapDrivenDataStore.setRelationWithCondition test failed: \(error.localizedDescription) ***")
-     }
-     })
-     }
-     
-     func testAddRelationWithObjects() {
-     let expectation = self.expectation(description: "*** mapDrivenDataStore.addRelationWithObjects test passed ***")
-     let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
-     childDataStore.createBulk(entities: childObjectsToSave, responseBlock: { savedChildrenIds in
-     let parentObjectToSave = self.createDictionary()
-     self.dataStore.save(entity: parentObjectToSave, responseBlock: { savedParentObject in
-     if let parentObjectId = savedParentObject["objectId"] as? String {
-     // 1:N
-     self.dataStore.addRelation(columnName: "children:ChildTestClass:n", parentObjectId: parentObjectId, childrenObjectIds: savedChildrenIds, responseBlock: { relations in
-     XCTAssertNotNil(relations)
-     XCTAssert(Int(exactly: relations)! == 2)
-     self.fulfillExpectation(expectation: expectation)
-     }, errorBlock: { fault in
-     XCTAssertNotNil(fault)
-     self.fulfillExpectation(expectation: expectation)
-     })
-     }
-     }, errorBlock: { fault in
-     XCTAssertNotNil(fault)
-     self.fulfillExpectation(expectation: expectation)
-     })
-     }, errorBlock: { fault in
-     XCTAssertNotNil(fault)
-     self.fulfillExpectation(expectation: expectation)
-     })
-     waitForExpectations(timeout: 10, handler: { error in
-     if let error = error {
-     print("*** mapDrivenDataStore.addRelationWithObjects test failed: \(error.localizedDescription) ***")
-     }
-     })
-     }
-     
-     func testAddRelationWithCondition() {
-     let expectation = self.expectation(description: "*** mapDrivenDataStore.addRelationWithCondition test passed ***")
-     let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
-     childDataStore.createBulk(entities: childObjectsToSave, responseBlock: { savedChildrenIds in
-     let parentObjectToSave = self.createDictionary()
-     self.dataStore.save(entity: parentObjectToSave, responseBlock: { savedParentObject in
-     if let parentObjectId = savedParentObject["objectId"] as? String {
-     // 1:N
-     self.dataStore.addRelation(columnName: "children:ChildTestClass:n", parentObjectId: parentObjectId, whereClause: "foo = 'bar' or foo = 'bar1'", responseBlock: { relations in
-     XCTAssertNotNil(relations)
-     XCTAssert(Int(exactly: relations)! >= 0)
-     self.fulfillExpectation(expectation: expectation)
-     }, errorBlock: { fault in
-     XCTAssertNotNil(fault)
-     self.fulfillExpectation(expectation: expectation)
-     })
-     }
-     }, errorBlock: { fault in
-     XCTAssertNotNil(fault)
-     self.fulfillExpectation(expectation: expectation)
-     })
-     }, errorBlock: { fault in
-     XCTAssertNotNil(fault)
-     self.fulfillExpectation(expectation: expectation)
-     })
-     waitForExpectations(timeout: 10, handler: { error in
-     if let error = error {
-     print("*** mapDrivenDataStore.addRelationWithCondition test failed: \(error.localizedDescription) ***")
-     }
-     })
-     }*/
+    func test_19_setRelationWithCondition() {
+        let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.setRelationWithCondition test passed")
+        let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
+        childDataStore.createBulk(entities: childObjectsToSave, responseBlock: { savedChildrenIds in
+            let parentObjectToSave = self.createDictionary()
+            self.dataStore.save(entity: parentObjectToSave, responseBlock: { savedParentObject in
+                if let parentObjectId = savedParentObject["objectId"] as? String {
+                    // 1:N
+                    self.dataStore.setRelation(columnName: "children:ChildTestClass:n", parentObjectId: parentObjectId, whereClause: "foo = 'bar' or foo = 'bar1'", responseBlock: { relations in
+                        XCTAssertNotNil(relations)
+                        XCTAssert(Int(exactly: relations)! >= 0)
+                        expectation.fulfill()
+                    }, errorBlock: { fault in
+                        XCTAssertNotNil(fault)
+                        XCTFail("\(fault.code): \(fault.message!)")
+                    })
+                }
+            }, errorBlock: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+    
+    func test_20_addRelationWithObjects() {
+        let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.addRelationWithObjects")
+        let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
+        childDataStore.createBulk(entities: childObjectsToSave, responseBlock: { savedChildrenIds in
+            let parentObjectToSave = self.createDictionary()
+            self.dataStore.save(entity: parentObjectToSave, responseBlock: { savedParentObject in
+                if let parentObjectId = savedParentObject["objectId"] as? String {
+                    // 1:N
+                    self.dataStore.addRelation(columnName: "children:ChildTestClass:n", parentObjectId: parentObjectId, childrenObjectIds: savedChildrenIds, responseBlock: { relations in
+                        XCTAssertNotNil(relations)
+                        XCTAssert(Int(exactly: relations)! == 2)
+                        expectation.fulfill()
+                    }, errorBlock: { fault in
+                        XCTAssertNotNil(fault)
+                        XCTFail("\(fault.code): \(fault.message!)")
+                    })
+                }
+            }, errorBlock: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+    
+    func test_21_addRelationWithCondition() {
+        let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.addRelationWithCondition")
+        let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
+        childDataStore.createBulk(entities: childObjectsToSave, responseBlock: { savedChildrenIds in
+            let parentObjectToSave = self.createDictionary()
+            self.dataStore.save(entity: parentObjectToSave, responseBlock: { savedParentObject in
+                if let parentObjectId = savedParentObject["objectId"] as? String {
+                    // 1:N
+                    self.dataStore.addRelation(columnName: "children:ChildTestClass:n", parentObjectId: parentObjectId, whereClause: "foo = 'bar' or foo = 'bar1'", responseBlock: { relations in
+                        XCTAssertNotNil(relations)
+                        XCTAssert(Int(exactly: relations)! >= 0)
+                        expectation.fulfill()
+                    }, errorBlock: { fault in
+                        XCTAssertNotNil(fault)
+                        XCTFail("\(fault.code): \(fault.message!)")
+                    })
+                }
+            }, errorBlock: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+    
+    func test_22_deleteRelationWithObjects() {
+        let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.deleteRelationWithObjects")
+        let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
+        childDataStore.createBulk(entities: childObjectsToSave, responseBlock: { savedChildrenIds in
+            let parentObjectToSave = self.createDictionary()
+            self.dataStore.save(entity: parentObjectToSave, responseBlock: { savedParentObject in
+                if let parentObjectId = savedParentObject["objectId"] as? String {
+                    // 1:N
+                    self.dataStore.setRelation(columnName: "children:ChildTestClass:n", parentObjectId: parentObjectId, childrenObjectIds: savedChildrenIds, responseBlock: { relations in
+                        XCTAssertNotNil(relations)
+                        XCTAssert(Int(exactly: relations) == 2)
+                        // remove relation
+                        self.dataStore.deleteRelation(columnName: "children", parentObjectId: parentObjectId, childrenObjectIds: savedChildrenIds, responseBlock: { removed in
+                            XCTAssertNotNil(removed)
+                            XCTAssert(Int(exactly: removed) == 2)
+                            expectation.fulfill()
+                        }, errorBlock: { fault in
+                            XCTAssertNotNil(fault)
+                            XCTFail("\(fault.code): \(fault.message!)")
+                        })
+                    }, errorBlock: { fault in
+                        XCTAssertNotNil(fault)
+                        XCTFail("\(fault.code): \(fault.message!)")
+                    })
+                }
+            }, errorBlock: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+    
+    func test_23_deleteRelationWithCondition() {
+        let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.deleteRelationWithCondition")
+        let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
+        childDataStore.createBulk(entities: childObjectsToSave, responseBlock: { savedChildrenIds in
+            let parentObjectToSave = self.createDictionary()
+            self.dataStore.save(entity: parentObjectToSave, responseBlock: { savedParentObject in
+                if let parentObjectId = savedParentObject["objectId"] as? String {
+                    // 1:N
+                    self.dataStore.setRelation(columnName: "children:ChildTestClass:n", parentObjectId: parentObjectId, childrenObjectIds: savedChildrenIds, responseBlock: { relations in
+                        XCTAssertNotNil(relations)
+                        XCTAssert(Int(exactly: relations) == 2)
+                        // remove relation
+                        self.dataStore.deleteRelation(columnName: "children", parentObjectId: parentObjectId, whereClause: "foo='bar1'", responseBlock: { removed in
+                            XCTAssertNotNil(removed)
+                            XCTAssert(Int(exactly: removed) == 1)
+                            expectation.fulfill()
+                        }, errorBlock: { fault in
+                            XCTAssertNotNil(fault)
+                            XCTFail("\(fault.code): \(fault.message!)")
+                        })
+                    }, errorBlock: { fault in
+                        XCTAssertNotNil(fault)
+                        XCTFail("\(fault.code): \(fault.message!)")
+                    })
+                }
+            }, errorBlock: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: 10, handler: nil)
+    }
     
     // ***************************************
     
