@@ -30,39 +30,48 @@ class PersistenceServiceTests: XCTestCase {
     override class func setUp() {
         Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
         Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
+        clearTables()
     }
     
-    func fulfillExpectation(expectation: XCTestExpectation) {
-        expectation.fulfill()
-        print(expectation.description)
+    // call after all tests
+    override class func tearDown() {
+        clearTables()
     }
     
-    func testCreateMapDrivenDataStore() {
+    class func clearTables() {
+        Backendless.shared.data.ofTable("TestClass").removeBulk(whereClause: nil, responseBlock: { removedObjects in
+        }, errorBlock: { fault in
+            print("PERSISTENCE SERVICE TEST SETUP ERROR \(fault.faultCode): \(fault.message!)")
+        })
+    }
+    
+    func test_01_createMapDrivenDataStore() {
         let dataStore = backendless.data.ofTable("TestClass")
         XCTAssertNotNil(dataStore)
         XCTAssert(type(of: dataStore) == MapDrivenDataStore.self)
     }
     
-    func testCreateDataStoreFactory() {
+    func test_02_createDataStoreFactory() {
         let dataStore = backendless.data.of(TestClass.self)
         XCTAssertNotNil(dataStore)
         XCTAssert(type(of: dataStore) == DataStoreFactory.self)
     }
     
-    func testDescribe() {
-        let expectation = self.expectation(description: "*** persistenceService.describe test passed ***")
-        backendless.data.describe(tableName: "TestClass", responseBlock: { properties in
-            XCTAssertNotNil(properties)
-            XCTAssert(properties.count > 0)
-            self.fulfillExpectation(expectation: expectation)
+    func test_03_describe() {
+        let expectation = self.expectation(description: "PASSED: persistenceService.describe")
+        backendless.data.ofTable("TestClass").save(entity: ["name": "Bob", "age": 25], responseBlock: { savedObject in
+            self.backendless.data.describe(tableName: "TestClass", responseBlock: { properties in
+                XCTAssertNotNil(properties)
+                XCTAssert(properties.count > 0)
+                expectation.fulfill()
+            }, errorBlock: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
         }, errorBlock: { fault in
             XCTAssertNotNil(fault)
-            self.fulfillExpectation(expectation: expectation)
+            XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: { error in
-            if let error = error {
-                print("*** persistenceService.describe test failed: \(error.localizedDescription) ***")
-            }
-        })
+        waitForExpectations(timeout: 10, handler: nil)
     }
 }

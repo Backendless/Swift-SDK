@@ -91,9 +91,7 @@ class ProcessResponse: NSObject {
             catch {
                 return Fault(domain: (error as NSError).domain, code: (error as NSError).code, userInfo: (error as NSError).userInfo)
             }
-            /*if let responseResult = responseResult as? [[String: Any]] {
-             // array of users
-             }*/
+
         }
         return nil
     }

@@ -24,7 +24,7 @@ import XCTest
 
 class GeoPointTests: XCTestCase {
     
-    func testCreateGeoPoint() {
+    func test_01_createGeoPoint() {
         let geoPoint = GeoPoint(latitude: 0.0, longitude: 0.0)
         XCTAssertNotNil(geoPoint.latitude)
         XCTAssertNotNil(geoPoint.longitude)

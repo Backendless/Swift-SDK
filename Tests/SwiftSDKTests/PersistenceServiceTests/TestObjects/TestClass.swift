@@ -23,4 +23,6 @@
     var objectId: String?
     var name: String?
     var age: Int = 0
+    var child: ChildTestClass?
+    var children: [ChildTestClass]?
 }

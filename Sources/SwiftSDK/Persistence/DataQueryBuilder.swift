@@ -47,6 +47,8 @@
         self.relationsDepth = relationsDepth
     }
 
+    // *********************************************
+    
     open func getPageSize() -> Int {
         return self.pageSize
     }
@@ -63,13 +65,7 @@
         self.offset = offset
     }
     
-    open func prepareNextPage() {
-        
-    }
-    
-    open func preparePreviousPage() {
-        
-    }
+    // *********************************************
     
     open func getProperties() -> [String]? {
         return self.properties
