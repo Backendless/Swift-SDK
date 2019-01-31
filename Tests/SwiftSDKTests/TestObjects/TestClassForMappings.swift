@@ -20,6 +20,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers class TestClassForMappings: NSObject {
     var objectId: String?
     var nameProperty: String?

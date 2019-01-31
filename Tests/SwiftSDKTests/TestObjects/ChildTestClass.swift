@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers class ChildTestClass: NSObject {
     var objectId: String?
     var foo: String?
