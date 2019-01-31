@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers class TestClass: NSObject {
     var objectId: String?
     var name: String?
