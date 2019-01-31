@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name         = "SwiftSDK"
   s.module_name  = "Backendless"
-  s.version      = "0.0.1-b1"
+  s.version      = "0.0.1-b3"
   s.license      = { :type => 'MIT', :text => 'Copyright (c) 2013-2018 by Backendless Corp' }
   s.homepage     = "http://backendless.com"
   s.authors      = { 'Mark Piller' => 'mark@backendless.com', 'Olha Danylova' => 'olga@themidnightcoders.com' }
@@ -14,8 +14,8 @@ Pod::Spec.new do |s|
   s.tvos.deployment_target = '9.0'
   s.watchos.deployment_target = '2.0'
   s.requires_arc = true
-  s.source = { :git => 'https://github.com/Backendless/Swift-SDK.git', :tag => '0.0.1-b1' }
-  s.source_files  = "Sources/SwiftSDK/**/*.swift", "Sources/SwiftSDK/*.swift"
+  s.source = { :git => 'https://github.com/Backendless/Swift-SDK.git', :tag => '0.0.1-b3' }
+  s.source_files = "Sources/SwiftSDK/**/*.swift", "Sources/SwiftSDK/*.swift", "SwiftSDKTests/TestObjects/*.swift"
   s.dependency "SwiftyJSON"
   
 end
