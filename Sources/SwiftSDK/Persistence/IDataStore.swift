@@ -50,4 +50,5 @@ protocol IDataStore {
     func addRelation(columnName: String, parentObjectId: String, whereClause: String?, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!)
     func deleteRelation(columnName: String, parentObjectId: String, childrenObjectIds: [String], responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!)
     func deleteRelation(columnName: String, parentObjectId: String, whereClause: String?, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!)
+    func loadRelations(objectId: String, queryBuilder: LoadRelationsQueryBuilder, responseBlock: (([CustomType]) -> Void)!, errorBlock: ((Fault) -> Void)!)
 }

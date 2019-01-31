@@ -46,15 +46,6 @@
         return _userSevice
     }()
     
-    open lazy var geo: GeoService = {
-        return self.geoService
-    }()
-    
-    open lazy var geoService: GeoService = {
-        let _geoSevice = GeoService()
-        return _geoSevice
-    }()
-    
     open lazy var data: PersistenceService = {
         return self.persistenceService
     }()
@@ -62,5 +53,14 @@
     open lazy var persistenceService: PersistenceService = {
         let _persistenceSevice = PersistenceService()
         return _persistenceSevice
+    }()
+    
+    open lazy var geo: GeoService = {
+        return self.geoService
+    }()
+    
+    open lazy var geoService: GeoService = {
+        let _geoSevice = GeoService()
+        return _geoSevice
     }()
 }

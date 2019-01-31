@@ -1,5 +1,5 @@
 //
-//  PersistenceService.swift
+//  ReturnedRequest.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,24 +19,8 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class PersistenceService: NSObject {
-
-    open func ofTable(_ tableName: String) -> MapDrivenDataStore {
-        return MapDrivenDataStore(tableName: tableName)
-    }
-    
-    open func of(_ entityClass: AnyClass) -> DataStoreFactory {
-        return DataStoreFactory(entityClass: entityClass)
-    }
-    
-    open func describe(tableName: String, responseBlock: (([ObjectProperty]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
-        PersistenceServiceUtils().describe(tableName: tableName, responseBlock: responseBlock, errorBlock: errorBlock)
-    }
-    
-    open lazy var permissions: DataPermission = {
-        let _permissions = DataPermission()
-        return _permissions
-    }()
+class ReturnedResponse: NSObject {
+    var data: Data?
+    var response: HTTPURLResponse?
+    var error: Error?
 }
-
-

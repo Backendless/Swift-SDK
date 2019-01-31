@@ -19,22 +19,21 @@
  *  ********************************************************************************************************************
  */
 
-import Alamofire
 import SwiftyJSON
 
 class ProcessResponse: NSObject {
     
     static let shared = ProcessResponse()
     
-    func adapt<T>(response: DataResponse<Data>, to: T.Type) -> Any? where T: Decodable {
+    func adapt<T>(response: ReturnedResponse, to: T.Type) -> Any? where T: Decodable {
         if response.data?.count == 0 {
-            if let responseResult = getResponseResult(responseData: response), responseResult is Fault {
+            if let responseResult = getResponseResult(response: response), responseResult is Fault {
                 return responseResult as! Fault
             }
             return nil
         }
-        else {            
-            if let responseResult = getResponseResult(responseData: response) {                
+        else {
+            if let responseResult = getResponseResult(response: response) {
                 if responseResult is Fault {
                     return responseResult as! Fault
                 }
@@ -91,30 +90,40 @@ class ProcessResponse: NSObject {
             catch {
                 return Fault(domain: (error as NSError).domain, code: (error as NSError).code, userInfo: (error as NSError).userInfo)
             }
-
+            
         }
         return nil
     }
     
-    func getResponseResult(responseData: DataResponse<Data>) -> Any? {
-        let responseResult =  try? JSONSerialization.jsonObject(with: responseData.data!, options: []) as? [String: Any]
-        switch responseData.result {
-        case .success( _):
-            if let responseResult = responseResult {
-                return responseResult as Any
+    func getResponseResult(response: ReturnedResponse) -> Any? {
+        if let error = response.error {
+            let faultCode = response.response?.statusCode
+            var faultMessage = error.localizedDescription
+            if faultCode == 404 {
+                faultMessage = "Not Found"
             }
-            
-        case .failure (let error):
-            if let faultDictionary = responseResult {
-                return Fault(message: faultDictionary!["message"] as? String, faultCode: faultDictionary!["code"] as! Int)
-            }
-            else {
-                let faultCode = responseData.response?.statusCode
-                var faultMessage = error.localizedDescription
-                if faultCode == 404 {
-                    faultMessage = "Not Found"
+            return Fault(message: faultMessage, faultCode: faultCode!)
+        }
+        else if let _response = response.response {
+            if let data = response.data {
+                let responseResultDictionary =  try? JSONSerialization.jsonObject(with: data, options: [])
+                if let faultDictionary = responseResultDictionary as? [String: Any],
+                    let faultCode = faultDictionary["code"] as? Int,
+                    let faultMessage = faultDictionary["message"] as? String {
+                    return Fault(message: faultMessage, faultCode: faultCode)
                 }
-                return Fault(message: faultMessage, faultCode: faultCode!)
+                if responseResultDictionary != nil {
+                    return responseResultDictionary
+                }
+                else if _response.statusCode < 200 && _response.statusCode > 400 {
+                    let faultCode = _response.statusCode
+                    var faultMessage = "Unrecognized error"
+                    if faultCode == 404 {
+                        faultMessage = "Not Found"
+                    }
+                    return Fault(message: faultMessage, faultCode: faultCode)
+                }
+                return responseResultDictionary
             }
         }
         return nil

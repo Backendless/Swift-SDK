@@ -173,19 +173,19 @@ import SwiftyJSON
     }
     
     open func setRelation(columnName: String, parentObjectId: String, childrenObjectIds: [String], responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
-        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, childrenObjectIds: childrenObjectIds, httpMethod: .post, responseBlock: responseBlock, errorBlock: errorBlock)
+        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, childrenObjectIds: childrenObjectIds, httpMethod: .POST, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
     open func setRelation(columnName: String, parentObjectId: String, whereClause: String?, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
-        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, whereClause: whereClause, httpMethod: .post, responseBlock: responseBlock, errorBlock: errorBlock)
+        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, whereClause: whereClause, httpMethod: .POST, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
     open func addRelation(columnName: String, parentObjectId: String, childrenObjectIds: [String], responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
-        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, childrenObjectIds: childrenObjectIds, httpMethod: .put, responseBlock: responseBlock, errorBlock: errorBlock)
+        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, childrenObjectIds: childrenObjectIds, httpMethod: .POST, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
     open func addRelation(columnName: String, parentObjectId: String, whereClause: String?, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
-        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, whereClause: whereClause, httpMethod: .put, responseBlock: responseBlock, errorBlock: errorBlock)
+        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, whereClause: whereClause, httpMethod: .POST, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
     open func deleteRelation(columnName: String, parentObjectId: String, childrenObjectIds: [String], responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
@@ -194,5 +194,19 @@ import SwiftyJSON
     
     open func deleteRelation(columnName: String, parentObjectId: String, whereClause: String?, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         persistenceServiceUtils.deleteRelation(columnName: columnName, parentObjectId: parentObjectId, whereClause: whereClause, responseBlock: responseBlock, errorBlock: errorBlock)
+    }
+    
+    open func loadRelations(objectId: String, queryBuilder: LoadRelationsQueryBuilder, responseBlock: (([Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        let wrappedBlock: ([[String: Any]]) -> () = { (responseArray) in
+            var resultArray = [Any]()
+            for responseObject in responseArray {
+                if let relationType = queryBuilder.getRelationType(),
+                    let resultObject = self.persistenceServiceUtils.dictionaryToEntity(dictionary: responseObject, className: self.persistenceServiceUtils.getClassName(entity: relationType)) {
+                    resultArray.append(resultObject)
+                }
+            }
+            responseBlock(resultArray)
+        }
+        persistenceServiceUtils.loadRelations(objectId: objectId, queryBuilder: queryBuilder, responseBlock: wrappedBlock, errorBlock: errorBlock)
     }
 }

@@ -19,7 +19,6 @@
  *  ********************************************************************************************************************
  */
 
-import Alamofire
 import SwiftyJSON
 
 class PersistenceServiceUtils: NSObject {
@@ -42,8 +41,7 @@ class PersistenceServiceUtils: NSObject {
     }
     
     func describe(tableName: String, responseBlock: (([ObjectProperty]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
-        let request = AlamofireManager(restMethod: "data/\(tableName)/properties", httpMethod: .get, headers: nil, parameters: nil).makeRequest()
-        request.responseData(completionHandler: { response in
+        BackendlessRequestManager(restMethod: "data/\(tableName)/properties", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: [ObjectProperty].self) {
                 if result is Fault {
                     errorBlock(result as! Fault)
@@ -58,8 +56,7 @@ class PersistenceServiceUtils: NSObject {
     func save(entity: [String : Any], responseBlock: (([String : Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = entity
-        let request = AlamofireManager(restMethod: "data/\(tableName)", httpMethod: .post, headers: headers, parameters: parameters).makeRequest()
-        request.responseData(completionHandler: { response in
+        BackendlessRequestManager(restMethod: "data/\(tableName)", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                 if result is Fault {
                     errorBlock(result as! Fault)
@@ -74,8 +71,7 @@ class PersistenceServiceUtils: NSObject {
     func createBulk(entities: [[String: Any]], responseBlock: (([String]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = entities
-        let request = AlamofireManager(restMethod: "data/bulk/\(tableName)", httpMethod: .post, headers: headers, parameters: parameters).makeRequest()
-        request.responseData(completionHandler: { response in
+        BackendlessRequestManager(restMethod: "data/bulk/\(tableName)", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: [String].self) {
                 if result is Fault {
                     errorBlock(result as! Fault)
@@ -91,8 +87,7 @@ class PersistenceServiceUtils: NSObject {
         let headers = ["Content-Type": "application/json"]
         let parameters = entity
         if let objectId = entity["objectId"] as? String {
-            let request = AlamofireManager(restMethod: "data/\(tableName)/\(objectId)", httpMethod: .put, headers: headers, parameters: parameters).makeRequest()
-            request.responseData(completionHandler: { response in
+            BackendlessRequestManager(restMethod: "data/\(tableName)/\(objectId)", httpMethod: .PUT, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
                 if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                     if result is Fault {
                         errorBlock(result as! Fault)
@@ -112,8 +107,7 @@ class PersistenceServiceUtils: NSObject {
         if whereClause != nil, whereClause?.count ?? 0 > 0 {
             restMethod += "?where=\(stringToUrlString(originalString: whereClause!))"
         }
-        let request = AlamofireManager(restMethod: restMethod, httpMethod: .put, headers: headers, parameters: parameters).makeRequest()
-        request.responseData(completionHandler: { response in
+        BackendlessRequestManager(restMethod: restMethod, httpMethod: .PUT, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
                     errorBlock(result as! Fault)
@@ -126,8 +120,8 @@ class PersistenceServiceUtils: NSObject {
     }
     
     func removeById(objectId: String, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
-        let request = AlamofireManager(restMethod: "data/\(tableName)/\(objectId)", httpMethod: .delete, headers: nil, parameters: nil).makeRequest()
-        request.responseData(completionHandler: { response in
+        let headers = [String: String]()
+        BackendlessRequestManager(restMethod: "data/\(tableName)/\(objectId)", httpMethod: .DELETE, headers: headers, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                 if result is Fault {
                     errorBlock(result as! Fault)
@@ -146,8 +140,7 @@ class PersistenceServiceUtils: NSObject {
         if whereClause == nil {
             parameters = ["where": "objectId != NULL"]
         }        
-        let request = AlamofireManager(restMethod: "data/bulk/\(tableName)/delete", httpMethod: .post, headers: headers, parameters: parameters).makeRequest()
-        request.responseData(completionHandler: { response in
+        BackendlessRequestManager(restMethod: "data/bulk/\(tableName)/delete", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
                     errorBlock(result as! Fault)
@@ -165,8 +158,7 @@ class PersistenceServiceUtils: NSObject {
         if let whereClause = queryBuilder?.getWhereClause(), whereClause.count > 0 {
             restMethod += "?where=\(stringToUrlString(originalString: whereClause))"
         }
-        let request = AlamofireManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest()
-        request.responseData(completionHandler: { response in
+        BackendlessRequestManager(restMethod: restMethod, httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
                     errorBlock(result as! Fault)
@@ -176,7 +168,7 @@ class PersistenceServiceUtils: NSObject {
                 self.storedObjects.removeObjectIds(tableName: self.tableName)
                 responseBlock(self.dataToNSNumber(data: response.data!))
             }
-        })        
+        })
     }
     
     func find(queryBuilder: DataQueryBuilder?, responseBlock: (([[String : Any]]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
@@ -206,8 +198,7 @@ class PersistenceServiceUtils: NSObject {
         if let offset = queryBuilder?.getOffset() {
             parameters["offset"] = offset
         }
-        let request = AlamofireManager(restMethod: "data/\(tableName)/find", httpMethod: .post, headers: headers, parameters: parameters).makeRequest()
-        request.responseData(completionHandler: { response in
+        BackendlessRequestManager(restMethod: "data/\(tableName)/find", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: [JSON].self) {
                 if result is Fault {
                     errorBlock(result as! Fault)
@@ -251,10 +242,8 @@ class PersistenceServiceUtils: NSObject {
         else if related == nil && relationsDepth! > 0 {
             restMethod += "?relationsDepth=" + String(relationsDepth!)
         }
-        
-        let request = AlamofireManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest()
-        request.responseData(completionHandler: { response in
-            if let result = self.processResponse.adapt(response: response, to: JSON.self) {                
+        BackendlessRequestManager(restMethod: restMethod, httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                 if result is Fault {
                     errorBlock(result as! Fault)
                 }
@@ -268,8 +257,7 @@ class PersistenceServiceUtils: NSObject {
     func setOrAddRelation(columnName: String, parentObjectId: String, childrenObjectIds: [String], httpMethod: HTTPMethod, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = childrenObjectIds
-        let request = AlamofireManager(restMethod: "data/\(tableName)/\(parentObjectId)/\(columnName)", httpMethod: httpMethod, headers: headers, parameters: parameters).makeRequest()
-        request.responseData(completionHandler: { response in
+        BackendlessRequestManager(restMethod: "data/\(tableName)/\(parentObjectId)/\(columnName)", httpMethod: httpMethod, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
                     errorBlock(result as! Fault)
@@ -287,8 +275,7 @@ class PersistenceServiceUtils: NSObject {
         if whereClause != nil, whereClause?.count ?? 0 > 0 {
             restMethod += "?whereClause=\(stringToUrlString(originalString: whereClause!))"
         }
-        let request = AlamofireManager(restMethod: restMethod, httpMethod: httpMethod, headers: nil, parameters: nil).makeRequest()
-        request.responseData(completionHandler: { response in
+        BackendlessRequestManager(restMethod: restMethod, httpMethod: httpMethod, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
                     errorBlock(result as! Fault)
@@ -304,8 +291,7 @@ class PersistenceServiceUtils: NSObject {
     func deleteRelation(columnName: String, parentObjectId: String, childrenObjectIds: [String], responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = childrenObjectIds
-        let request = AlamofireManager(restMethod: "data/\(tableName)/\(parentObjectId)/\(columnName)", httpMethod: .delete, headers: headers, parameters: parameters).makeRequest()
-        request.responseData(completionHandler: { response in
+        BackendlessRequestManager(restMethod: "data/\(tableName)/\(parentObjectId)/\(columnName)", httpMethod: .DELETE, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
                     errorBlock(result as! Fault)
@@ -323,8 +309,7 @@ class PersistenceServiceUtils: NSObject {
         if whereClause == nil {
             whereClause = "objectId != NULL"
         }
-        let request = AlamofireManager(restMethod: "data/\(tableName)/\(parentObjectId)/\(columnName)?whereClause=\(stringToUrlString(originalString: whereClause!))", httpMethod: .delete, headers: nil, parameters: nil).makeRequest()
-        request.responseData(completionHandler: { response in
+        BackendlessRequestManager(restMethod: "data/\(tableName)/\(parentObjectId)/\(columnName)?whereClause=\(stringToUrlString(originalString: whereClause!))", httpMethod: .DELETE, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
                     errorBlock(result as! Fault)
@@ -337,10 +322,46 @@ class PersistenceServiceUtils: NSObject {
         })
     }
     
+    func loadRelations(objectId: String, queryBuilder: LoadRelationsQueryBuilder, responseBlock: (([[String : Any]]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        var restMethod = "data/\(tableName)/\(objectId)"
+        if let relationName = queryBuilder.getRelationName() {
+            restMethod += "/\(relationName)"
+            
+            let pageSize = queryBuilder.getPageSize()
+            let offset = queryBuilder.getOffset()
+            
+            if pageSize != 100 && offset != 0 {
+                restMethod += "?pageSize=\(pageSize)&offset=\(offset)"
+            }
+            else if pageSize == 100 && offset != 0 {
+                restMethod += "?offset=\(offset)"
+            }
+            else if pageSize != 100 && offset == 0 {
+                restMethod += "?pageSize=\(pageSize)"
+            }
+        }
+        BackendlessRequestManager(restMethod: restMethod, httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = self.processResponse.adapt(response: response, to: [JSON].self) {
+                if result is Fault {
+                    errorBlock(result as! Fault)
+                }
+                else {
+                    var resultArray = [[String: Any]]()
+                    for resultObject in result as! [JSON] {
+                        if let resultDictionary = resultObject.dictionaryObject {
+                            resultArray.append(resultDictionary)
+                        }
+                    }
+                    responseBlock(resultArray)
+                }
+            }
+        })
+    }
+    
     // ******************** additional methods ********************
     
     func getTableName(entity: Any) -> String {
-        var name = String(describing: entity)
+        var name = String(describing: entity)        
         if name == "BackendlessUser" {
             name = "Users"
         }
