@@ -174,7 +174,6 @@
 		5AFE8E5C21E8D7010003477B /* PersistenceServiceTests */ = {
 			isa = PBXGroup;
 			children = (
-				5E5FE02721F7347200387F8B /* TestObjects */,
 				5AFE8E5D21E8D7410003477B /* PersistenceServiceTests.swift */,
 				5AFE8E6121E8E2620003477B /* MapDrivenDataStoreTests.swift */,
 				5AFE8E6521E8E5C00003477B /* DataStoreFactoryTests.swift */,
@@ -282,6 +281,7 @@
 		5EAA649A21AEDBEA006019EF = {
 			isa = PBXGroup;
 			children = (
+				5E5FE02721F7347200387F8B /* TestObjects */,
 				5ED3E2A921B0267200A223C1 /* Sources */,
 				5E9C572A21AEEA0400877870 /* SwiftSDK */,
 				5ECE680C21B0248B00839120 /* SwiftSDKTests */,

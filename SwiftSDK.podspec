@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.tvos.deployment_target = '9.0'
   s.watchos.deployment_target = '2.0'
   s.requires_arc = true
-  s.source = { :git => 'https://github.com/Backendless/Swift-SDK.git', :tag => '1.0.0-beta1' }
+  s.source = { :git => 'https://github.com/Backendless/Swift-SDK.git', :tag => '0.0.1-b1' }
   s.source_files  = "Sources/SwiftSDK/**/*.swift", "Sources/SwiftSDK/*.swift"
   s.dependency "SwiftyJSON"
   
