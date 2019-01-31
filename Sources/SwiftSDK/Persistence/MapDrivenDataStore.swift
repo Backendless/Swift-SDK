@@ -103,19 +103,19 @@
     }
     
     open func setRelation(columnName: String, parentObjectId: String, childrenObjectIds: [String], responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
-        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, childrenObjectIds: childrenObjectIds, httpMethod: .post, responseBlock: responseBlock, errorBlock: errorBlock)
+        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, childrenObjectIds: childrenObjectIds, httpMethod: .POST, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
     open func setRelation(columnName: String, parentObjectId: String, whereClause: String?, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
-        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, whereClause: whereClause, httpMethod: .post, responseBlock: responseBlock, errorBlock: errorBlock)
+        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, whereClause: whereClause, httpMethod: .POST, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
     open func addRelation(columnName: String, parentObjectId: String, childrenObjectIds: [String], responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
-        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, childrenObjectIds: childrenObjectIds, httpMethod: .put, responseBlock: responseBlock, errorBlock: errorBlock)
+        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, childrenObjectIds: childrenObjectIds, httpMethod: .POST, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
     open func addRelation(columnName: String, parentObjectId: String, whereClause: String?, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
-        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, whereClause: whereClause, httpMethod: .put, responseBlock: responseBlock, errorBlock: errorBlock)
+        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, whereClause: whereClause, httpMethod: .POST, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
     open func deleteRelation(columnName: String, parentObjectId: String, childrenObjectIds: [String], responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
@@ -124,5 +124,9 @@
     
     open func deleteRelation(columnName: String, parentObjectId: String, whereClause: String?, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         persistenceServiceUtils.deleteRelation(columnName: columnName, parentObjectId: parentObjectId, whereClause: whereClause, responseBlock: responseBlock, errorBlock: errorBlock)
+    }
+    
+    open func loadRelations(objectId: String, queryBuilder: LoadRelationsQueryBuilder, responseBlock: (([[String : Any]]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.loadRelations(objectId: objectId, queryBuilder: queryBuilder, responseBlock: responseBlock, errorBlock: errorBlock)
     }
 }

@@ -1,5 +1,5 @@
 //
-//  AlamofireManager.swift
+//  BackendlessRequestManager.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,25 +19,30 @@
  *  ********************************************************************************************************************
  */
 
-import Alamofire
+enum HTTPMethod: String {
+    case GET
+    case POST
+    case PUT
+    case DELETE
+}
 
-class AlamofireManager: NSObject {
+class BackendlessRequestManager: NSObject {
     
     private var urlString = "\(Backendless.shared.hostUrl)/\(Backendless.shared.getApplictionId())/\(Backendless.shared.getApiKey())/"
     private var restMethod: String
     private var httpMethod: HTTPMethod
-    private var headers: HTTPHeaders?
+    private var headers: [String: String]?
     private var parameters: Any?
     
-    init(restMethod: String, httpMethod: HTTPMethod, headers: HTTPHeaders?, parameters: Any?) {
+    init(restMethod: String, httpMethod: HTTPMethod, headers: [String: String]?, parameters: Any?) {
         self.restMethod = restMethod
         self.httpMethod = httpMethod
         self.headers = headers
         self.parameters = parameters
     }
     
-    func makeRequest() -> DataRequest {     
-        var request = URLRequest(url: URL(string: urlString+restMethod)!)        
+    func makeRequest(getResponse: @escaping (ReturnedResponse) -> ()){
+        var request = URLRequest(url: URL(string: urlString+restMethod)!)
         request.httpMethod = httpMethod.rawValue
         if let headers = headers, headers.count > 0 {
             for key in headers.keys {
@@ -46,9 +51,25 @@ class AlamofireManager: NSObject {
                 }
             }
         }
-        if let parametersArray = parameters {
-            request.httpBody = try? JSONSerialization.data(withJSONObject: parametersArray, options: [])
+        if let userToken = Backendless.shared.userService.currentUser?.userToken {
+            request.addValue(userToken, forHTTPHeaderField: "user-token")
         }
-        return Alamofire.request(request).validate(statusCode:  200..<400)
+        if let parameters = parameters {
+            request.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
+        }
+        let dataTask = URLSession.shared.dataTask(with: request) { data, response, error in
+            let returnedResponse = ReturnedResponse()
+            if let response = response as? HTTPURLResponse {
+                returnedResponse.response = response
+            }
+            if let data = data {
+                returnedResponse.data = data
+            }
+            if let error = error {
+                returnedResponse.error = error
+            }
+            getResponse(returnedResponse)
+        }
+        dataTask.resume()
     }
 }

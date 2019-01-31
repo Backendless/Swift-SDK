@@ -579,6 +579,46 @@ class MapDrivenDataStoreTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
     
+    func test_24_loadRelationsTwoStepsWithPaging() {
+        let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.loadRelationsTwoStepsWithPaging")
+        let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
+        childDataStore.createBulk(entities: childObjectsToSave, responseBlock: { savedChildrenIds in
+            let parentObjectToSave = self.createDictionary()
+            self.dataStore.save(entity: parentObjectToSave, responseBlock: { savedParentObject in
+                if let parentObjectId = savedParentObject["objectId"] as? String {
+                    // 1:N
+                    self.dataStore.setRelation(columnName: "children:ChildTestClass:n", parentObjectId: parentObjectId, childrenObjectIds: savedChildrenIds, responseBlock: { relations in
+                        XCTAssertNotNil(relations)
+                        XCTAssert(Int(exactly: relations) == 2)
+                        // retrieve relation
+                        let queryBuilder = LoadRelationsQueryBuilder(tableName: "ChildTestClass")
+                        queryBuilder.setRelationName(relationName: "children")
+                        queryBuilder.setPageSize(pageSize: 2)
+                        queryBuilder.setOffset(offset: 1)
+                        self.dataStore.loadRelations(objectId: parentObjectId, queryBuilder: queryBuilder, responseBlock: { foundRelations in
+                            XCTAssertNotNil(foundRelations)
+                            XCTAssert(Int(exactly: foundRelations.count) == 1)
+                            expectation.fulfill()
+                        }, errorBlock: { fault in
+                            XCTAssertNotNil(fault)
+                            XCTFail("\(fault.code): \(fault.message!)")
+                        })
+                    }, errorBlock: { fault in
+                        XCTAssertNotNil(fault)
+                        XCTFail("\(fault.code): \(fault.message!)")
+                    })
+                }
+            }, errorBlock: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+    
     // ***************************************
     
     func createDictionary() -> [String: Any] {

@@ -45,7 +45,7 @@ class UserServiceTests: XCTestCase {
     class func clearTables() {
         Backendless.shared.data.ofTable("Users").removeBulk(whereClause: nil, responseBlock: { removedObjects in
         }, errorBlock: { fault in
-            print("ERROR \(fault.faultCode): \(fault.message!)")
+            print("USER SERVICE TEST SETUP ERROR \(fault.faultCode): \(fault.message ?? "")")
         })
     }
     

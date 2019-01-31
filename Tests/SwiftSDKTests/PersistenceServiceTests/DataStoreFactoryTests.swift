@@ -678,6 +678,49 @@ class DataStoreFactoryTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
     
+    func test_25_loadRelationsTwoStepsWithPaging() {
+        let expectation = self.expectation(description: "PASSED: dataStoreFactory.loadRelationsTwoStepsWithPaging")
+        
+        let childObjectToSave = ChildTestClass()
+        childObjectToSave.foo = "bar"
+        
+        childDataStore.save(entity: childObjectToSave, responseBlock: { savedChildObject in
+            let parentObjectToSave = self.createTestClassObject()
+            self.dataStore.save(entity: parentObjectToSave, responseBlock: { savedParentObject in
+                // 1:1
+                if let parentObjectId = (savedParentObject as! TestClass).objectId,
+                    let childObjectId = (savedChildObject as! ChildTestClass).objectId {
+                    self.dataStore.setRelation(columnName: "child:ChildTestClass:1", parentObjectId: parentObjectId, childrenObjectIds: [childObjectId], responseBlock: { relations in
+                        XCTAssertNotNil(relations)
+                        XCTAssert(Int(exactly: relations) == 1)
+                        // retrieve relation
+                        let queryBuilder = LoadRelationsQueryBuilder(entityClass: ChildTestClass.self)
+                        queryBuilder.setRelationName(relationName: "child")
+                        queryBuilder.setPageSize(pageSize: 1)
+                        self.dataStore.loadRelations(objectId: parentObjectId, queryBuilder: queryBuilder, responseBlock: { foundRelations in
+                            XCTAssertNotNil(foundRelations)
+                            XCTAssert(Int(exactly: foundRelations.count) == 1)
+                            expectation.fulfill()
+                        }, errorBlock: { fault in
+                            XCTAssertNotNil(fault)
+                            XCTFail("\(fault.code): \(fault.message!)")
+                        })
+                    }, errorBlock: { fault in
+                        XCTAssertNotNil(fault)
+                        XCTFail("\(fault.code): \(fault.message!)")
+                    })
+                }
+            }, errorBlock: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorBlock: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+    
     // ***************************************
     
     func createTestClassObject() -> TestClass {
