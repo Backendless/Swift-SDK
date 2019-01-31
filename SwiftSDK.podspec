@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name         = "SwiftSDK"
   s.module_name  = "Backendless"
-  s.version      = "1.0.0-beta1"
+  s.version      = "0.0.1-b1"
   s.license      = { :type => 'MIT', :text => 'Copyright (c) 2013-2018 by Backendless Corp' }
   s.homepage     = "http://backendless.com"
   s.authors      = { 'Mark Piller' => 'mark@backendless.com', 'Olha Danylova' => 'olga@themidnightcoders.com' }
