@@ -22,7 +22,14 @@
 @objcMembers open class UserService: NSObject {
     
     open private(set) var currentUser: BackendlessUser?
-    open var stayLoggedIn = false
+    open var stayLoggedIn: Bool {
+        get {
+            return getStayLoggedIn()
+        }
+        set(_stayLoggedIn) {
+            setStayLoggedIn(stayLoggedIn: _stayLoggedIn)
+        }
+    }
     open private(set) var isValidUserToken: Bool {
         get {
             if getPersistentUserToken() != nil {
@@ -204,5 +211,13 @@
     
     func removePersistentUser() {
         userDefaultsHelper.removePersistentUser()
+    }
+    
+    func setStayLoggedIn(stayLoggedIn: Bool) {
+        userDefaultsHelper.saveStayLoggedIn(stayLoggedIn: stayLoggedIn)
+    }
+    
+    func getStayLoggedIn() -> Bool {
+        return userDefaultsHelper.getStayLoggedIn()
     }
 }

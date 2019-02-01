@@ -24,6 +24,7 @@ class UserDefaultsHelper: NSObject {
     static let shared = UserDefaultsHelper()
     
     private let PERSISTENT_USER_TOKEN_KEY = "userTokenKey"
+    private let STAY_LOGGED_IN_KEY = "stayLoggedInKey"
     
     func savePersistentUserToken(userToken: String) {
         let userDefaults = UserDefaults.standard
@@ -43,5 +44,21 @@ class UserDefaultsHelper: NSObject {
     
     func removePersistentUser() {
         UserDefaults.standard.removeObject(forKey: PERSISTENT_USER_TOKEN_KEY)
+    }
+    
+    func saveStayLoggedIn(stayLoggedIn: Bool) {
+        let userDefaults = UserDefaults.standard
+        let loggedIn: [String: NSNumber] = ["stayLoggedIn": NSNumber(booleanLiteral: stayLoggedIn)]
+        userDefaults.setValue(loggedIn, forKey: STAY_LOGGED_IN_KEY)
+        userDefaults.synchronize()
+    }
+    
+    func getStayLoggedIn() -> Bool {
+        let userDefaults = UserDefaults.standard
+        if let loggedIn = userDefaults.value(forKey: STAY_LOGGED_IN_KEY),
+            let stayLoggedIn = (loggedIn as! [String: NSNumber])["stayLoggedIn"] {
+            return stayLoggedIn.boolValue
+        }
+        return false
     }
 }
