@@ -19,8 +19,6 @@
  *  ********************************************************************************************************************
  */
 
-import SwiftyJSON
-
 class UserDefaultsHelper: NSObject {
     
     static let shared = UserDefaultsHelper()
