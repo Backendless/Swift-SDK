@@ -19,8 +19,6 @@
  *  ********************************************************************************************************************
  */
 
-import SwiftyJSON
-
 @objcMembers open class UserService: NSObject {
     
     open private(set) var currentUser: BackendlessUser?

@@ -19,8 +19,6 @@
  *  ********************************************************************************************************************
  */
 
-import SwiftyJSON
-
 @objcMembers open class ObjectProperty: NSObject, NSCoding, Codable {
     
     open var name: String

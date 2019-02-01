@@ -19,8 +19,6 @@
  *  ********************************************************************************************************************
  */
 
-import SwiftyJSON
-
 class ProcessResponse: NSObject {
     
     static let shared = ProcessResponse()

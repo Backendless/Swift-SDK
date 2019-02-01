@@ -19,8 +19,6 @@
  *  ********************************************************************************************************************
  */
 
-import SwiftyJSON
-
 class PersistenceServiceUtils: NSObject {
     
     private var tableName: String = ""

@@ -19,8 +19,6 @@
  *  ********************************************************************************************************************
  */
 
-import SwiftyJSON
-
 @objcMembers open class DataStoreFactory: NSObject, IDataStore {
     
     typealias CustomType = Any

@@ -19,8 +19,6 @@
  *  ********************************************************************************************************************
  */
 
-import SwiftyJSON
-
 @objcMembers open class GeoPoint: NSObject, NSCoding, Codable {
     
     open private(set) var objectId: String

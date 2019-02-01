@@ -19,8 +19,6 @@
  *  ********************************************************************************************************************
  */
 
-import SwiftyJSON
-
 @objcMembers open class BackendlessUser: NSObject, NSCoding, Codable {
     
     open var email: String
