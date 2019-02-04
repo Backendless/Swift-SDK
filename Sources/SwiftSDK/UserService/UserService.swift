@@ -30,16 +30,6 @@
             setStayLoggedIn(stayLoggedIn: _stayLoggedIn)
         }
     }
-    open private(set) var isValidUserToken: Bool {
-        get {
-            if getPersistentUserToken() != nil {
-                return true
-            }
-            return false
-        }
-        set {
-        }
-    }
     
     private let processResponse = ProcessResponse.shared
     private let userDefaultsHelper = UserDefaultsHelper.shared
@@ -129,6 +119,26 @@
      }*/
     
     // ******************************************************
+    
+    open func isValidUserToken(responseBlock: ((Bool) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        if let userToken = getPersistentUserToken() {
+            BackendlessRequestManager(restMethod: "users/isvalidusertoken/\(userToken)", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+                if let responseData = response.data {
+                    do {
+                        responseBlock(try JSONSerialization.jsonObject(with: responseData, options: .allowFragments) as! Bool)
+                    }
+                    catch {
+                        let faultCode = response.response?.statusCode
+                        let faultMessage = error.localizedDescription
+                        errorBlock(self.processResponse.faultConstructor(faultMessage, faultCode: faultCode!))
+                    }
+                }
+            })
+        }
+        else {
+            responseBlock(false)
+        }
+    }
     
     open func update(user: BackendlessUser, responseBlock: ((BackendlessUser) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
