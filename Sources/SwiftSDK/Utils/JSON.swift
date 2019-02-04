@@ -1,3 +1,4 @@
+//
 //  SwiftyJSON.swift
 //
 //  Copyright (c) 2014 - 2017 Ruoyu Fu, Pinglin Tang

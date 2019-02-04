@@ -40,9 +40,10 @@ class ProcessResponse: NSObject {
                         if to == BackendlessUser.self {
                             return adaptToBackendlessUser(responseResult: responseResult)
                         }
-                            /*else if to == [BackendlessUser].self {
-                             // array of users
-                             }*/
+//                        else if to == [BackendlessUser].self {
+//                            if let responseResult = responseResult as? [[String: Any]] {                                
+//                            }
+//                        }
                         else if let responseData = response.data {
                             let responseObject = try JSONDecoder().decode(to, from: responseData)
                             return responseObject
@@ -96,11 +97,8 @@ class ProcessResponse: NSObject {
     func getResponseResult(response: ReturnedResponse) -> Any? {
         if let error = response.error {
             let faultCode = response.response?.statusCode
-            var faultMessage = error.localizedDescription
-            if faultCode == 404 {
-                faultMessage = "Not Found"
-            }
-            return Fault(message: faultMessage, faultCode: faultCode!)
+            let faultMessage = error.localizedDescription
+            return faultConstructor(faultMessage, faultCode: faultCode!)
         }
         else if let _response = response.response {
             if let data = response.data {
@@ -108,22 +106,29 @@ class ProcessResponse: NSObject {
                 if let faultDictionary = responseResultDictionary as? [String: Any],
                     let faultCode = faultDictionary["code"] as? Int,
                     let faultMessage = faultDictionary["message"] as? String {
-                    return Fault(message: faultMessage, faultCode: faultCode)
+                    return faultConstructor(faultMessage, faultCode: faultCode)
                 }
                 if responseResultDictionary != nil {
                     return responseResultDictionary
                 }
-                else if _response.statusCode < 200 && _response.statusCode > 400 {
+                else if _response.statusCode < 200 || _response.statusCode > 400 {
                     let faultCode = _response.statusCode
-                    var faultMessage = "Unrecognized error"
-                    if faultCode == 404 {
-                        faultMessage = "Not Found"
-                    }
-                    return Fault(message: faultMessage, faultCode: faultCode)
+                    let faultMessage = "Unrecognized error"
+                    return faultConstructor(faultMessage, faultCode: faultCode)
                 }
                 return responseResultDictionary
             }
         }
         return nil
+    }
+    
+    func faultConstructor(_ faultMessage: String, faultCode: Int) -> Fault {
+        var message = faultMessage
+        if faultCode < 200 || faultCode > 400 {
+            if faultCode == 404 {
+                message = "Not Found"
+            }
+        }
+        return Fault(message: message, faultCode: faultCode)
     }
 }
