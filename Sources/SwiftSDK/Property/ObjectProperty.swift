@@ -1,5 +1,5 @@
 //
-//  UserProperty.swift
+//  ObjectProperty.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,16 +19,46 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class UserProperty: ObjectProperty {
+@objcMembers open class ObjectProperty: NSObject, NSCoding, Codable {
     
-    open var identity = false
+    open var name: String
+    open var required: Bool = false
+    open var type: DataTypeEnum
+    open var defaultValue: Any? {
+        get {
+            return self._defaultValue?.object
+        }
+        set {
+            if defaultValue != nil {
+                self._defaultValue = JSON(defaultValue!)
+            }
+        }
+    }
+    var _defaultValue: JSON?
+    open var relatedTable: String?
+    open var customRegex: String?
+    open var autoLoad: Bool = false
+    open var isPrimaryKey: Bool = false
     
     enum CodingKeys: String, CodingKey {
-        case identity
+        case name
+        case required
+        case type
+        case _defaultValue = "defaultValue"
+        case relatedTable
+        case customRegex
+        case autoLoad
+        case isPrimaryKey
     }
     
-    init(name: String, required: Bool, type: DataTypeEnum, defaultValue: JSON?, relatedTable: String?, customRegex: String?, autoLoad: Bool, identity: Bool, isPrimaryKey: Bool) {
-        super.init(name: name, required: required, type: type, defaultValue: defaultValue, relatedTable: relatedTable, customRegex: customRegex, autoLoad: autoLoad, isPrimaryKey: isPrimaryKey)
+    init (name: String, required: Bool, type: DataTypeEnum, defaultValue: JSON?, relatedTable: String?, customRegex: String?, autoLoad: Bool, isPrimaryKey: Bool) {
+        self.name = name
+        self.required = required
+        self.type = type
+        self._defaultValue = defaultValue
+        self.relatedTable = relatedTable
+        self.customRegex = customRegex
+        self.autoLoad = autoLoad
         self.isPrimaryKey = isPrimaryKey
     }
     
@@ -39,17 +69,12 @@
         let _defaultValue = aDecoder.decodeObject(forKey: CodingKeys._defaultValue.rawValue) as? JSON
         let relatedTable = aDecoder.decodeObject(forKey: CodingKeys.relatedTable.rawValue) as? String
         let customRegex = aDecoder.decodeObject(forKey: CodingKeys.customRegex.rawValue) as? String
-        let autoload = aDecoder.decodeBool(forKey: CodingKeys.autoLoad.rawValue)
-        let identity = aDecoder.decodeBool(forKey: CodingKeys.identity.rawValue)
+        let autoLoad = aDecoder.decodeBool(forKey: CodingKeys.autoLoad.rawValue)
         let isPrimaryKey = aDecoder.decodeBool(forKey: CodingKeys.isPrimaryKey.rawValue)
-        self.init(name: name, required: required, type: type, defaultValue: _defaultValue, relatedTable: relatedTable, customRegex: customRegex, autoLoad: autoload, identity: identity, isPrimaryKey: isPrimaryKey)
+        self.init(name: name, required: required, type:type, defaultValue: _defaultValue, relatedTable: relatedTable, customRegex: customRegex, autoLoad: autoLoad, isPrimaryKey: isPrimaryKey)
     }
     
-    required public init(from decoder: Decoder) throws {
-        try super.init(from: decoder)
-    }
-    
-    override public func encode(with aCoder: NSCoder) {
+    public func encode(with aCoder: NSCoder) {
         aCoder.encode(name, forKey: CodingKeys.name.rawValue)
         aCoder.encode(required, forKey: CodingKeys.required.rawValue)
         aCoder.encode(type, forKey: CodingKeys.type.rawValue)
@@ -57,7 +82,10 @@
         aCoder.encode(relatedTable, forKey: CodingKeys.relatedTable.rawValue)
         aCoder.encode(customRegex, forKey: CodingKeys.customRegex.rawValue)
         aCoder.encode(autoLoad, forKey: CodingKeys.autoLoad.rawValue)
-        aCoder.encode(identity, forKey: CodingKeys.identity.rawValue)
         aCoder.encode(isPrimaryKey, forKey: CodingKeys.isPrimaryKey.rawValue)
+    }
+    
+    open func getTypeName() -> String {
+        return self.type.rawValue
     }
 }

@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2018 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -19,60 +19,67 @@
  *  ********************************************************************************************************************
  */
 
-import Alamofire
-
-open class ProcessResponse: NSObject {
+class ProcessResponse: NSObject {
     
-    public static let shared = ProcessResponse()
+    static let shared = ProcessResponse()
     
-    func adapt<T>(response: DataResponse<Any>, to: T.Type) -> Any? where T : Decodable {
-        if let responseResult = getResponseResult(response) {
-            if responseResult is Fault {
+    func adapt<T>(response: ReturnedResponse, to: T.Type) -> Any? where T: Decodable {
+        if response.data?.count == 0 {
+            if let responseResult = getResponseResult(response: response), responseResult is Fault {
                 return responseResult as! Fault
             }
-            else if let responseData = response.data, responseData.count > 0 {
-                do {
-                    if to == BackendlessUser.self {
-                        return adaptToBackendlessUser(responseResult: responseResult)
-                    }
-                    /*else if to == [BackendlessUser].self {
-                        // array of users
-                    }*/
-                    else {
-                        let responseObject = try JSONDecoder().decode(to, from: responseData)
-                        return responseObject
-                    }
-                }
-                catch let DecodingError.dataCorrupted(context) {
-                    print(context)
-                } catch let DecodingError.keyNotFound(key, context) {
-                    print("Key '\(key)' not found:", context.debugDescription)
-                    print("codingPath:", context.codingPath)
-                } catch let DecodingError.valueNotFound(value, context) {
-                    print("Value '\(value)' not found:", context.debugDescription)
-                    print("codingPath:", context.codingPath)
-                } catch let DecodingError.typeMismatch(type, context)  {
-                    print("Type '\(type)' mismatch:", context.debugDescription)
-                    print("codingPath:", context.codingPath)
-                } catch {
-                    print("error: ", error)
-                }
-//                catch {
-//                    return Fault(domain: (error as NSError).domain, code: (error as NSError).code, userInfo: (error as NSError).userInfo)
-//                }
-            }
+            return nil
         }
-        return nil
+        else {
+            if let responseResult = getResponseResult(response: response) {
+                if responseResult is Fault {
+                    return responseResult as! Fault
+                }
+                else {
+                    do {
+                        if to == BackendlessUser.self {
+                            return adaptToBackendlessUser(responseResult: responseResult)
+                        }
+//                        else if to == [BackendlessUser].self {
+//                            if let responseResult = responseResult as? [[String: Any]] {                                
+//                            }
+//                        }
+                        else if let responseData = response.data {
+                            let responseObject = try JSONDecoder().decode(to, from: responseData)
+                            return responseObject
+                        }
+                    }
+                        //                    catch let DecodingError.dataCorrupted(context) {
+                        //                        print(context)
+                        //                    } catch let DecodingError.keyNotFound(key, context) {
+                        //                        print("Key '\(key)' not found:", context.debugDescription)
+                        //                        print("codingPath:", context.codingPath)
+                        //                    } catch let DecodingError.valueNotFound(value, context) {
+                        //                        print("Value '\(value)' not found:", context.debugDescription)
+                        //                        print("codingPath:", context.codingPath)
+                        //                    } catch let DecodingError.typeMismatch(type, context)  {
+                        //                        print("Type '\(type)' mismatch:", context.debugDescription)
+                        //                        print("codingPath:", context.codingPath)
+                        //                    } catch {
+                        //                        print("error: ", error)
+                        //                    }
+                    catch {
+                        return Fault(domain: (error as NSError).domain, code: (error as NSError).code, userInfo: (error as NSError).userInfo)
+                    }
+                }
+            }
+            return nil
+        }
     }
     
-    func adaptToBackendlessUser(responseResult: Any) -> Any? {
+    func adaptToBackendlessUser(responseResult: Any?) -> Any? {
         if let responseResult = responseResult as? [String: Any] {
-            var properties = ["email": responseResult["email"], "name": responseResult["name"], "objectId": responseResult["objectId"], "userToken": responseResult["user-token"]]
-            properties["properties"] = responseResult
+            let properties = ["email": responseResult["email"], "name": responseResult["name"], "objectId": responseResult["objectId"], "userToken": responseResult["user-token"]]
             do {
                 let responseData = try JSONSerialization.data(withJSONObject: properties)
                 do {
                     let responseObject = try JSONDecoder().decode(BackendlessUser.self, from: responseData)
+                    responseObject.setProperties(properties: responseResult)
                     return responseObject
                 }
                 catch {
@@ -82,24 +89,46 @@ open class ProcessResponse: NSObject {
             catch {
                 return Fault(domain: (error as NSError).domain, code: (error as NSError).code, userInfo: (error as NSError).userInfo)
             }
+            
         }
-        /*if let responseResult = responseResult as? [[String: Any]] {
-            // array of users
-        }*/
         return nil
     }
     
-    func getResponseResult(_ response: DataResponse<Any>) -> Any? {
-        switch response.result {
-        case .success(let result):
-            if (response.response?.statusCode)! >= 400 {
-                if let faultDictionary = result as? [String : Any] {
-                    return Fault(message: faultDictionary["message"] as? String, faultCode: faultDictionary["code"] as! Int)
-                }
-            }
-            return result            
-        case .failure(let error):
-            return Fault(domain: (error as NSError).domain, code: (error as NSError).code, userInfo: (error as NSError).userInfo)
+    func getResponseResult(response: ReturnedResponse) -> Any? {
+        if let error = response.error {
+            let faultCode = response.response?.statusCode
+            let faultMessage = error.localizedDescription
+            return faultConstructor(faultMessage, faultCode: faultCode!)
         }
+        else if let _response = response.response {
+            if let data = response.data {
+                let responseResultDictionary =  try? JSONSerialization.jsonObject(with: data, options: [])
+                if let faultDictionary = responseResultDictionary as? [String: Any],
+                    let faultCode = faultDictionary["code"] as? Int,
+                    let faultMessage = faultDictionary["message"] as? String {
+                    return faultConstructor(faultMessage, faultCode: faultCode)
+                }
+                if responseResultDictionary != nil {
+                    return responseResultDictionary
+                }
+                else if _response.statusCode < 200 || _response.statusCode > 400 {
+                    let faultCode = _response.statusCode
+                    let faultMessage = "Unrecognized error"
+                    return faultConstructor(faultMessage, faultCode: faultCode)
+                }
+                return responseResultDictionary
+            }
+        }
+        return nil
+    }
+    
+    func faultConstructor(_ faultMessage: String, faultCode: Int) -> Fault {
+        var message = faultMessage
+        if faultCode < 200 || faultCode > 400 {
+            if faultCode == 404 {
+                message = "Not Found"
+            }
+        }
+        return Fault(message: message, faultCode: faultCode)
     }
 }

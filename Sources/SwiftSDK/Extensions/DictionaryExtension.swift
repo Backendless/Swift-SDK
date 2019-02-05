@@ -1,5 +1,5 @@
 //
-//  FaultTests.swift
+//  DictionaryExtension.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,15 +19,10 @@
  *  ********************************************************************************************************************
  */
 
-import XCTest
-@testable import SwiftSDK
 
-class FaultTests: XCTestCase {
+extension Dictionary where Value: Equatable {
     
-    func testFaultInit() {
-        let fault = Fault(message: "Fault message", faultCode: 0)
-        XCTAssertNotNil(fault)
-        XCTAssertNotNil(fault.message)
-        XCTAssertNotNil(fault.faultCode)
+    func getKey(forValue val: Value) -> Key? {
+        return first(where: { $1 == val })?.key
     }
 }

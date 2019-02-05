@@ -1,5 +1,6 @@
 //
-//  FaultTests.swift
+//
+//  TestClassForMappings.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,15 +20,10 @@
  *  ********************************************************************************************************************
  */
 
-import XCTest
-@testable import SwiftSDK
+import Foundation
 
-class FaultTests: XCTestCase {
-    
-    func testFaultInit() {
-        let fault = Fault(message: "Fault message", faultCode: 0)
-        XCTAssertNotNil(fault)
-        XCTAssertNotNil(fault.message)
-        XCTAssertNotNil(fault.faultCode)
-    }
+@objcMembers class TestClassForMappings: NSObject {
+    var objectId: String?
+    var nameProperty: String?
+    var ageProperty: Int = 0
 }

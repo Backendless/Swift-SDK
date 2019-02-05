@@ -1,5 +1,5 @@
 //
-//  FaultTests.swift
+//  ReturnedRequest.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,15 +19,8 @@
  *  ********************************************************************************************************************
  */
 
-import XCTest
-@testable import SwiftSDK
-
-class FaultTests: XCTestCase {
-    
-    func testFaultInit() {
-        let fault = Fault(message: "Fault message", faultCode: 0)
-        XCTAssertNotNil(fault)
-        XCTAssertNotNil(fault.message)
-        XCTAssertNotNil(fault.faultCode)
-    }
+class ReturnedResponse: NSObject {
+    var data: Data?
+    var response: HTTPURLResponse?
+    var error: Error?
 }

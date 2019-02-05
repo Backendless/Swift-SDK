@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2018 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -24,26 +24,35 @@
     public static let shared = Backendless()
     
     open var hostUrl = "https://api.backendless.com"
-    var applicationId = "AppId"
-    var apiKey = "APIKey"
+    
+    private var applicationId = "AppId"
+    private var apiKey = "APIKey"
     
     open func initApp(applicationId: String, apiKey: String) {
         self.applicationId = applicationId
         self.apiKey = apiKey
     }
     
-    open func getApplictionId() -> String? {
+    open func getApplictionId() -> String {
         return applicationId
     }
     
-    open func getApiKey() -> String? {
+    open func getApiKey() -> String {
         return apiKey
     }
     
     open lazy var userService: UserService = {
         let _userSevice = UserService()
-        // userService.getPersistentUser()
         return _userSevice
+    }()
+    
+    open lazy var data: PersistenceService = {
+        return self.persistenceService
+    }()
+    
+    open lazy var persistenceService: PersistenceService = {
+        let _persistenceSevice = PersistenceService()
+        return _persistenceSevice
     }()
     
     open lazy var geo: GeoService = {

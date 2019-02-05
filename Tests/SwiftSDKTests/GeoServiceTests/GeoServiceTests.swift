@@ -25,24 +25,19 @@ import XCTest
 class GeoServiceTests: XCTestCase {
 
     private let backendless = Backendless.shared
-    private let hostUrl = "http://api.backendless.com"
-    private let appId = "EEE9F1BF-2820-7143-FF1A-C812061E2400"
-    private let apiKey = "E1043F31-7C0C-F349-FF9F-2A836F16BA00"
     
-    override func setUp() {
-        backendless.hostUrl = hostUrl
-        backendless.initApp(applicationId: appId, apiKey: apiKey)
+    override class func setUp() {
+        Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
+        Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
     }
     
-    func fulfillExpectation(_ expectation: XCTestExpectation) {
-        expectation.fulfill()
-        print(expectation.description)
-    }
+    // remove all points before tests
     
-    func testSavePoint() {
-        let expectation = self.expectation(description: "*** geoService.savePoint test passed ***")
+    /*func testSavePoint() {
+        let passedExpectation = self.expectation(description: "TEST PASSED: geoService.savePoint")
+        let failedExpectation = self.expectation(description: "TEST FAILED: geoService.savePoint")
         let geoPoint = GeoPoint(latitude: 0.0, longitude: 0.0, categories: ["My UnitTest Category"], metadata: ["foo": "bar", "foo1": 123])
-        backendless.geo.savePoint(geoPoint, responseBlock: { savedPoint in
+        backendless.geo.savePoint(geoPoint: geoPoint, responseBlock: { savedPoint in
             XCTAssertNotNil(savedPoint)
             XCTAssertNotNil(savedPoint.latitude)
             XCTAssertNotNil(savedPoint.longitude)
@@ -51,15 +46,13 @@ class GeoServiceTests: XCTestCase {
             XCTAssertNotNil(savedPoint.metadata)
             XCTAssert(savedPoint.metadata?.keys.count ?? 0 > 0)
             XCTAssert(savedPoint.metadata?.values.count ?? 0 > 0)
-            self.fulfillExpectation(expectation)
+            self.fulfillExpectation(expectation: passedExpectation)
         }, errorBlock: { fault in
             XCTAssertNotNil(fault)
-            self.fulfillExpectation(expectation)
+            self.fulfillExpectation(expectation: failedExpectation)
         })
         waitForExpectations(timeout: 10, handler: { error in
-            if let error = error {
-                print("*** geoService.savePoint test failed: \(error.localizedDescription) ***")
-            }
+            print("TEST FAILED(TIMEOUT): geoService.savePoint")
         })
-    }
+    }*/
 }

@@ -19,17 +19,17 @@
  *  ********************************************************************************************************************
  */
 
-import Alamofire
-
 @objcMembers open class GeoService: NSObject {
     
-    let processResponse = ProcessResponse.shared
-
-    open func savePoint(_ geoPoint: GeoPoint, responseBlock: ((GeoPoint) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+    private let processResponse = ProcessResponse.shared
+    private enum PermissionType: String {
+        case GRANT
+        case DENY
+    }
+    open func savePoint(geoPoint: GeoPoint, responseBlock: ((GeoPoint) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = ["latitude": geoPoint.latitude, "longitude": geoPoint.longitude, "categories": geoPoint.categories as Any, "metadata": geoPoint.metadata as Any] as [String : Any]
-        let request = AlamofireManager(restMethod: "geo/points?lat=10&lon=20&metadata=%20%7B%20%22foo%22%3A%22bar%22%20%7D", httpMethod: .post, headers: headers, parameters: parameters as Parameters).makeRequest()
-        request.responseJSON(completionHandler: { response in
+        BackendlessRequestManager(restMethod: "geo/points?lat=10&lon=20&metadata=%20%7B%20%22foo%22%3A%22bar%22%20%7D", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: [String: GeoPoint].self) {
                 if result is Fault {
                     errorBlock(result as! Fault)

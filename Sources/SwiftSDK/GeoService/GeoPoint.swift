@@ -19,15 +19,12 @@
  *  ********************************************************************************************************************
  */
 
-import SwiftyJSON
-
 @objcMembers open class GeoPoint: NSObject, NSCoding, Codable {
     
     open private(set) var objectId: String
     open private(set) var latitude: Double
     open private(set) var longitude: Double
     open private(set) var categories: [String]
-    private var _metadata: JSON?
     open private(set) var metadata: [String: Any]? {
         get {
             return self._metadata?.dictionaryObject
@@ -38,6 +35,7 @@ import SwiftyJSON
             }
         }
     }
+    private var _metadata: JSON?
     
     enum CodingKeys: String, CodingKey {
         case objectId

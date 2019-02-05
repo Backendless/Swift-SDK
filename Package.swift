@@ -9,10 +9,10 @@ let package = Package(
         .library(name: "SwiftSDK", targets: ["SwiftSDK"])
     ],
     dependencies: [
-        .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMinor(from:"4.8.0"))
+        //.package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMinor(from:"4.8.0"))
     ],
     targets: [
-        .target(name: "SwiftSDK", dependencies: ["Alamofire"]),
+        //.target(name: "SwiftSDK", dependencies: ["Alamofire"]),
         .testTarget(name: "SwiftSDKTests", dependencies: ["SwiftSDK"])
     ]
 )

@@ -1,5 +1,5 @@
 //
-//  BackendlessTests.swift
+//  Mappings.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,18 +19,34 @@
  *  ********************************************************************************************************************
  */
 
-import XCTest
-@testable import SwiftSDK
+class Mappings: NSObject {
+    
+    var tableToClassMappings = [String: String]()
+    var columnToPropertyMappings = [String: [String: String]]()
 
-class BackendlessTests: XCTestCase {
+    func mapTable(tableName: String, toClassNamed: String) {
+        tableToClassMappings[tableName] = toClassNamed
+    }
     
-    private let backendless = Backendless.shared
+    func getTableToClassMappings() -> [String: String] {
+        return tableToClassMappings
+    }
     
-    func testInitApp() {
-        backendless.hostUrl = BackendlessAppConfig.hostUrl
-        backendless.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
-        XCTAssertNotNil(backendless.hostUrl) 
-        XCTAssertNotNil(backendless.getApplictionId())
-        XCTAssertNotNil(backendless.getApiKey())
+    func mapColumn(columnName: String, toProperty: String, ofClassNamed: String) {
+        if var mappings = columnToPropertyMappings[ofClassNamed] {
+            mappings[columnName] = toProperty
+            columnToPropertyMappings[ofClassNamed] = mappings
+        }
+        else {
+            let mappings = [columnName: toProperty]
+            columnToPropertyMappings[ofClassNamed] = mappings
+        }
+    }
+    
+    func getColumnToPropertyMappings(className: String) -> [String: String] {
+        if let mappings = columnToPropertyMappings[className] {
+            return mappings
+        }
+        return [String: String]()
     }
 }
