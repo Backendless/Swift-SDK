@@ -32,101 +32,101 @@
         persistenceServiceUtils.setup(tableName: tableName)
     }
     
-    open func save(entity: [String : Any], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.save(entity: entity as [String : AnyObject], responseHandler: responseHandler, errorHandler: errorHandler)
+    open func save(entity: [String : Any], responseBlock: (([String : Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.save(entity: entity as [String : AnyObject], responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    open func createBulk(entities: [[String : Any]], responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.createBulk(entities: entities, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func createBulk(entities: [[String : Any]], responseBlock: (([String]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.createBulk(entities: entities, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    open func update(entity: [String : Any], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.update(entity: entity, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func update(entity: [String : Any], responseBlock: (([String : Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.update(entity: entity, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    open func updateBulk(whereClause: String?, changes: [String : Any], responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.updateBulk(whereClause: whereClause, changes: changes, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func updateBulk(whereClause: String?, changes: [String : Any], responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.updateBulk(whereClause: whereClause, changes: changes, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    open func removeById(objectId: String, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.removeById(objectId: objectId, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func removeById(objectId: String, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.removeById(objectId: objectId, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    open func remove(entity: [String : Any], responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    open func remove(entity: [String : Any], responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         if let objectId = entity["objectId"] as? String {
-            persistenceServiceUtils.removeById(objectId: objectId, responseHandler: responseHandler, errorHandler: errorHandler)
+            persistenceServiceUtils.removeById(objectId: objectId, responseBlock: responseBlock, errorBlock: errorBlock)
         }
     }
     
-    open func removeBulk(whereClause: String?, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.removeBulk(whereClause: whereClause, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func removeBulk(whereClause: String?, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.removeBulk(whereClause: whereClause, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    open func getObjectCount(responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.getObjectCount(queryBuilder: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func getObjectCount(responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.getObjectCount(queryBuilder: nil, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    open func getObjectCount(queryBuilder: DataQueryBuilder, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.getObjectCount(queryBuilder: queryBuilder, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func getObjectCount(queryBuilder: DataQueryBuilder, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.getObjectCount(queryBuilder: queryBuilder, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    open func find(responseHandler: (([[String : Any]]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.find(queryBuilder: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func find(responseBlock: (([[String : Any]]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.find(queryBuilder: nil, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    open func find(queryBuilder: DataQueryBuilder, responseHandler: (([[String : Any]]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.find(queryBuilder: queryBuilder, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func find(queryBuilder: DataQueryBuilder, responseBlock: (([[String : Any]]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.find(queryBuilder: queryBuilder, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    open func findFirst(responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        findFirst(queryBuilder: DataQueryBuilder(), responseHandler: responseHandler, errorHandler: errorHandler)
+    open func findFirst(responseBlock: (([String : Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        findFirst(queryBuilder: DataQueryBuilder(), responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    open func findFirst(queryBuilder: DataQueryBuilder, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.findFirstOrLastOrById(first: true, last: false, objectId: nil, queryBuilder: queryBuilder, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func findFirst(queryBuilder: DataQueryBuilder, responseBlock: (([String : Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.findFirstOrLastOrById(first: true, last: false, objectId: nil, queryBuilder: queryBuilder, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    open func findLast(responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        findLast(queryBuilder: DataQueryBuilder(), responseHandler: responseHandler, errorHandler: errorHandler)
+    open func findLast(responseBlock: (([String : Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        findLast(queryBuilder: DataQueryBuilder(), responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    open func findLast(queryBuilder: DataQueryBuilder, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.findFirstOrLastOrById(first: false, last: true, objectId: nil, queryBuilder: queryBuilder, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func findLast(queryBuilder: DataQueryBuilder, responseBlock: (([String : Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.findFirstOrLastOrById(first: false, last: true, objectId: nil, queryBuilder: queryBuilder, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    open func findById(objectId: String, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        findById(objectId: objectId, queryBuilder: DataQueryBuilder(), responseHandler: responseHandler, errorHandler: errorHandler)
+    open func findById(objectId: String, responseBlock: (([String : Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        findById(objectId: objectId, queryBuilder: DataQueryBuilder(), responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    open func findById(objectId: String, queryBuilder: DataQueryBuilder, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.findFirstOrLastOrById(first: false, last: false, objectId: objectId, queryBuilder: queryBuilder, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func findById(objectId: String, queryBuilder: DataQueryBuilder, responseBlock: (([String : Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.findFirstOrLastOrById(first: false, last: false, objectId: objectId, queryBuilder: queryBuilder, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    open func setRelation(columnName: String, parentObjectId: String, childrenObjectIds: [String], responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, childrenObjectIds: childrenObjectIds, httpMethod: .POST, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func setRelation(columnName: String, parentObjectId: String, childrenObjectIds: [String], responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, childrenObjectIds: childrenObjectIds, httpMethod: .POST, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    open func setRelation(columnName: String, parentObjectId: String, whereClause: String?, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, whereClause: whereClause, httpMethod: .POST, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func setRelation(columnName: String, parentObjectId: String, whereClause: String?, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, whereClause: whereClause, httpMethod: .POST, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    open func addRelation(columnName: String, parentObjectId: String, childrenObjectIds: [String], responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, childrenObjectIds: childrenObjectIds, httpMethod: .POST, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func addRelation(columnName: String, parentObjectId: String, childrenObjectIds: [String], responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, childrenObjectIds: childrenObjectIds, httpMethod: .POST, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    open func addRelation(columnName: String, parentObjectId: String, whereClause: String?, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, whereClause: whereClause, httpMethod: .POST, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func addRelation(columnName: String, parentObjectId: String, whereClause: String?, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, whereClause: whereClause, httpMethod: .POST, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    open func deleteRelation(columnName: String, parentObjectId: String, childrenObjectIds: [String], responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.deleteRelation(columnName: columnName, parentObjectId: parentObjectId, childrenObjectIds: childrenObjectIds, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func deleteRelation(columnName: String, parentObjectId: String, childrenObjectIds: [String], responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.deleteRelation(columnName: columnName, parentObjectId: parentObjectId, childrenObjectIds: childrenObjectIds, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    open func deleteRelation(columnName: String, parentObjectId: String, whereClause: String?, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.deleteRelation(columnName: columnName, parentObjectId: parentObjectId, whereClause: whereClause, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func deleteRelation(columnName: String, parentObjectId: String, whereClause: String?, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.deleteRelation(columnName: columnName, parentObjectId: parentObjectId, whereClause: whereClause, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    open func loadRelations(objectId: String, queryBuilder: LoadRelationsQueryBuilder, responseHandler: (([[String : Any]]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.loadRelations(objectId: objectId, queryBuilder: queryBuilder, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func loadRelations(objectId: String, queryBuilder: LoadRelationsQueryBuilder, responseBlock: (([[String : Any]]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        persistenceServiceUtils.loadRelations(objectId: objectId, queryBuilder: queryBuilder, responseBlock: responseBlock, errorBlock: errorBlock)
     }
 }

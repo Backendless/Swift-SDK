@@ -55,39 +55,39 @@ private enum PermissionType: String {
     private let processResponse = ProcessResponse.shared
     private struct NoReply: Decodable {}    
     
-    open func grantForUser(userId: String, entity: Any, operation: DataPermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        setPermission(entity: entity, permissionType: .GRANT, operation: operation, userId: userId, roleName: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func grantForUser(userId: String, entity: Any, operation: DataPermissionOperation, responseBlock: (() -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        setPermission(entity: entity, permissionType: .GRANT, operation: operation, userId: userId, roleName: nil, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    open func denyForUser(userId: String, entity: Any, operation: DataPermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        setPermission(entity: entity, permissionType: .DENY, operation: operation, userId: userId, roleName: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func denyForUser(userId: String, entity: Any, operation: DataPermissionOperation, responseBlock: (() -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        setPermission(entity: entity, permissionType: .DENY, operation: operation, userId: userId, roleName: nil, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    open func grantForRole(role: UserRolesEnum, entity: Any, operation: DataPermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        setPermission(entity: entity, permissionType: .GRANT, operation: operation, userId: nil, roleName: role.rawValue, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func grantForRole(role: UserRolesEnum, entity: Any, operation: DataPermissionOperation, responseBlock: (() -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        setPermission(entity: entity, permissionType: .GRANT, operation: operation, userId: nil, roleName: role.rawValue, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    open func denyForRole(role: UserRolesEnum, entity: Any, operation: DataPermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        setPermission(entity: entity, permissionType: .DENY, operation: operation, userId: nil, roleName: role.rawValue, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func denyForRole(role: UserRolesEnum, entity: Any, operation: DataPermissionOperation, responseBlock: (() -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        setPermission(entity: entity, permissionType: .DENY, operation: operation, userId: nil, roleName: role.rawValue, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    open func grantForAllUsers(entity: Any, operation: DataPermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        setPermission(entity: entity, permissionType: .GRANT, operation: operation, userId: "*", roleName: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func grantForAllUsers(entity: Any, operation: DataPermissionOperation, responseBlock: (() -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        setPermission(entity: entity, permissionType: .GRANT, operation: operation, userId: "*", roleName: nil, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    open func denyForAllUsers(entity: Any, operation: DataPermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        setPermission(entity: entity, permissionType: .DENY, operation: operation, userId: "*", roleName: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func denyForAllUsers(entity: Any, operation: DataPermissionOperation, responseBlock: (() -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        setPermission(entity: entity, permissionType: .DENY, operation: operation, userId: "*", roleName: nil, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    open func grantForAllRoles(entity: Any, operation: DataPermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        setPermission(entity: entity, permissionType: .GRANT, operation: operation, userId: nil, roleName: "*", responseHandler: responseHandler, errorHandler: errorHandler)
+    open func grantForAllRoles(entity: Any, operation: DataPermissionOperation, responseBlock: (() -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        setPermission(entity: entity, permissionType: .GRANT, operation: operation, userId: nil, roleName: "*", responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    open func denyForAllRoles(entity: Any, operation: DataPermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        setPermission(entity: entity, permissionType: .DENY, operation: operation, userId: nil, roleName: "*", responseHandler: responseHandler, errorHandler: errorHandler)
+    open func denyForAllRoles(entity: Any, operation: DataPermissionOperation, responseBlock: (() -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        setPermission(entity: entity, permissionType: .DENY, operation: operation, userId: nil, roleName: "*", responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
-    private func setPermission(entity: Any, permissionType: PermissionType, operation: DataPermissionOperation, userId: String?, roleName: String?, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    private func setPermission(entity: Any, permissionType: PermissionType, operation: DataPermissionOperation, userId: String?, roleName: String?, responseBlock: (() -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         var parameters = [String: String]()
         parameters["permission"] = operation.rawValue
@@ -102,10 +102,10 @@ private enum PermissionType: String {
             BackendlessRequestManager(restMethod: "data/\(tableName)/permissions/\(permissionType)/\(objectId)", httpMethod: .PUT, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
                 let result = self.processResponse.adapt(response: response, to: NoReply.self)
                 if result is Fault {
-                    errorHandler(result as! Fault)
+                    errorBlock(result as! Fault)
                 }
                 else {
-                    responseHandler()
+                    responseBlock()
                 }
             })
         }

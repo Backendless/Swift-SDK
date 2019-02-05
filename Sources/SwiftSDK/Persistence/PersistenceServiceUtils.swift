@@ -38,67 +38,67 @@ class PersistenceServiceUtils: NSObject {
         }
     }
     
-    func describe(tableName: String, responseHandler: (([ObjectProperty]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    func describe(tableName: String, responseBlock: (([ObjectProperty]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         BackendlessRequestManager(restMethod: "data/\(tableName)/properties", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: [ObjectProperty].self) {
                 if result is Fault {
-                    errorHandler(result as! Fault)
+                    errorBlock(result as! Fault)
                 }
                 else {
-                    responseHandler(result as! [ObjectProperty])
+                    responseBlock(result as! [ObjectProperty])
                 }
             }
         })
     }
     
-    func save(entity: [String : Any], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    func save(entity: [String : Any], responseBlock: (([String : Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = entity
         BackendlessRequestManager(restMethod: "data/\(tableName)", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                 if result is Fault {
-                    errorHandler(result as! Fault)
+                    errorBlock(result as! Fault)
                 }
                 else {
-                    responseHandler((result as! JSON).dictionaryObject!)
+                    responseBlock((result as! JSON).dictionaryObject!)
                 }
             }
         })
     }
     
-    func createBulk(entities: [[String: Any]], responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    func createBulk(entities: [[String: Any]], responseBlock: (([String]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = entities
         BackendlessRequestManager(restMethod: "data/bulk/\(tableName)", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: [String].self) {
                 if result is Fault {
-                    errorHandler(result as! Fault)
+                    errorBlock(result as! Fault)
                 }
                 else {
-                    responseHandler(result as! [String])
+                    responseBlock(result as! [String])
                 }
             }
         })
     }
     
-    func update(entity: [String : Any], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    func update(entity: [String : Any], responseBlock: (([String : Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = entity
         if let objectId = entity["objectId"] as? String {
             BackendlessRequestManager(restMethod: "data/\(tableName)/\(objectId)", httpMethod: .PUT, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
                 if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                     if result is Fault {
-                        errorHandler(result as! Fault)
+                        errorBlock(result as! Fault)
                     }
                     else {
-                        responseHandler((result as! JSON).dictionaryObject!)
+                        responseBlock((result as! JSON).dictionaryObject!)
                     }
                 }
             })
         }        
     }
     
-    func updateBulk(whereClause: String?, changes: [String : Any], responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    func updateBulk(whereClause: String?, changes: [String : Any], responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = changes
         var restMethod = "data/bulk/\(tableName)"
@@ -108,31 +108,31 @@ class PersistenceServiceUtils: NSObject {
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .PUT, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
-                    errorHandler(result as! Fault)
+                    errorBlock(result as! Fault)
                 }
             }
             else {
-                responseHandler(self.dataToNSNumber(data: response.data!))
+                responseBlock(self.dataToNSNumber(data: response.data!))
             }
         })
     }
     
-    func removeById(objectId: String, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    func removeById(objectId: String, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let headers = [String: String]()
         BackendlessRequestManager(restMethod: "data/\(tableName)/\(objectId)", httpMethod: .DELETE, headers: headers, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                 if result is Fault {
-                    errorHandler(result as! Fault)
+                    errorBlock(result as! Fault)
                 }
                 else if let resultValue = (result as! JSON).dictionaryObject?.first?.value as? Int {
                     self.storedObjects.removeObjectId(objectId: objectId)
-                    responseHandler(NSNumber(value: resultValue))
+                    responseBlock(NSNumber(value: resultValue))
                 }
             }
         })
     }
     
-    func removeBulk(whereClause: String?, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    func removeBulk(whereClause: String?, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         var parameters = ["where": whereClause]
         if whereClause == nil {
@@ -141,17 +141,17 @@ class PersistenceServiceUtils: NSObject {
         BackendlessRequestManager(restMethod: "data/bulk/\(tableName)/delete", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
-                    errorHandler(result as! Fault)
+                    errorBlock(result as! Fault)
                 }
             }
             else {
                 self.storedObjects.removeObjectIds(tableName: self.tableName)
-                responseHandler(self.dataToNSNumber(data: response.data!))
+                responseBlock(self.dataToNSNumber(data: response.data!))
             }
         })
     }
     
-    func getObjectCount(queryBuilder: DataQueryBuilder?, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    func getObjectCount(queryBuilder: DataQueryBuilder?, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         var restMethod = "data/\(tableName)/count"
         if let whereClause = queryBuilder?.getWhereClause(), whereClause.count > 0 {
             restMethod += "?where=\(stringToUrlString(originalString: whereClause))"
@@ -159,17 +159,17 @@ class PersistenceServiceUtils: NSObject {
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
-                    errorHandler(result as! Fault)
+                    errorBlock(result as! Fault)
                 }
             }
             else {
                 self.storedObjects.removeObjectIds(tableName: self.tableName)
-                responseHandler(self.dataToNSNumber(data: response.data!))
+                responseBlock(self.dataToNSNumber(data: response.data!))
             }
         })
     }
     
-    func find(queryBuilder: DataQueryBuilder?, responseHandler: (([[String : Any]]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    func find(queryBuilder: DataQueryBuilder?, responseBlock: (([[String : Any]]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         var parameters = [String: Any]()
         if let whereClause = queryBuilder?.getWhereClause() {
@@ -199,7 +199,7 @@ class PersistenceServiceUtils: NSObject {
         BackendlessRequestManager(restMethod: "data/\(tableName)/find", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: [JSON].self) {
                 if result is Fault {
-                    errorHandler(result as! Fault)
+                    errorBlock(result as! Fault)
                 }
                 else {
                     var resultArray = [[String: Any]]()
@@ -208,13 +208,13 @@ class PersistenceServiceUtils: NSObject {
                             resultArray.append(resultDictionary)
                         }
                     }
-                    responseHandler(resultArray)
+                    responseBlock(resultArray)
                 }
             }
         })
     }
     
-    func findFirstOrLastOrById(first: Bool, last: Bool, objectId: String?, queryBuilder: DataQueryBuilder?, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    func findFirstOrLastOrById(first: Bool, last: Bool, objectId: String?, queryBuilder: DataQueryBuilder?, responseBlock: (([String : Any]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         var restMethod = "data/\(tableName)"
         if first {
             restMethod += "/first"
@@ -243,32 +243,32 @@ class PersistenceServiceUtils: NSObject {
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                 if result is Fault {
-                    errorHandler(result as! Fault)
+                    errorBlock(result as! Fault)
                 }
                 else {
-                    responseHandler((result as! JSON).dictionaryObject!)
+                    responseBlock((result as! JSON).dictionaryObject!)
                 }
             }
         })
     }
     
-    func setOrAddRelation(columnName: String, parentObjectId: String, childrenObjectIds: [String], httpMethod: HTTPMethod, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    func setOrAddRelation(columnName: String, parentObjectId: String, childrenObjectIds: [String], httpMethod: HTTPMethod, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = childrenObjectIds
         BackendlessRequestManager(restMethod: "data/\(tableName)/\(parentObjectId)/\(columnName)", httpMethod: httpMethod, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
-                    errorHandler(result as! Fault)
+                    errorBlock(result as! Fault)
                 }
             }
             else {
                 self.storedObjects.removeObjectIds(tableName: self.tableName)
-                responseHandler(self.dataToNSNumber(data: response.data!))
+                responseBlock(self.dataToNSNumber(data: response.data!))
             }
         })
     }
     
-    func setOrAddRelation(columnName: String, parentObjectId: String, whereClause: String?, httpMethod: HTTPMethod, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    func setOrAddRelation(columnName: String, parentObjectId: String, whereClause: String?, httpMethod: HTTPMethod, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         var restMethod = "data/\(tableName)/\(parentObjectId)/\(columnName)"
         if whereClause != nil, whereClause?.count ?? 0 > 0 {
             restMethod += "?whereClause=\(stringToUrlString(originalString: whereClause!))"
@@ -276,33 +276,33 @@ class PersistenceServiceUtils: NSObject {
         BackendlessRequestManager(restMethod: restMethod, httpMethod: httpMethod, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
-                    errorHandler(result as! Fault)
+                    errorBlock(result as! Fault)
                 }
             }
             else {
                 self.storedObjects.removeObjectIds(tableName: self.tableName)
-                responseHandler(self.dataToNSNumber(data: response.data!))
+                responseBlock(self.dataToNSNumber(data: response.data!))
             }
         })
     }
     
-    func deleteRelation(columnName: String, parentObjectId: String, childrenObjectIds: [String], responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    func deleteRelation(columnName: String, parentObjectId: String, childrenObjectIds: [String], responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = childrenObjectIds
         BackendlessRequestManager(restMethod: "data/\(tableName)/\(parentObjectId)/\(columnName)", httpMethod: .DELETE, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
-                    errorHandler(result as! Fault)
+                    errorBlock(result as! Fault)
                 }
             }
             else {
                 self.storedObjects.removeObjectIds(tableName: self.tableName)
-                responseHandler(self.dataToNSNumber(data: response.data!))
+                responseBlock(self.dataToNSNumber(data: response.data!))
             }
         })
     }
     
-    func deleteRelation(columnName: String, parentObjectId: String, whereClause: String?, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    func deleteRelation(columnName: String, parentObjectId: String, whereClause: String?, responseBlock: ((NSNumber) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         var whereClause = whereClause
         if whereClause == nil {
             whereClause = "objectId != NULL"
@@ -310,17 +310,17 @@ class PersistenceServiceUtils: NSObject {
         BackendlessRequestManager(restMethod: "data/\(tableName)/\(parentObjectId)/\(columnName)?whereClause=\(stringToUrlString(originalString: whereClause!))", httpMethod: .DELETE, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
-                    errorHandler(result as! Fault)
+                    errorBlock(result as! Fault)
                 }
             }
             else {
                 self.storedObjects.removeObjectIds(tableName: self.tableName)
-                responseHandler(self.dataToNSNumber(data: response.data!))
+                responseBlock(self.dataToNSNumber(data: response.data!))
             }
         })
     }
     
-    func loadRelations(objectId: String, queryBuilder: LoadRelationsQueryBuilder, responseHandler: (([[String : Any]]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    func loadRelations(objectId: String, queryBuilder: LoadRelationsQueryBuilder, responseBlock: (([[String : Any]]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
         var restMethod = "data/\(tableName)/\(objectId)"
         if let relationName = queryBuilder.getRelationName() {
             restMethod += "/\(relationName)"
@@ -341,7 +341,7 @@ class PersistenceServiceUtils: NSObject {
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: [JSON].self) {
                 if result is Fault {
-                    errorHandler(result as! Fault)
+                    errorBlock(result as! Fault)
                 }
                 else {
                     var resultArray = [[String: Any]]()
@@ -350,7 +350,7 @@ class PersistenceServiceUtils: NSObject {
                             resultArray.append(resultDictionary)
                         }
                     }
-                    responseHandler(resultArray)
+                    responseBlock(resultArray)
                 }
             }
         })

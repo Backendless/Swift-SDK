@@ -29,8 +29,8 @@
         return DataStoreFactory(entityClass: entityClass)
     }
     
-    open func describe(tableName: String, responseHandler: (([ObjectProperty]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        PersistenceServiceUtils().describe(tableName: tableName, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func describe(tableName: String, responseBlock: (([ObjectProperty]) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+        PersistenceServiceUtils().describe(tableName: tableName, responseBlock: responseBlock, errorBlock: errorBlock)
     }
     
     open lazy var permissions: DataPermission = {
