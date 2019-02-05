@@ -37,7 +37,7 @@ class GeoServiceTests: XCTestCase {
         let passedExpectation = self.expectation(description: "TEST PASSED: geoService.savePoint")
         let failedExpectation = self.expectation(description: "TEST FAILED: geoService.savePoint")
         let geoPoint = GeoPoint(latitude: 0.0, longitude: 0.0, categories: ["My UnitTest Category"], metadata: ["foo": "bar", "foo1": 123])
-        backendless.geo.savePoint(geoPoint: geoPoint, responseBlock: { savedPoint in
+        backendless.geo.savePoint(geoPoint: geoPoint, responseHandler: { savedPoint in
             XCTAssertNotNil(savedPoint)
             XCTAssertNotNil(savedPoint.latitude)
             XCTAssertNotNil(savedPoint.longitude)
@@ -47,7 +47,7 @@ class GeoServiceTests: XCTestCase {
             XCTAssert(savedPoint.metadata?.keys.count ?? 0 > 0)
             XCTAssert(savedPoint.metadata?.values.count ?? 0 > 0)
             self.fulfillExpectation(expectation: passedExpectation)
-        }, errorBlock: { fault in
+        }, errorHandler: { fault in
             XCTAssertNotNil(fault)
             self.fulfillExpectation(expectation: failedExpectation)
         })
