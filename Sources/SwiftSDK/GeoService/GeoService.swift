@@ -26,17 +26,17 @@
         case GRANT
         case DENY
     }
-    open func savePoint(geoPoint: GeoPoint, responseBlock: ((GeoPoint) -> Void)!, errorBlock: ((Fault) -> Void)!) {
+    open func savePoint(geoPoint: GeoPoint, responseHandler: ((GeoPoint) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = ["latitude": geoPoint.latitude, "longitude": geoPoint.longitude, "categories": geoPoint.categories as Any, "metadata": geoPoint.metadata as Any] as [String : Any]
         BackendlessRequestManager(restMethod: "geo/points?lat=10&lon=20&metadata=%20%7B%20%22foo%22%3A%22bar%22%20%7D", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: [String: GeoPoint].self) {
                 if result is Fault {
-                    errorBlock(result as! Fault)
+                    errorHandler(result as! Fault)
                 }
                 else {
                     if let res = (result as! [String: GeoPoint])["geopoint"] {
-                        responseBlock(res)
+                        responseHandler(res)
                     }
                 }
             }
