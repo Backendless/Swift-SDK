@@ -25,10 +25,11 @@ class UserDefaultsHelper: NSObject {
     
     private let PERSISTENT_USER_TOKEN_KEY = "userTokenKey"
     private let STAY_LOGGED_IN_KEY = "stayLoggedInKey"
+    private let CURRENT_USER_KEY = "currentUserKey"
     
-    func savePersistentUserToken(userToken: String) {
+    func savePersistentUserToken(token: String) {
         let userDefaults = UserDefaults.standard
-        let userToken: [String: String] = ["userToken": userToken]
+        let userToken: [String: String] = ["userToken": token]
         userDefaults.setValue(userToken, forKey: PERSISTENT_USER_TOKEN_KEY)
         userDefaults.synchronize()
     }
@@ -60,5 +61,24 @@ class UserDefaultsHelper: NSObject {
             return stayLoggedIn.boolValue
         }
         return false
+    }
+    
+    func saveCurrentUser(currentUser: BackendlessUser) {
+        let data = NSKeyedArchiver.archivedData(withRootObject: currentUser)
+        let userDefaults = UserDefaults.standard
+        userDefaults.set(data, forKey: CURRENT_USER_KEY)
+        userDefaults.synchronize()
+    }
+    
+    func getCurrentUser() -> BackendlessUser? {
+        let userDefaults = UserDefaults.standard
+        if let data = userDefaults.value(forKey: CURRENT_USER_KEY) as? Data {
+            return NSKeyedUnarchiver.unarchiveObject(with: data) as? BackendlessUser
+        }
+        return nil
+    }
+    
+    func removeCurrentUser() {
+        UserDefaults.standard.removeObject(forKey: CURRENT_USER_KEY)
     }
 }
