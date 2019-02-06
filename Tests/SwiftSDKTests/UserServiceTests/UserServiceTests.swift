@@ -83,7 +83,7 @@ class UserServiceTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: userService.login")
         backendless.userService.login(identity: USER_EMAIL, password: USER_PASSWORD, responseHandler: { loggedInUser in
             XCTAssertNotNil(loggedInUser)
-            XCTAssertNotNil(self.backendless.userService.currentUser)
+            XCTAssertNotNil(self.backendless.userService.getCurrentUser())
             XCTAssertNotNil(self.backendless.userService.isValidUserToken)
             expectation.fulfill()
         }, errorHandler: { fault in
@@ -124,7 +124,7 @@ class UserServiceTests: XCTestCase {
     func test_05_getUserRoles() {
         let expectation = self.expectation(description: "PASSED: userService.getUserRoles")
         backendless.userService.login(identity: USER_EMAIL, password: USER_PASSWORD, responseHandler: { loggedInUser in
-            XCTAssertNotNil(self.backendless.userService.currentUser)
+            XCTAssertNotNil(self.backendless.userService.getCurrentUser())
             self.backendless.userService.getUserRoles(responseHandler: { roles in
                 XCTAssertNotNil(roles)
                 expectation.fulfill()
@@ -160,7 +160,7 @@ class UserServiceTests: XCTestCase {
     func test_07_logout() {
         let expectation = self.expectation(description: "PASSED: userService.logout")
         backendless.userService.logout(responseHandler: {
-            XCTAssertNil(self.backendless.userService.currentUser)
+            XCTAssertNil(self.backendless.userService.getCurrentUser())
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
@@ -183,7 +183,7 @@ class UserServiceTests: XCTestCase {
     
     func test_09_restoreUserPassword() {
         let expectation = self.expectation(description: "PASSED: userService.restoreUserPassword")
-        backendless.userService.restorePassword(login: USER_EMAIL, responseHandler: {
+        backendless.userService.restorePassword(email: USER_EMAIL, responseHandler: {
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
