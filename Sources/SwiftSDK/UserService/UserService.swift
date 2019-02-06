@@ -86,7 +86,7 @@
     open func logingWithFacebook(accessToken: String, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = ["accessToken": accessToken, "fieldsMapping": fieldsMapping] as [String : Any]
-        BackendlessRequestManager(restMethod: "users/social/facebook/sdk/login", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+        BackendlessRequestManager(restMethod: "users/social/facebook/login", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: BackendlessUser.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
@@ -116,8 +116,20 @@
     }
     
     /*open func loginWithGoogleSDK(responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-     
-     }*/
+        let headers = ["Content-Type": "application/json"]
+        let parameters = ["accessToken": accessToken, "fieldsMapping": fieldsMapping] as [String : Any]
+        BackendlessRequestManager(restMethod: "users/social/facebook/login", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+            if let result = self.processResponse.adapt(response: response, to: BackendlessUser.self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else {
+                    self.setPersistentUser(currentUser: result as! BackendlessUser)
+                    responseHandler(result as! BackendlessUser)
+                }
+            }
+        })
+    }*/
     
     // ******************************************************
     
