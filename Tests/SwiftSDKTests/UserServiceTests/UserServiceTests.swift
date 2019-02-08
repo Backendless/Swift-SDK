@@ -183,7 +183,7 @@ class UserServiceTests: XCTestCase {
     
     func test_09_restoreUserPassword() {
         let expectation = self.expectation(description: "PASSED: userService.restoreUserPassword")
-        backendless.userService.restorePassword(email: USER_EMAIL, responseHandler: {
+        backendless.userService.restorePassword(identity: USER_EMAIL, responseHandler: {
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)

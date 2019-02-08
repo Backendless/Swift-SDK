@@ -81,8 +81,6 @@
         })
     }
     
-    // ******************************************************
-    
     open func logingWithFacebook(accessToken: String, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = ["accessToken": accessToken, "fieldsMapping": fieldsMapping] as [String : Any]
@@ -99,26 +97,10 @@
         })
     }
     
-    open func loginWithTwitter(fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    /*open func loginWithTwitter(accessToken: String, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
-        let parameters = ["fieldsMapping": fieldsMapping, "redirect": true] as [String : Any]
+        let parameters = ["fieldsMapping": fieldsMapping, "redirect": true, "accessToken": accessToken] as [String : Any]
         BackendlessRequestManager(restMethod: "users/social/oauth/twitter/request_url", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: BackendlessUser.self) {
-                if result is Fault {
-                    errorHandler(result as! Fault)
-                }
-                else {
-                    self.setPersistentUser(currentUser: result as! BackendlessUser)
-                    responseHandler(result as! BackendlessUser)
-                }
-            }
-        })
-    }
-    
-    /*open func loginWithGoogleSDK(responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        let headers = ["Content-Type": "application/json"]
-        let parameters = ["accessToken": accessToken, "fieldsMapping": fieldsMapping] as [String : Any]
-        BackendlessRequestManager(restMethod: "users/social/facebook/login", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: BackendlessUser.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
@@ -131,7 +113,21 @@
         })
     }*/
     
-    // ******************************************************
+    open func loginWithGoogleSDK(accessToken: String, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        let headers = ["Content-Type": "application/json"]
+        let parameters = ["accessToken": accessToken, "fieldsMapping": fieldsMapping] as [String : Any]
+        BackendlessRequestManager(restMethod: "users/social/googleplus/login", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+            if let result = self.processResponse.adapt(response: response, to: BackendlessUser.self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else {
+                    self.setPersistentUser(currentUser: result as! BackendlessUser)
+                    responseHandler(result as! BackendlessUser)
+                }
+            }
+        })
+    }
     
     open func isValidUserToken(responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         if let userToken = getPersistentUserToken() {
@@ -188,8 +184,8 @@
         })
     }
     
-    open func restorePassword(email: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        BackendlessRequestManager(restMethod: "users/restorepassword/\(email)", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+    open func restorePassword(identity: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        BackendlessRequestManager(restMethod: "users/restorepassword/\(identity)", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             let result = self.processResponse.adapt(response: response, to: NoReply.self)
             if result is Fault {
                 errorHandler(result as! Fault)
