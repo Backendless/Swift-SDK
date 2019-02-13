@@ -25,7 +25,7 @@
     private var tableName: String?
     
     private var relationName: String?
-    private var pageSize: Int = 100
+    private var pageSize: Int = 10
     private var offset: Int = 0
     
     private let persistenceServiceUtils = PersistenceServiceUtils()

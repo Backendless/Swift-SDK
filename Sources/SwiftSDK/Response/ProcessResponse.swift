@@ -113,7 +113,7 @@ class ProcessResponse: NSObject {
                 }
                 else if _response.statusCode < 200 || _response.statusCode > 400 {
                     let faultCode = _response.statusCode
-                    let faultMessage = "Unrecognized error"
+                    let faultMessage = "Backendless server error"
                     return faultConstructor(faultMessage, faultCode: faultCode)
                 }
                 return responseResultDictionary

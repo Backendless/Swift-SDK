@@ -21,6 +21,8 @@
 
 class Mappings: NSObject {
     
+    static let shared = Mappings()
+    
     var tableToClassMappings = [String: String]()
     var columnToPropertyMappings = [String: [String: String]]()
 
@@ -32,7 +34,11 @@ class Mappings: NSObject {
         return tableToClassMappings
     }
     
-    func mapColumn(columnName: String, toProperty: String, ofClassNamed: String) {
+    func removeTableToClassMappings() {
+        tableToClassMappings.removeAll()
+    }
+    
+    func mapColumn(columnName: String, toProperty: String, ofClassNamed: String) {        
         if var mappings = columnToPropertyMappings[ofClassNamed] {
             mappings[columnName] = toProperty
             columnToPropertyMappings[ofClassNamed] = mappings
@@ -48,5 +54,9 @@ class Mappings: NSObject {
             return mappings
         }
         return [String: String]()
+    }
+    
+    func removeColumnToPropertyMappings() {
+        columnToPropertyMappings.removeAll()
     }
 }

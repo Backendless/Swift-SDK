@@ -41,7 +41,7 @@ class BackendlessRequestManager: NSObject {
         self.parameters = parameters
     }
     
-    func makeRequest(getResponse: @escaping (ReturnedResponse) -> ()){
+    func makeRequest(getResponse: @escaping (ReturnedResponse) -> ()) {
         var request = URLRequest(url: URL(string: urlString+restMethod)!)
         request.httpMethod = httpMethod.rawValue
         if let headers = headers, headers.count > 0 {

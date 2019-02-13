@@ -28,7 +28,7 @@
     
     private let persistenceServiceUtils = PersistenceServiceUtils()
     private let processResponse = ProcessResponse.shared
-    private let mappings = Mappings()
+    private let mappings = Mappings.shared
     
     init(entityClass: Any) {
         self.entityClass = entityClass
