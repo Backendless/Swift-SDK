@@ -24,7 +24,7 @@ class PersistenceServiceUtils: NSObject {
     private var tableName: String = ""
     
     private let processResponse = ProcessResponse.shared
-    private let mappings = Mappings()
+    private let mappings = Mappings.shared
     private let storedObjects = StoredObjects.shared
     
     func setup(tableName: String?) {
@@ -444,16 +444,23 @@ class PersistenceServiceUtils: NSObject {
         else {
             resultEntityTypeName = className
         }
-        if let resultEntityType = NSClassFromString(resultEntityTypeName) as? NSObject.Type {
-            let entity = (resultEntityType).init()
+        var resultEntityType = NSClassFromString(resultEntityTypeName) as? NSObject.Type
+        if resultEntityType == nil {
+            let nameArray = resultEntityTypeName.components(separatedBy: ".")
+            resultEntityTypeName = nameArray.last!
+            resultEntityType = NSClassFromString(resultEntityTypeName) as? NSObject.Type
+        }
+        if let resultEntityType = resultEntityType {
+            let entity = resultEntityType.init()
             let entityFields = getClassProperties(entity: entity)
             
             let entityClassName = getClassName(entity: entity.classForCoder)
             let columnToPropertyMappings = mappings.getColumnToPropertyMappings(className: entityClassName)
-            
             for dictionaryField in dictionary.keys {
+                
                 if !(dictionary[dictionaryField] is NSNull) {
                     if columnToPropertyMappings.keys.contains(dictionaryField) {
+                        
                         entity.setValue(dictionary[dictionaryField], forKey: columnToPropertyMappings[dictionaryField]!)
                     }
                     else if entityFields.contains(dictionaryField) {        

@@ -79,6 +79,9 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssert(type(of: savedObject) == TestClassForMappings.self)
             XCTAssertEqual((savedObject as! TestClassForMappings).nameProperty, "Bob")
             XCTAssertEqual((savedObject as! TestClassForMappings).ageProperty, 25)
+            // to avoid problems in next tests
+            Mappings.shared.removeTableToClassMappings()
+            Mappings.shared.removeColumnToPropertyMappings()
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)

@@ -93,22 +93,6 @@ class UserServiceTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
     
-    // ******************************************************
-    
-    /*func testLoginWithFacebookSDK() {
-     
-     }
-     
-     func testLoginWithTwitterSDK() {
-     
-     }
-     
-     func testLoginWithGoogleSDK() {
-     
-     }*/
-    
-    // ******************************************************
-    
     func test_04_isValidUserTokenTrue() {
         let expectation = self.expectation(description: "PASSED: userService.isValidUserToken")
         backendless.userService.isValidUserToken(responseHandler: { isValidUserToken in
