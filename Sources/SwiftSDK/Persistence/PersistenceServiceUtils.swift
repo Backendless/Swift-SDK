@@ -432,7 +432,7 @@ class PersistenceServiceUtils: NSObject {
         return entityDictionary
     }
     
-    func dictionaryToEntity(dictionary: [String: Any], className: String) -> Any? {        
+    func dictionaryToEntity(dictionary: [String: Any], className: String) -> Any? {
         if tableName == "Users" {
             return processResponse.adaptToBackendlessUser(responseResult: dictionary)
         }
@@ -460,22 +460,26 @@ class PersistenceServiceUtils: NSObject {
                 
                 if !(dictionary[dictionaryField] is NSNull) {
                     if columnToPropertyMappings.keys.contains(dictionaryField) {
-                        
                         entity.setValue(dictionary[dictionaryField], forKey: columnToPropertyMappings[dictionaryField]!)
                     }
-                    else if entityFields.contains(dictionaryField) {        
+                    else if entityFields.contains(dictionaryField) {
+                        
                         if let relationDictionary = dictionary[dictionaryField] as? [String: Any] {
                             if let relationClassName = getClassName(className: relationDictionary["___class"] as! String) {
                                 if relationDictionary["___class"] as? String == "Users",
                                     let userObject = processResponse.adaptToBackendlessUser(responseResult: relationDictionary) {
                                     entity.setValue(userObject as! BackendlessUser, forKey: dictionaryField)
                                 }
-                                    
+                                else if relationDictionary["___class"] as? String == "GeoPoint",
+                                    let geoPointObject = processResponse.adaptToGeoPoint(geoDictionary: relationDictionary) {
+                                    entity.setValue(geoPointObject, forKey: dictionaryField)
+                                }
                                 else if let relationObject = dictionaryToEntity(dictionary: relationDictionary, className: relationClassName) {
                                     entity.setValue(relationObject, forKey: dictionaryField)
                                 }
                             }
                         }
+                            
                         else if let relationArrayOfDictionaries = dictionary[dictionaryField] as? [[String: Any]] {
                             var relationsArray = [Any]()
                             for relationDictionary in relationArrayOfDictionaries {
@@ -483,6 +487,10 @@ class PersistenceServiceUtils: NSObject {
                                     if relationDictionary["___class"] as? String == "Users",
                                         let userObject = processResponse.adaptToBackendlessUser(responseResult: relationDictionary) {
                                         relationsArray.append(userObject as! BackendlessUser)
+                                    }
+                                    if relationDictionary["___class"] as? String == "GeoPoint",
+                                        let geoPointObject = processResponse.adaptToGeoPoint(geoDictionary: relationDictionary) {
+                                        relationsArray.append(geoPointObject)
                                     }
                                     else if let relationObject = dictionaryToEntity(dictionary: relationDictionary, className: relationClassName) {
                                         relationsArray.append(relationObject)

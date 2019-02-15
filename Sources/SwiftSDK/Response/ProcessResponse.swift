@@ -94,6 +94,17 @@ class ProcessResponse: NSObject {
         return nil
     }
     
+    func adaptToGeoPoint(geoDictionary: [String: Any]) -> GeoPoint? {
+        if let objectId = geoDictionary["objectId"] as? String,
+            let latitude = geoDictionary["latitude"] as? Double,
+            let longitude = geoDictionary["longitude"] as? Double,
+            let categories = geoDictionary["categories"] as? [String],
+            let metadata = geoDictionary["metadata"] as? [String: String] {            
+            return GeoPoint(objectId: objectId, latitude: latitude, longitude: longitude, categories: categories, metadata: JSON(metadata))
+        }
+        return nil
+    }
+    
     func getResponseResult(response: ReturnedResponse) -> Any? {
         if let error = response.error {
             let faultCode = response.response?.statusCode
