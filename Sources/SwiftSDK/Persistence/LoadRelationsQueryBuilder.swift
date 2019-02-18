@@ -64,6 +64,17 @@
         self.offset = offset
     }
     
+    open func prepareNextPage() {
+        self.offset += self.pageSize
+    }
+    
+    open func preparePreviousPage() {
+        self.offset -= self.pageSize
+        if offset < 0 {
+            offset = 0
+        }
+    }
+    
     open func getRelationType() -> Any? {
         return self.entityClass
     }

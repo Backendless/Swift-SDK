@@ -198,7 +198,11 @@
         let wrappedBlock: ([[String: Any]]) -> () = { (responseArray) in
             var resultArray = [Any]()
             for responseObject in responseArray {
-                if let relationType = queryBuilder.getRelationType(),
+                if responseObject["___class"] as? String == "Users",
+                    let userObject = self.processResponse.adaptToBackendlessUser(responseResult: responseObject) {
+                    resultArray.append(userObject as! BackendlessUser)
+                }
+                else if let relationType = queryBuilder.getRelationType(),
                     let resultObject = self.persistenceServiceUtils.dictionaryToEntity(dictionary: responseObject, className: self.persistenceServiceUtils.getClassName(entity: relationType)) {
                     resultArray.append(resultObject)
                 }
