@@ -273,6 +273,9 @@ class PersistenceServiceUtils: NSObject {
         if whereClause != nil, whereClause?.count ?? 0 > 0 {
             restMethod += "?whereClause=\(stringToUrlString(originalString: whereClause!))"
         }
+        else {
+            restMethod += "?whereClause=\(stringToUrlString(originalString: "objectId != NULL"))"
+        }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: httpMethod, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
@@ -447,7 +450,7 @@ class PersistenceServiceUtils: NSObject {
         var resultEntityType = NSClassFromString(resultEntityTypeName) as? NSObject.Type
         if resultEntityType == nil {
             let nameArray = resultEntityTypeName.components(separatedBy: ".")
-            resultEntityTypeName = nameArray.last!
+            resultEntityTypeName = nameArray.last!       
             resultEntityType = NSClassFromString(resultEntityTypeName) as? NSObject.Type
         }
         if let resultEntityType = resultEntityType {
