@@ -63,12 +63,12 @@ private enum PermissionType: String {
         setPermission(entity: entity, permissionType: .DENY, operation: operation, userId: userId, roleName: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func grantForRole(role: UserRolesEnum, entity: Any, operation: PermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        setPermission(entity: entity, permissionType: .GRANT, operation: operation, userId: nil, roleName: role.rawValue, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func grantForRole(role: String, entity: Any, operation: PermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        setPermission(entity: entity, permissionType: .GRANT, operation: operation, userId: nil, roleName: role, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func denyForRole(role: UserRolesEnum, entity: Any, operation: PermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        setPermission(entity: entity, permissionType: .DENY, operation: operation, userId: nil, roleName: role.rawValue, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func denyForRole(role: String, entity: Any, operation: PermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        setPermission(entity: entity, permissionType: .DENY, operation: operation, userId: nil, roleName: role, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     open func grantForAllUsers(entity: Any, operation: PermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {

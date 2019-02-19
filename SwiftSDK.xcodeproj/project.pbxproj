@@ -46,7 +46,6 @@
 		5EE063BF22017EAA00B862EA /* LoadRelationsQueryBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE063BE22017EAA00B862EA /* LoadRelationsQueryBuilder.swift */; };
 		5EE2B40721C25EC600F90723 /* BackendlessUserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE2B40621C25EC600F90723 /* BackendlessUserTests.swift */; };
 		5EE6920121B67791002E72A9 /* FaultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE6920021B67791002E72A9 /* FaultTests.swift */; };
-		5EF50D01220319D30059DAC8 /* UserRolesEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF50D00220319D30059DAC8 /* UserRolesEnum.swift */; };
 		5EFBA8FE21C1011E007B3BB0 /* BackendlessUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFBA8FD21C1011E007B3BB0 /* BackendlessUser.swift */; };
 		6AA95CD0F22ACB1CFFE37402 /* Pods_SwiftSDKTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3516024AF117B55B0390A0E3 /* Pods_SwiftSDKTests.framework */; };
 		B264877612834E6EDC429235 /* Pods_SwiftSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E498E2D8F87FE5F1EDC7604 /* Pods_SwiftSDK.framework */; };
@@ -108,7 +107,6 @@
 		5EE063BE22017EAA00B862EA /* LoadRelationsQueryBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadRelationsQueryBuilder.swift; sourceTree = "<group>"; };
 		5EE2B40621C25EC600F90723 /* BackendlessUserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessUserTests.swift; sourceTree = "<group>"; };
 		5EE6920021B67791002E72A9 /* FaultTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaultTests.swift; sourceTree = "<group>"; };
-		5EF50D00220319D30059DAC8 /* UserRolesEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRolesEnum.swift; sourceTree = "<group>"; };
 		5EFBA8FD21C1011E007B3BB0 /* BackendlessUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessUser.swift; sourceTree = "<group>"; };
 		8719E73BC42A4BAC496A289B /* Pods-SwiftSDKTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSDKTests.release.xcconfig"; path = "Target Support Files/Pods-SwiftSDKTests/Pods-SwiftSDKTests.release.xcconfig"; sourceTree = "<group>"; };
 		B6B654B2B26601D8872ECE6E /* Pods-SwiftSDKTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSDKTests.debug.xcconfig"; path = "Target Support Files/Pods-SwiftSDKTests/Pods-SwiftSDKTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -298,7 +296,6 @@
 			children = (
 				5E84136221B5265200869794 /* UserService.swift */,
 				5EFBA8FD21C1011E007B3BB0 /* BackendlessUser.swift */,
-				5EF50D00220319D30059DAC8 /* UserRolesEnum.swift */,
 			);
 			path = UserService;
 			sourceTree = "<group>";
@@ -524,7 +521,6 @@
 				5E84136321B5265200869794 /* UserService.swift in Sources */,
 				5E6C1E452203362700903B7A /* ReturnedResponse.swift in Sources */,
 				5E11113721B532450044CAED /* UserProperty.swift in Sources */,
-				5EF50D01220319D30059DAC8 /* UserRolesEnum.swift in Sources */,
 				5EE063BF22017EAA00B862EA /* LoadRelationsQueryBuilder.swift in Sources */,
 				5EFBA8FE21C1011E007B3BB0 /* BackendlessUser.swift in Sources */,
 				5E3706FD22037CC800E08C50 /* ChildTestClass.swift in Sources */,
