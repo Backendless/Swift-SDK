@@ -21,7 +21,9 @@
 
 @objcMembers open class MapDrivenDataStore: NSObject, IDataStore {
     
-    typealias CustomType = [String: Any]
+    typealias CustomType = [String : Any]
+    
+    open var rt: EventHandlerForMap!
     
     private var tableName: String
     
@@ -30,6 +32,7 @@
     init(tableName: String) {
         self.tableName = tableName
         persistenceServiceUtils.setup(tableName: tableName)
+        self.rt = RTFactory.shared.createEventHandlerForMap(tableName: tableName)
     }
     
     open func save(entity: [String : Any], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {

@@ -23,6 +23,8 @@
     
     typealias CustomType = Any
     
+    open var rt: EventHandlerForClass!
+    
     private var entityClass: Any
     private var tableName: String
     
@@ -35,6 +37,7 @@
         let tableName = persistenceServiceUtils.getTableName(entity: self.entityClass)
         self.tableName = tableName
         persistenceServiceUtils.setup(tableName: self.tableName)
+        self.rt = RTFactory.shared.creteEventHandlerForClass(entityClass: entityClass, tableName: tableName)
     }
     
     open func mapToTable(tableName: String) {
@@ -53,7 +56,7 @@
     
     open func save(entity: Any, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let entityDictionary = persistenceServiceUtils.entityToDictionary(entity: entity)
-        let wrappedBlock: ([String: Any]) -> () = { (responseDictionary) in
+        let wrappedBlock: ([String: Any]) -> () = { responseDictionary in
             if let resultEntity = self.persistenceServiceUtils.dictionaryToEntity(dictionary: responseDictionary, className: self.persistenceServiceUtils.getClassName(entity: self.entityClass)) {
                 responseHandler(resultEntity)
             }
@@ -71,7 +74,7 @@
     
     open func update(entity: Any, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let entityDictionary = persistenceServiceUtils.entityToDictionary(entity: entity)
-        let wrappedBlock: ([String: Any]) -> () = { (responseDictionary) in
+        let wrappedBlock: ([String: Any]) -> () = { responseDictionary in
             if let resultEntity = self.persistenceServiceUtils.dictionaryToEntity(dictionary: responseDictionary, className: self.persistenceServiceUtils.getClassName(entity: self.entityClass)) {
                 responseHandler(resultEntity)
             }
@@ -106,7 +109,7 @@
     }
     
     open func find(responseHandler: (([Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        let wrappedBlock: ([[String: Any]]) -> () = { (responseArray) in
+        let wrappedBlock: ([[String: Any]]) -> () = { responseArray in
             var resultArray = [Any]()
             for responseObject in responseArray {
                 if let resultObject = self.persistenceServiceUtils.dictionaryToEntity(dictionary: responseObject, className: self.persistenceServiceUtils.getClassName(entity: self.entityClass)) {
@@ -119,7 +122,7 @@
     }
     
     open func find(queryBuilder: DataQueryBuilder, responseHandler: (([Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        let wrappedBlock: ([[String: Any]]) -> () = { (responseArray) in
+        let wrappedBlock: ([[String: Any]]) -> () = { responseArray in
             var resultArray = [Any]()
             for responseObject in responseArray {
                 if let resultObject = self.persistenceServiceUtils.dictionaryToEntity(dictionary: responseObject, className: self.persistenceServiceUtils.getClassName(entity: self.entityClass)) {
@@ -136,7 +139,7 @@
     }
     
     open func findFirst(queryBuilder: DataQueryBuilder, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        let wrappedBlock: ([String: Any]) -> () = { (responseDictionary) in
+        let wrappedBlock: ([String: Any]) -> () = { responseDictionary in
             if let resultEntity = self.persistenceServiceUtils.dictionaryToEntity(dictionary: responseDictionary, className: self.persistenceServiceUtils.getClassName(entity: self.entityClass)) {
                 responseHandler(resultEntity)
             }
@@ -149,7 +152,7 @@
     }
     
     open func findLast(queryBuilder: DataQueryBuilder, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        let wrappedBlock: ([String: Any]) -> () = { (responseDictionary) in
+        let wrappedBlock: ([String: Any]) -> () = { responseDictionary in
             if let resultEntity = self.persistenceServiceUtils.dictionaryToEntity(dictionary: responseDictionary, className: self.persistenceServiceUtils.getClassName(entity: self.entityClass)) {
                 responseHandler(resultEntity)
             }
@@ -162,7 +165,7 @@
     }
     
     open func findById(objectId: String, queryBuilder: DataQueryBuilder, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        let wrappedBlock: ([String: Any]) -> () = { (responseDictionary) in
+        let wrappedBlock: ([String: Any]) -> () = { responseDictionary in
             if let resultEntity = self.persistenceServiceUtils.dictionaryToEntity(dictionary: responseDictionary, className: self.persistenceServiceUtils.getClassName(entity: self.entityClass)) {
                 responseHandler(resultEntity)
             }
@@ -195,7 +198,7 @@
     }
     
     open func loadRelations(objectId: String, queryBuilder: LoadRelationsQueryBuilder, responseHandler: (([Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        let wrappedBlock: ([[String: Any]]) -> () = { (responseArray) in
+        let wrappedBlock: ([[String: Any]]) -> () = { responseArray in
             var resultArray = [Any]()
             for responseObject in responseArray {
                 if responseObject["___class"] as? String == "Users",
