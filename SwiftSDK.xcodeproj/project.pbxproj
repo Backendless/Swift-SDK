@@ -36,9 +36,19 @@
 		5E7E8A6021ECC94A00AA04E1 /* UserDefaultsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7E8A5F21ECC94A00AA04E1 /* UserDefaultsHelper.swift */; };
 		5E84136321B5265200869794 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E84136221B5265200869794 /* UserService.swift */; };
 		5E90721121B66E9E00619C0D /* Fault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E90721021B66E9E00619C0D /* Fault.swift */; };
+		5E9718FD221BFE3D00857603 /* RTFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9718FC221BFE3D00857603 /* RTFactory.swift */; };
+		5E97190E221C276600857603 /* IEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E97190D221C276600857603 /* IEventHandler.swift */; };
+		5E971910221C27BB00857603 /* EventHandlerForClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E97190F221C27BB00857603 /* EventHandlerForClass.swift */; };
+		5E971912221C27CB00857603 /* EventHandlerForMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E971911221C27CB00857603 /* EventHandlerForMap.swift */; };
+		5E971914221C296A00857603 /* RTService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E971913221C296A00857603 /* RTService.swift */; };
+		5E971916221C2A8700857603 /* RTClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E971915221C2A8700857603 /* RTClient.swift */; };
+		5E971918221C2CC400857603 /* RTSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E971917221C2CC400857603 /* RTSubscription.swift */; };
+		5E97191A221C369A00857603 /* RTMethodRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E971919221C369A00857603 /* RTMethodRequest.swift */; };
 		5E9C573221AEEA0400877870 /* SwiftSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9C572821AEEA0400877870 /* SwiftSDK.framework */; };
 		5E9C573921AEEA0400877870 /* SwiftSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E9C572B21AEEA0400877870 /* SwiftSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5EA2B69B21F2324B00CFDC37 /* StoredObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2B69A21F2324B00CFDC37 /* StoredObjects.swift */; };
+		5EA87B75221D4A3100A8B93F /* ReconnectAttemptObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA87B74221D4A3100A8B93F /* ReconnectAttemptObject.swift */; };
+		5EA87B95221D720100A8B93F /* RTListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA87B94221D720100A8B93F /* RTListener.swift */; };
 		5EB28E1921B1799A0007AC30 /* Backendless.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB28E1821B1799A0007AC30 /* Backendless.swift */; };
 		5EB28E2021B1833A0007AC30 /* BackendlessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB28E1F21B1833A0007AC30 /* BackendlessTests.swift */; };
 		5ECD9C7E21DE57DA002CBB7D /* GeoPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECD9C7D21DE57DA002CBB7D /* GeoPoint.swift */; };
@@ -94,11 +104,21 @@
 		5E84136221B5265200869794 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		5E90721021B66E9E00619C0D /* Fault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fault.swift; sourceTree = "<group>"; };
 		5E96E1AC21F8408800F34C11 /* TestClassForMappings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestClassForMappings.swift; sourceTree = "<group>"; };
+		5E9718FC221BFE3D00857603 /* RTFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTFactory.swift; sourceTree = "<group>"; };
+		5E97190D221C276600857603 /* IEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEventHandler.swift; sourceTree = "<group>"; };
+		5E97190F221C27BB00857603 /* EventHandlerForClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHandlerForClass.swift; sourceTree = "<group>"; };
+		5E971911221C27CB00857603 /* EventHandlerForMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHandlerForMap.swift; sourceTree = "<group>"; };
+		5E971913221C296A00857603 /* RTService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTService.swift; sourceTree = "<group>"; };
+		5E971915221C2A8700857603 /* RTClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTClient.swift; sourceTree = "<group>"; };
+		5E971917221C2CC400857603 /* RTSubscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTSubscription.swift; sourceTree = "<group>"; };
+		5E971919221C369A00857603 /* RTMethodRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTMethodRequest.swift; sourceTree = "<group>"; };
 		5E9C572821AEEA0400877870 /* SwiftSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E9C572B21AEEA0400877870 /* SwiftSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftSDK.h; sourceTree = "<group>"; };
 		5E9C572C21AEEA0400877870 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5E9C573121AEEA0400877870 /* SwiftSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EA2B69A21F2324B00CFDC37 /* StoredObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredObjects.swift; sourceTree = "<group>"; };
+		5EA87B74221D4A3100A8B93F /* ReconnectAttemptObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReconnectAttemptObject.swift; sourceTree = "<group>"; };
+		5EA87B94221D720100A8B93F /* RTListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTListener.swift; sourceTree = "<group>"; };
 		5EB28E1821B1799A0007AC30 /* Backendless.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backendless.swift; sourceTree = "<group>"; };
 		5EB28E1F21B1833A0007AC30 /* BackendlessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessTests.swift; sourceTree = "<group>"; };
 		5ECD9C7D21DE57DA002CBB7D /* GeoPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoPoint.swift; sourceTree = "<group>"; };
@@ -148,6 +168,7 @@
 		5A2A784B21E6103100EC8007 /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
+				5E9718F8221BFD0D00857603 /* RT */,
 				5A2A785021E6114800EC8007 /* PersistenceService.swift */,
 				5AC54CA521E7373400EC1F8C /* PersistenceServiceUtils.swift */,
 				5A2A784C21E6104F00EC8007 /* IDataStore.swift */,
@@ -261,6 +282,30 @@
 			path = Fault;
 			sourceTree = "<group>";
 		};
+		5E9718F8221BFD0D00857603 /* RT */ = {
+			isa = PBXGroup;
+			children = (
+				5E97190D221C276600857603 /* IEventHandler.swift */,
+				5E971911221C27CB00857603 /* EventHandlerForMap.swift */,
+				5E97190F221C27BB00857603 /* EventHandlerForClass.swift */,
+			);
+			path = RT;
+			sourceTree = "<group>";
+		};
+		5E9718FB221BFE3100857603 /* RT */ = {
+			isa = PBXGroup;
+			children = (
+				5E971915221C2A8700857603 /* RTClient.swift */,
+				5EA87B94221D720100A8B93F /* RTListener.swift */,
+				5E971913221C296A00857603 /* RTService.swift */,
+				5E9718FC221BFE3D00857603 /* RTFactory.swift */,
+				5E971917221C2CC400857603 /* RTSubscription.swift */,
+				5E971919221C369A00857603 /* RTMethodRequest.swift */,
+				5EA87B74221D4A3100A8B93F /* ReconnectAttemptObject.swift */,
+			);
+			path = RT;
+			sourceTree = "<group>";
+		};
 		5E9C572921AEEA0400877870 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -336,8 +381,9 @@
 		5ED3E2AA21B0267200A223C1 /* SwiftSDK */ = {
 			isa = PBXGroup;
 			children = (
-				5E60834921EF720600268B4D /* Extensions */,
 				5EB28E1821B1799A0007AC30 /* Backendless.swift */,
+				5E9718FB221BFE3100857603 /* RT */,
+				5E60834921EF720600268B4D /* Extensions */,
 				5E64F0BD21C50D7D00590B04 /* BackendlessRequestManager */,
 				5E90720F21B66E6000619C0D /* Fault */,
 				5ECD9C7C21DE57C2002CBB7D /* GeoService */,
@@ -399,6 +445,7 @@
 				5E9C572D21AEEA0400877870 /* Sources */,
 				5E9C572E21AEEA0400877870 /* Frameworks */,
 				5E9C572F21AEEA0400877870 /* Resources */,
+				DD1A962912356CB99D37C626 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -509,6 +556,30 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		DD1A962912356CB99D37C626 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SwiftSDKTests/Pods-SwiftSDKTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Socket.IO-Client-Swift/SocketIO.framework",
+				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketIO.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SwiftSDKTests/Pods-SwiftSDKTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -518,16 +589,22 @@
 			files = (
 				5E4DE64321EF8E92009AE503 /* Mappings.swift in Sources */,
 				5E7E8A6021ECC94A00AA04E1 /* UserDefaultsHelper.swift in Sources */,
+				5E971918221C2CC400857603 /* RTSubscription.swift in Sources */,
 				5E84136321B5265200869794 /* UserService.swift in Sources */,
 				5E6C1E452203362700903B7A /* ReturnedResponse.swift in Sources */,
 				5E11113721B532450044CAED /* UserProperty.swift in Sources */,
 				5EE063BF22017EAA00B862EA /* LoadRelationsQueryBuilder.swift in Sources */,
 				5EFBA8FE21C1011E007B3BB0 /* BackendlessUser.swift in Sources */,
+				5E971912221C27CB00857603 /* EventHandlerForMap.swift in Sources */,
 				5E3706FD22037CC800E08C50 /* ChildTestClass.swift in Sources */,
 				5ECD9C8021DE57E7002CBB7D /* GeoService.swift in Sources */,
 				5E3706F922037C9100E08C50 /* TestClassForMappings.swift in Sources */,
 				5A2A784F21E610D700EC8007 /* MapDrivenDataStore.swift in Sources */,
+				5E97190E221C276600857603 /* IEventHandler.swift in Sources */,
+				5EA87B75221D4A3100A8B93F /* ReconnectAttemptObject.swift in Sources */,
 				5AFE8E6421E8E3430003477B /* TestsConfig.swift in Sources */,
+				5E971910221C27BB00857603 /* EventHandlerForClass.swift in Sources */,
+				5E9718FD221BFE3D00857603 /* RTFactory.swift in Sources */,
 				5A2A785121E6114800EC8007 /* PersistenceService.swift in Sources */,
 				5E722B5E21BE9DE800AA9A8F /* DataTypeEnum.swift in Sources */,
 				5EA2B69B21F2324B00CFDC37 /* StoredObjects.swift in Sources */,
@@ -535,14 +612,18 @@
 				5E64F0BF21C50D8E00590B04 /* BackendlessRequestManager.swift in Sources */,
 				5A2A785321E61D1700EC8007 /* DataStoreFactory.swift in Sources */,
 				5E90721121B66E9E00619C0D /* Fault.swift in Sources */,
+				5EA87B95221D720100A8B93F /* RTListener.swift in Sources */,
 				5E72EABD21F6EB89006C8C5C /* DataQueryBuilder.swift in Sources */,
 				5E3706F722037C8E00E08C50 /* TestClass.swift in Sources */,
 				5A2A784D21E6104F00EC8007 /* IDataStore.swift in Sources */,
 				5E341B7C21F5E11A00C32598 /* ObjectProperty.swift in Sources */,
+				5E971914221C296A00857603 /* RTService.swift in Sources */,
 				5E467F822201E20700E70772 /* DataPermission.swift in Sources */,
+				5E971916221C2A8700857603 /* RTClient.swift in Sources */,
 				5E13C3A622046F7C00EA3050 /* JSON.swift in Sources */,
 				5E60834B21EF721900268B4D /* DictionaryExtension.swift in Sources */,
 				5ECD9C7E21DE57DA002CBB7D /* GeoPoint.swift in Sources */,
+				5E97191A221C369A00857603 /* RTMethodRequest.swift in Sources */,
 				5E572D4B21B8043E000713B0 /* ProcessResponse.swift in Sources */,
 				5EB28E1921B1799A0007AC30 /* Backendless.swift in Sources */,
 			);

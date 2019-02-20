@@ -41,6 +41,15 @@
         return apiKey
     }
     
+    open lazy var rt: RTService = {
+        return self.rtService
+    }()
+    
+    open lazy var rtService: RTService = {
+        let _rtSevice = RTService()
+        return _rtSevice
+    }()
+    
     open lazy var userService: UserService = {
         let _userSevice = UserService()
         return _userSevice

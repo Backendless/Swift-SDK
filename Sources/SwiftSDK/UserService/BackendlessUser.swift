@@ -87,10 +87,10 @@
     open func setProperties(properties: [String: Any]) {
         var userProperties = getProperties()
         for propertyName in userProperties.keys {
-            if propertyName != "ownerId" && propertyName != "socialAccount" && propertyName != "___class" &&
-                propertyName != "objectId" && propertyName != "created" && propertyName != "updated" &&
-                propertyName != "user-token" && propertyName != "lastLogin" && propertyName != "userStatus" &&
-                propertyName != "updated" && propertyName != "email" {
+            if propertyName != "ownerId", propertyName != "socialAccount", propertyName != "___class",
+                propertyName != "objectId", propertyName != "created", propertyName != "updated",
+                propertyName != "user-token", propertyName != "lastLogin", propertyName != "userStatus",
+                propertyName != "updated", propertyName != "email" {
                 userProperties[propertyName] = NSNull()
             }
         }

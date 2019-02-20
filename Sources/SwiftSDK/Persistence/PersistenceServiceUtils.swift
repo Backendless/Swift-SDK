@@ -229,15 +229,15 @@ class PersistenceServiceUtils: NSObject {
         let related = queryBuilder?.getRelated()
         let relationsDepth = queryBuilder?.getRelationsDepth()
         
-        if related != nil && relationsDepth! > 0 {
+        if related != nil, relationsDepth! > 0 {
             let relatedString = stringToUrlString(originalString: arrayToString(array: related!))
             restMethod += "?loadRelations=" + relatedString + "&relationsDepth=" + String(relationsDepth!)
         }
-        else if related != nil && relationsDepth == 0 {
+        else if related != nil, relationsDepth == 0 {
             let relatedString = stringToUrlString(originalString: arrayToString(array: related!))
             restMethod += "?loadRelations=" + relatedString
         }
-        else if related == nil && relationsDepth! > 0 {
+        else if related == nil, relationsDepth! > 0 {
             restMethod += "?relationsDepth=" + String(relationsDepth!)
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
@@ -331,13 +331,13 @@ class PersistenceServiceUtils: NSObject {
             let pageSize = queryBuilder.getPageSize()
             let offset = queryBuilder.getOffset()
             
-            if pageSize != 100 && offset != 0 {
+            if pageSize != 100, offset != 0 {
                 restMethod += "?pageSize=\(pageSize)&offset=\(offset)"
             }
-            else if pageSize == 100 && offset != 0 {
+            else if pageSize == 100, offset != 0 {
                 restMethod += "?offset=\(offset)"
             }
-            else if pageSize != 100 && offset == 0 {
+            else if pageSize != 100, offset == 0 {
                 restMethod += "?pageSize=\(pageSize)"
             }
         }
