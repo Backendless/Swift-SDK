@@ -25,5 +25,33 @@ protocol IEventHandler {
     
     associatedtype CustomType
 
-    func addCreateListener(responseHandler: ((CustomType) -> Void)!, errorHandler: ((Fault) -> Void)!)
+    func addCreateListener(responseHandler: ((CustomType) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription?
+    func addCreateListener(whereClause: String, responseHandler: ((CustomType) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription?
+    func removeCreateListeners(whereClause: String)
+    func removeCreateListeners()
+    
+    func addUpdateListener(responseHandler: ((CustomType) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription?
+    func addUpdateListener(whereClause: String, responseHandler: ((CustomType) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription?
+    func removeUpdateListeners(whereClause: String)
+    func removeUpdateListeners()
+    
+    func addDeleteListener(responseHandler: ((CustomType) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription?
+    func addDeleteListener(whereClause: String, responseHandler: ((CustomType) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription?
+    func removeDeleteListeners(whereClause: String)
+    func removeDeleteListeners()
+    
+    func addBulkCreateListener(responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription?
+    func removeBulkCreateListeners()
+
+    func addBulkUpdateListener(responseHandler: ((BulkEvent) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription?
+    func addBulkUpdateListener(whereClause: String, responseHandler: ((BulkEvent) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription?
+    func removeBulkUpdateListeners(whereClause: String)
+    func removeBulkUpdateListeners()
+    
+    func addBulkDeleteListener(responseHandler: ((BulkEvent) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription?
+    func addBulkDeleteListener(whereClause: String, responseHandler: ((BulkEvent) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription?
+    func removeBulkDeleteListeners(whereClause: String)
+    func removeBulkDeleteListeners()
+    
+    func removeAllListeners()
 }

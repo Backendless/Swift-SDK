@@ -35,7 +35,7 @@ class RTClient: NSObject {
     private var socket: SocketIOClient?
     private var subscriptions: [String : RTSubscription]
     private var methods: [String : RTMethodRequest]
-    private var eventListeners: [String : [Any]]
+    private var eventSubscriptions: [String : [RTSubscription]]
     private var socketCreated = false
     private var socketConnected = false
     private var needResubscribe = false
@@ -52,7 +52,7 @@ class RTClient: NSObject {
     override init() {
         self.subscriptions = [String : RTSubscription]()
         self.methods = [String : RTMethodRequest]()
-        self.eventListeners = [String : [Any]]()
+        self.eventSubscriptions = [String : [RTSubscription]]()
         _lock = NSLock()
         super.init()
     }
@@ -61,56 +61,67 @@ class RTClient: NSObject {
         if onSocketConnectCallback == nil {
             onSocketConnectCallback = connected
         }
-        
-        DispatchQueue.global(qos: .userInitiated).async {
-            self._lock.lock()
+        BackendlessRequestManager(restMethod: "rt/lookup", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if !self.socketCreated {
-                let path = "/" + Backendless.shared.getApplictionId()
-                BackendlessRequestManager(restMethod: "rt/lookup", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-                    if let urlString = String(data: response.data!, encoding: .utf8)?.replacingOccurrences(of: "\"", with: ""),
-                        let url = URL(string: urlString) {
-                        var clientId = ""
-                        
-                        #if os(iOS)
-                        clientId = (UIDevice.current.identifierForVendor?.uuidString)!
-                        #else
-                        clientId = NSHost.currentHost.name
-                        #endif
-                        
-                        var connectParams = ["apiKey": Backendless.shared.getApiKey(), "clientId": clientId]
-                        if let userToken = Backendless.shared.userService.getCurrentUser()?.userToken {
-                            connectParams["userToken"] = userToken
-                        }
-                        
-                        self.socketManager = SocketManager(socketURL: url, config: ["path": path, "connectParams": connectParams])
-                        self.socketManager?.reconnects = false
-                        self.socket = self.socketManager?.socket(forNamespace: path)
-                        
-                        if self.socket != nil {
-                            self.socketCreated = true
-                            self.onConnectionHandlers(connected: connected)
-                        }
-                        if self.socketCreated, self.socketConnected {
-                            connected()
-                            self._lock.unlock()
-                        }
-                        else if self.socketCreated, !self.socketConnected {
-                            self.socket?.connect()
+                if let responseData = response.data,
+                    let urlString = String(data: responseData, encoding: .utf8)?.replacingOccurrences(of: "\"", with: ""),
+                    let url = URL(string: urlString) {
+                    let path = "/" + Backendless.shared.getApplictionId()
+                    
+                    var clientId = ""
+                    #if os(iOS)
+                    clientId = (UIDevice.current.identifierForVendor?.uuidString)!
+                    #else
+                    clientId = NSHost.currentHost.name
+                    #endif
+                    
+                    var connectParams = ["apiKey": Backendless.shared.getApiKey(), "clientId": clientId]
+                    if let userToken = Backendless.shared.userService.getCurrentUser()?.userToken {
+                        connectParams["userToken"] = userToken
+                    }
+                    
+                    self.socketManager = SocketManager(socketURL: url, config: ["path": path, "connectParams": connectParams])
+                    self.socketManager?.reconnects = false
+                    self.socket = self.socketManager?.socket(forNamespace: path)
+                    
+                    if self.socket != nil {
+                        self.socketCreated = true
+                        self.onConnectionHandlers(connected: connected)
+                    }
+                }
+                else {
+                    if let connectErrorSubscriptions = self.eventSubscriptions[self.CONNECT_ERROR_EVENT] {
+                        for subscription in connectErrorSubscriptions {
+                            subscription.onResult!("Lookup failed")
                         }
                     }
-                })
+                    self.onReconnectAttempt()
+                    self.tryToReconnectSocket()
+                }
+                
+                if self.socketCreated, self.socketConnected {
+                    connected()
+                }
+                else if self.socketCreated, !self.socketConnected {
+                    self.socket?.connect()
+                }
             }
-        }
+        })
     }
     
     func subscribe(data: [String : Any], subscription: RTSubscription) {
-        if self.socketConnected {
-            self.socket?.emit("SUB_ON", with: [data])
-        }
-        else {
-            self.connectSocket(connected: {
+        DispatchQueue.global(qos: .default).async {            
+            self._lock.lock()
+            if self.socketConnected {
                 self.socket?.emit("SUB_ON", with: [data])
-            })
+                self._lock.unlock()
+            }
+            else {
+                self.connectSocket(connected: {
+                    self.socket?.emit("SUB_ON", with: [data])
+                    self._lock.unlock()
+                })
+            }
         }
         if !self.needResubscribe {
             self.subscriptions[subscription.subscriptionId!] = subscription
@@ -118,8 +129,20 @@ class RTClient: NSObject {
     }
     
     func unsubscribe(subscriptionId: String) {
-        self.socket?.emit("SUB_OFF", with: [["id": subscriptionId]])
-        subscriptions.removeValue(forKey: subscriptionId)
+        if self.subscriptions.keys.contains(subscriptionId) {
+            self.socket?.emit("SUB_OFF", with: [["id": subscriptionId]])
+            subscriptions.removeValue(forKey: subscriptionId)
+            
+        }
+        else {
+            for type in eventSubscriptions.keys {
+                if var subscriptions = eventSubscriptions[type],
+                    let index = subscriptions.firstIndex(where: { $0.subscriptionId == subscriptionId }) {
+                    subscriptions.remove(at: index)
+                    eventSubscriptions[type] = subscriptions
+                }
+            }
+        }
         if self.subscriptions.count == 0, self.socket != nil, self.socketManager != nil {
             self.socketManager?.removeSocket(self.socket!)
             self.socket = nil
@@ -130,7 +153,7 @@ class RTClient: NSObject {
             self.onConnectionHandlersReady = false
             self.onResultReady = false
             self.onMethodResultReady = false
-        }
+        } 
     }
     
     func sendCommand(data: Any, method: RTMethodRequest?) {
@@ -155,7 +178,6 @@ class RTClient: NSObject {
                 self.socketConnected = true
                 self.reconnectAttempt = 1
                 self.timeInterval = 0.2
-                self._lock.unlock()
                 
                 if self.needResubscribe {
                     for subscriptionId in self.subscriptions.keys {
@@ -175,9 +197,9 @@ class RTClient: NSObject {
                 self.onResult()
                 self.onMethodResult()
                 
-                if let connectListeners = self.eventListeners[self.CONNECT_EVENT] as? [() -> Void] {
-                    for connectBlock in connectListeners {
-                        connectBlock()
+                if let connectSubscriptions = self.eventSubscriptions[self.CONNECT_EVENT] {
+                    for connectSubscription in connectSubscriptions {
+                        connectSubscription.onResult!(nil)
                     }
                 }
             })
@@ -219,10 +241,9 @@ class RTClient: NSObject {
         self.onConnectionHandlersReady = false
         self.onResultReady = false
         self.onMethodResultReady = false
-        if let connectListeners = eventListeners[type] as? [(String) -> Void] {
-            for i in 0..<connectListeners.count {
-                let connectBlock = connectListeners[i]
-                connectBlock(reason)
+        if let connectErrorOrDisconnectSubscriptions = eventSubscriptions[type] {
+            for subscription in connectErrorOrDisconnectSubscriptions {
+                subscription.onResult!(reason)
             }
             self.onReconnectAttempt()
             self.tryToReconnectSocket()
@@ -230,17 +251,16 @@ class RTClient: NSObject {
     }
     
     func onReconnectAttempt() {
-        if let reconnectAttemptListeners = eventListeners[RECONNECT_ATTEMPT_EVENT] {
-            for i in 0..<reconnectAttemptListeners.count {
+        if let reconnectAttemptSubscriptions = eventSubscriptions[RECONNECT_ATTEMPT_EVENT] {
+            for subscription in reconnectAttemptSubscriptions {
                 let reconnectAttemptObject = ReconnectAttemptObject()
                 reconnectAttemptObject.attempt = NSNumber(value: self.reconnectAttempt)
                 reconnectAttemptObject.timeout = NSNumber(value: maxTimeInterval * 1000)
-                if let reconnectAttemptBlock = reconnectAttemptListeners[i] as? (ReconnectAttemptObject) -> Void {
-                    reconnectAttemptBlock(reconnectAttemptObject)
-                }
+                subscription.onResult!(reconnectAttemptObject)
             }
         }
         reconnectAttempt += 1
+        self.tryToReconnectSocket()
     }
     
     func tryToReconnectSocket() {
@@ -265,13 +285,14 @@ class RTClient: NSObject {
         if !self.onResultReady {
             self.socket?.on("SUB_RES", callback: { data, ack in
                 self.onResultReady = true
+                
                 if let resultData = data.first as? [String : Any],
                     let subscriptionId = resultData["id"] as? String,
                     let subscription = self.subscriptions[subscriptionId] {
                     
                     if let result = resultData["data"] {
                         subscription.ready = true
-            
+                        
                         if let result = result as? String, result == "connected", subscription.onReady != nil, subscription.onResult != nil {
                             subscription.onReady!()
                             subscription.onResult!(result)
@@ -350,38 +371,26 @@ class RTClient: NSObject {
     
     // Native Socket.io events
     
-    func addConnectEventListener(responseHandler: (() -> Void)!) {
-        if var connectListeners = eventListeners[CONNECT_EVENT] {
-            connectListeners.append(responseHandler)
-            eventListeners[CONNECT_EVENT] = connectListeners
+    func addEventListener(type: String, responseHandler: ((Any) -> Void)!) -> RTSubscription {
+        var subscriptions = eventSubscriptions[type]
+        if subscriptions == nil {
+            subscriptions = [RTSubscription]()
         }
-    }
-    
-    func removeConnectEventListeners(responseHandler: (() -> Void)!) {
-        if let connectListeners = eventListeners[CONNECT_EVENT] {
-            (connectListeners as! NSMutableArray).remove(responseHandler)
-            eventListeners[CONNECT_EVENT] = connectListeners
-        }
-    }
-    
-    func addEventListener(type: String, responseHandler: ((Any) -> Void)!) {
-        if var listeners = eventListeners["type"] {
-            listeners.append(responseHandler)
-            eventListeners["type"] = listeners
-        }
-    }
-    
-    func removeEventListeners(type: String, responseHandler: ((Any) -> Void)!) {
-        if let listeners = eventListeners["type"] {
-            (listeners as! NSMutableArray).remove(responseHandler)
-            eventListeners["type"] = listeners
-        }
+        
+        // These subscriptions are very simple, just id and onResult
+        let subscription = RTSubscription()
+        subscription.subscriptionId = UUID().uuidString
+        subscription.onResult = responseHandler
+        
+        subscriptions?.append(subscription)
+        eventSubscriptions[type] = subscriptions
+        return subscription       
     }
     
     func removeEventListeners(type: String) {
-        if var listeners = eventListeners["type"] {
+        if var listeners = eventSubscriptions[type] {
             listeners.removeAll()
-            eventListeners["type"] = listeners
+            eventSubscriptions[type] = listeners
         }
     }
 }

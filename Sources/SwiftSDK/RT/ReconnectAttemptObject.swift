@@ -19,8 +19,8 @@
  *  ********************************************************************************************************************
  */
 
-class ReconnectAttemptObject: NSObject {
+@objcMembers open class ReconnectAttemptObject: NSObject {
     
-    var attempt: NSNumber?
-    var timeout: NSNumber?
+    open var attempt: NSNumber?
+    open var timeout: NSNumber?
 }
