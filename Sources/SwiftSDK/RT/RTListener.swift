@@ -62,7 +62,7 @@
     
     // ****************************************************
     
-    func subscribeForObjectChanges(event: String, tableName: String, whereClause: String?, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    func subscribeForObjectChanges(event: String, tableName: String, whereClause: String?, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         var options = ["tableName": tableName, "event": event]
         if let whereClause = whereClause {
             options["whereClause"] = whereClause
@@ -73,37 +73,43 @@
                     responseHandler(response)
                 }
             }
-            addSubscription(type: OBJECTS_CHANGES, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            return addSubscription(type: OBJECTS_CHANGES, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
+        else if event == BULK_CREATED {
+            // return value is [String] but wrapped in [String : Any] to make this the subscribeForObjectChanges method universal
+            let wrappedBlock: (Any) -> () = { response in
+                if let response = response as? [String] {
+                    var responseDictionary = [String : Any]()
+                    for key in response {
+                        responseDictionary[key] = NSNull()
+                    }
+                    responseHandler(responseDictionary)
+                }
+            }
+            return addSubscription(type: OBJECTS_CHANGES, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
+        }
+        else if event == BULK_UPDATED {
+            let wrappedBlock: (Any) -> () = { response in
+                if let response = response as? [String : Any] {
+                    responseHandler(response)
+                }
+            }
+            return addSubscription(type: OBJECTS_CHANGES, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
+        }
+        else if event == BULK_DELETED {
+            let wrappedBlock: (Any) -> () = { response in
+                if let response = response as? [String : Any] {
+                    responseHandler(response)
+                }
+            }
+            return addSubscription(type: OBJECTS_CHANGES, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
+        }
+        return nil
     }
-    
-    /*-(void)subscribeForObjectChanges:(NSString *)event tableName:(NSString *)tableName whereClause:(NSString *)whereClause response:(void(^)(id))responseBlock error:(void(^)(Fault *))errorBlock {
-     NSDictionary *options = @{@"tableName"  : tableName,
-     @"event"      : event};
-     if (whereClause) {
-     options = @{@"tableName"    : tableName,
-     @"event"        : event,
-     @"whereClause"  : whereClause};
-     }
-     
-     if ([event isEqualToString:CREATED] || [event isEqualToString:UPDATED] || [event isEqualToString:DELETED]) {
-     [super addSubscription:OBJECTS_CHANGES options:options onResult:responseBlock onError:errorBlock handleResultSelector:@selector(handleData:) fromClass:self];
-     }
-     else if ([event isEqualToString:BULK_CREATED]) {
-     [super addSubscription:OBJECTS_CHANGES options:options onResult:responseBlock onError:errorBlock handleResultSelector:nil fromClass:self];
-     }
-     else if ([event isEqualToString:BULK_UPDATED]) {
-     [super addSubscription:OBJECTS_CHANGES options:options onResult:responseBlock onError:errorBlock handleResultSelector:@selector(handleBulkEvent:) fromClass:self];
-     }
-     else if ([event isEqualToString:BULK_DELETED]) {
-     [super addSubscription:OBJECTS_CHANGES options:options onResult:responseBlock onError:errorBlock handleResultSelector:@selector(handleBulkEvent:) fromClass:self];
-     }
-     };
-     */
     
     // ****************************************************
     
-    func addSubscription(type: String, options: [String : Any], responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    func addSubscription(type: String, options: [String : Any], responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription {
         let subscriptionId = UUID().uuidString
         let data = ["id": subscriptionId, "name": type, "options": options] as [String : Any]
         
@@ -140,11 +146,42 @@
         
         if var typeName = data["name"] as? String, typeName == OBJECTS_CHANGES {
             typeName = (data["options"] as! [String : Any])["event"] as! String
-            var subscriptionStack = [RTSubscription]()
-            if subscriptions[typeName] != nil {
-                subscriptionStack = subscriptions[typeName]!
-                subscriptionStack.append(subscription)
-                subscriptions[typeName] = subscriptionStack
+            var subscriptionStack = subscriptions[typeName]
+            if subscriptionStack == nil {
+                subscriptionStack = [RTSubscription]()
+            }
+            subscriptionStack?.append(subscription)
+            subscriptions[typeName] = subscriptionStack
+        }
+        return subscription
+    }
+    
+    func stopSubscription(event: String?, whereClause: String?) {        
+        if let event = event {
+            if let subscriptionStack = subscriptions[event] {
+                if whereClause != nil {
+                    for subscription in subscriptionStack {
+                        if let options = subscription.options,
+                            let subscriptionWhereClause = options["whereClause"] as? String,
+                            subscriptionWhereClause == whereClause {
+                            subscription.stop()
+                        }
+                    }
+                }
+                else {
+                    for subscription in subscriptionStack {
+                        subscription.stop()
+                    }
+                }
+            }
+        }
+        else if event == nil {
+            for eventName in subscriptions.keys {
+                if let subscriptionStack = subscriptions[eventName] {
+                    for subscription in subscriptionStack {
+                        subscription.stop()
+                    }
+                }
             }
         }
     }

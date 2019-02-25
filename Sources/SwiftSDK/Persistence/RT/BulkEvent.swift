@@ -1,5 +1,5 @@
 //
-//  RTSubscription.swift
+//  BulkEvent.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,22 +19,8 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class RTSubscription: NSObject {
+@objcMembers open class BulkEvent: NSObject {
     
-    var subscriptionId: String?
-    var type: String?
-    var options: [String : Any]?
-    var onResult: ((Any?) -> Void)?
-    var onError: ((Fault) -> Void)?
-    var onStop: ((RTSubscription) -> Void)?
-    var onReady: (() -> Void)?
-    var ready = false
-    
-    open func stop() {
-        RTClient.shared.unsubscribe(subscriptionId: self.subscriptionId!)
-        if self.onStop != nil {
-            self.onStop!(self)
-        }
-    }
+    var whereClause: String?
+    var count: NSNumber?
 }
-
