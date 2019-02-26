@@ -48,11 +48,11 @@ class RTClient: NSObject {
     private var onSocketConnectCallback: (() -> Void)?
     
     #if os(OSX)
-    private var macOSHardwareUUID: NSUUID = {
+    private var macOSHardwareUUID: String = {
         var hwUUIDBytes: [UInt8] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         var ts = timespec(tv_sec: 0,tv_nsec: 0)
         gethostuuid(&hwUUIDBytes, &ts)
-        return NSUUID(uuidBytes: hwUUIDBytes)
+        return NSUUID(uuidBytes: hwUUIDBytes).uuidString
     }()
     #endif
     
