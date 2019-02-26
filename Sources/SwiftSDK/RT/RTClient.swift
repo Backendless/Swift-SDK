@@ -74,7 +74,7 @@ class RTClient: NSObject {
                     #elseif os(tvOS)
                     clientId = (UIDevice.current.identifierForVendor?.uuidString)!
                     #elseif os(OSX)
-                    clientId = NSHost.currentHost.name
+                    clientId = Host.current().name!
                     #endif
                     
                     var connectParams = ["apiKey": Backendless.shared.getApiKey(), "clientId": clientId]
