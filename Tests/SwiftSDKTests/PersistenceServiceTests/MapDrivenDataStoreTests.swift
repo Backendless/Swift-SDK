@@ -25,6 +25,8 @@ import XCTest
 class MapDrivenDataStoreTests: XCTestCase {
     
     private let backendless = Backendless.shared
+    private let timeout: Double = 10.0
+    
     private var dataStore: MapDrivenDataStore!
     private var childDataStore: MapDrivenDataStore!
     
@@ -70,7 +72,7 @@ class MapDrivenDataStoreTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_02_createBulk() {
@@ -85,7 +87,7 @@ class MapDrivenDataStoreTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_03_update() {
@@ -112,7 +114,7 @@ class MapDrivenDataStoreTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_04_updateBulk() {
@@ -125,7 +127,7 @@ class MapDrivenDataStoreTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_05_removeById() {
@@ -144,7 +146,7 @@ class MapDrivenDataStoreTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_06_remove() {
@@ -163,7 +165,7 @@ class MapDrivenDataStoreTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_07_removeBulk() {
@@ -185,7 +187,7 @@ class MapDrivenDataStoreTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_08_getObjectCount() {
@@ -207,7 +209,7 @@ class MapDrivenDataStoreTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_09_getObjectCountWithCondition() {
@@ -231,7 +233,7 @@ class MapDrivenDataStoreTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_10_find() {
@@ -251,7 +253,7 @@ class MapDrivenDataStoreTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_11_findWithCondition() {
@@ -276,7 +278,7 @@ class MapDrivenDataStoreTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_12_findFirst() {
@@ -296,7 +298,7 @@ class MapDrivenDataStoreTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_13_findLast() {
@@ -316,7 +318,7 @@ class MapDrivenDataStoreTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_14_findById() {
@@ -338,7 +340,7 @@ class MapDrivenDataStoreTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_15_findByIdWithCondition() {
@@ -362,7 +364,7 @@ class MapDrivenDataStoreTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_16_findFirstWithCondition() {
@@ -377,7 +379,7 @@ class MapDrivenDataStoreTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_17_findFirstWithCondition() {
@@ -392,7 +394,7 @@ class MapDrivenDataStoreTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_18_setRelationWithObjects() {
@@ -420,7 +422,7 @@ class MapDrivenDataStoreTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_19_setRelationWithCondition() {
@@ -448,7 +450,7 @@ class MapDrivenDataStoreTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_20_addRelationWithObjects() {
@@ -476,7 +478,7 @@ class MapDrivenDataStoreTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_21_addRelationWithCondition() {
@@ -504,7 +506,7 @@ class MapDrivenDataStoreTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_22_deleteRelationWithObjects() {
@@ -540,7 +542,7 @@ class MapDrivenDataStoreTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_23_deleteRelationWithCondition() {
@@ -576,7 +578,7 @@ class MapDrivenDataStoreTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_24_loadRelationsTwoStepsWithPaging() {
@@ -616,7 +618,7 @@ class MapDrivenDataStoreTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     // ***************************************

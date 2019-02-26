@@ -24,22 +24,26 @@ import XCTest
 
 class UserServiceTests: XCTestCase {
     
+    private let backendless = Backendless.shared
     private let USER_EMAIL = "testUser@test.com"
     private let USER_PASSWORD = "111"
     private let USER_NAME = "Test User"
-    
-    private let backendless = Backendless.shared
+    private let timeout: Double = 10.0
     
     // call before all tests
     override class func setUp() {
         Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
         Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
-        clearTables()
+        Backendless.shared.userService.logout(responseHandler: {
+            clearTables()
+        }, errorHandler: { fault in })
     }
     
     // call after all tests
     override class func tearDown() {
-        clearTables()
+        Backendless.shared.userService.logout(responseHandler: {
+            clearTables()
+        }, errorHandler: { fault in }) 
     }
     
     class func clearTables() {
@@ -49,8 +53,7 @@ class UserServiceTests: XCTestCase {
         })
     }
     
-    // add this test after BKNDLSS-18007 is on prod
-    /*func test_01_describeUserClass() {
+    func test_01_describeUserClass() {
         let expectation = self.expectation(description: "PASSED: userService.describeUserClass")
         backendless.userService.describeUserClass(responseHandler: { properties in
             XCTAssertNotNil(properties)
@@ -60,8 +63,8 @@ class UserServiceTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
-    }*/
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
     
     func test_02_registerUser() {
         let expectation = self.expectation(description: "PASSED: userService.registerUser")
@@ -76,7 +79,7 @@ class UserServiceTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })        
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_03_login() {
@@ -90,7 +93,7 @@ class UserServiceTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_04_isValidUserTokenTrue() {
@@ -102,7 +105,7 @@ class UserServiceTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_05_getUserRoles() {
@@ -120,7 +123,7 @@ class UserServiceTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_06_update() {
@@ -138,7 +141,7 @@ class UserServiceTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_07_logout() {
@@ -150,7 +153,7 @@ class UserServiceTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_08_isValidUserTokenFalse() {
@@ -162,7 +165,7 @@ class UserServiceTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_09_restoreUserPassword() {
@@ -173,6 +176,6 @@ class UserServiceTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
 }
