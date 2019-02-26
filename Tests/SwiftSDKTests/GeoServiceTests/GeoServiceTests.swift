@@ -23,8 +23,9 @@ import XCTest
 @testable import SwiftSDK
 
 class GeoServiceTests: XCTestCase {
-
+    
     private let backendless = Backendless.shared
+    private let timeout: Double = 10.0
     
     override class func setUp() {
         Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
@@ -34,25 +35,23 @@ class GeoServiceTests: XCTestCase {
     // remove all points before tests
     
     /*func testSavePoint() {
-        let passedExpectation = self.expectation(description: "TEST PASSED: geoService.savePoint")
-        let failedExpectation = self.expectation(description: "TEST FAILED: geoService.savePoint")
-        let geoPoint = GeoPoint(latitude: 0.0, longitude: 0.0, categories: ["My UnitTest Category"], metadata: ["foo": "bar", "foo1": 123])
-        backendless.geo.savePoint(geoPoint: geoPoint, responseHandler: { savedPoint in
-            XCTAssertNotNil(savedPoint)
-            XCTAssertNotNil(savedPoint.latitude)
-            XCTAssertNotNil(savedPoint.longitude)
-            XCTAssertNotNil(savedPoint.categories)
-            XCTAssert(savedPoint.categories.count > 0)
-            XCTAssertNotNil(savedPoint.metadata)
-            XCTAssert(savedPoint.metadata?.keys.count ?? 0 > 0)
-            XCTAssert(savedPoint.metadata?.values.count ?? 0 > 0)
-            self.fulfillExpectation(expectation: passedExpectation)
-        }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
-            self.fulfillExpectation(expectation: failedExpectation)
-        })
-        waitForExpectations(timeout: 10, handler: { error in
-            print("TEST FAILED(TIMEOUT): geoService.savePoint")
-        })
-    }*/
+     let passedExpectation = self.expectation(description: "TEST PASSED: geoService.savePoint")
+     let failedExpectation = self.expectation(description: "TEST FAILED: geoService.savePoint")
+     let geoPoint = GeoPoint(latitude: 0.0, longitude: 0.0, categories: ["My UnitTest Category"], metadata: ["foo": "bar", "foo1": 123])
+     backendless.geo.savePoint(geoPoint: geoPoint, responseHandler: { savedPoint in
+     XCTAssertNotNil(savedPoint)
+     XCTAssertNotNil(savedPoint.latitude)
+     XCTAssertNotNil(savedPoint.longitude)
+     XCTAssertNotNil(savedPoint.categories)
+     XCTAssert(savedPoint.categories.count > 0)
+     XCTAssertNotNil(savedPoint.metadata)
+     XCTAssert(savedPoint.metadata?.keys.count ?? 0 > 0)
+     XCTAssert(savedPoint.metadata?.values.count ?? 0 > 0)
+     self.fulfillExpectation(expectation: passedExpectation)
+     }, errorHandler: { fault in
+     XCTAssertNotNil(fault)
+     self.fulfillExpectation(expectation: failedExpectation)
+     })
+     waitForExpectations(timeout: timeout, handler: nil)
+     }*/
 }

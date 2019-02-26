@@ -25,7 +25,9 @@ import XCTest
 class DataStoreFactoryTests: XCTestCase {
     
     private let backendless = Backendless.shared
+    private let timeout: Double = 10.0
     private let storedObjects = StoredObjects.shared
+    
     private var dataStore: DataStoreFactory!
     private var childDataStore: DataStoreFactory!
     
@@ -87,7 +89,7 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_02_save() {
@@ -103,7 +105,7 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_03_createBulk() {
@@ -117,7 +119,7 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_04_update() {
@@ -143,7 +145,7 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_05_updateBulk() {
@@ -156,7 +158,7 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_06_removeById() {
@@ -178,7 +180,7 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_07_remove() {
@@ -197,7 +199,7 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_08_removeBulk() {
@@ -219,7 +221,7 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_09_getObjectCount() {
@@ -241,7 +243,7 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_10_getObjectCountWithCondition() {
@@ -265,7 +267,7 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_11_find() {
@@ -285,7 +287,7 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_12_findWithCondition() {
@@ -310,7 +312,7 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_13_findFirst() {
@@ -330,7 +332,7 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_14_findLast() {
@@ -350,7 +352,7 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_15_findById() {
@@ -372,7 +374,7 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_16_findByIdWithCondition() {
@@ -453,7 +455,7 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_18_findLastWithCondition() {
@@ -468,7 +470,7 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_19_setRelationWithObjects() {
@@ -500,7 +502,7 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_20_setRelationWithCondition() {
@@ -533,7 +535,7 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_21_addRelationWithObjects() {
@@ -565,7 +567,7 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_22_addRelationWithCondition() {
@@ -598,7 +600,7 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_23_deleteRelationWithObjects() {
@@ -638,7 +640,7 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_24_deleteRelationWithCondition() {
@@ -678,7 +680,7 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_25_loadRelationsTwoStepsWithPaging() {
@@ -721,7 +723,7 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     // ***************************************

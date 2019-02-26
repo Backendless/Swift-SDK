@@ -26,10 +26,10 @@ import XCTest
 class EventHanderForMapTests: XCTestCase {
     
     private let backendless = Backendless.shared
+    private let timeout: Double = 20.0
+    
     private var dataStore: MapDrivenDataStore!
     private var eventHandler: EventHandlerForMap!
-    
-    private let timeout: Double = 20.0
     
     // call before all tests
     override class func setUp() {
