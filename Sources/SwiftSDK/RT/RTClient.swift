@@ -73,6 +73,14 @@ class RTClient: NSObject {
         }
         BackendlessRequestManager(restMethod: "rt/lookup", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if !self.socketCreated {
+                
+                print("data = \(response.data)")
+                print("urlString = \(String(data: response.data!, encoding: .utf8)?.replacingOccurrences(of: "\"", with: ""))")
+                print("path = \("/" + Backendless.shared.getApplictionId())")
+                #if os(OSX)
+                print("macOSHardwareUUID = \(macOSHardwareUUID)")
+                #endif
+                
                 if let responseData = response.data,
                     let urlString = String(data: responseData, encoding: .utf8)?.replacingOccurrences(of: "\"", with: ""),
                     let url = URL(string: urlString) {
