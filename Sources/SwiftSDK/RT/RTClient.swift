@@ -71,7 +71,9 @@ class RTClient: NSObject {
                     var clientId = ""
                     #if os(iOS)
                     clientId = (UIDevice.current.identifierForVendor?.uuidString)!
-                    #else
+                    #elseif os(tvOS)
+                    clientId = (UIDevice.current.identifierForVendor?.uuidString)!
+                    #elseif os(OSX)
                     clientId = NSHost.currentHost.name
                     #endif
                     
