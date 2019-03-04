@@ -1,5 +1,5 @@
 //
-//  BulkEvent.swift
+//  CommandObject.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,8 +19,10 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class BulkEvent: NSObject {
-    
-    open var whereClause: String?
-    open var count: NSNumber?
+class CommandObject: NSObject {
+
+    var type: String?
+    var connectionId: String?
+    var userId: String?
+    var data: Any?
 }

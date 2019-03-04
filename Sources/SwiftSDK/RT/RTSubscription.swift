@@ -22,13 +22,21 @@
 @objcMembers open class RTSubscription: NSObject {
     
     var subscriptionId: String?
+    var data: [String: Any]?
     var type: String?
     var options: [String : Any]?
+    var onConnect: (() -> Void)?
     var onResult: ((Any?) -> Void)?
     var onError: ((Fault) -> Void)?
     var onStop: ((RTSubscription) -> Void)?
     var onReady: (() -> Void)?
     var ready = false
+    
+    func subscribe() {
+        if let data = self.data {
+            RTClient.shared.subscribe(data: data, subscription: self)
+        }        
+    }
     
     open func stop() {
         RTClient.shared.unsubscribe(subscriptionId: self.subscriptionId!)
@@ -36,5 +44,6 @@
             self.onStop!(self)
         }
     }
+    
 }
 

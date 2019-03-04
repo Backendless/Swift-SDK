@@ -64,6 +64,15 @@
         return _persistenceSevice
     }()
     
+    open lazy var messaging: MessagingService = {
+        return self.messagingService
+    }()
+    
+    open lazy var messagingService: MessagingService = {
+        let _messagingSevice = MessagingService()
+        return _messagingSevice
+    }()
+    
     open lazy var geo: GeoService = {
         return self.geoService
     }()

@@ -40,10 +40,10 @@ class ProcessResponse: NSObject {
                         if to == BackendlessUser.self {
                             return adaptToBackendlessUser(responseResult: responseResult)
                         }
-//                        else if to == [BackendlessUser].self {
-//                            if let responseResult = responseResult as? [[String: Any]] {                                
-//                            }
-//                        }
+                            //                        else if to == [BackendlessUser].self {
+                            //                            if let responseResult = responseResult as? [[String: Any]] {
+                            //                            }
+                            //                        }
                         else if let responseData = response.data {
                             let responseObject = try JSONDecoder().decode(to, from: responseData)
                             return responseObject
@@ -94,7 +94,7 @@ class ProcessResponse: NSObject {
         return nil
     }
     
-    func adaptToGeoPoint(geoDictionary: [String: Any]) -> GeoPoint? {
+    func adaptToGeoPoint(geoDictionary: [String : Any]) -> GeoPoint? {
         if let objectId = geoDictionary["objectId"] as? String,
             let latitude = geoDictionary["latitude"] as? Double,
             let longitude = geoDictionary["longitude"] as? Double,
@@ -103,6 +103,47 @@ class ProcessResponse: NSObject {
             return GeoPoint(objectId: objectId, latitude: latitude, longitude: longitude, categories: categories, metadata: JSON(metadata))
         }
         return nil
+    }
+    
+    func adaptToPublishMessageInfo(messageInfoDictionary: [String : Any]) -> PublishMessageInfo? {
+        let publishMessageInfo = PublishMessageInfo()
+        if let messageId = messageInfoDictionary["messageId"] as? String {
+            publishMessageInfo.messageId = messageId
+        }
+        if let timestamp = messageInfoDictionary["timestamp"] as? NSNumber? {
+            publishMessageInfo.timestamp = timestamp
+        }
+        if let message = messageInfoDictionary["message"] as? String {
+            publishMessageInfo.message = message
+        }
+        if let publisherId = messageInfoDictionary["publisherId"] as? String {
+            publishMessageInfo.publisherId = publisherId
+        }
+        if let subtopic = messageInfoDictionary["subtopic"] as? String {
+            publishMessageInfo.subtopic = subtopic
+        }
+        if let pushSinglecast = messageInfoDictionary["pushSinglecast"] as? [Any] {
+            publishMessageInfo.pushSinglecast = pushSinglecast
+        }
+        if let pushBroadcast = messageInfoDictionary["pushBroadcast"] as? NSNumber {
+            publishMessageInfo.pushBroadcast = pushBroadcast
+        }
+        if let publishPolicy = messageInfoDictionary["publishPolicy"] as? String {
+            publishMessageInfo.publishPolicy = publishPolicy
+        }
+        if let query = messageInfoDictionary["query"] as? String {
+            publishMessageInfo.query = query
+        }
+        if let publishAt = messageInfoDictionary["publishAt"] as? NSNumber {
+            publishMessageInfo.publishAt = publishAt
+        }
+        if let repeatEvery = messageInfoDictionary["repeatEvery"] as? NSNumber {
+            publishMessageInfo.repeatEvery = repeatEvery
+        }
+        if let headers = messageInfoDictionary["headers"] as? [String : Any] {
+            publishMessageInfo.headers = headers
+        }
+        return publishMessageInfo
     }
     
     func getResponseResult(response: ReturnedResponse) -> Any? {

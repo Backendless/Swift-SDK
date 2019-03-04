@@ -1,5 +1,5 @@
 //
-//  BulkEvent.swift
+//  MessagingService.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,8 +19,17 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class BulkEvent: NSObject {
+@objcMembers open class MessagingService: NSObject {
     
-    open var whereClause: String?
-    open var count: NSNumber?
+    private let DEFAULT_CHANNEL_NAME = "default"
+    
+    open func subscribe() -> Channel {
+        return subscribe(channelName: DEFAULT_CHANNEL_NAME)
+    }
+    
+    open func subscribe(channelName: String) -> Channel {
+        let channel = RTFactory.shared.createChannel(channelName: channelName)
+        channel.join()
+        return channel
+    }
 }

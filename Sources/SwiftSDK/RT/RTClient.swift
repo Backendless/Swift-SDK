@@ -121,10 +121,10 @@ class RTClient: NSObject {
         })
     }
     
-    func subscribe(data: [String : Any], subscription: RTSubscription) {
+    func subscribe(data: [String : Any], subscription: RTSubscription) {        
         DispatchQueue.global(qos: .default).async {            
             self._lock.lock()
-            if self.socketConnected {
+            if self.socketConnected {                
                 self.socket?.emit("SUB_ON", with: [data])
                 self._lock.unlock()
             }
@@ -297,17 +297,16 @@ class RTClient: NSObject {
         if !self.onResultReady {
             self.socket?.on("SUB_RES", callback: { data, ack in
                 self.onResultReady = true
-                
+            
                 if let resultData = data.first as? [String : Any],
                     let subscriptionId = resultData["id"] as? String,
                     let subscription = self.subscriptions[subscriptionId] {
                     
                     if let result = resultData["data"] {
                         subscription.ready = true
-                        
-                        if let result = result as? String, result == "connected", subscription.onReady != nil, subscription.onResult != nil {
+                        if let result = result as? String, result == "connected", subscription.onReady != nil, subscription.onConnect != nil {
                             subscription.onReady!()
-                            subscription.onResult!(result)
+                            subscription.onConnect!()
                         }
                         else if let result = result as? [String : Any], subscription.onResult != nil {
                             subscription.onResult!(result)
@@ -321,9 +320,8 @@ class RTClient: NSObject {
                     }
                     else if let error = resultData["error"] as? [String : Any],
                         let faultMessage = error["message"] as? String,
-                        let faultCode = error["code"] as? String {
-                        let fault = Fault(message: faultMessage, faultCode: Int(faultCode)!)
-                        
+                        let faultCode = error["code"] as? NSNumber {
+                        let fault = Fault(message: faultMessage, faultCode: faultCode.intValue)
                         if subscription.onError != nil {
                             subscription.onError!(fault)
                         }

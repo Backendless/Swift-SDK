@@ -1,5 +1,5 @@
 //
-//  BulkEvent.swift
+//  UserStatusObject.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,8 +19,10 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class BulkEvent: NSObject {
+import UIKit
+
+class UserStatusObject: NSObject {
     
-    open var whereClause: String?
-    open var count: NSNumber?
+    var status: String?
+    var data: [[String : Any]]?
 }

@@ -206,7 +206,7 @@ class PersistenceServiceTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    // TODO
+    // TODO after BKNDLSS-18209 fixed
     func test_07_denyForRole() {
     }
     
