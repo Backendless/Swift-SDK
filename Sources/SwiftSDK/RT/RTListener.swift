@@ -62,54 +62,7 @@
     
     // ****************************************************
     
-    func subscribeForObjectChanges(event: String, tableName: String, whereClause: String?, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
-        var options = ["tableName": tableName, "event": event]
-        if let whereClause = whereClause {
-            options["whereClause"] = whereClause
-        }
-        if event == CREATED || event == UPDATED || event == DELETED {
-            let wrappedBlock: (Any) -> () = { response in
-                if let response = response as? [String : Any] {
-                    responseHandler(response)
-                }
-            }
-            return addSubscription(type: OBJECTS_CHANGES, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
-        }
-        else if event == BULK_CREATED {
-            // return value is [String] but wrapped in [String : Any] to make this the subscribeForObjectChanges method universal
-            let wrappedBlock: (Any) -> () = { response in
-                if let response = response as? [String] {
-                    var responseDictionary = [String : Any]()
-                    for key in response {
-                        responseDictionary[key] = NSNull()
-                    }
-                    responseHandler(responseDictionary)
-                }
-            }
-            return addSubscription(type: OBJECTS_CHANGES, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
-        }
-        else if event == BULK_UPDATED {
-            let wrappedBlock: (Any) -> () = { response in
-                if let response = response as? [String : Any] {
-                    responseHandler(response)
-                }
-            }
-            return addSubscription(type: OBJECTS_CHANGES, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
-        }
-        else if event == BULK_DELETED {
-            let wrappedBlock: (Any) -> () = { response in
-                if let response = response as? [String : Any] {
-                    responseHandler(response)
-                }
-            }
-            return addSubscription(type: OBJECTS_CHANGES, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
-        }
-        return nil
-    }
-    
-    // ****************************************************
-    
-    func addSubscription(type: String, options: [String : Any], responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription {
+    func createSubscription(type: String, options: [String : Any], connectionHandler: (() -> Void)?, responseHandler: ((Any) -> Void)?, errorHandler: ((Fault) -> Void)!) -> RTSubscription {
         let subscriptionId = UUID().uuidString
         let data = ["id": subscriptionId, "name": type, "options": options] as [String : Any]
         
@@ -134,15 +87,15 @@
         
         let subscription = RTSubscription()
         subscription.subscriptionId = subscriptionId
+        subscription.data = data
         subscription.type = type
-        subscription.options = options  
+        subscription.options = options
         subscription.onResult = responseHandler
+        subscription.onConnect = connectionHandler
         subscription.onError = errorHandler
         subscription.onStop = onStop
         subscription.onReady = onReady
-        subscription.ready = false
-        
-        RTClient.shared.subscribe(data: data, subscription: subscription)
+        subscription.ready = false       
         
         if var typeName = data["name"] as? String, typeName == OBJECTS_CHANGES {
             typeName = (data["options"] as! [String : Any])["event"] as! String
@@ -185,4 +138,61 @@
             }
         }
     }
+    
+    // ****************************************************
+    
+    func subscribeForObjectChanges(event: String, tableName: String, whereClause: String?, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        var options = ["tableName": tableName, "event": event]
+        if let whereClause = whereClause {
+            options["whereClause"] = whereClause
+        }
+        if event == CREATED || event == UPDATED || event == DELETED {
+            let wrappedBlock: (Any) -> () = { response in
+                if let response = response as? [String : Any] {
+                    responseHandler(response)
+                }
+            }
+            let subscription = createSubscription(type: OBJECTS_CHANGES, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            RTClient.shared.subscribe(data: subscription.data!, subscription: subscription)
+            return subscription
+        }
+        else if event == BULK_CREATED {
+            // return value is [String] but wrapped in [String : Any] to make this the subscribeForObjectChanges method universal
+            let wrappedBlock: (Any) -> () = { response in
+                if let response = response as? [String] {
+                    var responseDictionary = [String : Any]()
+                    for key in response {
+                        responseDictionary[key] = NSNull()
+                    }
+                    responseHandler(responseDictionary)
+                }
+            }
+            let subscription = createSubscription(type: OBJECTS_CHANGES, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            RTClient.shared.subscribe(data: subscription.data!, subscription: subscription)
+            return subscription
+        }
+        else if event == BULK_UPDATED {
+            let wrappedBlock: (Any) -> () = { response in
+                if let response = response as? [String : Any] {
+                    responseHandler(response)
+                }
+            }
+            let subscription = createSubscription(type: OBJECTS_CHANGES, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            RTClient.shared.subscribe(data: subscription.data!, subscription: subscription)
+            return subscription
+        }
+        else if event == BULK_DELETED {
+            let wrappedBlock: (Any) -> () = { response in
+                if let response = response as? [String : Any] {
+                    responseHandler(response)
+                }
+            }
+            let subscription = createSubscription(type: OBJECTS_CHANGES, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            RTClient.shared.subscribe(data: subscription.data!, subscription: subscription)
+            return subscription
+        }
+        return nil
+    }
+    
+    // ****************************************************
 }

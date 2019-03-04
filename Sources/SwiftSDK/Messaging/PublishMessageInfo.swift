@@ -1,5 +1,5 @@
 //
-//  BulkEvent.swift
+//  MessagingService.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,8 +19,17 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class BulkEvent: NSObject {
-    
-    open var whereClause: String?
-    open var count: NSNumber?
+@objcMembers open class PublishMessageInfo: NSObject {
+    open var messageId: String?
+    open var timestamp: NSNumber?
+    open var message: Any?
+    open var publisherId: String?
+    open var subtopic: String?
+    open var pushSinglecast: [Any]?
+    open var pushBroadcast: NSNumber?
+    open var publishPolicy: String?
+    open var query: String?
+    open var publishAt: NSNumber?
+    open var repeatEvery: NSNumber?
+    open var headers: [String : Any]?
 }

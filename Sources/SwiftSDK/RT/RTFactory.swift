@@ -30,4 +30,12 @@ class RTFactory: NSObject {
     func creteEventHandlerForClass(entityClass: Any, tableName: String) -> EventHandlerForClass {
         return EventHandlerForClass(entityClass: entityClass, tableName: tableName)
     }
+    
+    func createChannel(channelName: String) -> Channel {
+        return Channel(channelName: channelName)
+    }
+    
+    func createRTMessaging(channel: Channel) -> RTMessaging {
+        return RTMessaging(channel: channel)
+    }
 }

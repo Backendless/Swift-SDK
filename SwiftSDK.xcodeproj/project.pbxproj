@@ -16,6 +16,12 @@
 		5AFE8E6221E8E2620003477B /* MapDrivenDataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFE8E6121E8E2620003477B /* MapDrivenDataStoreTests.swift */; };
 		5AFE8E6421E8E3430003477B /* TestsConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFE8E6321E8E3430003477B /* TestsConfig.swift */; };
 		5AFE8E6621E8E5C00003477B /* DataStoreFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFE8E6521E8E5C00003477B /* DataStoreFactoryTests.swift */; };
+		5E03A3BA222916A2005A538D /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E03A3B9222916A2005A538D /* Channel.swift */; };
+		5E03A3BD22291882005A538D /* RTMessaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E03A3BC22291882005A538D /* RTMessaging.swift */; };
+		5E03A3BF22291C74005A538D /* MessagingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E03A3BE22291C74005A538D /* MessagingService.swift */; };
+		5E03A3C122294A4B005A538D /* PublishMessageInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E03A3C022294A4B005A538D /* PublishMessageInfo.swift */; };
+		5E03A3C322296D03005A538D /* CommandObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E03A3C222296D03005A538D /* CommandObject.swift */; };
+		5E03A3C52229711F005A538D /* UserStatusObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E03A3C42229711F005A538D /* UserStatusObject.swift */; };
 		5E11113721B532450044CAED /* UserProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E11113621B532450044CAED /* UserProperty.swift */; };
 		5E11113C21B542BA0044CAED /* UserServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E11113B21B542BA0044CAED /* UserServiceTests.swift */; };
 		5E13C3A622046F7C00EA3050 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E13C3A522046F7C00EA3050 /* JSON.swift */; };
@@ -88,6 +94,12 @@
 		5AFE8E6121E8E2620003477B /* MapDrivenDataStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDrivenDataStoreTests.swift; sourceTree = "<group>"; };
 		5AFE8E6321E8E3430003477B /* TestsConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestsConfig.swift; sourceTree = "<group>"; };
 		5AFE8E6521E8E5C00003477B /* DataStoreFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStoreFactoryTests.swift; sourceTree = "<group>"; };
+		5E03A3B9222916A2005A538D /* Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
+		5E03A3BC22291882005A538D /* RTMessaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTMessaging.swift; sourceTree = "<group>"; };
+		5E03A3BE22291C74005A538D /* MessagingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagingService.swift; sourceTree = "<group>"; };
+		5E03A3C022294A4B005A538D /* PublishMessageInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishMessageInfo.swift; sourceTree = "<group>"; };
+		5E03A3C222296D03005A538D /* CommandObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandObject.swift; sourceTree = "<group>"; };
+		5E03A3C42229711F005A538D /* UserStatusObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStatusObject.swift; sourceTree = "<group>"; };
 		5E11113621B532450044CAED /* UserProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProperty.swift; sourceTree = "<group>"; };
 		5E11113B21B542BA0044CAED /* UserServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserServiceTests.swift; sourceTree = "<group>"; };
 		5E13C3A522046F7C00EA3050 /* JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
@@ -210,6 +222,25 @@
 			path = PersistenceServiceTests;
 			sourceTree = "<group>";
 		};
+		5E03A3B822291680005A538D /* Messaging */ = {
+			isa = PBXGroup;
+			children = (
+				5E03A3BB22291874005A538D /* RT */,
+				5E03A3B9222916A2005A538D /* Channel.swift */,
+				5E03A3BE22291C74005A538D /* MessagingService.swift */,
+				5E03A3C022294A4B005A538D /* PublishMessageInfo.swift */,
+			);
+			path = Messaging;
+			sourceTree = "<group>";
+		};
+		5E03A3BB22291874005A538D /* RT */ = {
+			isa = PBXGroup;
+			children = (
+				5E03A3BC22291882005A538D /* RTMessaging.swift */,
+			);
+			path = RT;
+			sourceTree = "<group>";
+		};
 		5E11113821B532BD0044CAED /* Property */ = {
 			isa = PBXGroup;
 			children = (
@@ -321,6 +352,8 @@
 				5E971917221C2CC400857603 /* RTSubscription.swift */,
 				5E971919221C369A00857603 /* RTMethodRequest.swift */,
 				5EA87B74221D4A3100A8B93F /* ReconnectAttemptObject.swift */,
+				5E03A3C222296D03005A538D /* CommandObject.swift */,
+				5E03A3C42229711F005A538D /* UserStatusObject.swift */,
 			);
 			path = RT;
 			sourceTree = "<group>";
@@ -402,14 +435,15 @@
 			isa = PBXGroup;
 			children = (
 				5EB28E1821B1799A0007AC30 /* Backendless.swift */,
-				5E9718FB221BFE3100857603 /* RT */,
-				5E60834921EF720600268B4D /* Extensions */,
 				5E64F0BD21C50D7D00590B04 /* BackendlessRequestManager */,
+				5E60834921EF720600268B4D /* Extensions */,
 				5E90720F21B66E6000619C0D /* Fault */,
 				5ECD9C7C21DE57C2002CBB7D /* GeoService */,
+				5E03A3B822291680005A538D /* Messaging */,
 				5A2A784B21E6103100EC8007 /* Persistence */,
 				5E11113821B532BD0044CAED /* Property */,
 				5E572D4921B8042B000713B0 /* Response */,
+				5E9718FB221BFE3100857603 /* RT */,
 				5EB28E1A21B17A490007AC30 /* UserService */,
 				5E7E8A5E21ECC92F00AA04E1 /* Utils */,
 			);
@@ -616,16 +650,19 @@
 				5EE063BF22017EAA00B862EA /* LoadRelationsQueryBuilder.swift in Sources */,
 				5EFBA8FE21C1011E007B3BB0 /* BackendlessUser.swift in Sources */,
 				5E971912221C27CB00857603 /* EventHandlerForMap.swift in Sources */,
+				5E03A3C52229711F005A538D /* UserStatusObject.swift in Sources */,
 				5E3706FD22037CC800E08C50 /* ChildTestClass.swift in Sources */,
 				5ECD9C8021DE57E7002CBB7D /* GeoService.swift in Sources */,
 				5E3706F922037C9100E08C50 /* TestClassForMappings.swift in Sources */,
 				5A2A784F21E610D700EC8007 /* MapDrivenDataStore.swift in Sources */,
+				5E03A3BA222916A2005A538D /* Channel.swift in Sources */,
 				5E97190E221C276600857603 /* IEventHandler.swift in Sources */,
 				5EA87B75221D4A3100A8B93F /* ReconnectAttemptObject.swift in Sources */,
 				5AFE8E6421E8E3430003477B /* TestsConfig.swift in Sources */,
 				5E971910221C27BB00857603 /* EventHandlerForClass.swift in Sources */,
 				5E9718FD221BFE3D00857603 /* RTFactory.swift in Sources */,
 				5A2A785121E6114800EC8007 /* PersistenceService.swift in Sources */,
+				5E03A3C322296D03005A538D /* CommandObject.swift in Sources */,
 				5E722B5E21BE9DE800AA9A8F /* DataTypeEnum.swift in Sources */,
 				5EA2B69B21F2324B00CFDC37 /* StoredObjects.swift in Sources */,
 				5AC54CA621E7373400EC1F8C /* PersistenceServiceUtils.swift in Sources */,
@@ -644,7 +681,10 @@
 				5E13C3A622046F7C00EA3050 /* JSON.swift in Sources */,
 				5E60834B21EF721900268B4D /* DictionaryExtension.swift in Sources */,
 				5ECD9C7E21DE57DA002CBB7D /* GeoPoint.swift in Sources */,
+				5E03A3BD22291882005A538D /* RTMessaging.swift in Sources */,
+				5E03A3C122294A4B005A538D /* PublishMessageInfo.swift in Sources */,
 				5E97191A221C369A00857603 /* RTMethodRequest.swift in Sources */,
+				5E03A3BF22291C74005A538D /* MessagingService.swift in Sources */,
 				5E572D4B21B8043E000713B0 /* ProcessResponse.swift in Sources */,
 				5EB28E1921B1799A0007AC30 /* Backendless.swift in Sources */,
 			);
