@@ -23,6 +23,9 @@
     
     private let DEFAULT_CHANNEL_NAME = "default"
     
+    private let processResponse = ProcessResponse.shared
+    private let persistenceServiceUtils = PersistenceServiceUtils()
+    
     open func subscribe() -> Channel {
         return subscribe(channelName: DEFAULT_CHANNEL_NAME)
     }
@@ -31,5 +34,26 @@
         let channel = RTFactory.shared.createChannel(channelName: channelName)
         channel.join()
         return channel
+    }
+    
+    open func publish(channelName: String, message: Any, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        var messageToPublish = message
+        if !(message is String), !(message is [String : Any]) {
+            var messageDictionary = persistenceServiceUtils.entityToDictionary(entity: message)
+            messageDictionary["___class"] = persistenceServiceUtils.getClassName(entity: type(of: message))
+            messageToPublish = messageDictionary
+        }
+        let headers = ["Content-Type": "application/json"]
+        let parameters = ["message": messageToPublish]
+        BackendlessRequestManager(restMethod: "messaging/\(channelName)", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+            if let result = self.processResponse.adapt(response: response, to: MessageStatus.self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else {
+                    responseHandler(result as! MessageStatus)
+                }
+            }
+        })
     }
 }

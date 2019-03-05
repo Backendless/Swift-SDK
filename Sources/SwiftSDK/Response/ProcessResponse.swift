@@ -105,7 +105,7 @@ class ProcessResponse: NSObject {
         return nil
     }
     
-    func adaptToPublishMessageInfo(messageInfoDictionary: [String : Any]) -> PublishMessageInfo? {
+    func adaptToPublishMessageInfo(messageInfoDictionary: [String : Any]) -> PublishMessageInfo? {        
         let publishMessageInfo = PublishMessageInfo()
         if let messageId = messageInfoDictionary["messageId"] as? String {
             publishMessageInfo.messageId = messageId
@@ -113,8 +113,14 @@ class ProcessResponse: NSObject {
         if let timestamp = messageInfoDictionary["timestamp"] as? NSNumber? {
             publishMessageInfo.timestamp = timestamp
         }
-        if let message = messageInfoDictionary["message"] as? String {
-            publishMessageInfo.message = message
+        if let message = messageInfoDictionary["message"] {
+            if let messageDictionary = message as? [String : Any],
+                let className = messageDictionary["___class"] as? String {
+                publishMessageInfo.message = PersistenceServiceUtils().dictionaryToEntity(dictionary: messageDictionary, className: className)
+            }
+            else {
+                publishMessageInfo.message = message
+            }
         }
         if let publisherId = messageInfoDictionary["publisherId"] as? String {
             publishMessageInfo.publisherId = publisherId
