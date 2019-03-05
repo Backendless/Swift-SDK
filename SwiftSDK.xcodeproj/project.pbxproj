@@ -11,6 +11,7 @@
 		5A2A784F21E610D700EC8007 /* MapDrivenDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2A784E21E610D700EC8007 /* MapDrivenDataStore.swift */; };
 		5A2A785121E6114800EC8007 /* PersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2A785021E6114800EC8007 /* PersistenceService.swift */; };
 		5A2A785321E61D1700EC8007 /* DataStoreFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2A785221E61D1700EC8007 /* DataStoreFactory.swift */; };
+		5AB44C62222E88C600ED9D36 /* MessageStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB44C61222E88C600ED9D36 /* MessageStatus.swift */; };
 		5AC54CA621E7373400EC1F8C /* PersistenceServiceUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC54CA521E7373400EC1F8C /* PersistenceServiceUtils.swift */; };
 		5AFE8E5E21E8D7410003477B /* PersistenceServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFE8E5D21E8D7410003477B /* PersistenceServiceTests.swift */; };
 		5AFE8E6221E8E2620003477B /* MapDrivenDataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFE8E6121E8E2620003477B /* MapDrivenDataStoreTests.swift */; };
@@ -88,6 +89,7 @@
 		5A2A784E21E610D700EC8007 /* MapDrivenDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDrivenDataStore.swift; sourceTree = "<group>"; };
 		5A2A785021E6114800EC8007 /* PersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceService.swift; sourceTree = "<group>"; };
 		5A2A785221E61D1700EC8007 /* DataStoreFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStoreFactory.swift; sourceTree = "<group>"; };
+		5AB44C61222E88C600ED9D36 /* MessageStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageStatus.swift; sourceTree = "<group>"; };
 		5AC54CA521E7373400EC1F8C /* PersistenceServiceUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceServiceUtils.swift; sourceTree = "<group>"; };
 		5AFE8E5D21E8D7410003477B /* PersistenceServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceServiceTests.swift; sourceTree = "<group>"; };
 		5AFE8E5F21E8E2150003477B /* TestClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestClass.swift; sourceTree = "<group>"; };
@@ -110,7 +112,7 @@
 		5E4DE64221EF8E92009AE503 /* Mappings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mappings.swift; sourceTree = "<group>"; };
 		5E545EEB21DFB87A00881ED0 /* GeoServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoServiceTests.swift; sourceTree = "<group>"; };
 		5E545EED21DFBA4400881ED0 /* GeoPointTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoPointTests.swift; sourceTree = "<group>"; };
-		5E572D4A21B8043E000713B0 /* ProcessResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessResponse.swift; sourceTree = "<group>"; };
+		5E572D4A21B8043E000713B0 /* ProcessResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessResponse.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		5E5FE02821F7359700387F8B /* ChildTestClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChildTestClass.swift; sourceTree = "<group>"; };
 		5E60834A21EF721900268B4D /* DictionaryExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryExtension.swift; sourceTree = "<group>"; };
 		5E64F0BE21C50D8E00590B04 /* BackendlessRequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessRequestManager.swift; sourceTree = "<group>"; };
@@ -229,6 +231,7 @@
 				5E03A3B9222916A2005A538D /* Channel.swift */,
 				5E03A3BE22291C74005A538D /* MessagingService.swift */,
 				5E03A3C022294A4B005A538D /* PublishMessageInfo.swift */,
+				5AB44C61222E88C600ED9D36 /* MessageStatus.swift */,
 			);
 			path = Messaging;
 			sourceTree = "<group>";
@@ -652,6 +655,7 @@
 				5E971912221C27CB00857603 /* EventHandlerForMap.swift in Sources */,
 				5E03A3C52229711F005A538D /* UserStatusObject.swift in Sources */,
 				5E3706FD22037CC800E08C50 /* ChildTestClass.swift in Sources */,
+				5AB44C62222E88C600ED9D36 /* MessageStatus.swift in Sources */,
 				5ECD9C8021DE57E7002CBB7D /* GeoService.swift in Sources */,
 				5E3706F922037C9100E08C50 /* TestClassForMappings.swift in Sources */,
 				5A2A784F21E610D700EC8007 /* MapDrivenDataStore.swift in Sources */,

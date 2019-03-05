@@ -302,7 +302,7 @@ class RTClient: NSObject {
                     let subscriptionId = resultData["id"] as? String,
                     let subscription = self.subscriptions[subscriptionId] {
                     
-                    if let result = resultData["data"] {
+                    if let result = resultData["data"] {                        
                         subscription.ready = true
                         if let result = result as? String, result == "connected", subscription.onReady != nil, subscription.onConnect != nil {
                             subscription.onReady!()

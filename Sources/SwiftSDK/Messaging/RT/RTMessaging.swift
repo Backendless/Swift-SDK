@@ -35,15 +35,61 @@ class RTMessaging: RTListener {
         }
     }
     
-    func addJoinListener(isConnected: Bool, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+    func addStringMessageListener(selector: String?, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         var options = [String : Any]()
         if let channelName = self.channel.channelName {
             options["channel"] = channelName
         }
-        let wrappedBlock: (Any) -> () = { response in
-            responseHandler()
+        if let selector = selector {
+            options["selector"] = selector
         }
-        let subscription = createSubscription(type: PUB_SUB_CONNECT, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+        let wrappedBlock: (Any) -> () = { response in
+            if let response = response as? [String : Any],
+                let message = response["message"] as? String {
+                responseHandler(message)
+            }
+        }
+        let subscription = createSubscription(type: PUB_SUB_MESSAGES, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+        subscription.subscribe()
+        return subscription
+    }
+    
+    func addDictionaryMessageListener(selector: String?, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        var options = [String : Any]()
+        if let channelName = self.channel.channelName {
+            options["channel"] = channelName
+        }
+        if let selector = selector {
+            options["selector"] = selector
+        }
+        let wrappedBlock: (Any) -> () = { response in
+            if let response = response as? [String : Any],
+                let message = response["message"] as? [String : Any],
+                message["___class"] == nil {
+                responseHandler(message)
+            }
+        }
+        let subscription = createSubscription(type: PUB_SUB_MESSAGES, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+        subscription.subscribe()
+        return subscription
+    }
+    
+    func addCustomObjectMessageListener(selector: String?, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        var options = [String : Any]()
+        if let channelName = self.channel.channelName {
+            options["channel"] = channelName
+        }
+        if let selector = selector {
+            options["selector"] = selector
+        }
+        let wrappedBlock: (Any) -> () = { response in
+            if let response = response as? [String : Any],
+                let message = response["message"] as? [String : Any],
+                let className = message["___class"] as? String {
+                responseHandler(PersistenceServiceUtils().dictionaryToEntity(dictionary: message, className: className) as Any)
+            }
+        }
+        let subscription = createSubscription(type: PUB_SUB_MESSAGES, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
         subscription.subscribe()
         return subscription
     }
@@ -56,50 +102,18 @@ class RTMessaging: RTListener {
         if let selector = selector {
             options["selector"] = selector
         }
-        let wrappedBlock: (Any) -> () = { response in
-            if let response = response as? [String : Any] {
-                let publishMessageInfo = PublishMessageInfo()
-                if let messageId = response["messageId"] as? String {
-                    publishMessageInfo.messageId = messageId
-                }
-                if let timestamp = response["timestamp"] as? NSNumber? {
-                    publishMessageInfo.timestamp = timestamp
-                }
-                if let message = response["message"] as? String {
-                    publishMessageInfo.message = message
-                }
-                if let publisherId = response["publisherId"] as? String {
-                    publishMessageInfo.publisherId = publisherId
-                }
-                if let subtopic = response["subtopic"] as? String {
-                    publishMessageInfo.subtopic = subtopic
-                }
-                if let pushSinglecast = response["pushSinglecast"] as? [Any] {
-                    publishMessageInfo.pushSinglecast = pushSinglecast
-                }
-                if let pushBroadcast = response["pushBroadcast"] as? NSNumber {
-                    publishMessageInfo.pushBroadcast = pushBroadcast
-                }
-                if let publishPolicy = response["publishPolicy"] as? String {
-                    publishMessageInfo.publishPolicy = publishPolicy
-                }
-                if let query = response["query"] as? String {
-                    publishMessageInfo.query = query
-                }
-                if let publishAt = response["publishAt"] as? NSNumber {
-                    publishMessageInfo.publishAt = publishAt
-                }
-                if let repeatEvery = response["repeatEvery"] as? NSNumber {
-                    publishMessageInfo.repeatEvery = repeatEvery
-                }
-                if let headers = response["headers"] as? [String : Any] {
-                    publishMessageInfo.headers = headers
-                }
+        let wrappedBlock: (Any) -> () = { response in           
+            if let response = response as? [String : Any],
+                let publishMessageInfo = ProcessResponse.shared.adaptToPublishMessageInfo(messageInfoDictionary: response) {
                 responseHandler(publishMessageInfo)
             }
         }
         let subscription = createSubscription(type: PUB_SUB_MESSAGES, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
         subscription.subscribe()
         return subscription
+    }
+    
+    func removeMessageListeners(selector: String?) {
+        stopSubscriptionForChannel(channel: self.channel, event: PUB_SUB_MESSAGES, selector: selector)
     }
 }

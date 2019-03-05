@@ -27,7 +27,6 @@
     private var rt: RTMessaging!
     private var waitingSubscriptions: [RTSubscription]
     
-    private let rtListener = RTListener()
     private let PUB_SUB_CONNECT = "PUB_SUB_CONNECT"
     private let PUB_SUB_MESSAGES = "PUB_SUB_MESSAGES"
     private let PUB_SUB_COMMANDS = "PUB_SUB_COMMANDS"
@@ -45,26 +44,9 @@
         if !self.isJoined {
             self.rt.connect(responseHandler: {
                 self.isJoined = true
-                for waitingSubscription in self.waitingSubscriptions {
-                    if let data = waitingSubscription.data {
-                        if data["name"] as? String == self.PUB_SUB_CONNECT {
-                            if waitingSubscription.onResult != nil {
-                                waitingSubscription.onResult!(nil)
-                            }
-                        }
-                    }
-                }
                 self.subscribeForWaiting()
             }, errorHandler: { fault in
-                for waitingSubscription in self.waitingSubscriptions {
-                    if let data = waitingSubscription.data {
-                        if data["name"] as? String == self.PUB_SUB_CONNECT {
-                            if waitingSubscription.onError != nil {
-                                waitingSubscription.onError!(fault)
-                            }
-                        }
-                    }
-                }
+                // ???
             })
         }
     }
@@ -74,20 +56,57 @@
         self.isJoined = false
     }
     
-    open func addJoinListener(responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
-        if !self.isJoined {
-            let wrappedBlock: (Any) -> () = { response in
-                responseHandler()
-            }
-            return addWaitingSubscription(event: PUB_SUB_CONNECT, channel: channelName, selector: nil, connectHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+    open func addStringMessageListener(responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        if self.isJoined {
+            let subscription = self.rt.addStringMessageListener(selector: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+            subscription?.subscribe()
+            return subscription
         }
         else {
-            return self.rt.addJoinListener(isConnected: self.isJoined, responseHandler: responseHandler, errorHandler: errorHandler)
+            let wrappedBlock: (Any) -> () = { response in
+                if let response = response as? [String : Any],
+                    let message = response["message"] as? String {
+                    responseHandler(message)
+                }
+            }
+            return addWaitingSubscription(event: PUB_SUB_MESSAGES, channel: channelName, selector: nil, connectHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
     }
     
-    open func removeJoinListeners() {
-        
+    open func addDictionaryMessageListener(responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        if self.isJoined {
+            let subscription = self.rt.addDictionaryMessageListener(selector: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+            subscription?.subscribe()
+            return subscription
+        }
+        else {
+            let wrappedBlock: (Any) -> () = { response in
+                if let response = response as? [String : Any],
+                    let message = response["message"] as? [String : Any],
+                    message["___class"] == nil {
+                    responseHandler(message)
+                }
+            }
+            return addWaitingSubscription(event: PUB_SUB_MESSAGES, channel: channelName, selector: nil, connectHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+        }
+    }
+    
+    open func addCustomObjectMessageListener(responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        if self.isJoined {
+            let subscription = self.rt.addCustomObjectMessageListener(selector: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+            subscription?.subscribe()
+            return subscription
+        }
+        else {
+            let wrappedBlock: (Any) -> () = { response in             
+                if let response = response as? [String : Any],
+                    let message = response["message"] as? [String : Any],
+                    let className = message["___class"] as? String {
+                    responseHandler(PersistenceServiceUtils().dictionaryToEntity(dictionary: message, className: className) as Any)
+                }
+            }
+            return addWaitingSubscription(event: PUB_SUB_MESSAGES, channel: channelName, selector: nil, connectHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+        }
     }
     
     open func addMessageListener(responseHandler: ((PublishMessageInfo) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
@@ -124,6 +143,14 @@
         }
     }
     
+    open func removeMessageListeners(selector: String) {
+        self.rt.removeMessageListeners(selector: selector)
+    }
+    
+    open func removeMessageListeners() {
+        self.rt.removeMessageListeners(selector: nil)
+    }
+    
     func addCommandListener(responseHandler: ((CommandObject) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         return RTSubscription()
     }
@@ -133,8 +160,10 @@
     }
     
     open func removeAllListeners() {
-        
+        removeMessageListeners()
     }
+    
+    // *************************************************************
     
     func addWaitingSubscription(event: String, channel: String, selector: String?, connectHandler: (() -> Void)?, responseHandler: ((Any) -> Void)?, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         var waitingSubscription: RTSubscription?
@@ -143,10 +172,10 @@
             options["selector"] = selector
         }
         if connectHandler != nil {
-            waitingSubscription = rtListener.createSubscription(type: event, options: options, connectionHandler: connectHandler, responseHandler: nil, errorHandler: errorHandler)
+            waitingSubscription = self.rt.createSubscription(type: event, options: options, connectionHandler: connectHandler, responseHandler: nil, errorHandler: errorHandler)
         }
         else if responseHandler != nil {
-            waitingSubscription = rtListener.createSubscription(type: event, options: options, connectionHandler: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+            waitingSubscription = self.rt.createSubscription(type: event, options: options, connectionHandler: nil, responseHandler: responseHandler, errorHandler: errorHandler)
         }
         if let waitingSubscription = waitingSubscription {
             waitingSubscriptions.append(waitingSubscription)
