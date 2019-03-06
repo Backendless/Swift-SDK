@@ -35,6 +35,7 @@ class RTServiceTests: XCTestCase {
     
     func test_01_addConnectEventListener() {
         let expectation = self.expectation(description: "PASSED: rtService.addConnectEventListener")
+        RTClient.shared.removeSocket()  
         let _ = backendless.rt.addConnectEventListener(responseHandler: {
             expectation.fulfill()
         })
