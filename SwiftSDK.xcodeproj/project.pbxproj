@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -61,6 +61,9 @@
 		5EA87B95221D720100A8B93F /* RTListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA87B94221D720100A8B93F /* RTListener.swift */; };
 		5EB28E1921B1799A0007AC30 /* Backendless.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB28E1821B1799A0007AC30 /* Backendless.swift */; };
 		5EB28E2021B1833A0007AC30 /* BackendlessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB28E1F21B1833A0007AC30 /* BackendlessTests.swift */; };
+		5EC7D161222FB56700FD3FF4 /* PublishOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC7D160222FB56700FD3FF4 /* PublishOptions.swift */; };
+		5EC7D163222FB86100FD3FF4 /* DeliveryOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC7D162222FB86100FD3FF4 /* DeliveryOptions.swift */; };
+		5EC7D16A222FDBCE00FD3FF4 /* RTMessagingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC7D169222FDBCE00FD3FF4 /* RTMessagingTests.swift */; };
 		5ECD9C7E21DE57DA002CBB7D /* GeoPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECD9C7D21DE57DA002CBB7D /* GeoPoint.swift */; };
 		5ECD9C8021DE57E7002CBB7D /* GeoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECD9C7F21DE57E7002CBB7D /* GeoService.swift */; };
 		5ED765D02224369E009431CD /* BulkEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED765CF2224369E009431CD /* BulkEvent.swift */; };
@@ -142,6 +145,9 @@
 		5EA87B94221D720100A8B93F /* RTListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTListener.swift; sourceTree = "<group>"; };
 		5EB28E1821B1799A0007AC30 /* Backendless.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backendless.swift; sourceTree = "<group>"; };
 		5EB28E1F21B1833A0007AC30 /* BackendlessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessTests.swift; sourceTree = "<group>"; };
+		5EC7D160222FB56700FD3FF4 /* PublishOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishOptions.swift; sourceTree = "<group>"; };
+		5EC7D162222FB86100FD3FF4 /* DeliveryOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryOptions.swift; sourceTree = "<group>"; };
+		5EC7D169222FDBCE00FD3FF4 /* RTMessagingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTMessagingTests.swift; sourceTree = "<group>"; };
 		5ECD9C7D21DE57DA002CBB7D /* GeoPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoPoint.swift; sourceTree = "<group>"; };
 		5ECD9C7F21DE57E7002CBB7D /* GeoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoService.swift; sourceTree = "<group>"; };
 		5ECE680E21B0248B00839120 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -232,6 +238,8 @@
 				5E03A3BE22291C74005A538D /* MessagingService.swift */,
 				5E03A3C022294A4B005A538D /* PublishMessageInfo.swift */,
 				5AB44C61222E88C600ED9D36 /* MessageStatus.swift */,
+				5EC7D160222FB56700FD3FF4 /* PublishOptions.swift */,
+				5EC7D162222FB86100FD3FF4 /* DeliveryOptions.swift */,
 			);
 			path = Messaging;
 			sourceTree = "<group>";
@@ -295,6 +303,7 @@
 				5E44C04F2223EC4A00B391E7 /* RTServiceTests.swift */,
 				5E7534652220578600BC31D4 /* EventHanderForMapTests.swift */,
 				5E7534672220579100BC31D4 /* EventHandlerForClassTests.swift */,
+				5EC7D169222FDBCE00FD3FF4 /* RTMessagingTests.swift */,
 			);
 			path = RTTests;
 			sourceTree = "<group>";
@@ -412,14 +421,14 @@
 		5ECE680C21B0248B00839120 /* SwiftSDKTests */ = {
 			isa = PBXGroup;
 			children = (
+				5ECE680E21B0248B00839120 /* Info.plist */,
+				5AFE8E6321E8E3430003477B /* TestsConfig.swift */,
 				5EB28E1F21B1833A0007AC30 /* BackendlessTests.swift */,
 				5EE691FF21B67770002E72A9 /* FaultTests */,
 				5E545EEA21DFAF1D00881ED0 /* GeoServiceTests */,
-				5ECE680E21B0248B00839120 /* Info.plist */,
 				5AFE8E5C21E8D7010003477B /* PersistenceServiceTests */,
 				5E6098FF222040620012F6A0 /* RTTests */,
 				5E5FE02721F7347200387F8B /* TestObjects */,
-				5AFE8E6321E8E3430003477B /* TestsConfig.swift */,
 				5E90720E21B66DA300619C0D /* UserServiceTests */,
 			);
 			name = SwiftSDKTests;
@@ -619,18 +628,11 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SwiftSDKTests/Pods-SwiftSDKTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Socket.IO-Client-Swift/SocketIO.framework",
-				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-SwiftSDKTests/Pods-SwiftSDKTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketIO.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-SwiftSDKTests/Pods-SwiftSDKTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -644,8 +646,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5EC7D163222FB86100FD3FF4 /* DeliveryOptions.swift in Sources */,
 				5E4DE64321EF8E92009AE503 /* Mappings.swift in Sources */,
 				5E7E8A6021ECC94A00AA04E1 /* UserDefaultsHelper.swift in Sources */,
+				5EC7D161222FB56700FD3FF4 /* PublishOptions.swift in Sources */,
 				5E971918221C2CC400857603 /* RTSubscription.swift in Sources */,
 				5E84136321B5265200869794 /* UserService.swift in Sources */,
 				5E6C1E452203362700903B7A /* ReturnedResponse.swift in Sources */,
@@ -708,6 +712,7 @@
 				5E545EEE21DFBA4400881ED0 /* GeoPointTests.swift in Sources */,
 				5E11113C21B542BA0044CAED /* UserServiceTests.swift in Sources */,
 				5EE2B40721C25EC600F90723 /* BackendlessUserTests.swift in Sources */,
+				5EC7D16A222FDBCE00FD3FF4 /* RTMessagingTests.swift in Sources */,
 				5AFE8E5E21E8D7410003477B /* PersistenceServiceTests.swift in Sources */,
 				5EB28E2021B1833A0007AC30 /* BackendlessTests.swift in Sources */,
 			);

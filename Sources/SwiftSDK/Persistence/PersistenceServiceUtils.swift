@@ -530,13 +530,6 @@ class PersistenceServiceUtils: NSObject {
         return 0
     }
     
-    private func stringToUrlString(originalString: String) -> String {
-        if let resultString = originalString.addingPercentEncoding(withAllowedCharacters: .alphanumerics) {
-            return resultString
-        }
-        return originalString
-    }
-    
     private func arrayToString(array: [String]) -> String {
         var resultString = ""
         for i in 0..<array.count {
@@ -546,5 +539,12 @@ class PersistenceServiceUtils: NSObject {
             resultString.removeLast(1)
         }
         return resultString
+    }
+    
+    func stringToUrlString(originalString: String) -> String {
+        if let resultString = originalString.addingPercentEncoding(withAllowedCharacters: .alphanumerics) {
+            return resultString
+        }
+        return originalString
     }
 }

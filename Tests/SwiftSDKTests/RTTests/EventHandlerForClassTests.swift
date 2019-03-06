@@ -65,7 +65,6 @@ class EventHandlerForClassTests: XCTestCase {
         let expectation: XCTestExpectation = self.expectation(description: "PASSED: eventHandlerForClass.addCreateListener")
         let _ = eventHandler.addCreateListener(responseHandler: { createdObject in
             XCTAssertNotNil(createdObject)
-            XCTAssertNotNil(createdObject)
             XCTAssert(type(of: createdObject) == TestClass.self)
             XCTAssertEqual((createdObject as! TestClass).name, "Bob")
             XCTAssertEqual((createdObject as! TestClass).age, 25)
@@ -89,7 +88,6 @@ class EventHandlerForClassTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: eventHandlerForClass.addCreateListenerWithCondition")
         let _ = eventHandler.addCreateListener(whereClause: "age > 20", responseHandler: { createdObject in
             XCTAssertNotNil(createdObject)
-            XCTAssertNotNil(createdObject)
             XCTAssert(type(of: createdObject) == TestClass.self)
             XCTAssertEqual((createdObject as! TestClass).name, "Bob")
             XCTAssert((createdObject as! TestClass).age > 20)
@@ -112,7 +110,6 @@ class EventHandlerForClassTests: XCTestCase {
     func test_03_removeCreateListenersWithCondition() {
         let expectation = self.expectation(description: "PASSED: eventHandlerForClass.removeCreateListenersWithCondition")
         let _ = eventHandler.addCreateListener(whereClause: "age > 20", responseHandler: { createdObject in
-            XCTAssertNotNil(createdObject)
             XCTAssertNotNil(createdObject)
             XCTAssert(type(of: createdObject) == TestClass.self)
             XCTAssertEqual((createdObject as! TestClass).name, "Bob")
@@ -230,7 +227,6 @@ class EventHandlerForClassTests: XCTestCase {
     func test_07_removeUpdateListenersWithCondition() {
         let expectation = self.expectation(description: "PASSED: eventHandlerForClass.removeUpdateListenersWithCondition")
         let _ = eventHandler.addUpdateListener(whereClause: "age > 20", responseHandler: { updatedObject in
-            XCTAssertNotNil(updatedObject)
             XCTAssertNotNil(updatedObject)
             XCTAssert(type(of: updatedObject) == TestClass.self)
             XCTAssertEqual((updatedObject as! TestClass).name, "Bob")
@@ -358,7 +354,6 @@ class EventHandlerForClassTests: XCTestCase {
     func test_11_removeDeleteListenersWithCondition() {
         let expectation = self.expectation(description: "PASSED: eventHandlerForClass.removeDeleteListenersWithCondition")
         let _ = eventHandler.addDeleteListener(whereClause: "age > 20", responseHandler: { deletedObject in
-            XCTAssertNotNil(deletedObject)
             XCTAssertNotNil(deletedObject)
             XCTAssert(type(of: deletedObject) == TestClass.self)
             XCTAssertEqual((deletedObject as! TestClass).name, "Bob")

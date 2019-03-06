@@ -33,7 +33,7 @@ class RTClient: NSObject {
     
     private var socketManager: SocketManager?
     private var socket: SocketIOClient?
-    private var subscriptions: [String : RTSubscription]
+     var subscriptions: [String : RTSubscription]
     private var methods: [String : RTMethodRequest]
     private var eventSubscriptions: [String : [RTSubscription]]
     private var socketCreated = false
@@ -144,7 +144,6 @@ class RTClient: NSObject {
         if self.subscriptions.keys.contains(subscriptionId) {
             self.socket?.emit("SUB_OFF", with: [["id": subscriptionId]])
             subscriptions.removeValue(forKey: subscriptionId)
-            
         }
         else {
             for type in eventSubscriptions.keys {
@@ -156,15 +155,7 @@ class RTClient: NSObject {
             }
         }
         if self.subscriptions.count == 0, self.socket != nil, self.socketManager != nil {
-            self.socketManager?.removeSocket(self.socket!)
-            self.socket = nil
-            self.socketManager = nil
-            self.socketCreated = false
-            self.socketConnected = false
-            self.needResubscribe = false
-            self.onConnectionHandlersReady = false
-            self.onResultReady = false
-            self.onMethodResultReady = false
+            self.removeSocket()
         } 
     }
     
@@ -244,15 +235,7 @@ class RTClient: NSObject {
     }
     
     func onConnectErrorOrDisconnect(reason: String, type: String) {
-        self.socketManager?.removeSocket(self.socket!)
-        self.socket = nil
-        self.socketManager = nil
-        self.socketCreated = false
-        self.socketConnected = false
-        self.needResubscribe = true
-        self.onConnectionHandlersReady = false
-        self.onResultReady = false
-        self.onMethodResultReady = false
+        self.removeSocket()
         if let connectErrorOrDisconnectSubscriptions = eventSubscriptions[type] {
             for subscription in connectErrorOrDisconnectSubscriptions {
                 subscription.onResult!(reason)
@@ -402,5 +385,17 @@ class RTClient: NSObject {
             listeners.removeAll()
             eventSubscriptions[type] = listeners
         }
+    }
+    
+    func removeSocket() {
+        self.socketManager?.removeSocket(self.socket!)
+        self.socket = nil
+        self.socketManager = nil
+        self.socketCreated = false
+        self.socketConnected = false
+        self.needResubscribe = false
+        self.onConnectionHandlersReady = false
+        self.onResultReady = false
+        self.onMethodResultReady = false
     }
 }

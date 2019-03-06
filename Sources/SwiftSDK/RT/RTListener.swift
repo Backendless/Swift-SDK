@@ -100,6 +100,7 @@
         if var typeName = data["name"] as? String,
             typeName == OBJECTS_CHANGES ||
             typeName == PUB_SUB_MESSAGES {
+            
             typeName = (data["options"] as! [String : Any])["event"] as! String
             
             var subscriptionStack = subscriptions[typeName]
