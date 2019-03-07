@@ -736,17 +736,17 @@ class EventHanderForMapTests: XCTestCase {
     
     func test_23_stopSubscription() {
         let expectation = self.expectation(description: "PASSED: eventHandlerForMap.stopSubscription")
+        let subscriptionToStop = eventHandler.addCreateListener(whereClause: "age > 20", responseHandler: { createdObject in
+            XCTFail("This subscription must be removed")
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
         let _ = eventHandler.addCreateListener(whereClause: "name = 'Bob'", responseHandler: { createdObject in
             XCTAssertNotNil(createdObject)
             XCTAssert(type(of: createdObject) == [String: Any].self)
             XCTAssertEqual(createdObject["name"] as? String, "Bob")
             expectation.fulfill()
-        }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
-            XCTFail("\(fault.code): \(fault.message!)")
-        })
-        let subscriptionToStop = eventHandler.addCreateListener(whereClause: "age > 20", responseHandler: { createdObject in
-            XCTFail("This subscription must be removed")
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
