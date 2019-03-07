@@ -1,5 +1,5 @@
 //
-//  RTMessagingTests.swift
+//  SubscriptionAPITests.swift
 //
 /*
  * *********************************************************************************************************************
@@ -22,7 +22,7 @@
 import XCTest
 @testable import SwiftSDK
 
-class RTMessagingTests: XCTestCase {
+class SubscriptionAPITests: XCTestCase {
     
     private let backendless = Backendless.shared
     private let timeout: Double = 10.0
@@ -233,7 +233,6 @@ class RTMessagingTests: XCTestCase {
         let expectation: XCTestExpectation = self.expectation(description: "PASSED: channel.removeMessageListeners")
         let _ = self.channel.addStringMessageListener(responseHandler: { message in
             XCTFail("This subscription must be removed")
-            self.channel.leave()
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
@@ -254,6 +253,7 @@ class RTMessagingTests: XCTestCase {
             })
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
                 expectation.fulfill()
+                self.channel.leave()
             })
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -289,23 +289,21 @@ class RTMessagingTests: XCTestCase {
     }
     
     func test_11_stopMessageSubscription() {
-        let expectation = self.expectation(description: "PASSED: channel.stopSubscription")
+        let expectation: XCTestExpectation = self.expectation(description: "PASSED: channel.stopSubscription")
+        let subscriptionToStop = self.channel.addStringMessageListener(selector: "foo = 'bar'", responseHandler: { message in
+            XCTFail("This subscription must be removed")
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
         let _ = self.channel.addStringMessageListener(responseHandler: { message in
-            XCTAssertNotNil(message)
-            XCTAssert(type(of: message) == String.self)
             expectation.fulfill()
             self.channel.leave()
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        let subscriptionToStop = channel.addStringMessageListener(selector: "foo = 'bar'", responseHandler: { message in
-            XCTFail("This subscription must be removed")
-        }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
-            XCTFail("\(fault.code): \(fault.message!)")
-        })
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             subscriptionToStop?.stop()
             let message = "Test Message"
             let publishOptions = PublishOptions()
@@ -316,7 +314,7 @@ class RTMessagingTests: XCTestCase {
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         })
-        self.waitForExpectations(timeout: timeout, handler: nil)
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_12_channelState() {
