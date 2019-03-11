@@ -92,13 +92,13 @@ class RTMessaging: RTListener {
         }
     }
     
-    func addCustomObjectMessageListener(selector: String?, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+    func addCustomObjectMessageListener(forClass: AnyClass, selector: String?, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         let wrappedBlock: (Any) -> () = { response in
             if let response = response as? [String : Any],
                 let message = response["message"] as? [String : Any],
                 let className = message["___class"] as? String,
+                className == PersistenceServiceUtils().getClassName(entity: forClass),
                 let result = PersistenceServiceUtils().dictionaryToEntity(dictionary: message, className: className) {
-                print(result)
                 responseHandler(result)
             }
         }        

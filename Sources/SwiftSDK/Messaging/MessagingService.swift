@@ -112,13 +112,13 @@
         })
     }
     
-    open func sendEmail(subject: String, bodyparts: EmailBodyparts, to: [String], attachment: [String]?, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    open func sendEmail(subject: String, bodyparts: EmailBodyparts, recipients: [String], attachments: [String]?, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         var parameters = [String : Any]()
         parameters["subject"] = subject
-        parameters["to"] = to
-        if let attachment = attachment {
-            parameters["attachment"] = attachment
+        parameters["to"] = recipients
+        if let attachments = attachments {
+            parameters["attachment"] = attachments
         }
         var bodypartsValue = [String : String]()
         if let textMessage = bodyparts.textMessage {

@@ -53,7 +53,7 @@ class PublishingAPITests: XCTestCase {
         let expectation: XCTestExpectation = self.expectation(description: "PASSED: messaging.publishWithHeaders")
         let message = "Test Message"
         let publishOptions = PublishOptions()
-        publishOptions.headers = ["foo": "bar"]
+        publishOptions.addHeader(name: "foo", value: "bar")
         backendless.messaging.publish(channelName: self.CHANNEL_NAME, message: message, publishOptions: publishOptions, responseHandler: { messageStatus in
             XCTAssertNotNil(messageStatus)
             XCTAssert(type(of: messageStatus) == MessageStatus.self)
@@ -158,9 +158,9 @@ class PublishingAPITests: XCTestCase {
     
     func test_07_sendEmail() {
         let expectation: XCTestExpectation = self.expectation(description: "PASSED: messaging.sendEmail")
-        let bodyParts = EmailBodyparts()
-        bodyParts.textMessage = "Test message"
-        backendless.messaging.sendEmail(subject: "TEST EMAIL", bodyparts: bodyParts, to: ["bkndlss@mailinator.com"], attachment: nil, responseHandler: { messageStatus in
+        let bodyparts = EmailBodyparts()
+        bodyparts.textMessage = "Test message"
+        backendless.messaging.sendEmail(subject: "TEST EMAIL", bodyparts: bodyparts, recipients: ["bkndlss@mailinator.com"], attachments: nil, responseHandler: { messageStatus in
             XCTAssertNotNil(messageStatus)
             expectation.fulfill()
         }, errorHandler: { fault in
