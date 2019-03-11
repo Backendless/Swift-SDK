@@ -77,7 +77,7 @@ class SubscriptionAPITests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             let message = "Test Message"
             let publishOptions = PublishOptions()
-            publishOptions.headers = ["foo": "bar"]
+            publishOptions.addHeader(name: "foo", value: "bar")
             self.backendless.messaging.publish(channelName: self.CHANNEL_NAME, message: message, publishOptions: publishOptions, responseHandler: { messageStatus in
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
@@ -123,7 +123,7 @@ class SubscriptionAPITests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             let message = ["name": "Bob", "age": 25] as [String : Any]
             let publishOptions = PublishOptions()
-            publishOptions.headers = ["foo": "bar"]
+            publishOptions.addHeader(name: "foo", value: "bar")
             self.backendless.messaging.publish(channelName: self.CHANNEL_NAME, message: message, publishOptions: publishOptions, responseHandler: { messageStatus in
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
@@ -135,7 +135,7 @@ class SubscriptionAPITests: XCTestCase {
     
     func test_05_addCustomObjectMessageListener() {
         let expectation: XCTestExpectation = self.expectation(description: "PASSED: channel.addCustomObjectMessageListener")
-        let _ = self.channel.addCustomObjectMessageListener(responseHandler: { message in
+        let _ = self.channel.addCustomObjectMessageListener(forClass: TestClass.self, responseHandler: { message in
             XCTAssertNotNil(message)
             XCTAssert(type(of: message) == TestClass.self)
             expectation.fulfill()
@@ -159,7 +159,7 @@ class SubscriptionAPITests: XCTestCase {
     
     func test_06_addCustomObjectMessageListenerWithCondition() {
         let expectation: XCTestExpectation = self.expectation(description: "PASSED: channel.addCustomObjectMessageListenerWithCondition")
-        let _ = self.channel.addCustomObjectMessageListener(selector: "foo = 'bar'", responseHandler: { message in
+        let _ = self.channel.addCustomObjectMessageListener(forClass: TestClass.self, selector: "foo = 'bar'", responseHandler: { message in
             XCTAssertNotNil(message)
             XCTAssert(type(of: message) == TestClass.self)
             expectation.fulfill()
@@ -173,7 +173,7 @@ class SubscriptionAPITests: XCTestCase {
             message.name = "Bob"
             message.age = 25
             let publishOptions = PublishOptions()
-            publishOptions.headers = ["foo": "bar"]
+            publishOptions.addHeader(name: "foo", value: "bar")
             self.backendless.messaging.publish(channelName: self.CHANNEL_NAME, message: message, publishOptions: publishOptions, responseHandler: { messageStatus in
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
@@ -219,7 +219,7 @@ class SubscriptionAPITests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             let message = "Test Message"
             let publishOptions = PublishOptions()
-            publishOptions.headers = ["foo": "bar"]
+            publishOptions.addHeader(name: "foo", value: "bar")
             self.backendless.messaging.publish(channelName: self.CHANNEL_NAME, message: message, publishOptions: publishOptions, responseHandler: { messageStatus in
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
@@ -278,7 +278,7 @@ class SubscriptionAPITests: XCTestCase {
             self.channel.removeMessageListeners(selector: "foo = 'bar'")
             let message = "Test Message"
             let publishOptions = PublishOptions()
-            publishOptions.headers = ["foo": "bar"]
+            publishOptions.addHeader(name: "foo", value: "bar")
             self.backendless.messaging.publish(channelName: self.CHANNEL_NAME, message: message, publishOptions: publishOptions, responseHandler: { messageStatus in
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
@@ -307,7 +307,7 @@ class SubscriptionAPITests: XCTestCase {
             subscriptionToStop?.stop()
             let message = "Test Message"
             let publishOptions = PublishOptions()
-            publishOptions.headers = ["foo": "bar"]
+            publishOptions.addHeader(name: "foo", value: "bar")
             self.backendless.messaging.publish(channelName: self.CHANNEL_NAME, message: message, publishOptions: publishOptions, responseHandler: { messageStatus in
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)

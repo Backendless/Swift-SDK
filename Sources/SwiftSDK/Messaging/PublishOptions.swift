@@ -23,10 +23,22 @@
     
     open var publisherId: String?
     
-    open var headers: [String : Any]
+    open private(set) var headers: [String : Any]
     
     public override init() {
         self.headers = ["ios-content-available": "1"]
         super.init()
+    }
+    
+    open func setHeaders(headers: [String : Any]) {
+        self.headers = headers
+    }
+    
+    open func addHeader(name: String, value: Any) {
+        self.headers[name] = value
+    }
+    
+    open func removeHeader(name: String) {
+        self.headers.removeValue(forKey: name)
     }
 }
