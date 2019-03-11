@@ -139,4 +139,12 @@
             }
         })
     }
+    
+    open func sendCommand(commandType: String, channelName: String, data: Any?, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        var options = ["channel": channelName, "type": commandType] as [String : Any]
+        if let data = data {
+            options["data"] = JSON(data)
+        }
+        RTMethod.shared.sendCommand(type: PUB_SUB_COMMAND, options: options, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
 }

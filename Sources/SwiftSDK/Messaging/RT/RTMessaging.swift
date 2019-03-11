@@ -148,6 +148,30 @@ class RTMessaging: RTListener {
         stopSubscriptionForChannel(channel: self.channel, event: PUB_SUB_MESSAGES, selector: selector)
     }
     
+    func addCommandListener(responseHandler: ((CommandObject) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        let wrappedBlock: (Any) -> () = { response in
+            if let response = response as? [String : Any] {
+                print(response)
+            }
+        }
+        if self.channel.isJoined {
+            var options = [String : Any]()
+            if let channelName = self.channel.channelName {
+                options["channel"] = channelName
+            }
+            let subscription = createSubscription(type: PUB_SUB_COMMANDS, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            subscription.subscribe()
+            return subscription
+        }
+        else {
+            return addWaitingSubscription(event: PUB_SUB_COMMANDS, channel: self.channel.channelName, selector: nil, connectHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+        }
+    }
+    
+    func removeCommandListeners() {
+        stopSubscriptionForChannel(channel: self.channel, event: PUB_SUB_COMMANDS, selector: nil)
+    }
+    
     // ********************************************
     
     func addWaitingSubscription(event: String, channel: String, selector: String?, connectHandler: (() -> Void)?, responseHandler: ((Any) -> Void)?, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
