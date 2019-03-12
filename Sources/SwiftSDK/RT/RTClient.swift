@@ -339,11 +339,8 @@ class RTClient: NSObject {
                         }
                     }
                     else {
-                        if let result = resultData["result"], method.onResult != nil {
-                            method.onResult!(result)
-                        }
-                        else if resultData["id"] != nil, method.onResult != nil {
-                            method.onResult!(nil)
+                        if resultData["id"] != nil, method.onResult != nil {
+                            method.onResult!()
                         }
                         method.onStop!(method)
                         self.methods.removeValue(forKey: methodId)

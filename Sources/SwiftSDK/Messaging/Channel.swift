@@ -95,8 +95,12 @@
         self.rt.removeMessageListeners(selector: nil)
     }
     
-    func addCommandListener(responseHandler: ((CommandObject) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
-        return RTSubscription()
+    open func addCommandListener(responseHandler: ((CommandObject) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        return self.rt.addCommandListener(responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    open func removeCommandListeners() {
+        self.rt.removeCommandListeners()
     }
     
     func addUserStatusListener(responseHandler: ((UserStatusObject) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {

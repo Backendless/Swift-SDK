@@ -435,6 +435,33 @@ class PersistenceServiceUtils: NSObject {
         return entityDictionary
     }
     
+    func entityToDictionaryWithClassProperty(entity: Any) -> [String: Any] {
+        let resultClass = type(of: entity) as! NSObject.Type
+        var entityDictionary = [String: Any]()
+        var outCount : UInt32 = 0
+        if let properties = class_copyPropertyList(resultClass.self, &outCount) {
+            
+            let entityClassName = getClassName(entity: (entity as! NSObject).classForCoder)
+            let columnToPropertyMappings = mappings.getColumnToPropertyMappings(className: entityClassName)
+            
+            for i : UInt32 in 0..<outCount {
+                if let key = NSString(cString: property_getName(properties[Int(i)]), encoding: String.Encoding.utf8.rawValue) as String?, let value = (entity as! NSObject).value(forKey: key) {
+                    if let mappedKey = columnToPropertyMappings.getKey(forValue: key) {
+                        entityDictionary[mappedKey] = value
+                    }
+                    else {
+                        entityDictionary[key] = value
+                    }
+                    if let objectId = storedObjects.getObjectId(forObject: entity as! AnyHashable) {
+                        entityDictionary["objectId"] = objectId
+                    }
+                }
+            }
+        }
+        entityDictionary["___class"] = getClassName(entity: type(of: entity))
+        return entityDictionary
+    }
+    
     func dictionaryToEntity(dictionary: [String: Any], className: String) -> Any? {
         if tableName == "Users" {
             return processResponse.adaptToBackendlessUser(responseResult: dictionary)

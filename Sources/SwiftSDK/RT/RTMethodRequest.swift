@@ -24,7 +24,7 @@ class RTMethodRequest: NSObject {
     var methodId: String?
     var type: String?
     var options: [String : Any]?
-    var onResult: ((Any?) -> Void)?
+    var onResult: (() -> Void)?
     var onError: ((Fault) -> Void)?
     var onStop: ((RTMethodRequest) -> Void)?
 }

@@ -25,6 +25,8 @@ class RTMessaging: RTListener {
     private var waitingSubscriptions: [RTSubscription]
     private var subscriptionId: String!
     
+    private let processResponse = ProcessResponse.shared
+    
     init(channel: Channel) {
         self.channel = channel        
         self.waitingSubscriptions = [RTSubscription]()
@@ -122,7 +124,7 @@ class RTMessaging: RTListener {
     func addMessageListener(selector: String?, responseHandler: ((PublishMessageInfo) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         let wrappedBlock: (Any) -> () = { response in
             if let response = response as? [String : Any],
-                let publishMessageInfo = ProcessResponse.shared.adaptToPublishMessageInfo(messageInfoDictionary: response) {
+                let publishMessageInfo = self.processResponse.adaptToPublishMessageInfo(messageInfoDictionary: response) {
                 responseHandler(publishMessageInfo)
             }
         }
@@ -150,8 +152,9 @@ class RTMessaging: RTListener {
     
     func addCommandListener(responseHandler: ((CommandObject) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         let wrappedBlock: (Any) -> () = { response in
-            if let response = response as? [String : Any] {
-                print(response)
+            if let response = response as? [String : Any],
+                let commandObject = self.processResponse.adaptToCommandObject(commandObjectDictionary: response) {
+                responseHandler(commandObject)
             }
         }
         if self.channel.isJoined {

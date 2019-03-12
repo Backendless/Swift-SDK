@@ -152,6 +152,23 @@ class ProcessResponse: NSObject {
         return publishMessageInfo
     }
     
+    func adaptToCommandObject(commandObjectDictionary: [String : Any]) -> CommandObject? {
+        let commandObject = CommandObject()        
+        if let type = commandObjectDictionary["type"] as? String {
+            commandObject.type = type
+        }
+        if let connectionId = commandObjectDictionary["connectionId"] as? String {
+            commandObject.connectionId = connectionId
+        }
+        if let userId = commandObjectDictionary["userId"] as? String {
+            commandObject.userId = userId
+        }
+        if let data = commandObjectDictionary["data"] {
+            commandObject.data = data
+        }
+        return commandObject
+    }
+    
     func getResponseResult(response: ReturnedResponse) -> Any? {
         if let error = response.error {
             let faultCode = response.response?.statusCode

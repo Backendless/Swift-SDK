@@ -11,6 +11,7 @@
 		5A2A784F21E610D700EC8007 /* MapDrivenDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2A784E21E610D700EC8007 /* MapDrivenDataStore.swift */; };
 		5A2A785121E6114800EC8007 /* PersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2A785021E6114800EC8007 /* PersistenceService.swift */; };
 		5A2A785321E61D1700EC8007 /* DataStoreFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2A785221E61D1700EC8007 /* DataStoreFactory.swift */; };
+		5AA2969A2237C19D007104C7 /* JSONHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AA296992237C19D007104C7 /* JSONHelper.swift */; };
 		5AB44C62222E88C600ED9D36 /* MessageStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB44C61222E88C600ED9D36 /* MessageStatus.swift */; };
 		5AC54CA621E7373400EC1F8C /* PersistenceServiceUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC54CA521E7373400EC1F8C /* PersistenceServiceUtils.swift */; };
 		5AFE8E5E21E8D7410003477B /* PersistenceServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFE8E5D21E8D7410003477B /* PersistenceServiceTests.swift */; };
@@ -96,6 +97,7 @@
 		5A2A784E21E610D700EC8007 /* MapDrivenDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDrivenDataStore.swift; sourceTree = "<group>"; };
 		5A2A785021E6114800EC8007 /* PersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceService.swift; sourceTree = "<group>"; };
 		5A2A785221E61D1700EC8007 /* DataStoreFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStoreFactory.swift; sourceTree = "<group>"; };
+		5AA296992237C19D007104C7 /* JSONHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONHelper.swift; sourceTree = "<group>"; };
 		5AB44C61222E88C600ED9D36 /* MessageStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageStatus.swift; sourceTree = "<group>"; };
 		5AC54CA521E7373400EC1F8C /* PersistenceServiceUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceServiceUtils.swift; sourceTree = "<group>"; };
 		5AFE8E5D21E8D7410003477B /* PersistenceServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceServiceTests.swift; sourceTree = "<group>"; };
@@ -332,6 +334,7 @@
 			children = (
 				5E7E8A5F21ECC94A00AA04E1 /* UserDefaultsHelper.swift */,
 				5E13C3A522046F7C00EA3050 /* JSON.swift */,
+				5AA296992237C19D007104C7 /* JSONHelper.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -642,9 +645,18 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-SwiftSDKTests/Pods-SwiftSDKTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SwiftSDKTests/Pods-SwiftSDKTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Socket.IO-Client-Swift/SocketIO.framework",
+				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-SwiftSDKTests/Pods-SwiftSDKTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketIO.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -708,6 +720,7 @@
 				5E03A3C122294A4B005A538D /* PublishMessageInfo.swift in Sources */,
 				5E97191A221C369A00857603 /* RTMethodRequest.swift in Sources */,
 				5E03A3BF22291C74005A538D /* MessagingService.swift in Sources */,
+				5AA2969A2237C19D007104C7 /* JSONHelper.swift in Sources */,
 				5E572D4B21B8043E000713B0 /* ProcessResponse.swift in Sources */,
 				5EB28E1921B1799A0007AC30 /* Backendless.swift in Sources */,
 			);
