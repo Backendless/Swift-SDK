@@ -59,7 +59,7 @@ class RTClient: NSObject {
     
     private let maxTimeInterval: Double = 60.0 // seconds
     
-    override init() {
+    private override init() {
         self.subscriptions = [String : RTSubscription]()
         self.methods = [String : RTMethodRequest]()
         self.eventSubscriptions = [String : [RTSubscription]]()

@@ -23,6 +23,8 @@ class ProcessResponse: NSObject {
     
     static let shared = ProcessResponse()
     
+    private override init() { }
+    
     func adapt<T>(response: ReturnedResponse, to: T.Type) -> Any? where T: Decodable {
         if response.data?.count == 0 {
             if let responseResult = getResponseResult(response: response), responseResult is Fault {
@@ -164,7 +166,7 @@ class ProcessResponse: NSObject {
             commandObject.userId = userId
         }
         if let data = commandObjectDictionary["data"] {
-            commandObject.data = data
+            commandObject.data = JSONHelper.shared.JSONToObject(objectToParse: data)
         }
         return commandObject
     }

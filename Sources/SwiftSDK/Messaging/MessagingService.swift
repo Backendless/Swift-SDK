@@ -69,7 +69,6 @@
             parameters["repeatEvery"] = repeatEvery
         }
         if let repeatExpiresAt = deliveryOptions?.repeatExpiresAt {
-            print(Int((repeatExpiresAt.timeIntervalSince1970 * 1000.0).rounded()))
             parameters["repeatExpiresAt"] = Int((repeatExpiresAt.timeIntervalSince1970 * 1000.0).rounded())
         }
         BackendlessRequestManager(restMethod: "messaging/\(channelName)", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in

@@ -23,6 +23,8 @@ class RTFactory: NSObject {
     
     static let shared = RTFactory()
     
+    private override init() { }
+    
     func createEventHandlerForMap(tableName: String) -> EventHandlerForMap {
         return EventHandlerForMap(tableName: tableName)
     }

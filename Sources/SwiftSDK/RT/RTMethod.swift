@@ -28,7 +28,7 @@ class RTMethod: NSObject {
     private var onError: ((Fault) -> Void)?
     private var onStop: ((RTMethodRequest) -> Void)?
 
-    override init() {
+    private override init() {
         self.methods = [String : [RTMethodRequest]]()
     }
     

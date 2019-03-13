@@ -370,7 +370,7 @@ class PersistenceServiceUtils: NSObject {
     }
     
     func getClassName(entity: Any) -> String {
-        var name = String(describing: entity)
+        var name = String(describing: (entity))
         if name == "Users" {
             name = "BackendessUser"
         }
@@ -420,6 +420,10 @@ class PersistenceServiceUtils: NSObject {
             
             for i : UInt32 in 0..<outCount {
                 if let key = NSString(cString: property_getName(properties[Int(i)]), encoding: String.Encoding.utf8.rawValue) as String?, let value = (entity as! NSObject).value(forKey: key) {
+                    
+                    // перевести value в dict
+                    
+                    
                     if let mappedKey = columnToPropertyMappings.getKey(forValue: key) {
                         entityDictionary[mappedKey] = value
                     }
@@ -436,34 +440,19 @@ class PersistenceServiceUtils: NSObject {
     }
     
     func entityToDictionaryWithClassProperty(entity: Any) -> [String: Any] {
-        let resultClass = type(of: entity) as! NSObject.Type
-        var entityDictionary = [String: Any]()
-        var outCount : UInt32 = 0
-        if let properties = class_copyPropertyList(resultClass.self, &outCount) {
-            
-            let entityClassName = getClassName(entity: (entity as! NSObject).classForCoder)
-            let columnToPropertyMappings = mappings.getColumnToPropertyMappings(className: entityClassName)
-            
-            for i : UInt32 in 0..<outCount {
-                if let key = NSString(cString: property_getName(properties[Int(i)]), encoding: String.Encoding.utf8.rawValue) as String?, let value = (entity as! NSObject).value(forKey: key) {
-                    if let mappedKey = columnToPropertyMappings.getKey(forValue: key) {
-                        entityDictionary[mappedKey] = value
-                    }
-                    else {
-                        entityDictionary[key] = value
-                    }
-                    if let objectId = storedObjects.getObjectId(forObject: entity as! AnyHashable) {
-                        entityDictionary["objectId"] = objectId
-                    }
-                }
+        var entityDictionary = entityToDictionary(entity: entity)
+        var className = getClassName(entity: type(of: entity))
+        if let name = className.components(separatedBy: ".").last {
+            if name == "BackendlessUser" {
+                className = "Users"
             }
         }
-        entityDictionary["___class"] = getClassName(entity: type(of: entity))
+        entityDictionary["___class"] = className
         return entityDictionary
     }
     
     func dictionaryToEntity(dictionary: [String: Any], className: String) -> Any? {
-        if tableName == "Users" {
+        if tableName == "Users" || className == "Users" {
             return processResponse.adaptToBackendlessUser(responseResult: dictionary)
         }
         var resultEntityTypeName = ""
@@ -483,8 +472,8 @@ class PersistenceServiceUtils: NSObject {
         if let resultEntityType = resultEntityType {
             let entity = resultEntityType.init()
             let entityFields = getClassProperties(entity: entity)
-            
             let entityClassName = getClassName(entity: entity.classForCoder)
+            
             let columnToPropertyMappings = mappings.getColumnToPropertyMappings(className: entityClassName)
             for dictionaryField in dictionary.keys {
                 
@@ -514,6 +503,10 @@ class PersistenceServiceUtils: NSObject {
                             var relationsArray = [Any]()
                             for relationDictionary in relationArrayOfDictionaries {
                                 if let relationClassName = getClassName(className: relationDictionary["___class"] as! String) {
+                                    
+                                    print("rel className 1 = \(relationClassName)")
+                                    print("rel dict = \(relationDictionary["___class"])")
+                                    
                                     if relationDictionary["___class"] as? String == "Users",
                                         let userObject = processResponse.adaptToBackendlessUser(responseResult: relationDictionary) {
                                         relationsArray.append(userObject as! BackendlessUser)

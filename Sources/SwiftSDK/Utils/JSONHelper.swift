@@ -22,7 +22,9 @@
 class JSONHelper: NSObject {
     
     static let shared = JSONHelper()
-    private let persistenceService = PersistenceServiceUtils()
+    private let persistenceServiceUtils = PersistenceServiceUtils()
+    
+    private override init() { }
     
     func objectToJSON(objectToParse: Any) -> Any {
         var resultObject = objectToParse
@@ -49,26 +51,47 @@ class JSONHelper: NSObject {
                 resultObject = resultDictionary
             }
             else {
-                resultObject = persistenceService.entityToDictionaryWithClassProperty(entity: objectToParse)
+                resultObject = persistenceServiceUtils.entityToDictionaryWithClassProperty(entity: objectToParse)
             }            
         }
         return resultObject
     }
     
-    func jsonToObject(objectToParse: Any) -> Any {
+    // надо проверять key != class
+    func JSONToObject(objectToParse: Any) -> Any {
         var resultObject = objectToParse
         if !(objectToParse is String), !(objectToParse is NSNumber), !(objectToParse is NSNull) {
             
-            
             if let arrayToParse = objectToParse as? [Any] {
-                // переводим в объект
+                var resultArray = [Any]()
+                for object in arrayToParse {
+                    resultArray.append(JSONToObject(objectToParse: object))
+                }
+                resultObject = resultArray
             }
             else if let dictionaryToParse = objectToParse as? [String : Any] {
-                // переводим в объект
+                var resultDictionary = [String : Any]()
+                if let className = dictionaryToParse["___class"] as? String {
+                    resultObject = persistenceServiceUtils.dictionaryToEntity(dictionary: dictionaryToParse, className: className)!
+                }
+                else {
+                    for key in dictionaryToParse.keys {
+                        let value = dictionaryToParse[key]
+                        if let value = value as? [String : Any] {
+                            resultDictionary[key] = JSONToObject(objectToParse: value)
+                        }
+                        else {
+                            resultObject = resultDictionary
+                        }
+                    }
+                }
             }
             else {
-                // переводим в объект
-            }            
+                if let dictionaryToParse = objectToParse as? [String : Any],
+                    let className = dictionaryToParse["___class"] as? String {
+                    resultObject = persistenceServiceUtils.dictionaryToEntity(dictionary: dictionaryToParse, className: className)!
+                }
+            }
         }
         return resultObject
     }
