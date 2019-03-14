@@ -59,7 +59,7 @@ class RTClient: NSObject {
     
     private let maxTimeInterval: Double = 60.0 // seconds
     
-    override init() {
+    private override init() {
         self.subscriptions = [String : RTSubscription]()
         self.methods = [String : RTMethodRequest]()
         self.eventSubscriptions = [String : [RTSubscription]]()
@@ -91,7 +91,6 @@ class RTClient: NSObject {
                     if let userToken = Backendless.shared.userService.getCurrentUser()?.userToken {
                         connectParams["userToken"] = userToken
                     }
-                    
                     self.socketManager = SocketManager(socketURL: url, config: ["path": path, "connectParams": connectParams])
                     self.socketManager?.reconnects = false
                     self.socket = self.socketManager?.socket(forNamespace: path)
@@ -339,11 +338,8 @@ class RTClient: NSObject {
                         }
                     }
                     else {
-                        if let result = resultData["result"], method.onResult != nil {
-                            method.onResult!(result)
-                        }
-                        else if resultData["id"] != nil, method.onResult != nil {
-                            method.onResult!(nil)
+                        if resultData["id"] != nil, method.onResult != nil {
+                            method.onResult!()
                         }
                         method.onStop!(method)
                         self.methods.removeValue(forKey: methodId)

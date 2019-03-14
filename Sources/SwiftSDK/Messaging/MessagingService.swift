@@ -55,9 +55,7 @@
     func publishMessage(channelName: String, message: Any, publishOptions: PublishOptions?, deliveryOptions: DeliveryOptions?, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         var messageToPublish = message
         if !(message is String), !(message is [String : Any]) {
-            var messageDictionary = persistenceServiceUtils.entityToDictionary(entity: message)
-            messageDictionary["___class"] = persistenceServiceUtils.getClassName(entity: type(of: message))
-            messageToPublish = messageDictionary
+            messageToPublish = persistenceServiceUtils.entityToDictionaryWithClassProperty(entity: message)
         }
         let headers = ["Content-Type": "application/json"]
         var parameters = ["message": messageToPublish]
@@ -71,7 +69,6 @@
             parameters["repeatEvery"] = repeatEvery
         }
         if let repeatExpiresAt = deliveryOptions?.repeatExpiresAt {
-            print(Int((repeatExpiresAt.timeIntervalSince1970 * 1000.0).rounded()))
             parameters["repeatExpiresAt"] = Int((repeatExpiresAt.timeIntervalSince1970 * 1000.0).rounded())
         }
         BackendlessRequestManager(restMethod: "messaging/\(channelName)", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
@@ -138,5 +135,13 @@
                 }
             }
         })
+    }
+    
+    open func sendCommand(commandType: String, channelName: String, data: Any?, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        var options = ["channel": channelName, "type": commandType] as [String : Any]
+        if let data = data {
+            options["data"] = JSONHelper.shared.objectToJSON(objectToParse: data)
+        }
+        RTMethod.shared.sendCommand(type: PUB_SUB_COMMAND, options: options, responseHandler: responseHandler, errorHandler: errorHandler)
     }
 }

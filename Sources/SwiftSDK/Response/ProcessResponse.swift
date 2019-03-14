@@ -23,6 +23,8 @@ class ProcessResponse: NSObject {
     
     static let shared = ProcessResponse()
     
+    private override init() { }
+    
     func adapt<T>(response: ReturnedResponse, to: T.Type) -> Any? where T: Decodable {
         if response.data?.count == 0 {
             if let responseResult = getResponseResult(response: response), responseResult is Fault {
@@ -150,6 +152,23 @@ class ProcessResponse: NSObject {
             publishMessageInfo.headers = headers
         }
         return publishMessageInfo
+    }
+    
+    func adaptToCommandObject(commandObjectDictionary: [String : Any]) -> CommandObject? {
+        let commandObject = CommandObject()        
+        if let type = commandObjectDictionary["type"] as? String {
+            commandObject.type = type
+        }
+        if let connectionId = commandObjectDictionary["connectionId"] as? String {
+            commandObject.connectionId = connectionId
+        }
+        if let userId = commandObjectDictionary["userId"] as? String {
+            commandObject.userId = userId
+        }
+        if let data = commandObjectDictionary["data"] {
+            commandObject.data = JSONHelper.shared.JSONToObject(objectToParse: data)
+        }
+        return commandObject
     }
     
     func getResponseResult(response: ReturnedResponse) -> Any? {

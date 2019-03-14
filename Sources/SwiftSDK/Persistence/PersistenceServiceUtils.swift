@@ -95,7 +95,7 @@ class PersistenceServiceUtils: NSObject {
                     }
                 }
             })
-        }        
+        }
     }
     
     func updateBulk(whereClause: String?, changes: [String : Any], responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
@@ -137,7 +137,7 @@ class PersistenceServiceUtils: NSObject {
         var parameters = ["where": whereClause]
         if whereClause == nil {
             parameters = ["where": "objectId != NULL"]
-        }        
+        }
         BackendlessRequestManager(restMethod: "data/bulk/\(tableName)/delete", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
@@ -362,7 +362,7 @@ class PersistenceServiceUtils: NSObject {
     // ******************** additional methods ********************
     
     func getTableName(entity: Any) -> String {
-        var name = String(describing: entity)        
+        var name = String(describing: entity)
         if name == "BackendlessUser" {
             name = "Users"
         }
@@ -370,19 +370,10 @@ class PersistenceServiceUtils: NSObject {
     }
     
     func getClassName(entity: Any) -> String {
-        var name = String(describing: entity)
-        if name == "Users" {
-            name = "BackendessUser"
-        }
-        if Bundle.main.infoDictionary![kCFBundleNameKey as String] == nil {
-            // for unit tests
-            let testBundle = Bundle(for: TestClass.self)
-            return testBundle.infoDictionary![kCFBundleNameKey as String] as! String + "." + name
-        }
-        return Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String + "." + name
+        return getClassName(className: String(describing: entity))
     }
     
-    func getClassName(className: String) -> String? {
+    func getClassName(className: String) -> String {
         var name = className
         if name == "Users" {
             name = "BackendlessUser"
@@ -420,11 +411,41 @@ class PersistenceServiceUtils: NSObject {
             
             for i : UInt32 in 0..<outCount {
                 if let key = NSString(cString: property_getName(properties[Int(i)]), encoding: String.Encoding.utf8.rawValue) as String?, let value = (entity as! NSObject).value(forKey: key) {
+                    
+                    var resultValue = value
+                    
+                    if !(value is String), !(value is NSNumber), !(value is NSNull) {
+                        if let arrayValue = value as? [Any] {
+                            var resultArray = [Any]()
+                            for arrayVal in arrayValue {
+                                resultArray.append(entityToDictionaryWithClassProperty(entity: arrayVal))
+                            }
+                            resultValue = resultArray
+                        }
+                        else if let dictionaryValue = value as? [String : Any] {
+                            var resultDictionary = [String : Any]()
+                            for key in dictionaryValue.keys {
+                                if let dictionaryVal = dictionaryValue[key] {
+                                    if !(dictionaryVal is String), !(dictionaryVal is NSNumber), !(dictionaryVal is NSNull) {
+                                        resultDictionary[key] = entityToDictionaryWithClassProperty(entity: dictionaryVal)
+                                    }
+                                    else {
+                                        resultDictionary[key] = dictionaryVal
+                                    }
+                                }
+                            }
+                            resultValue = resultDictionary
+                        }
+                        else {
+                            resultValue = entityToDictionaryWithClassProperty(entity: value)
+                        }
+                    }
+                    
                     if let mappedKey = columnToPropertyMappings.getKey(forValue: key) {
-                        entityDictionary[mappedKey] = value
+                        entityDictionary[mappedKey] = resultValue
                     }
                     else {
-                        entityDictionary[key] = value
+                        entityDictionary[key] = resultValue
                     }
                     if let objectId = storedObjects.getObjectId(forObject: entity as! AnyHashable) {
                         entityDictionary["objectId"] = objectId
@@ -435,8 +456,20 @@ class PersistenceServiceUtils: NSObject {
         return entityDictionary
     }
     
+    func entityToDictionaryWithClassProperty(entity: Any) -> [String: Any] {
+        var entityDictionary = entityToDictionary(entity: entity)
+        var className = getClassName(entity: type(of: entity))
+        if let name = className.components(separatedBy: ".").last {
+            if name == "BackendlessUser" {
+                className = "Users"
+            }
+        }
+        entityDictionary["___class"] = className
+        return entityDictionary
+    }
+    
     func dictionaryToEntity(dictionary: [String: Any], className: String) -> Any? {
-        if tableName == "Users" {
+        if tableName == "Users" || className == "Users" {
             return processResponse.adaptToBackendlessUser(responseResult: dictionary)
         }
         var resultEntityTypeName = ""
@@ -449,15 +482,14 @@ class PersistenceServiceUtils: NSObject {
         }
         var resultEntityType = NSClassFromString(resultEntityTypeName) as? NSObject.Type
         if resultEntityType == nil {
-            let nameArray = resultEntityTypeName.components(separatedBy: ".")
-            resultEntityTypeName = nameArray.last!       
+            resultEntityTypeName = resultEntityTypeName.components(separatedBy: ".").last!
             resultEntityType = NSClassFromString(resultEntityTypeName) as? NSObject.Type
         }
         if let resultEntityType = resultEntityType {
             let entity = resultEntityType.init()
             let entityFields = getClassProperties(entity: entity)
-            
             let entityClassName = getClassName(entity: entity.classForCoder)
+            
             let columnToPropertyMappings = mappings.getColumnToPropertyMappings(className: entityClassName)
             for dictionaryField in dictionary.keys {
                 
@@ -468,36 +500,34 @@ class PersistenceServiceUtils: NSObject {
                     else if entityFields.contains(dictionaryField) {
                         
                         if let relationDictionary = dictionary[dictionaryField] as? [String: Any] {
-                            if let relationClassName = getClassName(className: relationDictionary["___class"] as! String) {
-                                if relationDictionary["___class"] as? String == "Users",
-                                    let userObject = processResponse.adaptToBackendlessUser(responseResult: relationDictionary) {
-                                    entity.setValue(userObject as! BackendlessUser, forKey: dictionaryField)
-                                }
-                                else if relationDictionary["___class"] as? String == "GeoPoint",
-                                    let geoPointObject = processResponse.adaptToGeoPoint(geoDictionary: relationDictionary) {
-                                    entity.setValue(geoPointObject, forKey: dictionaryField)
-                                }
-                                else if let relationObject = dictionaryToEntity(dictionary: relationDictionary, className: relationClassName) {
-                                    entity.setValue(relationObject, forKey: dictionaryField)
-                                }
+                            let relationClassName = getClassName(className: relationDictionary["___class"] as! String)
+                            if relationDictionary["___class"] as? String == "Users",
+                                let userObject = processResponse.adaptToBackendlessUser(responseResult: relationDictionary) {
+                                entity.setValue(userObject as! BackendlessUser, forKey: dictionaryField)
+                            }
+                            else if relationDictionary["___class"] as? String == "GeoPoint",
+                                let geoPointObject = processResponse.adaptToGeoPoint(geoDictionary: relationDictionary) {
+                                entity.setValue(geoPointObject, forKey: dictionaryField)
+                            }
+                            else if let relationObject = dictionaryToEntity(dictionary: relationDictionary, className: relationClassName) {
+                                entity.setValue(relationObject, forKey: dictionaryField)
                             }
                         }
                             
                         else if let relationArrayOfDictionaries = dictionary[dictionaryField] as? [[String: Any]] {
                             var relationsArray = [Any]()
                             for relationDictionary in relationArrayOfDictionaries {
-                                if let relationClassName = getClassName(className: relationDictionary["___class"] as! String) {
-                                    if relationDictionary["___class"] as? String == "Users",
-                                        let userObject = processResponse.adaptToBackendlessUser(responseResult: relationDictionary) {
-                                        relationsArray.append(userObject as! BackendlessUser)
-                                    }
-                                    if relationDictionary["___class"] as? String == "GeoPoint",
-                                        let geoPointObject = processResponse.adaptToGeoPoint(geoDictionary: relationDictionary) {
-                                        relationsArray.append(geoPointObject)
-                                    }
-                                    else if let relationObject = dictionaryToEntity(dictionary: relationDictionary, className: relationClassName) {
-                                        relationsArray.append(relationObject)
-                                    }
+                                let relationClassName = getClassName(className: relationDictionary["___class"] as! String)
+                                if relationDictionary["___class"] as? String == "Users",
+                                    let userObject = processResponse.adaptToBackendlessUser(responseResult: relationDictionary) {
+                                    relationsArray.append(userObject as! BackendlessUser)
+                                }
+                                if relationDictionary["___class"] as? String == "GeoPoint",
+                                    let geoPointObject = processResponse.adaptToGeoPoint(geoDictionary: relationDictionary) {
+                                    relationsArray.append(geoPointObject)
+                                }
+                                else if let relationObject = dictionaryToEntity(dictionary: relationDictionary, className: relationClassName) {
+                                    relationsArray.append(relationObject)
                                 }
                                 entity.setValue(relationsArray, forKey: dictionaryField)
                             }

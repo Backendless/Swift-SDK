@@ -25,6 +25,8 @@ class Mappings: NSObject {
     
     var tableToClassMappings = [String: String]()
     var columnToPropertyMappings = [String: [String: String]]()
+    
+    private override init() { }
 
     func mapTable(tableName: String, toClassNamed: String) {
         tableToClassMappings[tableName] = toClassNamed

@@ -25,6 +25,8 @@ class StoredObjects: NSObject {
     
     var storedObjects = [AnyHashable: String]()
     
+    private override init() { }
+    
     func rememberObjectId(objectId: String, forObject: AnyHashable) {
         storedObjects[forObject] = objectId
     }

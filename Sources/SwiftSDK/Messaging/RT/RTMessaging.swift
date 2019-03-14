@@ -25,6 +25,8 @@ class RTMessaging: RTListener {
     private var waitingSubscriptions: [RTSubscription]
     private var subscriptionId: String!
     
+    private let processResponse = ProcessResponse.shared
+    
     init(channel: Channel) {
         self.channel = channel        
         self.waitingSubscriptions = [RTSubscription]()
@@ -122,7 +124,7 @@ class RTMessaging: RTListener {
     func addMessageListener(selector: String?, responseHandler: ((PublishMessageInfo) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         let wrappedBlock: (Any) -> () = { response in
             if let response = response as? [String : Any],
-                let publishMessageInfo = ProcessResponse.shared.adaptToPublishMessageInfo(messageInfoDictionary: response) {
+                let publishMessageInfo = self.processResponse.adaptToPublishMessageInfo(messageInfoDictionary: response) {
                 responseHandler(publishMessageInfo)
             }
         }
@@ -146,6 +148,31 @@ class RTMessaging: RTListener {
     
     func removeMessageListeners(selector: String?) {
         stopSubscriptionForChannel(channel: self.channel, event: PUB_SUB_MESSAGES, selector: selector)
+    }
+    
+    func addCommandListener(responseHandler: ((CommandObject) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        let wrappedBlock: (Any) -> () = { response in
+            if let response = response as? [String : Any],
+                let commandObject = self.processResponse.adaptToCommandObject(commandObjectDictionary: response) {
+                responseHandler(commandObject)
+            }
+        }
+        if self.channel.isJoined {
+            var options = [String : Any]()
+            if let channelName = self.channel.channelName {
+                options["channel"] = channelName
+            }
+            let subscription = createSubscription(type: PUB_SUB_COMMANDS, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            subscription.subscribe()
+            return subscription
+        }
+        else {
+            return addWaitingSubscription(event: PUB_SUB_COMMANDS, channel: self.channel.channelName, selector: nil, connectHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+        }
+    }
+    
+    func removeCommandListeners() {
+        stopSubscriptionForChannel(channel: self.channel, event: PUB_SUB_COMMANDS, selector: nil)
     }
     
     // ********************************************

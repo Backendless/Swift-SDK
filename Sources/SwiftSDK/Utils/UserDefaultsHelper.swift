@@ -27,6 +27,8 @@ class UserDefaultsHelper: NSObject {
     private let STAY_LOGGED_IN_KEY = "stayLoggedInKey"
     private let CURRENT_USER_KEY = "currentUserKey"
     
+    private override init() { }
+    
     func savePersistentUserToken(token: String) {
         let userDefaults = UserDefaults.standard
         let userToken: [String: String] = ["userToken": token]

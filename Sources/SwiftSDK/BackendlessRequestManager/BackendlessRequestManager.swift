@@ -33,7 +33,7 @@ class BackendlessRequestManager: NSObject {
     private var httpMethod: HTTPMethod
     private var headers: [String: String]?
     private var parameters: Any?
-    
+
     init(restMethod: String, httpMethod: HTTPMethod, headers: [String: String]?, parameters: Any?) {
         self.restMethod = restMethod
         self.httpMethod = httpMethod

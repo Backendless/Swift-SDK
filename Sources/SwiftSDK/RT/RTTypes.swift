@@ -1,5 +1,5 @@
 //
-//  RTMethodRequest.swift
+//  RTTypes.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,12 +19,30 @@
  *  ********************************************************************************************************************
  */
 
-class RTMethodRequest: NSObject {
-    
-    var methodId: String?
-    var type: String?
-    var options: [String : Any]?
-    var onResult: (() -> Void)?
-    var onError: ((Fault) -> Void)?
-    var onStop: ((RTMethodRequest) -> Void)?
-}
+// EventHandler
+let CREATED = "created"
+let UPDATED = "updated"
+let DELETED = "deleted"
+let BULK_CREATED = "bulk-created"
+let BULK_UPDATED = "bulk-updated"
+let BULK_DELETED = "bulk-deleted"
+
+// Type
+let ERROR = "ERROR"
+let OBJECTS_CHANGES = "OBJECTS_CHANGES"
+let PUB_SUB_CONNECT = "PUB_SUB_CONNECT"
+let PUB_SUB_MESSAGES = "PUB_SUB_MESSAGES"
+let SET_USER_TOKEN = "SET_USER_TOKEN"
+let PUB_SUB_COMMAND = "PUB_SUB_COMMAND"
+let PUB_SUB_COMMANDS = "PUB_SUB_COMMANDS"
+let PUB_SUB_USERS = "PUB_SUB_USERS"
+let RSO_CONNECT = "RSO_CONNECT"
+let RSO_CHANGES = "RSO_CHANGES"
+let RSO_CLEAR = "RSO_CLEAR"
+let RSO_CLEARED = "RSO_CLEARED"
+let RSO_COMMAND = "RSO_COMMAND"
+let RSO_COMMANDS = "RSO_COMMANDS"
+let RSO_USERS = "RSO_USERS"
+let RSO_GET = "RSO_GET"
+let RSO_SET = "RSO_SET"
+let RSO_INVOKE = "RSO_INVOKE"

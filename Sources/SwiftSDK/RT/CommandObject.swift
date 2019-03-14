@@ -19,10 +19,10 @@
  *  ********************************************************************************************************************
  */
 
-class CommandObject: NSObject {
+@objcMembers open class CommandObject: NSObject {
 
-    var type: String?
-    var connectionId: String?
-    var userId: String?
-    var data: Any?
+    open var type: String?
+    open var connectionId: String?
+    open var userId: String?
+    open var data: Any?
 }

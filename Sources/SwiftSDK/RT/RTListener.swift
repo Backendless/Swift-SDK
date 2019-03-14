@@ -19,35 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class RTListener: NSObject {
-    
-    // EventHandler
-    let CREATED = "created"
-    let UPDATED = "updated"
-    let DELETED = "deleted"
-    let BULK_CREATED = "bulk-created"
-    let BULK_UPDATED = "bulk-updated"
-    let BULK_DELETED = "bulk-deleted"
-    
-    // Type
-    let ERROR = "ERROR"
-    let OBJECTS_CHANGES = "OBJECTS_CHANGES"
-    let PUB_SUB_CONNECT = "PUB_SUB_CONNECT"
-    let PUB_SUB_MESSAGES = "PUB_SUB_MESSAGES"
-    let SET_USER_TOKEN = "SET_USER_TOKEN"
-    let PUB_SUB_COMMAND = "PUB_SUB_COMMAND"
-    let PUB_SUB_COMMANDS = "PUB_SUB_COMMANDS"
-    let PUB_SUB_USERS = "PUB_SUB_USERS"
-    let RSO_CONNECT = "RSO_CONNECT"
-    let RSO_CHANGES = "RSO_CHANGES"
-    let RSO_CLEAR = "RSO_CLEAR"
-    let RSO_CLEARED = "RSO_CLEARED"
-    let RSO_COMMAND = "RSO_COMMAND"
-    let RSO_COMMANDS = "RSO_COMMANDS"
-    let RSO_USERS = "RSO_USERS"
-    let RSO_GET = "RSO_GET"
-    let RSO_SET = "RSO_SET"
-    let RSO_INVOKE = "RSO_INVOKE"
+@objcMembers open class RTListener: NSObject { 
     
     private var subscriptions: [String : [RTSubscription]]!
     private var simpleListeners: [String : [Any]]!
@@ -103,19 +75,19 @@
             
             typeName = (data["options"] as! [String : Any])["event"] as! String
             
-            var subscriptionStack = subscriptions[typeName]
+            var subscriptionStack = self.subscriptions[typeName]
             if subscriptionStack == nil {
                 subscriptionStack = [RTSubscription]()
             }
             subscriptionStack?.append(subscription)
-            subscriptions[typeName] = subscriptionStack
+            self.subscriptions[typeName] = subscriptionStack
         }
         return subscription
     }
     
     func stopSubscription(event: String?, whereClause: String?) {
         if let event = event {
-            if let subscriptionStack = subscriptions[event] {
+            if let subscriptionStack = self.subscriptions[event] {
                 if whereClause != nil {
                     for subscription in subscriptionStack {
                         if let options = subscription.options,
@@ -133,7 +105,7 @@
             }
         }
         else if event == nil {
-            for eventName in subscriptions.keys {
+            for eventName in self.subscriptions.keys {
                 if let subscriptionStack = subscriptions[eventName] {
                     for subscription in subscriptionStack {
                         subscription.stop()
@@ -169,7 +141,7 @@
             }
         }
         else if event == nil {
-            for eventName in subscriptions.keys {
+            for eventName in self.subscriptions.keys {
                 if let subscriptionStack = subscriptions[eventName] {
                     for subscription in subscriptionStack {
                         subscription.stop()

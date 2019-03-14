@@ -28,6 +28,8 @@
     private var applicationId = "AppId"
     private var apiKey = "APIKey"
     
+    private override init() { }
+    
     open func initApp(applicationId: String, apiKey: String) {
         self.applicationId = applicationId
         self.apiKey = apiKey
