@@ -91,7 +91,6 @@ class RTClient: NSObject {
                     if let userToken = Backendless.shared.userService.getCurrentUser()?.userToken {
                         connectParams["userToken"] = userToken
                     }
-                    
                     self.socketManager = SocketManager(socketURL: url, config: ["path": path, "connectParams": connectParams])
                     self.socketManager?.reconnects = false
                     self.socket = self.socketManager?.socket(forNamespace: path)

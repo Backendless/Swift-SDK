@@ -52,12 +52,11 @@ class JSONHelper: NSObject {
             }
             else {
                 resultObject = persistenceServiceUtils.entityToDictionaryWithClassProperty(entity: objectToParse)
-            }            
+            }
         }
         return resultObject
     }
     
-    // надо проверять key != class
     func JSONToObject(objectToParse: Any) -> Any {
         var resultObject = objectToParse
         if !(objectToParse is String), !(objectToParse is NSNumber), !(objectToParse is NSNull) {
