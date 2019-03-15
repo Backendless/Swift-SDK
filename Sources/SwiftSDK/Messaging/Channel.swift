@@ -44,7 +44,7 @@
                 self.isJoined = true
                 self.rt.subscribeForWaiting()
             }, errorHandler: { fault in
-                // ???
+                self.rt.processConnectErrors(fault: fault)
             })
         }
     }
@@ -53,6 +53,14 @@
         removeAllListeners()
         self.isJoined = false
         self.rt.disconnect()
+    }
+    
+    open func addConnectListener(responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        return self.rt.addConnectListener(responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    open func removeConnectListeners() {
+        self.rt.removeConnectListeners()
     }
     
     open func addStringMessageListener(responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {

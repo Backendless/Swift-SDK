@@ -1,5 +1,5 @@
 //
-//  RTSubscription.swift
+//  WaitingSubscriptions.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,35 +19,17 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class RTSubscription: NSObject {
+class WaitingSubscriptions: NSObject {
     
-    var subscriptionId: String?
-    var data: [String: Any]?
-    var type: String?
-    var options: [String : Any]?
-    var onConnect: (() -> Void)?
-    var onResult: ((Any?) -> Void)?
-    var onError: ((Fault) -> Void)?
-    var onStop: ((RTSubscription) -> Void)?
-    var onReady: (() -> Void)?
-    var ready = false
+    static let shared = WaitingSubscriptions()
     
-    func subscribe() {       
-        if let data = self.data {
-            RTClient.shared.subscribe(data: data, subscription: self)
-        }        
+    var subscriptions: [RTSubscription]
+    
+    private override init() {
+        subscriptions = [RTSubscription]()
     }
     
-    open func stop() {
-        let waitingSubscriptions = WaitingSubscriptions.shared
-        if let index = waitingSubscriptions.subscriptions.firstIndex(where: { $0.subscriptionId == self.subscriptionId }) {
-            waitingSubscriptions.removeSubscription(index: index)
-        }
-        RTClient.shared.unsubscribe(subscriptionId: self.subscriptionId!)
-        if self.onStop != nil {
-            self.onStop!(self)
-        }
+    func removeSubscription(index: Int) {
+        self.subscriptions.remove(at: index)
     }
-    
 }
-

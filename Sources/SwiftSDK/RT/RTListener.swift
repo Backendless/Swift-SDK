@@ -36,8 +36,7 @@
     
     func createSubscription(type: String, options: [String : Any], connectionHandler: (() -> Void)?, responseHandler: ((Any) -> Void)?, errorHandler: ((Fault) -> Void)!) -> RTSubscription {
         let subscriptionId = UUID().uuidString
-        let data = ["id": subscriptionId, "name": type, "options": options] as [String : Any]
-        
+        let data = ["id": subscriptionId, "name": type, "options": options] as [String : Any]        
         onStop = { subscription in
             var subscriptionStack = [RTSubscription]()
             if self.subscriptions[type] != nil {
@@ -55,8 +54,7 @@
                     }
                 }
             }
-        }
-        
+        }        
         let subscription = RTSubscription()
         subscription.subscriptionId = subscriptionId
         subscription.data = data
@@ -67,23 +65,19 @@
         subscription.onError = errorHandler
         subscription.onStop = onStop
         subscription.onReady = onReady
-        subscription.ready = false       
+        subscription.ready = false
         
-        if var typeName = data["name"] as? String,
-            typeName == OBJECTS_CHANGES ||
-            typeName == PUB_SUB_MESSAGES ||
-            typeName == PUB_SUB_COMMANDS ||
-            typeName == PUB_SUB_USERS {
-            
+        var typeName = PUB_SUB_CONNECT
+        if let name = data["name"] as? String,
+            name != PUB_SUB_CONNECT {
             typeName = (data["options"] as! [String : Any])["event"] as! String
-            
-            var subscriptionStack = self.subscriptions[typeName]
-            if subscriptionStack == nil {
-                subscriptionStack = [RTSubscription]()
-            }
-            subscriptionStack?.append(subscription)
-            self.subscriptions[typeName] = subscriptionStack
         }
+        var subscriptionStack = self.subscriptions[typeName]
+        if subscriptionStack == nil {
+            subscriptionStack = [RTSubscription]()
+        }
+        subscriptionStack?.append(subscription)
+        self.subscriptions[typeName] = subscriptionStack        
         return subscription
     }
     
@@ -117,7 +111,7 @@
         }
     }
     
-    func stopSubscriptionForChannel(channel: Channel, event: String?, selector: String?) {        
+    func stopSubscriptionForChannel(channel: Channel, event: String?, selector: String?) {
         if let event = event {
             if let subscriptionStack = self.subscriptions[event] {
                 if selector != nil {

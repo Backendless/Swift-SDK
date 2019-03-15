@@ -22,27 +22,42 @@
 class RTMessaging: RTListener {
     
     private var channel: Channel
-    private var waitingSubscriptions: [RTSubscription]
+    private var channelName: String
     private var subscriptionId: String!
     
     private let processResponse = ProcessResponse.shared
+    private let waitingSubscriptions = WaitingSubscriptions.shared
     
     init(channel: Channel) {
-        self.channel = channel        
-        self.waitingSubscriptions = [RTSubscription]()
+        self.channel = channel
+        self.channelName = channel.channelName
     }
     
     func connect(responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        if let channelName = self.channel.channelName {
-            let options = ["channel": channelName] as [String : Any]
-            let subscription = createSubscription(type: PUB_SUB_CONNECT, options: options, connectionHandler: responseHandler, responseHandler: nil, errorHandler: errorHandler)
-            self.subscriptionId = subscription.subscriptionId
-            subscription.subscribe()
-        }
+        let options = ["channel": channelName] as [String : Any]
+        let subscription = createSubscription(type: PUB_SUB_CONNECT, options: options, connectionHandler: responseHandler, responseHandler: nil, errorHandler: errorHandler)
+        self.subscriptionId = subscription.subscriptionId
+        subscription.subscribe()
     }
     
     func disconnect() {
         RTClient.shared.unsubscribe(subscriptionId: subscriptionId)
+    }
+    
+    func addConnectListener(responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        if self.channel.isJoined {
+            let options = ["channel" : self.channelName] as [String : Any]
+            let subscription = createSubscription(type: PUB_SUB_CONNECT, options: options, connectionHandler: responseHandler, responseHandler: nil, errorHandler: errorHandler)
+            subscription.subscribe()
+            return subscription
+        }
+        else {
+            return addWaitingSubscription(event: PUB_SUB_CONNECT, channel: self.channelName, selector: nil, connectHandler: responseHandler, responseHandler: nil, errorHandler: errorHandler)
+        }
+    }
+    
+    func removeConnectListeners() {
+        stopSubscriptionForChannel(channel: self.channel, event: PUB_SUB_CONNECT, selector: nil)
     }
     
     func addStringMessageListener(selector: String?, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
@@ -54,9 +69,7 @@ class RTMessaging: RTListener {
         }
         if self.channel.isJoined {
             var options = [String : Any]()
-            if let channelName = self.channel.channelName {
-                options["channel"] = channelName
-            }
+            options["channel"] = self.channelName
             if let selector = selector {
                 options["selector"] = selector
             }
@@ -65,7 +78,7 @@ class RTMessaging: RTListener {
             return subscription
         }
         else {
-            return addWaitingSubscription(event: PUB_SUB_MESSAGES, channel: self.channel.channelName, selector: selector, connectHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            return addWaitingSubscription(event: PUB_SUB_MESSAGES, channel: self.channelName, selector: selector, connectHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
     }
     
@@ -79,9 +92,7 @@ class RTMessaging: RTListener {
         }
         if self.channel.isJoined {
             var options = [String : Any]()
-            if let channelName = self.channel.channelName {
-                options["channel"] = channelName
-            }
+            options["channel"] = self.channelName
             if let selector = selector {
                 options["selector"] = selector
             }
@@ -90,7 +101,7 @@ class RTMessaging: RTListener {
             return subscription
         }
         else {
-            return addWaitingSubscription(event: PUB_SUB_MESSAGES, channel: self.channel.channelName, selector: selector, connectHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            return addWaitingSubscription(event: PUB_SUB_MESSAGES, channel: self.channelName, selector: selector, connectHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
     }
     
@@ -106,9 +117,7 @@ class RTMessaging: RTListener {
         }        
         if self.channel.isJoined {
             var options = [String : Any]()
-            if let channelName = self.channel.channelName {
-                options["channel"] = channelName
-            }
+            options["channel"] = self.channelName
             if let selector = selector {
                 options["selector"] = selector
             }
@@ -117,7 +126,7 @@ class RTMessaging: RTListener {
             return subscription
         }
         else {
-            return addWaitingSubscription(event: PUB_SUB_MESSAGES, channel: self.channel.channelName, selector: selector, connectHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            return addWaitingSubscription(event: PUB_SUB_MESSAGES, channel: self.channelName, selector: selector, connectHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
     }
     
@@ -130,9 +139,7 @@ class RTMessaging: RTListener {
         }
         if self.channel.isJoined {
             var options = [String : Any]()
-            if let channelName = self.channel.channelName {
-                options["channel"] = channelName
-            }
+            options["channel"] = self.channelName
             if let selector = selector {
                 options["selector"] = selector
             }
@@ -142,7 +149,7 @@ class RTMessaging: RTListener {
             return subscription
         }
         else {
-            return addWaitingSubscription(event: PUB_SUB_MESSAGES, channel: self.channel.channelName, selector: selector, connectHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            return addWaitingSubscription(event: PUB_SUB_MESSAGES, channel: self.channelName, selector: selector, connectHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
     }
     
@@ -158,16 +165,13 @@ class RTMessaging: RTListener {
             }
         }
         if self.channel.isJoined {
-            var options = [String : Any]()
-            if let channelName = self.channel.channelName {
-                options["channel"] = channelName
-            }
+            let options = ["channel" : self.channelName] as [String : Any]
             let subscription = createSubscription(type: PUB_SUB_COMMANDS, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
             subscription.subscribe()
             return subscription
         }
         else {
-            return addWaitingSubscription(event: PUB_SUB_COMMANDS, channel: self.channel.channelName, selector: nil, connectHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            return addWaitingSubscription(event: PUB_SUB_COMMANDS, channel: self.channelName, selector: nil, connectHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
     }
     
@@ -178,21 +182,18 @@ class RTMessaging: RTListener {
     func addUserStatusListener(responseHandler: ((UserStatusObject) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         let wrappedBlock: (Any) -> () = { response in
             if let response = response as? [String : Any],
-                let userStatusObject = self.processResponse.adaptToUserStatusObject(userStatusObjectDictionary: response) {                
+                let userStatusObject = self.processResponse.adaptToUserStatusObject(userStatusObjectDictionary: response) {
                 responseHandler(userStatusObject)
             }
         }
         if self.channel.isJoined {
-            var options = [String : Any]()
-            if let channelName = self.channel.channelName {
-                options["channel"] = channelName
-            }
+            let options = ["channel" : self.channelName] as [String : Any]
             let subscription = createSubscription(type: PUB_SUB_USERS, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
             subscription.subscribe()
             return subscription
         }
         else {
-            return addWaitingSubscription(event: PUB_SUB_USERS, channel: self.channel.channelName, selector: nil, connectHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            return addWaitingSubscription(event: PUB_SUB_USERS, channel: self.channelName, selector: nil, connectHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
     }
     
@@ -215,21 +216,32 @@ class RTMessaging: RTListener {
             waitingSubscription = createSubscription(type: event, options: options, connectionHandler: nil, responseHandler: responseHandler, errorHandler: errorHandler)
         }
         if let waitingSubscription = waitingSubscription {
-            waitingSubscriptions.append(waitingSubscription)
+            waitingSubscriptions.subscriptions.append(waitingSubscription)
         }
         return waitingSubscription
     }
     
     func subscribeForWaiting() {
-        for waitingSubscription in waitingSubscriptions {
-            if let data = waitingSubscription.data {
-                if data["name"] as? String == PUB_SUB_MESSAGES ||
-                    data["name"] as? String == PUB_SUB_COMMANDS ||
-                    data["name"] as? String == PUB_SUB_USERS {
-                    waitingSubscription.subscribe()
-                }
+        for waitingSubscription in waitingSubscriptions.subscriptions {
+            if let data = waitingSubscription.data,
+                let name = data["name"] as? String,
+                name == PUB_SUB_CONNECT ||
+                    name == PUB_SUB_MESSAGES ||
+                    name == PUB_SUB_COMMANDS ||
+                    name == PUB_SUB_USERS {
+                waitingSubscription.subscribe()
             }
         }
-        waitingSubscriptions.removeAll()
+        waitingSubscriptions.subscriptions.removeAll()
+    }
+    
+    func processConnectErrors(fault: Fault) {
+        for waitingSubscription in waitingSubscriptions.subscriptions {
+            if let data = waitingSubscription.data,
+                data["name"] as? String == PUB_SUB_CONNECT,
+                waitingSubscription.onError != nil {
+                waitingSubscription.onError!(fault)
+            }
+        }
     }
 }
