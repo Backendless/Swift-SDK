@@ -71,7 +71,9 @@
         
         if var typeName = data["name"] as? String,
             typeName == OBJECTS_CHANGES ||
-            typeName == PUB_SUB_MESSAGES {
+            typeName == PUB_SUB_MESSAGES ||
+            typeName == PUB_SUB_COMMANDS ||
+            typeName == PUB_SUB_USERS {
             
             typeName = (data["options"] as! [String : Any])["event"] as! String
             
@@ -115,9 +117,9 @@
         }
     }
     
-    func stopSubscriptionForChannel(channel: Channel, event: String?, selector: String?) {
+    func stopSubscriptionForChannel(channel: Channel, event: String?, selector: String?) {        
         if let event = event {
-            if let subscriptionStack = self.subscriptions[event] {                
+            if let subscriptionStack = self.subscriptions[event] {
                 if selector != nil {
                     for subscription in subscriptionStack {
                         if let options = subscription.options,

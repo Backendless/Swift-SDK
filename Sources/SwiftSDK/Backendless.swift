@@ -83,4 +83,8 @@
         let _geoSevice = GeoService()
         return _geoSevice
     }()
+    
+    open func sharedObject(name: String) -> SharedObject {
+        return SharedObject(name: name)
+    }
 }

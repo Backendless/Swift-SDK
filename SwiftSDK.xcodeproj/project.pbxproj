@@ -27,6 +27,7 @@
 		5E11113721B532450044CAED /* UserProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E11113621B532450044CAED /* UserProperty.swift */; };
 		5E11113C21B542BA0044CAED /* UserServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E11113B21B542BA0044CAED /* UserServiceTests.swift */; };
 		5E13C3A622046F7C00EA3050 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E13C3A522046F7C00EA3050 /* JSON.swift */; };
+		5E15A06C223B9C9D0090F5A3 /* RTMessagingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E15A06B223B9C9D0090F5A3 /* RTMessagingTests.swift */; };
 		5E341B7C21F5E11A00C32598 /* ObjectProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E341B7B21F5E11A00C32598 /* ObjectProperty.swift */; };
 		5E3706F722037C8E00E08C50 /* TestClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFE8E5F21E8E2150003477B /* TestClass.swift */; };
 		5E3706F922037C9100E08C50 /* TestClassForMappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E96E1AC21F8408800F34C11 /* TestClassForMappings.swift */; };
@@ -62,6 +63,10 @@
 		5E9C573221AEEA0400877870 /* SwiftSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9C572821AEEA0400877870 /* SwiftSDK.framework */; };
 		5E9C573921AEEA0400877870 /* SwiftSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E9C572B21AEEA0400877870 /* SwiftSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5EA2B69B21F2324B00CFDC37 /* StoredObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2B69A21F2324B00CFDC37 /* StoredObjects.swift */; };
+		5EA5D2C4223BCE8F0027EA49 /* SharedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA5D2C3223BCE8F0027EA49 /* SharedObject.swift */; };
+		5EA5D2C6223BE2AC0027EA49 /* RTSharedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA5D2C5223BE2AC0027EA49 /* RTSharedObject.swift */; };
+		5EA5D2C8223BE5F90027EA49 /* InvokeObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA5D2C7223BE5F90027EA49 /* InvokeObject.swift */; };
+		5EA5D2CA223BE6440027EA49 /* SharedObjectChanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA5D2C9223BE6440027EA49 /* SharedObjectChanges.swift */; };
 		5EA87B75221D4A3100A8B93F /* ReconnectAttemptObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA87B74221D4A3100A8B93F /* ReconnectAttemptObject.swift */; };
 		5EA87B95221D720100A8B93F /* RTListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA87B94221D720100A8B93F /* RTListener.swift */; };
 		5EB28E1921B1799A0007AC30 /* Backendless.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB28E1821B1799A0007AC30 /* Backendless.swift */; };
@@ -114,6 +119,7 @@
 		5E11113621B532450044CAED /* UserProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProperty.swift; sourceTree = "<group>"; };
 		5E11113B21B542BA0044CAED /* UserServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserServiceTests.swift; sourceTree = "<group>"; };
 		5E13C3A522046F7C00EA3050 /* JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
+		5E15A06B223B9C9D0090F5A3 /* RTMessagingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTMessagingTests.swift; sourceTree = "<group>"; };
 		5E341B7B21F5E11A00C32598 /* ObjectProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectProperty.swift; sourceTree = "<group>"; };
 		5E44C04F2223EC4A00B391E7 /* RTServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTServiceTests.swift; sourceTree = "<group>"; };
 		5E467F812201E20700E70772 /* DataPermission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPermission.swift; sourceTree = "<group>"; };
@@ -151,6 +157,10 @@
 		5E9C572C21AEEA0400877870 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5E9C573121AEEA0400877870 /* SwiftSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EA2B69A21F2324B00CFDC37 /* StoredObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredObjects.swift; sourceTree = "<group>"; };
+		5EA5D2C3223BCE8F0027EA49 /* SharedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedObject.swift; sourceTree = "<group>"; };
+		5EA5D2C5223BE2AC0027EA49 /* RTSharedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTSharedObject.swift; sourceTree = "<group>"; };
+		5EA5D2C7223BE5F90027EA49 /* InvokeObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvokeObject.swift; sourceTree = "<group>"; };
+		5EA5D2C9223BE6440027EA49 /* SharedObjectChanges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedObjectChanges.swift; sourceTree = "<group>"; };
 		5EA87B74221D4A3100A8B93F /* ReconnectAttemptObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReconnectAttemptObject.swift; sourceTree = "<group>"; };
 		5EA87B94221D720100A8B93F /* RTListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTListener.swift; sourceTree = "<group>"; };
 		5EB28E1821B1799A0007AC30 /* Backendless.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backendless.swift; sourceTree = "<group>"; };
@@ -316,6 +326,7 @@
 				5E7534672220579100BC31D4 /* EventHandlerForClassTests.swift */,
 				5EC7D169222FDBCE00FD3FF4 /* SubscriptionAPITests.swift */,
 				5E84E879223158EA008B3F05 /* PublishingAPITests.swift */,
+				5E15A06B223B9C9D0090F5A3 /* RTMessagingTests.swift */,
 			);
 			path = RTTests;
 			sourceTree = "<group>";
@@ -370,6 +381,7 @@
 		5E9718FB221BFE3100857603 /* RT */ = {
 			isa = PBXGroup;
 			children = (
+				5EA5D2CB223BE6580027EA49 /* SharedObject */,
 				5E7722DC2236D91E00E7B346 /* RTTypes.swift */,
 				5E971915221C2A8700857603 /* RTClient.swift */,
 				5EA87B94221D720100A8B93F /* RTListener.swift */,
@@ -401,6 +413,17 @@
 				5E9C572C21AEEA0400877870 /* Info.plist */,
 			);
 			path = SwiftSDK;
+			sourceTree = "<group>";
+		};
+		5EA5D2CB223BE6580027EA49 /* SharedObject */ = {
+			isa = PBXGroup;
+			children = (
+				5EA5D2C3223BCE8F0027EA49 /* SharedObject.swift */,
+				5EA5D2C5223BE2AC0027EA49 /* RTSharedObject.swift */,
+				5EA5D2C7223BE5F90027EA49 /* InvokeObject.swift */,
+				5EA5D2C9223BE6440027EA49 /* SharedObjectChanges.swift */,
+			);
+			path = SharedObject;
 			sourceTree = "<group>";
 		};
 		5EAA649A21AEDBEA006019EF = {
@@ -661,6 +684,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5EA5D2C8223BE5F90027EA49 /* InvokeObject.swift in Sources */,
 				5EC7D163222FB86100FD3FF4 /* DeliveryOptions.swift in Sources */,
 				5E4DE64321EF8E92009AE503 /* Mappings.swift in Sources */,
 				5E7E8A6021ECC94A00AA04E1 /* UserDefaultsHelper.swift in Sources */,
@@ -674,6 +698,7 @@
 				5EFBA8FE21C1011E007B3BB0 /* BackendlessUser.swift in Sources */,
 				5E971912221C27CB00857603 /* EventHandlerForMap.swift in Sources */,
 				5E03A3C52229711F005A538D /* UserStatusObject.swift in Sources */,
+				5EA5D2C4223BCE8F0027EA49 /* SharedObject.swift in Sources */,
 				5E3706FD22037CC800E08C50 /* ChildTestClass.swift in Sources */,
 				5AB44C62222E88C600ED9D36 /* MessageStatus.swift in Sources */,
 				5ECD9C8021DE57E7002CBB7D /* GeoService.swift in Sources */,
@@ -682,6 +707,7 @@
 				5E03A3BA222916A2005A538D /* Channel.swift in Sources */,
 				5E97190E221C276600857603 /* IEventHandler.swift in Sources */,
 				5E84E87C22315E12008B3F05 /* EmailBodyparts.swift in Sources */,
+				5EA5D2C6223BE2AC0027EA49 /* RTSharedObject.swift in Sources */,
 				5EA87B75221D4A3100A8B93F /* ReconnectAttemptObject.swift in Sources */,
 				5AFE8E6421E8E3430003477B /* TestsConfig.swift in Sources */,
 				5E971910221C27BB00857603 /* EventHandlerForClass.swift in Sources */,
@@ -709,6 +735,7 @@
 				5ECD9C7E21DE57DA002CBB7D /* GeoPoint.swift in Sources */,
 				5E03A3BD22291882005A538D /* RTMessaging.swift in Sources */,
 				5E03A3C122294A4B005A538D /* PublishMessageInfo.swift in Sources */,
+				5EA5D2CA223BE6440027EA49 /* SharedObjectChanges.swift in Sources */,
 				5E97191A221C369A00857603 /* RTMethodRequest.swift in Sources */,
 				5E03A3BF22291C74005A538D /* MessagingService.swift in Sources */,
 				5AA2969A2237C19D007104C7 /* JSONHelper.swift in Sources */,
@@ -732,6 +759,7 @@
 				5E545EEE21DFBA4400881ED0 /* GeoPointTests.swift in Sources */,
 				5E11113C21B542BA0044CAED /* UserServiceTests.swift in Sources */,
 				5EE2B40721C25EC600F90723 /* BackendlessUserTests.swift in Sources */,
+				5E15A06C223B9C9D0090F5A3 /* RTMessagingTests.swift in Sources */,
 				5EC7D16A222FDBCE00FD3FF4 /* SubscriptionAPITests.swift in Sources */,
 				5AFE8E5E21E8D7410003477B /* PersistenceServiceTests.swift in Sources */,
 				5EB28E2021B1833A0007AC30 /* BackendlessTests.swift in Sources */,

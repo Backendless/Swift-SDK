@@ -279,7 +279,7 @@ class RTClient: NSObject {
         if !self.onResultReady {
             self.socket?.on("SUB_RES", callback: { data, ack in
                 self.onResultReady = true
-            
+                
                 if let resultData = data.first as? [String : Any],
                     let subscriptionId = resultData["id"] as? String,
                     let subscription = self.subscriptions[subscriptionId] {

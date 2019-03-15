@@ -103,11 +103,17 @@
         self.rt.removeCommandListeners()
     }
     
-    func addUserStatusListener(responseHandler: ((UserStatusObject) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
-        return RTSubscription()
+    open func addUserStatusListener(responseHandler: ((UserStatusObject) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        return self.rt.addUserStatusListener(responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    open func removeUserStatusListeners() {
+        self.rt.removeUserStatusListeners()
     }
     
     open func removeAllListeners() {
         removeMessageListeners()
+        removeCommandListeners()
+        removeUserStatusListeners()
     }
 }

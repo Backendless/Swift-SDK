@@ -32,7 +32,7 @@
     var onReady: (() -> Void)?
     var ready = false
     
-    func subscribe() {
+    func subscribe() {       
         if let data = self.data {
             RTClient.shared.subscribe(data: data, subscription: self)
         }        

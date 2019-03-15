@@ -171,6 +171,17 @@ class ProcessResponse: NSObject {
         return commandObject
     }
     
+    func adaptToUserStatusObject(userStatusObjectDictionary: [String : Any]) -> UserStatusObject? {
+        let userStatusObject = UserStatusObject()
+        if let status = userStatusObjectDictionary["status"] as? String {
+            userStatusObject.status = status
+        }
+        if let data = userStatusObjectDictionary["data"] as? [[String : Any]] {
+            userStatusObject.data = data
+        }
+        return userStatusObject
+    }
+    
     func getResponseResult(response: ReturnedResponse) -> Any? {
         if let error = response.error {
             let faultCode = response.response?.statusCode
