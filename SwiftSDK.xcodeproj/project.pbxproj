@@ -12,6 +12,7 @@
 		5A2A785121E6114800EC8007 /* PersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2A785021E6114800EC8007 /* PersistenceService.swift */; };
 		5A2A785321E61D1700EC8007 /* DataStoreFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2A785221E61D1700EC8007 /* DataStoreFactory.swift */; };
 		5AA2969A2237C19D007104C7 /* JSONHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AA296992237C19D007104C7 /* JSONHelper.swift */; };
+		5AB0B7A2223F9475000F6F96 /* WaitingSubscriptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB0B7A1223F9475000F6F96 /* WaitingSubscriptions.swift */; };
 		5AB44C62222E88C600ED9D36 /* MessageStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB44C61222E88C600ED9D36 /* MessageStatus.swift */; };
 		5AC54CA621E7373400EC1F8C /* PersistenceServiceUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC54CA521E7373400EC1F8C /* PersistenceServiceUtils.swift */; };
 		5AFE8E5E21E8D7410003477B /* PersistenceServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFE8E5D21E8D7410003477B /* PersistenceServiceTests.swift */; };
@@ -32,7 +33,6 @@
 		5E3706F722037C8E00E08C50 /* TestClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFE8E5F21E8E2150003477B /* TestClass.swift */; };
 		5E3706F922037C9100E08C50 /* TestClassForMappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E96E1AC21F8408800F34C11 /* TestClassForMappings.swift */; };
 		5E3706FD22037CC800E08C50 /* ChildTestClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5FE02821F7359700387F8B /* ChildTestClass.swift */; };
-		5E4204AB223C53F5002D0127 /* WaitingSubscriptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4204AA223C53F5002D0127 /* WaitingSubscriptions.swift */; };
 		5E44C0502223EC4A00B391E7 /* RTServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E44C04F2223EC4A00B391E7 /* RTServiceTests.swift */; };
 		5E467F822201E20700E70772 /* DataPermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E467F812201E20700E70772 /* DataPermission.swift */; };
 		5E4DE64321EF8E92009AE503 /* Mappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4DE64221EF8E92009AE503 /* Mappings.swift */; };
@@ -104,6 +104,7 @@
 		5A2A785021E6114800EC8007 /* PersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceService.swift; sourceTree = "<group>"; };
 		5A2A785221E61D1700EC8007 /* DataStoreFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStoreFactory.swift; sourceTree = "<group>"; };
 		5AA296992237C19D007104C7 /* JSONHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONHelper.swift; sourceTree = "<group>"; };
+		5AB0B7A1223F9475000F6F96 /* WaitingSubscriptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaitingSubscriptions.swift; sourceTree = "<group>"; };
 		5AB44C61222E88C600ED9D36 /* MessageStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageStatus.swift; sourceTree = "<group>"; };
 		5AC54CA521E7373400EC1F8C /* PersistenceServiceUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceServiceUtils.swift; sourceTree = "<group>"; };
 		5AFE8E5D21E8D7410003477B /* PersistenceServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceServiceTests.swift; sourceTree = "<group>"; };
@@ -122,7 +123,6 @@
 		5E13C3A522046F7C00EA3050 /* JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
 		5E15A06B223B9C9D0090F5A3 /* RTMessagingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTMessagingTests.swift; sourceTree = "<group>"; };
 		5E341B7B21F5E11A00C32598 /* ObjectProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectProperty.swift; sourceTree = "<group>"; };
-		5E4204AA223C53F5002D0127 /* WaitingSubscriptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingSubscriptions.swift; sourceTree = "<group>"; };
 		5E44C04F2223EC4A00B391E7 /* RTServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTServiceTests.swift; sourceTree = "<group>"; };
 		5E467F812201E20700E70772 /* DataPermission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPermission.swift; sourceTree = "<group>"; };
 		5E498E2D8F87FE5F1EDC7604 /* Pods_SwiftSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -395,7 +395,7 @@
 				5EA87B74221D4A3100A8B93F /* ReconnectAttemptObject.swift */,
 				5E03A3C222296D03005A538D /* CommandObject.swift */,
 				5E03A3C42229711F005A538D /* UserStatusObject.swift */,
-				5E4204AA223C53F5002D0127 /* WaitingSubscriptions.swift */,
+				5AB0B7A1223F9475000F6F96 /* WaitingSubscriptions.swift */,
 			);
 			path = RT;
 			sourceTree = "<group>";
@@ -701,7 +701,7 @@
 				5EFBA8FE21C1011E007B3BB0 /* BackendlessUser.swift in Sources */,
 				5E971912221C27CB00857603 /* EventHandlerForMap.swift in Sources */,
 				5E03A3C52229711F005A538D /* UserStatusObject.swift in Sources */,
-				5E4204AB223C53F5002D0127 /* WaitingSubscriptions.swift in Sources */,
+				5AB0B7A2223F9475000F6F96 /* WaitingSubscriptions.swift in Sources */,
 				5EA5D2C4223BCE8F0027EA49 /* SharedObject.swift in Sources */,
 				5E3706FD22037CC800E08C50 /* ChildTestClass.swift in Sources */,
 				5AB44C62222E88C600ED9D36 /* MessageStatus.swift in Sources */,

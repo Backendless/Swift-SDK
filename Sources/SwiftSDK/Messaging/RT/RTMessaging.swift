@@ -221,14 +221,17 @@ class RTMessaging: RTListener {
         return waitingSubscription
     }
     
-    func subscribeForWaiting() {
+    func subscribeForWaiting() {        
         for waitingSubscription in waitingSubscriptions.subscriptions {
-            if let data = waitingSubscription.data,
+                if let data = waitingSubscription.data,
                 let name = data["name"] as? String,
                 name == PUB_SUB_CONNECT ||
                     name == PUB_SUB_MESSAGES ||
                     name == PUB_SUB_COMMANDS ||
-                    name == PUB_SUB_USERS {
+                    name == PUB_SUB_USERS,
+                    let options = waitingSubscription.options,
+                    let channelName = options["channel"] as? String,
+                    channelName == self.channelName {                    
                 waitingSubscription.subscribe()
             }
         }

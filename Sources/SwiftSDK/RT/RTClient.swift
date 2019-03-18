@@ -123,13 +123,15 @@ class RTClient: NSObject {
     func subscribe(data: [String : Any], subscription: RTSubscription) {        
         DispatchQueue.global(qos: .default).async {            
             self._lock.lock()
-            if self.socketConnected {                
+            if self.socketConnected {
                 self.socket?.emit("SUB_ON", with: [data])
+                print(data)
                 self._lock.unlock()
             }
             else {
                 self.connectSocket(connected: {
                     self.socket?.emit("SUB_ON", with: [data])
+                    print(data)
                     self._lock.unlock()
                 })
             }
