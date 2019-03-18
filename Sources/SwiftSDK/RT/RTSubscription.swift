@@ -29,7 +29,6 @@
     var onResult: ((Any?) -> Void)?
     var onError: ((Fault) -> Void)?
     var onStop: ((RTSubscription) -> Void)?
-    var onReady: (() -> Void)?
     var ready = false
     
     func subscribe() {       

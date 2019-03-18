@@ -125,13 +125,11 @@ class RTClient: NSObject {
             self._lock.lock()
             if self.socketConnected {
                 self.socket?.emit("SUB_ON", with: [data])
-                print(data)
                 self._lock.unlock()
             }
             else {
                 self.connectSocket(connected: {
                     self.socket?.emit("SUB_ON", with: [data])
-                    print(data)
                     self._lock.unlock()
                 })
             }
@@ -288,8 +286,7 @@ class RTClient: NSObject {
                     
                     if let result = resultData["data"] {                        
                         subscription.ready = true
-                        if let result = result as? String, result == "connected", subscription.onReady != nil, subscription.onConnect != nil {
-                            subscription.onReady!()
+                        if let result = result as? String, result == "connected", subscription.onConnect != nil {
                             subscription.onConnect!()
                         }
                         else if let result = result as? [String : Any], subscription.onResult != nil {
@@ -360,6 +357,23 @@ class RTClient: NSObject {
         sendCommand(data: data, method: nil)
     }
     
+    func addSimpleListener(type: String, subscription: RTSubscription) {
+        var subscriptions = eventSubscriptions[type]
+        if subscriptions == nil {
+            subscriptions = [RTSubscription]()
+        }
+        subscriptions?.append(subscription)
+        eventSubscriptions[type] = subscriptions     
+    }
+    
+    func getSimpleListeners(type: String) -> [RTSubscription]? {
+        return eventSubscriptions[type]
+    }
+    
+    func removeSimpleListeners(type: String) {
+        removeEventListeners(type: type)
+    }
+    
     // Native Socket.io events
     
     func addEventListener(type: String, responseHandler: ((Any) -> Void)!) -> RTSubscription {
@@ -379,10 +393,7 @@ class RTClient: NSObject {
     }
     
     func removeEventListeners(type: String) {
-        if var listeners = eventSubscriptions[type] {
-            listeners.removeAll()
-            eventSubscriptions[type] = listeners
-        }
+        eventSubscriptions.removeValue(forKey: type)
     }
     
     func removeSocket() {

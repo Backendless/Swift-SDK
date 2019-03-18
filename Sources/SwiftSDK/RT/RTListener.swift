@@ -22,13 +22,11 @@
 @objcMembers open class RTListener: NSObject { 
     
     private var subscriptions: [String : [RTSubscription]]!
-    private var simpleListeners: [String : [Any]]!
     private var onStop: ((RTSubscription) -> Void)?
     private var onReady: (() -> Void)?
     
     public override init() {
         self.subscriptions = [String : [RTSubscription]]()
-        self.simpleListeners = [String : [Any]]()
         super.init()
     }
     
@@ -46,15 +44,7 @@
                 subscriptionStack.remove(at: index)
             }
         }
-        onReady = {
-            if let readyCallbacks = self.simpleListeners["type"] {
-                for i in 0..<readyCallbacks.count {
-                    if let readyBlock = readyCallbacks[i] as? ((Any?) -> Void) {
-                        readyBlock(nil)
-                    }
-                }
-            }
-        }        
+        
         let subscription = RTSubscription()
         subscription.subscriptionId = subscriptionId
         subscription.data = data
@@ -64,7 +54,6 @@
         subscription.onConnect = connectionHandler
         subscription.onError = errorHandler
         subscription.onStop = onStop
-        subscription.onReady = onReady
         subscription.ready = false
         
         var typeName = PUB_SUB_CONNECT
@@ -77,7 +66,7 @@
             subscriptionStack = [RTSubscription]()
         }
         subscriptionStack?.append(subscription)
-        self.subscriptions[typeName] = subscriptionStack        
+        self.subscriptions[typeName] = subscriptionStack
         return subscription
     }
     
