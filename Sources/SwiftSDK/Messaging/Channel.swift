@@ -51,13 +51,13 @@
     }
     
     open func leave() {
-        removeAllListeners()
         self.isJoined = false
+        removeAllListeners()        
         self.rt.disconnect()
     }
     
-    open func addConnectListener(responseHandler: (() -> Void)!) -> RTSubscription? {
-        return self.rt.addConnectListener(responseHandler: responseHandler)
+    open func addConnectListener(responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        return self.rt.addConnectListener(responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     open func removeConnectListeners() {
@@ -121,6 +121,7 @@
     }
     
     open func removeAllListeners() {
+        removeConnectListeners()
         removeMessageListeners()
         removeCommandListeners()
         removeUserStatusListeners()

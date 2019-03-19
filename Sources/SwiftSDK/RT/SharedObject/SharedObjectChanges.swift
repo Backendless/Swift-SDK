@@ -19,9 +19,10 @@
  *  ********************************************************************************************************************
  */
 
-class SharedObjectChanges: NSObject {
-    var key: String?
-    var data: Any?
-    var connectionId: String?
-    var userId: String?
+@objcMembers open class SharedObjectChanges: NSObject {
+    
+    open var key: String?
+    open var data: Any?
+    open var connectionId: String?
+    open var userId: String?
 }

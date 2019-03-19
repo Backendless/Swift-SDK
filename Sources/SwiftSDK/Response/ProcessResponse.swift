@@ -107,7 +107,7 @@ class ProcessResponse: NSObject {
         return nil
     }
     
-    func adaptToPublishMessageInfo(messageInfoDictionary: [String : Any]) -> PublishMessageInfo? {        
+    func adaptToPublishMessageInfo(messageInfoDictionary: [String : Any]) -> PublishMessageInfo {
         let publishMessageInfo = PublishMessageInfo()
         if let messageId = messageInfoDictionary["messageId"] as? String {
             publishMessageInfo.messageId = messageId
@@ -154,7 +154,7 @@ class ProcessResponse: NSObject {
         return publishMessageInfo
     }
     
-    func adaptToCommandObject(commandObjectDictionary: [String : Any]) -> CommandObject? {
+    func adaptToCommandObject(commandObjectDictionary: [String : Any]) -> CommandObject {
         let commandObject = CommandObject()        
         if let type = commandObjectDictionary["type"] as? String {
             commandObject.type = type
@@ -171,7 +171,7 @@ class ProcessResponse: NSObject {
         return commandObject
     }
     
-    func adaptToUserStatusObject(userStatusObjectDictionary: [String : Any]) -> UserStatusObject? {
+    func adaptToUserStatusObject(userStatusObjectDictionary: [String : Any]) -> UserStatusObject {
         let userStatusObject = UserStatusObject()
         if let status = userStatusObjectDictionary["status"] as? String {
             userStatusObject.status = status
@@ -180,6 +180,23 @@ class ProcessResponse: NSObject {
             userStatusObject.data = data
         }
         return userStatusObject
+    }
+    
+    func adaptToSharedObjectChanges(sharedObjectChangesDictionary: [String : Any]) -> SharedObjectChanges {
+        let sharedObjectChanges = SharedObjectChanges()
+        if let key = sharedObjectChangesDictionary["key"] as? String {
+            sharedObjectChanges.key = key
+        }
+        if let data = sharedObjectChangesDictionary["data"] {
+            sharedObjectChanges.data = JSONHelper.shared.JSONToObject(objectToParse: data)
+        }
+        if let connectionId = sharedObjectChangesDictionary["connectionId"] as? String {
+            sharedObjectChanges.connectionId = connectionId
+        }
+        if let userId = sharedObjectChangesDictionary["userId"] as? String {
+            sharedObjectChanges.userId = userId
+        }
+        return sharedObjectChanges
     }
     
     func getResponseResult(response: ReturnedResponse) -> Any? {

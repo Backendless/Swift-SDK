@@ -31,11 +31,13 @@ class RTClient: NSObject {
     let RECONNECT_ATTEMPT_EVENT = "RECONNECT_ATTEMPT_EVENT"
     let SET_USER_TOKEN = "SET_USER_TOKEN"
     
+    var waitingSubscriptions: [RTSubscription]
+    
     private var socketManager: SocketManager?
     private var socket: SocketIOClient?
-     var subscriptions: [String : RTSubscription]
-    private var methods: [String : RTMethodRequest]
+    private var subscriptions: [String : RTSubscription]
     private var eventSubscriptions: [String : [RTSubscription]]
+    private var methods: [String : RTMethodRequest]
     private var socketCreated = false
     private var socketConnected = false
     private var needResubscribe = false
@@ -60,9 +62,10 @@ class RTClient: NSObject {
     private let maxTimeInterval: Double = 60.0 // seconds
     
     private override init() {
+        self.waitingSubscriptions = [RTSubscription]()
         self.subscriptions = [String : RTSubscription]()
-        self.methods = [String : RTMethodRequest]()
         self.eventSubscriptions = [String : [RTSubscription]]()
+        self.methods = [String : RTMethodRequest]()
         _lock = NSLock()
         super.init()
     }
@@ -336,9 +339,12 @@ class RTClient: NSObject {
                             self.methods.removeValue(forKey: methodId)
                         }
                     }
-                    else {
-                        if resultData["id"] != nil, method.onResult != nil {
-                            method.onResult!()
+                    else if resultData["id"] != nil, method.onResult != nil {                 
+                        if let result = resultData["result"] {
+                            method.onResult!(result)
+                        }
+                        else {
+                            method.onResult!(nil)
                         }
                         method.onStop!(method)
                         self.methods.removeValue(forKey: methodId)
@@ -372,6 +378,10 @@ class RTClient: NSObject {
     
     func removeSimpleListeners(type: String) {
         removeEventListeners(type: type)
+    }
+    
+    func removeWaitingSubscription(index: Int) {
+        self.waitingSubscriptions.remove(at: index)
     }
     
     // Native Socket.io events

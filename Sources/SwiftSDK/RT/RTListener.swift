@@ -56,9 +56,12 @@
         subscription.onStop = onStop
         subscription.ready = false
         
-        var typeName = PUB_SUB_CONNECT
+        var typeName = RSO_CONNECT
+        if options["channel"] != nil {
+            typeName = PUB_SUB_CONNECT
+        }    
         if let name = data["name"] as? String,
-            name != PUB_SUB_CONNECT {
+            name != PUB_SUB_CONNECT, name != RSO_CONNECT {
             typeName = (data["options"] as! [String : Any])["event"] as! String
         }
         var subscriptionStack = self.subscriptions[typeName]
@@ -68,72 +71,6 @@
         subscriptionStack?.append(subscription)
         self.subscriptions[typeName] = subscriptionStack
         return subscription
-    }
-    
-    func stopSubscription(event: String?, whereClause: String?) {
-        if let event = event {
-            if let subscriptionStack = self.subscriptions[event] {
-                if whereClause != nil {
-                    for subscription in subscriptionStack {
-                        if let options = subscription.options,
-                            let subscriptionWhereClause = options["whereClause"] as? String,
-                            subscriptionWhereClause == whereClause {
-                            subscription.stop()
-                        }
-                    }
-                }
-                else {
-                    for subscription in subscriptionStack {
-                        subscription.stop()
-                    }
-                }
-            }
-        }
-        else if event == nil {
-            for eventName in self.subscriptions.keys {
-                if let subscriptionStack = subscriptions[eventName] {
-                    for subscription in subscriptionStack {
-                        subscription.stop()
-                    }
-                }
-            }
-        }
-    }
-    
-    func stopSubscriptionForChannel(channel: Channel, event: String?, selector: String?) {
-        if let event = event {
-            if let subscriptionStack = self.subscriptions[event] {
-                if selector != nil {
-                    for subscription in subscriptionStack {
-                        if let options = subscription.options,
-                            let channelName = options["channel"] as? String,
-                            channelName == channel.channelName,
-                            let subscriptionSelector = options["selector"] as? String,
-                            subscriptionSelector == selector {
-                            subscription.stop()
-                        }
-                    }
-                }
-                else {
-                    for subscription in subscriptionStack {
-                        if let options = subscription.options,
-                            let channelName = options["channel"] as? String,
-                            channelName == channel.channelName {
-                            subscription.stop()
-                        }
-                    }
-                }
-            }
-        }
-        else if event == nil {
-            for eventName in self.subscriptions.keys {
-                if let subscriptionStack = subscriptions[eventName] {
-                    for subscription in subscriptionStack {
-                        subscription.stop()
-                    }
-                }
-            }
-        }
     }
     
     // ****************************************************
@@ -192,4 +129,64 @@
     }
     
     // ****************************************************
+    
+    func stopSubscription(event: String, whereClause: String?) {
+        if let subscriptionStack = self.subscriptions[event] {
+            if whereClause != nil {
+                for subscription in subscriptionStack {
+                    if let options = subscription.options,
+                        let subscriptionWhereClause = options["whereClause"] as? String,
+                        subscriptionWhereClause == whereClause {
+                        subscription.stop()
+                    }
+                }
+            }
+            else {
+                for subscription in subscriptionStack {
+                    subscription.stop()
+                }
+            }
+        }
+    }
+    
+    // ****************************************************
+    
+    func stopSubscriptionForChannel(channel: Channel, event: String, selector: String?) {
+        if let subscriptionStack = self.subscriptions[event] {
+            if selector != nil {
+                for subscription in subscriptionStack {
+                    if let options = subscription.options,
+                        let channelName = options["channel"] as? String,
+                        channelName == channel.channelName,
+                        let subscriptionSelector = options["selector"] as? String,
+                        subscriptionSelector == selector {
+                        subscription.stop()
+                    }
+                }
+            }
+            else {
+                for subscription in subscriptionStack {
+                    if let options = subscription.options,
+                        let channelName = options["channel"] as? String,
+                        channelName == channel.channelName {
+                        subscription.stop()
+                    }
+                }
+            }
+        }
+    }
+    
+    // ****************************************************
+    
+    func stopSubscriptionForSharedObject(sharedObject: SharedObject, event: String) {
+        if let subscriptionStack = self.subscriptions[event] {
+            for subscription in subscriptionStack {
+                if let options = subscription.options,
+                    let sharedObjectName = options["name"] as? String,
+                    sharedObjectName == sharedObject.name {
+                    subscription.stop()
+                }
+            }
+        }
+    }
 }
