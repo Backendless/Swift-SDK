@@ -25,12 +25,7 @@
     open private(set) var isJoined = false
     
     private var rt: RTMessaging!
-    
-    private let PUB_SUB_CONNECT = "PUB_SUB_CONNECT"
-    private let PUB_SUB_MESSAGES = "PUB_SUB_MESSAGES"
-    private let PUB_SUB_COMMANDS = "PUB_SUB_COMMANDS"
-    private let PUB_SUB_USERS = "PUB_SUB_USERS"
-    
+        
     public init(channelName: String) {
         self.channelName = channelName
     }
@@ -112,7 +107,7 @@
         self.rt.removeCommandListeners()
     }
     
-    open func addUserStatusListener(responseHandler: ((UserStatusObject) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+    open func addUserStatusListener(responseHandler: ((UserStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         return self.rt.addUserStatusListener(responseHandler: responseHandler, errorHandler: errorHandler)
     }
     

@@ -23,7 +23,7 @@
 		5E03A3BF22291C74005A538D /* MessagingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E03A3BE22291C74005A538D /* MessagingService.swift */; };
 		5E03A3C122294A4B005A538D /* PublishMessageInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E03A3C022294A4B005A538D /* PublishMessageInfo.swift */; };
 		5E03A3C322296D03005A538D /* CommandObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E03A3C222296D03005A538D /* CommandObject.swift */; };
-		5E03A3C52229711F005A538D /* UserStatusObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E03A3C42229711F005A538D /* UserStatusObject.swift */; };
+		5E03A3C52229711F005A538D /* UserStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E03A3C42229711F005A538D /* UserStatus.swift */; };
 		5E11113721B532450044CAED /* UserProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E11113621B532450044CAED /* UserProperty.swift */; };
 		5E11113C21B542BA0044CAED /* UserServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E11113B21B542BA0044CAED /* UserServiceTests.swift */; };
 		5E13C3A622046F7C00EA3050 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E13C3A522046F7C00EA3050 /* JSON.swift */; };
@@ -37,6 +37,7 @@
 		5E4DE64321EF8E92009AE503 /* Mappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4DE64221EF8E92009AE503 /* Mappings.swift */; };
 		5E545EEC21DFB87A00881ED0 /* GeoServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E545EEB21DFB87A00881ED0 /* GeoServiceTests.swift */; };
 		5E545EEE21DFBA4400881ED0 /* GeoPointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E545EED21DFBA4400881ED0 /* GeoPointTests.swift */; };
+		5E5716E82242803A00C7B048 /* SharedObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5716E72242803A00C7B048 /* SharedObjectTests.swift */; };
 		5E572D4B21B8043E000713B0 /* ProcessResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E572D4A21B8043E000713B0 /* ProcessResponse.swift */; };
 		5E60834B21EF721900268B4D /* DictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E60834A21EF721900268B4D /* DictionaryExtension.swift */; };
 		5E64F0BF21C50D8E00590B04 /* BackendlessRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E64F0BE21C50D8E00590B04 /* BackendlessRequestManager.swift */; };
@@ -80,6 +81,7 @@
 		5EE063BF22017EAA00B862EA /* LoadRelationsQueryBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE063BE22017EAA00B862EA /* LoadRelationsQueryBuilder.swift */; };
 		5EE2B40721C25EC600F90723 /* BackendlessUserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE2B40621C25EC600F90723 /* BackendlessUserTests.swift */; };
 		5EE6920121B67791002E72A9 /* FaultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE6920021B67791002E72A9 /* FaultTests.swift */; };
+		5EFB60E922422F93004DFA2C /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFB60E822422F93004DFA2C /* UserInfo.swift */; };
 		5EFBA8FE21C1011E007B3BB0 /* BackendlessUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFBA8FD21C1011E007B3BB0 /* BackendlessUser.swift */; };
 		6AA95CD0F22ACB1CFFE37402 /* Pods_SwiftSDKTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3516024AF117B55B0390A0E3 /* Pods_SwiftSDKTests.framework */; };
 		B264877612834E6EDC429235 /* Pods_SwiftSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E498E2D8F87FE5F1EDC7604 /* Pods_SwiftSDK.framework */; };
@@ -115,7 +117,7 @@
 		5E03A3BE22291C74005A538D /* MessagingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagingService.swift; sourceTree = "<group>"; };
 		5E03A3C022294A4B005A538D /* PublishMessageInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishMessageInfo.swift; sourceTree = "<group>"; };
 		5E03A3C222296D03005A538D /* CommandObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandObject.swift; sourceTree = "<group>"; };
-		5E03A3C42229711F005A538D /* UserStatusObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStatusObject.swift; sourceTree = "<group>"; };
+		5E03A3C42229711F005A538D /* UserStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStatus.swift; sourceTree = "<group>"; };
 		5E11113621B532450044CAED /* UserProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProperty.swift; sourceTree = "<group>"; };
 		5E11113B21B542BA0044CAED /* UserServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserServiceTests.swift; sourceTree = "<group>"; };
 		5E13C3A522046F7C00EA3050 /* JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 		5E4DE64221EF8E92009AE503 /* Mappings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mappings.swift; sourceTree = "<group>"; };
 		5E545EEB21DFB87A00881ED0 /* GeoServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoServiceTests.swift; sourceTree = "<group>"; };
 		5E545EED21DFBA4400881ED0 /* GeoPointTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoPointTests.swift; sourceTree = "<group>"; };
+		5E5716E72242803A00C7B048 /* SharedObjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedObjectTests.swift; sourceTree = "<group>"; };
 		5E572D4A21B8043E000713B0 /* ProcessResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessResponse.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		5E5FE02821F7359700387F8B /* ChildTestClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChildTestClass.swift; sourceTree = "<group>"; };
 		5E60834A21EF721900268B4D /* DictionaryExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryExtension.swift; sourceTree = "<group>"; };
@@ -175,6 +178,7 @@
 		5EE063BE22017EAA00B862EA /* LoadRelationsQueryBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadRelationsQueryBuilder.swift; sourceTree = "<group>"; };
 		5EE2B40621C25EC600F90723 /* BackendlessUserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessUserTests.swift; sourceTree = "<group>"; };
 		5EE6920021B67791002E72A9 /* FaultTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaultTests.swift; sourceTree = "<group>"; };
+		5EFB60E822422F93004DFA2C /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		5EFBA8FD21C1011E007B3BB0 /* BackendlessUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessUser.swift; sourceTree = "<group>"; };
 		8719E73BC42A4BAC496A289B /* Pods-SwiftSDKTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSDKTests.release.xcconfig"; path = "Target Support Files/Pods-SwiftSDKTests/Pods-SwiftSDKTests.release.xcconfig"; sourceTree = "<group>"; };
 		B6B654B2B26601D8872ECE6E /* Pods-SwiftSDKTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSDKTests.debug.xcconfig"; path = "Target Support Files/Pods-SwiftSDKTests/Pods-SwiftSDKTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -254,7 +258,6 @@
 			isa = PBXGroup;
 			children = (
 				5E03A3BB22291874005A538D /* RT */,
-				5E03A3B9222916A2005A538D /* Channel.swift */,
 				5EC7D162222FB86100FD3FF4 /* DeliveryOptions.swift */,
 				5E84E87B22315E12008B3F05 /* EmailBodyparts.swift */,
 				5AB44C61222E88C600ED9D36 /* MessageStatus.swift */,
@@ -268,6 +271,7 @@
 		5E03A3BB22291874005A538D /* RT */ = {
 			isa = PBXGroup;
 			children = (
+				5E03A3B9222916A2005A538D /* Channel.swift */,
 				5E03A3BC22291882005A538D /* RTMessaging.swift */,
 			);
 			path = RT;
@@ -327,6 +331,7 @@
 				5EC7D169222FDBCE00FD3FF4 /* SubscriptionAPITests.swift */,
 				5E84E879223158EA008B3F05 /* PublishingAPITests.swift */,
 				5E15A06B223B9C9D0090F5A3 /* RTMessagingTests.swift */,
+				5E5716E72242803A00C7B048 /* SharedObjectTests.swift */,
 			);
 			path = RTTests;
 			sourceTree = "<group>";
@@ -392,7 +397,8 @@
 				5E971913221C296A00857603 /* RTService.swift */,
 				5E971917221C2CC400857603 /* RTSubscription.swift */,
 				5E7722DC2236D91E00E7B346 /* RTTypes.swift */,
-				5E03A3C42229711F005A538D /* UserStatusObject.swift */,
+				5EFB60E822422F93004DFA2C /* UserInfo.swift */,
+				5E03A3C42229711F005A538D /* UserStatus.swift */,
 			);
 			path = RT;
 			sourceTree = "<group>";
@@ -697,7 +703,7 @@
 				5EE063BF22017EAA00B862EA /* LoadRelationsQueryBuilder.swift in Sources */,
 				5EFBA8FE21C1011E007B3BB0 /* BackendlessUser.swift in Sources */,
 				5E971912221C27CB00857603 /* EventHandlerForMap.swift in Sources */,
-				5E03A3C52229711F005A538D /* UserStatusObject.swift in Sources */,
+				5E03A3C52229711F005A538D /* UserStatus.swift in Sources */,
 				5EA5D2C4223BCE8F0027EA49 /* SharedObject.swift in Sources */,
 				5E3706FD22037CC800E08C50 /* ChildTestClass.swift in Sources */,
 				5AB44C62222E88C600ED9D36 /* MessageStatus.swift in Sources */,
@@ -720,6 +726,7 @@
 				5E64F0BF21C50D8E00590B04 /* BackendlessRequestManager.swift in Sources */,
 				5A2A785321E61D1700EC8007 /* DataStoreFactory.swift in Sources */,
 				5E90721121B66E9E00619C0D /* Fault.swift in Sources */,
+				5EFB60E922422F93004DFA2C /* UserInfo.swift in Sources */,
 				5E81B28D2236A8300015AEDC /* RTMethod.swift in Sources */,
 				5EA87B95221D720100A8B93F /* RTListener.swift in Sources */,
 				5ED765D02224369E009431CD /* BulkEvent.swift in Sources */,
@@ -751,6 +758,7 @@
 				5E7534682220579100BC31D4 /* EventHandlerForClassTests.swift in Sources */,
 				5AFE8E6621E8E5C00003477B /* DataStoreFactoryTests.swift in Sources */,
 				5AFE8E6221E8E2620003477B /* MapDrivenDataStoreTests.swift in Sources */,
+				5E5716E82242803A00C7B048 /* SharedObjectTests.swift in Sources */,
 				5E84E87A223158EA008B3F05 /* PublishingAPITests.swift in Sources */,
 				5EE6920121B67791002E72A9 /* FaultTests.swift in Sources */,
 				5E7534662220578600BC31D4 /* EventHanderForMapTests.swift in Sources */,

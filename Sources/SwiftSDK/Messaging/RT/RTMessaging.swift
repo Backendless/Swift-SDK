@@ -181,11 +181,11 @@ class RTMessaging: RTListener {
         stopSubscriptionForChannel(channel: self.channel, event: PUB_SUB_COMMANDS, selector: nil)
     }
     
-    func addUserStatusListener(responseHandler: ((UserStatusObject) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+    func addUserStatusListener(responseHandler: ((UserStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         let wrappedBlock: (Any) -> () = { response in
             if let response = response as? [String : Any] {
-                let userStatusObject = self.processResponse.adaptToUserStatusObject(userStatusObjectDictionary: response)
-                responseHandler(userStatusObject)
+                let userStatus = self.processResponse.adaptToUserStatus(userStatusDictionary: response)
+                responseHandler(userStatus)
             }
         }
         if self.channel.isJoined {
@@ -233,8 +233,8 @@ class RTMessaging: RTListener {
                 indexesToRemove.append(rtClient.waitingSubscriptions.firstIndex(of: waitingSubscription)!)
             }
         }
-        for indexToRemove in indexesToRemove {
-            rtClient.waitingSubscriptions.remove(at: indexToRemove)
+        rtClient.waitingSubscriptions = rtClient.waitingSubscriptions.enumerated().compactMap {
+            indexesToRemove.contains($0.0) ? nil : $0.1
         }
     }
     
@@ -252,8 +252,8 @@ class RTMessaging: RTListener {
                 indexesToRemove.append(rtClient.waitingSubscriptions.firstIndex(of: waitingSubscription)!)
             }
         }
-        for indexToRemove in indexesToRemove {
-            rtClient.waitingSubscriptions.remove(at: indexToRemove)
+        rtClient.waitingSubscriptions = rtClient.waitingSubscriptions.enumerated().compactMap {
+            indexesToRemove.contains($0.0) ? nil : $0.1
         }
     }
     

@@ -106,7 +106,7 @@ class RTMessagingTests: XCTestCase {
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             let message = "Test Message"
-            self.backendless.messaging.sendCommand(commandType: "TestComamnd", channelName: self.CHANNEL_NAME, data: message, responseHandler: {
+            self.backendless.messaging.sendCommand(commandType: "TestCommand", channelName: self.CHANNEL_NAME, data: message, responseHandler: {
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
@@ -132,7 +132,7 @@ class RTMessagingTests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             self.channel.removeCommandListeners()
             let message = "Test Message"
-            self.backendless.messaging.sendCommand(commandType: "TestComamnd", channelName: self.CHANNEL_NAME, data: message, responseHandler: {
+            self.backendless.messaging.sendCommand(commandType: "TestCommand", channelName: self.CHANNEL_NAME, data: message, responseHandler: {
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
@@ -164,7 +164,7 @@ class RTMessagingTests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             subscriptionToStop?.stop()
             let message = "Test Message"
-            self.backendless.messaging.sendCommand(commandType: "TestComamnd", channelName: self.CHANNEL_NAME, data: message, responseHandler: {
+            self.backendless.messaging.sendCommand(commandType: "TestCommand", channelName: self.CHANNEL_NAME, data: message, responseHandler: {
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")

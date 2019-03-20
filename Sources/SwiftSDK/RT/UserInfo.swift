@@ -1,5 +1,5 @@
 //
-//  InvokeObject.swift
+//  UserInfo.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,10 +19,8 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class InvokeObject: NSObject {
+@objcMembers open class UserInfo: NSObject {
     
-    open var method: String?
-    open var args: [Any]?
     open var connectionId: String?
     open var userId: String?
 }

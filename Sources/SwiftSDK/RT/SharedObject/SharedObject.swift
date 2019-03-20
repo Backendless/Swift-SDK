@@ -78,9 +78,45 @@
         self.rt.removeChangesListeners()
     }
     
+    open func addClearListener(responseHandler: ((UserInfo) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        return self.rt.addClearListener(responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    open func removeClearListeners() {
+        self.rt.removeClearListeners()
+    }
+    
+    open func addCommandListener(responseHandler: ((CommandObject) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        return self.rt.addCommandListener(responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    open func removeCommandListeners() {
+        self.rt.removeCommandListeners()
+    }
+    
+//    open func addUserStatusListener(responseHandler: ((UserStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+//        return self.rt.addUserStatusListener(responseHandler: responseHandler, errorHandler: errorHandler)
+//    }
+//
+//    open func removeUserStatusListeners() {
+//        self.rt.removeUserStatusListeners()
+//    }
+//
+//    open func addInvokeListener(responseHandler: ((InvokeObject) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+//        return self.rt.addInvokeListener(responseHandler: responseHandler, errorHandler: errorHandler)
+//    }
+//
+//    open func removeInvokeListeners() {
+//        self.rt.removeInvokeListeners()
+//    }
+    
     open func removeAllListeners() {
         removeConnectListeners()
         removeChangesListeners()
+        removeClearListeners()
+        removeCommandListeners()
+//        removeUserStatusListeners()
+//        removeInvokeListeners()
     }
     
     // commands
@@ -96,4 +132,28 @@
     open func set(key: String, data: Any?, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         self.rt.set(key: key, data: data, responseHandler: responseHandler, errorHandler: errorHandler)
     }
+    
+    open func clear(responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        self.rt.clear(responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    open func sendCommand(commandName: String, data: Any?, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        self.rt.sendCommand(commandName: commandName, data: data, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+//    open func invokeOn(targets: [Any], method: String, args: [Any], responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+//        self.rt.invoke(targets: targets, method: method, args: args, responseHandler: responseHandler, errorHandler: errorHandler)
+//    }
+//    
+//    open func invokeOn(targets: [Any], method: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+//        self.rt.invoke(targets: targets, method: method, args: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+//    }
+//    
+//    open func invoke(method: String, args: [Any], responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+//        self.rt.invoke(targets: nil, method: method, args: args, responseHandler: responseHandler, errorHandler: errorHandler)
+//    }
+//    
+//    open func invoke(method: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+//        self.rt.invoke(targets: nil, method: method, args: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+//    }
 }
