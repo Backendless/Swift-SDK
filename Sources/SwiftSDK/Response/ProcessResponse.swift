@@ -76,9 +76,12 @@ class ProcessResponse: NSObject {
     
     func getResponseResult(response: ReturnedResponse) -> Any? {
         if let error = response.error {
-            let faultCode = response.response?.statusCode
+            var faultCode = 0
+            if let code = response.response?.statusCode {
+                faultCode = code
+            }
             let faultMessage = error.localizedDescription
-            return faultConstructor(faultMessage, faultCode: faultCode!)
+            return faultConstructor(faultMessage, faultCode: faultCode)
         }
         else if let _response = response.response {
             if let data = response.data {
