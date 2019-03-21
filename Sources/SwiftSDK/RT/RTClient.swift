@@ -31,11 +31,13 @@ class RTClient: NSObject {
     let RECONNECT_ATTEMPT_EVENT = "RECONNECT_ATTEMPT_EVENT"
     let SET_USER_TOKEN = "SET_USER_TOKEN"
     
+    var waitingSubscriptions: [RTSubscription]
+    
     private var socketManager: SocketManager?
     private var socket: SocketIOClient?
-     var subscriptions: [String : RTSubscription]
-    private var methods: [String : RTMethodRequest]
+    private var subscriptions: [String : RTSubscription]
     private var eventSubscriptions: [String : [RTSubscription]]
+    private var methods: [String : RTMethodRequest]
     private var socketCreated = false
     private var socketConnected = false
     private var needResubscribe = false
@@ -60,9 +62,10 @@ class RTClient: NSObject {
     private let maxTimeInterval: Double = 60.0 // seconds
     
     private override init() {
+        self.waitingSubscriptions = [RTSubscription]()
         self.subscriptions = [String : RTSubscription]()
-        self.methods = [String : RTMethodRequest]()
         self.eventSubscriptions = [String : [RTSubscription]]()
+        self.methods = [String : RTMethodRequest]()
         _lock = NSLock()
         super.init()
     }
@@ -123,7 +126,7 @@ class RTClient: NSObject {
     func subscribe(data: [String : Any], subscription: RTSubscription) {        
         DispatchQueue.global(qos: .default).async {            
             self._lock.lock()
-            if self.socketConnected {                
+            if self.socketConnected {
                 self.socket?.emit("SUB_ON", with: [data])
                 self._lock.unlock()
             }
@@ -279,15 +282,14 @@ class RTClient: NSObject {
         if !self.onResultReady {
             self.socket?.on("SUB_RES", callback: { data, ack in
                 self.onResultReady = true
-            
+                
                 if let resultData = data.first as? [String : Any],
                     let subscriptionId = resultData["id"] as? String,
                     let subscription = self.subscriptions[subscriptionId] {
                     
                     if let result = resultData["data"] {                        
                         subscription.ready = true
-                        if let result = result as? String, result == "connected", subscription.onReady != nil, subscription.onConnect != nil {
-                            subscription.onReady!()
+                        if let result = result as? String, result == "connected", subscription.onConnect != nil {
                             subscription.onConnect!()
                         }
                         else if let result = result as? [String : Any], subscription.onResult != nil {
@@ -337,9 +339,12 @@ class RTClient: NSObject {
                             self.methods.removeValue(forKey: methodId)
                         }
                     }
-                    else {
-                        if resultData["id"] != nil, method.onResult != nil {
-                            method.onResult!()
+                    else if resultData["id"] != nil, method.onResult != nil {                 
+                        if let result = resultData["result"] {
+                            method.onResult!(result)
+                        }
+                        else {
+                            method.onResult!(nil)
                         }
                         method.onStop!(method)
                         self.methods.removeValue(forKey: methodId)
@@ -356,6 +361,27 @@ class RTClient: NSObject {
             data["options"] = ["userToken": userToken]
         }
         sendCommand(data: data, method: nil)
+    }
+    
+    func addSimpleListener(type: String, subscription: RTSubscription) {
+        var subscriptions = eventSubscriptions[type]
+        if subscriptions == nil {
+            subscriptions = [RTSubscription]()
+        }
+        subscriptions?.append(subscription)
+        eventSubscriptions[type] = subscriptions     
+    }
+    
+    func getSimpleListeners(type: String) -> [RTSubscription]? {
+        return eventSubscriptions[type]
+    }
+    
+    func removeSimpleListeners(type: String) {
+        removeEventListeners(type: type)
+    }
+    
+    func removeWaitingSubscription(index: Int) {
+        self.waitingSubscriptions.remove(at: index)
     }
     
     // Native Socket.io events
@@ -377,10 +403,7 @@ class RTClient: NSObject {
     }
     
     func removeEventListeners(type: String) {
-        if var listeners = eventSubscriptions[type] {
-            listeners.removeAll()
-            eventSubscriptions[type] = listeners
-        }
+        eventSubscriptions.removeValue(forKey: type)
     }
     
     func removeSocket() {

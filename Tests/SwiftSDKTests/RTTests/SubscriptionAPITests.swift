@@ -289,7 +289,7 @@ class SubscriptionAPITests: XCTestCase {
     }
     
     func test_11_stopMessageSubscription() {
-        let expectation: XCTestExpectation = self.expectation(description: "PASSED: channel.stopSubscription")
+        let expectation: XCTestExpectation = self.expectation(description: "PASSED: channel.stopMessageSubscription")
         let subscriptionToStop = self.channel.addStringMessageListener(selector: "foo = 'bar'", responseHandler: { message in
             XCTFail("This subscription must be removed")
         }, errorHandler: { fault in

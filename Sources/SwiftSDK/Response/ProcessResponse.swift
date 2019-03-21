@@ -74,6 +74,44 @@ class ProcessResponse: NSObject {
         }
     }
     
+    func getResponseResult(response: ReturnedResponse) -> Any? {
+        if let error = response.error {
+            let faultCode = response.response?.statusCode
+            let faultMessage = error.localizedDescription
+            return faultConstructor(faultMessage, faultCode: faultCode!)
+        }
+        else if let _response = response.response {
+            if let data = response.data {
+                let responseResultDictionary =  try? JSONSerialization.jsonObject(with: data, options: [])
+                if let faultDictionary = responseResultDictionary as? [String: Any],
+                    let faultCode = faultDictionary["code"] as? Int,
+                    let faultMessage = faultDictionary["message"] as? String {
+                    return faultConstructor(faultMessage, faultCode: faultCode)
+                }
+                if responseResultDictionary != nil {
+                    return responseResultDictionary
+                }
+                else if _response.statusCode < 200 || _response.statusCode > 400 {
+                    let faultCode = _response.statusCode
+                    let faultMessage = "Backendless server error"
+                    return faultConstructor(faultMessage, faultCode: faultCode)
+                }
+                return responseResultDictionary
+            }
+        }
+        return nil
+    }
+    
+    func faultConstructor(_ faultMessage: String, faultCode: Int) -> Fault {
+        var message = faultMessage
+        if faultCode < 200 || faultCode > 400 {
+            if faultCode == 404 {
+                message = "Not Found"
+            }
+        }
+        return Fault(message: message, faultCode: faultCode)
+    }
+    
     func adaptToBackendlessUser(responseResult: Any?) -> Any? {
         if let responseResult = responseResult as? [String: Any] {
             let properties = ["email": responseResult["email"], "name": responseResult["name"], "objectId": responseResult["objectId"], "userToken": responseResult["user-token"]]
@@ -107,7 +145,7 @@ class ProcessResponse: NSObject {
         return nil
     }
     
-    func adaptToPublishMessageInfo(messageInfoDictionary: [String : Any]) -> PublishMessageInfo? {        
+    func adaptToPublishMessageInfo(messageInfoDictionary: [String : Any]) -> PublishMessageInfo {
         let publishMessageInfo = PublishMessageInfo()
         if let messageId = messageInfoDictionary["messageId"] as? String {
             publishMessageInfo.messageId = messageId
@@ -154,7 +192,7 @@ class ProcessResponse: NSObject {
         return publishMessageInfo
     }
     
-    func adaptToCommandObject(commandObjectDictionary: [String : Any]) -> CommandObject? {
+    func adaptToCommandObject(commandObjectDictionary: [String : Any]) -> CommandObject {
         let commandObject = CommandObject()        
         if let type = commandObjectDictionary["type"] as? String {
             commandObject.type = type
@@ -171,41 +209,60 @@ class ProcessResponse: NSObject {
         return commandObject
     }
     
-    func getResponseResult(response: ReturnedResponse) -> Any? {
-        if let error = response.error {
-            let faultCode = response.response?.statusCode
-            let faultMessage = error.localizedDescription
-            return faultConstructor(faultMessage, faultCode: faultCode!)
+    func adaptToUserStatus(userStatusDictionary: [String : Any]) -> UserStatus {
+        let userStatus = UserStatus()
+        if let status = userStatusDictionary["status"] as? String {
+            userStatus.status = status
         }
-        else if let _response = response.response {
-            if let data = response.data {
-                let responseResultDictionary =  try? JSONSerialization.jsonObject(with: data, options: [])
-                if let faultDictionary = responseResultDictionary as? [String: Any],
-                    let faultCode = faultDictionary["code"] as? Int,
-                    let faultMessage = faultDictionary["message"] as? String {
-                    return faultConstructor(faultMessage, faultCode: faultCode)
-                }
-                if responseResultDictionary != nil {
-                    return responseResultDictionary
-                }
-                else if _response.statusCode < 200 || _response.statusCode > 400 {
-                    let faultCode = _response.statusCode
-                    let faultMessage = "Backendless server error"
-                    return faultConstructor(faultMessage, faultCode: faultCode)
-                }
-                return responseResultDictionary
-            }
+        if let data = userStatusDictionary["data"] as? [[String : Any]] {
+            userStatus.data = data
         }
-        return nil
+        return userStatus
     }
     
-    func faultConstructor(_ faultMessage: String, faultCode: Int) -> Fault {
-        var message = faultMessage
-        if faultCode < 200 || faultCode > 400 {
-            if faultCode == 404 {
-                message = "Not Found"
-            }
+    func adaptToSharedObjectChanges(sharedObjectChangesDictionary: [String : Any]) -> SharedObjectChanges {
+        let sharedObjectChanges = SharedObjectChanges()
+        if let key = sharedObjectChangesDictionary["key"] as? String {
+            sharedObjectChanges.key = key
         }
-        return Fault(message: message, faultCode: faultCode)
+        if let data = sharedObjectChangesDictionary["data"] {
+            sharedObjectChanges.data = JSONHelper.shared.JSONToObject(objectToParse: data)
+        }
+        if let connectionId = sharedObjectChangesDictionary["connectionId"] as? String {
+            sharedObjectChanges.connectionId = connectionId
+        }
+        if let userId = sharedObjectChangesDictionary["userId"] as? String {
+            sharedObjectChanges.userId = userId
+        }
+        return sharedObjectChanges
+    }
+    
+    func adaptToUserInfo(userInfoDictionary: [String : Any]) -> UserInfo {
+        let userInfo = UserInfo()
+        if let connectionId = userInfoDictionary["connectionId"] as? String {
+            userInfo.connectionId = connectionId
+        }
+        if let userId = userInfoDictionary["userId"] as? String {
+            userInfo.userId = userId
+        }
+        return userInfo
+    }
+    
+    func adaptToInvokeObject(invokeObjectDictionary: [String : Any]) -> InvokeObject {
+        let invokeObject = InvokeObject()
+        if let method = invokeObjectDictionary["method"] as? String {
+            invokeObject.method = method
+        }
+        if let connectionId = invokeObjectDictionary["connectionId"] as? String {
+            invokeObject.connectionId = connectionId
+        }
+        if let userId = invokeObjectDictionary["userId"] as? String {
+            invokeObject.userId = userId
+        }
+        if let args = invokeObjectDictionary["args"] {            
+            invokeObject.args = JSONHelper.shared.JSONToObject(objectToParse: args) as? [Any]
+        }
+        
+        return invokeObject
     }
 }

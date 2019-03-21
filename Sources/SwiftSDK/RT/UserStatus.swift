@@ -19,10 +19,8 @@
  *  ********************************************************************************************************************
  */
 
-import UIKit
-
-class UserStatusObject: NSObject {
+@objcMembers open class UserStatus: NSObject {
     
-    var status: String?
-    var data: [[String : Any]]?
+    open var status: String?
+    open var data: [[String : Any]]?
 }

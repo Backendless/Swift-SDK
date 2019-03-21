@@ -22,6 +22,7 @@
 class JSONHelper: NSObject {
     
     static let shared = JSONHelper()
+    
     private let persistenceServiceUtils = PersistenceServiceUtils()
     
     private override init() { }
@@ -80,10 +81,11 @@ class JSONHelper: NSObject {
                             resultDictionary[key] = JSONToObject(objectToParse: value)
                         }
                         else {
-                            resultObject = resultDictionary
+                            resultDictionary[key] = value
                         }
                     }
-                }
+                    resultObject = resultDictionary
+                }                
             }
             else {
                 if let dictionaryToParse = objectToParse as? [String : Any],

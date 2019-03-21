@@ -138,10 +138,13 @@
     }
     
     open func sendCommand(commandType: String, channelName: String, data: Any?, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        let wrappedBlock: (Any) -> () = { response in
+            responseHandler()
+        }
         var options = ["channel": channelName, "type": commandType] as [String : Any]
         if let data = data {
             options["data"] = JSONHelper.shared.objectToJSON(objectToParse: data)
         }
-        RTMethod.shared.sendCommand(type: PUB_SUB_COMMAND, options: options, responseHandler: responseHandler, errorHandler: errorHandler)
+        RTMethod.shared.sendCommand(type: PUB_SUB_COMMAND, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
     }
 }

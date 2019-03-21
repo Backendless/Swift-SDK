@@ -1,5 +1,5 @@
 //
-//  RTFactory.swift
+//  UserInfo.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,29 +19,8 @@
  *  ********************************************************************************************************************
  */
 
-class RTFactory: NSObject {
+@objcMembers open class UserInfo: NSObject {
     
-    static let shared = RTFactory()
-    
-    private override init() { }
-    
-    func createEventHandlerForMap(tableName: String) -> EventHandlerForMap {
-        return EventHandlerForMap(tableName: tableName)
-    }
-    
-    func creteEventHandlerForClass(entityClass: Any, tableName: String) -> EventHandlerForClass {
-        return EventHandlerForClass(entityClass: entityClass, tableName: tableName)
-    }
-    
-    func createChannel(channelName: String) -> Channel {
-        return Channel(channelName: channelName)
-    }
-    
-    func createRTMessaging(channel: Channel) -> RTMessaging {
-        return RTMessaging(channel: channel)
-    }
-    
-    func createRTSharedObject(sharedObject: SharedObject) -> RTSharedObject {
-        return RTSharedObject(sharedObject: sharedObject)
-    }
+    open var connectionId: String?
+    open var userId: String?
 }

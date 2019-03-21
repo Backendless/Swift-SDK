@@ -25,12 +25,7 @@
     open private(set) var isJoined = false
     
     private var rt: RTMessaging!
-    
-    private let PUB_SUB_CONNECT = "PUB_SUB_CONNECT"
-    private let PUB_SUB_MESSAGES = "PUB_SUB_MESSAGES"
-    private let PUB_SUB_COMMANDS = "PUB_SUB_COMMANDS"
-    private let PUB_SUB_USERS = "PUB_SUB_USERS"
-    
+        
     public init(channelName: String) {
         self.channelName = channelName
     }
@@ -42,17 +37,26 @@
         if !self.isJoined {
             self.rt.connect(responseHandler: {
                 self.isJoined = true
+                self.rt.processConnectSubscriptions()                
                 self.rt.subscribeForWaiting()
             }, errorHandler: { fault in
-                // ???
+                self.rt.processConnectErrors(fault: fault)
             })
         }
     }
     
     open func leave() {
-        removeAllListeners()
         self.isJoined = false
+        removeAllListeners()        
         self.rt.disconnect()
+    }
+    
+    open func addConnectListener(responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        return self.rt.addConnectListener(responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    open func removeConnectListeners() {
+        self.rt.removeConnectListeners()
     }
     
     open func addStringMessageListener(responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
@@ -103,11 +107,18 @@
         self.rt.removeCommandListeners()
     }
     
-    func addUserStatusListener(responseHandler: ((UserStatusObject) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
-        return RTSubscription()
+    open func addUserStatusListener(responseHandler: ((UserStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        return self.rt.addUserStatusListener(responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    open func removeUserStatusListeners() {
+        self.rt.removeUserStatusListeners()
     }
     
     open func removeAllListeners() {
+        removeConnectListeners()
         removeMessageListeners()
+        removeCommandListeners()
+        removeUserStatusListeners()
     }
 }

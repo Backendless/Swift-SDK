@@ -24,7 +24,7 @@ class RTMethod: NSObject {
     static let shared = RTMethod()
     
     private var methods: [String : [RTMethodRequest]]
-    private var onResult: (() -> Void)?
+    private var onResult: ((Any?) -> Void)?
     private var onError: ((Fault) -> Void)?
     private var onStop: ((RTMethodRequest) -> Void)?
 
@@ -32,7 +32,7 @@ class RTMethod: NSObject {
         self.methods = [String : [RTMethodRequest]]()
     }
     
-    func sendCommand(type: String, options: [String : Any], responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    func sendCommand(type: String, options: [String : Any], responseHandler: ((Any?) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let methodId = UUID().uuidString
         let data = ["id": methodId, "name": type, "options": options] as [String : Any]
         
