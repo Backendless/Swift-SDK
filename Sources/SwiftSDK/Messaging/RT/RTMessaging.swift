@@ -211,7 +211,7 @@ class RTMessaging: RTListener {
         if let selector = selector {
             options["selector"] = selector
         }
-        else if responseHandler != nil {
+        if responseHandler != nil {
             waitingSubscription = createSubscription(type: event, options: options, connectionHandler: nil, responseHandler: responseHandler, errorHandler: errorHandler)
         }
         if let waitingSubscription = waitingSubscription {
