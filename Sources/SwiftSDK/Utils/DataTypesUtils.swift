@@ -1,5 +1,5 @@
 //
-//  Utils.swift
+//  DataTypesUtils.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,13 +19,38 @@
  *  ********************************************************************************************************************
  */
 
-class Utils: NSObject {
+class DataTypesUtils: NSObject {
     
-    static let shared = Utils()
+    static let shared = DataTypesUtils()
     
     private override init() { }
 
     func dateToInt(date: Date) -> Int {
         return Int((date.timeIntervalSince1970 * 1000.0).rounded())
+    }
+    
+    func stringToUrlString(originalString: String) -> String {
+        if let resultString = originalString.addingPercentEncoding(withAllowedCharacters: .alphanumerics) {
+            return resultString
+        }
+        return originalString
+    }
+    
+    func dataToNSNumber(data: Data) -> NSNumber {
+        if let stringValue = String(bytes: data, encoding: .utf8) {
+            return (NSNumber(value: Int(stringValue)!))
+        }
+        return 0
+    }
+    
+    func arrayToString(array: [String]) -> String {
+        var resultString = ""
+        for i in 0..<array.count {
+            resultString += array[i] + ","
+        }
+        if resultString.count >= 1 {
+            resultString.removeLast(1)
+        }
+        return resultString
     }
 }

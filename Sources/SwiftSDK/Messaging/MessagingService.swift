@@ -25,7 +25,8 @@
     
     private let processResponse = ProcessResponse.shared
     private let deviceHelper = DeviceHelper.shared
-    private let utils = Utils.shared
+    private let dataTypesUtils = DataTypesUtils.shared
+    private let userDefaultsHelper = UserDefaultsHelper.shared
     private let persistenceServiceUtils = PersistenceServiceUtils()
     
     private var deviceRegistration: DeviceRegistration!
@@ -89,25 +90,38 @@
             parameters["osVersion"] = osVersion
         }
         if let expiration = expirationDate {
-            parameters["expiration"] = utils.dateToInt(date: expiration)
+            parameters["expiration"] = dataTypesUtils.dateToInt(date: expiration)
         }
         BackendlessRequestManager(restMethod: "messaging/registrations", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
-                else {
-                    if let resultDictionary = (result as! JSON).dictionaryObject,
-                        let registrationId = resultDictionary["registrationId"] as? String {
-                        responseHandler(registrationId)
-                    }
+                else if let resultDictionary = (result as! JSON).dictionaryObject,
+                    let registrationId = resultDictionary["registrationId"] as? String {
+                    responseHandler(registrationId)
+                    self.getPushTemplates(errorHandler: errorHandler)
                 }
             }
         })
     }
     
-    // GET PUSH TEMPLATES
-    // GET .../messaging/pushtemplates
+    func getPushTemplates(errorHandler: ((Fault) -> Void)!) {
+        BackendlessRequestManager(restMethod: "messaging/pushtemplates", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = self.processResponse.adapt(response: response, to: JSON.self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else if let pushTemplatesDictionary = (result as! JSON).dictionaryObject {
+                    self.userDefaultsHelper.savePushTemplates(pushTemplatesDictionary: pushTemplatesDictionary)
+                }
+            }
+        })
+    }
+    
+    open func getTemplate() -> [String : Any]? {
+        return userDefaultsHelper.getPushTemplates()
+    }
     
     // ************************************************************************************
     
@@ -122,7 +136,7 @@
     open func publish(channelName: String, message: Any, deliveryOptions: DeliveryOptions, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         publishMessage(channelName: channelName, message: message, publishOptions: nil, deliveryOptions: deliveryOptions, responseHandler: responseHandler, errorHandler: errorHandler)
     }
-
+    
     open func publish(channelName: String, message: Any, publishOptions: PublishOptions, deliveryOptions: DeliveryOptions, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         publishMessage(channelName: channelName, message: message, publishOptions: publishOptions, deliveryOptions: deliveryOptions, responseHandler: responseHandler, errorHandler: errorHandler)
     }
@@ -138,13 +152,13 @@
             parameters["headers"] = publishHeaders
         }
         if let publishAt = deliveryOptions?.publishAt {
-            parameters["publishAt"] = utils.dateToInt(date: publishAt)
+            parameters["publishAt"] = dataTypesUtils.dateToInt(date: publishAt)
         }
         if let repeatEvery = deliveryOptions?.repeatEvery {
             parameters["repeatEvery"] = repeatEvery
         }
         if let repeatExpiresAt = deliveryOptions?.repeatExpiresAt {
-            parameters["repeatExpiresAt"] = utils.dateToInt(date: repeatExpiresAt)
+            parameters["repeatExpiresAt"] = dataTypesUtils.dateToInt(date: repeatExpiresAt)
         }
         BackendlessRequestManager(restMethod: "messaging/\(channelName)", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: MessageStatus.self) {
@@ -218,7 +232,7 @@
         }
         var options = ["channel": channelName, "type": commandType] as [String : Any]
         if let data = data {
-            options["data"] = JSONHelper.shared.objectToJSON(objectToParse: data)
+            options["data"] = JSONUtils.shared.objectToJSON(objectToParse: data)
         }
         RTMethod.shared.sendCommand(type: PUB_SUB_COMMAND, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
     }

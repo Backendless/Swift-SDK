@@ -26,6 +26,7 @@ class PersistenceServiceUtils: NSObject {
     private let processResponse = ProcessResponse.shared
     private let mappings = Mappings.shared
     private let storedObjects = StoredObjects.shared
+    private let dataTypesUtils = DataTypesUtils.shared
     
     func setup(tableName: String?) {
         if let tableName = tableName {
@@ -103,7 +104,7 @@ class PersistenceServiceUtils: NSObject {
         let parameters = changes
         var restMethod = "data/bulk/\(tableName)"
         if whereClause != nil, whereClause?.count ?? 0 > 0 {
-            restMethod += "?where=\(stringToUrlString(originalString: whereClause!))"
+            restMethod += "?where=\(dataTypesUtils.stringToUrlString(originalString: whereClause!))"
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .PUT, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: Int.self) {
@@ -112,7 +113,7 @@ class PersistenceServiceUtils: NSObject {
                 }
             }
             else {
-                responseHandler(self.dataToNSNumber(data: response.data!))
+                responseHandler(self.dataTypesUtils.dataToNSNumber(data: response.data!))
             }
         })
     }
@@ -146,7 +147,7 @@ class PersistenceServiceUtils: NSObject {
             }
             else {
                 self.storedObjects.removeObjectIds(tableName: self.tableName)
-                responseHandler(self.dataToNSNumber(data: response.data!))
+                responseHandler(self.dataTypesUtils.dataToNSNumber(data: response.data!))
             }
         })
     }
@@ -154,7 +155,7 @@ class PersistenceServiceUtils: NSObject {
     func getObjectCount(queryBuilder: DataQueryBuilder?, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         var restMethod = "data/\(tableName)/count"
         if let whereClause = queryBuilder?.getWhereClause(), whereClause.count > 0 {
-            restMethod += "?where=\(stringToUrlString(originalString: whereClause))"
+            restMethod += "?where=\(dataTypesUtils.stringToUrlString(originalString: whereClause))"
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: Int.self) {
@@ -164,7 +165,7 @@ class PersistenceServiceUtils: NSObject {
             }
             else {
                 self.storedObjects.removeObjectIds(tableName: self.tableName)
-                responseHandler(self.dataToNSNumber(data: response.data!))
+                responseHandler(self.dataTypesUtils.dataToNSNumber(data: response.data!))
             }
         })
     }
@@ -179,13 +180,13 @@ class PersistenceServiceUtils: NSObject {
             parameters["relationsDepth"] = String(relationsDepth)
         }
         if let sortBy = queryBuilder?.getSortBy(), sortBy.count > 0 {
-            parameters["sortBy"] = arrayToString(array: sortBy)
+            parameters["sortBy"] = dataTypesUtils.arrayToString(array: sortBy)
         }
         if let related = queryBuilder?.getRelated() {
-            parameters["loadRelations"] = arrayToString(array: related)
+            parameters["loadRelations"] = dataTypesUtils.arrayToString(array: related)
         }
         if let groupBy = queryBuilder?.getGroupBy() {
-            parameters["groupBy"] = arrayToString(array: groupBy)
+            parameters["groupBy"] = dataTypesUtils.arrayToString(array: groupBy)
         }
         if let havingClause = queryBuilder?.getHavingClause() {
             parameters["having"] = havingClause
@@ -230,11 +231,11 @@ class PersistenceServiceUtils: NSObject {
         let relationsDepth = queryBuilder?.getRelationsDepth()
         
         if related != nil, relationsDepth! > 0 {
-            let relatedString = stringToUrlString(originalString: arrayToString(array: related!))
+            let relatedString = dataTypesUtils.stringToUrlString(originalString: dataTypesUtils.arrayToString(array: related!))
             restMethod += "?loadRelations=" + relatedString + "&relationsDepth=" + String(relationsDepth!)
         }
         else if related != nil, relationsDepth == 0 {
-            let relatedString = stringToUrlString(originalString: arrayToString(array: related!))
+            let relatedString = dataTypesUtils.stringToUrlString(originalString: self.dataTypesUtils.arrayToString(array: related!))
             restMethod += "?loadRelations=" + relatedString
         }
         else if related == nil, relationsDepth! > 0 {
@@ -263,7 +264,7 @@ class PersistenceServiceUtils: NSObject {
             }
             else {
                 self.storedObjects.removeObjectIds(tableName: self.tableName)
-                responseHandler(self.dataToNSNumber(data: response.data!))
+                responseHandler(self.dataTypesUtils.dataToNSNumber(data: response.data!))
             }
         })
     }
@@ -271,10 +272,10 @@ class PersistenceServiceUtils: NSObject {
     func setOrAddRelation(columnName: String, parentObjectId: String, whereClause: String?, httpMethod: HTTPMethod, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         var restMethod = "data/\(tableName)/\(parentObjectId)/\(columnName)"
         if whereClause != nil, whereClause?.count ?? 0 > 0 {
-            restMethod += "?whereClause=\(stringToUrlString(originalString: whereClause!))"
+            restMethod += "?whereClause=\(dataTypesUtils.stringToUrlString(originalString: whereClause!))"
         }
         else {
-            restMethod += "?whereClause=\(stringToUrlString(originalString: "objectId != NULL"))"
+            restMethod += "?whereClause=\(dataTypesUtils.stringToUrlString(originalString: "objectId != NULL"))"
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: httpMethod, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: Int.self) {
@@ -284,7 +285,7 @@ class PersistenceServiceUtils: NSObject {
             }
             else {
                 self.storedObjects.removeObjectIds(tableName: self.tableName)
-                responseHandler(self.dataToNSNumber(data: response.data!))
+                responseHandler(self.dataTypesUtils.dataToNSNumber(data: response.data!))
             }
         })
     }
@@ -300,7 +301,7 @@ class PersistenceServiceUtils: NSObject {
             }
             else {
                 self.storedObjects.removeObjectIds(tableName: self.tableName)
-                responseHandler(self.dataToNSNumber(data: response.data!))
+                responseHandler(self.dataTypesUtils.dataToNSNumber(data: response.data!))
             }
         })
     }
@@ -310,7 +311,7 @@ class PersistenceServiceUtils: NSObject {
         if whereClause == nil {
             whereClause = "objectId != NULL"
         }
-        BackendlessRequestManager(restMethod: "data/\(tableName)/\(parentObjectId)/\(columnName)?whereClause=\(stringToUrlString(originalString: whereClause!))", httpMethod: .DELETE, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+        BackendlessRequestManager(restMethod: "data/\(tableName)/\(parentObjectId)/\(columnName)?whereClause=\(dataTypesUtils.stringToUrlString(originalString: whereClause!))", httpMethod: .DELETE, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
@@ -318,7 +319,7 @@ class PersistenceServiceUtils: NSObject {
             }
             else {
                 self.storedObjects.removeObjectIds(tableName: self.tableName)
-                responseHandler(self.dataToNSNumber(data: response.data!))
+                responseHandler(self.dataTypesUtils.dataToNSNumber(data: response.data!))
             }
         })
     }
@@ -359,7 +360,7 @@ class PersistenceServiceUtils: NSObject {
         })
     }
     
-    // ******************** additional methods ********************
+    // ***********************************************
     
     func getTableName(entity: Any) -> String {
         var name = String(describing: entity)
@@ -551,30 +552,5 @@ class PersistenceServiceUtils: NSObject {
             return objectId
         }
         return nil
-    }
-    
-    private func dataToNSNumber(data: Data) -> NSNumber {
-        if let stringValue = String(bytes: data, encoding: .utf8) {
-            return (NSNumber(value: Int(stringValue)!))
-        }
-        return 0
-    }
-    
-    private func arrayToString(array: [String]) -> String {
-        var resultString = ""
-        for i in 0..<array.count {
-            resultString += array[i] + ","
-        }
-        if resultString.count >= 1 {
-            resultString.removeLast(1)
-        }
-        return resultString
-    }
-    
-    func stringToUrlString(originalString: String) -> String {
-        if let resultString = originalString.addingPercentEncoding(withAllowedCharacters: .alphanumerics) {
-            return resultString
-        }
-        return originalString
     }
 }
