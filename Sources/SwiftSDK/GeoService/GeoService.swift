@@ -22,10 +22,12 @@
 @objcMembers open class GeoService: NSObject {
     
     private let processResponse = ProcessResponse.shared
+    
     private enum PermissionType: String {
         case GRANT
         case DENY
     }
+    
     open func savePoint(geoPoint: GeoPoint, responseHandler: ((GeoPoint) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = ["latitude": geoPoint.latitude, "longitude": geoPoint.longitude, "categories": geoPoint.categories as Any, "metadata": geoPoint.metadata as Any] as [String : Any]

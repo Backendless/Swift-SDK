@@ -57,7 +57,7 @@ class BackendlessRequestManager: NSObject {
         if let parameters = parameters {
             request.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
         }
-        let dataTask = URLSession.shared.dataTask(with: request) { data, response, error in
+        let dataTask = URLSession.shared.dataTask(with: request) { data, response, error in         
             let returnedResponse = ReturnedResponse()
             if let response = response as? HTTPURLResponse {
                 returnedResponse.response = response

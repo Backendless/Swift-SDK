@@ -47,17 +47,7 @@ class RTClient: NSObject {
     private var _lock: NSLock
     private var reconnectAttempt: Int = 1
     private var timeInterval: Double = 0.2 // seconds
-    private var onSocketConnectCallback: (() -> Void)?
-    
-    #if os(OSX)
-    private var macOSHardwareUUID: String = {
-        var hwUUIDBytes: [UInt8] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        var ts = timespec(tv_sec: 0,tv_nsec: 0)
-        gethostuuid(&hwUUIDBytes, &ts)
-        return NSUUID(uuidBytes: hwUUIDBytes).uuidString
-    }()
-    #endif
-    
+    private var onSocketConnectCallback: (() -> Void)?    
     
     private let maxTimeInterval: Double = 60.0 // seconds
     
@@ -82,12 +72,10 @@ class RTClient: NSObject {
                     let path = "/" + Backendless.shared.getApplictionId()
                     
                     var clientId = ""
-                    #if os(iOS)
-                    clientId = (UIDevice.current.identifierForVendor?.uuidString)!
-                    #elseif os(tvOS)
-                    clientId = (UIDevice.current.identifierForVendor?.uuidString)!
+                    #if os(iOS) || os(tvOS)
+                    clientId = DeviceHelper.shared.iOSIdentifierForVendor
                     #elseif os(OSX)
-                    clientId = self.macOSHardwareUUID
+                    clientId = DeviceHelper.shared.macOSHardwareUUID
                     #endif
                     
                     var connectParams = ["apiKey": Backendless.shared.getApiKey(), "clientId": clientId]

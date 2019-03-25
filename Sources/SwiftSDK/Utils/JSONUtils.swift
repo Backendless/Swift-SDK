@@ -1,5 +1,5 @@
 //
-//  JSONHelper.swift
+//  JSONUtils.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,9 +19,9 @@
  *  ********************************************************************************************************************
  */
 
-class JSONHelper: NSObject {
+class JSONUtils: NSObject {
     
-    static let shared = JSONHelper()
+    static let shared = JSONUtils()
     
     private let persistenceServiceUtils = PersistenceServiceUtils()
     

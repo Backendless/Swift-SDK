@@ -24,7 +24,28 @@
     private let DEFAULT_CHANNEL_NAME = "default"
     
     private let processResponse = ProcessResponse.shared
+    private let deviceHelper = DeviceHelper.shared
+    private let dataTypesUtils = DataTypesUtils.shared
+    private let userDefaultsHelper = UserDefaultsHelper.shared
     private let persistenceServiceUtils = PersistenceServiceUtils()
+    
+    private var deviceRegistration: DeviceRegistration!
+    
+    public override init() {
+        deviceRegistration = DeviceRegistration()
+        #if os(iOS) || os(tvOS)
+        deviceRegistration.deviceToken = deviceHelper.currentDeviceName
+        deviceRegistration.deviceId = deviceHelper.iOSIdentifierForVendor
+        deviceRegistration.os = "IOS"
+        deviceRegistration.osVersion = deviceHelper.currentDeviceSystemVersion
+        #elseif os(OSX)
+        deviceRegistration.deviceToken = Host.current().localizedName
+        deviceRegistration.deviceId = deviceHelper.macOSHardwareUUID
+        deviceRegistration.os = "OSX"
+        var systemVersion = ProcessInfo.processInfo.operatingSystemVersion
+        deviceRegistration.osVersion = "\(systemVersion.majorVersion).\(systemVersion.minorVersion).\(systemVersion.patchVersion)"
+        #endif
+    }
     
     open func subscribe() -> Channel {
         return subscribe(channelName: DEFAULT_CHANNEL_NAME)
@@ -35,6 +56,74 @@
         channel.join()
         return channel
     }
+    
+    // ************************************************************************************
+    
+    open func registerDevice(deviceToken: Data, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        registerDevice(deviceToken: deviceToken, channels: [DEFAULT_CHANNEL_NAME], expirationDate: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    open func registerDevice(deviceToken: Data, channels: [String], responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        registerDevice(deviceToken: deviceToken, channels: channels, expirationDate: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    open func registerDevice(deviceToken: Data, expiration: Date, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        registerDevice(deviceToken: deviceToken, channels: [DEFAULT_CHANNEL_NAME], expirationDate: expiration, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    open func registerDevice(deviceToken: Data, channels: [String], expiration: Date, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        registerDevice(deviceToken: deviceToken, channels: channels, expirationDate: expiration, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    func registerDevice(deviceToken: Data, channels: [String], expirationDate: Date?, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        let deviceTokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+        
+        let headers = ["Content-Type": "application/json"]
+        var parameters = ["deviceToken": deviceTokenString, "channels": channels] as [String : Any]
+        if let deviceId = deviceRegistration.deviceId {
+            parameters["deviceId"] = deviceId
+        }
+        if let os = deviceRegistration.os {
+            parameters["os"] = os
+        }
+        if let osVersion = deviceRegistration.osVersion {
+            parameters["osVersion"] = osVersion
+        }
+        if let expiration = expirationDate {
+            parameters["expiration"] = dataTypesUtils.dateToInt(date: expiration)
+        }
+        BackendlessRequestManager(restMethod: "messaging/registrations", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+            if let result = self.processResponse.adapt(response: response, to: JSON.self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else if let resultDictionary = (result as! JSON).dictionaryObject,
+                    let registrationId = resultDictionary["registrationId"] as? String {
+                    responseHandler(registrationId)
+                    self.getPushTemplates(errorHandler: errorHandler)
+                }
+            }
+        })
+    }
+    
+    func getPushTemplates(errorHandler: ((Fault) -> Void)!) {
+        BackendlessRequestManager(restMethod: "messaging/pushtemplates", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = self.processResponse.adapt(response: response, to: JSON.self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else if let pushTemplatesDictionary = (result as! JSON).dictionaryObject {
+                    self.userDefaultsHelper.savePushTemplates(pushTemplatesDictionary: pushTemplatesDictionary)
+                }
+            }
+        })
+    }
+    
+    open func getTemplate() -> [String : Any]? {
+        return userDefaultsHelper.getPushTemplates()
+    }
+    
+    // ************************************************************************************
     
     open func publish(channelName: String, message: Any, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         publishMessage(channelName: channelName, message: message, publishOptions: nil, deliveryOptions: nil, responseHandler: responseHandler, errorHandler: errorHandler)
@@ -47,7 +136,7 @@
     open func publish(channelName: String, message: Any, deliveryOptions: DeliveryOptions, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         publishMessage(channelName: channelName, message: message, publishOptions: nil, deliveryOptions: deliveryOptions, responseHandler: responseHandler, errorHandler: errorHandler)
     }
-
+    
     open func publish(channelName: String, message: Any, publishOptions: PublishOptions, deliveryOptions: DeliveryOptions, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         publishMessage(channelName: channelName, message: message, publishOptions: publishOptions, deliveryOptions: deliveryOptions, responseHandler: responseHandler, errorHandler: errorHandler)
     }
@@ -63,13 +152,13 @@
             parameters["headers"] = publishHeaders
         }
         if let publishAt = deliveryOptions?.publishAt {
-            parameters["publishAt"] = Int((publishAt.timeIntervalSince1970 * 1000.0).rounded())
+            parameters["publishAt"] = dataTypesUtils.dateToInt(date: publishAt)
         }
         if let repeatEvery = deliveryOptions?.repeatEvery {
             parameters["repeatEvery"] = repeatEvery
         }
         if let repeatExpiresAt = deliveryOptions?.repeatExpiresAt {
-            parameters["repeatExpiresAt"] = Int((repeatExpiresAt.timeIntervalSince1970 * 1000.0).rounded())
+            parameters["repeatExpiresAt"] = dataTypesUtils.dateToInt(date: repeatExpiresAt)
         }
         BackendlessRequestManager(restMethod: "messaging/\(channelName)", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: MessageStatus.self) {
@@ -143,7 +232,7 @@
         }
         var options = ["channel": channelName, "type": commandType] as [String : Any]
         if let data = data {
-            options["data"] = JSONHelper.shared.objectToJSON(objectToParse: data)
+            options["data"] = JSONUtils.shared.objectToJSON(objectToParse: data)
         }
         RTMethod.shared.sendCommand(type: PUB_SUB_COMMAND, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
     }
