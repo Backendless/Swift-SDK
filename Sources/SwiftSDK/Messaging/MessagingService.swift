@@ -32,19 +32,24 @@
     private var deviceRegistration: DeviceRegistration!
     
     public override init() {
-        deviceRegistration = DeviceRegistration()
         #if os(iOS) || os(tvOS)
-        deviceRegistration.deviceToken = deviceHelper.currentDeviceName
-        deviceRegistration.deviceId = deviceHelper.iOSIdentifierForVendor
-        deviceRegistration.os = "IOS"
-        deviceRegistration.osVersion = deviceHelper.currentDeviceSystemVersion
+        let deviceName = deviceHelper.currentDeviceName
+        let deviceId = deviceHelper.iOSIdentifierForVendor
+        let os = "IOS"
+        let osVersion = deviceHelper.currentDeviceSystemVersion
+        deviceRegistration = DeviceRegistration(id: nil, deviceToken: deviceName, deviceId: deviceId, os: os, osVersion: osVersion, expiration: nil, channels: nil)
         #elseif os(OSX)
-        deviceRegistration.deviceToken = Host.current().localizedName
-        deviceRegistration.deviceId = deviceHelper.macOSHardwareUUID
-        deviceRegistration.os = "OSX"
-        var systemVersion = ProcessInfo.processInfo.operatingSystemVersion
-        deviceRegistration.osVersion = "\(systemVersion.majorVersion).\(systemVersion.minorVersion).\(systemVersion.patchVersion)"
+        let deviceName = Host.current().localizedName
+        let deviceId = deviceHelper.macOSHardwareUUID
+        let os = "OSX"
+        let systemVersion = ProcessInfo.processInfo.operatingSystemVersion
+        let osVersion =  "\(systemVersion.majorVersion).\(systemVersion.minorVersion).\(systemVersion.patchVersion)"
+        deviceRegistration = DeviceRegistration(id: nil, deviceToken: deviceName, deviceId: deviceId, os: os, osVersion: osVersion, expiration: nil, channels: nil)
         #endif
+    }
+    
+    open func currentDevice() -> DeviceRegistration {
+        return self.deviceRegistration
     }
     
     open func subscribe() -> Channel {
@@ -82,6 +87,7 @@
         var parameters = ["deviceToken": deviceTokenString, "channels": channels] as [String : Any]
         if let deviceId = deviceRegistration.deviceId {
             parameters["deviceId"] = deviceId
+            userDefaultsHelper.saveDeviceId(deviceId: deviceId)
         }
         if let os = deviceRegistration.os {
             parameters["os"] = os
@@ -119,8 +125,44 @@
         })
     }
     
-    open func getTemplate() -> [String : Any]? {
-        return userDefaultsHelper.getPushTemplates()
+    open func unregisterDevice(responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        if let deviceId = userDefaultsHelper.getDeviceId() {
+            unregisterDevice(deviceId: deviceId, responseHandler: responseHandler, errorHandler: errorHandler)
+        }
+        else {
+            let fault = Fault(message: "Device id not found", faultCode: 0)
+            errorHandler (fault)
+        }
+    }
+    
+    open func unregisterDevice(deviceId: String, responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        BackendlessRequestManager(restMethod: "messaging/registrations/\(deviceId)", httpMethod: .DELETE, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = self.processResponse.adapt(response: response, to: JSON.self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else if let result = (result as! JSON).dictionaryObject {
+                    responseHandler(result["result"] as! Bool)
+                }
+            }
+        })
+    }
+    
+    open func getDeviceRegistration(deviceId: String, responseHandler: (([DeviceRegistration]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        BackendlessRequestManager(restMethod: "messaging/registrations/\(deviceId)", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = self.processResponse.adapt(response: response, to: [DeviceRegistration].self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else {
+                    responseHandler(result as! [DeviceRegistration])
+                }
+            }
+        })
+    }
+    
+    open func pushWithTemplate(templateName: String) {
+        
     }
     
     // ************************************************************************************

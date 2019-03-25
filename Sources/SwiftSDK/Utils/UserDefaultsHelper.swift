@@ -26,6 +26,7 @@ class UserDefaultsHelper: NSObject {
     private let PERSISTENT_USER_TOKEN_KEY = "userTokenKey"
     private let STAY_LOGGED_IN_KEY = "stayLoggedInKey"
     private let CURRENT_USER_KEY = "currentUserKey"
+    private let DEVICE_ID_KEY = "deviceIdKey"
     private let PUSH_TEMPLATES_KEY = "pushTemplatesKey"
     
     private override init() { }
@@ -92,6 +93,22 @@ class UserDefaultsHelper: NSObject {
             let appGroups = dictionary["com.apple.security.application-groups"] as? [String],
             let appGroup = appGroups.first(where: { $0.contains("group.backendlesspush.") }) {
             return appGroup
+        }
+        return nil
+    }
+    
+    func saveDeviceId(deviceId: String) {
+        let userDefaults = UserDefaults.standard
+        let deviceId: [String: String] = ["deviceId": deviceId]
+        userDefaults.setValue(deviceId, forKey: DEVICE_ID_KEY)
+        userDefaults.synchronize()
+    }
+    
+    func getDeviceId() -> String? {
+        let userDefaults = UserDefaults.standard
+        if let deviceId = userDefaults.value(forKey: DEVICE_ID_KEY),
+            let id = (deviceId as! [String: String])["deviceId"] {
+            return id
         }
         return nil
     }
