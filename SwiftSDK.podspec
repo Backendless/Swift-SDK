@@ -16,6 +16,6 @@ Pod::Spec.new do |s|
   s.watchos.deployment_target = '2.0'
   s.requires_arc = true
   s.source_files = "Sources/SwiftSDK/**/*.swift", "Sources/SwiftSDK/*.swift", "Tests/SwiftSDKTests/TestObjects/*.swift"
-  s.dependency "Socket.IO-Client-Swift", "~> 14.0.0"
+  s.dependency "Socket.IO-Client-Swift"
   
 end

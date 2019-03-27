@@ -27,6 +27,7 @@
     private let deviceHelper = DeviceHelper.shared
     private let dataTypesUtils = DataTypesUtils.shared
     private let userDefaultsHelper = UserDefaultsHelper.shared
+    private let fileManagerHelper = FileManagerHelper.shared
     private let persistenceServiceUtils = PersistenceServiceUtils()
     
     private var deviceRegistration: DeviceRegistration!
@@ -61,8 +62,6 @@
         channel.join()
         return channel
     }
-    
-    // ************************************************************************************
     
     open func registerDevice(deviceToken: Data, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         registerDevice(deviceToken: deviceToken, channels: [DEFAULT_CHANNEL_NAME], expirationDate: nil, responseHandler: responseHandler, errorHandler: errorHandler)
@@ -119,7 +118,20 @@
                     errorHandler(result as! Fault)
                 }
                 else if let pushTemplatesDictionary = (result as! JSON).dictionaryObject {
-                    self.userDefaultsHelper.savePushTemplates(pushTemplatesDictionary: pushTemplatesDictionary)
+                    self.fileManagerHelper.savePushTemplates(pushTemplatesDictionary: pushTemplatesDictionary)
+                }
+            }
+        })
+    }
+    
+    open func getDeviceRegistrations(deviceId: String, responseHandler: (([DeviceRegistration]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        BackendlessRequestManager(restMethod: "messaging/registrations/\(deviceId)", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = self.processResponse.adapt(response: response, to: [DeviceRegistration].self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else {
+                    responseHandler(result as! [DeviceRegistration])
                 }
             }
         })
@@ -147,25 +159,6 @@
             }
         })
     }
-    
-    open func getDeviceRegistration(deviceId: String, responseHandler: (([DeviceRegistration]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        BackendlessRequestManager(restMethod: "messaging/registrations/\(deviceId)", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: [DeviceRegistration].self) {
-                if result is Fault {
-                    errorHandler(result as! Fault)
-                }
-                else {
-                    responseHandler(result as! [DeviceRegistration])
-                }
-            }
-        })
-    }
-    
-    open func pushWithTemplate(templateName: String) {
-        
-    }
-    
-    // ************************************************************************************
     
     open func publish(channelName: String, message: Any, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         publishMessage(channelName: channelName, message: message, publishOptions: nil, deliveryOptions: nil, responseHandler: responseHandler, errorHandler: errorHandler)
@@ -214,6 +207,19 @@
         })
     }
     
+    open func cancelScheduledMessage(messageId: String, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        BackendlessRequestManager(restMethod: "messaging/\(messageId)", httpMethod: .DELETE, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = self.processResponse.adapt(response: response, to: MessageStatus.self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else {
+                    responseHandler(result as! MessageStatus)
+                }
+            }
+        })
+    }
+    
     open func getMessageStatus(messageId: String, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         BackendlessRequestManager(restMethod: "messaging/\(messageId)", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: MessageStatus.self) {
@@ -227,8 +233,8 @@
         })
     }
     
-    open func cancelScheduledMessage(messageId: String, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        BackendlessRequestManager(restMethod: "messaging/\(messageId)", httpMethod: .DELETE, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+    open func pushWithTemplate(templateName: String, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        BackendlessRequestManager(restMethod: "messaging/push/\(templateName)", httpMethod: .POST, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: MessageStatus.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)

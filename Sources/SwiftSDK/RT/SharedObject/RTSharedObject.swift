@@ -198,7 +198,7 @@ class RTSharedObject: RTListener {
             rtMethod.sendCommand(type: RSO_GET, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
         else if self.sharedObject.rememberCommands {
-            let waitingCommand = ["event": RSO_GET, "responseHandler": responseHandler, "errorHandler": errorHandler] as [String : Any]
+            let waitingCommand = ["event": RSO_GET, "responseHandler": responseHandler as Any, "errorHandler": errorHandler as Any] as [String : Any]
             waitingCommands.append(waitingCommand)
         }
     }
@@ -215,7 +215,7 @@ class RTSharedObject: RTListener {
             rtMethod.sendCommand(type: RSO_SET, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
         else if self.sharedObject.rememberCommands {
-            var waitingCommand = ["event": RSO_SET, "responseHandler": responseHandler, "errorHandler": errorHandler] as [String : Any]
+            var waitingCommand = ["event": RSO_SET, "responseHandler": responseHandler as Any, "errorHandler": errorHandler as Any] as [String : Any]
             if let data = data {
                 waitingCommand["data"] = JSONUtils.shared.objectToJSON(objectToParse: data)
             }
@@ -232,7 +232,7 @@ class RTSharedObject: RTListener {
             rtMethod.sendCommand(type: RSO_CLEAR, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
         else if self.sharedObject.rememberCommands {
-            let waitingCommand = ["event": RSO_CLEAR, "responseHandler": responseHandler, "errorHandler": errorHandler] as [String : Any]
+            let waitingCommand = ["event": RSO_CLEAR, "responseHandler": responseHandler as Any, "errorHandler": errorHandler as Any] as [String : Any]
             waitingCommands.append(waitingCommand)
         }
     }
@@ -249,7 +249,7 @@ class RTSharedObject: RTListener {
             rtMethod.sendCommand(type: RSO_COMMAND, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
         else if self.sharedObject.rememberCommands {
-            var waitingCommand = ["event": RSO_COMMAND, "commandName": commandName, "responseHandler": responseHandler, "errorHandler": errorHandler] as [String : Any]
+            var waitingCommand = ["event": RSO_COMMAND, "commandName": commandName, "responseHandler": responseHandler as Any, "errorHandler": errorHandler as Any] as [String : Any]
             if let data = data {
                 waitingCommand["data"] = JSONUtils.shared.objectToJSON(objectToParse: data)
             }

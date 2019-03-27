@@ -28,7 +28,7 @@ import UserNotifications
     
     public static let shared = BackendlessPushHelper()
     
-    private let userDefaultsHelper = UserDefaultsHelper.shared
+    private let fileManagerHelper = FileManagerHelper.shared
     
     private override init() { }
     
@@ -40,8 +40,7 @@ import UserNotifications
             request = prepareRequestWithIosImmediatePush(request: request)
         }
         if request.content.userInfo["template_name"] != nil {
-            // TODO
-            // request = [self prepareRequestWithTemplate:request];
+            request = prepareRequestWithTemplate(request: request)
         }
         
         let bestAttemptContent = request.content.mutableCopy() as! UNMutableNotificationContent
@@ -63,7 +62,12 @@ import UserNotifications
                     }
                 }
                 contentHandler(bestAttemptContent)
-            }).resume()            
+            }).resume()
+        }
+        else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                contentHandler(bestAttemptContent)
+            }
         }
     }
     
@@ -76,9 +80,9 @@ import UserNotifications
     
     func prepareRequestWithTemplate(request: UNNotificationRequest) -> UNNotificationRequest {
         let templateName = request.content.userInfo["template_name"] as! String
-        let iosPushTemplates = userDefaultsHelper.getPushTemplates()
+        let iosPushTemplates = fileManagerHelper.getPushTemplates()
         let iosPushTemplate = iosPushTemplates[templateName] as! [String : Any]
-        return self .createRequestFromTemplate(iosPushTemplate: dictionaryWithoutNulls(dictionary: iosPushTemplate), request: request)
+        return createRequestFromTemplate(iosPushTemplate: dictionaryWithoutNulls(dictionary: iosPushTemplate), request: request)
     }
     
     func dictionaryWithoutNulls(dictionary: [String : Any]) -> [String : Any] {
@@ -92,7 +96,7 @@ import UserNotifications
         return resultDictionary
     }
     
-    func createRequestFromTemplate(iosPushTemplate: [String : Any], request: UNNotificationRequest) -> UNNotificationRequest {
+    func createRequestFromTemplate(iosPushTemplate: [String : Any], request: UNNotificationRequest) -> UNNotificationRequest {        
         let content = UNMutableNotificationContent()
         var userInfo = [String : Any]()
         

@@ -473,6 +473,9 @@ class PersistenceServiceUtils: NSObject {
         if tableName == "Users" || className == "Users" {
             return processResponse.adaptToBackendlessUser(responseResult: dictionary)
         }
+        if tableName == "DeviceRegistration" || className == "DeviceRegistration" {
+            return processResponse.adaptToDeviceRegistration(responseResult: dictionary)
+        }
         var resultEntityTypeName = ""
         let classMappings = mappings.getTableToClassMappings()
         if classMappings.keys.contains(tableName) {
