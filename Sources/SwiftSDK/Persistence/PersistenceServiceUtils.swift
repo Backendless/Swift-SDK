@@ -379,8 +379,8 @@ class PersistenceServiceUtils: NSObject {
         if name == "Users" {
             name = "BackendlessUser"
         }
-        if Bundle.main.infoDictionary![kCFBundleNameKey as String] == nil {
-            // for unit tests
+        // for unit tests
+        if Bundle.main.infoDictionary![kCFBundleNameKey as String] as? String == "xctest" {
             let testBundle = Bundle(for: TestClass.self)
             return testBundle.infoDictionary![kCFBundleNameKey as String] as! String + "." + name
         }
