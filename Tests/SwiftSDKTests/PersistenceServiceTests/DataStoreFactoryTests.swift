@@ -54,10 +54,6 @@ class DataStoreFactoryTests: XCTestCase {
         }, errorHandler: { fault in
             print("DATA STORE FACTORY TEST SETUP ERROR \(fault.faultCode): \(fault.message ?? "")")
         })
-        Backendless.shared.data.of(TestClass.self).removeBulk(whereClause: nil, responseHandler: { removedObjects in
-        }, errorHandler: { fault in
-            print("DATA STORE FACTORY TEST SETUP ERROR \(fault.faultCode): \(fault.message ?? "")")
-        })
     }
     
     func test_01_Mappings() {
@@ -66,7 +62,9 @@ class DataStoreFactoryTests: XCTestCase {
             print("DATA STORE FACTORY TEST SETUP ERROR \(fault.faultCode): \(fault.message ?? "")")
         })
         
-        let expectation = self.expectation(description: "PASSED dataStoreFactory.mapToTable/mapColumnToProperty")
+        let expectation = self.expectation(description: "PASSED dataStoreFactory.mapToTable/mapColumnToProperty"
+        
+        )
         let mappedDataStore = backendless.data.of(TestClassForMappings.self)
         mappedDataStore.mapToTable(tableName: "TestClass")
         mappedDataStore.mapColumn(columnName: "name", toProperty: "nameProperty")

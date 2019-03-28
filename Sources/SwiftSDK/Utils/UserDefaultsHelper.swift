@@ -27,7 +27,6 @@ class UserDefaultsHelper: NSObject {
     private let STAY_LOGGED_IN_KEY = "stayLoggedInKey"
     private let CURRENT_USER_KEY = "currentUserKey"
     private let DEVICE_ID_KEY = "deviceIdKey"
-    private let PUSH_TEMPLATES_KEY = "pushTemplatesKey"
     
     private override init() { }
     
@@ -86,17 +85,6 @@ class UserDefaultsHelper: NSObject {
         UserDefaults.standard.removeObject(forKey: CURRENT_USER_KEY)
     }
     
-    private func getAppGroup() -> String? {
-        if let projectName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String,
-            let path = Bundle.main.path(forResource: projectName, ofType: "entitlements"),
-            let dictionary = NSDictionary(contentsOfFile: path),
-            let appGroups = dictionary["com.apple.security.application-groups"] as? [String],
-            let appGroup = appGroups.first(where: { $0.contains("group.backendlesspush.") }) {
-            return appGroup
-        }
-        return nil
-    }
-    
     func saveDeviceId(deviceId: String) {
         let userDefaults = UserDefaults.standard
         let deviceId: [String: String] = ["deviceId": deviceId]
@@ -111,26 +99,5 @@ class UserDefaultsHelper: NSObject {
             return id
         }
         return nil
-    }
-    
-    func savePushTemplates(pushTemplatesDictionary: [String : Any]) {
-        var userDefaults = UserDefaults.standard
-        if let suiteName = getAppGroup() {
-            userDefaults = UserDefaults(suiteName: suiteName)!
-        }
-        userDefaults.set(NSKeyedArchiver.archivedData(withRootObject: pushTemplatesDictionary), forKey: PUSH_TEMPLATES_KEY)
-        userDefaults.synchronize()
-    }
-    
-    func getPushTemplates() -> [String : Any] {
-        var userDefaults = UserDefaults.standard
-        if let suiteName = getAppGroup() {
-            userDefaults = UserDefaults(suiteName: suiteName)!
-        }
-        if let data = userDefaults.object(forKey: PUSH_TEMPLATES_KEY) as? Data,
-        let pushTemplatesDictionary = NSKeyedUnarchiver.unarchiveObject(with: data) as? [String : Any] {
-            return pushTemplatesDictionary
-        }
-        return [String : Any]()
     }
 }

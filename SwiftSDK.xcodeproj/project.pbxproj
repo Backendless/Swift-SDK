@@ -28,12 +28,14 @@
 		5E11113C21B542BA0044CAED /* UserServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E11113B21B542BA0044CAED /* UserServiceTests.swift */; };
 		5E13C3A622046F7C00EA3050 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E13C3A522046F7C00EA3050 /* JSON.swift */; };
 		5E15A06C223B9C9D0090F5A3 /* RTMessagingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E15A06B223B9C9D0090F5A3 /* RTMessagingTests.swift */; };
+		5E275CA0224B8142002F89FC /* FileManagerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E275C9F224B8142002F89FC /* FileManagerHelper.swift */; };
 		5E341B7C21F5E11A00C32598 /* ObjectProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E341B7B21F5E11A00C32598 /* ObjectProperty.swift */; };
 		5E3706F722037C8E00E08C50 /* TestClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFE8E5F21E8E2150003477B /* TestClass.swift */; };
 		5E3706F922037C9100E08C50 /* TestClassForMappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E96E1AC21F8408800F34C11 /* TestClassForMappings.swift */; };
 		5E3706FD22037CC800E08C50 /* ChildTestClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5FE02821F7359700387F8B /* ChildTestClass.swift */; };
 		5E44C0502223EC4A00B391E7 /* RTServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E44C04F2223EC4A00B391E7 /* RTServiceTests.swift */; };
 		5E467F822201E20700E70772 /* DataPermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E467F812201E20700E70772 /* DataPermission.swift */; };
+		5E4C2707224B964700CDF967 /* MessagingServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4C2706224B964700CDF967 /* MessagingServiceTests.swift */; };
 		5E4DE64321EF8E92009AE503 /* Mappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4DE64221EF8E92009AE503 /* Mappings.swift */; };
 		5E4E305E22439B9700B479C8 /* DeviceRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4E305D22439B9700B479C8 /* DeviceRegistration.swift */; };
 		5E4E309C2243B85C00B479C8 /* DeviceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4E309B2243B85C00B479C8 /* DeviceHelper.swift */; };
@@ -126,10 +128,12 @@
 		5E11113B21B542BA0044CAED /* UserServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserServiceTests.swift; sourceTree = "<group>"; };
 		5E13C3A522046F7C00EA3050 /* JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
 		5E15A06B223B9C9D0090F5A3 /* RTMessagingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTMessagingTests.swift; sourceTree = "<group>"; };
+		5E275C9F224B8142002F89FC /* FileManagerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerHelper.swift; sourceTree = "<group>"; };
 		5E341B7B21F5E11A00C32598 /* ObjectProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectProperty.swift; sourceTree = "<group>"; };
 		5E44C04F2223EC4A00B391E7 /* RTServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTServiceTests.swift; sourceTree = "<group>"; };
 		5E467F812201E20700E70772 /* DataPermission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPermission.swift; sourceTree = "<group>"; };
 		5E498E2D8F87FE5F1EDC7604 /* Pods_SwiftSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E4C2706224B964700CDF967 /* MessagingServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagingServiceTests.swift; sourceTree = "<group>"; };
 		5E4DE64221EF8E92009AE503 /* Mappings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mappings.swift; sourceTree = "<group>"; };
 		5E4E305D22439B9700B479C8 /* DeviceRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceRegistration.swift; sourceTree = "<group>"; };
 		5E4E309B2243B85C00B479C8 /* DeviceHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceHelper.swift; sourceTree = "<group>"; };
@@ -297,6 +301,14 @@
 			path = Property;
 			sourceTree = "<group>";
 		};
+		5E4C2705224B963000CDF967 /* MessagingServiceTests */ = {
+			isa = PBXGroup;
+			children = (
+				5E4C2706224B964700CDF967 /* MessagingServiceTests.swift */,
+			);
+			path = MessagingServiceTests;
+			sourceTree = "<group>";
+		};
 		5E545EEA21DFAF1D00881ED0 /* GeoServiceTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -363,6 +375,7 @@
 				5AA296992237C19D007104C7 /* JSONUtils.swift */,
 				5E4E309B2243B85C00B479C8 /* DeviceHelper.swift */,
 				5E4E31142243C39200B479C8 /* DataTypesUtils.swift */,
+				5E275C9F224B8142002F89FC /* FileManagerHelper.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -482,6 +495,7 @@
 				5EB28E1F21B1833A0007AC30 /* BackendlessTests.swift */,
 				5EE691FF21B67770002E72A9 /* FaultTests */,
 				5E545EEA21DFAF1D00881ED0 /* GeoServiceTests */,
+				5E4C2705224B963000CDF967 /* MessagingServiceTests */,
 				5AFE8E5C21E8D7010003477B /* PersistenceServiceTests */,
 				5E6098FF222040620012F6A0 /* RTTests */,
 				5E5FE02721F7347200387F8B /* TestObjects */,
@@ -590,11 +604,11 @@
 				TargetAttributes = {
 					5E9C572721AEEA0400877870 = {
 						CreatedOnToolsVersion = 10.1;
-						LastSwiftMigration = 1010;
+						LastSwiftMigration = 1020;
 					};
 					5E9C573021AEEA0400877870 = {
 						CreatedOnToolsVersion = 10.1;
-						LastSwiftMigration = 1010;
+						LastSwiftMigration = 1020;
 					};
 				};
 			};
@@ -604,6 +618,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 5EAA649A21AEDBEA006019EF;
 			productRefGroup = 5E9C572921AEEA0400877870 /* Products */;
@@ -716,6 +731,7 @@
 				5EE063BF22017EAA00B862EA /* LoadRelationsQueryBuilder.swift in Sources */,
 				5EFBA8FE21C1011E007B3BB0 /* BackendlessUser.swift in Sources */,
 				5E971912221C27CB00857603 /* EventHandlerForMap.swift in Sources */,
+				5E275CA0224B8142002F89FC /* FileManagerHelper.swift in Sources */,
 				5E03A3C52229711F005A538D /* UserStatus.swift in Sources */,
 				5EA5D2C4223BCE8F0027EA49 /* SharedObject.swift in Sources */,
 				5E3706FD22037CC800E08C50 /* ChildTestClass.swift in Sources */,
@@ -781,6 +797,7 @@
 				5E44C0502223EC4A00B391E7 /* RTServiceTests.swift in Sources */,
 				5E545EEC21DFB87A00881ED0 /* GeoServiceTests.swift in Sources */,
 				5E545EEE21DFBA4400881ED0 /* GeoPointTests.swift in Sources */,
+				5E4C2707224B964700CDF967 /* MessagingServiceTests.swift in Sources */,
 				5E11113C21B542BA0044CAED /* UserServiceTests.swift in Sources */,
 				5EE2B40721C25EC600F90723 /* BackendlessUserTests.swift in Sources */,
 				5E15A06C223B9C9D0090F5A3 /* RTMessagingTests.swift in Sources */,

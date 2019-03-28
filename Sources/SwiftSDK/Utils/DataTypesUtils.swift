@@ -29,6 +29,10 @@ class DataTypesUtils: NSObject {
         return Int((date.timeIntervalSince1970 * 1000.0).rounded())
     }
     
+    func intToDate(intVal: Int) -> Date {
+        return Date(timeIntervalSince1970: TimeInterval(intVal / 1000))
+    }
+    
     func stringToUrlString(originalString: String) -> String {
         if let resultString = originalString.addingPercentEncoding(withAllowedCharacters: .alphanumerics) {
             return resultString

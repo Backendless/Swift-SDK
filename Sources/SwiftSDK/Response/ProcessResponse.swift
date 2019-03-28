@@ -42,45 +42,28 @@ class ProcessResponse: NSObject {
                         if to == BackendlessUser.self {
                             return adaptToBackendlessUser(responseResult: responseResult)
                         }
-                            //                        else if to == [BackendlessUser].self {
-                            //                            if let responseResult = responseResult as? [[String: Any]] {
-                            //                            }
-                            //                        }
                         else if let responseData = response.data {
                             let responseObject = try JSONDecoder().decode(to, from: responseData)
                             return responseObject
                         }
                     }
-                    
-                    
-                    
-                    
-                                            catch let DecodingError.dataCorrupted(context) {
-                                                print(context)
-                                            } catch let DecodingError.keyNotFound(key, context) {
-                                                print("Key '\(key)' not found:", context.debugDescription)
-                                                print("codingPath:", context.codingPath)
-                                            } catch let DecodingError.valueNotFound(value, context) {
-                                                print("Value '\(value)' not found:", context.debugDescription)
-                                                print("codingPath:", context.codingPath)
-                                            } catch let DecodingError.typeMismatch(type, context)  {
-                                                print("Type '\(type)' mismatch:", context.debugDescription)
-                                                print("codingPath:", context.codingPath)
-                                            } catch {
-                                                print("error: ", error)
-                                            }
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-//                    catch {
-//                        return Fault(domain: (error as NSError).domain, code: (error as NSError).code, userInfo: (error as NSError).userInfo)
-//                    }
+                        /*catch let DecodingError.dataCorrupted(context) {
+                         print(context)
+                         } catch let DecodingError.keyNotFound(key, context) {
+                         print("Key '\(key)' not found:", context.debugDescription)
+                         print("codingPath:", context.codingPath)
+                         } catch let DecodingError.valueNotFound(value, context) {
+                         print("Value '\(value)' not found:", context.debugDescription)
+                         print("codingPath:", context.codingPath)
+                         } catch let DecodingError.typeMismatch(type, context)  {
+                         print("Type '\(type)' mismatch:", context.debugDescription)
+                         print("codingPath:", context.codingPath)
+                         } catch {
+                         print("error: ", error)
+                         }*/
+                    catch {
+                        return Fault(domain: (error as NSError).domain, code: (error as NSError).code, userInfo: (error as NSError).userInfo)
+                    }
                 }
             }
             return nil
@@ -145,9 +128,36 @@ class ProcessResponse: NSObject {
             catch {
                 return Fault(domain: (error as NSError).domain, code: (error as NSError).code, userInfo: (error as NSError).userInfo)
             }
-            
         }
         return nil
+    }
+    
+    func adaptToDeviceRegistration(responseResult: Any?) -> DeviceRegistration {
+        let deviceRegistration = DeviceRegistration(id: nil, deviceToken: nil, deviceId: nil, os: nil, osVersion: nil, expiration: nil, channels: nil)
+        if let responseResult = responseResult as? [String: Any] {
+            if let objectId = responseResult["objectId"] as? String {
+                deviceRegistration.id = objectId
+            }
+            if let deviceToken = responseResult["deviceToken"] as? String {
+                deviceRegistration.deviceToken = deviceToken
+            }
+            if let deviceId = responseResult["deviceId"] as? String {
+                deviceRegistration.deviceId = deviceId
+            }
+            if let os = responseResult["operatingSystemName"] as? String {
+                deviceRegistration.os = os
+            }
+            if let osVersion = responseResult["operatingSystemVersion"] as? String {
+                deviceRegistration.osVersion = osVersion
+            }
+            if let expiration = responseResult["expiration"] as? NSNumber {
+                deviceRegistration.expiration = DataTypesUtils.shared.intToDate(intVal: expiration.intValue)
+            }
+            if let channelName = responseResult["channelName"] as? String {
+                deviceRegistration.channels = [channelName]
+            }
+        }
+        return deviceRegistration
     }
     
     func adaptToGeoPoint(geoDictionary: [String : Any]) -> GeoPoint? {
