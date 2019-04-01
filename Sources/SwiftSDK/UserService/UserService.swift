@@ -97,7 +97,7 @@
         })
     }
     
-    /*open func loginWithTwitter(accessToken: String, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    open func loginWithTwitter(accessToken: String, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = ["fieldsMapping": fieldsMapping, "redirect": true, "accessToken": accessToken] as [String : Any]
         BackendlessRequestManager(restMethod: "users/social/oauth/twitter/request_url", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
@@ -111,7 +111,7 @@
                 }
             }
         })
-    }*/
+    }
     
     open func loginWithGoogleSDK(accessToken: String, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]

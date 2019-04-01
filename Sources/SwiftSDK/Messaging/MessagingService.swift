@@ -195,6 +195,15 @@
         if let repeatExpiresAt = deliveryOptions?.repeatExpiresAt {
             parameters["repeatExpiresAt"] = dataTypesUtils.dateToInt(date: repeatExpiresAt)
         }
+        if let publishPolicy = deliveryOptions?.getPublishPolicy() {
+            parameters["publishPolicy"] = publishPolicy
+        }
+        if let pushBroadcast = deliveryOptions?.getPushBroadcast() {
+            parameters["pushBroadcast"] = pushBroadcast
+        }
+        if let pushSinglecast = deliveryOptions?.getPushSinglecast(), pushSinglecast.count > 0 {
+            parameters["pushSinglecast"] = pushSinglecast
+        }
         BackendlessRequestManager(restMethod: "messaging/\(channelName)", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: MessageStatus.self) {
                 if result is Fault {
