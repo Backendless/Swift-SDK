@@ -19,83 +19,74 @@
  *  ********************************************************************************************************************
  */
 
-@objc public enum PublishPolicyEnum: Int, Codable {
-    case PUSH
-    case PUBSUB
-    case BOTH
-    
-    public typealias RawValue = String
-    
-    public var rawValue: RawValue {
-        switch self {
-        case .PUSH: return "PUSH"
-        case .PUBSUB: return "PUBSUB"
-        case .BOTH: return "BOTH"
-        }
-    }
-    
-    public init?(rawValue: RawValue) {
-        switch rawValue {
-        case "PUSH": self = .PUSH
-        case "PUBSUB": self = .PUBSUB
-        case "BOTH": self = .BOTH
-        default: self = .BOTH
-        }
-    }
+@objc public enum PublishPolicyEnum: Int {
+    case PUSH = 0
+    case PUBSUB = 1
+    case BOTH = 2
 }
 
-// *******************************************
-
-@objc public enum PushBroadcastEnum: Int, Codable {
+@objc public enum PushBroadcastEnum: Int {
     case FOR_NONE = 0
     case FOR_IOS = 1
     case FOR_ANDROID = 2
     case FOR_WP = 4
     case FOR_OSX = 8
     case FOR_ALL = 15
-    
-    public typealias RawValue = String
-    
-    public var rawValue: RawValue {
-        switch self {
-        case .FOR_NONE: return "FOR_NONE"
-        case .FOR_IOS: return "FOR_IOS"
-        case .FOR_ANDROID: return "FOR_ANDROID"
-        case .FOR_WP: return "FOR_WP"
-        case .FOR_OSX: return "FOR_OSX"
-        case .FOR_ALL: return "FOR_ALL"
-        }
-    }
-    
-    public init?(rawValue: RawValue) {
-        switch rawValue {
-        case "FOR_NONE": self = .FOR_NONE
-        case "FOR_IOS": self = .FOR_IOS
-        case "FOR_ANDROID": self = .FOR_ANDROID
-        case "FOR_WP": self = .FOR_WP
-        case "FOR_OSX": self = .FOR_OSX
-        case "FOR_ALL": self = .FOR_ALL
-        default: self = .FOR_ALL
-        }
-    }
 }
-
-// *******************************************
 
 @objcMembers open class DeliveryOptions: NSObject {
     
-    open var pushSinglecast: [String]?
     open var publishAt: Date?
     open var repeatEvery: NSNumber?
     open var repeatExpiresAt: Date?
-    open var publishPolicy: PublishPolicyEnum?
-    open var pushBroadcast: PushBroadcastEnum?
     
-    open func getPushBroadcastName() -> String? {
-        return self.pushBroadcast?.rawValue
+    private var pushSinglecast: [String]!
+    private var publishPolicy: NSNumber!
+    private var pushBroadcast: NSNumber!
+    
+    public override init() {
+        self.pushSinglecast = [String]()
+        self.publishPolicy = NSNumber(integerLiteral: PublishPolicyEnum.BOTH.rawValue)
+        self.pushBroadcast = NSNumber(integerLiteral: PushBroadcastEnum.FOR_ALL.rawValue)
     }
     
-    open func getPublishPolicyName() -> String? {
-        return self.publishPolicy?.rawValue
+    open func setPushSinglecast(singlecast: [String]) {
+        self.pushSinglecast = singlecast
+    }
+    
+    open func addPushSingleCast(singlecast: String) {
+        self.pushSinglecast?.append(singlecast)
+    }
+    
+    open func removePushSinglecast(singlecast: String) {
+        if let index = self.pushSinglecast?.firstIndex(of: singlecast) {
+            self.pushSinglecast?.remove(at: index)
+        }
+    }
+    
+    open func getPushSinglecast() -> [String] {
+        return self.pushSinglecast
+    }
+    
+    open func setPublishPolicy(publishPolicy: Int) {
+        self.publishPolicy = NSNumber(integerLiteral: publishPolicy)
+    }
+    
+    open func getPublishPolicy() -> String {
+        if self.publishPolicy == 0 {
+            return "PUSH"
+        }
+        else if self.publishPolicy == 1 {
+            return "PUBSUB"
+        }
+        return "BOTH"
+    }
+    
+    open func setPushBroadcast(pushBroadcast: Int) {
+        self.pushBroadcast = NSNumber(integerLiteral: pushBroadcast)
+    }
+    
+    open func getPushBroadcast() -> Int {
+        return self.pushBroadcast.intValue
     }
 }
