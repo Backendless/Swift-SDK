@@ -1,5 +1,5 @@
 //
-//  DictionaryExtension.swift
+//  BackendlessFile.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,9 +19,11 @@
  *  ********************************************************************************************************************
  */
 
-extension Dictionary where Value: Equatable {
+@objcMembers open class BackendlessFile: NSObject {
     
-    func getKey(forValue val: Value) -> Key? {
-        return first(where: { $1 == val })?.key
+    open var fileUrl: String?
+    
+    open func remove(responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        
     }
 }

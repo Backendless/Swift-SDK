@@ -290,4 +290,12 @@ class ProcessResponse: NSObject {
         }
         return invokeObject
     }
+    
+    func adaptToBackendlessFile(backendlessFileDictionary: [String : Any]) -> BackendlessFile {
+        let backendlessFile = BackendlessFile()
+        if let fileUrl = backendlessFileDictionary["fileURL"] as? String {
+            backendlessFile.fileUrl = fileUrl
+        }
+        return backendlessFile
+    }
 }

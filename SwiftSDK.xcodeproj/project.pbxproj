@@ -28,6 +28,8 @@
 		5E11113C21B542BA0044CAED /* UserServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E11113B21B542BA0044CAED /* UserServiceTests.swift */; };
 		5E13C3A622046F7C00EA3050 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E13C3A522046F7C00EA3050 /* JSON.swift */; };
 		5E15A06C223B9C9D0090F5A3 /* RTMessagingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E15A06B223B9C9D0090F5A3 /* RTMessagingTests.swift */; };
+		5E1CC2F72252534F0011D5C8 /* FileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1CC2F62252534F0011D5C8 /* FileService.swift */; };
+		5E1CC2F9225254140011D5C8 /* BackendlessFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1CC2F8225254140011D5C8 /* BackendlessFile.swift */; };
 		5E275CA0224B8142002F89FC /* FileManagerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E275C9F224B8142002F89FC /* FileManagerHelper.swift */; };
 		5E341B7C21F5E11A00C32598 /* ObjectProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E341B7B21F5E11A00C32598 /* ObjectProperty.swift */; };
 		5E3706F722037C8E00E08C50 /* TestClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFE8E5F21E8E2150003477B /* TestClass.swift */; };
@@ -36,6 +38,9 @@
 		5E44C0502223EC4A00B391E7 /* RTServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E44C04F2223EC4A00B391E7 /* RTServiceTests.swift */; };
 		5E467F822201E20700E70772 /* DataPermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E467F812201E20700E70772 /* DataPermission.swift */; };
 		5E4C2707224B964700CDF967 /* MessagingServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4C2706224B964700CDF967 /* MessagingServiceTests.swift */; };
+		5E4CE07D22535CAF004571DA /* NSMutableDataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4CE07C22535CAF004571DA /* NSMutableDataExtension.swift */; };
+		5E4CE08122536196004571DA /* DataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4CE08022536196004571DA /* DataExtension.swift */; };
+		5E4CE08622536B73004571DA /* FileServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4CE08522536B73004571DA /* FileServiceTests.swift */; };
 		5E4DE64321EF8E92009AE503 /* Mappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4DE64221EF8E92009AE503 /* Mappings.swift */; };
 		5E4E305E22439B9700B479C8 /* DeviceRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4E305D22439B9700B479C8 /* DeviceRegistration.swift */; };
 		5E4E309C2243B85C00B479C8 /* DeviceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4E309B2243B85C00B479C8 /* DeviceHelper.swift */; };
@@ -128,12 +133,17 @@
 		5E11113B21B542BA0044CAED /* UserServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserServiceTests.swift; sourceTree = "<group>"; };
 		5E13C3A522046F7C00EA3050 /* JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
 		5E15A06B223B9C9D0090F5A3 /* RTMessagingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTMessagingTests.swift; sourceTree = "<group>"; };
+		5E1CC2F62252534F0011D5C8 /* FileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileService.swift; sourceTree = "<group>"; };
+		5E1CC2F8225254140011D5C8 /* BackendlessFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessFile.swift; sourceTree = "<group>"; };
 		5E275C9F224B8142002F89FC /* FileManagerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerHelper.swift; sourceTree = "<group>"; };
 		5E341B7B21F5E11A00C32598 /* ObjectProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectProperty.swift; sourceTree = "<group>"; };
 		5E44C04F2223EC4A00B391E7 /* RTServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTServiceTests.swift; sourceTree = "<group>"; };
 		5E467F812201E20700E70772 /* DataPermission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPermission.swift; sourceTree = "<group>"; };
 		5E498E2D8F87FE5F1EDC7604 /* Pods_SwiftSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E4C2706224B964700CDF967 /* MessagingServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagingServiceTests.swift; sourceTree = "<group>"; };
+		5E4CE07C22535CAF004571DA /* NSMutableDataExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSMutableDataExtension.swift; sourceTree = "<group>"; };
+		5E4CE08022536196004571DA /* DataExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExtension.swift; sourceTree = "<group>"; };
+		5E4CE08522536B73004571DA /* FileServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileServiceTests.swift; sourceTree = "<group>"; };
 		5E4DE64221EF8E92009AE503 /* Mappings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mappings.swift; sourceTree = "<group>"; };
 		5E4E305D22439B9700B479C8 /* DeviceRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceRegistration.swift; sourceTree = "<group>"; };
 		5E4E309B2243B85C00B479C8 /* DeviceHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceHelper.swift; sourceTree = "<group>"; };
@@ -301,12 +311,29 @@
 			path = Property;
 			sourceTree = "<group>";
 		};
+		5E1CC2F5225252D70011D5C8 /* Files */ = {
+			isa = PBXGroup;
+			children = (
+				5E1CC2F62252534F0011D5C8 /* FileService.swift */,
+				5E1CC2F8225254140011D5C8 /* BackendlessFile.swift */,
+			);
+			path = Files;
+			sourceTree = "<group>";
+		};
 		5E4C2705224B963000CDF967 /* MessagingServiceTests */ = {
 			isa = PBXGroup;
 			children = (
 				5E4C2706224B964700CDF967 /* MessagingServiceTests.swift */,
 			);
 			path = MessagingServiceTests;
+			sourceTree = "<group>";
+		};
+		5E4CE08222536AA0004571DA /* FileServiceTests */ = {
+			isa = PBXGroup;
+			children = (
+				5E4CE08522536B73004571DA /* FileServiceTests.swift */,
+			);
+			path = FileServiceTests;
 			sourceTree = "<group>";
 		};
 		5E545EEA21DFAF1D00881ED0 /* GeoServiceTests */ = {
@@ -340,6 +367,8 @@
 			isa = PBXGroup;
 			children = (
 				5E60834A21EF721900268B4D /* DictionaryExtension.swift */,
+				5E4CE07C22535CAF004571DA /* NSMutableDataExtension.swift */,
+				5E4CE08022536196004571DA /* DataExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -493,6 +522,7 @@
 				5ECE680E21B0248B00839120 /* Info.plist */,
 				5AFE8E6321E8E3430003477B /* TestsConfig.swift */,
 				5EB28E1F21B1833A0007AC30 /* BackendlessTests.swift */,
+				5E4CE08222536AA0004571DA /* FileServiceTests */,
 				5EE691FF21B67770002E72A9 /* FaultTests */,
 				5E545EEA21DFAF1D00881ED0 /* GeoServiceTests */,
 				5E4C2705224B963000CDF967 /* MessagingServiceTests */,
@@ -517,6 +547,7 @@
 			isa = PBXGroup;
 			children = (
 				5EB28E1821B1799A0007AC30 /* Backendless.swift */,
+				5E1CC2F5225252D70011D5C8 /* Files */,
 				5E64F0BD21C50D7D00590B04 /* BackendlessRequestManager */,
 				5E60834921EF720600268B4D /* Extensions */,
 				5E90720F21B66E6000619C0D /* Fault */,
@@ -723,6 +754,8 @@
 				5E4DE64321EF8E92009AE503 /* Mappings.swift in Sources */,
 				5E7E8A6021ECC94A00AA04E1 /* UserDefaultsHelper.swift in Sources */,
 				5EC7D161222FB56700FD3FF4 /* PublishOptions.swift in Sources */,
+				5E1CC2F9225254140011D5C8 /* BackendlessFile.swift in Sources */,
+				5E4CE07D22535CAF004571DA /* NSMutableDataExtension.swift in Sources */,
 				5E971918221C2CC400857603 /* RTSubscription.swift in Sources */,
 				5E84136321B5265200869794 /* UserService.swift in Sources */,
 				5E6C1E452203362700903B7A /* ReturnedResponse.swift in Sources */,
@@ -732,6 +765,7 @@
 				5EFBA8FE21C1011E007B3BB0 /* BackendlessUser.swift in Sources */,
 				5E971912221C27CB00857603 /* EventHandlerForMap.swift in Sources */,
 				5E275CA0224B8142002F89FC /* FileManagerHelper.swift in Sources */,
+				5E4CE08122536196004571DA /* DataExtension.swift in Sources */,
 				5E03A3C52229711F005A538D /* UserStatus.swift in Sources */,
 				5EA5D2C4223BCE8F0027EA49 /* SharedObject.swift in Sources */,
 				5E3706FD22037CC800E08C50 /* ChildTestClass.swift in Sources */,
@@ -778,6 +812,7 @@
 				5E97191A221C369A00857603 /* RTMethodRequest.swift in Sources */,
 				5E03A3BF22291C74005A538D /* MessagingService.swift in Sources */,
 				5AA2969A2237C19D007104C7 /* JSONUtils.swift in Sources */,
+				5E1CC2F72252534F0011D5C8 /* FileService.swift in Sources */,
 				5E572D4B21B8043E000713B0 /* ProcessResponse.swift in Sources */,
 				5EB28E1921B1799A0007AC30 /* Backendless.swift in Sources */,
 			);
@@ -790,6 +825,7 @@
 				5E7534682220579100BC31D4 /* EventHandlerForClassTests.swift in Sources */,
 				5AFE8E6621E8E5C00003477B /* DataStoreFactoryTests.swift in Sources */,
 				5AFE8E6221E8E2620003477B /* MapDrivenDataStoreTests.swift in Sources */,
+				5E4CE08622536B73004571DA /* FileServiceTests.swift in Sources */,
 				5E5716E82242803A00C7B048 /* SharedObjectTests.swift in Sources */,
 				5E84E87A223158EA008B3F05 /* PublishingAPITests.swift in Sources */,
 				5EE6920121B67791002E72A9 /* FaultTests.swift in Sources */,

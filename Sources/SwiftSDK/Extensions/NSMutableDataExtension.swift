@@ -1,5 +1,5 @@
 //
-//  DictionaryExtension.swift
+//  NSMutableDataExtension.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,9 +19,10 @@
  *  ********************************************************************************************************************
  */
 
-extension Dictionary where Value: Equatable {
+extension NSMutableData {
     
-    func getKey(forValue val: Value) -> Key? {
-        return first(where: { $1 == val })?.key
+    func appendString(_ string: String) {
+        let data = string.data(using: String.Encoding.utf8, allowLossyConversion: false)
+        append(data!)
     }
 }

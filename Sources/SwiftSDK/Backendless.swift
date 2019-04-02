@@ -75,6 +75,15 @@
         return _messagingSevice
     }()
     
+    open lazy var file: FileService = {
+        return self.fileService
+    }()
+    
+    open lazy var fileService: FileService = {
+        let _fileSevice = FileService()
+        return _fileSevice
+    }()
+    
     open lazy var geo: GeoService = {
         return self.geoService
     }()

@@ -33,7 +33,7 @@ class BackendlessRequestManager: NSObject {
     private var httpMethod: HTTPMethod
     private var headers: [String: String]?
     private var parameters: Any?
-
+    
     init(restMethod: String, httpMethod: HTTPMethod, headers: [String: String]?, parameters: Any?) {
         self.restMethod = restMethod
         self.httpMethod = httpMethod
@@ -54,10 +54,20 @@ class BackendlessRequestManager: NSObject {
         if let userToken = Backendless.shared.userService.getCurrentUser()?.userToken {
             request.addValue(userToken, forHTTPHeaderField: "user-token")
         }
+        
         if let parameters = parameters {
-            request.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
+            if parameters is String {
+                request.httpBody = (parameters as! String).data(using: .utf8)
+            }
+            else {
+                //request.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
+                if let jsonData = try? JSONSerialization.data(withJSONObject: parameters) {
+                    request.httpBody?.append(jsonData)
+                }
+            }
         }
-        let dataTask = URLSession.shared.dataTask(with: request) { data, response, error in         
+        
+        let dataTask = URLSession.shared.dataTask(with: request) { data, response, error in       
             let returnedResponse = ReturnedResponse()
             if let response = response as? HTTPURLResponse {
                 returnedResponse.response = response
@@ -71,5 +81,54 @@ class BackendlessRequestManager: NSObject {
             getResponse(returnedResponse)
         }
         dataTask.resume()
+    }
+    
+    func makeMultipartFormRequest(data: Data, fileName: String, getResponse: @escaping (ReturnedResponse) -> ()) {
+        var request  = URLRequest(url: URL(string: urlString+restMethod)!)
+        request.httpMethod = httpMethod.rawValue
+        let boundary = "Boundary-\(UUID().uuidString)"
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        if let userToken = Backendless.shared.userService.getCurrentUser()?.userToken {
+            request.addValue(userToken, forHTTPHeaderField: "user-token")
+        }
+        
+        request.httpBody = createBodyForMultipartForm(parameters: self.parameters, boundary: boundary, data: data, mimeType: data.mimeType, fileName: fileName)
+        
+        let dataTask = URLSession.shared.dataTask(with: request) { data, response, error in
+            let returnedResponse = ReturnedResponse()
+            if let response = response as? HTTPURLResponse {
+                returnedResponse.response = response
+            }
+            if let data = data {
+                returnedResponse.data = data
+            }
+            if let error = error {
+                returnedResponse.error = error
+            }
+            getResponse(returnedResponse)
+        }
+        dataTask.resume()
+    }
+    
+    private func createBodyForMultipartForm(parameters: Any?, boundary: String, data: Data, mimeType: String, fileName: String) -> Data {
+        let body = NSMutableData()
+        let boundaryPrefix = "--\(boundary)\r\n"
+        
+        if let parameters = parameters as? [String : String] {
+            for (key, value) in parameters {
+                body.appendString(boundaryPrefix)
+                body.appendString("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
+                body.appendString("\(value)\r\n")
+            }
+        }       
+        
+        body.appendString(boundaryPrefix)
+        body.appendString("Content-Disposition: form-data; name=\"file\"; filename=\"\(fileName)\"\r\n")
+        body.appendString("Content-Type: \(mimeType)\r\n\r\n")
+        body.append(data)
+        body.appendString("\r\n")
+        body.appendString("--".appending(boundary.appending("--")))
+        
+        return body as Data
     }
 }

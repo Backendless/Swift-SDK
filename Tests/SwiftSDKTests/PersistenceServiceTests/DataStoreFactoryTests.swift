@@ -87,7 +87,6 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_02_save() {
