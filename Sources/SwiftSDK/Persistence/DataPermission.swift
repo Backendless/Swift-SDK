@@ -44,16 +44,16 @@
     }
 }
 
-private enum PermissionType: String {
-    case GRANT
-    case DENY
-}
-
 @objcMembers open class DataPermission: NSObject {
     
     private let persistenceServiceUtils = PersistenceServiceUtils()
     private let processResponse = ProcessResponse.shared
-    private struct NoReply: Decodable {}    
+    private struct NoReply: Decodable { }
+    
+    private enum PermissionType: String {
+        case GRANT
+        case DENY
+    }
     
     open func grantForUser(userId: String, entity: Any, operation: PermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         setPermission(entity: entity, permissionType: .GRANT, operation: operation, userId: userId, roleName: nil, responseHandler: responseHandler, errorHandler: errorHandler)

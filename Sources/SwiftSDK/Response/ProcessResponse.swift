@@ -298,4 +298,24 @@ class ProcessResponse: NSObject {
         }
         return backendlessFile
     }
+    
+    func adaptToFileInfo(fileInfoDictionary: [String : Any]) -> FileInfo {
+        let fileInfo = FileInfo()
+        if let name = fileInfoDictionary["name"] as? String {
+            fileInfo.name = name
+        }
+        if let createdOn = fileInfoDictionary["createdOn"] as? NSNumber {
+            fileInfo.createdOn = createdOn
+        }
+        if let publicUrl = fileInfoDictionary["publicUrl"] as? String {
+            fileInfo.publicUrl = publicUrl
+        }
+        if let size = fileInfoDictionary["size"] as? NSNumber {
+            fileInfo.size = size
+        }
+        if let url = fileInfoDictionary["url"] as? String {
+            fileInfo.url = url
+        }
+        return fileInfo
+    }
 }

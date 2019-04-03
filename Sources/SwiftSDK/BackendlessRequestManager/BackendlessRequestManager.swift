@@ -60,10 +60,7 @@ class BackendlessRequestManager: NSObject {
                 request.httpBody = (parameters as! String).data(using: .utf8)
             }
             else {
-                //request.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
-                if let jsonData = try? JSONSerialization.data(withJSONObject: parameters) {
-                    request.httpBody?.append(jsonData)
-                }
+                request.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
             }
         }
         

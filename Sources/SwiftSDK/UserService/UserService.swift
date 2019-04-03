@@ -35,7 +35,7 @@
     private let processResponse = ProcessResponse.shared
     private let userDefaultsHelper = UserDefaultsHelper.shared
     
-    private struct NoReply: Decodable {}
+    private struct NoReply: Decodable { }
     
     open func describeUserClass(responseHandler: (([UserProperty]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         BackendlessRequestManager(restMethod: "users/userclassprops", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
