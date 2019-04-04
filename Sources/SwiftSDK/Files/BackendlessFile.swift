@@ -22,8 +22,4 @@
 @objcMembers open class BackendlessFile: NSObject {
     
     open var fileUrl: String?
-    
-    open func remove(responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        
-    }
 }

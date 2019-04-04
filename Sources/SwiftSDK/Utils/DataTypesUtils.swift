@@ -40,6 +40,14 @@ class DataTypesUtils: NSObject {
         return originalString
     }
     
+    func dictionaryToUrlString(dictionary: [String : Any]) -> String? {
+         if let theJSONData = try? JSONSerialization.data(withJSONObject: dictionary, options: []),
+            let theJSONText = String(data: theJSONData, encoding: .ascii) {
+            return stringToUrlString(originalString: theJSONText)
+        }
+        return nil
+    }
+    
     func dataToNSNumber(data: Data) -> NSNumber {
         if let stringValue = String(bytes: data, encoding: .utf8) {
             return (NSNumber(value: Int(stringValue)!))

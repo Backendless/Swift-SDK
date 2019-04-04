@@ -164,9 +164,11 @@ class ProcessResponse: NSObject {
         if let objectId = geoDictionary["objectId"] as? String,
             let latitude = geoDictionary["latitude"] as? Double,
             let longitude = geoDictionary["longitude"] as? Double,
-            let categories = geoDictionary["categories"] as? [String],
-            let metadata = geoDictionary["metadata"] as? [String: String] {            
-            return GeoPoint(objectId: objectId, latitude: latitude, longitude: longitude, categories: categories, metadata: JSON(metadata))
+            let categories = geoDictionary["categories"] as? [String] {
+            if let metadata = geoDictionary["metadata"] as? [String: String] {
+                return GeoPoint(objectId: objectId, latitude: latitude, longitude: longitude, categories: categories, metadata: JSON(metadata))
+            }
+            return GeoPoint(objectId: objectId, latitude: latitude, longitude: longitude, categories: categories, metadata: nil)
         }
         return nil
     }

@@ -76,6 +76,8 @@
 		5E9C573221AEEA0400877870 /* SwiftSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9C572821AEEA0400877870 /* SwiftSDK.framework */; };
 		5E9C573921AEEA0400877870 /* SwiftSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E9C572B21AEEA0400877870 /* SwiftSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5EA2B69B21F2324B00CFDC37 /* StoredObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2B69A21F2324B00CFDC37 /* StoredObjects.swift */; };
+		5EA31F25225608B1008DF081 /* GeoCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA31F24225608B1008DF081 /* GeoCategory.swift */; };
+		5EA31F2722561EC6008DF081 /* BackendlessGeoQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA31F2622561EC6008DF081 /* BackendlessGeoQuery.swift */; };
 		5EA5D2C4223BCE8F0027EA49 /* SharedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA5D2C3223BCE8F0027EA49 /* SharedObject.swift */; };
 		5EA5D2C6223BE2AC0027EA49 /* RTSharedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA5D2C5223BE2AC0027EA49 /* RTSharedObject.swift */; };
 		5EA5D2C8223BE5F90027EA49 /* InvokeObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA5D2C7223BE5F90027EA49 /* InvokeObject.swift */; };
@@ -185,6 +187,8 @@
 		5E9C572C21AEEA0400877870 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5E9C573121AEEA0400877870 /* SwiftSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EA2B69A21F2324B00CFDC37 /* StoredObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredObjects.swift; sourceTree = "<group>"; };
+		5EA31F24225608B1008DF081 /* GeoCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoCategory.swift; sourceTree = "<group>"; };
+		5EA31F2622561EC6008DF081 /* BackendlessGeoQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessGeoQuery.swift; sourceTree = "<group>"; };
 		5EA5D2C3223BCE8F0027EA49 /* SharedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedObject.swift; sourceTree = "<group>"; };
 		5EA5D2C5223BE2AC0027EA49 /* RTSharedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTSharedObject.swift; sourceTree = "<group>"; };
 		5EA5D2C7223BE5F90027EA49 /* InvokeObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvokeObject.swift; sourceTree = "<group>"; };
@@ -518,6 +522,8 @@
 			children = (
 				5ECD9C7F21DE57E7002CBB7D /* GeoService.swift */,
 				5ECD9C7D21DE57DA002CBB7D /* GeoPoint.swift */,
+				5EA31F24225608B1008DF081 /* GeoCategory.swift */,
+				5EA31F2622561EC6008DF081 /* BackendlessGeoQuery.swift */,
 			);
 			path = GeoService;
 			sourceTree = "<group>";
@@ -761,6 +767,7 @@
 				5E7E8A6021ECC94A00AA04E1 /* UserDefaultsHelper.swift in Sources */,
 				5EC7D161222FB56700FD3FF4 /* PublishOptions.swift in Sources */,
 				5E1CC2F9225254140011D5C8 /* BackendlessFile.swift in Sources */,
+				5EA31F25225608B1008DF081 /* GeoCategory.swift in Sources */,
 				5E4CE07D22535CAF004571DA /* NSMutableDataExtension.swift in Sources */,
 				5E971918221C2CC400857603 /* RTSubscription.swift in Sources */,
 				5E84136321B5265200869794 /* UserService.swift in Sources */,
@@ -808,6 +815,7 @@
 				5A2A784D21E6104F00EC8007 /* IDataStore.swift in Sources */,
 				5E341B7C21F5E11A00C32598 /* ObjectProperty.swift in Sources */,
 				5E971914221C296A00857603 /* RTService.swift in Sources */,
+				5EA31F2722561EC6008DF081 /* BackendlessGeoQuery.swift in Sources */,
 				5E467F822201E20700E70772 /* DataPermission.swift in Sources */,
 				5E971916221C2A8700857603 /* RTClient.swift in Sources */,
 				5E13C3A622046F7C00EA3050 /* JSON.swift in Sources */,
