@@ -54,39 +54,39 @@
         case DENY
     }
     
-    open func grantForUser(userId: String, filePath: String, fileName: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        setPermission(filePath: filePath, fileName: fileName, permissionType: .GRANT, operation: operation, userId: userId, roleName: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func grantForUser(userId: String, path: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        setPermission(path: path, permissionType: .GRANT, operation: operation, userId: userId, roleName: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func denyForUser(userId: String, filePath: String, fileName: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        setPermission(filePath: filePath, fileName: fileName, permissionType: .DENY, operation: operation, userId: userId, roleName: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func denyForUser(userId: String, path: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        setPermission(path: path, permissionType: .DENY, operation: operation, userId: userId, roleName: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func grantForRole(role: String, filePath: String, fileName: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        setPermission(filePath: filePath, fileName: fileName, permissionType: .GRANT, operation: operation, userId: nil, roleName: role, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func grantForRole(role: String, path: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        setPermission(path: path, permissionType: .GRANT, operation: operation, userId: nil, roleName: role, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func denyForRole(role: String, filePath: String, fileName: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        setPermission(filePath: filePath, fileName: fileName, permissionType: .DENY, operation: operation, userId: nil, roleName: role, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func denyForRole(role: String, path: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        setPermission(path: path, permissionType: .DENY, operation: operation, userId: nil, roleName: role, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func grantForAllUsers(filePath: String, fileName: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        setPermission(filePath: filePath, fileName: fileName, permissionType: .GRANT, operation: operation, userId: "*", roleName: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func grantForAllUsers(path: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        setPermission(path: path, permissionType: .GRANT, operation: operation, userId: "*", roleName: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func denyForAllUsers(filePath: String, fileName: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        setPermission(filePath: filePath, fileName: fileName, permissionType: .DENY, operation: operation, userId: "*", roleName: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func denyForAllUsers(path: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        setPermission(path: path, permissionType: .DENY, operation: operation, userId: "*", roleName: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func grantForAllRoles(filePath: String, fileName: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        setPermission(filePath: filePath, fileName: fileName, permissionType: .GRANT, operation: operation, userId: nil, roleName: "*", responseHandler: responseHandler, errorHandler: errorHandler)
+    open func grantForAllRoles(path: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        setPermission(path: path, permissionType: .GRANT, operation: operation, userId: nil, roleName: "*", responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func denyForAllRoles(filePath: String, fileName: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        setPermission(filePath: filePath, fileName: fileName, permissionType: .DENY, operation: operation, userId: nil, roleName: "*", responseHandler: responseHandler, errorHandler: errorHandler)
+    open func denyForAllRoles(path: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        setPermission(path: path, permissionType: .DENY, operation: operation, userId: nil, roleName: "*", responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    private func setPermission(filePath: String, fileName: String, permissionType: PermissionType, operation: FilePermissionOperation, userId: String?, roleName: String?, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    private func setPermission(path: String, permissionType: PermissionType, operation: FilePermissionOperation, userId: String?, roleName: String?, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         var parameters = [String: String]()
         parameters["permission"] = operation.rawValue
@@ -96,7 +96,7 @@
         if let roleName = roleName {
             parameters["role"] = roleName
         }
-        BackendlessRequestManager(restMethod: "files/permissions/\(permissionType)/\(filePath)/\(fileName)", httpMethod: .PUT, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+        BackendlessRequestManager(restMethod: "files/permissions/\(permissionType)/\(path)", httpMethod: .PUT, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             let result = self.processResponse.adapt(response: response, to: NoReply.self)
             if result is Fault {
                 errorHandler(result as! Fault)

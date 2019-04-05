@@ -86,7 +86,7 @@
         })
     }
     
-    open func renameFile(path: String, newName: String, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    open func rename(path: String, newName: String, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = ["oldPathName": path, "newName": newName]
         BackendlessRequestManager(restMethod: "files/rename", httpMethod: .PUT, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
@@ -149,7 +149,7 @@
         filesListing(path: path, pattern: pattern, recursive: recursive, pageSize: pageSize, offset: offset, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func filesListing(path: String, pattern: String, recursive: Bool, pageSize: Int?, offset: Int?, responseHandler: (([FileInfo]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    func filesListing(path: String, pattern: String, recursive: Bool, pageSize: Int?, offset: Int?, responseHandler: (([FileInfo]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         var restMethod = "files/\(path)?pattern=\(dataTypesUtils.stringToUrlString(originalString: pattern))"
         if recursive {
             restMethod += "&sub=true"

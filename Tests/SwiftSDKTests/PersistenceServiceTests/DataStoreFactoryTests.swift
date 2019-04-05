@@ -31,7 +31,7 @@ class DataStoreFactoryTests: XCTestCase {
     private var dataStore: DataStoreFactory!
     private var childDataStore: DataStoreFactory!
     
-    // call before all tests
+    // call before all te
     override class func setUp() {
         Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
         Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
@@ -62,9 +62,8 @@ class DataStoreFactoryTests: XCTestCase {
             print("DATA STORE FACTORY TEST SETUP ERROR \(fault.faultCode): \(fault.message ?? "")")
         })
         
-        let expectation = self.expectation(description: "PASSED dataStoreFactory.mapToTable/mapColumnToProperty"
+        let expectation = self.expectation(description: "PASSED dataStoreFactory.mapToTable/mapColumnToProperty")
         
-        )
         let mappedDataStore = backendless.data.of(TestClassForMappings.self)
         mappedDataStore.mapToTable(tableName: "TestClass")
         mappedDataStore.mapColumn(columnName: "name", toProperty: "nameProperty")
@@ -87,6 +86,7 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_02_save() {

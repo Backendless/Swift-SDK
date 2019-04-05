@@ -39,7 +39,7 @@ class RTServiceTests: XCTestCase {
         let _ = backendless.rt.addConnectEventListener(responseHandler: {
             expectation.fulfill()
         })
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             let eventHandler = self.backendless.data.ofTable("TestClass").rt
             let _ = eventHandler?.addCreateListener(responseHandler: { createdObject in }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
@@ -55,13 +55,13 @@ class RTServiceTests: XCTestCase {
             
         })
         subscription.stop()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             let eventHandler = self.backendless.data.ofTable("TestClass").rt
             let _ = eventHandler?.addCreateListener(responseHandler: { createdObject in }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
             })
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                 expectation.fulfill()
             })
         })

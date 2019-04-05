@@ -48,7 +48,7 @@ class FileServiceTests: XCTestCase {
     
     func test_01_uploadFile() {
         let expectation = self.expectation(description: "PASSED: fileService.uploadFile")        
-        let data = "The quick brown fox jumps over the lazy dog".data(using: .ascii)!
+        let data = "The quick brown fox jumps over the lazy dog".data(using: .utf8)!
         backendless.file.uploadFile(fileName: "fox.txt", filePath: directory, content: data, overwrite: true, responseHandler: { backendlessFile in
             XCTAssertNotNil(backendlessFile)
             XCTAssertNotNil(backendlessFile.fileUrl)
@@ -62,7 +62,7 @@ class FileServiceTests: XCTestCase {
     
     func test_02_saveFile() {
         let expectation = self.expectation(description: "PASSED: fileService.saveFile")
-        let data = "The quick brown fox jumps over the lazy dog".data(using: .ascii)!
+        let data = "The quick brown fox jumps over the lazy dog".data(using: .utf8)!
         let base64 = data.base64EncodedString()
         backendless.file.saveFile(fileName: "fox.txt", filePath: "\(directory)/Binary", base64Content: base64, overwrite: true, responseHandler: { backendlessFile in
             XCTAssertNotNil(backendlessFile)
@@ -77,7 +77,7 @@ class FileServiceTests: XCTestCase {
     
     func test_03_rename() {
         let expectation = self.expectation(description: "PASSED: fileService.rename")
-        backendless.file.renameFile(path: "\(directory)/fox.txt", newName: "newFox.txt", responseHandler: { renamedPath in
+        backendless.file.rename(path: "\(directory)/fox.txt", newName: "newFox.txt", responseHandler: { renamedPath in
             XCTAssertNotNil(renamedPath)
             expectation.fulfill()
         }, errorHandler: { fault in
@@ -99,9 +99,9 @@ class FileServiceTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_05_copy() {
+    func test_05_move() {
         let expectation = self.expectation(description: "PASSED: fileService.move")
-        backendless.file.copy(sourcePath: "\(directory)/Binary/fox.txt", targetPath: "\(directory)/fox.txt", responseHandler: { movedPath in
+        backendless.file.move(sourcePath: "\(directory)/Binary/fox.txt", targetPath: "\(directory)/fox.txt", responseHandler: { movedPath in
             XCTAssertNotNil(movedPath)
             expectation.fulfill()
         }, errorHandler: { fault in
@@ -148,10 +148,10 @@ class FileServiceTests: XCTestCase {
     
     func test_09_denyPermissions() {
         let expectation = self.expectation(description: "PASSED: fileService.denyPermissions")
-        let data = "The quick brown fox jumps over the lazy dog".data(using: .ascii)!
+        let data = "The quick brown fox jumps over the lazy dog".data(using: .utf8)!
         backendless.file.uploadFile(fileName: "fox.txt", filePath: directory, content: data, overwrite: true, responseHandler: { backendlessFile in
             
-            self.backendless.file.permissions.denyForAllRoles(filePath: self.directory, fileName: "fox.txt", operation: .FILE_DELETE, responseHandler: {
+            self.backendless.file.permissions.denyForAllRoles(path: "\(self.directory)/fox.txt", operation: .FILE_DELETE, responseHandler: {
                 
                 self.backendless.file.remove(path: "\(self.directory)/fox.txt", responseHandler: {
                     XCTFail("This operation is denied")
@@ -174,7 +174,7 @@ class FileServiceTests: XCTestCase {
     
     func test_10_allowPermissions() {
         let expectation = self.expectation(description: "PASSED: fileService.allowPermissions")
-        backendless.file.permissions.grantForAllRoles(filePath: directory, fileName: "fox.txt", operation: .FILE_DELETE, responseHandler: {
+        backendless.file.permissions.grantForAllRoles(path: "\(self.directory)/fox.txt", operation: .FILE_DELETE, responseHandler: {
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
