@@ -132,29 +132,7 @@
     }
     
     func getGeoPointsCount(geoQuery: BackendlessGeoQuery?, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        var restMethod = "geo/count"
-        if let geoQuery = geoQuery {
-            restMethod += "?"
-            if let categories = geoQuery.categories {
-                let categoriesString = dataTypesUtils.arrayToString(array: categories)
-                restMethod += "categories=\(dataTypesUtils.stringToUrlString(originalString: categoriesString))"
-            }
-            if let whereClause = geoQuery.whereClause {
-                restMethod += "&where=\(dataTypesUtils.stringToUrlString(originalString: whereClause))"
-            }
-            if let metadata = geoQuery.metadata,
-                let metadataString = dataTypesUtils.dictionaryToUrlString(dictionary: metadata) {
-                restMethod += "&metadata = \(metadataString)"
-            }
-            restMethod += "&pagesize=\(geoQuery.pageSize)"
-            restMethod += "&offset=\(geoQuery.offset)"
-            if geoQuery.includemetadata {
-                restMethod += "&includemetadata=true"
-            }
-            else {
-                restMethod += "&includemetadata=false"
-            }
-        }
+        let restMethod = createRestMethod(restMethod: "geo/count?", geoQuery: geoQuery)
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
@@ -176,19 +154,66 @@
     }
     
     func getGeoPoints(geoQuery: BackendlessGeoQuery?, responseHandler: (([GeoPoint]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        var restMethod = "geo/points"
+        let restMethod = createRestMethod(restMethod: "geo/points?", geoQuery: geoQuery)
+        BackendlessRequestManager(restMethod: restMethod, httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = self.processResponse.adapt(response: response, to: [JSON].self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else if let geoPointsArray = result as? [JSON] {
+                    var resultArray = [GeoPoint]()
+                    for geoPointJSON in geoPointsArray {
+                        if let geoPointDictionary = geoPointJSON.dictionaryObject {
+                            if geoPointDictionary["totalPoints"] != nil,
+                                let geoCluster = self.processResponse.adaptToGeoCluster(geoDictionary: geoPointDictionary) {
+                                resultArray.append(geoCluster)
+                            }
+                            else if let geoPoint = self.processResponse.adaptToGeoPoint(geoDictionary: geoPointDictionary) {
+                                resultArray.append(geoPoint)
+                            }
+                        }
+                    }
+                    responseHandler(resultArray)
+                }
+            }
+        })
+    }
+    
+    open func getClusterPoints(geoCluster: GeoCluster, responseHandler: (([GeoPoint]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        if let objectId = geoCluster.objectId {
+            let restMethod = createRestMethod(restMethod: "geo/clusters/\(objectId)/points?", geoQuery: geoCluster.geoQuery)
+            BackendlessRequestManager(restMethod: restMethod, httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+                if let result = self.processResponse.adapt(response: response, to: [GeoPoint].self) {
+                    if result is Fault {
+                        errorHandler(result as! Fault)
+                    }
+                    else {
+                        responseHandler(result as! [GeoPoint])
+                    }
+                }
+            })
+        }
+        
+    }
+    
+    private func createRestMethod(restMethod: String, geoQuery: BackendlessGeoQuery?) -> String {
+        var restMethod = restMethod
         if let geoQuery = geoQuery {
-            restMethod += "?"
+            if let rectangle = geoQuery.rectangle,
+                let nordWestPoint = rectangle.nordWestPoint,
+                let southEastPoint = rectangle.southEastPoint {
+                restMethod = "geo/rect?nwlat=\(nordWestPoint.latitude)&nwlon=\(nordWestPoint.longitude)&selat=\(southEastPoint.latitude)&selon=\(southEastPoint.longitude)"
+            }
             if let categories = geoQuery.categories {
                 let categoriesString = dataTypesUtils.arrayToString(array: categories)
-                restMethod += "categories=\(dataTypesUtils.stringToUrlString(originalString: categoriesString))"
+                restMethod += "&categories=\(dataTypesUtils.stringToUrlString(originalString: categoriesString))"
             }
             if let whereClause = geoQuery.whereClause {
                 restMethod += "&where=\(dataTypesUtils.stringToUrlString(originalString: whereClause))"
             }
             if let metadata = geoQuery.metadata,
                 let metadataString = dataTypesUtils.dictionaryToUrlString(dictionary: metadata) {
-                restMethod += "&metadata = \(metadataString)"
+                restMethod += "&metadata=\(metadataString)"
             }
             restMethod += "&pagesize=\(geoQuery.pageSize)"
             restMethod += "&offset=\(geoQuery.offset)"
@@ -198,16 +223,8 @@
             else {
                 restMethod += "&includemetadata=false"
             }
+            restMethod += "&dpp=\(geoQuery.degreePerPixel)&clusterGridSize=\(geoQuery.clusterGridSize)"
         }
-        BackendlessRequestManager(restMethod: restMethod, httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: [GeoPoint].self) {
-                if result is Fault {
-                    errorHandler(result as! Fault)
-                }
-                else {
-                    responseHandler(result as! [GeoPoint])
-                }
-            }
-        })
+        return restMethod
     }
 }

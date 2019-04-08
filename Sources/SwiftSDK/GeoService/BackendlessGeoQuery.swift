@@ -59,7 +59,30 @@
     open var includemetadata = false
     open var metadata: [String : Any]?
     open var whereClause: String?
+    open var rectangle: GeoQueryRectangle?
     open var pageSize: Int = 10
     open var offset: Int = 0
     open var clustergridsize: NSNumber?
+    
+    open private(set) var degreePerPixel: Double = 0.0
+    open private(set) var clusterGridSize: Int = 100
+    
+    open func setClusteringParams(degreePerPixel: Double, clusterGridSize: Int) {
+        self.degreePerPixel = degreePerPixel
+        self.clusterGridSize = clusterGridSize
+    }
+    
+    open func setClusteringParams(westLongitude: Double, eastLongitude: Double, mapWidth: Int) {
+        setClusteringParams(westLongitude: westLongitude, eastLongitude: eastLongitude, mapWidth: mapWidth, clusterGridSize: 100)
+    }
+    
+    open func setClusteringParams(westLongitude: Double, eastLongitude: Double, mapWidth: Int, clusterGridSize: Int) {
+        if eastLongitude - westLongitude < 0 {
+            self.degreePerPixel = ((eastLongitude - westLongitude) + 360) / Double(mapWidth)
+        }
+        else {
+            self.degreePerPixel = (eastLongitude - westLongitude) / Double(mapWidth)
+        }
+        self.clusterGridSize = clusterGridSize
+    }
 }

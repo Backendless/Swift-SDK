@@ -42,6 +42,9 @@ class ProcessResponse: NSObject {
                         if to == BackendlessUser.self {
                             return adaptToBackendlessUser(responseResult: responseResult)
                         }
+                        else if to == [GeoPoint].self {
+                            
+                        }
                         else if let responseData = response.data {
                             let responseObject = try JSONDecoder().decode(to, from: responseData)
                             return responseObject
@@ -169,6 +172,24 @@ class ProcessResponse: NSObject {
                 return GeoPoint(objectId: objectId, latitude: latitude, longitude: longitude, categories: categories, metadata: JSON(metadata))
             }
             return GeoPoint(objectId: objectId, latitude: latitude, longitude: longitude, categories: categories, metadata: nil)
+        }
+        return nil
+    }
+    
+    func adaptToGeoCluster(geoDictionary: [String : Any]) -> GeoCluster? {
+        if let objectId = geoDictionary["objectId"] as? String,
+            let latitude = geoDictionary["latitude"] as? Double,
+            let longitude = geoDictionary["longitude"] as? Double,
+            let categories = geoDictionary["categories"] as? [String],
+            let totalPoints = geoDictionary["totalPoints"] as? Int {
+            if let metadata = geoDictionary["metadata"] as? [String: String] {
+                let geoCluster = GeoCluster(objectId: objectId, latitude: latitude, longitude: longitude, categories: categories, metadata: JSON(metadata))
+                geoCluster.totalPoints = totalPoints
+                return geoCluster
+            }
+            let geoCluster = GeoCluster(objectId: objectId, latitude: latitude, longitude: longitude, categories: categories, metadata: nil)
+            geoCluster.totalPoints = totalPoints
+            return geoCluster
         }
         return nil
     }
