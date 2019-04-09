@@ -179,9 +179,13 @@
         })
     }
     
+    // TODO TODO TODO TODO TODO TODO TODO
     open func getClusterPoints(geoCluster: GeoCluster, responseHandler: (([GeoPoint]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         if let objectId = geoCluster.objectId {
-            let restMethod = createRestMethod(restMethod: "geo/clusters/\(objectId)/points?", geoQuery: geoCluster.geoQuery)
+            // categories to str
+            let categoriesString = dataTypesUtils.arrayToString(array: geoCluster.categories)
+            let categoriesUrlString = dataTypesUtils.stringToUrlString(originalString: categoriesString)
+            let restMethod = createRestMethod(restMethod: "geo/clusters/\(objectId)/points?lat=\(geoCluster.latitude)&lon=\(geoCluster.longitude)&categories=\(categoriesUrlString)&dpp=", geoQuery: nil)
             BackendlessRequestManager(restMethod: restMethod, httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
                 if let result = self.processResponse.adapt(response: response, to: [GeoPoint].self) {
                     if result is Fault {
@@ -193,8 +197,15 @@
                 }
             })
         }
-        
     }
+
+    /*+"objectId": "263",
+     "categories": ["geoservice_sample"],
+     "latitude": 61.537496,
+     "longitude": 10.162582,
+     "totalPoints": 5*/
+    
+    /*curl -v https://api.backendless.com/<application-id>/<application-key>/geo/clusters/<cluster-id>/points?lat=<latitude>&lon=<longitude>&categories=<category>&dpp=<dpp>&clusterGridSize=<cluster-grid>*/
     
     private func createRestMethod(restMethod: String, geoQuery: BackendlessGeoQuery?) -> String {
         var restMethod = restMethod

@@ -22,5 +22,4 @@
 @objcMembers open class GeoCluster: GeoPoint {
     
     open var totalPoints: Int = 0
-    open var geoQuery: BackendlessGeoQuery?
 }
