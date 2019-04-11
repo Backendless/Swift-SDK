@@ -166,6 +166,7 @@
                         if let geoPointDictionary = geoPointJSON.dictionaryObject {
                             if geoPointDictionary["totalPoints"] != nil,
                                 let geoCluster = self.processResponse.adaptToGeoCluster(geoDictionary: geoPointDictionary) {
+                                geoCluster.geoQuery = geoQuery
                                 resultArray.append(geoCluster)
                             }
                             else if let geoPoint = self.processResponse.adaptToGeoPoint(geoDictionary: geoPointDictionary) {
@@ -179,13 +180,13 @@
         })
     }
     
-    // TODO TODO TODO TODO TODO TODO TODO
     open func getClusterPoints(geoCluster: GeoCluster, responseHandler: (([GeoPoint]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        if let objectId = geoCluster.objectId {
+        if let objectId = geoCluster.objectId,
+            let geoQuery = geoCluster.geoQuery {
             // categories to str
             let categoriesString = dataTypesUtils.arrayToString(array: geoCluster.categories)
             let categoriesUrlString = dataTypesUtils.stringToUrlString(originalString: categoriesString)
-            let restMethod = createRestMethod(restMethod: "geo/clusters/\(objectId)/points?lat=\(geoCluster.latitude)&lon=\(geoCluster.longitude)&categories=\(categoriesUrlString)&dpp=", geoQuery: nil)
+            let restMethod = createRestMethod(restMethod: "geo/clusters/\(objectId)/points?lat=\(geoCluster.latitude)&lon=\(geoCluster.longitude)&categories=\(categoriesUrlString)&dpp=\(geoQuery.degreePerPixel)&clusterGridSize=\(geoQuery.clusterGridSize)", geoQuery: nil)
             BackendlessRequestManager(restMethod: restMethod, httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
                 if let result = self.processResponse.adapt(response: response, to: [GeoPoint].self) {
                     if result is Fault {
@@ -198,14 +199,6 @@
             })
         }
     }
-
-    /*+"objectId": "263",
-     "categories": ["geoservice_sample"],
-     "latitude": 61.537496,
-     "longitude": 10.162582,
-     "totalPoints": 5*/
-    
-    /*curl -v https://api.backendless.com/<application-id>/<application-key>/geo/clusters/<cluster-id>/points?lat=<latitude>&lon=<longitude>&categories=<category>&dpp=<dpp>&clusterGridSize=<cluster-grid>*/
     
     private func createRestMethod(restMethod: String, geoQuery: BackendlessGeoQuery?) -> String {
         var restMethod = restMethod
@@ -238,4 +231,174 @@
         }
         return restMethod
     }
+    
+    // ******************************** TODO ******************************************
+    
+    // loadMetadata method
+    
+    func runOnEnterAction(geoFenceName: String, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        
+    }
+    
+    func runOnEnterAction(geoFenceName: String, geoPoint: GeoPoint, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        
+    }
+    
+    func runOnStayAction(geoFenceName: String, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        
+    }
+    
+    func runOnStayAction(geoFenceName: String, geoPoint: GeoPoint, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        
+    }
+    
+    func runOnExitAction(geoFenceName: String, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        
+    }
+    
+    func runOnExitAction(geoFenceName: String, geoPoint: GeoPoint, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        
+    }
+    
+    /*-(NSArray<GeoPoint *> *)getFencePoints:(NSString *)geoFenceName {
+     id result = [self getFencePoints:geoFenceName query:nil];
+     if ([result isKindOfClass:[Fault class]]) {
+     return [backendless throwFault:result];
+     }
+     return result;
+     }
+     
+     -(NSArray<GeoPoint *> *)getFencePoints:(NSString *)geoFenceName query:(BackendlessGeoQuery *)query {
+     id fault = nil;
+     if ((fault = [self isFaultGeoFenceName:geoFenceName responder:nil]))
+     return [backendless throwFault:fault];
+     BackendlessGeoQuery *geoQuery = query?query:[BackendlessGeoQuery query];
+     NSArray *args = @[geoFenceName, geoQuery];
+     id result = [invoker invokeSync:SERVER_GEO_SERVICE_PATH method:METHOD_GET_POINTS args:args];
+     if ([result isKindOfClass:[Fault class]]) {
+     return [backendless throwFault:result];
+     }
+     if (![result isKindOfClass:[NSArray class]]) {
+     NSLog(@"GeoService->getPoints: (ERROR) [%@]\n%@", [result class], result);
+     return nil;
+     }
+     NSArray<GeoPoint *> *collection = result;
+     [self setReferenceToCluster:collection geoQuery:query];
+     return collection;
+     }
+     
+     -(NSArray *)relativeFind:(BackendlessGeoQuery *)query {
+     BackendlessGeoQuery *geoQuery = query?query:[BackendlessGeoQuery query];
+     NSArray *args = @[geoQuery];
+     id result = [invoker invokeSync:SERVER_GEO_SERVICE_PATH method:METHOD_GET_POINTS_WITH_MATCHES args:args];
+     if ([result isKindOfClass:[Fault class]]) {
+     return [backendless throwFault:result];
+     }
+     NSArray<GeoPoint *> *collection = result;
+     [self setReferenceToCluster:collection geoQuery:query];
+     return collection;
+     }
+     
+     -(void)setReferenceToCluster:(NSArray<GeoPoint *> *)collection geoQuery:(BackendlessGeoQuery *)geoQuery {
+     BackendlessGeoQuery *protectedQuery = [[ProtectedBackendlessGeoQuery alloc] initWithQuery:geoQuery];
+     for (GeoPoint *geoPoint in collection) {
+     if ([geoPoint isKindOfClass:[GeoCluster class]]) {
+     [(GeoCluster *)geoPoint setGeoQuery:protectedQuery];
+     }
+     }
+     }
+     
+     -(void)removePoint:(GeoPoint *)geoPoint {
+     id fault = nil;
+     if ((fault = [self isFaultGeoPoint:geoPoint responder:nil]) || (fault = [self isFaultGeoPointId:geoPoint.objectId responder:nil]))
+     [backendless throwFault:fault];
+     NSArray *args = @[geoPoint.objectId];
+     id result = [invoker invokeSync:SERVER_GEO_SERVICE_PATH method:METHOD_DELETE_GEOPOINT args:args];
+     if ([result isKindOfClass:[Fault class]]) {
+     [backendless throwFault:fault];
+     }
+     return;
+     }
+     
+     -(GeoPoint *)loadMetadata:(GeoPoint *)geoPoint {
+     id fault = nil;
+     if ((fault = [self isFaultGeoPoint:geoPoint responder:nil]) || (fault = [self isFaultGeoPointId:geoPoint.objectId responder:nil]))
+     return [backendless throwFault:fault];;
+     id query = [geoPoint isKindOfClass:[GeoCluster class]]? [(GeoCluster *)geoPoint geoQuery] : [NSNull null];
+     NSArray *args = @[geoPoint.objectId, query];
+     [geoPoint metadata:[invoker invokeSync:SERVER_GEO_SERVICE_PATH method:METHOD_LOAD_METADATA args:args]];
+     return geoPoint;
+     }
+     
+     -(NSNumber *)runOnEnterAction:(NSString *)geoFenceName {
+     id fault = nil;
+     if ((fault = [self isFaultGeoFenceName:geoFenceName responder:nil]))
+     return [backendless throwFault:fault];;
+     NSArray *args = @[geoFenceName];
+     id result = [invoker invokeSync:SERVER_GEO_SERVICE_PATH method:METHOD_RUN_ON_ENTER_ACTION args:args];
+     if ([result isKindOfClass:[Fault class]]) {
+     return [backendless throwFault:result];
+     }
+     return result;
+     }
+     
+     -(NSNumber *)runOnEnterAction:(NSString *)geoFenceName geoPoint:(GeoPoint *)geoPoint {
+     id fault = nil;
+     if ((fault = [self isFaultGeoFenceName:geoFenceName responder:nil]) || (fault = [self isFaultGeoPoint:geoPoint responder:nil]))
+     return [backendless throwFault:fault];
+     NSArray *args = @[geoFenceName, geoPoint];
+     id result = [invoker invokeSync:SERVER_GEO_SERVICE_PATH method:METHOD_RUN_ON_ENTER_ACTION args:args];
+     if ([result isKindOfClass:[Fault class]]) {
+     return [backendless throwFault:result];
+     }
+     return result;
+     }
+     
+     -(NSNumber *)runOnStayAction:(NSString *)geoFenceName {
+     id fault = nil;
+     if ((fault = [self isFaultGeoFenceName:geoFenceName responder:nil]))
+     return [backendless throwFault:fault];
+     NSArray *args = @[geoFenceName];
+     id result = [invoker invokeSync:SERVER_GEO_SERVICE_PATH method:METHOD_RUN_ON_STAY_ACTION args:args];
+     if ([result isKindOfClass:[Fault class]]) {
+     return [backendless throwFault:result];
+     }
+     return result;
+     }
+     
+     -(NSNumber *)runOnStayAction:(NSString *)geoFenceName geoPoint:(GeoPoint *)geoPoint {
+     id fault = nil;
+     if ((fault = [self isFaultGeoFenceName:geoFenceName responder:nil]) || (fault = [self isFaultGeoPoint:geoPoint responder:nil]))
+     return [backendless throwFault:fault];
+     NSArray *args = @[geoFenceName, geoPoint];
+     id result = [invoker invokeSync:SERVER_GEO_SERVICE_PATH method:METHOD_RUN_ON_STAY_ACTION args:args];
+     if ([result isKindOfClass:[Fault class]]) {
+     return [backendless throwFault:result];
+     }
+     return result;
+     }
+     
+     -(NSNumber *)runOnExitAction:(NSString *)geoFenceName {
+     id fault = nil;
+     if ((fault = [self isFaultGeoFenceName:geoFenceName responder:nil]))
+     return [backendless throwFault:fault];
+     NSArray *args = @[geoFenceName];
+     id result = [invoker invokeSync:SERVER_GEO_SERVICE_PATH method:METHOD_RUN_ON_EXIT_ACTION args:args];
+     if ([result isKindOfClass:[Fault class]]) {
+     return [backendless throwFault:result];
+     }
+     return result;
+     }
+     
+     -(NSNumber *)runOnExitAction:(NSString *)geoFenceName geoPoint:(GeoPoint *)geoPoint {
+     id fault = nil;
+     if ((fault = [self isFaultGeoFenceName:geoFenceName responder:nil]) || (fault = [self isFaultGeoPoint:geoPoint responder:nil]))
+     return [backendless throwFault:fault];
+     NSArray *args = @[geoFenceName, geoPoint];
+     id result = [invoker invokeSync:SERVER_GEO_SERVICE_PATH method:METHOD_RUN_ON_EXIT_ACTION args:args];
+     if ([result isKindOfClass:[Fault class]]) {
+     return [backendless throwFault:result];
+     }
+     return result;
+     }*/
 }

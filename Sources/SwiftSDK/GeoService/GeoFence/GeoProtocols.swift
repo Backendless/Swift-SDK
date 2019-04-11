@@ -1,5 +1,5 @@
 //
-//  GeoCluster.swift
+//  GeoProtocols.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,8 +19,24 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class GeoCluster: GeoPoint {
-    
-    open var totalPoints: Int = 0
-    open var geoQuery: BackendlessGeoQuery?
+import CoreLocation
+
+// Location Tracker invokes the ILocationTrackerListener methods from default global dispatch queue,
+// so if the listener uses UI in its callbckacs, it MUST get the main dispatch queue
+protocol ILocationTrackerListener {
+    func onLocationChanged(location: CLLocation)
+    func onLocationFailed(error: Error)
+}
+
+protocol ICallback {
+    func callOnEnter(geoFence: GeoFence, location: CLLocation)
+    func callOnStay(geoFence: GeoFence, location: CLLocation)
+    func callOnExit(geoFence: GeoFence, location: CLLocation)
+    func equalCallbackParameter(object: Any?) -> Bool
+}
+
+protocol IGeofenceCallback {
+    func geoPointEntered(geoFenceName: String, geoFenceId: String, latitude: Double, longitude: Double)
+    func geoPointStayed(geoFenceName: String, geoFenceId: String, latitude: Double, longitude: Double)
+    func geoPointExited(geoFenceName: String, geoFenceId: String, latitude: Double, longitude: Double)
 }

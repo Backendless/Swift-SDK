@@ -42,9 +42,6 @@ class ProcessResponse: NSObject {
                         if to == BackendlessUser.self {
                             return adaptToBackendlessUser(responseResult: responseResult)
                         }
-                        else if to == [GeoPoint].self {
-                            
-                        }
                         else if let responseData = response.data {
                             let responseObject = try JSONDecoder().decode(to, from: responseData)
                             return responseObject

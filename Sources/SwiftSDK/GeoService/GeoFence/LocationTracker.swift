@@ -21,14 +21,6 @@
 
 import CoreLocation
 
-// Location Tracker invokes the ILocationTrackerListener methods from default global dispatch queue,
-// so if the listener uses UI in its callbckacs, it MUST get the main dispatch queue
-
-protocol ILocationTrackerListener {
-    func onLocationChanged(location: CLLocation)
-    func onLocationFailed(error: Error)
-}
-
 class LocationTracker: NSObject, CLLocationManagerDelegate {
     
     public static let shared = LocationTracker()
@@ -144,16 +136,52 @@ class LocationTracker: NSObject, CLLocationManagerDelegate {
     }
     
     func onLocationChanged(location: CLLocation) {
-        
+        if let listeners = self.locationListeners?.values {
+            for listener in listeners {
+                listener.onLocationChanged(location: location)
+            }
+        }
     }
     
-    /*-(void)onLocationChanged:(CLLocation *)location {
-     NSArray *listeners = [_locationListeners values];
-     for (id <ILocationTrackerListener> listener in listeners) {
-     if ([listener respondsToSelector:@selector(onLocationChanged:)]) {
-     [listener onLocationChanged:location];
-     }
-     }
-     }
-*/
+    func onLocationFailed(error: Error) {
+        if let listeners = self.locationListeners?.values {
+            for listener in listeners {
+                listener.onLocationFailed(error: error)
+            }
+        }
+    }
+    
+    func makeForegroundUpdateLocations(location:CLLocation) {
+        DispatchQueue.global(qos: .default).async {
+            self.onLocationChanged(location: location)
+        }
+    }
+    
+    func makeForegroundLocationFailed(error: Error) {
+        DispatchQueue.global(qos: .default).async {
+            self.onLocationFailed(error: error)
+        }
+    }
+    
+    func makeBackgroundUpdateLocations(location:CLLocation) {
+        DispatchQueue.global(qos: .default).async {
+            self.onLocationChanged(location: location)
+        }
+    }
+    
+    func makeBackgroundLocationFailed(error: Error) {
+        DispatchQueue.global(qos: .default).async {
+            self.onLocationFailed(error: error)
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.last {
+            makeForegroundUpdateLocations(location: location)
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        makeForegroundLocationFailed(error: error)
+    }
 }
