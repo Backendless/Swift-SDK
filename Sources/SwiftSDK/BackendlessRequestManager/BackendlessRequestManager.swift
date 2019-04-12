@@ -54,7 +54,6 @@ class BackendlessRequestManager: NSObject {
         if let userToken = Backendless.shared.userService.getCurrentUser()?.userToken {
             request.addValue(userToken, forHTTPHeaderField: "user-token")
         }
-        
         if let parameters = parameters {
             if parameters is String {
                 request.httpBody = (parameters as! String).data(using: .utf8)
