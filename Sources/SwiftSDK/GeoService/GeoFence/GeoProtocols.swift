@@ -36,7 +36,7 @@ public protocol ICallback {
 }
 
 @objc public protocol IGeofenceCallback {
-    init()
+    //init()
     func geoPointEntered(geoFenceName: String, geoFenceId: String, latitude: Double, longitude: Double)
     func geoPointStayed(geoFenceName: String, geoFenceId: String, latitude: Double, longitude: Double)
     func geoPointExited(geoFenceName: String, geoFenceId: String, latitude: Double, longitude: Double)
