@@ -20,8 +20,8 @@
  */
 
 #if os(iOS)
+
 import UserNotifications
-#endif
 
 @available(iOS 10.0, *)
 @objcMembers open class BackendlessPushHelper: NSObject {
@@ -32,7 +32,6 @@ import UserNotifications
     
     private override init() { }
     
-    #if os(iOS)
     open func processMutableContent(request: UNNotificationRequest, contentHandler: @escaping (UNNotificationContent) -> Void) {
         var request = request
         
@@ -203,5 +202,6 @@ import UserNotifications
         UNUserNotificationCenter.current().setNotificationCategories(setOfCategory)
         return categoryId
     }
-    #endif
 }
+
+#endif

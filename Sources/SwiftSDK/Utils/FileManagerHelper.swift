@@ -19,13 +19,18 @@
  *  ********************************************************************************************************************
  */
 
+#if os(iOS)
+
 class FileManagerHelper: NSObject {
     
     static let shared = FileManagerHelper()
     
-    private var PUSH_TEMPLATES_KEY = "pushTemplatesForApp" + Backendless.shared.getApplictionId()
+    private var PUSH_TEMPLATES_FILE_NAME: String!
     
-    private override init() { }
+    private override init() {
+        let appId = Backendless.shared.getApplictionId().replacingOccurrences(of: "-", with: "")
+        PUSH_TEMPLATES_FILE_NAME = "pushTemplates" + appId.dropLast(10)
+    }
     
     private func getAppGroup() -> String? {
         if let projectName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String,
@@ -46,7 +51,7 @@ class FileManagerHelper: NSObject {
         return nil
     }
     
-    /*func savePushTemplates(pushTemplatesDictionary: [String : Any]) {
+    func savePushTemplates(pushTemplatesDictionary: [String : Any]) {
         if let url = sharedContainerURL() {
             let filePath = url.appendingPathComponent(PUSH_TEMPLATES_FILE_NAME)
             let data = NSKeyedArchiver.archivedData(withRootObject: pushTemplatesDictionary)
@@ -63,21 +68,7 @@ class FileManagerHelper: NSObject {
             }
         }
         return [String : Any]()
-    }*/
-    
-    func savePushTemplates(pushTemplatesDictionary: [String : Any]) {
-        if let userDefaults = UserDefaults(suiteName: getAppGroup()),
-            let data = try? JSONSerialization.data(withJSONObject: pushTemplatesDictionary, options: []) {
-            userDefaults.set(data, forKey: PUSH_TEMPLATES_KEY)
-        }
-    }
-    
-    func getPushTemplates() -> [String : Any] {
-        if let userDefaults = UserDefaults(suiteName: getAppGroup()),
-            let data = userDefaults.value(forKey: PUSH_TEMPLATES_KEY) as? Data,
-            let pushTemplates = try? JSONSerialization.jsonObject(with: data, options: []) as? [String : Any] {
-            return pushTemplates!
-        }
-        return [String : Any]()
     }
 }
+
+#endif
