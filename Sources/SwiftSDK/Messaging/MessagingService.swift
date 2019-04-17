@@ -27,7 +27,6 @@
     private let deviceHelper = DeviceHelper.shared
     private let dataTypesUtils = DataTypesUtils.shared
     private let userDefaultsHelper = UserDefaultsHelper.shared
-    private let fileManagerHelper = FileManagerHelper.shared
     private let persistenceServiceUtils = PersistenceServiceUtils()
     
     private var deviceRegistration: DeviceRegistration!
@@ -105,12 +104,15 @@
                 else if let resultDictionary = (result as! JSON).dictionaryObject,
                     let registrationId = resultDictionary["registrationId"] as? String {
                     responseHandler(registrationId)
+                    #if os(iOS)
                     self.getPushTemplates(errorHandler: errorHandler)
+                    #endif
                 }
             }
         })
     }
     
+    #if os(iOS)
     func getPushTemplates(errorHandler: ((Fault) -> Void)!) {
         BackendlessRequestManager(restMethod: "messaging/pushtemplates", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: JSON.self) {
@@ -118,11 +120,12 @@
                     errorHandler(result as! Fault)
                 }
                 else if let pushTemplatesDictionary = (result as! JSON).dictionaryObject {
-                    self.fileManagerHelper.savePushTemplates(pushTemplatesDictionary: pushTemplatesDictionary)
+                    FileManagerHelper.shared.savePushTemplates(pushTemplatesDictionary: pushTemplatesDictionary)
                 }
             }
         })
     }
+    #endif
     
     open func getDeviceRegistrations(deviceId: String, responseHandler: (([DeviceRegistration]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         BackendlessRequestManager(restMethod: "messaging/registrations/\(deviceId)", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
