@@ -1,5 +1,5 @@
 //
-//  FileInfo.swift
+//  BackendlessFileInfo.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class FileInfo: NSObject {
+@objcMembers open class BackendlessFileInfo: NSObject {
     
     open var name: String?
     open var createdOn: NSNumber?

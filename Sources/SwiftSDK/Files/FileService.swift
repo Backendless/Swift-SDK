@@ -137,19 +137,19 @@
         })
     }
     
-    open func listing(pattern: String, recursive: Bool, responseHandler: (([FileInfo]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    open func listing(pattern: String, recursive: Bool, responseHandler: (([BackendlessFileInfo]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         filesListing(path: "", pattern: pattern, recursive: recursive, pageSize: nil, offset: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func listing(path: String, pattern: String, recursive: Bool, responseHandler: (([FileInfo]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    open func listing(path: String, pattern: String, recursive: Bool, responseHandler: (([BackendlessFileInfo]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         filesListing(path: path, pattern: pattern, recursive: recursive, pageSize: nil, offset: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func listing(path: String, pattern: String, recursive: Bool, pageSize: Int, offset: Int, responseHandler: (([FileInfo]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    open func listing(path: String, pattern: String, recursive: Bool, pageSize: Int, offset: Int, responseHandler: (([BackendlessFileInfo]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         filesListing(path: path, pattern: pattern, recursive: recursive, pageSize: pageSize, offset: offset, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    func filesListing(path: String, pattern: String, recursive: Bool, pageSize: Int?, offset: Int?, responseHandler: (([FileInfo]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    func filesListing(path: String, pattern: String, recursive: Bool, pageSize: Int?, offset: Int?, responseHandler: (([BackendlessFileInfo]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         var restMethod = "files/\(path)?pattern=\(dataTypesUtils.stringToUrlString(originalString: pattern))"
         if recursive {
             restMethod += "&sub=true"
@@ -169,7 +169,7 @@
                     errorHandler(result as! Fault)
                 }
                 else {
-                    var resultArray = [FileInfo]()
+                    var resultArray = [BackendlessFileInfo]()
                     for resultObject in result as! [JSON] {
                         if let resultDictionary = resultObject.dictionaryObject {
                             resultArray.append(self.processResponse.adaptToFileInfo(fileInfoDictionary: resultDictionary))
