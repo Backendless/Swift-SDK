@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+#if os(iOS) || os(watchOS)
+
 struct GeoRectangle {
     var northLatitude: Double = 0.0
     var westLongitude: Double = 0.0
@@ -164,14 +166,17 @@ class GeoMath: NSObject {
         return distance(latitude1: geoPoint.latitude, longitude1: geoPoint.longitude, latitude2: center.latitude, longitude2: center.longitude) <= radius
     }
     
-    func isPointInRectangular(geoPoint: GeoPoint, nwGeoPoint: GeoPoint, seGeoPoint: GeoPoint) -> Bool {
-        if geoPoint.latitude > nwGeoPoint.latitude || geoPoint.latitude < seGeoPoint.latitude {
-            return false
+    func isPointInRectangular(geoPoint: GeoPoint, nwGeoPoint: GeoPoint, seGeoPoint: GeoPoint) -> Bool {        
+        let geoLat = geoPoint.latitude
+        let geoLon = geoPoint.longitude
+        let nwLat = nwGeoPoint.latitude
+        let nwLon = nwGeoPoint.longitude
+        let seLat = seGeoPoint.latitude
+        let seLon = seGeoPoint.longitude        
+        if geoLat <= seLat && geoLat >= nwLat && geoLon >= seLon && geoLon <= nwLon {
+            return true
         }
-        if nwGeoPoint.longitude > seGeoPoint.longitude {
-            return geoPoint.longitude >= nwGeoPoint.longitude || geoPoint.longitude <= seGeoPoint.longitude
-        }
-        return geoPoint.longitude >= nwGeoPoint.longitude && geoPoint.longitude <= seGeoPoint.longitude
+        return false
     }
     
     func isPointInShape(geoPoint: GeoPoint, shape: [GeoPoint]) -> Bool {
@@ -205,3 +210,5 @@ class GeoMath: NSObject {
         return result > 0 ? .INTERSECT : .NO_INTERSECT
     }
 }
+
+#endif

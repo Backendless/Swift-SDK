@@ -19,42 +19,42 @@
  *  ********************************************************************************************************************
  */
 
-enum FenceType: Int, Codable {
-    case CIRCLE_FENCE
-    case RECT_FENCE
-    case SHAPE_FENCE
+public enum FenceType: Int, Codable {
+    case CIRCLE
+    case RECT
+    case SHAPE
     
     public typealias RawValue = String
     
     public var rawValue: RawValue {
         switch self {
-        case .CIRCLE_FENCE: return "CIRCLE_FENCE"
-        case .RECT_FENCE: return "RECT_FENCE"
-        case .SHAPE_FENCE: return "SHAPE_FENCE"
+        case .CIRCLE: return "CIRCLE"
+        case .RECT: return "RECT"
+        case .SHAPE: return "SHAPE"
         }
     }
     
     public init?(rawValue: RawValue) {
         switch rawValue {
-        case "CIRCLE_FENCE": self = .CIRCLE_FENCE
-        case "RECT_FENCE": self = .RECT_FENCE
-        case "SHAPE_FENCE": self = .SHAPE_FENCE
-        default: self = .CIRCLE_FENCE
+        case "CIRCLE": self = .CIRCLE
+        case "RECT": self = .RECT
+        case "SHAPE": self = .SHAPE
+        default: self = .CIRCLE
         }
     }
 }    
 
-class GeoFence: NSObject {
+@objcMembers open class GeoFence: NSObject {
 
-    var objectId: String?
-    var geofenceName: String?
-    var onStayDuration: NSNumber?
-    var geoFenceType: FenceType?
-    var nodes: [GeoPoint]?
-    var nwGeoPoint: GeoPoint?
-    var seGeoPoint: GeoPoint?
+    open internal(set) var objectId: String?
+    open var geofenceName: String?
+    open var onStayDuration: NSNumber?
+    open var geoFenceType: FenceType?
+    open var nodes: [GeoPoint]?
+    open var nwGeoPoint: GeoPoint?
+    open  var seGeoPoint: GeoPoint?
     
-    init(geofenceName: String) {
+    public init(geofenceName: String) {
         self.geofenceName = geofenceName
     }
     

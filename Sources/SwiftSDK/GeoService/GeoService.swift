@@ -23,6 +23,11 @@
     
     private let processResponse = ProcessResponse.shared
     private let dataTypesUtils = DataTypesUtils.shared
+    
+    #if os(iOS) || os(watchOS)
+    private let geoFenceMonitoring = GeoFenceMonitoring.shared
+    #endif
+    
     private struct NoReply: Decodable { }
     
     open func saveGeoPoint(geoPoint: GeoPoint, responseHandler: ((GeoPoint) -> Void)!, errorHandler: ((Fault) -> Void)!) {
@@ -275,8 +280,6 @@
         return restMethod
     }
     
-    // ******************************** FENCE ******************************************
-    
     open func getFencePoints(geoFenceName: String, responseHandler: (([GeoPoint]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         getFenceGeoPoints(geoFenceName: geoFenceName, geoQuery: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
@@ -364,4 +367,84 @@
             })
         }
     }
+    
+    #if os(iOS) || os(watchOS)
+    
+    open func startGeoFenceMonitoring(geoPoint: GeoPoint, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        startGeoFenceMonitoring(callback: ServerCallback(geoPoint: geoPoint) as ICallback, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    open func startGeoFenceMonitoring(geoFenceName: String, geoPoint: GeoPoint, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        startGeoFenceMonitoring(callback: ServerCallback(geoPoint: geoPoint) as ICallback, geoFenceName: geoFenceName, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    open func startGeoFenceMonitoring(geoFenceCallback: IGeofenceCallback, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        startGeoFenceMonitoring(callback: ClientCallback(geoFenceCallback: geoFenceCallback) as ICallback, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    open func startGeoFenceMonitoring(geoFenceName: String, geoFenceCallback: IGeofenceCallback, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        startGeoFenceMonitoring(callback: ClientCallback(geoFenceCallback: geoFenceCallback) as ICallback, geoFenceName: geoFenceName, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    open func stopGeoFenceMonitoring() {
+        geoFenceMonitoring.removeGeoFences()
+        LocationTracker.shared.removeListener(name: geoFenceMonitoring.listenerName())
+    }
+    
+    open func stopGeoFenceMonitoring(geoFenceName: String) {
+        geoFenceMonitoring.removeGeoFence(geoFenceName: geoFenceName)
+        if !geoFenceMonitoring.isMonitoring() {
+            LocationTracker.shared.removeListener(name: geoFenceMonitoring.listenerName())
+        }
+    }
+    
+    private func startGeoFenceMonitoring(callback: ICallback, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        startGeoFenceMonitoring(geoFenceName: nil, callback: callback, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    private func startGeoFenceMonitoring(callback: ICallback, geoFenceName: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        startGeoFenceMonitoring(geoFenceName: geoFenceName, callback: callback, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    private func startGeoFenceMonitoring(geoFenceName: String?, callback: ICallback, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        var restMethod = "geo/fences?"
+        if let geoFenceName = geoFenceName {
+            restMethod += "geoFence=\(geoFenceName)"
+        }
+        BackendlessRequestManager(restMethod: restMethod, httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = self.processResponse.adapt(response: response, to: [JSON].self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else if let geoFencesArray = result as? [JSON] {
+                    var geoFences = [GeoFence]()
+                    for geoFenceJSON in geoFencesArray {
+                        if let geoFenceDictionary = geoFenceJSON.dictionaryObject,
+                            let geoFence = self.processResponse.adaptToGeoFence(geoFenceDictionary: geoFenceDictionary) {
+                            geoFences.append(geoFence)
+                        }
+                    }
+                    self.addFenceMonitoring(callback: callback, geoFences: geoFences, responseHandler: responseHandler, errorHandler: errorHandler)
+                }
+            }
+        })
+    }
+    
+    private func addFenceMonitoring(callback: ICallback, geoFences: Any, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        if geoFences is GeoFence {
+            if let fault = geoFenceMonitoring.addGeoFence(geoFence: geoFences as? GeoFence, callback: callback) {
+                errorHandler(fault)
+            }
+        }
+        else if geoFences is [GeoFence] {
+            if let fault = geoFenceMonitoring.addGeoFences(geoFences: geoFences as? [GeoFence], callback: callback) {
+                errorHandler(fault)
+            }
+        }
+        let listenerName = geoFenceMonitoring.listenerName()
+        let _ = LocationTracker.shared.addListener(name: listenerName, listener: geoFenceMonitoring)
+        responseHandler()
+    }
+    
+    #endif
 }

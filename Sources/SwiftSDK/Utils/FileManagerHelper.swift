@@ -23,7 +23,7 @@ class FileManagerHelper: NSObject {
     
     static let shared = FileManagerHelper()
     
-    private let PUSH_TEMPLATES_FILE_NAME = "pushTemplatesFile"
+    private var PUSH_TEMPLATES_FILE_NAME = "pushTemplatesFile" + Backendless.shared.getApplictionId()
     
     private override init() { }
     

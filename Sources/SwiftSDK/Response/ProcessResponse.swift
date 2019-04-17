@@ -191,6 +191,35 @@ class ProcessResponse: NSObject {
         return nil
     }
     
+    func adaptToGeoFence(geoFenceDictionary: [String : Any]) -> GeoFence? {
+        if let geofenceName = geoFenceDictionary["geofenceName"] as? String {
+            let geoFence = GeoFence(geofenceName: geofenceName)
+            if let objectId = geoFenceDictionary["objectId"] as? String {
+                geoFence.objectId = objectId
+            }
+            if let onStayDuration = geoFenceDictionary["onStayDuration"] as? NSNumber {
+                geoFence.onStayDuration = onStayDuration
+            }
+            if let geoFenceType = geoFenceDictionary["type"] as? String {
+                geoFence.geoFenceType = FenceType(rawValue: geoFenceType)
+            }
+            if let nodes = geoFenceDictionary["nodes"] as? [[String : Any]] {
+                var geoFenceNodes = [GeoPoint]()
+                for node in nodes {
+                    if node["___class"] as? String == "GeoPoint",
+                        let latitude = node["latitude"] as? Double,
+                        let longitude = node["longitude"] as? Double {
+                        let geoPoint = GeoPoint(latitude: latitude, longitude: longitude)
+                        geoFenceNodes.append(geoPoint)
+                    }
+                }
+                geoFence.nodes = geoFenceNodes
+            }
+            return geoFence
+        }
+        return nil
+    }
+    
     func adaptToPublishMessageInfo(messageInfoDictionary: [String : Any]) -> PublishMessageInfo {
         let publishMessageInfo = PublishMessageInfo()
         if let messageId = messageInfoDictionary["messageId"] as? String {

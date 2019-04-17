@@ -1,5 +1,5 @@
 //
-//  GeoProtocols.swift
+//  Logging.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,27 +19,6 @@
  *  ********************************************************************************************************************
  */
 
-#if os(iOS) || os(watchOS)
+class Logging: NSObject {
 
-import CoreLocation
-
-protocol ILocationTrackerListener {
-    func onLocationChanged(location: CLLocation)
-    func onLocationFailed(error: Error)
 }
-
-public protocol ICallback {
-    func callOnEnter(geoFence: GeoFence, location: CLLocation)
-    func callOnStay(geoFence: GeoFence, location: CLLocation)
-    func callOnExit(geoFence: GeoFence, location: CLLocation)
-    func equalCallbackParameter(object: Any?) -> Bool
-}
-
-public protocol IGeofenceCallback {
-    init()
-    func geoPointEntered(geoFenceName: String, geoFenceId: String, latitude: Double, longitude: Double)
-    func geoPointStayed(geoFenceName: String, geoFenceId: String, latitude: Double, longitude: Double)
-    func geoPointExited(geoFenceName: String, geoFenceId: String, latitude: Double, longitude: Double)
-}
-
-#endif

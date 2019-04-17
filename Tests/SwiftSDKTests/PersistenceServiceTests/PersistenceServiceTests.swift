@@ -87,223 +87,22 @@ class PersistenceServiceTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_04_grantForUser() {
-        let expectation = self.expectation(description: "PASSED: persistenceService.grantForUser")
-        
-        let user = BackendlessUser()
-        user.email = USER_EMAIL
-        user.password = USER_PASSWORD
-        user.name = USER_NAME
-        
-        backendless.userService.registerUser(user: user, responseHandler: { registeredUser in
-            XCTAssertNotNil(registeredUser)
-            self.backendless.userService.login(identity: self.USER_EMAIL, password: self.USER_PASSWORD, responseHandler: { loggedInUser in
-                XCTAssertNotNil(loggedInUser)
-                
-                let testObject = TestClass()
-                testObject.name = "Bob"
-                testObject.age = 25
-                
-                self.backendless.data.of(TestClass.self).save(entity: testObject, responseHandler: { savedObject in
-                    XCTAssertNotNil(savedObject)
-                    self.backendless.data.permissions.grantForUser(userId: loggedInUser.objectId, entity: savedObject, operation: .DATA_UPDATE, responseHandler: {
-                        (savedObject as! TestClass).name = "Ann"
-                        (savedObject as! TestClass).age = 50
-                        self.backendless.data.of(TestClass.self).update(entity: savedObject, responseHandler: { updatedObject in
-                            XCTAssertEqual((updatedObject as! TestClass).name, "Ann")
-                            XCTAssertEqual((updatedObject as! TestClass).age, 50)
-                            expectation.fulfill()
-                        }, errorHandler: { fault in
-                            XCTAssertNotNil(fault)
-                            XCTFail("\(fault.code): \(fault.message!)")
-                        })
-                    }, errorHandler: { fault in
-                        XCTAssertNotNil(fault)
-                        XCTFail("\(fault.code): \(fault.message!)")
-                    })
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
-                })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
-                XCTFail("\(fault.code): \(fault.message!)")
-            })
-        }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
-            XCTFail("\(fault.code): \(fault.message!)")
-        })
-        waitForExpectations(timeout: timeout, handler: nil)
-    }
-    
-    func test_05_denyForUser() {
-        let expectation = self.expectation(description: "PASSED: persistenceService.denyForUser")
-        self.backendless.userService.login(identity: self.USER_EMAIL, password: self.USER_PASSWORD, responseHandler: { loggedInUser in
-            XCTAssertNotNil(loggedInUser)
-            
-            let testObject = TestClass()
-            testObject.name = "Bob"
-            testObject.age = 25
-            
-            self.backendless.data.of(TestClass.self).save(entity: testObject, responseHandler: { savedObject in
-                XCTAssertNotNil(savedObject)
-                self.backendless.data.permissions.denyForUser(userId: loggedInUser.objectId, entity: savedObject, operation: .DATA_UPDATE, responseHandler: {
-                    (savedObject as! TestClass).name = "Ann"
-                    (savedObject as! TestClass).age = 50
-                    self.backendless.data.of(TestClass.self).update(entity: savedObject, responseHandler: { updatedObject in
-                        XCTFail("Update operation for this object must be denied")
-                    }, errorHandler: { fault in
-                        XCTAssertNotNil(fault)
-                        expectation.fulfill()
-                    })
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
-                })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
-                XCTFail("\(fault.code): \(fault.message!)")
-            })
-        }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
-            XCTFail("\(fault.code): \(fault.message!)")
-        })
-        waitForExpectations(timeout: timeout, handler: nil)
-    }
-    
-    func test_06_grantForRole() {
-        let expectation = self.expectation(description: "PASSED: persistenceService.grantForRole")
-        self.backendless.userService.logout(responseHandler: {
-            let testObject = TestClass()
-            testObject.name = "Bob"
-            testObject.age = 25
-            
-            self.backendless.data.of(TestClass.self).save(entity: testObject, responseHandler: { savedObject in
-                XCTAssertNotNil(savedObject)
-                self.backendless.data.permissions.grantForRole(role: "NotAuthenticatedUser", entity: savedObject, operation: .DATA_UPDATE, responseHandler: {
-                    (savedObject as! TestClass).name = "Ann"
-                    (savedObject as! TestClass).age = 50
-                    self.backendless.data.of(TestClass.self).update(entity: savedObject, responseHandler: { updatedObject in
-                        XCTAssertEqual((updatedObject as! TestClass).name, "Ann")
-                        XCTAssertEqual((updatedObject as! TestClass).age, 50)
-                        expectation.fulfill()
-                    }, errorHandler: { fault in
-                        XCTAssertNotNil(fault)
-                        XCTFail("\(fault.code): \(fault.message!)")
-                    })
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
-                })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
-                XCTFail("\(fault.code): \(fault.message!)")
-            })
-        }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
-            XCTFail("\(fault.code): \(fault.message!)")
-        })
-        waitForExpectations(timeout: timeout, handler: nil)
-    }
-    
-    // TODO after BKNDLSS-18209 fixed
-    func test_07_denyForRole() {
-    }
-    
-    func test_08_grantForAllUsers() {
-        let expectation = self.expectation(description: "PASSED: persistenceService.grantForAllUsers")
-        self.backendless.userService.login(identity: self.USER_EMAIL, password: self.USER_PASSWORD, responseHandler: { loggedInUser in
-            XCTAssertNotNil(loggedInUser)
-            
-            let testObject = TestClass()
-            testObject.name = "Bob"
-            testObject.age = 25
-            
-            self.backendless.data.of(TestClass.self).save(entity: testObject, responseHandler: { savedObject in
-                XCTAssertNotNil(savedObject)
-                self.backendless.data.permissions.grantForAllUsers(entity: savedObject, operation: .DATA_UPDATE, responseHandler: {
-                    (savedObject as! TestClass).name = "Ann"
-                    (savedObject as! TestClass).age = 50
-                    self.backendless.data.of(TestClass.self).update(entity: savedObject, responseHandler: { updatedObject in
-                        XCTAssertEqual((updatedObject as! TestClass).name, "Ann")
-                        XCTAssertEqual((updatedObject as! TestClass).age, 50)
-                        expectation.fulfill()
-                    }, errorHandler: { fault in
-                        XCTAssertNotNil(fault)
-                        XCTFail("\(fault.code): \(fault.message!)")
-                    })
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
-                })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
-                XCTFail("\(fault.code): \(fault.message!)")
-            })
-        }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
-            XCTFail("\(fault.code): \(fault.message!)")
-        })
-        waitForExpectations(timeout: timeout, handler: nil)
-    }
-    
-    func test_09_denyForAllUsers() {
-        let expectation = self.expectation(description: "PASSED: persistenceService.denyForAllUsers")
-        self.backendless.userService.login(identity: self.USER_EMAIL, password: self.USER_PASSWORD, responseHandler: { loggedInUser in
-            XCTAssertNotNil(loggedInUser)
-            
-            let testObject = TestClass()
-            testObject.name = "Bob"
-            testObject.age = 25
-            
-            self.backendless.data.of(TestClass.self).save(entity: testObject, responseHandler: { savedObject in
-                XCTAssertNotNil(savedObject)
-                self.backendless.data.permissions.denyForAllUsers(entity: savedObject, operation: .DATA_UPDATE, responseHandler: {
-                    (savedObject as! TestClass).name = "Ann"
-                    (savedObject as! TestClass).age = 50
-                    self.backendless.data.of(TestClass.self).update(entity: savedObject, responseHandler: { updatedObject in
-                        XCTFail("Update operation for this object must be denied")
-                    }, errorHandler: { fault in
-                        XCTAssertNotNil(fault)
-                        expectation.fulfill()
-                    })
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
-                })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
-                XCTFail("\(fault.code): \(fault.message!)")
-            })
-        }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
-            XCTFail("\(fault.code): \(fault.message!)")
-        })
-        waitForExpectations(timeout: timeout, handler: nil)
-    }
-    
-    func test_10_grantForAllRoles() {
+    func test_04_grantForAllRoles() {
         let expectation = self.expectation(description: "PASSED: persistenceService.grantForAllRoles")
-        self.backendless.userService.login(identity: self.USER_EMAIL, password: self.USER_PASSWORD, responseHandler: { loggedInUser in
-            XCTAssertNotNil(loggedInUser)
-            
-            let testObject = TestClass()
-            testObject.name = "Bob"
-            testObject.age = 25
-            
-            self.backendless.data.of(TestClass.self).save(entity: testObject, responseHandler: { savedObject in
-                XCTAssertNotNil(savedObject)
-                self.backendless.data.permissions.grantForAllRoles(entity: savedObject, operation: .DATA_UPDATE, responseHandler: {
-                    (savedObject as! TestClass).name = "Ann"
-                    (savedObject as! TestClass).age = 50
-                    self.backendless.data.of(TestClass.self).update(entity: savedObject, responseHandler: { updatedObject in
-                        XCTAssertEqual((updatedObject as! TestClass).name, "Ann")
-                        XCTAssertEqual((updatedObject as! TestClass).age, 50)
-                        expectation.fulfill()
-                    }, errorHandler: { fault in
-                        XCTAssertNotNil(fault)
-                        XCTFail("\(fault.code): \(fault.message!)")
-                    })
+        
+        let testObject = TestClass()
+        testObject.name = "Bob"
+        testObject.age = 25
+        
+        self.backendless.data.of(TestClass.self).save(entity: testObject, responseHandler: { savedObject in
+            XCTAssertNotNil(savedObject)
+            self.backendless.data.permissions.grantForAllRoles(entity: savedObject, operation: .DATA_UPDATE, responseHandler: {
+                (savedObject as! TestClass).name = "Ann"
+                (savedObject as! TestClass).age = 50
+                self.backendless.data.of(TestClass.self).update(entity: savedObject, responseHandler: { updatedObject in
+                    XCTAssertEqual((updatedObject as! TestClass).name, "Ann")
+                    XCTAssertEqual((updatedObject as! TestClass).age, 50)
+                    expectation.fulfill()
                 }, errorHandler: { fault in
                     XCTAssertNotNil(fault)
                     XCTFail("\(fault.code): \(fault.message!)")
@@ -319,29 +118,23 @@ class PersistenceServiceTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_11_denyForAllRoles() {
+    func test_05_denyForAllRoles() {
         let expectation = self.expectation(description: "PASSED: persistenceService.denyForAllRoles")
-        self.backendless.userService.login(identity: self.USER_EMAIL, password: self.USER_PASSWORD, responseHandler: { loggedInUser in
-            XCTAssertNotNil(loggedInUser)
-            
-            let testObject = TestClass()
-            testObject.name = "Bob"
-            testObject.age = 25
-            
-            self.backendless.data.of(TestClass.self).save(entity: testObject, responseHandler: { savedObject in
-                XCTAssertNotNil(savedObject)
-                self.backendless.data.permissions.denyForAllRoles(entity: savedObject, operation: .DATA_UPDATE, responseHandler: {
-                    (savedObject as! TestClass).name = "Ann"
-                    (savedObject as! TestClass).age = 50
-                    self.backendless.data.of(TestClass.self).update(entity: savedObject, responseHandler: { updatedObject in
-                        XCTFail("Update operation for this object must be denied")
-                    }, errorHandler: { fault in
-                        XCTAssertNotNil(fault)
-                        expectation.fulfill()
-                    })
+        
+        let testObject = TestClass()
+        testObject.name = "Bob"
+        testObject.age = 25
+        
+        self.backendless.data.of(TestClass.self).save(entity: testObject, responseHandler: { savedObject in
+            XCTAssertNotNil(savedObject)
+            self.backendless.data.permissions.denyForAllRoles(entity: savedObject, operation: .DATA_UPDATE, responseHandler: {
+                (savedObject as! TestClass).name = "Ann"
+                (savedObject as! TestClass).age = 50
+                self.backendless.data.of(TestClass.self).update(entity: savedObject, responseHandler: { updatedObject in
+                    XCTFail("Update operation for this object must be denied")
                 }, errorHandler: { fault in
                     XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
+                    expectation.fulfill()
                 })
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)

@@ -28,14 +28,24 @@ class GeoServiceTests: XCTestCase {
     private let timeout: Double = 10.0
     private let category = "TestsCategory"
     private let newCategory = "NewTestsCategory"
+    private let geoSampleCategory = "geoservice_sample"
     
+    // call before all tests
     override class func setUp() {
         Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
         Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
+        removeCategories()
     }
     
-    // TODO
-    // remove all points before and after tests
+    // call after all tests
+    override class func tearDown() {
+        removeCategories()
+    }
+    
+    class func removeCategories() {
+        Backendless.shared.geo.deleteGeoCategory(categoryName: "TestsCategory", responseHandler: { deleted in }, errorHandler: { fault in })
+        Backendless.shared.geo.deleteGeoCategory(categoryName: "NewTestsCategory", responseHandler: { deleted in }, errorHandler: { fault in })
+    }
     
     func test_01_saveGeoPoint() {
         let expectation = self.expectation(description: "PASSED: geoService.saveGeoPoint")
@@ -145,7 +155,7 @@ class GeoServiceTests: XCTestCase {
     func test_07_getPointsCount() {
         let expectation = self.expectation(description: "PASSED: geoService.getPointsCount")
         let geoQuery = BackendlessGeoQuery()
-        geoQuery.categories = ["geoservice_sample"]
+        geoQuery.categories = [geoSampleCategory]
         backendless.geo.getPointsCount(geoQuery: geoQuery, responseHandler: { pointsCount in
             expectation.fulfill()
         }, errorHandler: { fault in
@@ -162,7 +172,7 @@ class GeoServiceTests: XCTestCase {
         geoQuery.geoPoint = center
         geoQuery.radius = 100000
         geoQuery.units = Units.METERS.rawValue
-        geoQuery.categories = ["geoservice_sample"]
+        geoQuery.categories = [geoSampleCategory]
         backendless.geo.getPoints(geoQuery: geoQuery, responseHandler: { geoPoints in
             expectation.fulfill()
         }, errorHandler: { fault in
@@ -178,7 +188,7 @@ class GeoServiceTests: XCTestCase {
         let southEastPoint = GeoPoint(latitude: 25.79, longitude: -80.22)
         let geoQuery = BackendlessGeoQuery()
         geoQuery.rectangle = GeoQueryRectangle(nordWestPoint: nordWestPoint, southEastPoint: southEastPoint)
-        geoQuery.categories = ["geoservice_sample"]
+        geoQuery.categories = [geoSampleCategory]
         backendless.geo.getPoints(geoQuery: geoQuery, responseHandler: { geoPoints in
             expectation.fulfill()
         }, errorHandler: { fault in
@@ -194,7 +204,7 @@ class GeoServiceTests: XCTestCase {
         let southEastPoint = GeoPoint(latitude: 25.79, longitude: -80.22)
         let geoQuery = BackendlessGeoQuery()
         geoQuery.rectangle = GeoQueryRectangle(nordWestPoint: nordWestPoint, southEastPoint: southEastPoint)
-        geoQuery.categories = ["geoservice_sample"]
+        geoQuery.categories = [geoSampleCategory]
         backendless.geo.getPoints(geoQuery: geoQuery, responseHandler: { geoPoints in
             if let geoPoint = geoPoints.first {
                 self.backendless.geo.loadMetadata(geoPoint: geoPoint, responseHandler: { geoPointWithMeta in
@@ -210,28 +220,26 @@ class GeoServiceTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
-        
-        
-        
     }
     
     func test_11_clustering() {
         let expectation = self.expectation(description: "PASSED: geoService.clustering")
         let geoQuery = BackendlessGeoQuery()
-        geoQuery.categories = ["geoservice_sample"]
+        geoQuery.categories = [geoSampleCategory]
         geoQuery.setClusteringParams(westLongitude: 24.86242, eastLongitude: 54.83570, mapWidth: 480)
         backendless.geo.getPoints(geoQuery: geoQuery, responseHandler: { points in
             for point in points {
                 if point is GeoCluster {
                     let geoCluster = point as! GeoCluster
                     self.backendless.geo.getClusterPoints(geoCluster: geoCluster, responseHandler: { clusterPoints in
-                        expectation.fulfill()
+                        XCTAssertNotNil(clusterPoints)
                     }, errorHandler: { fault in
                         XCTAssertNotNil(fault)
                         XCTFail("\(fault.code): \(fault.message!)")
                     })
                 }
             }
+            expectation.fulfill()
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")

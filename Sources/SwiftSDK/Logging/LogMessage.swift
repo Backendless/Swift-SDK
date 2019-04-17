@@ -1,5 +1,5 @@
 //
-//  GeoProtocols.swift
+//  LogMessage.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,27 +19,22 @@
  *  ********************************************************************************************************************
  */
 
-#if os(iOS) || os(watchOS)
-
-import CoreLocation
-
-protocol ILocationTrackerListener {
-    func onLocationChanged(location: CLLocation)
-    func onLocationFailed(error: Error)
+class LogMessage: NSObject {
+    
+    var logger: String?
+    var level: String?
+    var timestamp: Date?
+    var message: String?
+    var exception: String?
+    
+    private override init() { }
+    
+    init(logger: String, level: String, timestamp: Date, message: String, exception: String) {
+        let logMessage = LogMessage()
+        logMessage.logger = logger
+        logMessage.level = level
+        logMessage.timestamp = timestamp
+        logMessage.message = message
+        logMessage.exception = exception
+    }
 }
-
-public protocol ICallback {
-    func callOnEnter(geoFence: GeoFence, location: CLLocation)
-    func callOnStay(geoFence: GeoFence, location: CLLocation)
-    func callOnExit(geoFence: GeoFence, location: CLLocation)
-    func equalCallbackParameter(object: Any?) -> Bool
-}
-
-public protocol IGeofenceCallback {
-    init()
-    func geoPointEntered(geoFenceName: String, geoFenceId: String, latitude: Double, longitude: Double)
-    func geoPointStayed(geoFenceName: String, geoFenceId: String, latitude: Double, longitude: Double)
-    func geoPointExited(geoFenceName: String, geoFenceId: String, latitude: Double, longitude: Double)
-}
-
-#endif
