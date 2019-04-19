@@ -348,7 +348,7 @@ class ProcessResponse: NSObject {
         return backendlessFile
     }
     
-    func adaptToFileInfo(fileInfoDictionary: [String : Any]) -> BackendlessFileInfo {
+    func adaptToBackendlessFileInfo(fileInfoDictionary: [String : Any]) -> BackendlessFileInfo {
         let fileInfo = BackendlessFileInfo()
         if let name = fileInfoDictionary["name"] as? String {
             fileInfo.name = name

@@ -172,7 +172,7 @@
                     var resultArray = [BackendlessFileInfo]()
                     for resultObject in result as! [JSON] {
                         if let resultDictionary = resultObject.dictionaryObject {
-                            resultArray.append(self.processResponse.adaptToFileInfo(fileInfoDictionary: resultDictionary))
+                            resultArray.append(self.processResponse.adaptToBackendlessFileInfo(fileInfoDictionary: resultDictionary))
                         }
                     }
                     responseHandler(resultArray)
