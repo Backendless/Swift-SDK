@@ -19,42 +19,18 @@
  *  ********************************************************************************************************************
  */
 
-@objc public enum Units: Int, Codable {
-    case METERS
-    case MILES
-    case YARDS
-    case KILOMETERS
-    case FEET
-    
-    public typealias RawValue = String
-    
-    public var rawValue: RawValue {
-        switch self {
-        case .METERS: return "METERS"
-        case .MILES: return "MILES"
-        case .YARDS: return "YARDS"
-        case .KILOMETERS: return "KILOMETERS"
-        case .FEET: return "FEET"
-        }
-    }
-    
-    public init?(rawValue: RawValue) {
-        switch rawValue {
-        case "METERS": self = .METERS
-        case "MILES": self = .MILES
-        case "YARDS": self = .YARDS
-        case "KILOMETERS": self = .KILOMETERS
-        case "FEET": self = .FEET
-        default: self = .MILES
-        }
-    }
+@objc public enum Units: Int {
+    case METERS = 0
+    case MILES = 1
+    case YARDS = 2
+    case KILOMETERS = 3
+    case FEET = 4
 }
 
 @objcMembers open class BackendlessGeoQuery: NSObject {
     
     open var geoPoint: GeoPoint?
     open var radius: NSNumber?
-    open var units: String?
     open var categories: [String]?
     open var includemetadata = false
     open var metadata: [String : Any]?
@@ -66,6 +42,31 @@
     
     open private(set) var degreePerPixel: Double = 0.0
     open private(set) var clusterGridSize: Int = 100
+    
+    private var units: NSNumber?
+    
+    open func setUnits(units: Int) {
+        self.units = NSNumber(integerLiteral: units)
+    }
+    
+    open func getUnits() -> String {
+        if self.units == 0 {
+            return "METERS"
+        }
+        else if self.units == 1 {
+            return "MILES"
+        }
+        else if self.units == 2 {
+            return "YARDS"
+        }
+        else if self.units == 3 {
+            return "KILOMETERS"
+        }
+        else if self.units == 4 {
+            return "FEET"
+        }
+        return "MILES"
+    }
     
     open func setClusteringParams(degreePerPixel: Double, clusterGridSize: Int) {
         self.degreePerPixel = degreePerPixel

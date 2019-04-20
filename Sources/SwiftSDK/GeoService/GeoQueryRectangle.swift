@@ -29,5 +29,21 @@
     public init(nordWestPoint: GeoPoint, southEastPoint: GeoPoint) {
         self.nordWestPoint = nordWestPoint
         self.southEastPoint = southEastPoint
-    }    
+    }
+    
+    public init(center: GeoPoint, length: Double, width: Double) {
+        super.init()
+        
+        var value: Double = center.latitude + width / 2
+        let nwLatitude = (value > 90.0) ? 180.0 - value : value
+        value = center.longitude - length / 2
+        let nwLongitude = (value < -180.0) ? 360.0 + value : value
+        self.nordWestPoint = GeoPoint(latitude: nwLatitude, longitude: nwLongitude)
+        
+        value = center.latitude - width / 2
+        let seLatitude = (value < -90.0) ? -(value + 180.0) : value
+        value = center.longitude + length / 2
+        let seLongitude = (value > 180.0) ? value - 360.0 : value
+        self.southEastPoint = GeoPoint(latitude: seLatitude, longitude: seLongitude)
+    }
 }

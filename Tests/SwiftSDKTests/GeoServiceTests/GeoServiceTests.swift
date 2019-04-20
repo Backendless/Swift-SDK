@@ -73,7 +73,7 @@ class GeoServiceTests: XCTestCase {
         backendless.geo.saveGeoPoint(geoPoint: geoPoint, responseHandler: { savedPoint in
             XCTAssertNotNil(savedPoint)
             savedPoint.metadata = ["foo": "bar"]
-            self.backendless.geo.updateGeoPoint(geoPoint: savedPoint, responseHandler: { updatedPoint in
+            self.backendless.geo.saveGeoPoint(geoPoint: savedPoint, responseHandler: { updatedPoint in
                 XCTAssertNotNil(savedPoint)
                 XCTAssertNotNil(savedPoint.latitude)
                 XCTAssertNotNil(savedPoint.longitude)
@@ -171,7 +171,7 @@ class GeoServiceTests: XCTestCase {
         let geoQuery = BackendlessGeoQuery()
         geoQuery.geoPoint = center
         geoQuery.radius = 100000
-        geoQuery.units = Units.METERS.rawValue
+        geoQuery.setUnits(units: Units.METERS.rawValue)
         geoQuery.categories = [geoSampleCategory]
         backendless.geo.getPoints(geoQuery: geoQuery, responseHandler: { geoPoints in
             expectation.fulfill()

@@ -33,40 +33,31 @@
     open func saveGeoPoint(geoPoint: GeoPoint, responseHandler: ((GeoPoint) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = ["latitude": geoPoint.latitude, "longitude": geoPoint.longitude, "categories": geoPoint.categories as Any, "metadata": geoPoint.metadata as Any] as [String : Any]
-        BackendlessRequestManager(restMethod: "geo/points", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: [String: GeoPoint].self) {
-                if result is Fault {
-                    errorHandler(result as! Fault)
-                }
-                else if let geoPoint = (result as! [String: GeoPoint])["geopoint"] {
-                    responseHandler(geoPoint)
-                }
-            }
-        })
-    }
     
-    open func updateGeoPoint(geoPoint: GeoPoint, responseHandler: ((GeoPoint) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        if let objectId = geoPoint.objectId {
-            let headers = ["Content-Type": "application/json"]
-            let parameters = ["latitude": geoPoint.latitude, "longitude": geoPoint.longitude, "categories": geoPoint.categories as Any, "metadata": geoPoint.metadata as Any] as [String : Any]
+        if let objectId = geoPoint.objectId { // update
             BackendlessRequestManager(restMethod: "geo/points/\(objectId)", httpMethod: .PUT, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
                 if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                     if result is Fault {
                         errorHandler(result as! Fault)
                     }
-                    else {
-                        if let geoDictionary = (result as! JSON).dictionaryObject {
-                            if let geoPoint = self.processResponse.adaptToGeoPoint(geoDictionary: geoDictionary) {
-                                responseHandler(geoPoint)
-                            }
-                        }
+                    else if let geoDictionary = (result as! JSON).dictionaryObject,
+                        let geoPoint = self.processResponse.adaptToGeoPoint(geoDictionary: geoDictionary) {
+                        responseHandler(geoPoint)
                     }
                 }
             })
         }
-        else {
-            let fault = Fault(message: "geoPoint not found", faultCode: 0)
-            errorHandler(fault)
+        else { // save
+            BackendlessRequestManager(restMethod: "geo/points", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+                if let result = self.processResponse.adapt(response: response, to: [String: GeoPoint].self) {
+                    if result is Fault {
+                        errorHandler(result as! Fault)
+                    }
+                    else if let geoPoint = (result as! [String: GeoPoint])["geopoint"] {
+                        responseHandler(geoPoint)
+                    }
+                }
+            })
         }
     }
     
@@ -409,7 +400,7 @@
     private func startGeoFenceMonitoring(geoFenceName: String?, callback: ICallback, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         var restMethod = "geo/fences?"
         if let geoFenceName = geoFenceName {
-            restMethod += "geoFence=\(geoFenceName)"
+            restMethod += "geoFence=\(dataTypesUtils.stringToUrlString(originalString: geoFenceName))"
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: [JSON].self) {
