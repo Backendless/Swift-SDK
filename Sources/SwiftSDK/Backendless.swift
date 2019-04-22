@@ -93,6 +93,11 @@
         return _geoSevice
     }()
     
+    open lazy var logging: Logging = {
+        let _logging = Logging()
+        return _logging
+    }()
+    
     open func sharedObject(name: String) -> SharedObject {
         return SharedObject(name: name)
     }

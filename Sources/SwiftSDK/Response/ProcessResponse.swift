@@ -367,4 +367,35 @@ class ProcessResponse: NSObject {
         }
         return fileInfo
     }
+    
+    func adaptToLogMessagesArrayOfDict(logMessages: [LogMessage]) -> [[String : Any]] {
+        var resultArray = [[String : Any]]()        
+        for logMessage in logMessages {
+            
+//            print(logMessage.level)
+//            print(logMessage.logger)
+//            print(logMessage.timestamp)
+//            print(logMessage.exception)
+//            print("**********")
+            
+            
+            
+            var logMessageDict = [String : Any]()
+            if let logLevel = logMessage.level {
+                logMessageDict["log-level"] = logLevel
+            }
+            if let logger = logMessage.logger {
+                logMessageDict["logger"] = logger
+            }
+            logMessageDict["timestamp"] = logMessage.timestamp
+            if let message = logMessage.message {
+                logMessageDict["message"] = message
+            }
+            if let exception = logMessage.exception {
+                logMessageDict["exception"] = exception
+            }
+            resultArray.append(logMessageDict)
+        }
+        return resultArray
+    }
 }

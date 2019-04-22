@@ -19,6 +19,35 @@
  *  ********************************************************************************************************************
  */
 
-class Logging: NSObject {
-
+@objcMembers open class Logging: NSObject {
+    
+    private var loggers = [String : Logger]()
+    
+    private let logBuffer = LogBuffer.shared
+    
+    public override init() {
+        super.init()
+        loggers.removeAll()
+    }
+    
+    open func setLogReportingPolicy(numberOfMessages: Int, timeFrequencySec: Int) {
+        logBuffer.setLogReportingPolicy(numberOfMessges: numberOfMessages, timeFrequencySec: timeFrequencySec)
+    }
+    
+    open func getLoggerClass(clazz: Any) -> Logger {
+        return getLogger(loggerName: String(describing: clazz))
+    }
+    
+    open func getLogger(loggerName: String) -> Logger {
+        if let logger = loggers[loggerName] {
+            return logger
+        }
+        let logger = Logger(loggerName: loggerName)
+        loggers[loggerName] = logger
+        return logger
+    }
+    
+    open func flush() {
+        logBuffer.forceFlush()
+    }
 }
