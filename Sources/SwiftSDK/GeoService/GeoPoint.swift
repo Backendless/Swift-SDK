@@ -21,17 +21,17 @@
 
 @objcMembers open class GeoPoint: NSObject, NSCoding, Codable {
     
-    open private(set) var objectId: String
-    open private(set) var latitude: Double
-    open private(set) var longitude: Double
-    open private(set) var categories: [String]
-    open private(set) var metadata: [String: Any]? {
+    open private(set) var objectId: String?
+    open var latitude: Double
+    open var longitude: Double
+    open var categories: [String]
+    open var metadata: [String: Any]? {
         get {
             return self._metadata?.dictionaryObject
         }
         set {
-            if metadata != nil {
-                self._metadata = JSON(metadata!)
+            if newValue != nil {
+                self._metadata = JSON(newValue!)
             }
         }
     }
@@ -46,34 +46,30 @@
     }
     
     public init(latitude: Double, longitude: Double) {
-        self.objectId = ""
         self.latitude = latitude
         self.longitude = longitude
         self.categories = ["Default"]
     }
     
     public init(latitude: Double, longitude: Double, categories: [String]) {
-        self.objectId = ""
         self.latitude = latitude
         self.longitude = longitude
         self.categories = categories
     }
     
     public init (latitude: Double, longitude: Double, metadata: [String: Any]) {
-            self.objectId = ""
-            self.latitude = latitude
-            self.longitude = longitude
-            self.categories = ["Default"]
-            self._metadata = JSON(metadata)
-        }
+        self.latitude = latitude
+        self.longitude = longitude
+        self.categories = ["Default"]
+        self._metadata = JSON(metadata)
+    }
     
-        public init (latitude: Double, longitude: Double, categories: [String], metadata: [String: Any]) {
-            self.objectId = ""
-            self.latitude = latitude
-            self.longitude = longitude
-            self.categories = categories
-            self._metadata = JSON(metadata)
-        }
+    public init (latitude: Double, longitude: Double, categories: [String], metadata: [String: Any]) {
+        self.latitude = latitude
+        self.longitude = longitude
+        self.categories = categories
+        self._metadata = JSON(metadata)
+    }
     
     init(objectId: String, latitude: Double, longitude: Double, categories: [String], metadata: JSON?) {
         self.objectId = objectId

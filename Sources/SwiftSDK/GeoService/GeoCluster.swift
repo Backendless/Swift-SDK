@@ -1,5 +1,5 @@
 //
-//  DictionaryExtension.swift
+//  GeoCluster.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,9 +19,8 @@
  *  ********************************************************************************************************************
  */
 
-extension Dictionary where Value: Equatable {
+@objcMembers open class GeoCluster: GeoPoint {
     
-    func getKey(forValue val: Value) -> Key? {
-        return first(where: { $1 == val })?.key
-    }
+    open var totalPoints: Int = 0
+    open var geoQuery: BackendlessGeoQuery?
 }

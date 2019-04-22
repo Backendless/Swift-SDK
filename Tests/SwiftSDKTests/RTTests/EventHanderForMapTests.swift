@@ -74,7 +74,7 @@ class EventHanderForMapTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             let objectToSave = self.createDictionary()
             self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
             }, errorHandler: { fault in
@@ -99,7 +99,7 @@ class EventHanderForMapTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             let objectToSave = self.createDictionary()
             self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
             }, errorHandler: { fault in
@@ -131,7 +131,7 @@ class EventHanderForMapTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         eventHandler.removeCreateListeners(whereClause: "name = 'Bob'")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             let objectToSave = self.createDictionary()
             self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
             }, errorHandler: { fault in
@@ -157,14 +157,14 @@ class EventHanderForMapTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         eventHandler.removeCreateListeners()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             let objectToSave = self.createDictionary()
             self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
             })
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                 expectation.fulfill()
             })
         })
@@ -183,7 +183,7 @@ class EventHanderForMapTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             let objectToSave = self.createDictionary()
             self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
                 var savedObject = savedObject
@@ -215,7 +215,7 @@ class EventHanderForMapTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             let objectToSave = self.createDictionary()
             self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
                 var savedObject = savedObject
@@ -254,7 +254,7 @@ class EventHanderForMapTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         eventHandler.removeUpdateListeners(whereClause: "name = 'Bob'")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             let objectToSave = self.createDictionary()
             self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
                 var savedObject = savedObject
@@ -287,7 +287,7 @@ class EventHanderForMapTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         eventHandler.removeUpdateListeners()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             let objectToSave = self.createDictionary()
             self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
                 var savedObject = savedObject
@@ -301,7 +301,7 @@ class EventHanderForMapTests: XCTestCase {
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
             })
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                 expectation.fulfill()
             })
         })
@@ -320,7 +320,7 @@ class EventHanderForMapTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             let objectToSave = self.createDictionary()
             self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
                 self.dataStore.remove(entity: savedObject, responseHandler: { removed in
@@ -350,7 +350,7 @@ class EventHanderForMapTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             let objectToSave = self.createDictionary()
             self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
                 self.dataStore.remove(entity: savedObject, responseHandler: { removed in
@@ -387,7 +387,7 @@ class EventHanderForMapTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         eventHandler.removeDeleteListeners(whereClause: "name = 'Bob'")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             let objectToSave = self.createDictionary()
             self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
                 self.dataStore.remove(entity: savedObject, responseHandler: { removed in
@@ -418,7 +418,7 @@ class EventHanderForMapTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         eventHandler.removeDeleteListeners()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             let objectToSave = self.createDictionary()
             self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
                 self.dataStore.remove(entity: savedObject, responseHandler: { removed in
@@ -430,7 +430,7 @@ class EventHanderForMapTests: XCTestCase {
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
             })
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                 expectation.fulfill()
             })
         })
@@ -448,7 +448,7 @@ class EventHanderForMapTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             let objectsToSave = self.createDictionaries(numberOfObjects: 3)
             self.dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjectIds in
             }, errorHandler: { fault in
@@ -468,14 +468,14 @@ class EventHanderForMapTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         eventHandler.removeBulkCreateListeners()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             let objectsToSave = self.createDictionaries(numberOfObjects: 3)
             self.dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjectIds in
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
             })
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                 expectation.fulfill()
             })
         })
@@ -492,7 +492,7 @@ class EventHanderForMapTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             let objectsToSave = self.createDictionaries(numberOfObjects: 10)
             self.dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjectIds in
                 self.dataStore.updateBulk(whereClause: nil, changes: ["age": 25], responseHandler: { updatedObjects in
@@ -519,7 +519,7 @@ class EventHanderForMapTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             let objectsToSave = self.createDictionaries(numberOfObjects: 10)
             self.dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjectIds in
                 self.dataStore.updateBulk(whereClause: "age > 20", changes: ["age": 25], responseHandler: { updatedObjects in
@@ -553,7 +553,7 @@ class EventHanderForMapTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         eventHandler.removeBulkUpdateListeners(whereClause: "name = 'Bob'")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             let objectsToSave = self.createDictionaries(numberOfObjects: 10)
             self.dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjectIds in
                 self.dataStore.updateBulk(whereClause: "age > 20", changes: ["age": 25], responseHandler: { updatedObjects in
@@ -589,7 +589,7 @@ class EventHanderForMapTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         eventHandler.removeBulkUpdateListeners()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             let objectsToSave = self.createDictionaries(numberOfObjects: 10)
             self.dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjectIds in
                 self.dataStore.updateBulk(whereClause: "age > 20", changes: ["age": 25], responseHandler: { updatedObjects in
@@ -601,7 +601,7 @@ class EventHanderForMapTests: XCTestCase {
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
             })
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                 expectation.fulfill()
             })
         })
@@ -618,7 +618,7 @@ class EventHanderForMapTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             let objectsToSave = self.createDictionaries(numberOfObjects: 10)
             self.dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjectIds in
                 self.dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
@@ -645,7 +645,7 @@ class EventHanderForMapTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             let objectsToSave = self.createDictionaries(numberOfObjects: 10)
             self.dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjectIds in
                 self.dataStore.removeBulk(whereClause: "age > 20", responseHandler: { removed in
@@ -679,7 +679,7 @@ class EventHanderForMapTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         eventHandler.removeBulkDeleteListeners(whereClause: "name = 'Bob'")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             let objectsToSave = self.createDictionaries(numberOfObjects: 10)
             self.dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjectIds in
                 self.dataStore.removeBulk(whereClause: "age > 20", responseHandler: { removed in
@@ -715,7 +715,7 @@ class EventHanderForMapTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         eventHandler.removeBulkDeleteListeners()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             let objectsToSave = self.createDictionaries(numberOfObjects: 10)
             self.dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjectIds in
                 self.dataStore.removeBulk(whereClause: "age > 20", responseHandler: { removed in
@@ -727,7 +727,7 @@ class EventHanderForMapTests: XCTestCase {
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
             })
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                 expectation.fulfill()
             })
         })
@@ -751,7 +751,7 @@ class EventHanderForMapTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             subscriptionToStop?.stop()
             let objectToSave = self.createDictionary()
             self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in

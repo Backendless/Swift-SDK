@@ -251,7 +251,7 @@ class SubscriptionAPITests: XCTestCase {
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
             })
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                 expectation.fulfill()
                 self.channel.leave()
             })
@@ -319,13 +319,13 @@ class SubscriptionAPITests: XCTestCase {
     
     func test_12_channelState() {
         let expectation = self.expectation(description: "PASSED: channel.channelState")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             XCTAssertTrue(self.channel.isJoined)
             self.channel.leave()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                 XCTAssertFalse(self.channel.isJoined)
                 self.channel.join()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                     XCTAssertTrue(self.channel.isJoined)
                     expectation.fulfill()
                 })

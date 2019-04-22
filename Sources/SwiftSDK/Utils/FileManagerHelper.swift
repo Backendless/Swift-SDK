@@ -19,13 +19,18 @@
  *  ********************************************************************************************************************
  */
 
+#if os(iOS)
+
 class FileManagerHelper: NSObject {
     
     static let shared = FileManagerHelper()
     
-    private let PUSH_TEMPLATES_FILE_NAME = "pushTemplatesFile"
+    private var PUSH_TEMPLATES_FILE_NAME: String!
     
-    private override init() { }
+    private override init() {
+        let appId = Backendless.shared.getApplictionId().replacingOccurrences(of: "-", with: "")
+        PUSH_TEMPLATES_FILE_NAME = "pushTemplates" + appId.dropLast(10)
+    }
     
     private func getAppGroup() -> String? {
         if let projectName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String,
@@ -63,5 +68,7 @@ class FileManagerHelper: NSObject {
             }
         }
         return [String : Any]()
-    }    
+    }
 }
+
+#endif

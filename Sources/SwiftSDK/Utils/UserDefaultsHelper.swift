@@ -67,7 +67,8 @@ class UserDefaultsHelper: NSObject {
     }
     
     func saveCurrentUser(currentUser: BackendlessUser) {
-        let data = NSKeyedArchiver.archivedData(withRootObject: currentUser)
+        //let data = NSKeyedArchiver.archivedData(withRootObject: currentUser)
+        let data = try? JSONEncoder().encode(currentUser)
         let userDefaults = UserDefaults.standard
         userDefaults.set(data, forKey: CURRENT_USER_KEY)
         userDefaults.synchronize()
@@ -76,7 +77,8 @@ class UserDefaultsHelper: NSObject {
     func getCurrentUser() -> BackendlessUser? {
         let userDefaults = UserDefaults.standard
         if let data = userDefaults.value(forKey: CURRENT_USER_KEY) as? Data {
-            return NSKeyedUnarchiver.unarchiveObject(with: data) as? BackendlessUser
+            // return NSKeyedUnarchiver.unarchiveObject(with: data) as? BackendlessUser
+            return try? JSONDecoder().decode(BackendlessUser.self, from: data)
         }
         return nil
     }

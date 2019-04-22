@@ -1,5 +1,5 @@
 //
-//  DictionaryExtension.swift
+//  LogMessage.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,9 +19,22 @@
  *  ********************************************************************************************************************
  */
 
-extension Dictionary where Value: Equatable {
+class LogMessage: NSObject {
     
-    func getKey(forValue val: Value) -> Key? {
-        return first(where: { $1 == val })?.key
+    var logger: String?
+    var level: String?
+    var timestamp: Date?
+    var message: String?
+    var exception: String?
+    
+    private override init() { }
+    
+    init(logger: String, level: String, timestamp: Date, message: String, exception: String) {
+        let logMessage = LogMessage()
+        logMessage.logger = logger
+        logMessage.level = level
+        logMessage.timestamp = timestamp
+        logMessage.message = message
+        logMessage.exception = exception
     }
 }

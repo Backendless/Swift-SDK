@@ -24,18 +24,34 @@
 		5E03A3C122294A4B005A538D /* PublishMessageInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E03A3C022294A4B005A538D /* PublishMessageInfo.swift */; };
 		5E03A3C322296D03005A538D /* CommandObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E03A3C222296D03005A538D /* CommandObject.swift */; };
 		5E03A3C52229711F005A538D /* UserStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E03A3C42229711F005A538D /* UserStatus.swift */; };
+		5E09B00C22645B9A0073DA5E /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E09B00B22645B9A0073DA5E /* Logging.swift */; };
+		5E09B00E22645BBC0073DA5E /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E09B00D22645BBC0073DA5E /* Logger.swift */; };
+		5E09B01022645BCF0073DA5E /* LogBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E09B00F22645BCF0073DA5E /* LogBuffer.swift */; };
+		5E09B01222645CE60073DA5E /* LogMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E09B01122645CE60073DA5E /* LogMessage.swift */; };
 		5E11113721B532450044CAED /* UserProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E11113621B532450044CAED /* UserProperty.swift */; };
 		5E11113C21B542BA0044CAED /* UserServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E11113B21B542BA0044CAED /* UserServiceTests.swift */; };
 		5E13C3A622046F7C00EA3050 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E13C3A522046F7C00EA3050 /* JSON.swift */; };
 		5E15A06C223B9C9D0090F5A3 /* RTMessagingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E15A06B223B9C9D0090F5A3 /* RTMessagingTests.swift */; };
+		5E1CC2F72252534F0011D5C8 /* FileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1CC2F62252534F0011D5C8 /* FileService.swift */; };
+		5E1CC2F9225254140011D5C8 /* BackendlessFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1CC2F8225254140011D5C8 /* BackendlessFile.swift */; };
 		5E275CA0224B8142002F89FC /* FileManagerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E275C9F224B8142002F89FC /* FileManagerHelper.swift */; };
+		5E309B22225FBCF800BE6720 /* ServerCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E309B21225FBCF700BE6720 /* ServerCallback.swift */; };
+		5E309B24225FC2D000BE6720 /* ClientCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E309B23225FC2D000BE6720 /* ClientCallback.swift */; };
+		5E338D90225C97AB00709630 /* LocationTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E338D8F225C97AB00709630 /* LocationTracker.swift */; };
 		5E341B7C21F5E11A00C32598 /* ObjectProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E341B7B21F5E11A00C32598 /* ObjectProperty.swift */; };
 		5E3706F722037C8E00E08C50 /* TestClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFE8E5F21E8E2150003477B /* TestClass.swift */; };
 		5E3706F922037C9100E08C50 /* TestClassForMappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E96E1AC21F8408800F34C11 /* TestClassForMappings.swift */; };
 		5E3706FD22037CC800E08C50 /* ChildTestClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5FE02821F7359700387F8B /* ChildTestClass.swift */; };
 		5E44C0502223EC4A00B391E7 /* RTServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E44C04F2223EC4A00B391E7 /* RTServiceTests.swift */; };
+		5E45F669225F52C5001DD7CF /* GeoMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E45F668225F52C5001DD7CF /* GeoMath.swift */; };
+		5E45F66B225F6C3B001DD7CF /* GeoFence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E45F66A225F6C3B001DD7CF /* GeoFence.swift */; };
+		5E45F66D225F7CDB001DD7CF /* GeoFenceMonitoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E45F66C225F7CDB001DD7CF /* GeoFenceMonitoring.swift */; };
+		5E45F671225F7EB4001DD7CF /* GeoProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E45F670225F7EB4001DD7CF /* GeoProtocols.swift */; };
 		5E467F822201E20700E70772 /* DataPermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E467F812201E20700E70772 /* DataPermission.swift */; };
 		5E4C2707224B964700CDF967 /* MessagingServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4C2706224B964700CDF967 /* MessagingServiceTests.swift */; };
+		5E4CE07D22535CAF004571DA /* NSMutableDataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4CE07C22535CAF004571DA /* NSMutableDataExtension.swift */; };
+		5E4CE08122536196004571DA /* DataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4CE08022536196004571DA /* DataExtension.swift */; };
+		5E4CE08622536B73004571DA /* FileServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4CE08522536B73004571DA /* FileServiceTests.swift */; };
 		5E4DE64321EF8E92009AE503 /* Mappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4DE64221EF8E92009AE503 /* Mappings.swift */; };
 		5E4E305E22439B9700B479C8 /* DeviceRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4E305D22439B9700B479C8 /* DeviceRegistration.swift */; };
 		5E4E309C2243B85C00B479C8 /* DeviceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4E309B2243B85C00B479C8 /* DeviceHelper.swift */; };
@@ -52,12 +68,16 @@
 		5E7534662220578600BC31D4 /* EventHanderForMapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7534652220578600BC31D4 /* EventHanderForMapTests.swift */; };
 		5E7534682220579100BC31D4 /* EventHandlerForClassTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7534672220579100BC31D4 /* EventHandlerForClassTests.swift */; };
 		5E7722DD2236D91E00E7B346 /* RTTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7722DC2236D91E00E7B346 /* RTTypes.swift */; };
+		5E7955962254D9A300E8ED65 /* BackendlessFileInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7955952254D9A300E8ED65 /* BackendlessFileInfo.swift */; };
+		5E795598225503D900E8ED65 /* FilePermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E795597225503D900E8ED65 /* FilePermission.swift */; };
 		5E7E8A6021ECC94A00AA04E1 /* UserDefaultsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7E8A5F21ECC94A00AA04E1 /* UserDefaultsHelper.swift */; };
 		5E81B28D2236A8300015AEDC /* RTMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E81B28C2236A8300015AEDC /* RTMethod.swift */; };
 		5E84136321B5265200869794 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E84136221B5265200869794 /* UserService.swift */; };
 		5E84E87A223158EA008B3F05 /* PublishingAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E84E879223158EA008B3F05 /* PublishingAPITests.swift */; };
 		5E84E87C22315E12008B3F05 /* EmailBodyparts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E84E87B22315E12008B3F05 /* EmailBodyparts.swift */; };
 		5E90721121B66E9E00619C0D /* Fault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E90721021B66E9E00619C0D /* Fault.swift */; };
+		5E922249225B8CCF0001688F /* GeoQueryRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E922248225B8CCF0001688F /* GeoQueryRectangle.swift */; };
+		5E92224B225BAA8C0001688F /* GeoCluster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E92224A225BAA8C0001688F /* GeoCluster.swift */; };
 		5E9718FD221BFE3D00857603 /* RTFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9718FC221BFE3D00857603 /* RTFactory.swift */; };
 		5E97190E221C276600857603 /* IEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E97190D221C276600857603 /* IEventHandler.swift */; };
 		5E971910221C27BB00857603 /* EventHandlerForClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E97190F221C27BB00857603 /* EventHandlerForClass.swift */; };
@@ -69,6 +89,8 @@
 		5E9C573221AEEA0400877870 /* SwiftSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9C572821AEEA0400877870 /* SwiftSDK.framework */; };
 		5E9C573921AEEA0400877870 /* SwiftSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E9C572B21AEEA0400877870 /* SwiftSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5EA2B69B21F2324B00CFDC37 /* StoredObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2B69A21F2324B00CFDC37 /* StoredObjects.swift */; };
+		5EA31F25225608B1008DF081 /* GeoCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA31F24225608B1008DF081 /* GeoCategory.swift */; };
+		5EA31F2722561EC6008DF081 /* BackendlessGeoQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA31F2622561EC6008DF081 /* BackendlessGeoQuery.swift */; };
 		5EA5D2C4223BCE8F0027EA49 /* SharedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA5D2C3223BCE8F0027EA49 /* SharedObject.swift */; };
 		5EA5D2C6223BE2AC0027EA49 /* RTSharedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA5D2C5223BE2AC0027EA49 /* RTSharedObject.swift */; };
 		5EA5D2C8223BE5F90027EA49 /* InvokeObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA5D2C7223BE5F90027EA49 /* InvokeObject.swift */; };
@@ -124,16 +146,32 @@
 		5E03A3C022294A4B005A538D /* PublishMessageInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishMessageInfo.swift; sourceTree = "<group>"; };
 		5E03A3C222296D03005A538D /* CommandObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandObject.swift; sourceTree = "<group>"; };
 		5E03A3C42229711F005A538D /* UserStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStatus.swift; sourceTree = "<group>"; };
+		5E09B00B22645B9A0073DA5E /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
+		5E09B00D22645BBC0073DA5E /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		5E09B00F22645BCF0073DA5E /* LogBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogBuffer.swift; sourceTree = "<group>"; };
+		5E09B01122645CE60073DA5E /* LogMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogMessage.swift; sourceTree = "<group>"; };
 		5E11113621B532450044CAED /* UserProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProperty.swift; sourceTree = "<group>"; };
 		5E11113B21B542BA0044CAED /* UserServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserServiceTests.swift; sourceTree = "<group>"; };
 		5E13C3A522046F7C00EA3050 /* JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
 		5E15A06B223B9C9D0090F5A3 /* RTMessagingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTMessagingTests.swift; sourceTree = "<group>"; };
+		5E1CC2F62252534F0011D5C8 /* FileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileService.swift; sourceTree = "<group>"; };
+		5E1CC2F8225254140011D5C8 /* BackendlessFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessFile.swift; sourceTree = "<group>"; };
 		5E275C9F224B8142002F89FC /* FileManagerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerHelper.swift; sourceTree = "<group>"; };
+		5E309B21225FBCF700BE6720 /* ServerCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerCallback.swift; sourceTree = "<group>"; };
+		5E309B23225FC2D000BE6720 /* ClientCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCallback.swift; sourceTree = "<group>"; };
+		5E338D8F225C97AB00709630 /* LocationTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTracker.swift; sourceTree = "<group>"; };
 		5E341B7B21F5E11A00C32598 /* ObjectProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectProperty.swift; sourceTree = "<group>"; };
 		5E44C04F2223EC4A00B391E7 /* RTServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTServiceTests.swift; sourceTree = "<group>"; };
+		5E45F668225F52C5001DD7CF /* GeoMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoMath.swift; sourceTree = "<group>"; };
+		5E45F66A225F6C3B001DD7CF /* GeoFence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoFence.swift; sourceTree = "<group>"; };
+		5E45F66C225F7CDB001DD7CF /* GeoFenceMonitoring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoFenceMonitoring.swift; sourceTree = "<group>"; };
+		5E45F670225F7EB4001DD7CF /* GeoProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoProtocols.swift; sourceTree = "<group>"; };
 		5E467F812201E20700E70772 /* DataPermission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPermission.swift; sourceTree = "<group>"; };
 		5E498E2D8F87FE5F1EDC7604 /* Pods_SwiftSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E4C2706224B964700CDF967 /* MessagingServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagingServiceTests.swift; sourceTree = "<group>"; };
+		5E4CE07C22535CAF004571DA /* NSMutableDataExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSMutableDataExtension.swift; sourceTree = "<group>"; };
+		5E4CE08022536196004571DA /* DataExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExtension.swift; sourceTree = "<group>"; };
+		5E4CE08522536B73004571DA /* FileServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileServiceTests.swift; sourceTree = "<group>"; };
 		5E4DE64221EF8E92009AE503 /* Mappings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mappings.swift; sourceTree = "<group>"; };
 		5E4E305D22439B9700B479C8 /* DeviceRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceRegistration.swift; sourceTree = "<group>"; };
 		5E4E309B2243B85C00B479C8 /* DeviceHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceHelper.swift; sourceTree = "<group>"; };
@@ -151,12 +189,16 @@
 		5E7534652220578600BC31D4 /* EventHanderForMapTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHanderForMapTests.swift; sourceTree = "<group>"; };
 		5E7534672220579100BC31D4 /* EventHandlerForClassTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHandlerForClassTests.swift; sourceTree = "<group>"; };
 		5E7722DC2236D91E00E7B346 /* RTTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTTypes.swift; sourceTree = "<group>"; };
+		5E7955952254D9A300E8ED65 /* BackendlessFileInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessFileInfo.swift; sourceTree = "<group>"; };
+		5E795597225503D900E8ED65 /* FilePermission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePermission.swift; sourceTree = "<group>"; };
 		5E7E8A5F21ECC94A00AA04E1 /* UserDefaultsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsHelper.swift; sourceTree = "<group>"; };
 		5E81B28C2236A8300015AEDC /* RTMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTMethod.swift; sourceTree = "<group>"; };
 		5E84136221B5265200869794 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		5E84E879223158EA008B3F05 /* PublishingAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishingAPITests.swift; sourceTree = "<group>"; };
 		5E84E87B22315E12008B3F05 /* EmailBodyparts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailBodyparts.swift; sourceTree = "<group>"; };
 		5E90721021B66E9E00619C0D /* Fault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fault.swift; sourceTree = "<group>"; };
+		5E922248225B8CCF0001688F /* GeoQueryRectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoQueryRectangle.swift; sourceTree = "<group>"; };
+		5E92224A225BAA8C0001688F /* GeoCluster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoCluster.swift; sourceTree = "<group>"; };
 		5E96E1AC21F8408800F34C11 /* TestClassForMappings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestClassForMappings.swift; sourceTree = "<group>"; };
 		5E9718FC221BFE3D00857603 /* RTFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTFactory.swift; sourceTree = "<group>"; };
 		5E97190D221C276600857603 /* IEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEventHandler.swift; sourceTree = "<group>"; };
@@ -171,6 +213,8 @@
 		5E9C572C21AEEA0400877870 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5E9C573121AEEA0400877870 /* SwiftSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EA2B69A21F2324B00CFDC37 /* StoredObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredObjects.swift; sourceTree = "<group>"; };
+		5EA31F24225608B1008DF081 /* GeoCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoCategory.swift; sourceTree = "<group>"; };
+		5EA31F2622561EC6008DF081 /* BackendlessGeoQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessGeoQuery.swift; sourceTree = "<group>"; };
 		5EA5D2C3223BCE8F0027EA49 /* SharedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedObject.swift; sourceTree = "<group>"; };
 		5EA5D2C5223BE2AC0027EA49 /* RTSharedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTSharedObject.swift; sourceTree = "<group>"; };
 		5EA5D2C7223BE5F90027EA49 /* InvokeObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvokeObject.swift; sourceTree = "<group>"; };
@@ -291,6 +335,17 @@
 			path = RT;
 			sourceTree = "<group>";
 		};
+		5E09B00A22645B870073DA5E /* Logging */ = {
+			isa = PBXGroup;
+			children = (
+				5E09B00B22645B9A0073DA5E /* Logging.swift */,
+				5E09B00D22645BBC0073DA5E /* Logger.swift */,
+				5E09B00F22645BCF0073DA5E /* LogBuffer.swift */,
+				5E09B01122645CE60073DA5E /* LogMessage.swift */,
+			);
+			path = Logging;
+			sourceTree = "<group>";
+		};
 		5E11113821B532BD0044CAED /* Property */ = {
 			isa = PBXGroup;
 			children = (
@@ -301,12 +356,45 @@
 			path = Property;
 			sourceTree = "<group>";
 		};
+		5E1CC2F5225252D70011D5C8 /* Files */ = {
+			isa = PBXGroup;
+			children = (
+				5E1CC2F62252534F0011D5C8 /* FileService.swift */,
+				5E1CC2F8225254140011D5C8 /* BackendlessFile.swift */,
+				5E7955952254D9A300E8ED65 /* BackendlessFileInfo.swift */,
+				5E795597225503D900E8ED65 /* FilePermission.swift */,
+			);
+			path = Files;
+			sourceTree = "<group>";
+		};
+		5E45F672225F7F8F001DD7CF /* GeoFence */ = {
+			isa = PBXGroup;
+			children = (
+				5E45F670225F7EB4001DD7CF /* GeoProtocols.swift */,
+				5E338D8F225C97AB00709630 /* LocationTracker.swift */,
+				5E45F668225F52C5001DD7CF /* GeoMath.swift */,
+				5E45F66A225F6C3B001DD7CF /* GeoFence.swift */,
+				5E45F66C225F7CDB001DD7CF /* GeoFenceMonitoring.swift */,
+				5E309B21225FBCF700BE6720 /* ServerCallback.swift */,
+				5E309B23225FC2D000BE6720 /* ClientCallback.swift */,
+			);
+			path = GeoFence;
+			sourceTree = "<group>";
+		};
 		5E4C2705224B963000CDF967 /* MessagingServiceTests */ = {
 			isa = PBXGroup;
 			children = (
 				5E4C2706224B964700CDF967 /* MessagingServiceTests.swift */,
 			);
 			path = MessagingServiceTests;
+			sourceTree = "<group>";
+		};
+		5E4CE08222536AA0004571DA /* FileServiceTests */ = {
+			isa = PBXGroup;
+			children = (
+				5E4CE08522536B73004571DA /* FileServiceTests.swift */,
+			);
+			path = FileServiceTests;
 			sourceTree = "<group>";
 		};
 		5E545EEA21DFAF1D00881ED0 /* GeoServiceTests */ = {
@@ -340,6 +428,8 @@
 			isa = PBXGroup;
 			children = (
 				5E60834A21EF721900268B4D /* DictionaryExtension.swift */,
+				5E4CE07C22535CAF004571DA /* NSMutableDataExtension.swift */,
+				5E4CE08022536196004571DA /* DataExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -483,6 +573,11 @@
 			children = (
 				5ECD9C7F21DE57E7002CBB7D /* GeoService.swift */,
 				5ECD9C7D21DE57DA002CBB7D /* GeoPoint.swift */,
+				5E92224A225BAA8C0001688F /* GeoCluster.swift */,
+				5EA31F24225608B1008DF081 /* GeoCategory.swift */,
+				5EA31F2622561EC6008DF081 /* BackendlessGeoQuery.swift */,
+				5E922248225B8CCF0001688F /* GeoQueryRectangle.swift */,
+				5E45F672225F7F8F001DD7CF /* GeoFence */,
 			);
 			path = GeoService;
 			sourceTree = "<group>";
@@ -493,6 +588,7 @@
 				5ECE680E21B0248B00839120 /* Info.plist */,
 				5AFE8E6321E8E3430003477B /* TestsConfig.swift */,
 				5EB28E1F21B1833A0007AC30 /* BackendlessTests.swift */,
+				5E4CE08222536AA0004571DA /* FileServiceTests */,
 				5EE691FF21B67770002E72A9 /* FaultTests */,
 				5E545EEA21DFAF1D00881ED0 /* GeoServiceTests */,
 				5E4C2705224B963000CDF967 /* MessagingServiceTests */,
@@ -517,6 +613,8 @@
 			isa = PBXGroup;
 			children = (
 				5EB28E1821B1799A0007AC30 /* Backendless.swift */,
+				5E09B00A22645B870073DA5E /* Logging */,
+				5E1CC2F5225252D70011D5C8 /* Files */,
 				5E64F0BD21C50D7D00590B04 /* BackendlessRequestManager */,
 				5E60834921EF720600268B4D /* Extensions */,
 				5E90720F21B66E6000619C0D /* Fault */,
@@ -718,13 +816,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				5EA5D2C8223BE5F90027EA49 /* InvokeObject.swift in Sources */,
+				5E45F66B225F6C3B001DD7CF /* GeoFence.swift in Sources */,
 				5E4E305E22439B9700B479C8 /* DeviceRegistration.swift in Sources */,
 				5EC7D163222FB86100FD3FF4 /* DeliveryOptions.swift in Sources */,
 				5E4DE64321EF8E92009AE503 /* Mappings.swift in Sources */,
 				5E7E8A6021ECC94A00AA04E1 /* UserDefaultsHelper.swift in Sources */,
+				5E09B01222645CE60073DA5E /* LogMessage.swift in Sources */,
 				5EC7D161222FB56700FD3FF4 /* PublishOptions.swift in Sources */,
+				5E09B00C22645B9A0073DA5E /* Logging.swift in Sources */,
+				5E1CC2F9225254140011D5C8 /* BackendlessFile.swift in Sources */,
+				5EA31F25225608B1008DF081 /* GeoCategory.swift in Sources */,
+				5E4CE07D22535CAF004571DA /* NSMutableDataExtension.swift in Sources */,
 				5E971918221C2CC400857603 /* RTSubscription.swift in Sources */,
+				5E45F671225F7EB4001DD7CF /* GeoProtocols.swift in Sources */,
 				5E84136321B5265200869794 /* UserService.swift in Sources */,
+				5E795598225503D900E8ED65 /* FilePermission.swift in Sources */,
 				5E6C1E452203362700903B7A /* ReturnedResponse.swift in Sources */,
 				5E7722DD2236D91E00E7B346 /* RTTypes.swift in Sources */,
 				5E11113721B532450044CAED /* UserProperty.swift in Sources */,
@@ -732,6 +838,7 @@
 				5EFBA8FE21C1011E007B3BB0 /* BackendlessUser.swift in Sources */,
 				5E971912221C27CB00857603 /* EventHandlerForMap.swift in Sources */,
 				5E275CA0224B8142002F89FC /* FileManagerHelper.swift in Sources */,
+				5E4CE08122536196004571DA /* DataExtension.swift in Sources */,
 				5E03A3C52229711F005A538D /* UserStatus.swift in Sources */,
 				5EA5D2C4223BCE8F0027EA49 /* SharedObject.swift in Sources */,
 				5E3706FD22037CC800E08C50 /* ChildTestClass.swift in Sources */,
@@ -742,30 +849,40 @@
 				5E03A3BA222916A2005A538D /* Channel.swift in Sources */,
 				5E97190E221C276600857603 /* IEventHandler.swift in Sources */,
 				5E84E87C22315E12008B3F05 /* EmailBodyparts.swift in Sources */,
+				5E45F66D225F7CDB001DD7CF /* GeoFenceMonitoring.swift in Sources */,
 				5EA5D2C6223BE2AC0027EA49 /* RTSharedObject.swift in Sources */,
+				5E309B22225FBCF800BE6720 /* ServerCallback.swift in Sources */,
 				5EA87B75221D4A3100A8B93F /* ReconnectAttemptObject.swift in Sources */,
 				5AFE8E6421E8E3430003477B /* TestsConfig.swift in Sources */,
 				5E971910221C27BB00857603 /* EventHandlerForClass.swift in Sources */,
 				5E9718FD221BFE3D00857603 /* RTFactory.swift in Sources */,
+				5E09B01022645BCF0073DA5E /* LogBuffer.swift in Sources */,
 				5A2A785121E6114800EC8007 /* PersistenceService.swift in Sources */,
 				5E03A3C322296D03005A538D /* CommandObject.swift in Sources */,
 				5E722B5E21BE9DE800AA9A8F /* DataTypeEnum.swift in Sources */,
 				5EA2B69B21F2324B00CFDC37 /* StoredObjects.swift in Sources */,
+				5E7955962254D9A300E8ED65 /* BackendlessFileInfo.swift in Sources */,
+				5E922249225B8CCF0001688F /* GeoQueryRectangle.swift in Sources */,
 				5AC54CA621E7373400EC1F8C /* PersistenceServiceUtils.swift in Sources */,
 				5E64F0BF21C50D8E00590B04 /* BackendlessRequestManager.swift in Sources */,
 				5A2A785321E61D1700EC8007 /* DataStoreFactory.swift in Sources */,
 				5E90721121B66E9E00619C0D /* Fault.swift in Sources */,
+				5E45F669225F52C5001DD7CF /* GeoMath.swift in Sources */,
 				5E4E309C2243B85C00B479C8 /* DeviceHelper.swift in Sources */,
 				5EFB60E922422F93004DFA2C /* UserInfo.swift in Sources */,
 				5E81B28D2236A8300015AEDC /* RTMethod.swift in Sources */,
 				5EA87B95221D720100A8B93F /* RTListener.swift in Sources */,
 				5ED765D02224369E009431CD /* BulkEvent.swift in Sources */,
 				5E72EABD21F6EB89006C8C5C /* DataQueryBuilder.swift in Sources */,
+				5E338D90225C97AB00709630 /* LocationTracker.swift in Sources */,
 				5ED51D0D22456E8600D22F11 /* BackendlessPushHelper.swift in Sources */,
 				5E3706F722037C8E00E08C50 /* TestClass.swift in Sources */,
+				5E309B24225FC2D000BE6720 /* ClientCallback.swift in Sources */,
+				5E09B00E22645BBC0073DA5E /* Logger.swift in Sources */,
 				5A2A784D21E6104F00EC8007 /* IDataStore.swift in Sources */,
 				5E341B7C21F5E11A00C32598 /* ObjectProperty.swift in Sources */,
 				5E971914221C296A00857603 /* RTService.swift in Sources */,
+				5EA31F2722561EC6008DF081 /* BackendlessGeoQuery.swift in Sources */,
 				5E467F822201E20700E70772 /* DataPermission.swift in Sources */,
 				5E971916221C2A8700857603 /* RTClient.swift in Sources */,
 				5E13C3A622046F7C00EA3050 /* JSON.swift in Sources */,
@@ -778,6 +895,8 @@
 				5E97191A221C369A00857603 /* RTMethodRequest.swift in Sources */,
 				5E03A3BF22291C74005A538D /* MessagingService.swift in Sources */,
 				5AA2969A2237C19D007104C7 /* JSONUtils.swift in Sources */,
+				5E1CC2F72252534F0011D5C8 /* FileService.swift in Sources */,
+				5E92224B225BAA8C0001688F /* GeoCluster.swift in Sources */,
 				5E572D4B21B8043E000713B0 /* ProcessResponse.swift in Sources */,
 				5EB28E1921B1799A0007AC30 /* Backendless.swift in Sources */,
 			);
@@ -790,6 +909,7 @@
 				5E7534682220579100BC31D4 /* EventHandlerForClassTests.swift in Sources */,
 				5AFE8E6621E8E5C00003477B /* DataStoreFactoryTests.swift in Sources */,
 				5AFE8E6221E8E2620003477B /* MapDrivenDataStoreTests.swift in Sources */,
+				5E4CE08622536B73004571DA /* FileServiceTests.swift in Sources */,
 				5E5716E82242803A00C7B048 /* SharedObjectTests.swift in Sources */,
 				5E84E87A223158EA008B3F05 /* PublishingAPITests.swift in Sources */,
 				5EE6920121B67791002E72A9 /* FaultTests.swift in Sources */,

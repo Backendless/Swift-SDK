@@ -1,5 +1,5 @@
 //
-//  DictionaryExtension.swift
+//  GeoProtocols.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,9 +19,26 @@
  *  ********************************************************************************************************************
  */
 
-extension Dictionary where Value: Equatable {
-    
-    func getKey(forValue val: Value) -> Key? {
-        return first(where: { $1 == val })?.key
-    }
+#if os(iOS) || os(watchOS)
+
+import CoreLocation
+
+protocol ILocationTrackerListener {
+    func onLocationChanged(location: CLLocation)
+    func onLocationFailed(error: Error)
 }
+
+public protocol ICallback {
+    func callOnEnter(geoFence: GeoFence, location: CLLocation)
+    func callOnStay(geoFence: GeoFence, location: CLLocation)
+    func callOnExit(geoFence: GeoFence, location: CLLocation)
+    func equalCallbackParameter(object: Any?) -> Bool
+}
+
+@objc public protocol IGeofenceCallback {
+    func geoPointEntered(geoFenceName: String, geoFenceId: String, latitude: Double, longitude: Double)
+    func geoPointStayed(geoFenceName: String, geoFenceId: String, latitude: Double, longitude: Double)
+    func geoPointExited(geoFenceName: String, geoFenceId: String, latitude: Double, longitude: Double)
+}
+
+#endif

@@ -164,9 +164,58 @@ class ProcessResponse: NSObject {
         if let objectId = geoDictionary["objectId"] as? String,
             let latitude = geoDictionary["latitude"] as? Double,
             let longitude = geoDictionary["longitude"] as? Double,
+            let categories = geoDictionary["categories"] as? [String] {
+            if let metadata = geoDictionary["metadata"] as? [String: String] {
+                return GeoPoint(objectId: objectId, latitude: latitude, longitude: longitude, categories: categories, metadata: JSON(metadata))
+            }
+            return GeoPoint(objectId: objectId, latitude: latitude, longitude: longitude, categories: categories, metadata: nil)
+        }
+        return nil
+    }
+    
+    func adaptToGeoCluster(geoDictionary: [String : Any]) -> GeoCluster? {
+        if let objectId = geoDictionary["objectId"] as? String,
+            let latitude = geoDictionary["latitude"] as? Double,
+            let longitude = geoDictionary["longitude"] as? Double,
             let categories = geoDictionary["categories"] as? [String],
-            let metadata = geoDictionary["metadata"] as? [String: String] {            
-            return GeoPoint(objectId: objectId, latitude: latitude, longitude: longitude, categories: categories, metadata: JSON(metadata))
+            let totalPoints = geoDictionary["totalPoints"] as? Int {
+            if let metadata = geoDictionary["metadata"] as? [String: String] {
+                let geoCluster = GeoCluster(objectId: objectId, latitude: latitude, longitude: longitude, categories: categories, metadata: JSON(metadata))
+                geoCluster.totalPoints = totalPoints
+                return geoCluster
+            }
+            let geoCluster = GeoCluster(objectId: objectId, latitude: latitude, longitude: longitude, categories: categories, metadata: nil)
+            geoCluster.totalPoints = totalPoints
+            return geoCluster
+        }
+        return nil
+    }
+    
+    func adaptToGeoFence(geoFenceDictionary: [String : Any]) -> GeoFence? {
+        if let geofenceName = geoFenceDictionary["geofenceName"] as? String {
+            let geoFence = GeoFence(geofenceName: geofenceName)
+            if let objectId = geoFenceDictionary["objectId"] as? String {
+                geoFence.objectId = objectId
+            }
+            if let onStayDuration = geoFenceDictionary["onStayDuration"] as? NSNumber {
+                geoFence.onStayDuration = onStayDuration
+            }
+            if let geoFenceType = geoFenceDictionary["type"] as? String {
+                geoFence.geoFenceType = FenceType(rawValue: geoFenceType)
+            }
+            if let nodes = geoFenceDictionary["nodes"] as? [[String : Any]] {
+                var geoFenceNodes = [GeoPoint]()
+                for node in nodes {
+                    if node["___class"] as? String == "GeoPoint",
+                        let latitude = node["latitude"] as? Double,
+                        let longitude = node["longitude"] as? Double {
+                        let geoPoint = GeoPoint(latitude: latitude, longitude: longitude)
+                        geoFenceNodes.append(geoPoint)
+                    }
+                }
+                geoFence.nodes = geoFenceNodes
+            }
+            return geoFence
         }
         return nil
     }
@@ -289,5 +338,33 @@ class ProcessResponse: NSObject {
             invokeObject.args = JSONUtils.shared.JSONToObject(objectToParse: args) as? [Any]
         }
         return invokeObject
+    }
+    
+    func adaptToBackendlessFile(backendlessFileDictionary: [String : Any]) -> BackendlessFile {
+        let backendlessFile = BackendlessFile()
+        if let fileUrl = backendlessFileDictionary["fileURL"] as? String {
+            backendlessFile.fileUrl = fileUrl
+        }
+        return backendlessFile
+    }
+    
+    func adaptToBackendlessFileInfo(fileInfoDictionary: [String : Any]) -> BackendlessFileInfo {
+        let fileInfo = BackendlessFileInfo()
+        if let name = fileInfoDictionary["name"] as? String {
+            fileInfo.name = name
+        }
+        if let createdOn = fileInfoDictionary["createdOn"] as? NSNumber {
+            fileInfo.createdOn = createdOn
+        }
+        if let publicUrl = fileInfoDictionary["publicUrl"] as? String {
+            fileInfo.publicUrl = publicUrl
+        }
+        if let size = fileInfoDictionary["size"] as? NSNumber {
+            fileInfo.size = size
+        }
+        if let url = fileInfoDictionary["url"] as? String {
+            fileInfo.url = url
+        }
+        return fileInfo
     }
 }
