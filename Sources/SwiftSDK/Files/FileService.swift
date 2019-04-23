@@ -28,7 +28,6 @@
     
     private let processResponse = ProcessResponse.shared
     private let dataTypesUtils = DataTypesUtils.shared
-    private struct NoReply: Decodable { }
     
     open func uploadFile(fileName: String, filePath: String, content: Data, responseHandler: ((BackendlessFile) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         self.uploadFile(fileName: fileName, filePath: filePath, fileContent: content, overwrite: false, responseHandler: responseHandler, errorHandler: errorHandler)

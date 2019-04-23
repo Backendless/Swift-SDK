@@ -41,16 +41,11 @@ class UserServiceTests: XCTestCase {
     
     // call after all tests
     override class func tearDown() {
-        Backendless.shared.userService.logout(responseHandler: {
-            clearTables()
-        }, errorHandler: { fault in }) 
+        Backendless.shared.userService.logout(responseHandler: { clearTables() }, errorHandler: { fault in })
     }
     
     class func clearTables() {
-        Backendless.shared.data.ofTable("Users").removeBulk(whereClause: nil, responseHandler: { removedObjects in
-        }, errorHandler: { fault in
-            print("USER SERVICE TEST SETUP ERROR \(fault.faultCode): \(fault.message ?? "")")
-        })
+        Backendless.shared.data.ofTable("Users").removeBulk(whereClause: nil, responseHandler: { removedObjects in }, errorHandler: { fault in })
     }
     
     func test_01_describeUserClass() {

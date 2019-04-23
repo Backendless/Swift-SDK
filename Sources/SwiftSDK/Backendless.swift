@@ -98,7 +98,24 @@
         return _logging
     }()
     
+    open lazy var cache: CacheService = {
+        return self.cacheService
+    }()
+    
+    open lazy var cacheService: CacheService = {
+        let _cacheSevice = CacheService()
+        return _cacheSevice
+    }()
+    
     open func sharedObject(name: String) -> SharedObject {
         return SharedObject(name: name)
     }
+    
+    /*#pragma mark - cache methods
+     -(void)clearAllCache;
+     -(void)clearCacheForClassName:(NSString *)className query:(id) query;
+     -(BOOL)hasResultForClassName:(NSString *)className query:(id) query;
+     -(void)setCachePolicy:(BackendlessCachePolicy *)policy;
+     -(void)setCacheStoredType:(BackendlessCacheStoredEnum)storedType;
+     -(void)saveCache;*/
 }

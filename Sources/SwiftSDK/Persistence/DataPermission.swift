@@ -48,7 +48,6 @@
     
     private let persistenceServiceUtils = PersistenceServiceUtils()
     private let processResponse = ProcessResponse.shared
-    private struct NoReply: Decodable { }
     
     private enum PermissionType: String {
         case GRANT

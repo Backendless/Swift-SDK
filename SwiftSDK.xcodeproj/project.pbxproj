@@ -75,6 +75,9 @@
 		5E84136321B5265200869794 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E84136221B5265200869794 /* UserService.swift */; };
 		5E84E87A223158EA008B3F05 /* PublishingAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E84E879223158EA008B3F05 /* PublishingAPITests.swift */; };
 		5E84E87C22315E12008B3F05 /* EmailBodyparts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E84E87B22315E12008B3F05 /* EmailBodyparts.swift */; };
+		5E8A2A22226EF7DA007C2BAA /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8A2A21226EF7DA007C2BAA /* CacheService.swift */; };
+		5E8A2A24226EFA16007C2BAA /* NoReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8A2A23226EFA16007C2BAA /* NoReply.swift */; };
+		5E8A2A27226F2BF4007C2BAA /* CacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8A2A26226F2BF4007C2BAA /* CacheTests.swift */; };
 		5E90721121B66E9E00619C0D /* Fault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E90721021B66E9E00619C0D /* Fault.swift */; };
 		5E922249225B8CCF0001688F /* GeoQueryRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E922248225B8CCF0001688F /* GeoQueryRectangle.swift */; };
 		5E92224B225BAA8C0001688F /* GeoCluster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E92224A225BAA8C0001688F /* GeoCluster.swift */; };
@@ -196,6 +199,9 @@
 		5E84136221B5265200869794 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		5E84E879223158EA008B3F05 /* PublishingAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishingAPITests.swift; sourceTree = "<group>"; };
 		5E84E87B22315E12008B3F05 /* EmailBodyparts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailBodyparts.swift; sourceTree = "<group>"; };
+		5E8A2A21226EF7DA007C2BAA /* CacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheService.swift; sourceTree = "<group>"; };
+		5E8A2A23226EFA16007C2BAA /* NoReply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoReply.swift; sourceTree = "<group>"; };
+		5E8A2A26226F2BF4007C2BAA /* CacheTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheTests.swift; sourceTree = "<group>"; };
 		5E90721021B66E9E00619C0D /* Fault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fault.swift; sourceTree = "<group>"; };
 		5E922248225B8CCF0001688F /* GeoQueryRectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoQueryRectangle.swift; sourceTree = "<group>"; };
 		5E92224A225BAA8C0001688F /* GeoCluster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoCluster.swift; sourceTree = "<group>"; };
@@ -300,14 +306,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		5AFE8E5C21E8D7010003477B /* PersistenceServiceTests */ = {
+		5AFE8E5C21E8D7010003477B /* PersistenceTests */ = {
 			isa = PBXGroup;
 			children = (
 				5AFE8E5D21E8D7410003477B /* PersistenceServiceTests.swift */,
 				5AFE8E6121E8E2620003477B /* MapDrivenDataStoreTests.swift */,
 				5AFE8E6521E8E5C00003477B /* DataStoreFactoryTests.swift */,
 			);
-			path = PersistenceServiceTests;
+			path = PersistenceTests;
 			sourceTree = "<group>";
 		};
 		5E03A3B822291680005A538D /* Messaging */ = {
@@ -381,29 +387,29 @@
 			path = GeoFence;
 			sourceTree = "<group>";
 		};
-		5E4C2705224B963000CDF967 /* MessagingServiceTests */ = {
+		5E4C2705224B963000CDF967 /* MessagingTests */ = {
 			isa = PBXGroup;
 			children = (
 				5E4C2706224B964700CDF967 /* MessagingServiceTests.swift */,
 			);
-			path = MessagingServiceTests;
+			path = MessagingTests;
 			sourceTree = "<group>";
 		};
-		5E4CE08222536AA0004571DA /* FileServiceTests */ = {
+		5E4CE08222536AA0004571DA /* FilesTests */ = {
 			isa = PBXGroup;
 			children = (
 				5E4CE08522536B73004571DA /* FileServiceTests.swift */,
 			);
-			path = FileServiceTests;
+			path = FilesTests;
 			sourceTree = "<group>";
 		};
-		5E545EEA21DFAF1D00881ED0 /* GeoServiceTests */ = {
+		5E545EEA21DFAF1D00881ED0 /* GeoTests */ = {
 			isa = PBXGroup;
 			children = (
 				5E545EEB21DFB87A00881ED0 /* GeoServiceTests.swift */,
 				5E545EED21DFBA4400881ED0 /* GeoPointTests.swift */,
 			);
-			path = GeoServiceTests;
+			path = GeoTests;
 			sourceTree = "<group>";
 		};
 		5E572D4921B8042B000713B0 /* Response */ = {
@@ -466,8 +472,25 @@
 				5E4E309B2243B85C00B479C8 /* DeviceHelper.swift */,
 				5E4E31142243C39200B479C8 /* DataTypesUtils.swift */,
 				5E275C9F224B8142002F89FC /* FileManagerHelper.swift */,
+				5E8A2A23226EFA16007C2BAA /* NoReply.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		5E8A2A20226EF7B3007C2BAA /* Cache */ = {
+			isa = PBXGroup;
+			children = (
+				5E8A2A21226EF7DA007C2BAA /* CacheService.swift */,
+			);
+			path = Cache;
+			sourceTree = "<group>";
+		};
+		5E8A2A25226F2BD8007C2BAA /* CacheTests */ = {
+			isa = PBXGroup;
+			children = (
+				5E8A2A26226F2BF4007C2BAA /* CacheTests.swift */,
+			);
+			path = CacheTests;
 			sourceTree = "<group>";
 		};
 		5E90720E21B66DA300619C0D /* UserServiceTests */ = {
@@ -568,7 +591,7 @@
 			path = UserService;
 			sourceTree = "<group>";
 		};
-		5ECD9C7C21DE57C2002CBB7D /* GeoService */ = {
+		5ECD9C7C21DE57C2002CBB7D /* Geo */ = {
 			isa = PBXGroup;
 			children = (
 				5ECD9C7F21DE57E7002CBB7D /* GeoService.swift */,
@@ -579,7 +602,7 @@
 				5E922248225B8CCF0001688F /* GeoQueryRectangle.swift */,
 				5E45F672225F7F8F001DD7CF /* GeoFence */,
 			);
-			path = GeoService;
+			path = Geo;
 			sourceTree = "<group>";
 		};
 		5ECE680C21B0248B00839120 /* SwiftSDKTests */ = {
@@ -588,11 +611,12 @@
 				5ECE680E21B0248B00839120 /* Info.plist */,
 				5AFE8E6321E8E3430003477B /* TestsConfig.swift */,
 				5EB28E1F21B1833A0007AC30 /* BackendlessTests.swift */,
-				5E4CE08222536AA0004571DA /* FileServiceTests */,
+				5E8A2A25226F2BD8007C2BAA /* CacheTests */,
+				5E4CE08222536AA0004571DA /* FilesTests */,
 				5EE691FF21B67770002E72A9 /* FaultTests */,
-				5E545EEA21DFAF1D00881ED0 /* GeoServiceTests */,
-				5E4C2705224B963000CDF967 /* MessagingServiceTests */,
-				5AFE8E5C21E8D7010003477B /* PersistenceServiceTests */,
+				5E545EEA21DFAF1D00881ED0 /* GeoTests */,
+				5E4C2705224B963000CDF967 /* MessagingTests */,
+				5AFE8E5C21E8D7010003477B /* PersistenceTests */,
 				5E6098FF222040620012F6A0 /* RTTests */,
 				5E5FE02721F7347200387F8B /* TestObjects */,
 				5E90720E21B66DA300619C0D /* UserServiceTests */,
@@ -613,12 +637,13 @@
 			isa = PBXGroup;
 			children = (
 				5EB28E1821B1799A0007AC30 /* Backendless.swift */,
+				5E8A2A20226EF7B3007C2BAA /* Cache */,
 				5E09B00A22645B870073DA5E /* Logging */,
 				5E1CC2F5225252D70011D5C8 /* Files */,
 				5E64F0BD21C50D7D00590B04 /* BackendlessRequestManager */,
 				5E60834921EF720600268B4D /* Extensions */,
 				5E90720F21B66E6000619C0D /* Fault */,
-				5ECD9C7C21DE57C2002CBB7D /* GeoService */,
+				5ECD9C7C21DE57C2002CBB7D /* Geo */,
 				5E03A3B822291680005A538D /* Messaging */,
 				5A2A784B21E6103100EC8007 /* Persistence */,
 				5E11113821B532BD0044CAED /* Property */,
@@ -836,6 +861,7 @@
 				5E11113721B532450044CAED /* UserProperty.swift in Sources */,
 				5EE063BF22017EAA00B862EA /* LoadRelationsQueryBuilder.swift in Sources */,
 				5EFBA8FE21C1011E007B3BB0 /* BackendlessUser.swift in Sources */,
+				5E8A2A24226EFA16007C2BAA /* NoReply.swift in Sources */,
 				5E971912221C27CB00857603 /* EventHandlerForMap.swift in Sources */,
 				5E275CA0224B8142002F89FC /* FileManagerHelper.swift in Sources */,
 				5E4CE08122536196004571DA /* DataExtension.swift in Sources */,
@@ -899,6 +925,7 @@
 				5E92224B225BAA8C0001688F /* GeoCluster.swift in Sources */,
 				5E572D4B21B8043E000713B0 /* ProcessResponse.swift in Sources */,
 				5EB28E1921B1799A0007AC30 /* Backendless.swift in Sources */,
+				5E8A2A22226EF7DA007C2BAA /* CacheService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -911,6 +938,7 @@
 				5AFE8E6221E8E2620003477B /* MapDrivenDataStoreTests.swift in Sources */,
 				5E4CE08622536B73004571DA /* FileServiceTests.swift in Sources */,
 				5E5716E82242803A00C7B048 /* SharedObjectTests.swift in Sources */,
+				5E8A2A27226F2BF4007C2BAA /* CacheTests.swift in Sources */,
 				5E84E87A223158EA008B3F05 /* PublishingAPITests.swift in Sources */,
 				5EE6920121B67791002E72A9 /* FaultTests.swift in Sources */,
 				5E7534662220578600BC31D4 /* EventHanderForMapTests.swift in Sources */,

@@ -47,7 +47,6 @@
 @objcMembers open class FilePermission: NSObject {
     
     private let processResponse = ProcessResponse.shared
-    private struct NoReply: Decodable { }
     
     private enum PermissionType: String {
         case GRANT

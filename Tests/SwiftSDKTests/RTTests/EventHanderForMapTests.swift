@@ -56,10 +56,7 @@ class EventHanderForMapTests: XCTestCase {
     }
     
     class func clearTables() {
-        Backendless.shared.data.ofTable("TestClass").removeBulk(whereClause: nil, responseHandler: { removedObjects in
-        }, errorHandler: { fault in
-            print("EVENT HANDLER FOR MAP TEST SETUP ERROR \(fault.faultCode): \(fault.message!)")
-        })
+        Backendless.shared.data.ofTable("TestClass").removeBulk(whereClause: nil, responseHandler: { removedObjects in }, errorHandler: { fault in })
     }
     
     func test_01_addCreateListener() {
