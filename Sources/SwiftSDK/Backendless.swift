@@ -107,15 +107,12 @@
         return _cacheSevice
     }()
     
+    open lazy var counters: AtomicCounters = {
+        let _atomicCounters = AtomicCounters()
+        return _atomicCounters
+    }()
+    
     open func sharedObject(name: String) -> SharedObject {
         return SharedObject(name: name)
     }
-    
-    /*#pragma mark - cache methods
-     -(void)clearAllCache;
-     -(void)clearCacheForClassName:(NSString *)className query:(id) query;
-     -(BOOL)hasResultForClassName:(NSString *)className query:(id) query;
-     -(void)setCachePolicy:(BackendlessCachePolicy *)policy;
-     -(void)setCacheStoredType:(BackendlessCacheStoredEnum)storedType;
-     -(void)saveCache;*/
 }

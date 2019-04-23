@@ -180,23 +180,23 @@
         })
     }
     
-    open func getFileCount(responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    open func getFileCount(responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         getFileCount(path: "", pattern: "*", recursive: false, countDirectories: true, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func getFileCount(path: String, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    open func getFileCount(path: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         getFileCount(path: path, pattern: "*", recursive: false, countDirectories: true, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func getFileCount(path: String, pattern: String, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    open func getFileCount(path: String, pattern: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         getFileCount(path: path, pattern: pattern, recursive: false, countDirectories: true, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func getFileCount(path: String, pattern: String, recursive: Bool, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    open func getFileCount(path: String, pattern: String, recursive: Bool, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         getFileCount(path: path, pattern: pattern, recursive: recursive, countDirectories: true, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func getFileCount(path: String, pattern: String, recursive: Bool, countDirectories: Bool, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    open func getFileCount(path: String, pattern: String, recursive: Bool, countDirectories: Bool, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         var restMethod = "files/\(path)/?action=count&pattern=\(dataTypesUtils.stringToUrlString(originalString: pattern))"
         if recursive {
             restMethod += "&sub=true"
@@ -217,7 +217,7 @@
                 }
             }
             else {
-                responseHandler(self.dataTypesUtils.dataToNSNumber(data: response.data!))
+                responseHandler(self.dataTypesUtils.dataToInt(data: response.data!))
             }
         })
     }

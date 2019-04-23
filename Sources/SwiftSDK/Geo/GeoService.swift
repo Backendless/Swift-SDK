@@ -161,15 +161,15 @@
         })
     }
     
-    open func getPointsCount(responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    open func getPointsCount(responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         getGeoPointsCount(geoQuery: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func getPointsCount(geoQuery: BackendlessGeoQuery, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    open func getPointsCount(geoQuery: BackendlessGeoQuery, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         getGeoPointsCount(geoQuery: geoQuery, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    private func getGeoPointsCount(geoQuery: BackendlessGeoQuery?, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    private func getGeoPointsCount(geoQuery: BackendlessGeoQuery?, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let restMethod = createRestMethod(restMethod: "geo/count?", geoQuery: geoQuery)
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: Int.self) {
@@ -178,7 +178,7 @@
                 }
             }
             else {
-                responseHandler(self.dataTypesUtils.dataToNSNumber(data: response.data!))
+                responseHandler(self.dataTypesUtils.dataToInt(data: response.data!))
             }
         })
     }
@@ -304,31 +304,31 @@
         })
     }
     
-    open func runOnEnterAction(geoFenceName: String, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    open func runOnEnterAction(geoFenceName: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         runOnAction(actionName: "onenter", geoFenceName: geoFenceName, geoPoint: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func runOnEnterAction(geoFenceName: String, geoPoint: GeoPoint, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    open func runOnEnterAction(geoFenceName: String, geoPoint: GeoPoint, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         runOnAction(actionName: "onenter", geoFenceName: geoFenceName, geoPoint: geoPoint, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func runOnStayAction(geoFenceName: String, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    open func runOnStayAction(geoFenceName: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         runOnAction(actionName: "onstay", geoFenceName: geoFenceName, geoPoint: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func runOnStayAction(geoFenceName: String, geoPoint: GeoPoint, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    open func runOnStayAction(geoFenceName: String, geoPoint: GeoPoint, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         runOnAction(actionName: "onstay", geoFenceName: geoFenceName, geoPoint: geoPoint, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func runOnExitAction(geoFenceName: String, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    open func runOnExitAction(geoFenceName: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         runOnAction(actionName: "onexit", geoFenceName: geoFenceName, geoPoint: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func runOnExitAction(geoFenceName: String, geoPoint: GeoPoint, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    open func runOnExitAction(geoFenceName: String, geoPoint: GeoPoint, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         runOnAction(actionName: "onexit", geoFenceName: geoFenceName, geoPoint: geoPoint, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    private func runOnAction(actionName: String, geoFenceName: String, geoPoint: GeoPoint?, responseHandler: ((NSNumber) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    private func runOnAction(actionName: String, geoFenceName: String, geoPoint: GeoPoint?, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         if let geoPoint = geoPoint {
             let headers = ["Content-Type": "application/json"]
             let parameters = ["latitude": geoPoint.latitude, "longitude": geoPoint.longitude] as [String : Any]
@@ -349,7 +349,7 @@
                     if result is Fault {
                         errorHandler(result as! Fault)
                     }
-                    else if let totalObjects = (result as! JSON).dictionaryObject?["totalObjects"] as? NSNumber {
+                    else if let totalObjects = (result as! JSON).dictionaryObject?["totalObjects"] as? Int {
                         responseHandler(totalObjects)
                     }
                 }

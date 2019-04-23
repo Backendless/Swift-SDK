@@ -24,7 +24,7 @@ class DataTypesUtils: NSObject {
     static let shared = DataTypesUtils()
     
     private override init() { }
-
+    
     func dateToInt(date: Date) -> Int {
         return Int((date.timeIntervalSince1970 * 1000.0).rounded())
     }
@@ -41,16 +41,26 @@ class DataTypesUtils: NSObject {
     }
     
     func dictionaryToUrlString(dictionary: [String : Any]) -> String? {
-         if let theJSONData = try? JSONSerialization.data(withJSONObject: dictionary, options: []),
+        if let theJSONData = try? JSONSerialization.data(withJSONObject: dictionary, options: []),
             let theJSONText = String(data: theJSONData, encoding: .ascii) {
             return stringToUrlString(originalString: theJSONText)
         }
         return nil
     }
     
-    func dataToNSNumber(data: Data) -> NSNumber {
+    //    func dataToNSNumber(data: Data) -> NSNumber {
+    //        if let stringValue = String(bytes: data, encoding: .utf8) {
+    //            if
+    //            return (NSNumber(value: Int(stringValue)!))
+    //        }
+    //        return 0
+    //    }
+    
+    func dataToInt(data: Data) -> Int {
         if let stringValue = String(bytes: data, encoding: .utf8) {
-            return (NSNumber(value: Int(stringValue)!))
+            if let result = Int(stringValue) {
+                return result
+            }
         }
         return 0
     }
