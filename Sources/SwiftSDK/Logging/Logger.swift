@@ -43,6 +43,10 @@
         logBuffer.enqueue(logger: name, level: "TRACE", message: message, exception: nil)
     }
     
+    open func warn(message: String) {
+        logBuffer.enqueue(logger: name, level: "WARN", message: message, exception: nil)
+    }
+    
     open func warn(message: String, exception: NSException) {
         logBuffer.enqueue(logger: name, level: "WARN", message: message, exception: exception.reason)
     }

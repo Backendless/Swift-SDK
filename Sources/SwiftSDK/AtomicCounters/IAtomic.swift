@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-public protocol IAtomic {
+@objc public protocol IAtomic {
     func getAndIncrement(responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
     func incrementAndGet(responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
     func getAndDecrement(responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)

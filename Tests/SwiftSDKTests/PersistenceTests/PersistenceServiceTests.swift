@@ -109,33 +109,4 @@ class PersistenceServiceTests: XCTestCase {
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
-    
-    func test_05_denyForAllRoles() {
-        let expectation = self.expectation(description: "PASSED: persistenceService.denyForAllRoles")
-        
-        let testObject = TestClass()
-        testObject.name = "Bob"
-        testObject.age = 25
-        
-        self.backendless.data.of(TestClass.self).save(entity: testObject, responseHandler: { savedObject in
-            XCTAssertNotNil(savedObject)
-            self.backendless.data.permissions.denyForAllRoles(entity: savedObject, operation: .DATA_UPDATE, responseHandler: {
-                (savedObject as! TestClass).name = "Ann"
-                (savedObject as! TestClass).age = 50
-                self.backendless.data.of(TestClass.self).update(entity: savedObject, responseHandler: { updatedObject in
-                    XCTFail("Update operation for this object must be denied")
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    expectation.fulfill()
-                })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
-                XCTFail("\(fault.code): \(fault.message!)")
-            })
-        }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
-            XCTFail("\(fault.code): \(fault.message!)")
-        })
-        waitForExpectations(timeout: timeout, handler: nil)
-    }
 }
