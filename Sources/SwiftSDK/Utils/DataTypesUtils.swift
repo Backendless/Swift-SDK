@@ -48,14 +48,6 @@ class DataTypesUtils: NSObject {
         return nil
     }
     
-    //    func dataToNSNumber(data: Data) -> NSNumber {
-    //        if let stringValue = String(bytes: data, encoding: .utf8) {
-    //            if
-    //            return (NSNumber(value: Int(stringValue)!))
-    //        }
-    //        return 0
-    //    }
-    
     func dataToInt(data: Data) -> Int {
         if let stringValue = String(bytes: data, encoding: .utf8) {
             if let result = Int(stringValue) {

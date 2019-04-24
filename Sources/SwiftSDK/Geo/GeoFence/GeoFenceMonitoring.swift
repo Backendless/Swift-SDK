@@ -103,7 +103,7 @@ class GeoFenceMonitoring: NSObject, ILocationTrackerListener {
             if geoFence.geofenceName == geoFenceName {
                 fencesToCallback.removeValue(forKey: geoFence)
                 cancelOnStayGeoFence(geoFence: geoFence)
-                if let index = pointFences.index(of: geoFence) {
+                if let index = pointFences.firstIndex(of: geoFence) {
                     pointFences.remove(at: index)
                 }
             }
@@ -279,7 +279,7 @@ class GeoFenceMonitoring: NSObject, ILocationTrackerListener {
     }
     
     private func cancelOnStayGeoFence(geoFence: GeoFence) {
-        if let index = onStay.index(of: geoFence) {
+        if let index = onStay.firstIndex(of: geoFence) {
             onStay.remove(at: index)
         }
     }

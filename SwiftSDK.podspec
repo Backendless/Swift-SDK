@@ -8,7 +8,10 @@ Pod::Spec.new do |s|
   s.authors      = { 'Mark Piller' => 'mark@backendless.com', 'Olha Danylova' => 'olga@themidnightcoders.com' }
   s.summary      = "Backendless is a Mobile Backend and API Services Platform"
   s.description  = "Backendless is a development and a run-time platform. It helps software developers to create mobile and desktop applications while removing the need for server-side coding."
-  s.swift_version = '4.2'
+  s.swift_version = "5"
+  s.pod_target_xcconfig = {
+      'SWIFT_VERSION' => '5.0'
+  }
 
   s.ios.deployment_target = '8.0'
   s.osx.deployment_target = '10.10'
