@@ -26,7 +26,7 @@ import CoreLocation
 class ServerCallback: NSObject, ICallback {
     
     var geoPoint: GeoPoint?
-    var responseHandler: ((NSNumber) -> Void)!
+    var responseHandler: ((Int) -> Void)!
     var errorHandler: ((Fault) -> Void)!
     
     override init() {
@@ -40,7 +40,7 @@ class ServerCallback: NSObject, ICallback {
     
     func callOnEnter(geoFence: GeoFence, location: CLLocation) {
         if let geoFenceName = geoFence.geofenceName,
-            let geoPoint = self.geoPoint {
+            let geoPoint = self.geoPoint {           
             Backendless.shared.geoService.runOnEnterAction(geoFenceName: geoFenceName, geoPoint: geoPoint, responseHandler: { response in
                 self.responseHandler(response)
             }, errorHandler: { fault in

@@ -40,10 +40,11 @@ class MessagingServiceTests: XCTestCase {
     }
     
     class func clearTables() {
-        Backendless.shared.data.ofTable("DeviceRegistration").removeBulk(whereClause: nil, responseHandler: { removedObjects in
-        }, errorHandler: { fault in
-            print("MESSAGE SERVICE TEST SETUP ERROR \(fault.faultCode): \(fault.message!)")
-        })
+        Backendless.shared.data.ofTable("DeviceRegistration").find(responseHandler: { deviceRegistrations in
+            for deviceRegistration in deviceRegistrations {
+                Backendless.shared.data.ofTable("DeviceRegistration").remove(entity: deviceRegistration, responseHandler: { removed in }, errorHandler: { fault in })
+            }
+        }, errorHandler: { fault in })
     }
     
     func generateDeviceToken() -> Data {

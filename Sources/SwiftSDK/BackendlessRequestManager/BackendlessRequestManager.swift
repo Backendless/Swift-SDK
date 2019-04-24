@@ -54,12 +54,27 @@ class BackendlessRequestManager: NSObject {
         if let userToken = Backendless.shared.userService.getCurrentUser()?.userToken {
             request.addValue(userToken, forHTTPHeaderField: "user-token")
         }
-        if let parameters = parameters {
-            if parameters is String {
-                request.httpBody = (parameters as! String).data(using: .utf8)
-            }
+        if var parameters = parameters {
+            if headers == ["Content-Type": "application/json"] {
+                if parameters is String {
+                    parameters = "\"\(parameters as! String)\""
+                    request.httpBody = (parameters as! String).data(using: .utf8)
+                }
+                else if parameters is NSNumber {
+                    parameters = "\(parameters as! NSNumber)"
+                    request.httpBody = (parameters as! String).data(using: .utf8)
+                }
+                else {
+                    request.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
+                }
+            }                
             else {
-                request.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
+                if parameters is String {
+                    request.httpBody = (parameters as! String).data(using: .utf8)
+                }
+                else {
+                    request.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
+                }
             }
         }
         

@@ -61,7 +61,6 @@ class JSONUtils: NSObject {
     func JSONToObject(objectToParse: Any) -> Any {
         var resultObject = objectToParse
         if !(objectToParse is String), !(objectToParse is NSNumber), !(objectToParse is NSNull) {
-            
             if let arrayToParse = objectToParse as? [Any] {
                 var resultArray = [Any]()
                 for object in arrayToParse {

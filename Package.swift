@@ -9,7 +9,7 @@ let package = Package(
         .library(name: "SwiftSDK", targets: ["SwiftSDK"])
     ],
     dependencies: [
-        .package(url: "https://github.com/socketio/socket.io-client-swift.git", .upToNextMinor(from:"14.0.0"))
+        .package(url: "https://github.com/socketio/socket.io-client-swift.git", .upToNextMinor(from:"15.0.0"))
     ],
     targets: [
         .target(name: "SwiftSDK", dependencies: ["Socket.IO-Client-Swift"]),

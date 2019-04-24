@@ -19,85 +19,61 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class LogBuffer: NSObject {
+class LogBuffer: NSObject {
     
-    public static let shared = LogBuffer()
+    static let shared = LogBuffer()
     
     private var logMessages: [LogMessage]!
     private var numberOfMessages: Int = 0
     private var timeFrequency: Int = 0
+    
+    private let dataTypesUtils = DataTypesUtils.shared
+    private let processResponse = ProcessResponse.shared
+    
+    private var timer: Timer?
     
     private override init() {
         super.init()
         self.logMessages = [LogMessage]()
         self.numberOfMessages = 100
         self.timeFrequency = 60 * 5 // 5 minutes
-        flushMessages()
-    }
-
-    open func setLogReportingPolicy(numberOfMessges: Int, timeFrequencySec: Int) -> Any? {
-        if numberOfMessges <= 0, timeFrequencySec <= 0 {
-            return Fault(message: "Invalid or missing fields for Policy", faultCode: 21000)
-        }
-        self.numberOfMessages = numberOfMessges
-        self.timeFrequency = timeFrequencySec
-        flushMessages()
-        return nil
+        timer = Timer.scheduledTimer(timeInterval: Double(timeFrequency), target: self, selector: #selector(LogBuffer.flush), userInfo: nil, repeats: true)
     }
     
-    open func enqueue(logger: String, level: String, message: String, exception: String) {
-        if numberOfMessages == 1 {
-            reportSingleLogMessage(logger: logger, level: level, message: message, exception: exception)
-            return
-        }
-        let logMessage = LogMessage(logger: logger, level: level, timestamp: Date(), message: message, exception: exception)
-        DispatchQueue.global(qos: .default).async {
-            self.logMessages.append(logMessage)
-            if self.numberOfMessages > 1 && self.logMessages.count <= self.numberOfMessages {
-                self.flush()
-            }
+    func setLogReportingPolicy(numberOfMessges: Int, timeFrequencySec: Int) {
+        if numberOfMessages > 0 && timeFrequencySec > 0 {
+            self.numberOfMessages = numberOfMessges
+            self.timeFrequency = timeFrequencySec
+            timer?.invalidate()
+            timer = Timer.scheduledTimer(timeInterval: Double(timeFrequency), target: self, selector: #selector(LogBuffer.flush), userInfo: nil, repeats: true)
         }
     }
     
-    open func forceFlush() {
-        DispatchQueue.global(qos: .default).async {
+    func enqueue(logger: String, level: String, message: String, exception: String?) {
+        let logMessage = LogMessage(logger: logger, level: level, timestamp: self.dataTypesUtils.dateToInt(date: Date()), message: message, exception: exception)
+        self.logMessages.append(logMessage)
+        
+        if logMessages.count >= numberOfMessages {
             self.flush()
         }
     }
     
-    private func flush() {
-        if logMessages.count == 0 {
+    func forceFlush() {
+        self.flush()
+    }
+    
+    @objc private func flush() {
+        if self.logMessages?.count == 0 {
             return
         }
         self.reportBatch(batch: logMessages)
-        logMessages.removeAll()
-    }
-    
-    private func flushMessages() {
-        self.flush()
-        if (numberOfMessages == 1 || timeFrequency <= 0) {
-            return
-        }
-        DispatchQueue.global(qos: .default).asyncAfter(deadline: .now() + Double(integerLiteral: Int64(timeFrequency)), execute: {
-            self.flushMessages()
-        })
-    }
-    
-    private func reportSingleLogMessage(logger: String, level: String, message: String, exception: String) {
-        /*
-         if (!logger || !level || !message)
-         return;
-         [DebLog log:@"LogBuffer -> reportSingleLogMessage: _numOfMessages = %d, logger = '%@', level = '%@', message = '%@', exeption = '%@'", _numOfMessages, logger, level, message, exception];
-         NSArray *args = @[level, logger, message, exception?exception:[NSNull null]];
-         [invoker invokeAsync:SERVER_LOG_SERVICE_PATH method:METHOD_LOG args:args responder:_responder];
-         }*/
     }
     
     private func reportBatch(batch: [LogMessage]) {
-        /*if (!batch || !batch.count)
-         return;
-         [DebLog log:@"LogBuffer -> reportBatch: %@", batch];
-         NSArray *args = @[batch];
-         [invoker invokeAsync:SERVER_LOG_SERVICE_PATH method:METHOD_BATCHLOG args:args responder:_responder];*/
+        let headers = ["Content-Type": "application/json"]
+        let parameters = processResponse.adaptToLogMessagesArrayOfDict(logMessages: batch)
+        self.logMessages.removeAll()
+        BackendlessRequestManager(restMethod: "log", httpMethod: .PUT, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+        })
     }
 }

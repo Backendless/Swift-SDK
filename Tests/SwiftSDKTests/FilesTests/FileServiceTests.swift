@@ -101,7 +101,7 @@ class FileServiceTests: XCTestCase {
         backendless.file.uploadFile(fileName: "fox2.txt", filePath: directory, content: data, overwrite: true, responseHandler: { backendlessFile in
             XCTAssertNotNil(backendlessFile)
             XCTAssertNotNil(backendlessFile.fileUrl)
-            self.backendless.file.copy(sourcePath: self.directory, targetPath: self.copiedDirectory, responseHandler: { copiedPath in
+            self.backendless.file.copy(sourcePath: self.directory, targetPath: self.copiedDirectory + "/copied", responseHandler: { copiedPath in
                 XCTAssertNotNil(copiedPath)
                 expectation.fulfill()
             }, errorHandler: { fault in

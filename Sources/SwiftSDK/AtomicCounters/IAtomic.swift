@@ -1,5 +1,5 @@
 //
-//  Logging.swift
+//  IAtomic.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,35 +19,14 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class Logging: NSObject {
-    
-    private var loggers = [String : Logger]()
-    
-    private let logBuffer = LogBuffer.shared
-    
-    public override init() {
-        super.init()
-        loggers.removeAll()
-    }
-    
-    open func setLogReportingPolicy(numberOfMessages: Int, timeFrequencySec: Int) {
-        logBuffer.setLogReportingPolicy(numberOfMessges: numberOfMessages, timeFrequencySec: timeFrequencySec)
-    }
-    
-    open func getLoggerClass(clazz: Any) -> Logger {
-        return getLogger(loggerName: String(describing: clazz))
-    }
-    
-    open func getLogger(loggerName: String) -> Logger {
-        if let logger = loggers[loggerName] {
-            return logger
-        }
-        let logger = Logger(loggerName: loggerName)
-        loggers[loggerName] = logger
-        return logger
-    }
-    
-    open func flush() {
-        logBuffer.forceFlush()
-    }
+public protocol IAtomic {
+    func getAndIncrement(responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
+    func incrementAndGet(responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
+    func getAndDecrement(responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
+    func decrementAndGet(responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
+    func getAndAdd(value: Int, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
+    func addAndGet(value: Int, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
+    func compareAndSet(expected: Int, updated: Int, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
+    func get(responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
+    func reset(responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!)
 }

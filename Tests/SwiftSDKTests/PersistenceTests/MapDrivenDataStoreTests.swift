@@ -49,14 +49,8 @@ class MapDrivenDataStoreTests: XCTestCase {
     }
     
     class func clearTables() {
-        Backendless.shared.data.ofTable("TestClass").removeBulk(whereClause: nil, responseHandler: { removedObjects in
-        }, errorHandler: { fault in
-            print("MAP DRIVEN DATA STORE TEST SETUP ERROR \(fault.faultCode): \(fault.message ?? "")")
-        })
-        Backendless.shared.data.ofTable("ChildTestClass").removeBulk(whereClause: nil, responseHandler: { removedObjects in
-        }, errorHandler: { fault in
-            print("MAP DRIVEN DATA STORE TEST SETUP ERROR \(fault.faultCode): \(fault.message ?? "")")
-        })
+        Backendless.shared.data.ofTable("TestClass").removeBulk(whereClause: nil, responseHandler: { removedObjects in }, errorHandler: { fault in })
+        Backendless.shared.data.ofTable("ChildTestClass").removeBulk(whereClause: nil, responseHandler: { removedObjects in }, errorHandler: { fault in })
     }
     
     func test_01_save() {

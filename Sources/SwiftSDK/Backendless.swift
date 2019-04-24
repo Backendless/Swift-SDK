@@ -93,6 +93,25 @@
         return _geoSevice
     }()
     
+    open lazy var logging: Logging = {
+        let _logging = Logging()
+        return _logging
+    }()
+    
+    open lazy var cache: CacheService = {
+        return self.cacheService
+    }()
+    
+    open lazy var cacheService: CacheService = {
+        let _cacheSevice = CacheService()
+        return _cacheSevice
+    }()
+    
+    open lazy var counters: AtomicCounters = {
+        let _atomicCounters = AtomicCounters()
+        return _atomicCounters
+    }()
+    
     open func sharedObject(name: String) -> SharedObject {
         return SharedObject(name: name)
     }

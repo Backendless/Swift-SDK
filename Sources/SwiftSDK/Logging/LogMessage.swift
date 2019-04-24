@@ -23,18 +23,17 @@ class LogMessage: NSObject {
     
     var logger: String?
     var level: String?
-    var timestamp: Date?
+    var timestamp: Int = 0
     var message: String?
     var exception: String?
     
     private override init() { }
     
-    init(logger: String, level: String, timestamp: Date, message: String, exception: String) {
-        let logMessage = LogMessage()
-        logMessage.logger = logger
-        logMessage.level = level
-        logMessage.timestamp = timestamp
-        logMessage.message = message
-        logMessage.exception = exception
+    init(logger: String, level: String, timestamp: Int, message: String, exception: String?) {
+        self.logger = logger
+        self.level = level
+        self.timestamp = timestamp
+        self.message = message
+        self.exception = exception
     }
 }

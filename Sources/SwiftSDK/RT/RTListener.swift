@@ -26,8 +26,8 @@
     private var onReady: (() -> Void)?
     
     public override init() {
-        self.subscriptions = [String : [RTSubscription]]()
         super.init()
+        self.subscriptions = [String : [RTSubscription]]()
     }
     
     // ****************************************************
