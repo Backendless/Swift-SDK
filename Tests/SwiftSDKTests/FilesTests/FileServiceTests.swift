@@ -36,11 +36,6 @@ class FileServiceTests: XCTestCase {
         removeFiles()
     }
     
-    // call after all tests
-    override class func tearDown() {
-        removeFiles()
-    }
-    
     class func removeFiles() {
         Backendless.shared.file.remove(path: "TestsFiles", responseHandler: { }, errorHandler: { fault in })
         Backendless.shared.file.remove(path: "CopiedTestsFiles", responseHandler: { }, errorHandler: { fault in })
@@ -75,134 +70,85 @@ class FileServiceTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_03_rename() {
-        let expectation = self.expectation(description: "PASSED: fileService.rename")
-        let data = "The quick brown fox jumps over the lazy dog".data(using: .utf8)!
-        backendless.file.uploadFile(fileName: "fox1.txt", filePath: directory, content: data, overwrite: true, responseHandler: { backendlessFile in
-            XCTAssertNotNil(backendlessFile)
-            XCTAssertNotNil(backendlessFile.fileUrl)
-            self.backendless.file.rename(path: "\(self.directory)/fox1.txt", newName: "newFox1.txt", responseHandler: { renamedPath in
+    func test_03_renameFile() {
+        let expectation = self.expectation(description: "PASSED: fileService.renameFile")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+            self.backendless.file.rename(path: "\(self.directory)/Binary/fox.txt", newName: "newFox.txt", responseHandler: { renamedPath in
                 XCTAssertNotNil(renamedPath)
                 expectation.fulfill()
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
             })
-        }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
-            XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_04_copy() {
-        let expectation = self.expectation(description: "PASSED: fileService.copy")
-        let data = "The quick brown fox jumps over the lazy dog".data(using: .utf8)!
-        backendless.file.uploadFile(fileName: "fox2.txt", filePath: directory, content: data, overwrite: true, responseHandler: { backendlessFile in
-            XCTAssertNotNil(backendlessFile)
-            XCTAssertNotNil(backendlessFile.fileUrl)
-            self.backendless.file.copy(sourcePath: self.directory, targetPath: self.copiedDirectory + "/copied", responseHandler: { copiedPath in
+    func test_04_copyFile() {
+        let expectation = self.expectation(description: "PASSED: fileService.copyFile")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+            self.backendless.file.copy(sourcePath: "\(self.directory)/Binary/newFox.txt", targetPath: "\(self.copiedDirectory)/Binary/newFox.txt", responseHandler: { copiedPath in
                 XCTAssertNotNil(copiedPath)
                 expectation.fulfill()
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
             })
-        }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
-            XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_05_move() {
-        let expectation = self.expectation(description: "PASSED: fileService.move")
-        let data = "The quick brown fox jumps over the lazy dog".data(using: .utf8)!
-        backendless.file.uploadFile(fileName: "fox3.txt", filePath: directory, content: data, overwrite: true, responseHandler: { backendlessFile in
-            XCTAssertNotNil(backendlessFile)
-            XCTAssertNotNil(backendlessFile.fileUrl)
-            self.backendless.file.move(sourcePath: "\(self.directory)/fox3.txt", targetPath: "\(self.directory)/Binary/fox3.txt", responseHandler: { movedPath in
+    func test_05_moveFile() {
+        let expectation = self.expectation(description: "PASSED: fileService.moveFile")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+            self.backendless.file.move(sourcePath: "\(self.directory)/fox.txt", targetPath: self.copiedDirectory, responseHandler: { movedPath in
                 XCTAssertNotNil(movedPath)
                 expectation.fulfill()
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
             })
-        }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
-            XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_06_listing() {
         let expectation = self.expectation(description: "PASSED: fileService.listing")
-        backendless.file.listing(path: directory, pattern: "*", recursive: true, responseHandler: { filesInfo in
-            XCTAssertNotNil(filesInfo)
-            expectation.fulfill()
-        }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
-            XCTFail("\(fault.code): \(fault.message!)")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+            self.backendless.file.listing(path: self.copiedDirectory, pattern: "*", recursive: false, responseHandler: { fileInfo in
+                XCTAssert(fileInfo.count > 0)
+                expectation.fulfill()
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_07_getCount() {
-        let expectation = self.expectation(description: "PASSED: fileService.getCount")
-        backendless.file.getFileCount(path: directory, pattern: "*", recursive: false, countDirectories: true, responseHandler: {
-            count in
-            expectation.fulfill()
-        }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
-            XCTFail("\(fault.code): \(fault.message!)")
+    func test_07_getFileCount() {
+        let expectation = self.expectation(description: "PASSED: fileService.getFileCount")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+            self.backendless.file.getFileCount(path: self.copiedDirectory, responseHandler: { count in
+                XCTAssert(count > 0)
+                expectation.fulfill()
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_08_remove() {
         let expectation = self.expectation(description: "PASSED: fileService.remove")
-        backendless.file.remove(path: directory, responseHandler: {
-            expectation.fulfill()
-        }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
-            XCTFail("\(fault.code): \(fault.message!)")
-        })
-        waitForExpectations(timeout: timeout, handler: nil)
-    }
-    
-    func test_09_denyPermissions() {
-        let expectation = self.expectation(description: "PASSED: fileService.denyPermissions")
-        let data = "The quick brown fox jumps over the lazy dog".data(using: .utf8)!
-        backendless.file.uploadFile(fileName: "fox.txt", filePath: directory, content: data, overwrite: true, responseHandler: { backendlessFile in
-            
-            self.backendless.file.permissions.denyForAllRoles(path: "\(self.directory)/fox.txt", operation: .FILE_DELETE, responseHandler: {
-                
-                self.backendless.file.remove(path: "\(self.directory)/fox.txt", responseHandler: {
-                    XCTFail("This operation is denied")
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    expectation.fulfill()
-                })
-                
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+            self.backendless.file.remove(path: self.copiedDirectory, responseHandler: {
+                expectation.fulfill()
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
             })
-            
-        }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
-            XCTFail("\(fault.code): \(fault.message!)")
-        })
-        waitForExpectations(timeout: timeout, handler: nil)
-    }
-    
-    func test_10_allowPermissions() {
-        let expectation = self.expectation(description: "PASSED: fileService.allowPermissions")
-        backendless.file.permissions.grantForAllRoles(path: "\(self.directory)/fox.txt", operation: .FILE_DELETE, responseHandler: {
-            expectation.fulfill()
-        }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
-            XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
