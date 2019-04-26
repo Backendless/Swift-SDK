@@ -58,6 +58,22 @@ class JSONUtils: NSObject {
         return resultObject
     }
     
+    func objectToJSONWithoutClass(objectToParse: Any) -> Any {
+        let resultObject = objectToJSON(objectToParse: objectToParse)
+        if var resultDictionary = resultObject as? [String : Any] {
+            for key in Array(resultDictionary.keys) {
+                if key == "___class" {
+                    resultDictionary.removeValue(forKey: key)
+                }
+                else if let value = resultDictionary[key] as? [String : Any] {
+                    resultDictionary[key] = objectToJSONWithoutClass(objectToParse: value)
+                }
+            }
+            return resultDictionary
+        }
+        return resultObject
+    }
+    
     func JSONToObject(objectToParse: Any) -> Any {
         var resultObject = objectToParse
         if !(objectToParse is String), !(objectToParse is NSNumber), !(objectToParse is NSNull) {
@@ -70,8 +86,9 @@ class JSONUtils: NSObject {
             }
             else if let dictionaryToParse = objectToParse as? [String : Any] {
                 var resultDictionary = [String : Any]()
-                if let className = dictionaryToParse["___class"] as? String {
-                    resultObject = persistenceServiceUtils.dictionaryToEntity(dictionary: dictionaryToParse, className: className)!
+                if let tableName = dictionaryToParse["___class"] as? String {
+                    persistenceServiceUtils.setup(tableName: tableName)
+                    resultObject = persistenceServiceUtils.dictionaryToEntity(dictionary: dictionaryToParse, className: tableName)!
                 }
                 else {
                     for key in dictionaryToParse.keys {

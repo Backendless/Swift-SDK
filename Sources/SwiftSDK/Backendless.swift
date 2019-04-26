@@ -112,6 +112,16 @@
         return _atomicCounters
     }()
     
+    open lazy var customService: CustomService = {
+        let _customService = CustomService()
+        return _customService
+    }()
+    
+    open lazy var events: Events = {
+        let _events = Events()
+        return _events
+    }()
+    
     open func sharedObject(name: String) -> SharedObject {
         return SharedObject(name: name)
     }
