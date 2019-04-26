@@ -1,7 +1,7 @@
-[![CocoaPods Latest Version](https://img.shields.io/cocoapods/v/BackendlessSwift.svg)](https://img.shields.io/cocoapods/v/BackendlessSwift.svg)
-[![Platforms](https://img.shields.io/cocoapods/p/BackendlessSwift.svg?style=flat)]
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/Backendless/Swift-SDK/blob/master/LICENSE)
 [![Build Status](https://travis-ci.org/Backendless/Swift-SDK.png)](https://travis-ci.org/Backendless/Swift-SDK)
+[![CocoaPods Latest Version](https://img.shields.io/cocoapods/v/BackendlessSwift.svg)](https://img.shields.io/cocoapods/v/BackendlessSwift.svg)
+![Platforms](https://img.shields.io/cocoapods/p/BackendlessSwift.svg?style=flat)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/Backendless/Swift-SDK/blob/master/LICENSE)
 
 Backendless Swift SDK (http://backendless.com)
 ---
