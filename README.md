@@ -1,6 +1,9 @@
+[![CocoaPods Latest Version](https://img.shields.io/cocoapods/v/BackendlessSwift.svg)](https://img.shields.io/cocoapods/v/BackendlessSwift.svg)
+[![Platforms](https://img.shields.io/cocoapods/p/BackendlessSwift.svg?style=flat)]
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/Backendless/Swift-SDK/blob/master/LICENSE)
 [![Build Status](https://travis-ci.org/Backendless/Swift-SDK.png)](https://travis-ci.org/Backendless/Swift-SDK)
 
-Backendless SDK for Swift (http://backendless.com)
+Backendless Swift SDK (http://backendless.com)
 ---
 
 ## GETTING STARTED WITH BACKENDLESS
@@ -10,9 +13,11 @@ The simplest way to get started with Backendless is by using a Project Template 
 3. Click the Download Project Template button: 
 
 ![Download Project Template](https://backendless.com/docs/images/shared/download-proj-template.png "Download Project Template")
+
 4. Double click the iOS icon, then select Objective-C or Swift:
 
 ![iOS Templates](https://backendless.com/docs/images/shared/ios-templates.png "iOS Templates")
+
 5. Click the Download button to download a template generated for your Backendless app
 6. Unzip the downloaded file into a directory, let's call it `Project Directory`.
 7. Open a Terminal window and change the currect directory to `Project Directory`.
