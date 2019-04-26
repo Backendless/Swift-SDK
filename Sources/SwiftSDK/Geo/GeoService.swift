@@ -24,10 +24,6 @@
     private let processResponse = ProcessResponse.shared
     private let dataTypesUtils = DataTypesUtils.shared
     
-    #if os(iOS) || os(watchOS)
-    private let geoFenceMonitoring = GeoFenceMonitoring.shared
-    #endif
-    
     open func saveGeoPoint(geoPoint: GeoPoint, responseHandler: ((GeoPoint) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = ["latitude": geoPoint.latitude, "longitude": geoPoint.longitude, "categories": geoPoint.categories as Any, "metadata": geoPoint.metadata as Any] as [String : Any]
@@ -356,45 +352,70 @@
             })
         }
     }
-    
-    #if os(iOS) || os(watchOS)
-    
+
+    @available(iOS 8.0, watchOS 3.0, *)
+    @available(OSX, unavailable)
+    @available(tvOS, unavailable)
     open func startGeoFenceMonitoring(geoPoint: GeoPoint, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         startGeoFenceMonitoring(callback: ServerCallback(geoPoint: geoPoint) as ICallback, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
+    @available(iOS 8.0, watchOS 3.0, *)
+    @available(OSX, unavailable)
+    @available(tvOS, unavailable)
     open func startGeoFenceMonitoring(geoFenceName: String, geoPoint: GeoPoint, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         startGeoFenceMonitoring(callback: ServerCallback(geoPoint: geoPoint) as ICallback, geoFenceName: geoFenceName, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
+    @available(iOS 8.0, watchOS 3.0, *)
+    @available(OSX, unavailable)
+    @available(tvOS, unavailable)
     open func startGeoFenceMonitoring(geoFenceCallback: IGeofenceCallback, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         startGeoFenceMonitoring(callback: ClientCallback(geoFenceCallback: geoFenceCallback) as ICallback, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
+    @available(iOS 8.0, watchOS 3.0, *)
+    @available(OSX, unavailable)
+    @available(tvOS, unavailable)
     open func startGeoFenceMonitoring(geoFenceName: String, geoFenceCallback: IGeofenceCallback, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         startGeoFenceMonitoring(callback: ClientCallback(geoFenceCallback: geoFenceCallback) as ICallback, geoFenceName: geoFenceName, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
+    @available(iOS 8.0, watchOS 3.0, *)
+    @available(OSX, unavailable)
+    @available(tvOS, unavailable)
     open func stopGeoFenceMonitoring() {
-        geoFenceMonitoring.removeGeoFences()
-        LocationTracker.shared.removeListener(name: geoFenceMonitoring.listenerName())
+        GeoFenceMonitoring.shared.removeGeoFences()
+        LocationTracker.shared.removeListener(name: GeoFenceMonitoring.shared.listenerName())
     }
     
+    @available(iOS 8.0, watchOS 3.0, *)
+    @available(OSX, unavailable)
+    @available(tvOS, unavailable)
     open func stopGeoFenceMonitoring(geoFenceName: String) {
-        geoFenceMonitoring.removeGeoFence(geoFenceName: geoFenceName)
-        if !geoFenceMonitoring.isMonitoring() {
-            LocationTracker.shared.removeListener(name: geoFenceMonitoring.listenerName())
+        GeoFenceMonitoring.shared.removeGeoFence(geoFenceName: geoFenceName)
+        if !GeoFenceMonitoring.shared.isMonitoring() {
+            LocationTracker.shared.removeListener(name: GeoFenceMonitoring.shared.listenerName())
         }
     }
     
+    @available(iOS 8.0, watchOS 3.0, *)
+    @available(OSX, unavailable)
+    @available(tvOS, unavailable)
     private func startGeoFenceMonitoring(callback: ICallback, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         startGeoFenceMonitoring(geoFenceName: nil, callback: callback, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
+    @available(iOS 8.0, watchOS 3.0, *)
+    @available(OSX, unavailable)
+    @available(tvOS, unavailable)
     private func startGeoFenceMonitoring(callback: ICallback, geoFenceName: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         startGeoFenceMonitoring(geoFenceName: geoFenceName, callback: callback, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
+    @available(iOS 8.0, watchOS 3.0, *)
+    @available(OSX, unavailable)
+    @available(tvOS, unavailable)
     private func startGeoFenceMonitoring(geoFenceName: String?, callback: ICallback, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         var restMethod = "geo/fences?"
         if let geoFenceName = geoFenceName {
@@ -419,21 +440,22 @@
         })
     }
     
+    @available(iOS 8.0, watchOS 3.0, *)
+    @available(OSX, unavailable)
+    @available(tvOS, unavailable)
     private func addFenceMonitoring(callback: ICallback, geoFences: Any, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         if geoFences is GeoFence {
-            if let fault = geoFenceMonitoring.addGeoFence(geoFence: geoFences as? GeoFence, callback: callback) {
+            if let fault = GeoFenceMonitoring.shared.addGeoFence(geoFence: geoFences as? GeoFence, callback: callback) {
                 errorHandler(fault)
             }
         }
         else if geoFences is [GeoFence] {
-            if let fault = geoFenceMonitoring.addGeoFences(geoFences: geoFences as? [GeoFence], callback: callback) {
+            if let fault = GeoFenceMonitoring.shared.addGeoFences(geoFences: geoFences as? [GeoFence], callback: callback) {
                 errorHandler(fault)
             }
         }
-        let listenerName = geoFenceMonitoring.listenerName()
-        let _ = LocationTracker.shared.addListener(name: listenerName, listener: geoFenceMonitoring)
+        let listenerName = GeoFenceMonitoring.shared.listenerName()
+        let _ = LocationTracker.shared.addListener(name: listenerName, listener: GeoFenceMonitoring.shared)
         responseHandler()
     }
-    
-    #endif
 }
