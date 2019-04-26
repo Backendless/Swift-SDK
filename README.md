@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/Backendless/Swift-SDK.png)](https://travis-ci.org/Backendless/Swift-SDK)
-[![CocoaPods Latest Version](https://img.shields.io/cocoapods/v/BackendlessSwift.svg)](https://img.shields.io/cocoapods/v/BackendlessSwift.svg)
+[![CocoaPods Latest Version](https://img.shields.io/cocoapods/v/BackendlessSwift.svg)](https://cocoapods.org/pods/BackendlessSwift)
 ![Platforms](https://img.shields.io/cocoapods/p/BackendlessSwift.svg?style=flat)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/Backendless/Swift-SDK/blob/master/LICENSE)
 
