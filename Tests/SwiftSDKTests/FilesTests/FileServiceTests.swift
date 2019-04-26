@@ -70,7 +70,7 @@ class FileServiceTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_03_renameFile() {
+    /*func test_03_renameFile() {
         let expectation = self.expectation(description: "PASSED: fileService.renameFile")
         DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             self.backendless.file.rename(path: "\(self.directory)/Binary/fox.txt", newName: "newFox.txt", responseHandler: { renamedPath in
@@ -151,5 +151,5 @@ class FileServiceTests: XCTestCase {
             })
         })
         waitForExpectations(timeout: timeout, handler: nil)
-    }
+    }*/
 }
