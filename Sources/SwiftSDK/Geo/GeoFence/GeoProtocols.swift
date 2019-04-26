@@ -19,15 +19,19 @@
  *  ********************************************************************************************************************
  */
 
-#if os(iOS) || os(watchOS)
-
 import CoreLocation
 
+@available(iOS 8.0, watchOS 3.0, *)
+@available(OSX, unavailable)
+@available(tvOS, unavailable)
 protocol ILocationTrackerListener {
     func onLocationChanged(location: CLLocation)
     func onLocationFailed(error: Error)
 }
 
+@available(iOS 8.0, watchOS 3.0, *)
+@available(OSX, unavailable)
+@available(tvOS, unavailable)
 public protocol ICallback {
     func callOnEnter(geoFence: GeoFence, location: CLLocation)
     func callOnStay(geoFence: GeoFence, location: CLLocation)
@@ -35,10 +39,11 @@ public protocol ICallback {
     func equalCallbackParameter(object: Any?) -> Bool
 }
 
+@available(iOS 8.0, watchOS 3.0, *)
+@available(OSX, unavailable)
+@available(tvOS, unavailable)
 @objc public protocol IGeofenceCallback {
     func geoPointEntered(geoFenceName: String, geoFenceId: String, latitude: Double, longitude: Double)
     func geoPointStayed(geoFenceName: String, geoFenceId: String, latitude: Double, longitude: Double)
     func geoPointExited(geoFenceName: String, geoFenceId: String, latitude: Double, longitude: Double)
 }
-
-#endif

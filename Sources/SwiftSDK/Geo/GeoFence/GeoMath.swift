@@ -19,8 +19,9 @@
  *  ********************************************************************************************************************
  */
 
-#if os(iOS) || os(watchOS)
-
+@available(iOS 8.0, watchOS 3.0, *)
+@available(OSX, unavailable)
+@available(tvOS, unavailable)
 struct GeoRectangle {
     var northLatitude: Double = 0.0
     var westLongitude: Double = 0.0
@@ -28,6 +29,9 @@ struct GeoRectangle {
     var eastLongitude: Double = 0.0
 }
 
+@available(iOS 8.0, watchOS 3.0, *)
+@available(OSX, unavailable)
+@available(tvOS, unavailable)
 class GeoMath: NSObject {
     
     static let shared = GeoMath()
@@ -210,5 +214,3 @@ class GeoMath: NSObject {
         return result > 0 ? .INTERSECT : .NO_INTERSECT
     }
 }
-
-#endif

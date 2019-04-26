@@ -60,24 +60,32 @@ class JSONUtils: NSObject {
     
     func JSONToObject(objectToParse: Any) -> Any {
         var resultObject = objectToParse
-        if !(objectToParse is String), !(objectToParse is NSNumber), !(objectToParse is NSNull) {
+        if !(objectToParse is String), !(objectToParse is NSNumber), !(objectToParse is NSNull) {            
             if let arrayToParse = objectToParse as? [Any] {
                 var resultArray = [Any]()
-                for object in arrayToParse {
+                for object in arrayToParse {                    
                     resultArray.append(JSONToObject(objectToParse: object))
                 }
                 resultObject = resultArray
             }
             else if let dictionaryToParse = objectToParse as? [String : Any] {
                 var resultDictionary = [String : Any]()
-                if let className = dictionaryToParse["___class"] as? String {
-                    resultObject = persistenceServiceUtils.dictionaryToEntity(dictionary: dictionaryToParse, className: className)!
+                if let tableName = dictionaryToParse["___class"] as? String {
+                    persistenceServiceUtils.setup(tableName: tableName)
+                    resultObject = persistenceServiceUtils.dictionaryToEntity(dictionary: dictionaryToParse, className: tableName)!
                 }
                 else {
                     for key in dictionaryToParse.keys {
                         let value = dictionaryToParse[key]
                         if let value = value as? [String : Any] {
                             resultDictionary[key] = JSONToObject(objectToParse: value)
+                        }
+                        else if let value = value as? [Any] {
+                            var valueArray = [Any]()
+                            for valueElement in value {
+                                valueArray.append(JSONToObject(objectToParse: valueElement))
+                            }
+                            resultDictionary[key] = valueArray
                         }
                         else {
                             resultDictionary[key] = value

@@ -19,10 +19,11 @@
  *  ********************************************************************************************************************
  */
 
-#if os(iOS) || os(watchOS)
-
 import CoreLocation
 
+@available(iOS 8.0, watchOS 3.0, *)
+@available(OSX, unavailable)
+@available(tvOS, unavailable)
 class ServerCallback: NSObject, ICallback {
     
     var geoPoint: GeoPoint?
@@ -86,5 +87,3 @@ class ServerCallback: NSObject, ICallback {
         self.geoPoint?.longitude = location.coordinate.longitude
     }
 }
-
-#endif

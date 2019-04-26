@@ -31,6 +31,7 @@
     init(entityClass: Any, tableName: String) {
         self.entityClass = entityClass
         self.tableName = tableName
+        persistenceServiceUtils.setup(tableName: tableName)
     }
     
     open func addCreateListener(responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {

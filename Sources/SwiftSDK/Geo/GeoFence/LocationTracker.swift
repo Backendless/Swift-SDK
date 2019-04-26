@@ -19,10 +19,11 @@
  *  ********************************************************************************************************************
  */
 
-#if os(iOS) || os(watchOS)
-
 import CoreLocation
 
+@available(iOS 8.0, watchOS 3.0, *)
+@available(OSX, unavailable)
+@available(tvOS, unavailable)
 class LocationTracker: NSObject, CLLocationManagerDelegate {
     
     static let shared = LocationTracker()
@@ -45,10 +46,12 @@ class LocationTracker: NSObject, CLLocationManagerDelegate {
             self.locationManager.requestAlwaysAuthorization()
             self.locationManager.startUpdatingLocation()
             self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
-            if #available(iOS 9.0, *) {
+            if #available(iOS 9.0, watchOS 4.0, *) {
                 self.locationManager.allowsBackgroundLocationUpdates = true
             }
+            #if os(iOS)
             self.locationManager.pausesLocationUpdatesAutomatically = true
+            #endif
         }
     }
     
@@ -98,5 +101,3 @@ class LocationTracker: NSObject, CLLocationManagerDelegate {
         }
     }
 }
-
-#endif

@@ -19,10 +19,11 @@
  *  ********************************************************************************************************************
  */
 
-#if os(iOS) || os(watchOS)
-
 import CoreLocation
 
+@available(iOS 8.0, watchOS 3.0, *)
+@available(OSX, unavailable)
+@available(tvOS, unavailable)
 class GeoFenceMonitoring: NSObject, ILocationTrackerListener {
     
     static let shared = GeoFenceMonitoring()
@@ -284,5 +285,3 @@ class GeoFenceMonitoring: NSObject, ILocationTrackerListener {
         }
     }
 }
-
-#endif

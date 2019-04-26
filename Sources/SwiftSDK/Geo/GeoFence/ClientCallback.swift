@@ -19,10 +19,11 @@
  *  ********************************************************************************************************************
  */
 
-#if os(iOS) || os(watchOS)
-
 import CoreLocation
 
+@available(iOS 8.0, watchOS 3.0, *)
+@available(OSX, unavailable)
+@available(tvOS, unavailable)
 class ClientCallback: NSObject, ICallback {
     
     var geoFenceCallback: IGeofenceCallback?
@@ -62,5 +63,3 @@ class ClientCallback: NSObject, ICallback {
         return type(of: self.geoFenceCallback) == type(of: object) as! NSObject.Type && (self.geoFenceCallback as! NSObject) == object as! NSObject
     }
 }
-
-#endif
