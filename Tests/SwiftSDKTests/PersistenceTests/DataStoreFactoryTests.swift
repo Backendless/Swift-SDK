@@ -693,6 +693,8 @@ class DataStoreFactoryTests: XCTestCase {
                         let queryBuilder = LoadRelationsQueryBuilder(entityClass: ChildTestClass.self)
                         queryBuilder.setRelationName(relationName: "child")
                         queryBuilder.setPageSize(pageSize: 1)
+                        queryBuilder.setProperties(properties: ["foo"])
+                        queryBuilder.setSortBy(sortBy: ["foo"])
                         self.dataStore.loadRelations(objectId: parentObjectId, queryBuilder: queryBuilder, responseHandler: { foundRelations in
                             XCTAssertNotNil(foundRelations)
                             XCTAssert(Int(exactly: foundRelations.count) == 1)

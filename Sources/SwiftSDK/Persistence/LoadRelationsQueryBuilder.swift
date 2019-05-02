@@ -25,6 +25,8 @@
     private var tableName: String?
     
     private var relationName: String?
+    private var properties: [String]?
+    private var sortBy: [String]?
     private var pageSize: Int = 10
     private var offset: Int = 0
     
@@ -40,12 +42,12 @@
         self.tableName = tableName
     }
     
-    open func getRelationName() -> String? {
-        return self.relationName
-    }
-    
     open func setRelationName(relationName: String) {
         self.relationName = relationName
+    }
+    
+    open func getRelationName() -> String? {
+        return self.relationName
     }
     
     open func getPageSize() -> Int {
@@ -77,5 +79,51 @@
     
     open func getRelationType() -> Any? {
         return self.entityClass
+    }
+    
+    open func getProperties() -> [String]? {
+        return self.properties
+    }
+    
+    open func setProperties(properties: [String]) {
+        self.properties = properties
+    }
+    
+    open func addProperty(property: String) {
+        addProperties(properties: [property])
+    }
+    
+    open func addProperties(properties: [String]) {
+        if self.properties != nil {
+            for property in properties {
+                self.properties?.append(property)
+            }
+        }
+        else {
+            self.properties = properties
+        }
+    }
+    
+    open func getSortBy() -> [String]? {
+        return self.sortBy
+    }
+    
+    open func setSortBy(sortBy: [String]) {
+        self.sortBy = sortBy
+    }
+    
+    open func addSortBy(sortBy: String) {
+        addSortBy(listSortBy: [sortBy])
+    }
+    
+    open func addSortBy(listSortBy: [String]) {
+        if self.sortBy != nil {
+            for sortBy in listSortBy {
+                self.sortBy?.append(sortBy)
+            }
+        }
+        else {
+            self.sortBy = listSortBy
+        }
     }
 }

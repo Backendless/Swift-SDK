@@ -324,40 +324,35 @@ class PersistenceServiceUtils: NSObject {
         })
     }
     
-    func loadRelations(objectId: String, queryBuilder: LoadRelationsQueryBuilder, responseHandler: (([[String : Any]]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        var restMethod = "data/\(tableName)/\(objectId)"
-        if let relationName = queryBuilder.getRelationName() {
-            restMethod += "/\(relationName)"
-            
-            let pageSize = queryBuilder.getPageSize()
-            let offset = queryBuilder.getOffset()
-            
-            if pageSize != 100, offset != 0 {
-                restMethod += "?pageSize=\(pageSize)&offset=\(offset)"
-            }
-            else if pageSize == 100, offset != 0 {
-                restMethod += "?offset=\(offset)"
-            }
-            else if pageSize != 100, offset == 0 {
-                restMethod += "?pageSize=\(pageSize)"
-            }
+    func loadRelations(objectId: String, queryBuilder: LoadRelationsQueryBuilder, responseHandler: (([[String : Any]]) -> Void)!, errorHandler: ((Fault) -> Void)!) {        
+        let headers = ["Content-Type": "application/json"]
+        var parameters = [String: Any]()
+        parameters["pageSize"] = queryBuilder.getPageSize()
+        parameters["offset"] = queryBuilder.getOffset()
+        if let sortBy = queryBuilder.getSortBy(), sortBy.count > 0 {
+            parameters["sortBy"] = dataTypesUtils.arrayToString(array: sortBy)
         }
-        BackendlessRequestManager(restMethod: restMethod, httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: [JSON].self) {
-                if result is Fault {
-                    errorHandler(result as! Fault)
-                }
-                else {
-                    var resultArray = [[String: Any]]()
-                    for resultObject in result as! [JSON] {
-                        if let resultDictionary = resultObject.dictionaryObject {
-                            resultArray.append(resultDictionary)
-                        }
+        if let props = queryBuilder.getProperties() {
+            parameters["props"] = dataTypesUtils.arrayToString(array: props)
+        }
+        if let relationName = queryBuilder.getRelationName() {
+            BackendlessRequestManager(restMethod: "data/\(tableName)/\(objectId)/\(relationName)/load", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+                if let result = self.processResponse.adapt(response: response, to: [JSON].self) {
+                    if result is Fault {
+                        errorHandler(result as! Fault)
                     }
-                    responseHandler(resultArray)
+                    else {
+                        var resultArray = [[String: Any]]()
+                        for resultObject in result as! [JSON] {
+                            if let resultDictionary = resultObject.dictionaryObject {
+                                resultArray.append(resultDictionary)
+                            }
+                        }
+                        responseHandler(resultArray)
+                    }
                 }
-            }
-        })
+            })
+        }
     }
     
     // ***********************************************
