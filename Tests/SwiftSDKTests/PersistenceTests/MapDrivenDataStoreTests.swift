@@ -591,6 +591,8 @@ class MapDrivenDataStoreTests: XCTestCase {
                         queryBuilder.setRelationName(relationName: "children")
                         queryBuilder.setPageSize(pageSize: 2)
                         queryBuilder.setOffset(offset: 1)
+                        queryBuilder.setProperties(properties: ["foo"])
+                        queryBuilder.setSortBy(sortBy: ["foo"])
                         self.dataStore.loadRelations(objectId: parentObjectId, queryBuilder: queryBuilder, responseHandler: { foundRelations in
                             XCTAssertNotNil(foundRelations)
                             XCTAssert(Int(exactly: foundRelations.count) == 1)

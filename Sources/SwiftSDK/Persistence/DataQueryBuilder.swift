@@ -116,7 +116,7 @@
             }
         }
         else {
-            self.properties = listSortBy
+            self.sortBy = listSortBy
         }
     }
     
@@ -139,7 +139,7 @@
             }
         }
         else {
-            self.properties = listRelated
+            self.related = listRelated
         }
     }
     
