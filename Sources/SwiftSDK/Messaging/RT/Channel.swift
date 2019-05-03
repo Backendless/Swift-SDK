@@ -21,7 +21,7 @@
 
 @objcMembers open class Channel: NSObject {
     
-    private(set) var channelName: String!
+    open private(set) var channelName: String!
     open private(set) var isJoined = false
     
     private var rt: RTMessaging!
