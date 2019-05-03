@@ -1,6 +1,6 @@
 # RELEASE HISTORY
 
-### -
+### 0.0.3 / May, 3 2019
 * added support of sortBy and properties for LoadRelationsQueryBuilder
 * channel name property getter is open
 * added the device registration methods that take no deviceToken argument
