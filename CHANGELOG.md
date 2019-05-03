@@ -1,4 +1,6 @@
 # RELEASE HISTORY
+
+### -
 * added support of sortBy and properties for LoadRelationsQueryBuilder
 * channel name property getter set to open
 
