@@ -127,6 +127,24 @@
     }
     #endif
     
+    open func getDeviceRegistrations(responseHandler: (([DeviceRegistration]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        if let deviceId = userDefaultsHelper.getDeviceId() {
+            BackendlessRequestManager(restMethod: "messaging/registrations/\(deviceId)", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+                if let result = self.processResponse.adapt(response: response, to: [DeviceRegistration].self) {
+                    if result is Fault {
+                        errorHandler(result as! Fault)
+                    }
+                    else {
+                        responseHandler(result as! [DeviceRegistration])
+                    }
+                }
+            })
+        }
+        else {
+            errorHandler(Fault(message: "Device ID not found", faultCode: 0))
+        }
+    }
+    
     open func getDeviceRegistrations(deviceId: String, responseHandler: (([DeviceRegistration]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         BackendlessRequestManager(restMethod: "messaging/registrations/\(deviceId)", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: [DeviceRegistration].self) {

@@ -62,7 +62,12 @@
         }    
         if let name = data["name"] as? String,
             name != PUB_SUB_CONNECT, name != RSO_CONNECT {
-            typeName = (data["options"] as! [String : Any])["event"] as! String
+            if let event = (data["options"] as! [String : Any])["event"] as? String {
+                typeName = event
+            }
+            else {
+                typeName = name
+            }
         }
         var subscriptionStack = self.subscriptions[typeName]
         if subscriptionStack == nil {
