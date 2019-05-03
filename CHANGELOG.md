@@ -2,7 +2,9 @@
 
 ### -
 * added support of sortBy and properties for LoadRelationsQueryBuilder
-* channel name property getter set to open
+* channel name property getter is open
+* added the device registration methods that take no deviceToken argument
+* device token is saved on the device when registering in Backendless first time
 
 ### 0.0.2 / April, 26 2019
 * some beautiful changes are made with README.md

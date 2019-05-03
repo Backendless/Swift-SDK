@@ -96,19 +96,7 @@
     }
     
     open func loginWithTwitter(authToken: String, authTokenSecret: String, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        let headers = ["Content-Type": "application/json"]
-        let parameters = ["fieldsMapping": fieldsMapping, "redirect": true, "accessToken": authToken] as [String : Any]
-        BackendlessRequestManager(restMethod: "users/social/oauth/twitter/request_url", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: BackendlessUser.self) {
-                if result is Fault {
-                    errorHandler(result as! Fault)
-                }
-                else {
-                    self.setPersistentUser(currentUser: result as! BackendlessUser)
-                    responseHandler(result as! BackendlessUser)
-                }
-            }
-        })
+        // TODO
     }
     
     open func loginWithGoogleSDK(accessToken: String, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
