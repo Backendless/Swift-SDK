@@ -62,6 +62,22 @@
         return channel
     }
     
+    open func registerDevice(responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        registerDevice(deviceToken: nil, channels: [DEFAULT_CHANNEL_NAME], expirationDate: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    open func registerDevice(channels: [String], responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        registerDevice(deviceToken: nil, channels: channels, expirationDate: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    open func registerDevice(expiration: Date, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        registerDevice(deviceToken: nil, channels: [DEFAULT_CHANNEL_NAME], expirationDate: expiration, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    open func registerDevice(channels: [String], expiration: Date, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        registerDevice(deviceToken: nil, channels: channels, expirationDate: expiration, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
     open func registerDevice(deviceToken: Data, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         registerDevice(deviceToken: deviceToken, channels: [DEFAULT_CHANNEL_NAME], expirationDate: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
@@ -78,8 +94,19 @@
         registerDevice(deviceToken: deviceToken, channels: channels, expirationDate: expiration, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    func registerDevice(deviceToken: Data, channels: [String], expirationDate: Date?, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        let deviceTokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+    func registerDevice(deviceToken: Data?, channels: [String], expirationDate: Date?, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        var token = deviceToken
+        if token == nil {
+            if let tokenData = userDefaultsHelper.getDeviceToken() {
+                token = tokenData
+            }
+            else {
+                errorHandler(Fault(message: "Device token not found", faultCode: 0))
+                return
+            }
+        }
+        userDefaultsHelper.saveDeviceToken(deviceToken: token!)
+        let deviceTokenString = token!.map { String(format: "%02.2hhx", $0) }.joined()
         
         let headers = ["Content-Type": "application/json"]
         var parameters = ["deviceToken": deviceTokenString, "channels": channels] as [String : Any]
@@ -126,6 +153,24 @@
         })
     }
     #endif
+    
+    open func getDeviceRegistrations(responseHandler: (([DeviceRegistration]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        if let deviceId = userDefaultsHelper.getDeviceId() {
+            BackendlessRequestManager(restMethod: "messaging/registrations/\(deviceId)", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+                if let result = self.processResponse.adapt(response: response, to: [DeviceRegistration].self) {
+                    if result is Fault {
+                        errorHandler(result as! Fault)
+                    }
+                    else {
+                        responseHandler(result as! [DeviceRegistration])
+                    }
+                }
+            })
+        }
+        else {
+            errorHandler(Fault(message: "Device ID not found", faultCode: 0))
+        }
+    }
     
     open func getDeviceRegistrations(deviceId: String, responseHandler: (([DeviceRegistration]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         BackendlessRequestManager(restMethod: "messaging/registrations/\(deviceId)", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in

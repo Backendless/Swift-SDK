@@ -27,6 +27,7 @@ class UserDefaultsHelper: NSObject {
     private let STAY_LOGGED_IN_KEY = "stayLoggedInKey"
     private let CURRENT_USER_KEY = "currentUserKey"
     private let DEVICE_ID_KEY = "deviceIdKey"
+    private let DEVICE_TOKEN_KEY = "deviceTokenKey"
     
     private override init() { }
     
@@ -99,6 +100,20 @@ class UserDefaultsHelper: NSObject {
         if let deviceId = userDefaults.value(forKey: DEVICE_ID_KEY),
             let id = (deviceId as! [String: String])["deviceId"] {
             return id
+        }
+        return nil
+    }
+    
+    func saveDeviceToken(deviceToken: Data) {
+        let userDefaults = UserDefaults.standard
+        userDefaults.setValue(deviceToken, forKey: DEVICE_TOKEN_KEY)
+        userDefaults.synchronize()
+    }
+    
+    func getDeviceToken() -> Data? {
+        let userDefaults = UserDefaults.standard
+        if let deviceToken = userDefaults.value(forKey: DEVICE_TOKEN_KEY) as? Data {
+            return deviceToken
         }
         return nil
     }

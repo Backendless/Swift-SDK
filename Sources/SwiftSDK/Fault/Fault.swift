@@ -30,7 +30,7 @@
         super.init(coder: aDecoder)
     }
     
-    init(message: String?, faultCode: Int) {
+    public init(message: String?, faultCode: Int) {
         super.init(domain: backendlessDomain, code: faultCode, userInfo: [NSLocalizedDescriptionKey:message ?? "Unrecognized Backendless Server Error"])
         self.message = message
         self.faultCode = faultCode
