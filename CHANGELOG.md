@@ -1,4 +1,6 @@
 # RELEASE HISTORY
+* added support of sortBy and properties for LoadRelationsQueryBuilder
+* channel name property getter set to open
 
 ### 0.0.2 / April, 26 2019
 * some beautiful changes are made with README.md
