@@ -6,24 +6,6 @@
 Backendless Swift SDK (http://backendless.com)
 ---
 
-## GETTING STARTED WITH BACKENDLESS
-The simplest way to get started with Backendless is by using a Project Template for iOS:
-1. Register for your free account at https://develop.backendless.com
-2. Login to Backendless Console and create a new app
-3. Click the Download Project Template button: 
-
-![Download Project Template](https://backendless.com/docs/images/shared/download-proj-template.png "Download Project Template")
-
-4. Double click the iOS icon, then select Objective-C or Swift:
-
-![iOS Templates](https://backendless.com/docs/images/shared/ios-templates.png "iOS Templates")
-
-5. Click the Download button to download a template generated for your Backendless app
-6. Unzip the downloaded file into a directory, let's call it `Project Directory`.
-7. Open a Terminal window and change the currect directory to `Project Directory`.
-8. Run the `pod install` and `pod update` commands. Once all of the pod data is downloaded / updated, Xcode project workspace file will be created. This is the file you must open when working on your app.
-9. Open .xcworkspace file to launch your project.
-
 ## GETTING STARTED WITH COCOAPODS:
 To create a new project with CocoaPods, follow the instructions below:
 
