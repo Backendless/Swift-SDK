@@ -78,7 +78,9 @@ class BackendlessRequestManager: NSObject {
             }
         }
         
-        let dataTask = URLSession.shared.dataTask(with: request) { data, response, error in       
+        let sessionConfig = URLSessionConfiguration.default
+        let session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: OperationQueue.current)
+        let dataTask = session.dataTask(with: request) { data, response, error in       
             let returnedResponse = ReturnedResponse()
             if let response = response as? HTTPURLResponse {
                 returnedResponse.response = response
