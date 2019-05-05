@@ -479,6 +479,7 @@ class PersistenceServiceUtils: NSObject {
         else {
             resultEntityTypeName = className
         }
+        resultEntityTypeName = resultEntityTypeName.replacingOccurrences(of: "-", with: "_")
         var resultEntityType = NSClassFromString(resultEntityTypeName) as? NSObject.Type
         if resultEntityType == nil {
             resultEntityTypeName = resultEntityTypeName.components(separatedBy: ".").last!

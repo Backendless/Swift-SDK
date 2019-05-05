@@ -1,5 +1,9 @@
 # RELEASE HISTORY
 
+### 0.0.4 / May, 5 2019
+* resolved issue when request response returned in the wrong thread
+* fixed the issue of NSClassFromString method when namespace contains dashes
+
 ### 0.0.3 / May, 3 2019
 * added support of sortBy and properties for LoadRelationsQueryBuilder
 * channel name property getter set to open
