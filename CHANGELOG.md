@@ -1,6 +1,6 @@
 # RELEASE HISTORY
 
-### 0.0.5 / -
+### 0.0.5 / May, 16 2019
 * deviceId is stored permanently in Keychain after device registration
 
 ### 0.0.4 / May, 5 2019
