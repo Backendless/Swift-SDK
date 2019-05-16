@@ -96,6 +96,7 @@
 		5E971916221C2A8700857603 /* RTClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E971915221C2A8700857603 /* RTClient.swift */; };
 		5E971918221C2CC400857603 /* RTSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E971917221C2CC400857603 /* RTSubscription.swift */; };
 		5E97191A221C369A00857603 /* RTMethodRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E971919221C369A00857603 /* RTMethodRequest.swift */; };
+		5E973115228D33A900F64B49 /* KeychainUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E973114228D33A900F64B49 /* KeychainUtils.swift */; };
 		5E9C573221AEEA0400877870 /* SwiftSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9C572821AEEA0400877870 /* SwiftSDK.framework */; };
 		5E9C573921AEEA0400877870 /* SwiftSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E9C572B21AEEA0400877870 /* SwiftSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5EA2B69B21F2324B00CFDC37 /* StoredObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2B69A21F2324B00CFDC37 /* StoredObjects.swift */; };
@@ -228,6 +229,7 @@
 		5E971915221C2A8700857603 /* RTClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTClient.swift; sourceTree = "<group>"; };
 		5E971917221C2CC400857603 /* RTSubscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTSubscription.swift; sourceTree = "<group>"; };
 		5E971919221C369A00857603 /* RTMethodRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTMethodRequest.swift; sourceTree = "<group>"; };
+		5E973114228D33A900F64B49 /* KeychainUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainUtils.swift; sourceTree = "<group>"; };
 		5E9C572821AEEA0400877870 /* SwiftSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E9C572B21AEEA0400877870 /* SwiftSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftSDK.h; sourceTree = "<group>"; };
 		5E9C572C21AEEA0400877870 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -506,6 +508,7 @@
 				5E4E31142243C39200B479C8 /* DataTypesUtils.swift */,
 				5E275C9F224B8142002F89FC /* FileManagerHelper.swift */,
 				5E8A2A23226EFA16007C2BAA /* NoReply.swift */,
+				5E973114228D33A900F64B49 /* KeychainUtils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -946,6 +949,7 @@
 				5E4E309C2243B85C00B479C8 /* DeviceHelper.swift in Sources */,
 				5EFB60E922422F93004DFA2C /* UserInfo.swift in Sources */,
 				5E81B28D2236A8300015AEDC /* RTMethod.swift in Sources */,
+				5E973115228D33A900F64B49 /* KeychainUtils.swift in Sources */,
 				5EA87B95221D720100A8B93F /* RTListener.swift in Sources */,
 				5ED765D02224369E009431CD /* BulkEvent.swift in Sources */,
 				5E72EABD21F6EB89006C8C5C /* DataQueryBuilder.swift in Sources */,
