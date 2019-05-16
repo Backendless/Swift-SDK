@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 0.0.5 / -
+* deviceId is stored permanently in Keychain after device registration
+
 ### 0.0.4 / May, 5 2019
 * resolved issue when request response returned in the wrong thread
 * fixed the issue of NSClassFromString method when namespace contains dashes

@@ -42,6 +42,10 @@ class DeviceHelper: NSObject {
         if let deviceId = keychainUtils.getDeviceId() {
             return deviceId
         }
+        if let deviceId = UIDevice.current.identifierForVendor?.uuidString {
+            keychainUtils.saveDeviceId(deviceId: deviceId)
+            return deviceId
+        }
         let deviceId = UUID().uuidString
         keychainUtils.saveDeviceId(deviceId: deviceId)
         return deviceId
