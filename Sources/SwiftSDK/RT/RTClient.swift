@@ -73,7 +73,7 @@ class RTClient: NSObject {
                     
                     var clientId = ""
                     #if os(iOS) || os(tvOS)
-                    clientId = DeviceHelper.shared.iOSIdentifierForVendor
+                    clientId = DeviceHelper.shared.getDeviceId
                     #elseif os(OSX)
                     clientId = DeviceHelper.shared.macOSHardwareUUID
                     #endif

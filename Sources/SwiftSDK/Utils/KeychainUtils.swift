@@ -1,5 +1,5 @@
 //
-//  DeviceHelper.swift
+//  KeychainUtils.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,44 +19,30 @@
  *  ********************************************************************************************************************
  */
 
-import SocketIO
-
-class DeviceHelper: NSObject {
+class KeychainUtils: NSObject {
     
-    static let shared = DeviceHelper()
+    static let shared = KeychainUtils()
     
-    private let keychainUtils = KeychainUtils.shared
+    private let deviceIdKey = "BackendlessDeviceId"
     
     private override init() { }
     
-    #if os(iOS) || os(tvOS)
-    var currentDeviceName: String {
-        return UIDevice.current.name
-    }
-    
-    var currentDeviceSystemVersion: String {
-        return UIDevice.current.systemVersion
-    }
-    
-    var getDeviceId: String {
-        if let deviceId = keychainUtils.getDeviceId() {
-            return deviceId
+    func saveDeviceId(deviceId: String) {
+        if let deviceIdData = deviceId.data(using: .utf8) {
+            let query = [kSecClass as String: kSecClassGenericPassword as String, kSecAttrAccount as String: deviceIdKey, kSecValueData as String: deviceIdData ] as [String : Any]
+            SecItemDelete(query as CFDictionary)
+            SecItemAdd(query as CFDictionary, nil)
         }
-        if let deviceId = UIDevice.current.identifierForVendor?.uuidString {
-            keychainUtils.saveDeviceId(deviceId: deviceId)
-            return deviceId
-        }
-        let deviceId = UUID().uuidString
-        keychainUtils.saveDeviceId(deviceId: deviceId)
-        return deviceId
     }
     
-    #elseif os(OSX)
-    var macOSHardwareUUID: String = {
-        var hwUUIDBytes: [UInt8] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        var ts = timespec(tv_sec: 0,tv_nsec: 0)
-        gethostuuid(&hwUUIDBytes, &ts)
-        return NSUUID(uuidBytes: hwUUIDBytes).uuidString
-    }()
-    #endif
+    func getDeviceId() -> String? {
+        let query = [kSecClass as String: kSecClassGenericPassword, kSecAttrAccount as String: deviceIdKey, kSecReturnData as String: kCFBooleanTrue!, kSecMatchLimit as String: kSecMatchLimitOne ] as [String : Any]
+        var dataTypeRef: AnyObject? = nil
+        let status: OSStatus = SecItemCopyMatching(query as CFDictionary, &dataTypeRef)
+        if status == noErr,
+            let data = dataTypeRef as? Data {
+            return String(data: data, encoding: .utf8)
+        }
+        return nil
+    }
 }

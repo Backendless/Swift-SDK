@@ -34,7 +34,7 @@
     public override init() {
         #if os(iOS) || os(tvOS)
         let deviceName = deviceHelper.currentDeviceName
-        let deviceId = deviceHelper.iOSIdentifierForVendor
+        let deviceId = deviceHelper.getDeviceId
         let os = "IOS"
         let osVersion = deviceHelper.currentDeviceSystemVersion
         deviceRegistration = DeviceRegistration(id: nil, deviceToken: deviceName, deviceId: deviceId, os: os, osVersion: osVersion, expiration: nil, channels: nil)
