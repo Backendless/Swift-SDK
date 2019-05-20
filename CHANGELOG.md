@@ -13,6 +13,10 @@ func unregisterDevice(channels: [String], responseHandler: ((Bool) -> Void)!, er
 
 func refreshDeviceToken(newDeviceToken: Data, responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!)
 ```
+* added function to FileService:
+```
+func remove(path: String, pattern: String, recursive: Bool, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!)
+```
 
 ### 0.0.5 / May, 16 2019
 * deviceId is stored permanently in Keychain after device registration

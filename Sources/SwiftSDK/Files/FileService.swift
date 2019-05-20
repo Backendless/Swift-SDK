@@ -225,9 +225,20 @@
             }
         })
     }
-    
+
     open func remove(path: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        BackendlessRequestManager(restMethod: "files/\(path)", httpMethod: .DELETE, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+        remove(path: path, pattern: "*", recursive: false, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    open func remove(path: String, pattern: String, recursive: Bool, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        var restMethod = "files/\(path)?pattern=\(dataTypesUtils.stringToUrlString(originalString: pattern))"
+        if recursive {
+            restMethod += "&sub=true"
+        }
+        else {
+            restMethod += "&sub=false"
+        }
+        BackendlessRequestManager(restMethod: restMethod, httpMethod: .DELETE, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: NoReply.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
