@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 0.0.6 / May, ? 2019
+* the `exists` function added to the FileService
+
 ### 0.0.5 / May, 16 2019
 * deviceId is stored permanently in Keychain after device registration
 
