@@ -137,18 +137,18 @@
     }
     
     open func listing(pattern: String, recursive: Bool, responseHandler: (([BackendlessFileInfo]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        filesListing(path: "", pattern: pattern, recursive: recursive, pageSize: nil, offset: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+        filesListing(path: "", pattern: pattern, recursive: recursive, pageSize: nil, offset: nil, action: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     open func listing(path: String, pattern: String, recursive: Bool, responseHandler: (([BackendlessFileInfo]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        filesListing(path: path, pattern: pattern, recursive: recursive, pageSize: nil, offset: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+        filesListing(path: path, pattern: pattern, recursive: recursive, pageSize: nil, offset: nil, action: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     open func listing(path: String, pattern: String, recursive: Bool, pageSize: Int, offset: Int, responseHandler: (([BackendlessFileInfo]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        filesListing(path: path, pattern: pattern, recursive: recursive, pageSize: pageSize, offset: offset, responseHandler: responseHandler, errorHandler: errorHandler)
+        filesListing(path: path, pattern: pattern, recursive: recursive, pageSize: pageSize, offset: offset, action: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    func filesListing(path: String, pattern: String, recursive: Bool, pageSize: Int?, offset: Int?, responseHandler: (([BackendlessFileInfo]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    func filesListing(path: String, pattern: String, recursive: Bool, pageSize: Int?, offset: Int?, action: String?, responseHandler: (([BackendlessFileInfo]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         var restMethod = "files/\(path)?pattern=\(dataTypesUtils.stringToUrlString(originalString: pattern))"
         if recursive {
             restMethod += "&sub=true"
@@ -161,6 +161,9 @@
         }
         if let offset = offset {
             restMethod += "&offset=\(offset)"
+        }
+        if let action = action {
+            restMethod += "action=\(action)"
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: [JSON].self) {
@@ -231,6 +234,21 @@
             }
             else {
                 responseHandler()
+            }
+        })
+    }
+    
+    open func exists(path: String, responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        BackendlessRequestManager(restMethod: "files/\(path)?action=exists", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let responseData = response.data {
+                do {
+                    responseHandler(try JSONSerialization.jsonObject(with: responseData, options: .allowFragments) as! Bool)
+                }
+                catch {
+                    let faultCode = response.response?.statusCode
+                    let faultMessage = error.localizedDescription
+                    errorHandler(self.processResponse.faultConstructor(faultMessage, faultCode: faultCode!))
+                }
             }
         })
     }
