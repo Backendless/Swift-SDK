@@ -1,7 +1,18 @@
 # RELEASE HISTORY
 
 ### 0.0.6 / May, ? 2019
-* the `exists` function added to the FileService
+* added functions to FileService:
+```
+func exists(path: String, responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!)
+
+func listing(path: String, responseHandler: (([BackendlessFileInfo]) -> Void)!, errorHandler: ((Fault) -> Void)!)
+```
+* added functions to MessagingService:
+```
+func unregisterDevice(channels: [String], responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!)
+
+func refreshDeviceToken(newDeviceToken: Data, responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!)
+```
 
 ### 0.0.5 / May, 16 2019
 * deviceId is stored permanently in Keychain after device registration

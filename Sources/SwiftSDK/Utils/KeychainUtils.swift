@@ -28,6 +28,9 @@ class KeychainUtils: NSObject {
     private override init() { }
     
     func saveDeviceId(deviceId: String) {
+        if let _ = getDeviceId() {
+            return
+        }
         if let deviceIdData = deviceId.data(using: .utf8) {
             let query = [kSecClass as String: kSecClassGenericPassword as String, kSecAttrAccount as String: deviceIdKey, kSecValueData as String: deviceIdData ] as [String : Any]
             SecItemDelete(query as CFDictionary)

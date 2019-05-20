@@ -133,10 +133,10 @@ class ProcessResponse: NSObject {
     }
     
     func adaptToDeviceRegistration(responseResult: Any?) -> DeviceRegistration {
-        let deviceRegistration = DeviceRegistration(id: nil, deviceToken: nil, deviceId: nil, os: nil, osVersion: nil, expiration: nil, channels: nil)
+        let deviceRegistration = DeviceRegistration(objectId: nil, deviceToken: nil, deviceId: nil, os: nil, osVersion: nil, expiration: nil, channels: nil)
         if let responseResult = responseResult as? [String: Any] {
             if let objectId = responseResult["objectId"] as? String {
-                deviceRegistration.id = objectId
+                deviceRegistration.setObjectId(objectId: objectId)
             }
             if let deviceToken = responseResult["deviceToken"] as? String {
                 deviceRegistration.deviceToken = deviceToken
@@ -260,6 +260,9 @@ class ProcessResponse: NSObject {
         }
         if let repeatEvery = messageInfoDictionary["repeatEvery"] as? NSNumber {
             publishMessageInfo.repeatEvery = repeatEvery
+        }
+        if let repeatExpiresAt = messageInfoDictionary["repeatExpiresAt"] as? NSNumber {
+            publishMessageInfo.repeatExpiresAt = repeatExpiresAt
         }
         if let headers = messageInfoDictionary["headers"] as? [String : Any] {
             publishMessageInfo.headers = headers

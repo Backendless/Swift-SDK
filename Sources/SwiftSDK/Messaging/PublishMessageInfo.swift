@@ -31,5 +31,6 @@
     open var query: String?
     open var publishAt: NSNumber?
     open var repeatEvery: NSNumber?
+    open var repeatExpiresAt: NSNumber?
     open var headers: [String : Any]?
 }

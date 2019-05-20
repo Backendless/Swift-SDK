@@ -102,4 +102,8 @@
         aCoder.encode(categories, forKey: CodingKeys.categories.rawValue)
         aCoder.encode(_metadata, forKey: CodingKeys.categories.rawValue)
     }
+    
+    func setObjectId(objectId: String) {
+        self.objectId = objectId
+    }
 }
