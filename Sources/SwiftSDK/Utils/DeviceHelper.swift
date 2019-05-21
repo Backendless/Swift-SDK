@@ -38,21 +38,21 @@ class DeviceHelper: NSObject {
         return UIDevice.current.systemVersion
     }
     
-    var getDeviceId: String {
-        if let deviceId = keychainUtils.getDeviceId() {
-            return deviceId
+    var deviceId: String {
+        if let _deviceId = keychainUtils.getDeviceId() {
+            return _deviceId
         }
-        if let deviceId = UIDevice.current.identifierForVendor?.uuidString {
-            keychainUtils.saveDeviceId(deviceId: deviceId)
-            return deviceId
+        if let _deviceId = UIDevice.current.identifierForVendor?.uuidString {
+            keychainUtils.saveDeviceId(deviceId: _deviceId)
+            return _deviceId
         }
-        let deviceId = UUID().uuidString
-        keychainUtils.saveDeviceId(deviceId: deviceId)
-        return deviceId
+        let _deviceId = UUID().uuidString
+        keychainUtils.saveDeviceId(deviceId: _deviceId)
+        return _deviceId
     }
     
     #elseif os(OSX)
-    var macOSHardwareUUID: String = {
+    var deviceId: String = {
         var hwUUIDBytes: [UInt8] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         var ts = timespec(tv_sec: 0,tv_nsec: 0)
         gethostuuid(&hwUUIDBytes, &ts)
