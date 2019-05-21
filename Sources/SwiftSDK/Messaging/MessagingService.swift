@@ -155,8 +155,7 @@
     }
     #endif
     
-    open func getDeviceRegistrations(responseHandler: (([DeviceRegistration]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        let deviceId = deviceHelper.deviceId
+    open func getDeviceRegistrations(deviceId: String, responseHandler: (([DeviceRegistration]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         BackendlessRequestManager(restMethod: "messaging/registrations/\(deviceId)", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: [DeviceRegistration].self) {
                 if result is Fault {
@@ -169,7 +168,22 @@
         })
     }
     
-    open func getDeviceRegistrations(deviceId: String, responseHandler: (([DeviceRegistration]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    open func unregisterDevice(deviceId: String, responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        BackendlessRequestManager(restMethod: "messaging/registrations/\(deviceId)", httpMethod: .DELETE, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = self.processResponse.adapt(response: response, to: JSON.self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else if let result = (result as! JSON).dictionaryObject {
+                    responseHandler(result["result"] as! Bool)
+                }
+            }
+        })
+    }
+    
+    #if !os(watchOS)
+    open func getDeviceRegistrations(responseHandler: (([DeviceRegistration]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        let deviceId = deviceHelper.deviceId
         BackendlessRequestManager(restMethod: "messaging/registrations/\(deviceId)", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: [DeviceRegistration].self) {
                 if result is Fault {
@@ -187,23 +201,9 @@
         unregisterDevice(deviceId: deviceId, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func unregisterDevice(deviceId: String, responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        BackendlessRequestManager(restMethod: "messaging/registrations/\(deviceId)", httpMethod: .DELETE, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: JSON.self) {
-                if result is Fault {
-                    errorHandler(result as! Fault)
-                }
-                else if let result = (result as! JSON).dictionaryObject {
-                    responseHandler(result["result"] as! Bool)
-                }
-            }
-        })
-    }
-    
     open func unregisterDevice(channels: [String], responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let dataQueryBuilder = DataQueryBuilder()
         dataQueryBuilder.setWhereClause(whereClause: String(format: "deviceId='%@'", deviceHelper.deviceId))
-        
         Backendless.shared.data.of(DeviceRegistration.self).find(queryBuilder: dataQueryBuilder, responseHandler: { deviceRegs in
             if let deviceRegs = deviceRegs as? [DeviceRegistration] {
                 let group = DispatchGroup()
@@ -250,6 +250,7 @@
             errorHandler(fault)
         })
     }
+    #endif
     
     open func publish(channelName: String, message: Any, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         publishMessage(channelName: channelName, message: message, publishOptions: nil, deliveryOptions: nil, responseHandler: responseHandler, errorHandler: errorHandler)
