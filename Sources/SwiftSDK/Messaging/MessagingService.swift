@@ -35,17 +35,17 @@
     public override init() {
         #if os(iOS) || os(tvOS)
         let deviceName = deviceHelper.currentDeviceName
-        let deviceId = deviceHelper.getDeviceId
+        let deviceId = deviceHelper.deviceId
         let os = "IOS"
         let osVersion = deviceHelper.currentDeviceSystemVersion
         deviceRegistration = DeviceRegistration(objectId: nil, deviceToken: deviceName, deviceId: deviceId, os: os, osVersion: osVersion, expiration: nil, channels: nil)
         #elseif os(OSX)
         let deviceName = Host.current().localizedName
-        let deviceId = deviceHelper.macOSHardwareUUID
+        let deviceId = deviceHelper.deviceId
         let os = "OSX"
         let systemVersion = ProcessInfo.processInfo.operatingSystemVersion
         let osVersion =  "\(systemVersion.majorVersion).\(systemVersion.minorVersion).\(systemVersion.patchVersion)"
-        deviceRegistration = DeviceRegistration(id: nil, deviceToken: deviceName, deviceId: deviceId, os: os, osVersion: osVersion, expiration: nil, channels: nil)
+        deviceRegistration = DeviceRegistration(objectId: nil, deviceToken: deviceName, deviceId: deviceId, os: os, osVersion: osVersion, expiration: nil, channels: nil)
         #endif
     }
     
@@ -156,7 +156,7 @@
     #endif
     
     open func getDeviceRegistrations(responseHandler: (([DeviceRegistration]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        let deviceId = deviceHelper.getDeviceId
+        let deviceId = deviceHelper.deviceId
         BackendlessRequestManager(restMethod: "messaging/registrations/\(deviceId)", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: [DeviceRegistration].self) {
                 if result is Fault {
@@ -183,7 +183,7 @@
     }
     
     open func unregisterDevice(responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        let deviceId = deviceHelper.getDeviceId
+        let deviceId = deviceHelper.deviceId
         unregisterDevice(deviceId: deviceId, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
@@ -202,7 +202,7 @@
     
     open func unregisterDevice(channels: [String], responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let dataQueryBuilder = DataQueryBuilder()
-        dataQueryBuilder.setWhereClause(whereClause: String(format: "deviceId='%@'", deviceHelper.getDeviceId))
+        dataQueryBuilder.setWhereClause(whereClause: String(format: "deviceId='%@'", deviceHelper.deviceId))
         
         Backendless.shared.data.of(DeviceRegistration.self).find(queryBuilder: dataQueryBuilder, responseHandler: { deviceRegs in
             if let deviceRegs = deviceRegs as? [DeviceRegistration] {
@@ -229,7 +229,7 @@
     
     open func refreshDeviceToken(newDeviceToken: Data, responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let dataQueryBuilder = DataQueryBuilder()
-        dataQueryBuilder.setWhereClause(whereClause: String(format: "deviceId='%@'", deviceHelper.getDeviceId))
+        dataQueryBuilder.setWhereClause(whereClause: String(format: "deviceId='%@'", deviceHelper.deviceId))
         Backendless.shared.data.of(DeviceRegistration.self).find(queryBuilder: dataQueryBuilder, responseHandler: { deviceRegs in
             if let deviceRegs = deviceRegs as? [DeviceRegistration] {
                 let group = DispatchGroup()                
