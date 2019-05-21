@@ -167,18 +167,12 @@
             restMethod += "&offset=\(offset)"
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: [JSON].self) {
+            if let result = self.processResponse.adapt(response: response, to: [BackendlessFileInfo].self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
                 else {
-                    var resultArray = [BackendlessFileInfo]()
-                    for resultObject in result as! [JSON] {
-                        if let resultDictionary = resultObject.dictionaryObject {
-                            resultArray.append(self.processResponse.adaptToBackendlessFileInfo(fileInfoDictionary: resultDictionary))
-                        }
-                    }
-                    responseHandler(resultArray)
+                    responseHandler(result as! [BackendlessFileInfo])
                 }
             }
         })

@@ -133,26 +133,27 @@ class RTMessaging: RTListener {
     }
     
     func addMessageListener(selector: String?, responseHandler: ((PublishMessageInfo) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
-        let wrappedBlock: (Any) -> () = { response in
-            if let response = response as? [String : Any] {
-                let publishMessageInfo = self.processResponse.adaptToPublishMessageInfo(messageInfoDictionary: response)
-                responseHandler(publishMessageInfo)
-            }
-        }
-        if self.channel.isJoined {
-            var options = [String : Any]()
-            options["channel"] = self.channelName
-            if let selector = selector {
-                options["selector"] = selector
-            }
-            
-            let subscription = createSubscription(type: PUB_SUB_MESSAGES, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
-            subscription.subscribe()
-            return subscription
-        }
-        else {
-            return addWaitingSubscription(event: PUB_SUB_MESSAGES, selector: selector, responseHandler: wrappedBlock, errorHandler: errorHandler)
-        }
+//        let wrappedBlock: (Any) -> () = { response in
+//            if let response = response as? [String : Any] {
+//                let publishMessageInfo = self.processResponse.adaptToPublishMessageInfo(messageInfoDictionary: response)
+//                responseHandler(publishMessageInfo)
+//            }
+//        }
+//        if self.channel.isJoined {
+//            var options = [String : Any]()
+//            options["channel"] = self.channelName
+//            if let selector = selector {
+//                options["selector"] = selector
+//            }
+//
+//            let subscription = createSubscription(type: PUB_SUB_MESSAGES, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+//            subscription.subscribe()
+//            return subscription
+//        }
+//        else {
+//            return addWaitingSubscription(event: PUB_SUB_MESSAGES, selector: selector, responseHandler: wrappedBlock, errorHandler: errorHandler)
+//        }
+        return nil
     }
     
     func removeMessageListeners(selector: String?) {

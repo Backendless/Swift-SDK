@@ -29,10 +29,6 @@
     open var expiration: Date?
     open var channels: [String]?
     
-    open func addChannel(channelName: String, responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        
-    }
-    
     enum CodingKeys: String, CodingKey {
         case objectId
         case deviceToken

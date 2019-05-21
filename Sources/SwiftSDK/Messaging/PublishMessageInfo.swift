@@ -21,16 +21,16 @@
 
 @objcMembers open class PublishMessageInfo: NSObject {
     open var messageId: String?
-    open var timestamp: NSNumber?
+    open var timestamp: Int?
     open var message: Any?
     open var publisherId: String?
     open var subtopic: String?
     open var pushSinglecast: [Any]?
-    open var pushBroadcast: NSNumber?
+    open var pushBroadcast: Int?
     open var publishPolicy: String?
     open var query: String?
-    open var publishAt: NSNumber?
-    open var repeatEvery: NSNumber?
-    open var repeatExpiresAt: NSNumber?
+    open var publishAt: Int?
+    open var repeatEvery: Int?
+    open var repeatExpiresAt: Int?
     open var headers: [String : Any]?
 }
