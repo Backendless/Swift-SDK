@@ -27,6 +27,7 @@
     private let deviceHelper = DeviceHelper.shared
     private let dataTypesUtils = DataTypesUtils.shared
     private let userDefaultsHelper = UserDefaultsHelper.shared
+    private let keychainUtils = KeychainUtils.shared
     private let persistenceServiceUtils = PersistenceServiceUtils()
     
     private var deviceRegistration: DeviceRegistration!
@@ -37,7 +38,7 @@
         let deviceId = deviceHelper.getDeviceId
         let os = "IOS"
         let osVersion = deviceHelper.currentDeviceSystemVersion
-        deviceRegistration = DeviceRegistration(id: nil, deviceToken: deviceName, deviceId: deviceId, os: os, osVersion: osVersion, expiration: nil, channels: nil)
+        deviceRegistration = DeviceRegistration(objectId: nil, deviceToken: deviceName, deviceId: deviceId, os: os, osVersion: osVersion, expiration: nil, channels: nil)
         #elseif os(OSX)
         let deviceName = Host.current().localizedName
         let deviceId = deviceHelper.macOSHardwareUUID
@@ -112,7 +113,7 @@
         var parameters = ["deviceToken": deviceTokenString, "channels": channels] as [String : Any]
         if let deviceId = deviceRegistration.deviceId {
             parameters["deviceId"] = deviceId
-            userDefaultsHelper.saveDeviceId(deviceId: deviceId)
+            keychainUtils.saveDeviceId(deviceId: deviceId)
         }
         if let os = deviceRegistration.os {
             parameters["os"] = os
@@ -155,21 +156,17 @@
     #endif
     
     open func getDeviceRegistrations(responseHandler: (([DeviceRegistration]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        if let deviceId = userDefaultsHelper.getDeviceId() {
-            BackendlessRequestManager(restMethod: "messaging/registrations/\(deviceId)", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-                if let result = self.processResponse.adapt(response: response, to: [DeviceRegistration].self) {
-                    if result is Fault {
-                        errorHandler(result as! Fault)
-                    }
-                    else {
-                        responseHandler(result as! [DeviceRegistration])
-                    }
+        let deviceId = deviceHelper.getDeviceId
+        BackendlessRequestManager(restMethod: "messaging/registrations/\(deviceId)", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = self.processResponse.adapt(response: response, to: [DeviceRegistration].self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
                 }
-            })
-        }
-        else {
-            errorHandler(Fault(message: "Device ID not found", faultCode: 0))
-        }
+                else {
+                    responseHandler(result as! [DeviceRegistration])
+                }
+            }
+        })
     }
     
     open func getDeviceRegistrations(deviceId: String, responseHandler: (([DeviceRegistration]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
@@ -186,13 +183,8 @@
     }
     
     open func unregisterDevice(responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        if let deviceId = userDefaultsHelper.getDeviceId() {
-            unregisterDevice(deviceId: deviceId, responseHandler: responseHandler, errorHandler: errorHandler)
-        }
-        else {
-            let fault = Fault(message: "Device id not found", faultCode: 0)
-            errorHandler (fault)
-        }
+        let deviceId = deviceHelper.getDeviceId
+        unregisterDevice(deviceId: deviceId, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     open func unregisterDevice(deviceId: String, responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
@@ -205,6 +197,57 @@
                     responseHandler(result["result"] as! Bool)
                 }
             }
+        })
+    }
+    
+    open func unregisterDevice(channels: [String], responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        let dataQueryBuilder = DataQueryBuilder()
+        dataQueryBuilder.setWhereClause(whereClause: String(format: "deviceId='%@'", deviceHelper.getDeviceId))
+        
+        Backendless.shared.data.of(DeviceRegistration.self).find(queryBuilder: dataQueryBuilder, responseHandler: { deviceRegs in
+            if let deviceRegs = deviceRegs as? [DeviceRegistration] {
+                let group = DispatchGroup()
+                for deviceReg in deviceRegs {
+                    if let channelName = deviceReg.channels?.first,
+                        channels.contains(channelName) {
+                        group.enter()
+                        Backendless.shared.data.of(DeviceRegistration.self).remove(entity: deviceReg, responseHandler: { removed in
+                            group.leave()
+                        }, errorHandler: { fault in
+                            errorHandler(fault)
+                        })
+                    }
+                }
+                group.notify(queue: OperationQueue.current!.underlyingQueue!, execute: {
+                    responseHandler(true)
+                })
+            }
+        }, errorHandler: { fault in
+            errorHandler(fault)
+        })
+    }
+    
+    open func refreshDeviceToken(newDeviceToken: Data, responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        let dataQueryBuilder = DataQueryBuilder()
+        dataQueryBuilder.setWhereClause(whereClause: String(format: "deviceId='%@'", deviceHelper.getDeviceId))
+        Backendless.shared.data.of(DeviceRegistration.self).find(queryBuilder: dataQueryBuilder, responseHandler: { deviceRegs in
+            if let deviceRegs = deviceRegs as? [DeviceRegistration] {
+                let group = DispatchGroup()                
+                for deviceReg in deviceRegs {
+                    deviceReg.deviceToken = newDeviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+                    group.enter()
+                    Backendless.shared.data.of(DeviceRegistration.self).update(entity: deviceReg, responseHandler: { updatedReg in
+                        group.leave()
+                    }, errorHandler: { fault in
+                        errorHandler(fault)
+                    })
+                }
+                group.notify(queue: OperationQueue.current!.underlyingQueue!, execute: {
+                    responseHandler(true)
+                })
+            }
+        }, errorHandler: { fault in
+            errorHandler(fault)
         })
     }
     
@@ -226,7 +269,19 @@
     
     func publishMessage(channelName: String, message: Any, publishOptions: PublishOptions?, deliveryOptions: DeliveryOptions?, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         var messageToPublish = message
-        if !(message is String), !(message is [String : Any]) {
+        
+        if let messageArray = message as? Array<Any> {
+            var messageArrayNew = [Any]()
+            for messageElement in messageArray {
+                var element = messageElement
+                if !(messageElement is Bool), !(messageElement is Int), !(messageElement is Float), !(messageElement is Double), !(messageElement is Character), !(messageElement is String), !(messageElement is [String : Any]) {
+                    element = persistenceServiceUtils.entityToDictionaryWithClassProperty(entity: messageElement)
+                }
+                messageArrayNew.append(element)
+            }
+            messageToPublish = messageArrayNew
+        }
+        else if !(message is Bool), !(message is Int), !(message is Float), !(message is Double), !(message is Character), !(message is String), !(message is [String : Any]) {
             messageToPublish = persistenceServiceUtils.entityToDictionaryWithClassProperty(entity: message)
         }
         let headers = ["Content-Type": "application/json"]
@@ -234,6 +289,9 @@
         if let publishHeaders = publishOptions?.headers {
             parameters["headers"] = publishHeaders
         }
+        if let publisherId = publishOptions?.publisherId {
+            parameters["publisherId"] = publisherId
+        }        
         if let publishAt = deliveryOptions?.publishAt {
             parameters["publishAt"] = dataTypesUtils.dateToInt(date: publishAt)
         }

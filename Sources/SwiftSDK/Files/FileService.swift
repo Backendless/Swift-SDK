@@ -136,6 +136,10 @@
         })
     }
     
+    open func listing(path: String, responseHandler: (([BackendlessFileInfo]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        filesListing(path: path, pattern: "*", recursive: false, pageSize: nil, offset: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
     open func listing(pattern: String, recursive: Bool, responseHandler: (([BackendlessFileInfo]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         filesListing(path: "", pattern: pattern, recursive: recursive, pageSize: nil, offset: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
@@ -163,18 +167,12 @@
             restMethod += "&offset=\(offset)"
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: [JSON].self) {
+            if let result = self.processResponse.adapt(response: response, to: [BackendlessFileInfo].self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
                 else {
-                    var resultArray = [BackendlessFileInfo]()
-                    for resultObject in result as! [JSON] {
-                        if let resultDictionary = resultObject.dictionaryObject {
-                            resultArray.append(self.processResponse.adaptToBackendlessFileInfo(fileInfoDictionary: resultDictionary))
-                        }
-                    }
-                    responseHandler(resultArray)
+                    responseHandler(result as! [BackendlessFileInfo])
                 }
             }
         })
@@ -221,9 +219,20 @@
             }
         })
     }
-    
+
     open func remove(path: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        BackendlessRequestManager(restMethod: "files/\(path)", httpMethod: .DELETE, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+        remove(path: path, pattern: "*", recursive: false, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    open func remove(path: String, pattern: String, recursive: Bool, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        var restMethod = "files/\(path)?pattern=\(dataTypesUtils.stringToUrlString(originalString: pattern))"
+        if recursive {
+            restMethod += "&sub=true"
+        }
+        else {
+            restMethod += "&sub=false"
+        }
+        BackendlessRequestManager(restMethod: restMethod, httpMethod: .DELETE, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: NoReply.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
@@ -231,6 +240,21 @@
             }
             else {
                 responseHandler()
+            }
+        })
+    }
+    
+    open func exists(path: String, responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        BackendlessRequestManager(restMethod: "files/\(path)?action=exists", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let responseData = response.data {
+                do {
+                    responseHandler(try JSONSerialization.jsonObject(with: responseData, options: .allowFragments) as! Bool)
+                }
+                catch {
+                    let faultCode = response.response?.statusCode
+                    let faultMessage = error.localizedDescription
+                    errorHandler(self.processResponse.faultConstructor(faultMessage, faultCode: faultCode!))
+                }
             }
         })
     }

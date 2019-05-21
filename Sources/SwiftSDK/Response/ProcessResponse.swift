@@ -47,27 +47,47 @@ class ProcessResponse: NSObject {
                             return responseObject
                         }
                     }
-                        /*catch let DecodingError.dataCorrupted(context) {
-                         print(context)
-                         } catch let DecodingError.keyNotFound(key, context) {
-                         print("Key '\(key)' not found:", context.debugDescription)
-                         print("codingPath:", context.codingPath)
-                         } catch let DecodingError.valueNotFound(value, context) {
-                         print("Value '\(value)' not found:", context.debugDescription)
-                         print("codingPath:", context.codingPath)
-                         } catch let DecodingError.typeMismatch(type, context)  {
-                         print("Type '\(type)' mismatch:", context.debugDescription)
-                         print("codingPath:", context.codingPath)
-                         } catch {
-                         print("error: ", error)
-                         }*/
-                    catch {
-                        return Fault(domain: (error as NSError).domain, code: (error as NSError).code, userInfo: (error as NSError).userInfo)
+                        // ***********************
+                    catch let DecodingError.dataCorrupted(context) {
+                        print(context)
+                    } catch let DecodingError.keyNotFound(key, context) {
+                        print("Key '\(key)' not found:", context.debugDescription)
+                        print("codingPath:", context.codingPath)
+                    } catch let DecodingError.valueNotFound(value, context) {
+                        print("Value '\(value)' not found:", context.debugDescription)
+                        print("codingPath:", context.codingPath)
+                    } catch let DecodingError.typeMismatch(type, context)  {
+                        print("Type '\(type)' mismatch:", context.debugDescription)
+                        print("codingPath:", context.codingPath)
+                    } catch {
+                        print("error: ", error)
                     }
+                    // ***********************
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    //                    catch {
+                    //                        return Fault(domain: (error as NSError).domain, code: (error as NSError).code, userInfo: (error as NSError).userInfo)
+                    //                    }
                 }
             }
             return nil
         }
+    }
+    
+    func adapt<T>(responseDictionary: [String : Any], to: T.Type) -> Any? where T: Decodable {
+        if let jsonData = try? JSONSerialization.data(withJSONObject: responseDictionary, options: .prettyPrinted) {
+            let responseObject = try? JSONDecoder().decode(to, from: jsonData)
+            return responseObject
+        }
+        return nil
     }
     
     func getResponseResult(response: ReturnedResponse) -> Any? {
@@ -133,10 +153,10 @@ class ProcessResponse: NSObject {
     }
     
     func adaptToDeviceRegistration(responseResult: Any?) -> DeviceRegistration {
-        let deviceRegistration = DeviceRegistration(id: nil, deviceToken: nil, deviceId: nil, os: nil, osVersion: nil, expiration: nil, channels: nil)
+        let deviceRegistration = DeviceRegistration(objectId: nil, deviceToken: nil, deviceId: nil, os: nil, osVersion: nil, expiration: nil, channels: nil)
         if let responseResult = responseResult as? [String: Any] {
             if let objectId = responseResult["objectId"] as? String {
-                deviceRegistration.id = objectId
+                deviceRegistration.setObjectId(objectId: objectId)
             }
             if let deviceToken = responseResult["deviceToken"] as? String {
                 deviceRegistration.deviceToken = deviceToken
@@ -220,55 +240,58 @@ class ProcessResponse: NSObject {
         return nil
     }
     
-    func adaptToPublishMessageInfo(messageInfoDictionary: [String : Any]) -> PublishMessageInfo {
-        let publishMessageInfo = PublishMessageInfo()
-        if let messageId = messageInfoDictionary["messageId"] as? String {
-            publishMessageInfo.messageId = messageId
-        }
-        if let timestamp = messageInfoDictionary["timestamp"] as? NSNumber? {
-            publishMessageInfo.timestamp = timestamp
-        }
-        if let message = messageInfoDictionary["message"] {
-            if let messageDictionary = message as? [String : Any],
-                let className = messageDictionary["___class"] as? String {
-                publishMessageInfo.message = PersistenceServiceUtils().dictionaryToEntity(dictionary: messageDictionary, className: className)
-            }
-            else {
-                publishMessageInfo.message = message
-            }
-        }
-        if let publisherId = messageInfoDictionary["publisherId"] as? String {
-            publishMessageInfo.publisherId = publisherId
-        }
-        if let subtopic = messageInfoDictionary["subtopic"] as? String {
-            publishMessageInfo.subtopic = subtopic
-        }
-        if let pushSinglecast = messageInfoDictionary["pushSinglecast"] as? [Any] {
-            publishMessageInfo.pushSinglecast = pushSinglecast
-        }
-        if let pushBroadcast = messageInfoDictionary["pushBroadcast"] as? NSNumber {
-            publishMessageInfo.pushBroadcast = pushBroadcast
-        }
-        if let publishPolicy = messageInfoDictionary["publishPolicy"] as? String {
-            publishMessageInfo.publishPolicy = publishPolicy
-        }
-        if let query = messageInfoDictionary["query"] as? String {
-            publishMessageInfo.query = query
-        }
-        if let publishAt = messageInfoDictionary["publishAt"] as? NSNumber {
-            publishMessageInfo.publishAt = publishAt
-        }
-        if let repeatEvery = messageInfoDictionary["repeatEvery"] as? NSNumber {
-            publishMessageInfo.repeatEvery = repeatEvery
-        }
-        if let headers = messageInfoDictionary["headers"] as? [String : Any] {
-            publishMessageInfo.headers = headers
-        }
-        return publishMessageInfo
-    }
+    //    func adaptToPublishMessageInfo(messageInfoDictionary: [String : Any]) -> PublishMessageInfo {
+    //        let publishMessageInfo = PublishMessageInfo()
+    //        if let messageId = messageInfoDictionary["messageId"] as? String {
+    //            publishMessageInfo.messageId = messageId
+    //        }
+    //        if let timestamp = messageInfoDictionary["timestamp"] as? NSNumber? {
+    //            publishMessageInfo.timestamp = timestamp
+    //        }
+    //        if let message = messageInfoDictionary["message"] {
+    //            if let messageDictionary = message as? [String : Any],
+    //                let className = messageDictionary["___class"] as? String {
+    //                publishMessageInfo.message = PersistenceServiceUtils().dictionaryToEntity(dictionary: messageDictionary, className: className)
+    //            }
+    //            else {
+    //                publishMessageInfo.message = message
+    //            }
+    //        }
+    //        if let publisherId = messageInfoDictionary["publisherId"] as? String {
+    //            publishMessageInfo.publisherId = publisherId
+    //        }
+    //        if let subtopic = messageInfoDictionary["subtopic"] as? String {
+    //            publishMessageInfo.subtopic = subtopic
+    //        }
+    //        if let pushSinglecast = messageInfoDictionary["pushSinglecast"] as? [Any] {
+    //            publishMessageInfo.pushSinglecast = pushSinglecast
+    //        }
+    //        if let pushBroadcast = messageInfoDictionary["pushBroadcast"] as? NSNumber {
+    //            publishMessageInfo.pushBroadcast = pushBroadcast
+    //        }
+    //        if let publishPolicy = messageInfoDictionary["publishPolicy"] as? String {
+    //            publishMessageInfo.publishPolicy = publishPolicy
+    //        }
+    //        if let query = messageInfoDictionary["query"] as? String {
+    //            publishMessageInfo.query = query
+    //        }
+    //        if let publishAt = messageInfoDictionary["publishAt"] as? NSNumber {
+    //            publishMessageInfo.publishAt = publishAt
+    //        }
+    //        if let repeatEvery = messageInfoDictionary["repeatEvery"] as? NSNumber {
+    //            publishMessageInfo.repeatEvery = repeatEvery
+    //        }
+    //        if let repeatExpiresAt = messageInfoDictionary["repeatExpiresAt"] as? NSNumber {
+    //            publishMessageInfo.repeatExpiresAt = repeatExpiresAt
+    //        }
+    //        if let headers = messageInfoDictionary["headers"] as? [String : Any] {
+    //            publishMessageInfo.headers = headers
+    //        }
+    //        return publishMessageInfo
+    //    }
     
     func adaptToCommandObject(commandObjectDictionary: [String : Any]) -> CommandObject {
-        let commandObject = CommandObject()        
+        let commandObject = CommandObject()
         if let type = commandObjectDictionary["type"] as? String {
             commandObject.type = type
         }
@@ -334,7 +357,7 @@ class ProcessResponse: NSObject {
         if let userId = invokeObjectDictionary["userId"] as? String {
             invokeObject.userId = userId
         }
-        if let args = invokeObjectDictionary["args"] {            
+        if let args = invokeObjectDictionary["args"] {
             invokeObject.args = JSONUtils.shared.JSONToObject(objectToParse: args) as? [Any]
         }
         return invokeObject
@@ -348,38 +371,9 @@ class ProcessResponse: NSObject {
         return backendlessFile
     }
     
-    func adaptToBackendlessFileInfo(fileInfoDictionary: [String : Any]) -> BackendlessFileInfo {
-        let fileInfo = BackendlessFileInfo()
-        if let name = fileInfoDictionary["name"] as? String {
-            fileInfo.name = name
-        }
-        if let createdOn = fileInfoDictionary["createdOn"] as? NSNumber {
-            fileInfo.createdOn = createdOn
-        }
-        if let publicUrl = fileInfoDictionary["publicUrl"] as? String {
-            fileInfo.publicUrl = publicUrl
-        }
-        if let size = fileInfoDictionary["size"] as? NSNumber {
-            fileInfo.size = size
-        }
-        if let url = fileInfoDictionary["url"] as? String {
-            fileInfo.url = url
-        }
-        return fileInfo
-    }
-    
     func adaptToLogMessagesArrayOfDict(logMessages: [LogMessage]) -> [[String : Any]] {
-        var resultArray = [[String : Any]]()        
+        var resultArray = [[String : Any]]()
         for logMessage in logMessages {
-            
-//            print(logMessage.level)
-//            print(logMessage.logger)
-//            print(logMessage.timestamp)
-//            print(logMessage.exception)
-//            print("**********")
-            
-            
-            
             var logMessageDict = [String : Any]()
             if let logLevel = logMessage.level {
                 logMessageDict["log-level"] = logLevel

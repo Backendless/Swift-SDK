@@ -88,22 +88,6 @@ class UserDefaultsHelper: NSObject {
         UserDefaults.standard.removeObject(forKey: CURRENT_USER_KEY)
     }
     
-    func saveDeviceId(deviceId: String) {
-        let userDefaults = UserDefaults.standard
-        let deviceId: [String: String] = ["deviceId": deviceId]
-        userDefaults.setValue(deviceId, forKey: DEVICE_ID_KEY)
-        userDefaults.synchronize()
-    }
-    
-    func getDeviceId() -> String? {
-        let userDefaults = UserDefaults.standard
-        if let deviceId = userDefaults.value(forKey: DEVICE_ID_KEY),
-            let id = (deviceId as! [String: String])["deviceId"] {
-            return id
-        }
-        return nil
-    }
-    
     func saveDeviceToken(deviceToken: Data) {
         let userDefaults = UserDefaults.standard
         userDefaults.setValue(deviceToken, forKey: DEVICE_TOKEN_KEY)

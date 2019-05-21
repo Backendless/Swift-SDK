@@ -19,12 +19,17 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class GeoQueryRectangle: NSObject {
+@objcMembers open class GeoQueryRectangle: NSObject, NSCoding, Codable {
     
     open private(set) var nordWestPoint: GeoPoint?
     open private(set) var southEastPoint: GeoPoint?
     
     private override init() { }
+    
+    enum CodingKeys: String, CodingKey {
+        case nordWestPoint
+        case southEastPoint
+    }
     
     public init(nordWestPoint: GeoPoint, southEastPoint: GeoPoint) {
         self.nordWestPoint = nordWestPoint
@@ -45,5 +50,16 @@
         value = center.longitude + length / 2
         let seLongitude = (value > 180.0) ? value - 360.0 : value
         self.southEastPoint = GeoPoint(latitude: seLatitude, longitude: seLongitude)
+    }
+    
+    convenience public required init?(coder aDecoder: NSCoder) {
+        let nordWestPoint = aDecoder.decodeObject(forKey: CodingKeys.nordWestPoint.rawValue) as! GeoPoint
+        let southEastPoint = aDecoder.decodeObject(forKey: CodingKeys.southEastPoint.rawValue) as! GeoPoint
+        self.init(nordWestPoint: nordWestPoint, southEastPoint: southEastPoint)
+    }
+    
+    public func encode(with aCoder: NSCoder) {
+        aCoder.encode(nordWestPoint, forKey: CodingKeys.nordWestPoint.rawValue)
+        aCoder.encode(southEastPoint, forKey: CodingKeys.southEastPoint.rawValue)
     }
 }

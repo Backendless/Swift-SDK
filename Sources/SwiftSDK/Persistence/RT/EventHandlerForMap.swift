@@ -25,6 +25,8 @@
     
     private var tableName: String!
     
+    private let processResponse = ProcessResponse.shared
+    
     init(tableName: String) {
         self.tableName = tableName
     }
@@ -93,7 +95,8 @@
     }
     
     open func addBulkUpdateListener(responseHandler: ((BulkEvent) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
-        let wrappedBlock: ([String : Any]) -> () = { response in
+        
+        let wrappedBlock: ([String : Any]) -> () = { response in            
             let bulkEvent = BulkEvent()
             if let whereClause = response["whereClause"] as? String {
                 bulkEvent.whereClause = whereClause
