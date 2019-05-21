@@ -19,8 +19,8 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class LoadRelationsQueryBuilder: NSObject {
-    
+@objcMembers open class LoadRelationsQueryBuilder: NSObject, NSCoding, Codable {
+   
     private var entityClass: Any?
     private var tableName: String?
     
@@ -32,14 +32,48 @@
     
     private let persistenceServiceUtils = PersistenceServiceUtils()
     
+    enum CodingKeys: String, CodingKey {
+        case relationName
+        case properties
+        case sortBy
+        case pageSize
+        case offset
+    }
+    
     public init(tableName: String) {
         self.tableName = tableName
     }
     
     public init(entityClass: Any) {
+        super.init()
         self.entityClass = entityClass
         let tableName = persistenceServiceUtils.getTableName(entity: self.entityClass!)
         self.tableName = tableName
+    }
+    
+    public init(relationName: String?, properties: [String]?, sortBy: [String]?, pageSize: Int, offset: Int) {
+        self.relationName = relationName
+        self.properties = properties
+        self.sortBy = sortBy
+        self.pageSize = pageSize
+        self.offset = offset
+    }
+    
+    convenience public required init?(coder aDecoder: NSCoder) {
+        let relationName = aDecoder.decodeObject(forKey: CodingKeys.relationName.rawValue) as? String
+        let properties = aDecoder.decodeObject(forKey: CodingKeys.properties.rawValue) as? [String]
+        let sortBy = aDecoder.decodeObject(forKey: CodingKeys.sortBy.rawValue) as? [String]
+        let pageSize = aDecoder.decodeInteger(forKey: CodingKeys.pageSize.rawValue)
+        let offset = aDecoder.decodeInteger(forKey: CodingKeys.offset.rawValue)
+        self.init(relationName: relationName, properties: properties, sortBy: sortBy, pageSize: pageSize, offset: offset)
+    }
+    
+    public func encode(with aCoder: NSCoder) {
+        aCoder.encode(relationName, forKey: CodingKeys.relationName.rawValue)
+        aCoder.encode(properties, forKey: CodingKeys.properties.rawValue)
+        aCoder.encode(sortBy, forKey: CodingKeys.sortBy.rawValue)
+        aCoder.encode(pageSize, forKey: CodingKeys.pageSize.rawValue)
+        aCoder.encode(offset, forKey: CodingKeys.offset.rawValue)
     }
     
     open func setRelationName(relationName: String) {

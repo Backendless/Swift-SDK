@@ -1,6 +1,6 @@
 # RELEASE HISTORY
 
-### 0.0.6 / May, ? 2019
+### 0.0.6 / May, 21 2019
 * added functions to FileService:
 ```
 func exists(path: String, responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!)
@@ -15,7 +15,8 @@ func unregisterDevice(channels: [String], responseHandler: ((Bool) -> Void)!, er
 
 func refreshDeviceToken(newDeviceToken: Data, responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!)
 ```
-* classes made to conform to the Codable protocol: BackendlessFileInfo, 
+* classes made to conform to the Codable protocol: DataQueryBuilder, LoadRelationsQueryBuilder, BackendlessGeoQuery, GeoQueryRectangle, PublishOptions, DeliveryOptions, BackendlessFileInfo,  PublishMessageInfo, UserInfo, ReconnectAttemptObject, BulkEvent
+
 
 ### 0.0.5 / May, 16 2019
 * deviceId is stored permanently in Keychain after device registration
