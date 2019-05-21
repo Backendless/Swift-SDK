@@ -41,7 +41,7 @@
         deviceRegistration = DeviceRegistration(objectId: nil, deviceToken: deviceName, deviceId: deviceId, os: os, osVersion: osVersion, expiration: nil, channels: nil)
         #elseif os(OSX)
         let deviceName = Host.current().localizedName
-        let deviceId = deviceHelper.macOSHardwareUUID
+        let deviceId = deviceHelper.deviceId
         let os = "OSX"
         let systemVersion = ProcessInfo.processInfo.operatingSystemVersion
         let osVersion =  "\(systemVersion.majorVersion).\(systemVersion.minorVersion).\(systemVersion.patchVersion)"
