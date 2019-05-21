@@ -1,8 +1,5 @@
 # RELEASE HISTORY
 
-### 0.0.7, / May, 21 2019
-* fixed podspec bugs of v0.0.6
-
 ### 0.0.6, / May, 21 2019
 * added functions to FileService:
 ```
