@@ -47,13 +47,6 @@ class ProcessResponse: NSObject {
                             return responseObject
                         }
                     }
-                        
-                        
-                        
-                        
-                        
-                        
-                        
                         // ***********************
                     catch let DecodingError.dataCorrupted(context) {
                         print(context)
@@ -87,6 +80,14 @@ class ProcessResponse: NSObject {
             }
             return nil
         }
+    }
+    
+    func adapt<T>(responseDictionary: [String : Any], to: T.Type) -> Any? where T: Decodable {
+        if let jsonData = try? JSONSerialization.data(withJSONObject: responseDictionary, options: .prettyPrinted) {
+            let responseObject = try? JSONDecoder().decode(to, from: jsonData)
+            return responseObject
+        }
+        return nil
     }
     
     func getResponseResult(response: ReturnedResponse) -> Any? {
@@ -239,58 +240,58 @@ class ProcessResponse: NSObject {
         return nil
     }
     
-//    func adaptToPublishMessageInfo(messageInfoDictionary: [String : Any]) -> PublishMessageInfo {
-//        let publishMessageInfo = PublishMessageInfo()
-//        if let messageId = messageInfoDictionary["messageId"] as? String {
-//            publishMessageInfo.messageId = messageId
-//        }
-//        if let timestamp = messageInfoDictionary["timestamp"] as? NSNumber? {
-//            publishMessageInfo.timestamp = timestamp
-//        }
-//        if let message = messageInfoDictionary["message"] {
-//            if let messageDictionary = message as? [String : Any],
-//                let className = messageDictionary["___class"] as? String {
-//                publishMessageInfo.message = PersistenceServiceUtils().dictionaryToEntity(dictionary: messageDictionary, className: className)
-//            }
-//            else {
-//                publishMessageInfo.message = message
-//            }
-//        }
-//        if let publisherId = messageInfoDictionary["publisherId"] as? String {
-//            publishMessageInfo.publisherId = publisherId
-//        }
-//        if let subtopic = messageInfoDictionary["subtopic"] as? String {
-//            publishMessageInfo.subtopic = subtopic
-//        }
-//        if let pushSinglecast = messageInfoDictionary["pushSinglecast"] as? [Any] {
-//            publishMessageInfo.pushSinglecast = pushSinglecast
-//        }
-//        if let pushBroadcast = messageInfoDictionary["pushBroadcast"] as? NSNumber {
-//            publishMessageInfo.pushBroadcast = pushBroadcast
-//        }
-//        if let publishPolicy = messageInfoDictionary["publishPolicy"] as? String {
-//            publishMessageInfo.publishPolicy = publishPolicy
-//        }
-//        if let query = messageInfoDictionary["query"] as? String {
-//            publishMessageInfo.query = query
-//        }
-//        if let publishAt = messageInfoDictionary["publishAt"] as? NSNumber {
-//            publishMessageInfo.publishAt = publishAt
-//        }
-//        if let repeatEvery = messageInfoDictionary["repeatEvery"] as? NSNumber {
-//            publishMessageInfo.repeatEvery = repeatEvery
-//        }
-//        if let repeatExpiresAt = messageInfoDictionary["repeatExpiresAt"] as? NSNumber {
-//            publishMessageInfo.repeatExpiresAt = repeatExpiresAt
-//        }
-//        if let headers = messageInfoDictionary["headers"] as? [String : Any] {
-//            publishMessageInfo.headers = headers
-//        }
-//        return publishMessageInfo
-//    }
+    //    func adaptToPublishMessageInfo(messageInfoDictionary: [String : Any]) -> PublishMessageInfo {
+    //        let publishMessageInfo = PublishMessageInfo()
+    //        if let messageId = messageInfoDictionary["messageId"] as? String {
+    //            publishMessageInfo.messageId = messageId
+    //        }
+    //        if let timestamp = messageInfoDictionary["timestamp"] as? NSNumber? {
+    //            publishMessageInfo.timestamp = timestamp
+    //        }
+    //        if let message = messageInfoDictionary["message"] {
+    //            if let messageDictionary = message as? [String : Any],
+    //                let className = messageDictionary["___class"] as? String {
+    //                publishMessageInfo.message = PersistenceServiceUtils().dictionaryToEntity(dictionary: messageDictionary, className: className)
+    //            }
+    //            else {
+    //                publishMessageInfo.message = message
+    //            }
+    //        }
+    //        if let publisherId = messageInfoDictionary["publisherId"] as? String {
+    //            publishMessageInfo.publisherId = publisherId
+    //        }
+    //        if let subtopic = messageInfoDictionary["subtopic"] as? String {
+    //            publishMessageInfo.subtopic = subtopic
+    //        }
+    //        if let pushSinglecast = messageInfoDictionary["pushSinglecast"] as? [Any] {
+    //            publishMessageInfo.pushSinglecast = pushSinglecast
+    //        }
+    //        if let pushBroadcast = messageInfoDictionary["pushBroadcast"] as? NSNumber {
+    //            publishMessageInfo.pushBroadcast = pushBroadcast
+    //        }
+    //        if let publishPolicy = messageInfoDictionary["publishPolicy"] as? String {
+    //            publishMessageInfo.publishPolicy = publishPolicy
+    //        }
+    //        if let query = messageInfoDictionary["query"] as? String {
+    //            publishMessageInfo.query = query
+    //        }
+    //        if let publishAt = messageInfoDictionary["publishAt"] as? NSNumber {
+    //            publishMessageInfo.publishAt = publishAt
+    //        }
+    //        if let repeatEvery = messageInfoDictionary["repeatEvery"] as? NSNumber {
+    //            publishMessageInfo.repeatEvery = repeatEvery
+    //        }
+    //        if let repeatExpiresAt = messageInfoDictionary["repeatExpiresAt"] as? NSNumber {
+    //            publishMessageInfo.repeatExpiresAt = repeatExpiresAt
+    //        }
+    //        if let headers = messageInfoDictionary["headers"] as? [String : Any] {
+    //            publishMessageInfo.headers = headers
+    //        }
+    //        return publishMessageInfo
+    //    }
     
     func adaptToCommandObject(commandObjectDictionary: [String : Any]) -> CommandObject {
-        let commandObject = CommandObject()        
+        let commandObject = CommandObject()
         if let type = commandObjectDictionary["type"] as? String {
             commandObject.type = type
         }
@@ -356,7 +357,7 @@ class ProcessResponse: NSObject {
         if let userId = invokeObjectDictionary["userId"] as? String {
             invokeObject.userId = userId
         }
-        if let args = invokeObjectDictionary["args"] {            
+        if let args = invokeObjectDictionary["args"] {
             invokeObject.args = JSONUtils.shared.JSONToObject(objectToParse: args) as? [Any]
         }
         return invokeObject
@@ -371,8 +372,8 @@ class ProcessResponse: NSObject {
     }
     
     func adaptToLogMessagesArrayOfDict(logMessages: [LogMessage]) -> [[String : Any]] {
-        var resultArray = [[String : Any]]()        
-        for logMessage in logMessages {         
+        var resultArray = [[String : Any]]()
+        for logMessage in logMessages {
             var logMessageDict = [String : Any]()
             if let logLevel = logMessage.level {
                 logMessageDict["log-level"] = logLevel

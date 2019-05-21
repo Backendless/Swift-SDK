@@ -25,6 +25,7 @@
     open var createdOn: Int = 0
     open var publicUrl: String?
     open var url: String?
+    
     private var _size: Int?
     open var size: NSNumber? {
         get {
@@ -46,7 +47,7 @@
         case url
     }
     
-    init(name: String?, createdOn: Int, publicUrl: String?, _size: Int?, url: String?) {
+    public init(name: String?, createdOn: Int, publicUrl: String?, _size: Int?, url: String?) {
         self.name = name
         self.createdOn = createdOn
         self.publicUrl = publicUrl
@@ -66,7 +67,7 @@
     public func encode(with aCoder: NSCoder) {
         aCoder.encode(name, forKey: CodingKeys.name.rawValue)
         aCoder.encode(createdOn, forKey: CodingKeys.createdOn.rawValue)
-        aCoder.encode(name, forKey: CodingKeys.publicUrl.rawValue)
+        aCoder.encode(publicUrl, forKey: CodingKeys.publicUrl.rawValue)
         aCoder.encode(_size, forKey: CodingKeys._size.rawValue)
         aCoder.encode(url, forKey: CodingKeys.url.rawValue)
     }

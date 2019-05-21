@@ -19,26 +19,60 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class PublishOptions: NSObject {
+@objcMembers open class PublishOptions: NSObject, NSCoding, Codable {
     
     open var publisherId: String?
     
-    open private(set) var headers: [String : Any]
+    private var _headers: JSON?
+    open private(set) var headers: [String : Any]? {
+        get {
+            return _headers?.dictionaryObject
+        }
+        set(newHeaders) {
+            _headers = JSON(newHeaders ?? [:])
+        }
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case publisherId
+        case _headers = "headers"
+    }
     
     public override init() {
-        self.headers = ["ios-content-available": "1"]
         super.init()
+        self.headers = ["ios-content-available": "1"]
+    }
+    
+    public init(publisherId: String?, _headers: JSON?) {
+        self.publisherId = publisherId
+        self._headers = _headers
+    }
+    
+    convenience public required init?(coder aDecoder: NSCoder) {
+        let publisherId = aDecoder.decodeObject(forKey: CodingKeys.publisherId.rawValue) as? String
+        let _headers = aDecoder.decodeObject(forKey: CodingKeys._headers.rawValue) as? JSON
+        self.init(publisherId: publisherId, _headers: _headers)
+    }
+    
+    public func encode(with aCoder: NSCoder) {
+        aCoder.encode(publisherId, forKey: CodingKeys.publisherId.rawValue)
+        aCoder.encode(_headers, forKey: CodingKeys._headers.rawValue)
     }
     
     open func setHeaders(headers: [String : Any]) {
         self.headers = headers
     }
     
+    
     open func addHeader(name: String, value: Any) {
-        self.headers[name] = value
+        if self.headers != nil {
+            self.headers![name] = value
+        }
     }
     
     open func removeHeader(name: String) {
-        self.headers.removeValue(forKey: name)
+        if self.headers != nil {
+            self.headers!.removeValue(forKey: name)
+        }
     }
 }

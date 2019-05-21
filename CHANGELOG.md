@@ -15,6 +15,7 @@ func unregisterDevice(channels: [String], responseHandler: ((Bool) -> Void)!, er
 
 func refreshDeviceToken(newDeviceToken: Data, responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!)
 ```
+* classes made to conform to the Codable protocol: BackendlessFileInfo, 
 
 ### 0.0.5 / May, 16 2019
 * deviceId is stored permanently in Keychain after device registration

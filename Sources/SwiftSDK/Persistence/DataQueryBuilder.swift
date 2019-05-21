@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class DataQueryBuilder: NSObject {
+@objcMembers open class DataQueryBuilder: NSObject, NSCoding, Codable {
     
     private var whereClause: String?
     private var relationsDepth: Int = 0
@@ -30,6 +30,57 @@
     private var related: [String]?
     private var groupBy: [String]?
     private var havingClause: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case whereClause
+        case relationsDepth
+        case pageSize
+        case offset
+        case properties
+        case sortBy
+        case related
+        case groupBy
+        case havingClause
+    }
+    
+    public override init() { }
+    
+    public init(whereClause: String?, relationsDepth: Int, pageSize: Int, offset: Int, properties: [String]?, sortBy: [String]?, related: [String]?, groupBy: [String]?, havingClause: String?) {
+        self.whereClause = whereClause
+        self.relationsDepth = relationsDepth
+        self.pageSize = pageSize
+        self.offset = offset
+        self.properties = properties
+        self.sortBy = sortBy
+        self.related = related
+        self.groupBy = groupBy
+        self.havingClause = havingClause
+    }
+    
+    convenience public required init?(coder aDecoder: NSCoder) {
+        let whereClause = aDecoder.decodeObject(forKey: CodingKeys.whereClause.rawValue) as? String
+        let relationsDepth = aDecoder.decodeInteger(forKey: CodingKeys.relationsDepth.rawValue)
+        let pageSize = aDecoder.decodeInteger(forKey: CodingKeys.pageSize.rawValue)
+        let offset = aDecoder.decodeInteger(forKey: CodingKeys.offset.rawValue)
+        let properties = aDecoder.decodeObject(forKey: CodingKeys.properties.rawValue) as? [String]
+        let sortBy = aDecoder.decodeObject(forKey: CodingKeys.sortBy.rawValue) as? [String]
+        let related = aDecoder.decodeObject(forKey: CodingKeys.related.rawValue) as? [String]
+        let groupBy = aDecoder.decodeObject(forKey: CodingKeys.groupBy.rawValue) as? [String]
+        let havingClause = aDecoder.decodeObject(forKey: CodingKeys.havingClause.rawValue) as? String
+        self.init(whereClause: whereClause, relationsDepth: relationsDepth, pageSize: pageSize, offset: offset, properties: properties, sortBy: sortBy, related: related, groupBy: groupBy, havingClause: havingClause)
+    }
+    
+    public func encode(with aCoder: NSCoder) {
+        aCoder.encode(whereClause, forKey: CodingKeys.whereClause.rawValue)
+        aCoder.encode(relationsDepth, forKey: CodingKeys.relationsDepth.rawValue)
+        aCoder.encode(pageSize, forKey: CodingKeys.pageSize.rawValue)
+        aCoder.encode(offset, forKey: CodingKeys.offset.rawValue)
+        aCoder.encode(properties, forKey: CodingKeys.properties.rawValue)        
+        aCoder.encode(sortBy, forKey: CodingKeys.sortBy.rawValue)
+        aCoder.encode(related, forKey: CodingKeys.related.rawValue)
+        aCoder.encode(groupBy, forKey: CodingKeys.groupBy.rawValue)
+        aCoder.encode(havingClause, forKey: CodingKeys.havingClause.rawValue)
+    }
     
     open func getWhereClause() -> String? {
         return self.whereClause

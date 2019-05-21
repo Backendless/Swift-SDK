@@ -269,7 +269,19 @@
     
     func publishMessage(channelName: String, message: Any, publishOptions: PublishOptions?, deliveryOptions: DeliveryOptions?, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         var messageToPublish = message
-        if !(message is String), !(message is [String : Any]) {
+        
+        if let messageArray = message as? Array<Any> {
+            var messageArrayNew = [Any]()
+            for messageElement in messageArray {
+                var element = messageElement
+                if !(messageElement is Bool), !(messageElement is Int), !(messageElement is Float), !(messageElement is Double), !(messageElement is Character), !(messageElement is String), !(messageElement is [String : Any]) {
+                    element = persistenceServiceUtils.entityToDictionaryWithClassProperty(entity: messageElement)
+                }
+                messageArrayNew.append(element)
+            }
+            messageToPublish = messageArrayNew
+        }
+        else if !(message is Bool), !(message is Int), !(message is Float), !(message is Double), !(message is Character), !(message is String), !(message is [String : Any]) {
             messageToPublish = persistenceServiceUtils.entityToDictionaryWithClassProperty(entity: message)
         }
         let headers = ["Content-Type": "application/json"]
@@ -277,6 +289,9 @@
         if let publishHeaders = publishOptions?.headers {
             parameters["headers"] = publishHeaders
         }
+        if let publisherId = publishOptions?.publisherId {
+            parameters["publisherId"] = publisherId
+        }        
         if let publishAt = deliveryOptions?.publishAt {
             parameters["publishAt"] = dataTypesUtils.dateToInt(date: publishAt)
         }

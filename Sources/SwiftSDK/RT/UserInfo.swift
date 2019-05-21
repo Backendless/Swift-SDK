@@ -19,8 +19,31 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class UserInfo: NSObject {
+@objcMembers open class UserInfo: NSObject, NSCoding, Codable {
     
     open var connectionId: String?
     open var userId: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case connectionId
+        case userId
+    }
+    
+    public override init() { }
+    
+    public init(connectionId: String?, userId: String?) {
+        self.connectionId = connectionId
+        self.userId = userId
+    }
+    
+    convenience public required init?(coder aDecoder: NSCoder) {
+        let connectionId = aDecoder.decodeObject(forKey: CodingKeys.connectionId.rawValue) as? String
+        let userId = aDecoder.decodeObject(forKey: CodingKeys.userId.rawValue) as? String
+        self.init(connectionId: connectionId, userId: userId)
+    }
+    
+    public func encode(with aCoder: NSCoder) {
+        aCoder.encode(connectionId, forKey: CodingKeys.connectionId.rawValue)
+        aCoder.encode(userId, forKey: CodingKeys.userId.rawValue)
+    }
 }

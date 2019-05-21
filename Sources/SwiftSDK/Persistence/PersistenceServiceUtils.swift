@@ -452,7 +452,7 @@ class PersistenceServiceUtils: NSObject {
         return entityDictionary
     }
     
-    func entityToDictionaryWithClassProperty(entity: Any) -> [String: Any] {
+    func entityToDictionaryWithClassProperty(entity: Any) -> [String: Any] {    
         var entityDictionary = entityToDictionary(entity: entity)
         var className = getClassName(entity: type(of: entity))
         if let name = className.components(separatedBy: ".").last {
