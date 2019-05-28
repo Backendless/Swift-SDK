@@ -1,6 +1,6 @@
 # RELEASE HISTORY
 
-### 0.0.7, / Nay, 28 2019
+### 0.0.7, / May, 28 2019
 * customized Serialization/Deserialization for next classes: ObjectProperty, BackendlessFileInfo, GeoCategory, BackendlessUser, UserProperty
 ```
 init(from decoder: Decoder) throws
