@@ -68,25 +68,17 @@
     
     public override init() { }
     
-    public init(publishAt: Date?, repeatExpiresAt: Date?, _repeatEvery: Int?, pushSinglecast: [String]?, publishPolicy: Int, pushBroadcast: Int) {
-        self.publishAt = publishAt
-        self.repeatExpiresAt = repeatExpiresAt
-        self._repeatEvery = _repeatEvery
-        if pushSinglecast != nil {
-            self.pushSinglecast = pushSinglecast!
-        }
-        self.publishPolicy = publishPolicy
-        self.pushBroadcast = pushBroadcast
-    }
-    
     convenience public required init?(coder aDecoder: NSCoder) {
-        let publishAt = aDecoder.decodeObject(forKey: CodingKeys.publishAt.rawValue) as? Date
-        let repeatExpiresAt = aDecoder.decodeObject(forKey: CodingKeys.repeatExpiresAt.rawValue) as? Date
-        let _repeatEvery = aDecoder.decodeInteger(forKey: CodingKeys._repeatEvery.rawValue)
-        let pushSinglecast = aDecoder.decodeObject(forKey: CodingKeys.pushSinglecast.rawValue) as? [String]
-        let publishPolicy = aDecoder.decodeInteger(forKey: CodingKeys.publishPolicy.rawValue)
-        let pushBroadcast = aDecoder.decodeInteger(forKey: CodingKeys.pushBroadcast.rawValue)
-        self.init(publishAt: publishAt, repeatExpiresAt: repeatExpiresAt, _repeatEvery: _repeatEvery, pushSinglecast: pushSinglecast, publishPolicy: publishPolicy, pushBroadcast: pushBroadcast)
+        self.init()
+        self.publishAt = aDecoder.decodeObject(forKey: CodingKeys.publishAt.rawValue) as? Date
+        self.repeatExpiresAt = aDecoder.decodeObject(forKey: CodingKeys.repeatExpiresAt.rawValue) as? Date
+        self._repeatEvery = aDecoder.decodeInteger(forKey: CodingKeys._repeatEvery.rawValue)
+        self.pushSinglecast = []
+        if let pushSinglecast = aDecoder.decodeObject(forKey: CodingKeys.pushSinglecast.rawValue) as? [String] {
+            self.pushSinglecast = pushSinglecast
+        }
+        self.publishPolicy = aDecoder.decodeInteger(forKey: CodingKeys.publishPolicy.rawValue)
+        self.pushBroadcast = aDecoder.decodeInteger(forKey: CodingKeys.pushBroadcast.rawValue)
     }
     
     public func encode(with aCoder: NSCoder) {

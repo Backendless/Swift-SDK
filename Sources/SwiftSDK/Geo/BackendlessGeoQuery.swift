@@ -72,33 +72,19 @@
     
     public override init() { }
     
-    public init(geoPoint: GeoPoint?, radius: Double?, categories: [String]?, includemetadata: Bool, _metadata: JSON?, whereClause: String?, rectangle: GeoQueryRectangle?, pageSize: Int, offset: Int, degreePerPixel: Double, clusterGridSize: Double) {
-        self.geoPoint = geoPoint
-        self.radius = radius
-        self.categories = categories
-        self.includemetadata = includemetadata
-        self._metadata = _metadata
-        self.whereClause = whereClause
-        self.rectangle = rectangle
-        self.pageSize = pageSize
-        self.offset = offset
-        self.degreePerPixel = degreePerPixel
-        self.clusterGridSize = clusterGridSize
-    }
-    
     convenience public required init?(coder aDecoder: NSCoder) {
-        let geoPoint = aDecoder.decodeObject(forKey: CodingKeys.geoPoint.rawValue) as? GeoPoint
-        let radius = aDecoder.decodeDouble(forKey: CodingKeys.radius.rawValue)
-        let categories = aDecoder.decodeObject(forKey: CodingKeys.categories.rawValue) as? [String]
-        let includemetadata = aDecoder.decodeBool(forKey: CodingKeys.includemetadata.rawValue)
-        let _metadata = aDecoder.decodeObject(forKey: CodingKeys._metadata.rawValue) as? JSON
-        let whereClause = aDecoder.decodeObject(forKey: CodingKeys.whereClause.rawValue) as? String
-        let rectangle = aDecoder.decodeObject(forKey: CodingKeys.rectangle.rawValue) as? GeoQueryRectangle
-        let pageSize = aDecoder.decodeInteger(forKey: CodingKeys.pageSize.rawValue)
-        let offset = aDecoder.decodeInteger(forKey: CodingKeys.offset.rawValue)
-        let degreePerPixel = aDecoder.decodeDouble(forKey: CodingKeys.degreePerPixel.rawValue)
-        let clusterGridSize = aDecoder.decodeDouble(forKey: CodingKeys.clusterGridSize.rawValue)
-        self.init(geoPoint: geoPoint, radius: radius, categories: categories, includemetadata: includemetadata, _metadata: _metadata, whereClause: whereClause, rectangle: rectangle, pageSize: pageSize, offset: offset, degreePerPixel: degreePerPixel, clusterGridSize: clusterGridSize)
+        self.init()
+        self.geoPoint = aDecoder.decodeObject(forKey: CodingKeys.geoPoint.rawValue) as? GeoPoint
+        self.radius = aDecoder.decodeDouble(forKey: CodingKeys.radius.rawValue)
+        self.categories = aDecoder.decodeObject(forKey: CodingKeys.categories.rawValue) as? [String]
+        self.includemetadata = aDecoder.decodeBool(forKey: CodingKeys.includemetadata.rawValue)
+        self._metadata = aDecoder.decodeObject(forKey: CodingKeys._metadata.rawValue) as? JSON
+        self.whereClause = aDecoder.decodeObject(forKey: CodingKeys.whereClause.rawValue) as? String
+        self.rectangle = aDecoder.decodeObject(forKey: CodingKeys.rectangle.rawValue) as? GeoQueryRectangle
+        self.pageSize = aDecoder.decodeInteger(forKey: CodingKeys.pageSize.rawValue)
+        self.offset = aDecoder.decodeInteger(forKey: CodingKeys.offset.rawValue)
+        self.degreePerPixel = aDecoder.decodeDouble(forKey: CodingKeys.degreePerPixel.rawValue)
+        self.clusterGridSize = aDecoder.decodeDouble(forKey: CodingKeys.clusterGridSize.rawValue)
     }
     
     public func encode(with aCoder: NSCoder) {
