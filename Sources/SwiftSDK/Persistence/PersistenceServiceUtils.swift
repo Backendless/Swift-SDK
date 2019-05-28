@@ -553,7 +553,11 @@ class PersistenceServiceUtils: NSObject {
     }
     
     func getObjectId(entity: Any) -> String? {
-        if let objectId = storedObjects.getObjectId(forObject: entity as! AnyHashable) {
+        if let entity = entity as? [String : Any],
+            let objectId = entity["objectId"] as? String {
+            return objectId
+        }
+        else if let objectId = storedObjects.getObjectId(forObject: entity as! AnyHashable) {
             return objectId
         }
         return nil
