@@ -40,6 +40,8 @@
         case offset
     }
     
+    private override init() { }
+    
     public init(tableName: String) {
         self.tableName = tableName
     }
@@ -51,21 +53,13 @@
         self.tableName = tableName
     }
     
-    public init(relationName: String?, properties: [String]?, sortBy: [String]?, pageSize: Int, offset: Int) {
-        self.relationName = relationName
-        self.properties = properties
-        self.sortBy = sortBy
-        self.pageSize = pageSize
-        self.offset = offset
-    }
-    
     convenience public required init?(coder aDecoder: NSCoder) {
-        let relationName = aDecoder.decodeObject(forKey: CodingKeys.relationName.rawValue) as? String
-        let properties = aDecoder.decodeObject(forKey: CodingKeys.properties.rawValue) as? [String]
-        let sortBy = aDecoder.decodeObject(forKey: CodingKeys.sortBy.rawValue) as? [String]
-        let pageSize = aDecoder.decodeInteger(forKey: CodingKeys.pageSize.rawValue)
-        let offset = aDecoder.decodeInteger(forKey: CodingKeys.offset.rawValue)
-        self.init(relationName: relationName, properties: properties, sortBy: sortBy, pageSize: pageSize, offset: offset)
+        self.init()
+        self.relationName = aDecoder.decodeObject(forKey: CodingKeys.relationName.rawValue) as? String
+        self.properties = aDecoder.decodeObject(forKey: CodingKeys.properties.rawValue) as? [String]
+        self.sortBy = aDecoder.decodeObject(forKey: CodingKeys.sortBy.rawValue) as? [String]
+        self.pageSize = aDecoder.decodeInteger(forKey: CodingKeys.pageSize.rawValue)
+        self.offset = aDecoder.decodeInteger(forKey: CodingKeys.offset.rawValue)
     }
     
     public func encode(with aCoder: NSCoder) {

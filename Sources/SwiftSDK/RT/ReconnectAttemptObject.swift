@@ -54,15 +54,10 @@
     
     public override init() { }
     
-    public init(_attempt: Int, _timeout: Int?) {
-        self._attempt = _attempt
-        self._timeout = _timeout
-    }
-    
     convenience public required init?(coder aDecoder: NSCoder) {
-        let _attempt = aDecoder.decodeInteger(forKey: CodingKeys._attempt.rawValue)
-        let _timeout = aDecoder.decodeInteger(forKey: CodingKeys._timeout.rawValue)
-        self.init(_attempt: _attempt, _timeout: _timeout)
+        self.init()
+        self._attempt = aDecoder.decodeInteger(forKey: CodingKeys._attempt.rawValue)
+        self._timeout = aDecoder.decodeInteger(forKey: CodingKeys._timeout.rawValue)
     }
     
     public func encode(with aCoder: NSCoder) {

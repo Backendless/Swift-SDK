@@ -47,21 +47,15 @@
         case url
     }
     
-    public init(name: String?, createdOn: Int, publicUrl: String?, _size: Int?, url: String?) {
-        self.name = name
-        self.createdOn = createdOn
-        self.publicUrl = publicUrl
-        self._size = _size
-        self.url = url
-    }
-    
+    public override init() { }
+
     convenience public required init?(coder aDecoder: NSCoder) {
-        let name = aDecoder.decodeObject(forKey: CodingKeys.name.rawValue) as? String
-        let createdOn = aDecoder.decodeInteger(forKey: CodingKeys.createdOn.rawValue)
-        let publicUrl = aDecoder.decodeObject(forKey: CodingKeys.publicUrl.rawValue) as? String
-        let _size = aDecoder.decodeInteger(forKey: CodingKeys._size.rawValue)
-        let url = aDecoder.decodeObject(forKey: CodingKeys.url.rawValue) as? String
-        self.init(name: name, createdOn: createdOn, publicUrl: publicUrl, _size: _size, url: url)
+        self.init()
+        self.name = aDecoder.decodeObject(forKey: CodingKeys.name.rawValue) as? String
+        self.createdOn = aDecoder.decodeInteger(forKey: CodingKeys.createdOn.rawValue)
+        self.publicUrl = aDecoder.decodeObject(forKey: CodingKeys.publicUrl.rawValue) as? String
+        self._size = aDecoder.decodeInteger(forKey: CodingKeys._size.rawValue)
+        self.url = aDecoder.decodeObject(forKey: CodingKeys.url.rawValue) as? String
     }
     
     public func encode(with aCoder: NSCoder) {
@@ -74,7 +68,6 @@
     
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
         name = try container.decodeIfPresent(String.self, forKey: .name)
         createdOn = try container.decodeIfPresent(Int.self, forKey: .createdOn) ?? 0
         publicUrl = try container.decodeIfPresent(String.self, forKey: .publicUrl)
@@ -84,7 +77,6 @@
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        
         try container.encodeIfPresent(name, forKey: .name)
         try container.encode(createdOn, forKey: .createdOn)
         try container.encodeIfPresent(publicUrl, forKey: .publicUrl)

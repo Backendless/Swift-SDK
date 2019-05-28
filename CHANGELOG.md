@@ -5,6 +5,7 @@
 * added the segmentQuery property to the DeliveryOptions
 * removed the device registration methods that don't take deviceToken as parameter
 * removed the `refreshDeviceToken` method
+* removed the unnecessary init methods
 * customized Serialization/Deserialization for next classes: ObjectProperty, BackendlessFileInfo, GeoCategory, BackendlessUser, UserProperty
 ```
 init(from decoder: Decoder) throws
