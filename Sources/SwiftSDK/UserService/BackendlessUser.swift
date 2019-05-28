@@ -71,6 +71,24 @@
         aCoder.encode(userToken, forKey: CodingKeys.userToken.rawValue)
     }
     
+    required public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        email = try container.decodeIfPresent(String.self, forKey: .email) ?? ""
+        name = try container.decodeIfPresent(String.self, forKey: .name)
+        objectId = try container.decode(String.self, forKey: .objectId)
+        userToken = try container.decodeIfPresent(String.self, forKey: .userToken)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encode(email, forKey: .email)
+        try container.encodeIfPresent(name, forKey: .name)
+        try container.encode(objectId, forKey: .objectId)
+        try container.encodeIfPresent(userToken, forKey: .userToken)
+    }
+    
     open func getProperty(propertyName: String) -> Any? {
         let userProperties = getProperties()
         return userProperties[propertyName] as Any?

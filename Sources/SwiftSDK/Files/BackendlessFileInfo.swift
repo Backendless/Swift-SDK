@@ -71,4 +71,24 @@
         aCoder.encode(_size, forKey: CodingKeys._size.rawValue)
         aCoder.encode(url, forKey: CodingKeys.url.rawValue)
     }
+    
+    required public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        name = try container.decodeIfPresent(String.self, forKey: .name)
+        createdOn = try container.decodeIfPresent(Int.self, forKey: .createdOn) ?? 0
+        publicUrl = try container.decodeIfPresent(String.self, forKey: .publicUrl)
+        url = try container.decodeIfPresent(String.self, forKey: .url)
+        _size = try container.decodeIfPresent(Int.self, forKey: ._size)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encodeIfPresent(name, forKey: .name)
+        try container.encode(createdOn, forKey: .createdOn)
+        try container.encodeIfPresent(publicUrl, forKey: .publicUrl)
+        try container.encodeIfPresent(_size, forKey: ._size)
+        try container.encodeIfPresent(url, forKey: .url)
+    }
 }

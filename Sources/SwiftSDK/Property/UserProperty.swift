@@ -23,7 +23,7 @@
     
     open var identity = false
     
-    enum CodingKeys: String, CodingKey {
+    enum UserPropertyCodingKeys: String, CodingKey {
         case identity
     }
     
@@ -40,13 +40,25 @@
         let relatedTable = aDecoder.decodeObject(forKey: CodingKeys.relatedTable.rawValue) as? String
         let customRegex = aDecoder.decodeObject(forKey: CodingKeys.customRegex.rawValue) as? String
         let autoload = aDecoder.decodeBool(forKey: CodingKeys.autoLoad.rawValue)
-        let identity = aDecoder.decodeBool(forKey: CodingKeys.identity.rawValue)
+        let identity = aDecoder.decodeBool(forKey: UserPropertyCodingKeys.identity.rawValue)
         let isPrimaryKey = aDecoder.decodeBool(forKey: CodingKeys.isPrimaryKey.rawValue)
         self.init(name: name, required: required, type: type, defaultValue: _defaultValue, relatedTable: relatedTable, customRegex: customRegex, autoLoad: autoload, identity: identity, isPrimaryKey: isPrimaryKey)
     }
     
     required public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: UserPropertyCodingKeys.self)
+        
+        identity = try container.decodeIfPresent(Bool.self, forKey: .identity) ?? false
+        
         try super.init(from: decoder)
+    }
+    
+    override public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: UserPropertyCodingKeys.self)
+        
+        try container.encode(identity, forKey: .identity)
+        
+        try super.encode(to: encoder)
     }
     
     override public func encode(with aCoder: NSCoder) {
@@ -57,7 +69,8 @@
         aCoder.encode(relatedTable, forKey: CodingKeys.relatedTable.rawValue)
         aCoder.encode(customRegex, forKey: CodingKeys.customRegex.rawValue)
         aCoder.encode(autoLoad, forKey: CodingKeys.autoLoad.rawValue)
-        aCoder.encode(identity, forKey: CodingKeys.identity.rawValue)
+        aCoder.encode(identity, forKey: UserPropertyCodingKeys.identity.rawValue)
         aCoder.encode(isPrimaryKey, forKey: CodingKeys.isPrimaryKey.rawValue)
     }
+    
 }
