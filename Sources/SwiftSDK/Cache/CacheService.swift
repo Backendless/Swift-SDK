@@ -33,7 +33,7 @@
     open func put(key: String, object: Any, timeToLiveSec: Int, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = jsonUtils.objectToJSON(objectToParse: object)
-        BackendlessRequestManager(restMethod: "cache/\(key)?timeout=\(timeToLiveSec)", httpMethod: .PUT, headers: headers, parameters: parameters).makeRequest(getResponse: { response in            
+        BackendlessRequestManager(restMethod: "cache/\(dataTypesUtils.stringToUrlString(originalString: key))?timeout=\(timeToLiveSec)", httpMethod: .PUT, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: NoReply.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
@@ -46,7 +46,7 @@
     }
 
     open func get(key: String, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        BackendlessRequestManager(restMethod: "cache/\(key)", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+        BackendlessRequestManager(restMethod: "cache/\(dataTypesUtils.stringToUrlString(originalString: key))", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
@@ -77,7 +77,7 @@
     }
     
     open func contains(key: String, responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        BackendlessRequestManager(restMethod: "cache/\(key)/check", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+        BackendlessRequestManager(restMethod: "cache/\(dataTypesUtils.stringToUrlString(originalString: key))/check", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let responseData = response.data {
                 do {
                     responseHandler(try JSONSerialization.jsonObject(with: responseData, options: .allowFragments) as! Bool)
@@ -92,7 +92,7 @@
     }
     
     open func expireIn(key: String, seconds: Int, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        BackendlessRequestManager(restMethod: "cache/\(key)/expireIn?timeout=\(seconds)", httpMethod: .PUT, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+        BackendlessRequestManager(restMethod: "cache/\(dataTypesUtils.stringToUrlString(originalString: key))/expireIn?timeout=\(seconds)", httpMethod: .PUT, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: NoReply.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
@@ -105,7 +105,7 @@
     }
     
     open func expireAt(key: String, date: Date, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        BackendlessRequestManager(restMethod: "cache/\(key)/expireAt?timestamp=\(dataTypesUtils.dateToInt(date: date))", httpMethod: .PUT, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+        BackendlessRequestManager(restMethod: "cache/\(dataTypesUtils.stringToUrlString(originalString: key))/expireAt?timestamp=\(dataTypesUtils.dateToInt(date: date))", httpMethod: .PUT, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: NoReply.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
@@ -118,7 +118,7 @@
     }
     
     open func remove(key: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        BackendlessRequestManager(restMethod: "cache/\(key)", httpMethod: .DELETE, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+        BackendlessRequestManager(restMethod: "cache/\(dataTypesUtils.stringToUrlString(originalString: key))", httpMethod: .DELETE, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: NoReply.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
