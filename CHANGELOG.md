@@ -1,5 +1,12 @@
 # RELEASE HISTORY
 
+### 0.0.7, / Nay, 28 2019
+* customized Serialization/Deserialization for next classes: ObjectProperty, BackendlessFileInfo, GeoCategory, BackendlessUser, UserProperty
+```
+init(from decoder: Decoder) throws
+func encode(to encoder: Encoder) throws
+```
+
 ### 0.0.6, / May, 21 2019
 * added functions to FileService:
 ```
