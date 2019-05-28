@@ -31,15 +31,10 @@
     
     public override init() { }
     
-    public init(connectionId: String?, userId: String?) {
-        self.connectionId = connectionId
-        self.userId = userId
-    }
-    
     convenience public required init?(coder aDecoder: NSCoder) {
-        let connectionId = aDecoder.decodeObject(forKey: CodingKeys.connectionId.rawValue) as? String
-        let userId = aDecoder.decodeObject(forKey: CodingKeys.userId.rawValue) as? String
-        self.init(connectionId: connectionId, userId: userId)
+        self.init()
+        self.connectionId = aDecoder.decodeObject(forKey: CodingKeys.connectionId.rawValue) as? String
+        self.userId = aDecoder.decodeObject(forKey: CodingKeys.userId.rawValue) as? String
     }
     
     public func encode(with aCoder: NSCoder) {

@@ -1,9 +1,16 @@
 # RELEASE HISTORY
 
-### 0.0.7, / Nay, 28 2019
+### 0.0.7, / May, 28 2019
+* fixed bug in the CacheService methods when key contains spaces
+* fixed crashes in DataPermission when object is Dictionary
+* added the segmentQuery property to the DeliveryOptions
+* removed the device registration methods that don't take deviceToken as parameter
+* removed the `refreshDeviceToken` method
+* removed the unnecessary init methods
 * customized Serialization/Deserialization for next classes: ObjectProperty, BackendlessFileInfo, GeoCategory, BackendlessUser, UserProperty
 ```
 init(from decoder: Decoder) throws
+
 func encode(to encoder: Encoder) throws
 ```
 

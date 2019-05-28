@@ -43,15 +43,10 @@
         self.headers = ["ios-content-available": "1"]
     }
     
-    public init(publisherId: String?, _headers: JSON?) {
-        self.publisherId = publisherId
-        self._headers = _headers
-    }
-    
     convenience public required init?(coder aDecoder: NSCoder) {
-        let publisherId = aDecoder.decodeObject(forKey: CodingKeys.publisherId.rawValue) as? String
-        let _headers = aDecoder.decodeObject(forKey: CodingKeys._headers.rawValue) as? JSON
-        self.init(publisherId: publisherId, _headers: _headers)
+        self.init()
+        self.publisherId = aDecoder.decodeObject(forKey: CodingKeys.publisherId.rawValue) as? String
+        self._headers = aDecoder.decodeObject(forKey: CodingKeys._headers.rawValue) as? JSON
     }
     
     public func encode(with aCoder: NSCoder) {

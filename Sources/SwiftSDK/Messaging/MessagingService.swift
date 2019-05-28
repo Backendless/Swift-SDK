@@ -63,22 +63,6 @@
         return channel
     }
     
-    open func registerDevice(responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        registerDevice(deviceToken: nil, channels: [DEFAULT_CHANNEL_NAME], expirationDate: nil, responseHandler: responseHandler, errorHandler: errorHandler)
-    }
-    
-    open func registerDevice(channels: [String], responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        registerDevice(deviceToken: nil, channels: channels, expirationDate: nil, responseHandler: responseHandler, errorHandler: errorHandler)
-    }
-    
-    open func registerDevice(expiration: Date, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        registerDevice(deviceToken: nil, channels: [DEFAULT_CHANNEL_NAME], expirationDate: expiration, responseHandler: responseHandler, errorHandler: errorHandler)
-    }
-    
-    open func registerDevice(channels: [String], expiration: Date, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        registerDevice(deviceToken: nil, channels: channels, expirationDate: expiration, responseHandler: responseHandler, errorHandler: errorHandler)
-    }
-    
     open func registerDevice(deviceToken: Data, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         registerDevice(deviceToken: deviceToken, channels: [DEFAULT_CHANNEL_NAME], expirationDate: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
@@ -95,22 +79,9 @@
         registerDevice(deviceToken: deviceToken, channels: channels, expirationDate: expiration, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    func registerDevice(deviceToken: Data?, channels: [String], expirationDate: Date?, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        var token = deviceToken
-        if token == nil {
-            if let tokenData = userDefaultsHelper.getDeviceToken() {
-                token = tokenData
-            }
-            else {
-                errorHandler(Fault(message: "Device token not found", faultCode: 0))
-                return
-            }
-        }
-        userDefaultsHelper.saveDeviceToken(deviceToken: token!)
-        let deviceTokenString = token!.map { String(format: "%02.2hhx", $0) }.joined()
-        
+    func registerDevice(deviceToken: Data, channels: [String], expirationDate: Date?, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
-        var parameters = ["deviceToken": deviceTokenString, "channels": channels] as [String : Any]
+        var parameters = ["deviceToken": deviceToken.map { String(format: "%02.2hhx", $0) }.joined(), "channels": channels] as [String : Any]
         if let deviceId = deviceRegistration.deviceId {
             parameters["deviceId"] = deviceId
             keychainUtils.saveDeviceId(deviceId: deviceId)
@@ -226,30 +197,6 @@
             errorHandler(fault)
         })
     }
-    
-    open func refreshDeviceToken(newDeviceToken: Data, responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        let dataQueryBuilder = DataQueryBuilder()
-        dataQueryBuilder.setWhereClause(whereClause: String(format: "deviceId='%@'", deviceHelper.deviceId))
-        Backendless.shared.data.of(DeviceRegistration.self).find(queryBuilder: dataQueryBuilder, responseHandler: { deviceRegs in
-            if let deviceRegs = deviceRegs as? [DeviceRegistration] {
-                let group = DispatchGroup()                
-                for deviceReg in deviceRegs {
-                    deviceReg.deviceToken = newDeviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-                    group.enter()
-                    Backendless.shared.data.of(DeviceRegistration.self).update(entity: deviceReg, responseHandler: { updatedReg in
-                        group.leave()
-                    }, errorHandler: { fault in
-                        errorHandler(fault)
-                    })
-                }
-                group.notify(queue: OperationQueue.current!.underlyingQueue!, execute: {
-                    responseHandler(true)
-                })
-            }
-        }, errorHandler: { fault in
-            errorHandler(fault)
-        })
-    }
     #endif
     
     open func publish(channelName: String, message: Any, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
@@ -310,6 +257,9 @@
         }
         if let pushSinglecast = deliveryOptions?.getPushSinglecast(), pushSinglecast.count > 0 {
             parameters["pushSinglecast"] = pushSinglecast
+        }
+        if let segmentQuery = deliveryOptions?.segmentQuery {
+            parameters["segmentQuery"] = segmentQuery
         }
         BackendlessRequestManager(restMethod: "messaging/\(channelName)", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: MessageStatus.self) {
