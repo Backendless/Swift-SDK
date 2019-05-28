@@ -87,18 +87,4 @@ class UserDefaultsHelper: NSObject {
     func removeCurrentUser() {
         UserDefaults.standard.removeObject(forKey: CURRENT_USER_KEY)
     }
-    
-    func saveDeviceToken(deviceToken: Data) {
-        let userDefaults = UserDefaults.standard
-        userDefaults.setValue(deviceToken, forKey: DEVICE_TOKEN_KEY)
-        userDefaults.synchronize()
-    }
-    
-    func getDeviceToken() -> Data? {
-        let userDefaults = UserDefaults.standard
-        if let deviceToken = userDefaults.value(forKey: DEVICE_TOKEN_KEY) as? Data {
-            return deviceToken
-        }
-        return nil
-    }
 }

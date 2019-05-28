@@ -63,22 +63,6 @@
         return channel
     }
     
-    open func registerDevice(responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        registerDevice(deviceToken: nil, channels: [DEFAULT_CHANNEL_NAME], expirationDate: nil, responseHandler: responseHandler, errorHandler: errorHandler)
-    }
-    
-    open func registerDevice(channels: [String], responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        registerDevice(deviceToken: nil, channels: channels, expirationDate: nil, responseHandler: responseHandler, errorHandler: errorHandler)
-    }
-    
-    open func registerDevice(expiration: Date, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        registerDevice(deviceToken: nil, channels: [DEFAULT_CHANNEL_NAME], expirationDate: expiration, responseHandler: responseHandler, errorHandler: errorHandler)
-    }
-    
-    open func registerDevice(channels: [String], expiration: Date, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        registerDevice(deviceToken: nil, channels: channels, expirationDate: expiration, responseHandler: responseHandler, errorHandler: errorHandler)
-    }
-    
     open func registerDevice(deviceToken: Data, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         registerDevice(deviceToken: deviceToken, channels: [DEFAULT_CHANNEL_NAME], expirationDate: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
@@ -95,22 +79,9 @@
         registerDevice(deviceToken: deviceToken, channels: channels, expirationDate: expiration, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    func registerDevice(deviceToken: Data?, channels: [String], expirationDate: Date?, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        var token = deviceToken
-        if token == nil {
-            if let tokenData = userDefaultsHelper.getDeviceToken() {
-                token = tokenData
-            }
-            else {
-                errorHandler(Fault(message: "Device token not found", faultCode: 0))
-                return
-            }
-        }
-        userDefaultsHelper.saveDeviceToken(deviceToken: token!)
-        let deviceTokenString = token!.map { String(format: "%02.2hhx", $0) }.joined()
-        
+    func registerDevice(deviceToken: Data, channels: [String], expirationDate: Date?, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
-        var parameters = ["deviceToken": deviceTokenString, "channels": channels] as [String : Any]
+        var parameters = ["deviceToken": deviceToken.map { String(format: "%02.2hhx", $0) }.joined(), "channels": channels] as [String : Any]
         if let deviceId = deviceRegistration.deviceId {
             parameters["deviceId"] = deviceId
             keychainUtils.saveDeviceId(deviceId: deviceId)
