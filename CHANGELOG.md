@@ -2,6 +2,7 @@
 
 ### 0.0.7, / May, 28 2019
 * fixed bug in the CacheService methods when key contains spaces
+* fixed crashes in DataPermission when object is Dictionary
 * added the segmentQuery property to the DeliveryOptions
 * removed the device registration methods that don't take deviceToken as parameter
 * removed the `refreshDeviceToken` method
