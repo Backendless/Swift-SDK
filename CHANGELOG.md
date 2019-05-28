@@ -6,6 +6,8 @@
 init(from decoder: Decoder) throws
 func encode(to encoder: Encoder) throws
 ```
+* fixed bug in the CacheService methods when key contains spaces
+* added the segmentQuery property to the DeliveryOptions
 
 ### 0.0.6, / May, 21 2019
 * added functions to FileService:
