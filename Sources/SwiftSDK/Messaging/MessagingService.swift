@@ -311,6 +311,9 @@
         if let pushSinglecast = deliveryOptions?.getPushSinglecast(), pushSinglecast.count > 0 {
             parameters["pushSinglecast"] = pushSinglecast
         }
+        if let segmentQuery = deliveryOptions?.segmentQuery {
+            parameters["segmentQuery"] = segmentQuery
+        }
         BackendlessRequestManager(restMethod: "messaging/\(channelName)", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: MessageStatus.self) {
                 if result is Fault {

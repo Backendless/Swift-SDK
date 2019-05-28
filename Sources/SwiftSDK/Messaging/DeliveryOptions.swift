@@ -38,6 +38,7 @@
     
     open var publishAt: Date?
     open var repeatExpiresAt: Date?
+    open var segmentQuery: String?
 
     private var _repeatEvery: Int?
     open var repeatEvery: NSNumber? {
