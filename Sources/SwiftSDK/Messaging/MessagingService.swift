@@ -226,30 +226,6 @@
             errorHandler(fault)
         })
     }
-    
-    open func refreshDeviceToken(newDeviceToken: Data, responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        let dataQueryBuilder = DataQueryBuilder()
-        dataQueryBuilder.setWhereClause(whereClause: String(format: "deviceId='%@'", deviceHelper.deviceId))
-        Backendless.shared.data.of(DeviceRegistration.self).find(queryBuilder: dataQueryBuilder, responseHandler: { deviceRegs in
-            if let deviceRegs = deviceRegs as? [DeviceRegistration] {
-                let group = DispatchGroup()                
-                for deviceReg in deviceRegs {
-                    deviceReg.deviceToken = newDeviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-                    group.enter()
-                    Backendless.shared.data.of(DeviceRegistration.self).update(entity: deviceReg, responseHandler: { updatedReg in
-                        group.leave()
-                    }, errorHandler: { fault in
-                        errorHandler(fault)
-                    })
-                }
-                group.notify(queue: OperationQueue.current!.underlyingQueue!, execute: {
-                    responseHandler(true)
-                })
-            }
-        }, errorHandler: { fault in
-            errorHandler(fault)
-        })
-    }
     #endif
     
     open func publish(channelName: String, message: Any, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
