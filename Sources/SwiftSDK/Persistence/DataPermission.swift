@@ -95,9 +95,19 @@
         }
         if let roleName = roleName {
             parameters["role"] = roleName
-        } 
-        let tableName = persistenceServiceUtils.getTableName(entity: type(of: entity))        
+        }
+        
         if let objectId = persistenceServiceUtils.getObjectId(entity: entity) {
+            var tableName = ""
+            
+            if let entityDictionary = entity as? [String : Any],
+                let className = entityDictionary["___class"] as? String {
+                tableName = className
+            }
+            else {
+                tableName = persistenceServiceUtils.getTableName(entity: type(of: entity))
+            }
+            
             BackendlessRequestManager(restMethod: "data/\(tableName)/permissions/\(permissionType)/\(objectId)", httpMethod: .PUT, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
                 let result = self.processResponse.adapt(response: response, to: NoReply.self)
                 if result is Fault {
