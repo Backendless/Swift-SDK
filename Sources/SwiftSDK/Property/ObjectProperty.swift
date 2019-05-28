@@ -85,6 +85,35 @@
         aCoder.encode(isPrimaryKey, forKey: CodingKeys.isPrimaryKey.rawValue)
     }
     
+    required public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        name = try container.decodeIfPresent(String.self, forKey: .name) ?? ""
+        required = try container.decodeIfPresent(Bool.self, forKey: .required) ?? false
+
+        let rawType = try container.decodeIfPresent(String.self, forKey: .type)
+        type = DataTypeEnum(rawValue: rawType ?? "UNKNOWN") ?? .UNKNOWN
+
+        _defaultValue = try container.decodeIfPresent(JSON.self, forKey: ._defaultValue)
+        relatedTable = try container.decodeIfPresent(String.self, forKey: .relatedTable)
+        customRegex = try container.decodeIfPresent(String.self, forKey: .customRegex)
+        autoLoad = try container.decodeIfPresent(Bool.self, forKey: .autoLoad) ?? false
+        isPrimaryKey = try container.decodeIfPresent(Bool.self, forKey: .isPrimaryKey) ?? false
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encode(name, forKey: .name)
+        try container.encode(required, forKey: .required)
+        try container.encode(type.rawValue, forKey: .type)
+        try container.encodeIfPresent(_defaultValue, forKey: ._defaultValue)
+        try container.encodeIfPresent(relatedTable, forKey: .relatedTable)
+        try container.encodeIfPresent(customRegex, forKey: .customRegex)
+        try container.encode(autoLoad, forKey: .autoLoad)
+        try container.encode(isPrimaryKey, forKey: .isPrimaryKey)
+    }
+    
     open func getTypeName() -> String {
         return self.type.rawValue
     }
