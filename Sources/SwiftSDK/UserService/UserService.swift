@@ -207,6 +207,19 @@
         })
     }
     
+    open func resendEmailConfirmation(email: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        BackendlessRequestManager(restMethod: "users/resendconfirmation/\(email)", httpMethod: .POST, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = self.processResponse.adapt(response: response, to: NoReply.self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+            }
+            else {
+                responseHandler()
+            }
+        })
+    }
+    
     func setPersistentUser(currentUser: BackendlessUser) {
         self.currentUser = currentUser        
         savePersistentUser(currentUser: self.currentUser!)

@@ -47,7 +47,7 @@
         rtClient.removeEventListeners(type: rtClient.CONNECT_ERROR_EVENT)
     }
 
-    open func addDisonnectEventListener(responseHandler: ((String) -> Void)!) -> RTSubscription {
+    open func addDisсonnectEventListener(responseHandler: ((String) -> Void)!) -> RTSubscription {
         let wrappedBlock: (Any) -> () = { response in
             if let response = response as? String {
                 responseHandler(response)
