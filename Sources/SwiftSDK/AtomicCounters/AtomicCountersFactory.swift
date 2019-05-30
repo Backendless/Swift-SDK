@@ -54,7 +54,7 @@ class AtomicCountersFactory: IAtomic {
         Backendless.shared.counters.addAndGet(counterName: counterName, value: value, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func compareAndSet(expected: Int, updated: Int, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    open func compareAndSet(expected: Int, updated: Int, responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         Backendless.shared.counters.compareAndSet(counterName: counterName, expected: expected, updated: updated, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     

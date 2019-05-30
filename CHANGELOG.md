@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 0.0.8, / May, 30 2019
+* the AtomicCounters compareAndSet function returns Bool in response instead of Int
+
 ### 0.0.7, / May, 28 2019
 * fixed bug in the CacheService methods when key contains spaces
 * fixed crashes in DataPermission when object is Dictionary
