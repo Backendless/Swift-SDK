@@ -144,8 +144,7 @@ class CountersTests: XCTestCase {
     
     func test_09_conditionalUpdate() {
         let expectation = self.expectation(description: "PASSED: counters.conditionalUpdate")
-        backendless.counters.compareAndSet(counterName: counterName, expected: 0, updated: 20, responseHandler: { counterValue in
-            XCTAssertEqual(counterValue, 0)
+        backendless.counters.compareAndSet(counterName: counterName, expected: 0, updated: 20, responseHandler: { compared in
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
