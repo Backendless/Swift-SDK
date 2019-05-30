@@ -1,5 +1,12 @@
 # RELEASE HISTORY
 
+### 0.0.8, / May, 30 2019
+* the AtomicCounters compareAndSet function fixed to return Bool in response instead of Int
+* added function to UserService:
+```
+func resendEmailConfirmation(email: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!)
+```
+
 ### 0.0.7, / May, 28 2019
 * fixed bug in the CacheService methods when key contains spaces
 * fixed crashes in DataPermission when object is Dictionary

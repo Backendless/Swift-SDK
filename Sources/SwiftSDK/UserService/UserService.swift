@@ -97,6 +97,18 @@
     
     open func loginWithTwitter(authToken: String, authTokenSecret: String, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         // TODO
+        /*let headers = ["Content-Type": "application/json"]
+        let parameters = ["accessToken": authToken, "accessTokenSecret": authTokenSecret, "fieldsMapping": fieldsMapping] as [String : Any]
+        BackendlessRequestManager(restMethod: "users/social/twitter/sdk/login", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+            if let result = self.processResponse.adapt(response: response, to: BackendlessUser.self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else {
+                    responseHandler(result as! BackendlessUser)
+                }
+            }
+        })*/
     }
     
     open func loginWithGoogleSDK(accessToken: String, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
@@ -192,6 +204,19 @@
                 else {
                     responseHandler(result as! [String])
                 }
+            }
+        })
+    }
+    
+    open func resendEmailConfirmation(email: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        BackendlessRequestManager(restMethod: "users/resendconfirmation/\(email)", httpMethod: .POST, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = self.processResponse.adapt(response: response, to: NoReply.self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+            }
+            else {
+                responseHandler()
             }
         })
     }

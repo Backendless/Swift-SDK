@@ -26,7 +26,7 @@
     func decrementAndGet(responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
     func getAndAdd(value: Int, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
     func addAndGet(value: Int, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
-    func compareAndSet(expected: Int, updated: Int, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
+    func compareAndSet(expected: Int, updated: Int, responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!)
     func get(responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
     func reset(responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!)
 }
