@@ -2,7 +2,7 @@
 
 ### 0.0.8, / May, 30 2019
 * the AtomicCounters compareAndSet function fixed to return Bool in response instead of Int
-* added functions to UserService:
+* added function to UserService:
 ```
 func resendEmailConfirmation(email: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!)
 ```
