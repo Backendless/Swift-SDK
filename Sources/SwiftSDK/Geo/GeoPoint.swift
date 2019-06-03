@@ -71,7 +71,7 @@
         self._metadata = JSON(metadata)
     }
     
-    init(objectId: String, latitude: Double, longitude: Double, categories: [String], metadata: JSON?) {
+    init(objectId: String?, latitude: Double, longitude: Double, categories: [String], metadata: JSON?) {
         self.objectId = objectId
         self.latitude = latitude
         self.longitude = longitude
@@ -89,7 +89,6 @@
     }
     
     required public override init() {
-        self.objectId = ""
         self.latitude = 0.0
         self.longitude = 0.0
         self.categories = ["Default"]

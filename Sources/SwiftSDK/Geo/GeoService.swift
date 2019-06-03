@@ -28,7 +28,8 @@
         let headers = ["Content-Type": "application/json"]
         let parameters = ["latitude": geoPoint.latitude, "longitude": geoPoint.longitude, "categories": geoPoint.categories as Any, "metadata": geoPoint.metadata as Any] as [String : Any]
     
-        if let objectId = geoPoint.objectId { // update
+        // update
+        if let objectId = geoPoint.objectId {
             BackendlessRequestManager(restMethod: "geo/points/\(objectId)", httpMethod: .PUT, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
                 if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                     if result is Fault {
@@ -41,7 +42,8 @@
                 }
             })
         }
-        else { // save
+        // save
+        else {
             BackendlessRequestManager(restMethod: "geo/points", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
                 if let result = self.processResponse.adapt(response: response, to: [String: GeoPoint].self) {
                     if result is Fault {
