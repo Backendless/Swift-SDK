@@ -31,7 +31,8 @@
         }
     }
     open var name: String?
-    open private(set) var objectId: String
+    
+    open private(set) var objectId: String?
     open private(set) var userToken: String?
     
     var _password: String?
@@ -45,7 +46,7 @@
         case userToken
     }
     
-    init(email: String, name: String?, objectId: String, userToken: String?) {
+    init(email: String, name: String?, objectId: String?, userToken: String?) {
         self.email = email
         self.name = name
         self.objectId = objectId
@@ -54,14 +55,13 @@
     convenience required public init?(coder aDecoder: NSCoder) {
         let email = aDecoder.decodeObject(forKey: CodingKeys.email.rawValue) as! String
         let name = aDecoder.decodeObject(forKey: CodingKeys.name.rawValue) as? String
-        let objectId = aDecoder.decodeObject(forKey: CodingKeys.objectId.rawValue) as! String
+        let objectId = aDecoder.decodeObject(forKey: CodingKeys.objectId.rawValue) as? String
         let userToken = aDecoder.decodeObject(forKey: CodingKeys.userToken.rawValue) as? String
         self.init(email: email, name: name, objectId: objectId, userToken: userToken)
     }
     
     required public override init() {
         self.email = ""
-        self.objectId = ""
     }
     
     public func encode(with aCoder: NSCoder) {

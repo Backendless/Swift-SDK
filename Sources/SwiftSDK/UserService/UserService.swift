@@ -150,16 +150,18 @@
     open func update(user: BackendlessUser, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = user.getProperties()
-        BackendlessRequestManager(restMethod: "users/\(user.objectId)", httpMethod: .PUT, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: BackendlessUser.self) {
-                if result is Fault {
-                    errorHandler(result as! Fault)
+        if let userId = user.objectId {
+            BackendlessRequestManager(restMethod: "users/\(userId)", httpMethod: .PUT, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+                if let result = self.processResponse.adapt(response: response, to: BackendlessUser.self) {
+                    if result is Fault {
+                        errorHandler(result as! Fault)
+                    }
+                    else {
+                        responseHandler(result as! BackendlessUser)
+                    }
                 }
-                else {
-                    responseHandler(result as! BackendlessUser)
-                }
-            }
-        })
+            })
+        }
     }
     
     open func getCurrentUser() -> BackendlessUser? {
