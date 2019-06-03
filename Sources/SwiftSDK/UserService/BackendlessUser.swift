@@ -76,7 +76,7 @@
         
         email = try container.decodeIfPresent(String.self, forKey: .email) ?? ""
         name = try container.decodeIfPresent(String.self, forKey: .name)
-        objectId = try container.decode(String.self, forKey: .objectId)
+        objectId = try container.decodeIfPresent(String.self, forKey: .objectId)
         userToken = try container.decodeIfPresent(String.self, forKey: .userToken)
     }
     
