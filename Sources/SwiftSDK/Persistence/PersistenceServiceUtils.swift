@@ -467,7 +467,9 @@ class PersistenceServiceUtils: NSObject {
     func dictionaryToEntity(dictionary: [String: Any], className: String) -> Any? {
         if tableName == "Users" || className == "Users",
             let backendlessUser = processResponse.adaptToBackendlessUser(responseResult: dictionary) as? BackendlessUser {
-            storedObjects.rememberObjectId(objectId: backendlessUser.objectId, forObject: backendlessUser)
+            if let userId = backendlessUser.objectId {
+                storedObjects.rememberObjectId(objectId: userId, forObject: backendlessUser)
+            }
             return backendlessUser
         }
         if tableName == "DeviceRegistration" || className == "DeviceRegistration" {
