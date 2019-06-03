@@ -30,9 +30,21 @@
 @objcMembers open class BackendlessGeoQuery: NSObject, NSCoding, Codable {
     
     open var geoPoint: GeoPoint?
-    open var radius: Double?
     open var categories: [String]?
     open var includemetadata = false
+    
+    private var _radius: Double?
+    open var radius: NSNumber? {
+        get {
+            if let _radius = _radius {
+                return NSNumber(floatLiteral: _radius)
+            }
+            return nil
+        }
+        set(newRadius) {
+            _radius = newRadius?.doubleValue
+        }
+    }
     
     private var _metadata: JSON?
     open var metadata: [String : Any]? {
@@ -58,7 +70,7 @@
     
     enum CodingKeys: String, CodingKey {
         case geoPoint
-        case radius
+        case _radius = "radius"
         case categories
         case includemetadata
         case _metadata = "metadata"
@@ -75,7 +87,7 @@
     convenience public required init?(coder aDecoder: NSCoder) {
         self.init()
         self.geoPoint = aDecoder.decodeObject(forKey: CodingKeys.geoPoint.rawValue) as? GeoPoint
-        self.radius = aDecoder.decodeDouble(forKey: CodingKeys.radius.rawValue)
+        self._radius = aDecoder.decodeDouble(forKey: CodingKeys._radius.rawValue)
         self.categories = aDecoder.decodeObject(forKey: CodingKeys.categories.rawValue) as? [String]
         self.includemetadata = aDecoder.decodeBool(forKey: CodingKeys.includemetadata.rawValue)
         self._metadata = aDecoder.decodeObject(forKey: CodingKeys._metadata.rawValue) as? JSON
@@ -89,7 +101,7 @@
     
     public func encode(with aCoder: NSCoder) {
         aCoder.encode(geoPoint, forKey: CodingKeys.geoPoint.rawValue)
-        aCoder.encode(radius, forKey: CodingKeys.radius.rawValue)
+        aCoder.encode(_radius, forKey: CodingKeys._radius.rawValue)
         aCoder.encode(categories, forKey: CodingKeys.categories.rawValue)
         aCoder.encode(includemetadata, forKey: CodingKeys.includemetadata.rawValue)
         aCoder.encode(_metadata, forKey: CodingKeys._metadata.rawValue)
