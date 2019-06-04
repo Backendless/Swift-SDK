@@ -95,11 +95,10 @@
         })
     }
     
-    open func loginWithTwitter(authToken: String, authTokenSecret: String, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        // TODO
-        /*let headers = ["Content-Type": "application/json"]
+    open func loginWithTwitter(authToken: String, authTokenSecret: String, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {        
+        let headers = ["Content-Type": "application/json"]
         let parameters = ["accessToken": authToken, "accessTokenSecret": authTokenSecret, "fieldsMapping": fieldsMapping] as [String : Any]
-        BackendlessRequestManager(restMethod: "users/social/twitter/sdk/login", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+        BackendlessRequestManager(restMethod: "users/social/twitter/login", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: BackendlessUser.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
@@ -108,10 +107,10 @@
                     responseHandler(result as! BackendlessUser)
                 }
             }
-        })*/
+        })
     }
     
-    open func loginWithGoogleSDK(accessToken: String, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    open func loginWithGoogle(accessToken: String, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = ["accessToken": accessToken, "fieldsMapping": fieldsMapping] as [String : Any]
         BackendlessRequestManager(restMethod: "users/social/googleplus/login", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
@@ -150,16 +149,18 @@
     open func update(user: BackendlessUser, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = user.getProperties()
-        BackendlessRequestManager(restMethod: "users/\(user.objectId)", httpMethod: .PUT, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: BackendlessUser.self) {
-                if result is Fault {
-                    errorHandler(result as! Fault)
+        if let userId = user.objectId {
+            BackendlessRequestManager(restMethod: "users/\(userId)", httpMethod: .PUT, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+                if let result = self.processResponse.adapt(response: response, to: BackendlessUser.self) {
+                    if result is Fault {
+                        errorHandler(result as! Fault)
+                    }
+                    else {
+                        responseHandler(result as! BackendlessUser)
+                    }
                 }
-                else {
-                    responseHandler(result as! BackendlessUser)
-                }
-            }
-        })
+            })
+        }
     }
     
     open func getCurrentUser() -> BackendlessUser? {

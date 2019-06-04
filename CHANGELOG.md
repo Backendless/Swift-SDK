@@ -1,9 +1,11 @@
 # RELEASE HISTORY
 
-### 0.0.8, / May, 30 2019
+### 0.0.8, / June, 4 2019
 * the AtomicCounters compareAndSet function fixed to return Bool in response instead of Int
-* added function to UserService:
+* added functions to UserService:
 ```
+func loginWithTwitter(authToken: String, authTokenSecret: String, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!)
+
 func resendEmailConfirmation(email: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!)
 ```
 
