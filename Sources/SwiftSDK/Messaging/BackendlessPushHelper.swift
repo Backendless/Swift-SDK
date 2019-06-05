@@ -139,6 +139,15 @@ import UserNotifications
                 content.userInfo = userInfo
             }
             
+            if #available(iOS 12.0, *) {
+                if let threadId = iosPushTemplate["threadId"] as? String {
+                    content.threadIdentifier = threadId
+                }
+                if let summaryFormat = iosPushTemplate["summaryFormat"] as? String {
+                    content.summaryArgument = summaryFormat
+                }
+            }
+            
             if let sound = request.content.sound {
                 content.sound = sound
             }
