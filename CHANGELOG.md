@@ -8,6 +8,7 @@ func sendEmails(templateName: String, envelope: IEmailEnvelope, responseHandler:
 
 func sendEmails(templateName: String, templateValues: [String : String], envelope: IEmailEnvelope, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!)
 ```
+* added groups support for push notifications (for iOS 12+)
 
 ### 0.0.8, / June, 4 2019
 * the AtomicCounters compareAndSet function fixed to return Bool in response instead of Int
