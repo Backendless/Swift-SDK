@@ -98,7 +98,11 @@
         var userProperties = [String: Any]()
         for (propertyName, propertyValue) in properties.dictionaryObject! {
             userProperties[propertyName] = propertyValue
-        }        
+        }
+        userProperties["name"] = name
+        userProperties["email"] = email
+        userProperties["objectId"] = objectId
+        userProperties["userToken"] = userToken
         return userProperties
     }
     
@@ -137,20 +141,27 @@
     }
     
     open func updateProperty(propertyName: String, propertyValue: Any) {
-        var userProperties = getProperties()
-        if userProperties.keys.contains(propertyName) {
-            userProperties[propertyName] = propertyValue
+        
+        if propertyName == "email", propertyValue is String {
+            email = propertyValue as! String
         }
-        self.properties = JSON(userProperties)
+        else if propertyName == "name" {
+            name = propertyValue as? String
+        }
+        else {
+            var userProperties = getProperties()
+            if userProperties.keys.contains(propertyName) {
+                userProperties[propertyName] = propertyValue
+            }
+            self.properties = JSON(userProperties)
+        }   
     }
     
     open func updateProperties(propertiesToUpdate: [String: Any]) {
-        var userProperties = getProperties()
         for propertyName in propertiesToUpdate.keys {
-            if userProperties.keys.contains(propertyName) {
-                userProperties[propertyName] = propertiesToUpdate[propertyName]
+            if let propertyValue = propertiesToUpdate[propertyName] {
+                updateProperty(propertyName: propertyName, propertyValue: propertyValue)
             }
-            self.properties = JSON(userProperties)
         }
     }
     

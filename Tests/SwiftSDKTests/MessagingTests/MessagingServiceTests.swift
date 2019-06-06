@@ -139,5 +139,4 @@ class MessagingServiceTests: XCTestCase {
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
-    
 }

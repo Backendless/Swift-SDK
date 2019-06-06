@@ -1,5 +1,15 @@
 # RELEASE HISTORY
 
+### 0.0.9, / June, ? 2019
+* added IEmailEnvelope protocol, EmailEnvelope, EnvelopeWithRecepients and EnvelopeWithQuery classes
+* added functions to MessagingService:
+```
+func sendEmails(templateName: String, envelope: IEmailEnvelope, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!)
+
+func sendEmails(templateName: String, templateValues: [String : String], envelope: IEmailEnvelope, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!)
+```
+* added groups support for push notifications (for iOS 12+)
+
 ### 0.0.8, / June, 4 2019
 * the AtomicCounters compareAndSet function fixed to return Bool in response instead of Int
 * added functions to UserService:

@@ -98,6 +98,8 @@ import UserNotifications
     func createRequestFromTemplate(iosPushTemplate: [String : Any], request: UNNotificationRequest) -> UNNotificationRequest {        
         let content = UNMutableNotificationContent()
         var userInfo = [String : Any]()
+        var aps = [String : Any]()
+        var apsAlert = [String : Any]()
         
         // check if push is silent
         if let contentAvailable = iosPushTemplate["contentAvailable"] as? NSNumber, contentAvailable == 1 {
@@ -105,26 +107,56 @@ import UserNotifications
         else {
             if let body = request.content.userInfo["message"] as? String {
                 content.body = body
+                apsAlert["body"] = body
             }
             else if let aps = request.content.userInfo["aps"] as? [String : Any],
-                let alert = aps["alert"] as? [String : Any] {
-                if let body = alert["body"] as? String {
-                    content.body = body
-                }
+                let alert = aps["alert"] as? [String : Any],
+                let body = alert["body"] as? String {
+                content.body = body
+                apsAlert["body"] = body
             }
             
             if let title = request.content.userInfo["ios-alert-title"] as? String {
                 content.title = title
+                apsAlert["title"] = title
             }
             else if let title = iosPushTemplate["alertTitle"] as? String {
                 content.title = title
+                apsAlert["title"] = title
             }
             
             if let subtitle = request.content.userInfo["ios-alert-subtitle"] as? String {
                 content.subtitle = subtitle
+                apsAlert["subtitle"] = subtitle
             }
             else if let subtitle = iosPushTemplate["alertSubtitle"] as? String {
                 content.subtitle = subtitle
+                apsAlert["subtitle"] = subtitle
+            }
+            aps["alert"] = apsAlert
+            
+            if let sound = iosPushTemplate["sound"] as? String {
+                content.sound = UNNotificationSound(named: UNNotificationSoundName(sound))
+                aps["sound"] = sound
+            }
+            else {
+                content.sound = UNNotificationSound.default
+                aps["sound"] = "default"
+            }
+            
+            if let badge = request.content.badge {
+                content.badge = badge
+                aps["badge"] = badge
+            }
+            else if let badge = iosPushTemplate["badge"] as? NSNumber {
+                content.badge = badge
+                aps["badge"] = badge
+            }
+            
+            userInfo["aps"] = aps
+
+            if let attachmentUrl = iosPushTemplate["attachmentUrl"] as? String {
+                userInfo["attachment-url"] = attachmentUrl
             }
             
             if let headers = iosPushTemplate["customHeaders"] as? [String : Any] {
@@ -136,32 +168,26 @@ import UserNotifications
                         userInfo[key] = headers[key]
                     }
                 }
-                content.userInfo = userInfo
             }
             
-            if let sound = request.content.sound {
-                content.sound = sound
-            }
-            else {
-                content.sound = UNNotificationSound.default
-            }
-            
-            if let badge = request.content.badge {
-                content.badge = badge
-            }
-            else if let badge = iosPushTemplate["badge"] as? NSNumber {
-                content.badge = badge
-            }
-            
-            if let attachmentUrl = iosPushTemplate["attachmentUrl"] as? String {
-                userInfo["attachment-url"] = attachmentUrl
-                content.userInfo = userInfo
-            }
-            
-            if let actions = iosPushTemplate["actions"] as? [[String : Any]] {
-                content.categoryIdentifier = setActions(actions: actions)
+            if #available(iOS 12.0, *) {
+                if let threadId = iosPushTemplate["threadId"] as? String {
+                    content.threadIdentifier = threadId
+                    userInfo["thread-id"] = threadId
+                }
+                if let summaryArgument = iosPushTemplate["summaryFormat"] as? String {
+                    content.summaryArgument = summaryArgument
+                    userInfo["summary-arg"] = summaryArgument
+                }
             }
         }
+        
+        content.userInfo = userInfo
+        
+        if let actions = iosPushTemplate["actions"] as? [[String : Any]] {
+            content.categoryIdentifier = setActions(actions: actions)
+        }  
+        
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0.1, repeats: false)
         return UNNotificationRequest(identifier: "request", content: content, trigger: trigger)
     }
@@ -177,13 +203,11 @@ import UserNotifications
                 
                 if let inlineReply = action["inlineReply"] as? Bool,
                     inlineReply == true {
-                    
                     var textInputButtonTitle = "Send"
                     if let buttonTitle = action["inputButtonTitle"] as? String,
                         buttonTitle.count > 0 {
                         textInputButtonTitle = buttonTitle
                     }
-                    
                     var textInputPlaceholder = "Input text here..."
                     if let inputPlaceHolder = action["textInputPlaceholder"] as? String,
                         inputPlaceHolder.count > 0 {
