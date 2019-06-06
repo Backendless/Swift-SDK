@@ -25,12 +25,7 @@ class FileManagerHelper: NSObject {
     
     static let shared = FileManagerHelper()
     
-    private var PUSH_TEMPLATES_FILE_NAME: String!
-    
-    private override init() {
-        let appId = Backendless.shared.getApplictionId().replacingOccurrences(of: "-", with: "")
-        PUSH_TEMPLATES_FILE_NAME = "pushTemplates" + appId.dropLast(10)
-    }
+    private var PUSH_TEMPLATES_FILE_NAME = "pushTemplates"
     
     private func getAppGroup() -> String? {
         if let projectName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String,
