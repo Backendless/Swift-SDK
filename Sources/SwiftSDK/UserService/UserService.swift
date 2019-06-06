@@ -50,7 +50,14 @@
     
     open func registerUser(user: BackendlessUser, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
-        let parameters = ["email": user.email, "password": user._password, "name": user.name]
+        var parameters = [String : Any]()
+        let userProperties = user.getProperties()
+        for key in Array(userProperties.keys) {
+            parameters[key] = userProperties[key]
+        }
+        parameters["email"] = user.email
+        parameters["password"] = user._password
+        parameters["name"] = user.name        
         BackendlessRequestManager(restMethod: "users/register", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: BackendlessUser.self) {
                 if result is Fault {

@@ -98,7 +98,11 @@
         var userProperties = [String: Any]()
         for (propertyName, propertyValue) in properties.dictionaryObject! {
             userProperties[propertyName] = propertyValue
-        }        
+        }
+        userProperties["name"] = name
+        userProperties["email"] = email
+        userProperties["objectId"] = objectId
+        userProperties["userToken"] = userToken
         return userProperties
     }
     
