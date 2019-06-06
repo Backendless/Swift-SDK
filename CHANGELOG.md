@@ -1,6 +1,6 @@
 # RELEASE HISTORY
 
-### 0.0.9, / June, ? 2019
+### 0.0.9, / June, 6 2019
 * added IEmailEnvelope protocol, EmailEnvelope, EnvelopeWithRecepients and EnvelopeWithQuery classes
 * added functions to MessagingService:
 ```
