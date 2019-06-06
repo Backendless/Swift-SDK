@@ -170,10 +170,6 @@ import UserNotifications
                 }
             }
             
-            if let actions = iosPushTemplate["actions"] as? [[String : Any]] {
-                content.categoryIdentifier = setActions(actions: actions)
-            }           
-            
             if #available(iOS 12.0, *) {
                 if let threadId = iosPushTemplate["threadId"] as? String {
                     content.threadIdentifier = threadId
@@ -187,6 +183,10 @@ import UserNotifications
         }
         
         content.userInfo = userInfo
+        
+        if let actions = iosPushTemplate["actions"] as? [[String : Any]] {
+            content.categoryIdentifier = setActions(actions: actions)
+        }  
         
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0.1, repeats: false)
         return UNNotificationRequest(identifier: "request", content: content, trigger: trigger)
