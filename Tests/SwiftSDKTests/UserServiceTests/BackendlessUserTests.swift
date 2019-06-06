@@ -38,9 +38,6 @@ class BackendlessUserTests: XCTestCase {
         user.setProperties(properties: ["foo": "bar", "foo1": "bar1"])
         XCTAssertNotNil(user.getProperty(propertyName: "foo"))
         XCTAssertNotNil(user.getProperty(propertyName: "foo1"))
-        XCTAssertTrue(user.getProperty(propertyName: "name") is NSNull)
-        XCTAssertTrue(user.getProperty(propertyName: "age") is NSNull)
-        XCTAssertTrue(user.getProperty(propertyName: "city") is NSNull)
     }
     
     func test_02_getProperty() {
