@@ -41,6 +41,7 @@
     
     enum CodingKeys: String, CodingKey {
         case email
+        case _password = "password"
         case name
         case objectId
         case userToken

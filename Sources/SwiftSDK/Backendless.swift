@@ -33,6 +33,9 @@
     open func initApp(applicationId: String, apiKey: String) {
         self.applicationId = applicationId
         self.apiKey = apiKey
+        
+        // mappings for updating objects correctly
+        self.data.of(BackendlessUser.self).mapColumn(columnName: "password", toProperty: "_password")
     }
     
     open func getApplictionId() -> String {
