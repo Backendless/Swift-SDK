@@ -156,7 +156,14 @@
     open func update(user: BackendlessUser, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = user.getProperties()
-        if let userId = user.objectId {
+        var userId = String()        
+        if let userObjectId = user.objectId {
+            userId = userObjectId
+        }
+        else if let userObjectId = user.getProperty(propertyName: "objectId") as? String {
+            userId = userObjectId
+        }
+        if !userId.isEmpty {
             BackendlessRequestManager(restMethod: "users/\(userId)", httpMethod: .PUT, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
                 if let result = self.processResponse.adapt(response: response, to: BackendlessUser.self) {
                     if result is Fault {
