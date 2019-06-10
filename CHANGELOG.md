@@ -4,7 +4,7 @@
 * fixed password issue when updating the BackendlessUser object
 * fixed Date type issue when retrieving object or registering BackendlessUser with custom Date field
 
-### 0.0.9, / June, ? 2019
+### 0.0.9, / June, 6 2019
 * added IEmailEnvelope protocol, EmailEnvelope, EnvelopeWithRecepients and EnvelopeWithQuery classes
 * added functions to MessagingService:
 ```
