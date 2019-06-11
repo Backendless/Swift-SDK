@@ -182,15 +182,27 @@
     }
     
     open func getPoints(responseHandler: (([GeoPoint]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        getGeoPoints(geoQuery: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+        getGeoPoints(geoFenceName: nil, geoQuery: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     open func getPoints(geoQuery: BackendlessGeoQuery, responseHandler: (([GeoPoint]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        getGeoPoints(geoQuery: geoQuery, responseHandler: responseHandler, errorHandler: errorHandler)
+        getGeoPoints(geoFenceName: nil, geoQuery: geoQuery, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    private func getGeoPoints(geoQuery: BackendlessGeoQuery?, responseHandler: (([GeoPoint]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        let restMethod = createRestMethod(restMethod: "geo/points?", geoQuery: geoQuery)
+    open func getPoints(geoFenceName: String, responseHandler: (([GeoPoint]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        getGeoPoints(geoFenceName: geoFenceName, geoQuery: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    open func getPoints(geoFenceName: String, geoQuery: BackendlessGeoQuery, responseHandler: (([GeoPoint]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        getGeoPoints(geoFenceName: geoFenceName, geoQuery: geoQuery, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    private func getGeoPoints(geoFenceName: String?, geoQuery: BackendlessGeoQuery?, responseHandler: (([GeoPoint]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        var method = "geo/points?"
+        if let geoFenceName = geoFenceName {
+            method += "geoFence=\(dataTypesUtils.stringToUrlString(originalString: geoFenceName))"
+        }
+        let restMethod = createRestMethod(restMethod: method, geoQuery: geoQuery)
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: [JSON].self) {
                 if result is Fault {
