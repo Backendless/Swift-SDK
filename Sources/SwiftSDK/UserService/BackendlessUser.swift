@@ -41,10 +41,10 @@
     
     enum CodingKeys: String, CodingKey {
         case email
-        case _password = "password"
         case name
         case objectId
         case userToken
+        case _password = "password"
     }
     
     init(email: String, name: String?, objectId: String?, userToken: String?) {
@@ -74,20 +74,20 @@
     
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
         email = try container.decodeIfPresent(String.self, forKey: .email) ?? ""
         name = try container.decodeIfPresent(String.self, forKey: .name)
         objectId = try container.decodeIfPresent(String.self, forKey: .objectId)
         userToken = try container.decodeIfPresent(String.self, forKey: .userToken)
+        _password = try container.decodeIfPresent(String.self, forKey: ._password)
     }
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        
         try container.encode(email, forKey: .email)
         try container.encodeIfPresent(name, forKey: .name)
         try container.encode(objectId, forKey: .objectId)
         try container.encodeIfPresent(userToken, forKey: .userToken)
+        try container.encodeIfPresent(_password, forKey: ._password)
     }
     
     open func getProperty(propertyName: String) -> Any? {
