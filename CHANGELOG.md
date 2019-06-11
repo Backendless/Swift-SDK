@@ -12,12 +12,6 @@ func pushWithTemplate(templateName: String, templateValues: [String : Any], resp
 ```
 func sendCommand(commandType: String, data: Any?, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!)
 ```
-* added methods for GeoService:
-```
-func getPoints(geoFenceName: String, responseHandler: (([GeoPoint]) -> Void)!, errorHandler: ((Fault) -> Void)!)
-
-func getPoints(geoFenceName: String, geoQuery: BackendlessGeoQuery, responseHandler: (([GeoPoint]) -> Void)!, errorHandler: ((Fault) -> Void)!)
-```
 
 ### 0.0.9, / June, 6 2019
 * added IEmailEnvelope protocol, EmailEnvelope, EnvelopeWithRecepients and EnvelopeWithQuery classes
