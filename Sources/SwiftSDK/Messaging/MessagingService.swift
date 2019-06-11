@@ -300,7 +300,13 @@
     }
     
     open func pushWithTemplate(templateName: String, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        BackendlessRequestManager(restMethod: "messaging/push/\(templateName)", httpMethod: .POST, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+        pushWithTemplate(templateName: templateName, templateValues: [String : Any](), responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    open func pushWithTemplate(templateName: String, templateValues: [String : Any], responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        let headers = ["Content-Type": "application/json"]
+        let parameters = ["templateValues": templateValues]
+        BackendlessRequestManager(restMethod: "messaging/push/\(templateName)", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: MessageStatus.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
