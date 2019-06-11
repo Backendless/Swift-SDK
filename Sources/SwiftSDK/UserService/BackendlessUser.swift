@@ -97,7 +97,6 @@
     
     open func getProperties() -> [String: Any] {
         var userProperties = [String: Any]()
-        
         for (propertyName, propertyValue) in properties.dictionaryObject! {
           userProperties[propertyName] = propertyValue
         }
@@ -116,39 +115,21 @@
         return userProperties
     }
     
-    open func setProperties(properties: [String: Any]) {
-        var userProperties = getProperties()
-        for newProperty in properties {
-            userProperties[newProperty.key] = properties[newProperty.key]
+    open func setProperty(propertyName: String, propertyValue: Any) {
+        if propertyName == "name", propertyValue is String {
+            self.name = propertyValue as? String
         }
+        else if propertyName == "email", propertyValue is String {
+            self.email = propertyValue as! String
+        }
+        var userProperties = getProperties()
+        userProperties[propertyName] = propertyValue
         self.properties = JSON(userProperties)
     }
     
-    open func setProperty(propertyName: String, propertyValue: Any) {
-        setProperties(properties: [propertyName: propertyValue])
-    }
-    
-    open func updateProperty(propertyName: String, propertyValue: Any) {
-        if propertyName == "email", propertyValue is String {
-            email = propertyValue as! String
-        }
-        else if propertyName == "name" {
-            name = propertyValue as? String
-        }
-        else {
-            var userProperties = getProperties()
-            if userProperties.keys.contains(propertyName) {
-                userProperties[propertyName] = propertyValue
-            }
-            self.properties = JSON(userProperties)
-        }   
-    }
-    
-    open func updateProperties(propertiesToUpdate: [String: Any]) {
-        for propertyName in propertiesToUpdate.keys {
-            if let propertyValue = propertiesToUpdate[propertyName] {
-                updateProperty(propertyName: propertyName, propertyValue: propertyValue)
-            }
+    open func setProperties(properties: [String: Any]) {
+        for property in properties {
+            setProperty(propertyName: property.key, propertyValue: property.value)
         }
     }
     
