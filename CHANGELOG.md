@@ -1,6 +1,6 @@
 # RELEASE HISTORY
 
-### 0.0.10, / ?, ? 2019
+### 0.0.10, / June, 12 2019
 * fixed password issue when updating the BackendlessUser object
 * fixed Date type issue when retrieving object or registering BackendlessUser with custom Date field
 * fixed the BackendlessUser properties methods
