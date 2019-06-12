@@ -65,6 +65,14 @@ class BackendlessRequestManager: NSObject {
                     request.httpBody = (parameters as! String).data(using: .utf8)
                 }
                 else {
+                    if var params = parameters as? [String : Any] {
+                        for key in Array(params.keys) {
+                            if let dateParam = params[key] as? Date {
+                                params[key] = dateParam.timeIntervalSince1970
+                            }
+                        }
+                        parameters = params
+                    }
                     request.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
                 }
             }                

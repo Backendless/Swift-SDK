@@ -44,6 +44,7 @@
         case name
         case objectId
         case userToken
+        case _password = "password"
     }
     
     init(email: String, name: String?, objectId: String?, userToken: String?) {
@@ -73,20 +74,20 @@
     
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
         email = try container.decodeIfPresent(String.self, forKey: .email) ?? ""
         name = try container.decodeIfPresent(String.self, forKey: .name)
         objectId = try container.decodeIfPresent(String.self, forKey: .objectId)
         userToken = try container.decodeIfPresent(String.self, forKey: .userToken)
+        _password = try container.decodeIfPresent(String.self, forKey: ._password)
     }
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        
         try container.encode(email, forKey: .email)
         try container.encodeIfPresent(name, forKey: .name)
         try container.encode(objectId, forKey: .objectId)
         try container.encodeIfPresent(userToken, forKey: .userToken)
+        try container.encodeIfPresent(_password, forKey: ._password)
     }
     
     open func getProperty(propertyName: String) -> Any? {
@@ -97,71 +98,38 @@
     open func getProperties() -> [String: Any] {
         var userProperties = [String: Any]()
         for (propertyName, propertyValue) in properties.dictionaryObject! {
-            userProperties[propertyName] = propertyValue
+          userProperties[propertyName] = propertyValue
         }
-        userProperties["name"] = name
-        userProperties["email"] = email
-        userProperties["objectId"] = objectId
-        userProperties["userToken"] = userToken
+        if let name = self.name {
+            userProperties["name"] = name
+        }
+        if !self.email.isEmpty {
+            userProperties["email"] = email
+        }        
+        if let objectId = self.objectId {
+            userProperties["objectId"] = objectId
+        }
+        if let userToken = self.userToken {
+            userProperties["userToken"] = userToken
+        }
         return userProperties
     }
     
+    open func setProperty(propertyName: String, propertyValue: Any) {
+        if propertyName == "name", propertyValue is String {
+            self.name = propertyValue as? String
+        }
+        else if propertyName == "email", propertyValue is String {
+            self.email = propertyValue as! String
+        }
+        var userProperties = getProperties()
+        userProperties[propertyName] = propertyValue
+        self.properties = JSON(userProperties)
+    }
+    
     open func setProperties(properties: [String: Any]) {
-        var userProperties = getProperties()
-        for propertyName in userProperties.keys {
-            if propertyName != "ownerId", propertyName != "socialAccount", propertyName != "___class",
-                propertyName != "objectId", propertyName != "created", propertyName != "updated",
-                propertyName != "user-token", propertyName != "lastLogin", propertyName != "userStatus",
-                propertyName != "updated", propertyName != "email" {
-                userProperties[propertyName] = NSNull()
-            }
-        }
-        for newProperty in properties {
-            userProperties[newProperty.key] = properties[newProperty.key]
-        }
-        self.properties = JSON(userProperties)
-    }
-    
-    open func addProperty(propertyName: String, propertyValue: Any) {
-        var userProperties = getProperties()
-        if !(userProperties.keys.contains(propertyName)) {
-            userProperties[propertyName] = propertyValue
-        }
-        self.properties = JSON(userProperties)
-    }
-    
-    open func addProperties(properties: [String: Any]) {
-        var userProperties = getProperties()
-        for propertyName in properties.keys {
-            if !(userProperties.keys.contains(propertyName)) {
-                userProperties[propertyName] = properties[propertyName]
-            }
-        }
-        self.properties = JSON(userProperties)
-    }
-    
-    open func updateProperty(propertyName: String, propertyValue: Any) {
-        
-        if propertyName == "email", propertyValue is String {
-            email = propertyValue as! String
-        }
-        else if propertyName == "name" {
-            name = propertyValue as? String
-        }
-        else {
-            var userProperties = getProperties()
-            if userProperties.keys.contains(propertyName) {
-                userProperties[propertyName] = propertyValue
-            }
-            self.properties = JSON(userProperties)
-        }   
-    }
-    
-    open func updateProperties(propertiesToUpdate: [String: Any]) {
-        for propertyName in propertiesToUpdate.keys {
-            if let propertyValue = propertiesToUpdate[propertyName] {
-                updateProperty(propertyName: propertyName, propertyValue: propertyValue)
-            }
+        for property in properties {
+            setProperty(propertyName: property.key, propertyValue: property.value)
         }
     }
     
