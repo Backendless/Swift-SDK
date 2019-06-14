@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 0.0.11, / ?, 12 2019
+* fixed the GeoPoint saving issue which caused crash when sending custom object in metadata
+
 ### 0.0.10, / June, 12 2019
 * fixed password issue when updating the BackendlessUser object
 * fixed Date type issue when retrieving object or registering BackendlessUser with custom Date field
