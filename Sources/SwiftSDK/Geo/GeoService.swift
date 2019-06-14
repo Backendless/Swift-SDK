@@ -26,7 +26,17 @@
     
     open func saveGeoPoint(geoPoint: GeoPoint, responseHandler: ((GeoPoint) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
-        let parameters = ["latitude": geoPoint.latitude, "longitude": geoPoint.longitude, "categories": geoPoint.categories as Any, "metadata": geoPoint.metadata as Any] as [String : Any]
+        
+        var metadata = [String : Any]()
+        if let geoMeta = geoPoint.metadata {
+            for key in Array(geoMeta.keys) {
+                if let value = geoMeta[key] {
+                    metadata[key] = JSONUtils.shared.objectToJSON(objectToParse: value)
+                }
+            }
+        }
+        
+        let parameters = ["latitude": geoPoint.latitude, "longitude": geoPoint.longitude, "categories": geoPoint.categories as Any, "metadata": metadata] as [String : Any]
     
         // update
         if let objectId = geoPoint.objectId {

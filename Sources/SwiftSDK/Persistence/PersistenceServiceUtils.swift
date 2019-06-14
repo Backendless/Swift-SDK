@@ -458,6 +458,9 @@ class PersistenceServiceUtils: NSObject {
                                 }
                                 resultValue = resultDictionary
                             }
+                            else if let dateValue = value as? Date {
+                                resultValue = dataTypesUtils.dateToInt(date: dateValue)
+                            }
                             else {
                                 resultValue = entityToDictionaryWithClassProperty(entity: value)
                             }
