@@ -34,6 +34,7 @@
 		5E15A06C223B9C9D0090F5A3 /* RTMessagingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E15A06B223B9C9D0090F5A3 /* RTMessagingTests.swift */; };
 		5E1CC2F72252534F0011D5C8 /* FileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1CC2F62252534F0011D5C8 /* FileService.swift */; };
 		5E1CC2F9225254140011D5C8 /* BackendlessFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1CC2F8225254140011D5C8 /* BackendlessFile.swift */; };
+		5E22155522B8D74F00491250 /* SearchMatchesResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E22155422B8D74F00491250 /* SearchMatchesResult.swift */; };
 		5E238A612271BDCF00227859 /* CustomService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E238A602271BDCF00227859 /* CustomService.swift */; };
 		5E238A662271CE8100227859 /* ExecutionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E238A652271CE8100227859 /* ExecutionType.swift */; };
 		5E275CA0224B8142002F89FC /* FileManagerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E275C9F224B8142002F89FC /* FileManagerHelper.swift */; };
@@ -172,6 +173,7 @@
 		5E15A06B223B9C9D0090F5A3 /* RTMessagingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTMessagingTests.swift; sourceTree = "<group>"; };
 		5E1CC2F62252534F0011D5C8 /* FileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileService.swift; sourceTree = "<group>"; };
 		5E1CC2F8225254140011D5C8 /* BackendlessFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessFile.swift; sourceTree = "<group>"; };
+		5E22155422B8D74F00491250 /* SearchMatchesResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMatchesResult.swift; sourceTree = "<group>"; };
 		5E238A602271BDCF00227859 /* CustomService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomService.swift; sourceTree = "<group>"; };
 		5E238A652271CE8100227859 /* ExecutionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutionType.swift; sourceTree = "<group>"; };
 		5E275C9F224B8142002F89FC /* FileManagerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerHelper.swift; sourceTree = "<group>"; };
@@ -656,6 +658,7 @@
 				5EA31F24225608B1008DF081 /* GeoCategory.swift */,
 				5EA31F2622561EC6008DF081 /* BackendlessGeoQuery.swift */,
 				5E922248225B8CCF0001688F /* GeoQueryRectangle.swift */,
+				5E22155422B8D74F00491250 /* SearchMatchesResult.swift */,
 				5E45F672225F7F8F001DD7CF /* GeoFence */,
 			);
 			path = Geo;
@@ -992,6 +995,7 @@
 				5E13C3A622046F7C00EA3050 /* JSON.swift in Sources */,
 				5E60834B21EF721900268B4D /* DictionaryExtension.swift in Sources */,
 				5ECD9C7E21DE57DA002CBB7D /* GeoPoint.swift in Sources */,
+				5E22155522B8D74F00491250 /* SearchMatchesResult.swift in Sources */,
 				5E03A3BD22291882005A538D /* RTMessaging.swift in Sources */,
 				5E03A3C122294A4B005A538D /* PublishMessageInfo.swift in Sources */,
 				5EA5D2CA223BE6440027EA49 /* SharedObjectChanges.swift in Sources */,

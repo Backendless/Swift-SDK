@@ -103,27 +103,20 @@
         }
     }
     
-    open func relativeFind(geoQuery: BackendlessGeoQuery, responseHandler: (([GeoPoint]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    open func relativeFind(geoQuery: BackendlessGeoQuery, responseHandler: (([SearchMatchesResult]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let restMethod = createRestMethod(restMethod: "geo/relative/points?", geoQuery: geoQuery)
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: [JSON].self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
-                else if let geoPointsArray = result as? [JSON] {
-                    var resultArray = [GeoPoint]()
-                    for geoPointJSON in geoPointsArray {
-                        if let geoPointDictionary = geoPointJSON.dictionaryObject {
-                            if geoPointDictionary["totalPoints"] != nil,
-                                let geoCluster = self.processResponse.adaptToGeoCluster(geoDictionary: geoPointDictionary) {
-                                geoCluster.geoQuery = geoQuery
-                                resultArray.append(geoCluster)
-                            }
-                            else if let geoPoint = self.processResponse.adaptToGeoPoint(geoDictionary: geoPointDictionary) {
-                                resultArray.append(geoPoint)
-                            }
+                else if let matchesResultArray = result as? [JSON] {
+                    var resultArray = [SearchMatchesResult]()
+                    for matchesResult in matchesResultArray {
+                        if let matchesResult = matchesResult.dictionaryObject {
+                            resultArray.append(self.processResponse.adaptToSearchMatchesResult(searchMatchesResultDictionary: matchesResult))
                         }
-                    }
+                    }                    
                     responseHandler(resultArray)
                 }
             }
