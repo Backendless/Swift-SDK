@@ -62,4 +62,18 @@
         aCoder.encode(nordWestPoint, forKey: CodingKeys.nordWestPoint.rawValue)
         aCoder.encode(southEastPoint, forKey: CodingKeys.southEastPoint.rawValue)
     }
+    
+    required public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        nordWestPoint = try container.decodeIfPresent(GeoPoint.self, forKey: .nordWestPoint)
+        southEastPoint = try container.decodeIfPresent(GeoPoint.self, forKey: .southEastPoint)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encodeIfPresent(nordWestPoint, forKey: .nordWestPoint)
+        try container.encodeIfPresent(southEastPoint, forKey: .southEastPoint)
+    }
 }

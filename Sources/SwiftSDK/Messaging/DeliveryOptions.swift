@@ -90,6 +90,32 @@
         aCoder.encode(pushBroadcast, forKey: CodingKeys.pushBroadcast.rawValue)
     }
     
+    required public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        if let publishAt = try container.decodeIfPresent(Double.self, forKey: .publishAt) {
+            self.publishAt = Date(timeIntervalSince1970: publishAt)
+        }
+        if let repeatExpiresAt = try container.decodeIfPresent(Double.self, forKey: .repeatExpiresAt) {
+            self.repeatExpiresAt = Date(timeIntervalSince1970: repeatExpiresAt)
+        }
+        _repeatEvery = try container.decodeIfPresent(Int.self, forKey: ._repeatEvery)
+        pushSinglecast = try container.decodeIfPresent([String].self, forKey: .pushSinglecast) ?? []
+        publishPolicy = try container.decodeIfPresent(Int.self, forKey: .publishPolicy) ?? PublishPolicyEnum.BOTH.rawValue
+        pushBroadcast = try container.decodeIfPresent(Int.self, forKey: .pushBroadcast) ?? PushBroadcastEnum.FOR_ALL.rawValue
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encodeIfPresent(publishAt, forKey: .publishAt)
+        try container.encodeIfPresent(repeatExpiresAt, forKey: .repeatExpiresAt)
+        try container.encodeIfPresent(_repeatEvery, forKey: ._repeatEvery)
+        try container.encode(pushSinglecast, forKey: .pushSinglecast)
+        try container.encode(publishPolicy, forKey: .publishPolicy)
+        try container.encode(pushBroadcast, forKey: .pushBroadcast)
+    }
+    
     open func setPushSinglecast(singlecast: [String]) {
         self.pushSinglecast = singlecast
     }

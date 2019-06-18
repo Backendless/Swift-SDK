@@ -102,6 +102,26 @@
         aCoder.encode(_metadata, forKey: CodingKeys.categories.rawValue)
     }
     
+    required public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        objectId = try container.decodeIfPresent(String.self, forKey: .objectId)
+        latitude = try container.decodeIfPresent(Double.self, forKey: .latitude) ?? 0.0
+        longitude = try container.decodeIfPresent(Double.self, forKey: .longitude) ?? 0.0
+        categories = try container.decodeIfPresent([String].self, forKey: .categories) ?? ["Default"]
+        _metadata = try container.decodeIfPresent(JSON.self, forKey: ._metadata)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encodeIfPresent(objectId, forKey: .objectId)
+        try container.encode(latitude, forKey: .latitude)
+        try container.encode(longitude, forKey: .longitude)
+        try container.encode(categories, forKey: .categories)
+        try container.encodeIfPresent(_metadata, forKey: ._metadata)
+    }
+    
     func setObjectId(objectId: String) {
         self.objectId = objectId
     }
