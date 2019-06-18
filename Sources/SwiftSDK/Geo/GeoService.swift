@@ -273,6 +273,10 @@
                 restMethod += "&includemetadata=false"
             }
             restMethod += "&dpp=\(geoQuery.degreePerPixel)&clusterGridSize=\(geoQuery.clusterGridSize)"
+            if let relativeFindMetadata = geoQuery.relativeFindMetadata,
+                let relativeFindMetadataString = dataTypesUtils.dictionaryToUrlString(dictionary: relativeFindMetadata) {
+                restMethod += "&relativeFindMetadata=\(relativeFindMetadataString)&relativeFindPercentThreshold=\(geoQuery.relativeFindPercentThreshold)"
+            }
         }
         return restMethod
     }

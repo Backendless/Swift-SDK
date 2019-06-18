@@ -1,13 +1,11 @@
 # RELEASE HISTORY
 
-### 0.0.12, / June, 17 2019
+### 0.0.11, / June, 18 2019
+* fixed the GeoPoint saving issue which caused crash when sending custom object in metadata
 * customized serialization/deserialization for the next classes: DeliveryOptions, GeoPoint, GeoQueryRectangle
 
-### 0.0.11, / ?, 12 2019
-* fixed the GeoPoint saving issue which caused crash when sending custom object in metadata
-
 ### 0.0.10, / June, 12 2019
-* fixed password issue when updating the BackendlessUser object
+* fixed password issue when updating the BackendlessUser objects
 * fixed Date type issue when retrieving object or registering BackendlessUser with custom Date field
 * fixed the BackendlessUser properties methods
 * added support of custom smart-text substitutions for push templates:
