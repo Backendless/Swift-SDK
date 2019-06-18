@@ -1,8 +1,8 @@
 # RELEASE HISTORY
 
 ### 0.0.12, / June, ? 2019
-* added the SearchMathResult class
-* fixed the relativeFind method to return SearchMathResult correctly
+* added the SearchMatchesResult class
+* fixed the relativeFind method to return SearchMatchesResult correctly
 
 ### 0.0.11, / June, 18 2019
 * fixed the GeoPoint saving issue which caused crash when sending custom object in metadata
