@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 0.0.12, / June, 17 2019
+* customized serialization/deserialization for the next classes: DeliveryOptions, GeoPoint, GeoQueryRectangle
+
 ### 0.0.11, / ?, 12 2019
 * fixed the GeoPoint saving issue which caused crash when sending custom object in metadata
 
