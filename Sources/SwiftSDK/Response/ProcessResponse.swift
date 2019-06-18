@@ -230,6 +230,19 @@ class ProcessResponse: NSObject {
         return nil
     }
     
+    func adaptToSearchMatchesResult(searchMatchesResultDictionary: [String : Any]) -> SearchMatchesResult {
+        let searchMatchesResult = SearchMatchesResult()
+        if let matchesData = searchMatchesResultDictionary["fields"] as? [String : Any] {
+            if let geoPointDictionary = matchesData["geoPoint"] as? [String : Any] {
+                searchMatchesResult.setGeoPoint(geoPoint: adaptToGeoPoint(geoDictionary: geoPointDictionary))
+            }
+            if let matches = matchesData["matches"] as? Double {
+                searchMatchesResult.setMatches(matches: matches)
+            }
+        }
+        return searchMatchesResult
+    }
+    
     //    func adaptToPublishMessageInfo(messageInfoDictionary: [String : Any]) -> PublishMessageInfo {
     //        let publishMessageInfo = PublishMessageInfo()
     //        if let messageId = messageInfoDictionary["messageId"] as? String {
