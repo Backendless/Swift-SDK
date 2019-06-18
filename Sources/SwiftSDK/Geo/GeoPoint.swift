@@ -122,6 +122,19 @@
         try container.encodeIfPresent(_metadata, forKey: ._metadata)
     }
     
+    public func pointDescription() -> String {
+        let categories = self.categories.joined(separator: ",")
+        var metadata = "{"
+        if let pointMetadata = self.metadata {
+            for (key, value) in pointMetadata {
+                metadata.append("\(key):\(value);")
+            }
+        }
+        metadata.removeLast()
+        metadata += "}"
+        return "GeoPoint{objectId='\(self.objectId ?? "")', latitude=\(self.latitude), longitude=\(self.longitude), categories=[\(categories)], metadata=\(metadata)}"
+    }
+    
     func setObjectId(objectId: String) {
         self.objectId = objectId
     }

@@ -62,6 +62,8 @@
     open var rectangle: GeoQueryRectangle?
     open var pageSize: Int = 10
     open var offset: Int = 0
+    open var relativeFindMetadata: [String : String]?
+    open var relativeFindPercentThreshold: Double = 0.0
     
     open private(set) var degreePerPixel: Double = 0.0
     open private(set) var clusterGridSize: Double = 100.0
