@@ -19,11 +19,11 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class GeoPoint: NSObject, NSCoding, Codable {
+@objcMembers open class GeoPoint: NSObject, Codable {
     
     open private(set) var objectId: String?
-    open var latitude: Double
-    open var longitude: Double
+    open var latitude: Double = 0.0
+    open var longitude: Double = 0.0
     open var distance: Double = 0.0
     open var categories: [String]
     open var metadata: [String: Any]? {
@@ -82,34 +82,12 @@
         self._metadata = metadata
     }
     
-    convenience required public init?(coder aDecoder: NSCoder) {
-        let objectId = aDecoder.decodeObject(forKey: CodingKeys.objectId.rawValue) as! String
-        let latitude = aDecoder.decodeDouble(forKey: CodingKeys.latitude.rawValue)
-        let longitude = aDecoder.decodeDouble(forKey: CodingKeys.longitude.rawValue)
-        let distance = aDecoder.decodeDouble(forKey: CodingKeys.distance.rawValue)
-        let categories = aDecoder.decodeObject(forKey: CodingKeys.categories.rawValue) as! [String]
-        let metadata = aDecoder.decodeObject(forKey: CodingKeys._metadata.rawValue) as? JSON
-        self.init(objectId: objectId, latitude: latitude, longitude: longitude, distance: distance, categories: categories, metadata: metadata)
-    }
-    
     required public override init() {
-        self.latitude = 0.0
-        self.longitude = 0.0
         self.categories = ["Default"]
-    }
-    
-    public func encode(with aCoder: NSCoder) {
-        aCoder.encode(objectId, forKey: CodingKeys.objectId.rawValue)
-        aCoder.encode(latitude, forKey: CodingKeys.latitude.rawValue)
-        aCoder.encode(longitude, forKey: CodingKeys.longitude.rawValue)
-        aCoder.encode(distance, forKey: CodingKeys.distance.rawValue)
-        aCoder.encode(categories, forKey: CodingKeys.categories.rawValue)
-        aCoder.encode(_metadata, forKey: CodingKeys.categories.rawValue)
     }
     
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
         objectId = try container.decodeIfPresent(String.self, forKey: .objectId)
         latitude = try container.decodeIfPresent(Double.self, forKey: .latitude) ?? 0.0
         longitude = try container.decodeIfPresent(Double.self, forKey: .longitude) ?? 0.0
@@ -119,8 +97,7 @@
     }
     
     public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        
+        var container = encoder.container(keyedBy: CodingKeys.self)        
         try container.encodeIfPresent(objectId, forKey: .objectId)
         try container.encode(latitude, forKey: .latitude)
         try container.encode(longitude, forKey: .longitude)

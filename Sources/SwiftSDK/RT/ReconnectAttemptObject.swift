@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class ReconnectAttemptObject: NSObject, NSCoding, Codable {
+@objcMembers open class ReconnectAttemptObject: NSObject, Codable {
 
     private var _attempt: Int?
     open var attempt: NSNumber? {
@@ -45,23 +45,5 @@
         set(newTimeout) {
             _timeout = newTimeout?.intValue
         }
-    }
-    
-    enum CodingKeys: String, CodingKey {
-        case _attempt = "attempt"
-        case _timeout = "timeout"
-    }
-    
-    public override init() { }
-    
-    convenience public required init?(coder aDecoder: NSCoder) {
-        self.init()
-        self._attempt = aDecoder.decodeInteger(forKey: CodingKeys._attempt.rawValue)
-        self._timeout = aDecoder.decodeInteger(forKey: CodingKeys._timeout.rawValue)
-    }
-    
-    public func encode(with aCoder: NSCoder) {
-        aCoder.encode(_attempt, forKey: CodingKeys._attempt.rawValue)
-        aCoder.encode(_timeout, forKey: CodingKeys._timeout.rawValue)
     }
 }

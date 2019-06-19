@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class GeoQueryRectangle: NSObject, NSCoding, Codable {
+@objcMembers open class GeoQueryRectangle: NSObject, Codable {
     
     open private(set) var nordWestPoint: GeoPoint?
     open private(set) var southEastPoint: GeoPoint?
@@ -52,27 +52,14 @@
         self.southEastPoint = GeoPoint(latitude: seLatitude, longitude: seLongitude)
     }
     
-    convenience public required init?(coder aDecoder: NSCoder) {
-        let nordWestPoint = aDecoder.decodeObject(forKey: CodingKeys.nordWestPoint.rawValue) as! GeoPoint
-        let southEastPoint = aDecoder.decodeObject(forKey: CodingKeys.southEastPoint.rawValue) as! GeoPoint
-        self.init(nordWestPoint: nordWestPoint, southEastPoint: southEastPoint)
-    }
-    
-    public func encode(with aCoder: NSCoder) {
-        aCoder.encode(nordWestPoint, forKey: CodingKeys.nordWestPoint.rawValue)
-        aCoder.encode(southEastPoint, forKey: CodingKeys.southEastPoint.rawValue)
-    }
-    
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
         nordWestPoint = try container.decodeIfPresent(GeoPoint.self, forKey: .nordWestPoint)
         southEastPoint = try container.decodeIfPresent(GeoPoint.self, forKey: .southEastPoint)
     }
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        
         try container.encodeIfPresent(nordWestPoint, forKey: .nordWestPoint)
         try container.encodeIfPresent(southEastPoint, forKey: .southEastPoint)
     }

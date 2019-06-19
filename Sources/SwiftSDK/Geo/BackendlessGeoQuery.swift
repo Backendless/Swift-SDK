@@ -27,7 +27,7 @@
     case FEET = 4
 }
 
-@objcMembers open class BackendlessGeoQuery: NSObject, NSCoding, Codable {
+@objcMembers open class BackendlessGeoQuery: NSObject, Codable {
     
     open var geoPoint: GeoPoint?
     open var categories: [String]?
@@ -82,37 +82,6 @@
         case offset
         case degreePerPixel
         case clusterGridSize
-    }
-    
-    public override init() { }
-    
-    convenience public required init?(coder aDecoder: NSCoder) {
-        self.init()
-        self.geoPoint = aDecoder.decodeObject(forKey: CodingKeys.geoPoint.rawValue) as? GeoPoint
-        self._radius = aDecoder.decodeDouble(forKey: CodingKeys._radius.rawValue)
-        self.categories = aDecoder.decodeObject(forKey: CodingKeys.categories.rawValue) as? [String]
-        self.includemetadata = aDecoder.decodeBool(forKey: CodingKeys.includemetadata.rawValue)
-        self._metadata = aDecoder.decodeObject(forKey: CodingKeys._metadata.rawValue) as? JSON
-        self.whereClause = aDecoder.decodeObject(forKey: CodingKeys.whereClause.rawValue) as? String
-        self.rectangle = aDecoder.decodeObject(forKey: CodingKeys.rectangle.rawValue) as? GeoQueryRectangle
-        self.pageSize = aDecoder.decodeInteger(forKey: CodingKeys.pageSize.rawValue)
-        self.offset = aDecoder.decodeInteger(forKey: CodingKeys.offset.rawValue)
-        self.degreePerPixel = aDecoder.decodeDouble(forKey: CodingKeys.degreePerPixel.rawValue)
-        self.clusterGridSize = aDecoder.decodeDouble(forKey: CodingKeys.clusterGridSize.rawValue)
-    }
-    
-    public func encode(with aCoder: NSCoder) {
-        aCoder.encode(geoPoint, forKey: CodingKeys.geoPoint.rawValue)
-        aCoder.encode(_radius, forKey: CodingKeys._radius.rawValue)
-        aCoder.encode(categories, forKey: CodingKeys.categories.rawValue)
-        aCoder.encode(includemetadata, forKey: CodingKeys.includemetadata.rawValue)
-        aCoder.encode(_metadata, forKey: CodingKeys._metadata.rawValue)
-        aCoder.encode(whereClause, forKey: CodingKeys.whereClause.rawValue)
-        aCoder.encode(rectangle, forKey: CodingKeys.rectangle.rawValue)
-        aCoder.encode(pageSize, forKey: CodingKeys.pageSize.rawValue)
-        aCoder.encode(offset, forKey: CodingKeys.offset.rawValue)
-        aCoder.encode(degreePerPixel, forKey: CodingKeys.degreePerPixel.rawValue)
-        aCoder.encode(clusterGridSize, forKey: CodingKeys.clusterGridSize.rawValue)
     }
     
     open func setUnits(units: Int) {

@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class GeoCategory: NSObject, NSCoding, Codable {
+@objcMembers open class GeoCategory: NSObject, Codable {
     
     open private(set) var objectId: String?
     open private(set) var name: String?
@@ -40,28 +40,8 @@
         case _size = "size"
     }
     
-    init(objectId: String, name: String, size: Int) {
-        self.objectId = objectId
-        self.name = name
-        self._size = size
-    }
-    
-    convenience required public init?(coder aDecoder: NSCoder) {
-        let objectId = aDecoder.decodeObject(forKey: CodingKeys.objectId.rawValue) as! String
-        let name = aDecoder.decodeObject(forKey: CodingKeys.name.rawValue) as! String
-        let _size = aDecoder.decodeInteger(forKey: CodingKeys._size.rawValue)
-        self.init(objectId: objectId, name: name, size: _size)
-    }
-    
-    public func encode(with aCoder: NSCoder) {
-        aCoder.encode(objectId, forKey: CodingKeys.objectId.rawValue)
-        aCoder.encode(name, forKey: CodingKeys.name.rawValue)
-        aCoder.encode(_size, forKey: CodingKeys._size.rawValue)
-    }
-    
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
         objectId = try container.decodeIfPresent(String.self, forKey: .objectId)
         name = try container.decodeIfPresent(String.self, forKey: .name)
         _size = try container.decodeIfPresent(Int.self, forKey: ._size) ?? 0
@@ -69,7 +49,6 @@
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        
         try container.encodeIfPresent(objectId, forKey: .objectId)
         try container.encodeIfPresent(name, forKey: .name)
         try container.encodeIfPresent(_size, forKey: ._size)

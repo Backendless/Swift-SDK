@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class PublishOptions: NSObject, NSCoding, Codable {
+@objcMembers open class PublishOptions: NSObject, Codable {
     
     open var publisherId: String?
     
@@ -41,17 +41,6 @@
     public override init() {
         super.init()
         self.headers = ["ios-content-available": "1"]
-    }
-    
-    convenience public required init?(coder aDecoder: NSCoder) {
-        self.init()
-        self.publisherId = aDecoder.decodeObject(forKey: CodingKeys.publisherId.rawValue) as? String
-        self._headers = aDecoder.decodeObject(forKey: CodingKeys._headers.rawValue) as? JSON
-    }
-    
-    public func encode(with aCoder: NSCoder) {
-        aCoder.encode(publisherId, forKey: CodingKeys.publisherId.rawValue)
-        aCoder.encode(_headers, forKey: CodingKeys._headers.rawValue)
     }
     
     open func setHeaders(headers: [String : Any]) {

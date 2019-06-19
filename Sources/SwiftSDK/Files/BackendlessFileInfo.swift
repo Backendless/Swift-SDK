@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class BackendlessFileInfo: NSObject, NSCoding, Codable {
+@objcMembers open class BackendlessFileInfo: NSObject, Codable {
     
     open var name: String?
     open var createdOn: Int = 0
@@ -48,23 +48,6 @@
     }
     
     public override init() { }
-
-    convenience public required init?(coder aDecoder: NSCoder) {
-        self.init()
-        self.name = aDecoder.decodeObject(forKey: CodingKeys.name.rawValue) as? String
-        self.createdOn = aDecoder.decodeInteger(forKey: CodingKeys.createdOn.rawValue)
-        self.publicUrl = aDecoder.decodeObject(forKey: CodingKeys.publicUrl.rawValue) as? String
-        self._size = aDecoder.decodeInteger(forKey: CodingKeys._size.rawValue)
-        self.url = aDecoder.decodeObject(forKey: CodingKeys.url.rawValue) as? String
-    }
-    
-    public func encode(with aCoder: NSCoder) {
-        aCoder.encode(name, forKey: CodingKeys.name.rawValue)
-        aCoder.encode(createdOn, forKey: CodingKeys.createdOn.rawValue)
-        aCoder.encode(publicUrl, forKey: CodingKeys.publicUrl.rawValue)
-        aCoder.encode(_size, forKey: CodingKeys._size.rawValue)
-        aCoder.encode(url, forKey: CodingKeys.url.rawValue)
-    }
     
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -76,8 +59,7 @@
     }
     
     public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        
+        var container = encoder.container(keyedBy: CodingKeys.self)        
         try container.encodeIfPresent(name, forKey: .name)
         try container.encode(createdOn, forKey: .createdOn)
         try container.encodeIfPresent(publicUrl, forKey: .publicUrl)

@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class BackendlessUser: NSObject, NSCoding, Codable {
+@objcMembers open class BackendlessUser: NSObject, Codable {
     
     open var email: String
     open var password: String? {
@@ -47,29 +47,8 @@
         case _password = "password"
     }
     
-    init(email: String, name: String?, objectId: String?, userToken: String?) {
-        self.email = email
-        self.name = name
-        self.objectId = objectId
-    }
-    
-    convenience required public init?(coder aDecoder: NSCoder) {
-        let email = aDecoder.decodeObject(forKey: CodingKeys.email.rawValue) as! String
-        let name = aDecoder.decodeObject(forKey: CodingKeys.name.rawValue) as? String
-        let objectId = aDecoder.decodeObject(forKey: CodingKeys.objectId.rawValue) as? String
-        let userToken = aDecoder.decodeObject(forKey: CodingKeys.userToken.rawValue) as? String
-        self.init(email: email, name: name, objectId: objectId, userToken: userToken)
-    }
-    
-    required public override init() {
+    public override init() {
         self.email = ""
-    }
-    
-    public func encode(with aCoder: NSCoder) {
-        aCoder.encode(email, forKey: CodingKeys.email.rawValue)
-        aCoder.encode(name, forKey: CodingKeys.name.rawValue)
-        aCoder.encode(objectId, forKey: CodingKeys.objectId.rawValue)
-        aCoder.encode(userToken, forKey: CodingKeys.userToken.rawValue)
     }
     
     required public init(from decoder: Decoder) throws {
