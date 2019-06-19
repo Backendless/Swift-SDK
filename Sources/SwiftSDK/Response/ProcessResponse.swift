@@ -175,10 +175,11 @@ class ProcessResponse: NSObject {
             let latitude = geoDictionary["latitude"] as? Double,
             let longitude = geoDictionary["longitude"] as? Double,
             let categories = geoDictionary["categories"] as? [String] {
+            let distance = geoDictionary["distance"] as? Double
             if let metadata = geoDictionary["metadata"] as? [String: String] {
-                return GeoPoint(objectId: objectId, latitude: latitude, longitude: longitude, categories: categories, metadata: JSON(metadata))
+                return GeoPoint(objectId: objectId, latitude: latitude, longitude: longitude, distance: distance ?? 0.0, categories: categories, metadata: JSON(metadata))
             }
-            return GeoPoint(objectId: objectId, latitude: latitude, longitude: longitude, categories: categories, metadata: nil)
+            return GeoPoint(objectId: objectId, latitude: latitude, longitude: longitude, distance: distance ?? 0.0, categories: categories, metadata: nil)
         }
         return nil
     }
@@ -189,12 +190,13 @@ class ProcessResponse: NSObject {
             let longitude = geoDictionary["longitude"] as? Double,
             let categories = geoDictionary["categories"] as? [String],
             let totalPoints = geoDictionary["totalPoints"] as? Int {
+            let distance = geoDictionary["distance"] as? Double
             if let metadata = geoDictionary["metadata"] as? [String: String] {
-                let geoCluster = GeoCluster(objectId: objectId, latitude: latitude, longitude: longitude, categories: categories, metadata: JSON(metadata))
+                let geoCluster = GeoCluster(objectId: objectId, latitude: latitude, longitude: longitude, distance: distance ?? 0.0, categories: categories, metadata: JSON(metadata))
                 geoCluster.totalPoints = totalPoints
                 return geoCluster
             }
-            let geoCluster = GeoCluster(objectId: objectId, latitude: latitude, longitude: longitude, categories: categories, metadata: nil)
+            let geoCluster = GeoCluster(objectId: objectId, latitude: latitude, longitude: longitude, distance: distance ?? 0.0, categories: categories, metadata: nil)
             geoCluster.totalPoints = totalPoints
             return geoCluster
         }
@@ -230,17 +232,14 @@ class ProcessResponse: NSObject {
         return nil
     }
     
-    func adaptToSearchMatchesResult(searchMatchesResultDictionary: [String : Any]) -> SearchMatchesResult {
-        let searchMatchesResult = SearchMatchesResult()
-        if let matchesData = searchMatchesResultDictionary["fields"] as? [String : Any] {
-            if let geoPointDictionary = matchesData["geoPoint"] as? [String : Any] {
-                searchMatchesResult.setGeoPoint(geoPoint: adaptToGeoPoint(geoDictionary: geoPointDictionary))
-            }
-            if let matches = matchesData["matches"] as? Double {
-                searchMatchesResult.setMatches(matches: matches)
-            }
+    func adaptToSearchMatchesResult(searchMatchesResultDictionary: [String : Any]) -> SearchMatchesResult? {
+        if let matchesData = searchMatchesResultDictionary["fields"] as? [String : Any],
+            let geoPointDictionary = matchesData["geoPoint"] as? [String : Any],
+            let matches = matchesData["matches"] as? Double,
+            let geoPoint = adaptToGeoPoint(geoDictionary: geoPointDictionary) {
+            return SearchMatchesResult(geoPoint: geoPoint, matches: matches)
         }
-        return searchMatchesResult
+        return nil
     }
     
     //    func adaptToPublishMessageInfo(messageInfoDictionary: [String : Any]) -> PublishMessageInfo {

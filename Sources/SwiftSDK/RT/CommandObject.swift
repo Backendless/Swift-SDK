@@ -25,4 +25,12 @@
     open var connectionId: String?
     open var userId: String?
     open var data: Any?
+    
+    public static func decodeFromJson(_ json: [String: Any]) -> CommandObject {
+        return ProcessResponse.shared.adaptToCommandObject(commandObjectDictionary: json)
+    }
+    
+    public func encodeToJson() -> Any {
+        return JSONUtils.shared.objectToJSON(objectToParse: self)
+    }
 }
