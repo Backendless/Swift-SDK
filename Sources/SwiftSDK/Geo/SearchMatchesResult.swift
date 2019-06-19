@@ -28,7 +28,7 @@
         self.geoPoint = geoPoint
         self.matches = matches
     }
-    
+
     func setGeoPoint(geoPoint: GeoPoint?) {
         self.geoPoint = geoPoint
     }
@@ -36,7 +36,7 @@
     func setMatches(matches: Double) {
         self.matches = matches
     }
-    
+
     private enum CodingKeys: String, CodingKey {
         case geoPoint
         case matches
