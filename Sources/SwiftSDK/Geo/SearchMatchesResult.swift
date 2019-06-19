@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class SearchMatchesResult: NSObject {
+@objcMembers open class SearchMatchesResult: NSObject, Codable {
     
     open private(set) var geoPoint: GeoPoint?
     open private(set) var matches: Double = 0

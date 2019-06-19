@@ -139,7 +139,7 @@
         }
         metadata.removeLast()
         metadata += "}"
-        return "GeoPoint{objectId='\(self.objectId ?? "")', latitude=\(self.latitude), longitude=\(self.longitude), categories=[\(categories)], metadata=\(metadata)}"
+        return "GeoPoint{objectId='\(self.objectId ?? "")', latitude=\(self.latitude), longitude=\(self.longitude), categories=[\(categories)], metadata=\(metadata), distance=\(self.distance)}"
     }
     
     func setObjectId(objectId: String) {
