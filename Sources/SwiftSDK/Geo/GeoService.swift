@@ -113,8 +113,9 @@
                 else if let matchesResultArray = result as? [JSON] {
                     var resultArray = [SearchMatchesResult]()
                     for matchesResult in matchesResultArray {
-                        if let matchesResult = matchesResult.dictionaryObject {
-                            resultArray.append(self.processResponse.adaptToSearchMatchesResult(searchMatchesResultDictionary: matchesResult))
+                        if let matchesResultDictionary = matchesResult.dictionaryObject,
+                            let searchMatchesResult = self.processResponse.adaptToSearchMatchesResult(searchMatchesResultDictionary: matchesResultDictionary) {
+                            resultArray.append(searchMatchesResult)
                         }
                     }                    
                     responseHandler(resultArray)
