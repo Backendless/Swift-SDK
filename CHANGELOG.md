@@ -1,6 +1,6 @@
 # RELEASE HISTORY
 
-### 0.0.12, / June, ? 2019
+### 0.0.12, / June, 19 2019
 * added the SearchMatchesResult class
 * fixed the relativeFind method to return SearchMatchesResult correctly
 * added serializations/deserialization for class SearchMatchesResult
