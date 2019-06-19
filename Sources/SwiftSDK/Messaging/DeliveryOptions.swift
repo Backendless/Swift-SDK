@@ -34,7 +34,7 @@
     case FOR_ALL = 15
 }
 
-@objcMembers open class DeliveryOptions: NSObject, NSCoding, Codable {
+@objcMembers open class DeliveryOptions: NSObject, Codable {
     
     open var publishAt: Date?
     open var repeatExpiresAt: Date?
@@ -68,31 +68,8 @@
     
     public override init() { }
     
-    convenience public required init?(coder aDecoder: NSCoder) {
-        self.init()
-        self.publishAt = aDecoder.decodeObject(forKey: CodingKeys.publishAt.rawValue) as? Date
-        self.repeatExpiresAt = aDecoder.decodeObject(forKey: CodingKeys.repeatExpiresAt.rawValue) as? Date
-        self._repeatEvery = aDecoder.decodeInteger(forKey: CodingKeys._repeatEvery.rawValue)
-        self.pushSinglecast = []
-        if let pushSinglecast = aDecoder.decodeObject(forKey: CodingKeys.pushSinglecast.rawValue) as? [String] {
-            self.pushSinglecast = pushSinglecast
-        }
-        self.publishPolicy = aDecoder.decodeInteger(forKey: CodingKeys.publishPolicy.rawValue)
-        self.pushBroadcast = aDecoder.decodeInteger(forKey: CodingKeys.pushBroadcast.rawValue)
-    }
-    
-    public func encode(with aCoder: NSCoder) {
-        aCoder.encode(publishAt, forKey: CodingKeys.publishAt.rawValue)
-        aCoder.encode(repeatExpiresAt, forKey: CodingKeys.repeatExpiresAt.rawValue)
-        aCoder.encode(_repeatEvery, forKey: CodingKeys._repeatEvery.rawValue)
-        aCoder.encode(pushSinglecast, forKey: CodingKeys.pushSinglecast.rawValue)
-        aCoder.encode(publishPolicy, forKey: CodingKeys.publishPolicy.rawValue)
-        aCoder.encode(pushBroadcast, forKey: CodingKeys.pushBroadcast.rawValue)
-    }
-    
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
         if let publishAt = try container.decodeIfPresent(Double.self, forKey: .publishAt) {
             self.publishAt = Date(timeIntervalSince1970: publishAt)
         }
@@ -107,7 +84,6 @@
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        
         try container.encodeIfPresent(publishAt, forKey: .publishAt)
         try container.encodeIfPresent(repeatExpiresAt, forKey: .repeatExpiresAt)
         try container.encodeIfPresent(_repeatEvery, forKey: ._repeatEvery)

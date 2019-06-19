@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class BulkEvent: NSObject, NSCoding, Codable {
+@objcMembers open class BulkEvent: NSObject, Codable {
     
     open var whereClause: String?
     
@@ -39,18 +39,5 @@
     enum CodingKeys: String, CodingKey {
         case whereClause
         case _count = "count"
-    }
-    
-    public override init() { }
-    
-    convenience public required init?(coder aDecoder: NSCoder) {
-        self.init()
-        self.whereClause = aDecoder.decodeObject(forKey: CodingKeys.whereClause.rawValue) as? String
-        self._count = aDecoder.decodeInteger(forKey: CodingKeys._count.rawValue)
-    }
-    
-    public func encode(with aCoder: NSCoder) {
-        aCoder.encode(whereClause, forKey: CodingKeys.whereClause.rawValue)
-        aCoder.encode(_count, forKey: CodingKeys._count.rawValue)
     }
 }

@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class DeviceRegistration: NSObject, NSCoding, Codable {
+@objcMembers open class DeviceRegistration: NSObject, Codable {
     
     open private(set) var objectId: String?
     open var deviceToken: String?
@@ -29,16 +29,6 @@
     open var expiration: Date?
     open var channels: [String]?
     
-    enum CodingKeys: String, CodingKey {
-        case objectId
-        case deviceToken
-        case deviceId
-        case os
-        case osVersion
-        case expiration
-        case channels
-    }
-    
     init(objectId: String?, deviceToken: String?, deviceId: String?, os: String?, osVersion: String?, expiration: Date?, channels: [String]?) {
         self.objectId = objectId
         self.deviceToken = deviceToken
@@ -47,27 +37,6 @@
         self.osVersion = osVersion
         self.expiration = expiration
         self.channels = channels
-    }
-    
-    convenience required public init?(coder aDecoder: NSCoder) {
-        let objectId = aDecoder.decodeObject(forKey: CodingKeys.objectId.rawValue) as? String
-        let deviceToken = aDecoder.decodeObject(forKey: CodingKeys.deviceToken.rawValue) as? String
-        let deviceId = aDecoder.decodeObject(forKey: CodingKeys.deviceId.rawValue) as? String
-        let os = aDecoder.decodeObject(forKey: CodingKeys.os.rawValue) as? String
-        let osVersion = aDecoder.decodeObject(forKey: CodingKeys.osVersion.rawValue) as? String
-        let expiration = aDecoder.decodeObject(forKey: CodingKeys.expiration.rawValue) as? Date
-        let channels = aDecoder.decodeObject(forKey: CodingKeys.channels.rawValue) as? [String]
-        self.init(objectId: objectId, deviceToken: deviceToken, deviceId: deviceId, os: os, osVersion: osVersion, expiration: expiration, channels: channels)
-    }
-    
-    public func encode(with aCoder: NSCoder) {
-        aCoder.encode(objectId, forKey: CodingKeys.objectId.rawValue)
-        aCoder.encode(deviceToken, forKey: CodingKeys.deviceToken.rawValue)
-        aCoder.encode(deviceId, forKey: CodingKeys.deviceId.rawValue)
-        aCoder.encode(os, forKey: CodingKeys.os.rawValue)
-        aCoder.encode(osVersion, forKey: CodingKeys.osVersion.rawValue)
-        aCoder.encode(expiration, forKey: CodingKeys.expiration.rawValue)
-        aCoder.encode(channels, forKey: CodingKeys.channels.rawValue)
     }
     
     func setObjectId(objectId: String) {
