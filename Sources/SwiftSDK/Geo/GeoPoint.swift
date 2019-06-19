@@ -24,6 +24,7 @@
     open private(set) var objectId: String?
     open var latitude: Double
     open var longitude: Double
+    open var distance: Double = 0.0
     open var categories: [String]
     open var metadata: [String: Any]? {
         get {
@@ -41,6 +42,7 @@
         case objectId
         case latitude
         case longitude
+        case distance
         case categories
         case _metadata = "metadata"
     }
@@ -71,10 +73,11 @@
         self._metadata = JSON(metadata)
     }
     
-    init(objectId: String?, latitude: Double, longitude: Double, categories: [String], metadata: JSON?) {
+    init(objectId: String?, latitude: Double, longitude: Double, distance: Double, categories: [String], metadata: JSON?) {
         self.objectId = objectId
         self.latitude = latitude
         self.longitude = longitude
+        self.distance = distance
         self.categories = categories
         self._metadata = metadata
     }
@@ -83,9 +86,10 @@
         let objectId = aDecoder.decodeObject(forKey: CodingKeys.objectId.rawValue) as! String
         let latitude = aDecoder.decodeDouble(forKey: CodingKeys.latitude.rawValue)
         let longitude = aDecoder.decodeDouble(forKey: CodingKeys.longitude.rawValue)
+        let distance = aDecoder.decodeDouble(forKey: CodingKeys.distance.rawValue)
         let categories = aDecoder.decodeObject(forKey: CodingKeys.categories.rawValue) as! [String]
         let metadata = aDecoder.decodeObject(forKey: CodingKeys._metadata.rawValue) as? JSON
-        self.init(objectId: objectId, latitude: latitude, longitude: longitude, categories: categories, metadata: metadata)
+        self.init(objectId: objectId, latitude: latitude, longitude: longitude, distance: distance, categories: categories, metadata: metadata)
     }
     
     required public override init() {
@@ -98,6 +102,7 @@
         aCoder.encode(objectId, forKey: CodingKeys.objectId.rawValue)
         aCoder.encode(latitude, forKey: CodingKeys.latitude.rawValue)
         aCoder.encode(longitude, forKey: CodingKeys.longitude.rawValue)
+        aCoder.encode(distance, forKey: CodingKeys.distance.rawValue)
         aCoder.encode(categories, forKey: CodingKeys.categories.rawValue)
         aCoder.encode(_metadata, forKey: CodingKeys.categories.rawValue)
     }
@@ -108,6 +113,7 @@
         objectId = try container.decodeIfPresent(String.self, forKey: .objectId)
         latitude = try container.decodeIfPresent(Double.self, forKey: .latitude) ?? 0.0
         longitude = try container.decodeIfPresent(Double.self, forKey: .longitude) ?? 0.0
+        distance = try container.decodeIfPresent(Double.self, forKey: .distance) ?? 0.0
         categories = try container.decodeIfPresent([String].self, forKey: .categories) ?? ["Default"]
         _metadata = try container.decodeIfPresent(JSON.self, forKey: ._metadata)
     }
@@ -118,6 +124,7 @@
         try container.encodeIfPresent(objectId, forKey: .objectId)
         try container.encode(latitude, forKey: .latitude)
         try container.encode(longitude, forKey: .longitude)
+        try container.encode(distance, forKey: .distance)
         try container.encode(categories, forKey: .categories)
         try container.encodeIfPresent(_metadata, forKey: ._metadata)
     }
