@@ -3,6 +3,8 @@
 ### 0.0.12, / June, ? 2019
 * added the SearchMatchesResult class
 * fixed the relativeFind method to return SearchMatchesResult correctly
+* added serializations/deserialization for class SearchMatchesResult
+* added distance field in class GeoPoint
 
 ### 0.0.11, / June, 18 2019
 * fixed the GeoPoint saving issue which caused crash when sending custom object in metadata
