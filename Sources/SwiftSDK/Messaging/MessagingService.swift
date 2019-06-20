@@ -357,32 +357,24 @@
         RTMethod.shared.sendCommand(type: PUB_SUB_COMMAND, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
     }
     
-    open func sendEmails(templateName: String, envelope: IEmailEnvelope, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    open func sendEmails(templateName: String, envelope: EmailEnvelope, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         sendEmailsTemplate(templateName: templateName, templateValues: nil, envelope: envelope, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func sendEmails(templateName: String, templateValues: [String : String], envelope: IEmailEnvelope, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    open func sendEmails(templateName: String, templateValues: [String : String], envelope: EmailEnvelope, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         sendEmailsTemplate(templateName: templateName, templateValues: templateValues, envelope: envelope, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    private func sendEmailsTemplate(templateName: String, templateValues: [String : String]?, envelope: IEmailEnvelope, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    private func sendEmailsTemplate(templateName: String, templateValues: [String : String]?, envelope: EmailEnvelope, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
-        var parameters = [String : Any]()
-        
+        var parameters = [String : Any]()        
         parameters["template-name"] = templateName
+        parameters["addresses"] = envelope.getTo()
         parameters["cc-addresses"] = envelope.getCc()
         parameters["bcc-addresses"] = envelope.getBcc()
-        
+        parameters["criteria"] = envelope.getRecipientsQuery()
         if let templateValues = templateValues {
             parameters["template-values"] = templateValues
-        }
-        if envelope is EnvelopeWithRecepients {
-            let envelopeWithRecipients = envelope as! EnvelopeWithRecepients
-            parameters["addresses"] = envelopeWithRecipients.getTo()
-        }
-        else if envelope is EnvelopeWithQuery {
-            let envelopeWithRecipients = envelope as! EnvelopeWithQuery
-            parameters["criteria"] = envelopeWithRecipients.getRecipientsQuery()
         }
         BackendlessRequestManager(restMethod: "emailtemplate/send", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: MessageStatus.self) {

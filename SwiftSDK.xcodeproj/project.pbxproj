@@ -64,9 +64,6 @@
 		5E4E309C2243B85C00B479C8 /* DeviceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4E309B2243B85C00B479C8 /* DeviceHelper.swift */; };
 		5E4E31152243C39200B479C8 /* DataTypesUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4E31142243C39200B479C8 /* DataTypesUtils.swift */; };
 		5E535A1222A6752D00AB0738 /* EmailEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E535A1122A6752D00AB0738 /* EmailEnvelope.swift */; };
-		5E535A1422A675A000AB0738 /* EnvelopeWithRecepients.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E535A1322A675A000AB0738 /* EnvelopeWithRecepients.swift */; };
-		5E535A1622A675B000AB0738 /* EnvelopeWithQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E535A1522A675B000AB0738 /* EnvelopeWithQuery.swift */; };
-		5E535A1822A6770B00AB0738 /* IEmailEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E535A1722A6770B00AB0738 /* IEmailEnvelope.swift */; };
 		5E545EEC21DFB87A00881ED0 /* GeoServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E545EEB21DFB87A00881ED0 /* GeoServiceTests.swift */; };
 		5E545EEE21DFBA4400881ED0 /* GeoPointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E545EED21DFBA4400881ED0 /* GeoPointTests.swift */; };
 		5E5716E82242803A00C7B048 /* SharedObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5716E72242803A00C7B048 /* SharedObjectTests.swift */; };
@@ -200,9 +197,6 @@
 		5E4E309B2243B85C00B479C8 /* DeviceHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceHelper.swift; sourceTree = "<group>"; };
 		5E4E31142243C39200B479C8 /* DataTypesUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTypesUtils.swift; sourceTree = "<group>"; };
 		5E535A1122A6752D00AB0738 /* EmailEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailEnvelope.swift; sourceTree = "<group>"; };
-		5E535A1322A675A000AB0738 /* EnvelopeWithRecepients.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvelopeWithRecepients.swift; sourceTree = "<group>"; };
-		5E535A1522A675B000AB0738 /* EnvelopeWithQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvelopeWithQuery.swift; sourceTree = "<group>"; };
-		5E535A1722A6770B00AB0738 /* IEmailEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEmailEnvelope.swift; sourceTree = "<group>"; };
 		5E545EEB21DFB87A00881ED0 /* GeoServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoServiceTests.swift; sourceTree = "<group>"; };
 		5E545EED21DFBA4400881ED0 /* GeoPointTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoPointTests.swift; sourceTree = "<group>"; };
 		5E5716E72242803A00C7B048 /* SharedObjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedObjectTests.swift; sourceTree = "<group>"; };
@@ -336,9 +330,9 @@
 		5E03A3B822291680005A538D /* Messaging */ = {
 			isa = PBXGroup;
 			children = (
-				5E535A0E22A674E200AB0738 /* EmailEnvelope */,
 				5E03A3BB22291874005A538D /* RT */,
 				5EC7D162222FB86100FD3FF4 /* DeliveryOptions.swift */,
+				5E535A1122A6752D00AB0738 /* EmailEnvelope.swift */,
 				5E84E87B22315E12008B3F05 /* EmailBodyparts.swift */,
 				5AB44C61222E88C600ED9D36 /* MessageStatus.swift */,
 				5E03A3BE22291C74005A538D /* MessagingService.swift */,
@@ -447,17 +441,6 @@
 				5E4CE08522536B73004571DA /* FileServiceTests.swift */,
 			);
 			path = FilesTests;
-			sourceTree = "<group>";
-		};
-		5E535A0E22A674E200AB0738 /* EmailEnvelope */ = {
-			isa = PBXGroup;
-			children = (
-				5E535A1122A6752D00AB0738 /* EmailEnvelope.swift */,
-				5E535A1722A6770B00AB0738 /* IEmailEnvelope.swift */,
-				5E535A1322A675A000AB0738 /* EnvelopeWithRecepients.swift */,
-				5E535A1522A675B000AB0738 /* EnvelopeWithQuery.swift */,
-			);
-			path = EmailEnvelope;
 			sourceTree = "<group>";
 		};
 		5E545EEA21DFAF1D00881ED0 /* GeoTests */ = {
@@ -930,7 +913,6 @@
 				5E384C99226F40E200743125 /* AtomicCountersFactory.swift in Sources */,
 				5E84136321B5265200869794 /* UserService.swift in Sources */,
 				5E795598225503D900E8ED65 /* FilePermission.swift in Sources */,
-				5E535A1822A6770B00AB0738 /* IEmailEnvelope.swift in Sources */,
 				5E6C1E452203362700903B7A /* ReturnedResponse.swift in Sources */,
 				5E7722DD2236D91E00E7B346 /* RTTypes.swift in Sources */,
 				5E11113721B532450044CAED /* UserProperty.swift in Sources */,
@@ -955,7 +937,6 @@
 				5E309B22225FBCF800BE6720 /* ServerCallback.swift in Sources */,
 				5EA87B75221D4A3100A8B93F /* ReconnectAttemptObject.swift in Sources */,
 				5AFE8E6421E8E3430003477B /* TestsConfig.swift in Sources */,
-				5E535A1422A675A000AB0738 /* EnvelopeWithRecepients.swift in Sources */,
 				5E971910221C27BB00857603 /* EventHandlerForClass.swift in Sources */,
 				5E535A1222A6752D00AB0738 /* EmailEnvelope.swift in Sources */,
 				5E9718FD221BFE3D00857603 /* RTFactory.swift in Sources */,
@@ -989,7 +970,6 @@
 				5E971914221C296A00857603 /* RTService.swift in Sources */,
 				5EA31F2722561EC6008DF081 /* BackendlessGeoQuery.swift in Sources */,
 				5E467F822201E20700E70772 /* DataPermission.swift in Sources */,
-				5E535A1622A675B000AB0738 /* EnvelopeWithQuery.swift in Sources */,
 				5E971916221C2A8700857603 /* RTClient.swift in Sources */,
 				5E384C97226F3E8000743125 /* AtomicCounters.swift in Sources */,
 				5E13C3A622046F7C00EA3050 /* JSON.swift in Sources */,
