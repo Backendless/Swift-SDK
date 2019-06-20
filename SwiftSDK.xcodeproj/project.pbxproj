@@ -650,18 +650,18 @@
 		5ECE680C21B0248B00839120 /* SwiftSDKTests */ = {
 			isa = PBXGroup;
 			children = (
-				5ECE680E21B0248B00839120 /* Info.plist */,
-				5AFE8E6321E8E3430003477B /* TestsConfig.swift */,
 				5EB28E1F21B1833A0007AC30 /* BackendlessTests.swift */,
-				5E384C9C226F52F300743125 /* CountersTests */,
 				5E8A2A25226F2BD8007C2BAA /* CacheTests */,
-				5E4CE08222536AA0004571DA /* FilesTests */,
+				5E384C9C226F52F300743125 /* CountersTests */,
 				5EE691FF21B67770002E72A9 /* FaultTests */,
+				5E4CE08222536AA0004571DA /* FilesTests */,
 				5E545EEA21DFAF1D00881ED0 /* GeoTests */,
+				5ECE680E21B0248B00839120 /* Info.plist */,
 				5E4C2705224B963000CDF967 /* MessagingTests */,
 				5AFE8E5C21E8D7010003477B /* PersistenceTests */,
 				5E6098FF222040620012F6A0 /* RTTests */,
 				5E5FE02721F7347200387F8B /* TestObjects */,
+				5AFE8E6321E8E3430003477B /* TestsConfig.swift */,
 				5E90720E21B66DA300619C0D /* UserServiceTests */,
 			);
 			name = SwiftSDKTests;
