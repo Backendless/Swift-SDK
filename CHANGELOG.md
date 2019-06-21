@@ -1,6 +1,6 @@
 # RELEASE HISTORY
 
-### 0.0.13, / June, ? 2019
+### 0.0.13, / June, 21 2019
 * the EmailEnvelope signatures changed
 * code refactoring
 * version 0.0.12 expirienced some cocoapods issues, so they are fixed in 0.0.13 - please use this version instead
