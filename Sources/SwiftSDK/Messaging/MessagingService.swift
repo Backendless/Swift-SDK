@@ -357,11 +357,11 @@
         RTMethod.shared.sendCommand(type: PUB_SUB_COMMAND, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
     }
     
-    open func sendEmails(templateName: String, envelope: EmailEnvelope, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    open func sendEmailFromTemplate(templateName: String, envelope: EmailEnvelope, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         sendEmailsTemplate(templateName: templateName, templateValues: nil, envelope: envelope, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func sendEmails(templateName: String, templateValues: [String : String], envelope: EmailEnvelope, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    open func sendEmailFromTemplate(templateName: String, templateValues: [String : String], envelope: EmailEnvelope, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         sendEmailsTemplate(templateName: templateName, templateValues: templateValues, envelope: envelope, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
