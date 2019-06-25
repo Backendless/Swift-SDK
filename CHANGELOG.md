@@ -1,7 +1,11 @@
 # RELEASE HISTORY
 
 ### 0.0.14 / ?, 2019
-* the sendEmails functions renamed into the sendEmailFromTemplate
+* the sendEmails functions renamed into the sendEmailFromTemplate:
+```
+func sendEmailFromTemplate(templateName: String, envelope: EmailEnvelope, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!)
+func sendEmailFromTemplate(templateName: String, templateValues: [String : String], envelope: EmailEnvelope, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!)
+```
 
 ### 0.0.13 / June, 21 2019
 * the EmailEnvelope signatures changed
