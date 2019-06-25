@@ -1,21 +1,28 @@
 # RELEASE HISTORY
 
-### 0.0.13, / June, 21 2019
+### 0.0.14 / ?, 2019
+* the sendEmails functions renamed into the sendEmailFromTemplate:
+```
+func sendEmailFromTemplate(templateName: String, envelope: EmailEnvelope, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!)
+func sendEmailFromTemplate(templateName: String, templateValues: [String : String], envelope: EmailEnvelope, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!)
+```
+
+### 0.0.13 / June, 21 2019
 * the EmailEnvelope signatures changed
 * code refactoring
 * version 0.0.12 expirienced some cocoapods issues, so they are fixed in 0.0.13 - please use this version instead
 
-### 0.0.12, / June, 19 2019
+### 0.0.12 / June, 19 2019
 * added the SearchMatchesResult class
 * fixed the relativeFind method to return SearchMatchesResult correctly
 * added serializations/deserialization for class SearchMatchesResult
 * added distance field in class GeoPoint
 
-### 0.0.11, / June, 18 2019
+### 0.0.11 / June, 18 2019
 * fixed the GeoPoint saving issue which caused crash when sending custom object in metadata
 * customized serialization/deserialization for the next classes: DeliveryOptions, GeoPoint, GeoQueryRectangle
 
-### 0.0.10, / June, 12 2019
+### 0.0.10 / June, 12 2019
 * fixed password issue when updating the BackendlessUser objects
 * fixed Date type issue when retrieving object or registering BackendlessUser with custom Date field
 * fixed the BackendlessUser properties methods
@@ -28,7 +35,7 @@ func pushWithTemplate(templateName: String, templateValues: [String : Any], resp
 func sendCommand(commandType: String, data: Any?, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!)
 ```
 
-### 0.0.9, / June, 6 2019
+### 0.0.9 / June, 6 2019
 * added IEmailEnvelope protocol, EmailEnvelope, EnvelopeWithRecepients and EnvelopeWithQuery classes
 * added functions to MessagingService:
 ```
@@ -38,7 +45,7 @@ func sendEmails(templateName: String, templateValues: [String : String], envelop
 ```
 * added groups support for push notifications (for iOS 12+)
 
-### 0.0.8, / June, 4 2019
+### 0.0.8 / June, 4 2019
 * the AtomicCounters compareAndSet function fixed to return Bool in response instead of Int
 * added functions to UserService:
 ```
@@ -47,7 +54,7 @@ func loginWithTwitter(authToken: String, authTokenSecret: String, fieldsMapping:
 func resendEmailConfirmation(email: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!)
 ```
 
-### 0.0.7, / May, 28 2019
+### 0.0.7 / May, 28 2019
 * fixed bug in the CacheService methods when key contains spaces
 * fixed crashes in DataPermission when object is Dictionary
 * added the segmentQuery property to the DeliveryOptions
@@ -61,7 +68,7 @@ init(from decoder: Decoder) throws
 func encode(to encoder: Encoder) throws
 ```
 
-### 0.0.6, / May, 21 2019
+### 0.0.6 / May, 21 2019
 * added functions to FileService:
 ```
 func exists(path: String, responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!)
