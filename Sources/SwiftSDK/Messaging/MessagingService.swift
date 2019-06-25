@@ -369,10 +369,10 @@
         let headers = ["Content-Type": "application/json"]
         var parameters = [String : Any]()        
         parameters["template-name"] = templateName
-        parameters["addresses"] = envelope.getTo()
-        parameters["cc-addresses"] = envelope.getCc()
-        parameters["bcc-addresses"] = envelope.getBcc()
-        parameters["criteria"] = envelope.getRecipientsQuery()
+        parameters["addresses"] = envelope.to
+        parameters["cc-addresses"] = envelope.cc
+        parameters["bcc-addresses"] = envelope.bcc
+        parameters["criteria"] = envelope.query
         if let templateValues = templateValues {
             parameters["template-values"] = templateValues
         }

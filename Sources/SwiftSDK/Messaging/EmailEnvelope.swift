@@ -21,52 +21,29 @@
 
 @objcMembers open class EmailEnvelope: NSObject {
     
-    private var to = [String]()
-    private var cc = [String]()
-    private var bcc = [String]()
-    private var recipientsQuery: String?
+    open var to: [String]?
+    open var cc: [String]?
+    open var bcc: [String]?
+    open var query: String?
     
     open func addTo(to: [String]) {
-        self.to.append(contentsOf: to)
-    }
-    
-    open func setTo(to: [String]) {
-        self.to = to
-    }
-    
-    open func getTo() -> [String] {
-        return self.to
+        if self.to == nil {
+            self.to = [String]()
+        }
+        self.to!.append(contentsOf: to)
     }
     
     open func addCc(cc: [String]) {
-        self.cc.append(contentsOf: cc)
-    }
-    
-    open func setCc(cc: [String]) {
-        self.cc = cc
-    }
-    
-    open func getCc() -> [String] {
-        return self.cc
+        if self.cc == nil {
+            self.cc = [String]()
+        }
+        self.cc!.append(contentsOf: cc)
     }
     
     open func addBcc(bcc: [String]) {
-        self.bcc.append(contentsOf: bcc)
-    }
-    
-    open func setBcc(bcc: [String]) {
-        self.bcc = bcc
-    }
-    
-    open func getBcc() -> [String] {
-        return self.bcc
-    }
-    
-    open func setRecipientsQuery(recipientsQuery: String) {
-        self.recipientsQuery = recipientsQuery
-    }
-    
-    open func getRecipientsQuery() -> String? {
-        return self.recipientsQuery
+        if self.bcc == nil {
+            self.bcc = [String]()
+        }
+        self.bcc!.append(contentsOf: bcc)
     }
 }
