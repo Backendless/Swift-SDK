@@ -1,5 +1,12 @@
 # RELEASE HISTORY
 
+### 0.0.15 / ?, 2019
+* added methods to GeoService:
+```
+func getFencePointsCount(geoFenceName: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
+func getFencePointsCount(geoFenceName: String, geoQuery: BackendlessGeoQuery, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
+```
+
 ### 0.0.14 / June 25, 2019
 * the sendEmails functions renamed into the sendEmailFromTemplate:
 ```

@@ -275,6 +275,32 @@
         return restMethod
     }
     
+    // **********************************
+    
+    open func getFencePointsCount(geoFenceName: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        getFenceGeoPointsCount(geoFenceName: geoFenceName, geoQuery: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    open func getFencePointsCount(geoFenceName: String, geoQuery: BackendlessGeoQuery, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        getFenceGeoPointsCount(geoFenceName: geoFenceName, geoQuery: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    private func getFenceGeoPointsCount(geoFenceName: String, geoQuery: BackendlessGeoQuery?, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        let restMethod = createRestMethod(restMethod: "geo/count?geoFence=\(dataTypesUtils.stringToUrlString(originalString: geoFenceName))", geoQuery: geoQuery)
+        BackendlessRequestManager(restMethod: restMethod, httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = self.processResponse.adapt(response: response, to: Int.self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+            }
+            else {
+                responseHandler(self.dataTypesUtils.dataToInt(data: response.data!))
+            }
+        })
+    }
+    
+    // **********************************
+    
     open func getFencePoints(geoFenceName: String, responseHandler: (([GeoPoint]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         getFenceGeoPoints(geoFenceName: geoFenceName, geoQuery: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
