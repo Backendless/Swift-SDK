@@ -86,6 +86,8 @@
         case clusterGridSize
     }
     
+    public override init() { }
+    
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         geoPoint = try container.decodeIfPresent(GeoPoint.self, forKey: .geoPoint)
