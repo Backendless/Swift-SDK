@@ -1,6 +1,6 @@
 # RELEASE HISTORY
 
-### 0.0.15 / ?, 2019
+### 0.0.15 / July 1, 2019
 * added methods to GeoService:
 ```
 func getFencePointsCount(geoFenceName: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
