@@ -358,14 +358,14 @@
     }
     
     open func sendEmailFromTemplate(templateName: String, envelope: EmailEnvelope, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        sendEmailsTemplate(templateName: templateName, templateValues: nil, envelope: envelope, responseHandler: responseHandler, errorHandler: errorHandler)
+        sendEmailsTemplate(templateName: templateName, envelope: envelope, templateValues: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func sendEmailFromTemplate(templateName: String, templateValues: [String : String], envelope: EmailEnvelope, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        sendEmailsTemplate(templateName: templateName, templateValues: templateValues, envelope: envelope, responseHandler: responseHandler, errorHandler: errorHandler)
+    open func sendEmailFromTemplate(templateName: String, envelope: EmailEnvelope, templateValues: [String : String], responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        sendEmailsTemplate(templateName: templateName, envelope: envelope, templateValues: templateValues, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    private func sendEmailsTemplate(templateName: String, templateValues: [String : String]?, envelope: EmailEnvelope, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    private func sendEmailsTemplate(templateName: String, envelope: EmailEnvelope, templateValues: [String : String]?,  responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         var parameters = [String : Any]()        
         parameters["template-name"] = templateName

@@ -19,12 +19,37 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class EmailEnvelope: NSObject {
+@objcMembers open class EmailEnvelope: NSObject, Codable {
     
     open var to: [String]?
     open var cc: [String]?
     open var bcc: [String]?
     open var query: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case to
+        case cc
+        case bcc
+        case query
+    }
+    
+    public override init() { }
+    
+    required public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        to = try container.decodeIfPresent([String].self, forKey: .to)
+        cc = try container.decodeIfPresent([String].self, forKey: .cc)
+        bcc = try container.decodeIfPresent([String].self, forKey: .bcc)
+        query = try container.decodeIfPresent(String.self, forKey: .query)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)        
+        try container.encodeIfPresent(to, forKey: .to)
+        try container.encodeIfPresent(cc, forKey: .cc)
+        try container.encodeIfPresent(bcc, forKey: .bcc)
+        try container.encodeIfPresent(query, forKey: .query)
+    }
     
     open func addTo(to: [String]) {
         if self.to == nil {

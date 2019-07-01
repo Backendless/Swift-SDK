@@ -1,10 +1,15 @@
 # RELEASE HISTORY
 
-### 0.0.15 / ?, 2019
+### 0.0.15 / July 1, 2019
 * added methods to GeoService:
 ```
 func getFencePointsCount(geoFenceName: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
 func getFencePointsCount(geoFenceName: String, geoQuery: BackendlessGeoQuery, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
+```
+* the sendEmailFromTemplate functions signatures changed:
+```
+func sendEmailFromTemplate(templateName: String, envelope: EmailEnvelope, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!)
+func sendEmailFromTemplate(templateName: String, envelope: EmailEnvelope, templateValues: [String : String], responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!)
 ```
 
 ### 0.0.14 / June 25, 2019
