@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 0.0.16 / ?, 2019
+* added Codable and NSCoding support for LoadRelationsQueryBuilder
+
 ### 0.0.15 / July 1, 2019
 * added methods to GeoService:
 ```

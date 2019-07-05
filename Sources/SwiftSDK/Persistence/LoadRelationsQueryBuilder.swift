@@ -22,7 +22,6 @@
 @objcMembers open class LoadRelationsQueryBuilder: NSObject, Codable {
    
     private var entityClass: Any?
-    private var tableName: String?
     
     private var relationName: String?
     private var properties: [String]?
@@ -40,17 +39,29 @@
         case offset
     }
     
-    private override init() { }
-    
-    public init(tableName: String) {
-        self.tableName = tableName
+    required public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        relationName = try container.decodeIfPresent(String.self, forKey: .relationName)
+        properties = try container.decodeIfPresent([String].self, forKey: .properties)
+        sortBy = try container.decodeIfPresent([String].self, forKey: .sortBy)
+        pageSize = try container.decodeIfPresent(Int.self, forKey: .pageSize) ?? 10
+        offset = try container.decodeIfPresent(Int.self, forKey: .offset) ?? 0
     }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(relationName, forKey: .relationName)
+        try container.encodeIfPresent(properties, forKey: .properties)
+        try container.encodeIfPresent(sortBy, forKey: .sortBy)
+        try container.encode(pageSize, forKey: .pageSize)
+        try container.encode(offset, forKey: .offset)
+    }
+    
+    public override init() { }
     
     public init(entityClass: Any) {
         super.init()
         self.entityClass = entityClass
-        let tableName = persistenceServiceUtils.getTableName(entity: self.entityClass!)
-        self.tableName = tableName
     }
     
     open func setRelationName(relationName: String) {
