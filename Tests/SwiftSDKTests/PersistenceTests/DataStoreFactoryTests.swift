@@ -690,8 +690,7 @@ class DataStoreFactoryTests: XCTestCase {
                         XCTAssertNotNil(relations)
                         XCTAssert(Int(exactly: relations) == 1)
                         // retrieve relation
-                        let queryBuilder = LoadRelationsQueryBuilder(entityClass: ChildTestClass.self)
-                        queryBuilder.setRelationName(relationName: "child")
+                        let queryBuilder = LoadRelationsQueryBuilder(entityClass: ChildTestClass.self, relationName: "child")
                         queryBuilder.setPageSize(pageSize: 1)
                         queryBuilder.setProperties(properties: ["foo"])
                         queryBuilder.setSortBy(sortBy: ["foo"])

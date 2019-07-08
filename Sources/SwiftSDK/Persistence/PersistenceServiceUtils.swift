@@ -335,8 +335,12 @@ class PersistenceServiceUtils: NSObject {
         if let props = queryBuilder.getProperties() {
             parameters["props"] = dataTypesUtils.arrayToString(array: props)
         }
-        if let relationName = queryBuilder.getRelationName() {
-            BackendlessRequestManager(restMethod: "data/\(tableName)/\(objectId)/\(relationName)/load", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+        if queryBuilder.getRelationName().isEmpty {
+            let fault = Fault(message: "Incorrect relationName property", faultCode: 0)
+            errorHandler(fault)
+        }
+        else {
+            BackendlessRequestManager(restMethod: "data/\(tableName)/\(objectId)/\(queryBuilder.getRelationName())/load", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
                 if let result = self.processResponse.adapt(response: response, to: [JSON].self) {
                     if result is Fault {
                         errorHandler(result as! Fault)
