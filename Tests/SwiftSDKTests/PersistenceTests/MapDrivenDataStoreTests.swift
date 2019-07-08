@@ -587,8 +587,7 @@ class MapDrivenDataStoreTests: XCTestCase {
                         XCTAssertNotNil(relations)
                         XCTAssert(Int(exactly: relations) == 2)
                         // retrieve relation
-                        let queryBuilder = LoadRelationsQueryBuilder()
-                        queryBuilder.setRelationName(relationName: "children")
+                        let queryBuilder = LoadRelationsQueryBuilder(relationName: "children")
                         queryBuilder.setPageSize(pageSize: 2)
                         queryBuilder.setOffset(offset: 1)
                         queryBuilder.setProperties(properties: ["foo"])
