@@ -29,7 +29,7 @@ class RTFactory: NSObject {
         return EventHandlerForMap(tableName: tableName)
     }
     
-    func creteEventHandlerForClass(entityClass: Any, tableName: String) -> EventHandlerForClass {
+    func creteEventHandlerForClass(entityClass: AnyClass, tableName: String) -> EventHandlerForClass {
         return EventHandlerForClass(entityClass: entityClass, tableName: tableName)
     }
     

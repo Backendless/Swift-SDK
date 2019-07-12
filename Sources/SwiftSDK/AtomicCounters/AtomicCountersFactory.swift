@@ -21,7 +21,6 @@
 
 class AtomicCountersFactory: IAtomic {
     
-    private let defaultName = "DEFAULT_NAME"
     private var counterName: String!
     
     private init() { } 

@@ -30,9 +30,7 @@
     var onError: ((Fault) -> Void)?
     var onStop: ((RTSubscription) -> Void)?
     var ready = false
-    
-    private let rtClient = RTClient.shared
-    
+
     func subscribe() {       
         if let data = self.data {
             RTClient.shared.subscribe(data: data, subscription: self)
@@ -40,8 +38,8 @@
     }
     
     open func stop() {
-        if let index = rtClient.waitingSubscriptions.firstIndex(where: { $0.subscriptionId == self.subscriptionId }) {
-            rtClient.removeWaitingSubscription(index: index)
+        if let index = RTClient.shared.waitingSubscriptions.firstIndex(where: { $0.subscriptionId == self.subscriptionId }) {
+            RTClient.shared.removeWaitingSubscription(index: index)
         }
         RTClient.shared.unsubscribe(subscriptionId: self.subscriptionId!)
         if self.onStop != nil {

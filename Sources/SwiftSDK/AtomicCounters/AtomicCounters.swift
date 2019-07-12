@@ -21,9 +21,6 @@
 
 @objcMembers open class AtomicCounters: NSObject {
     
-    private let processResponse = ProcessResponse.shared
-    private let dataTypeUtils = DataTypesUtils.shared
-    
     open func of(counterName: String) -> IAtomic {
         return AtomicCountersFactory(counterName: nameToUrlString(counterName: counterName))
     }
@@ -53,7 +50,7 @@
     }
     
     open func compareAndSet(counterName: String, expected: Int, updated: Int, responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        BackendlessRequestManager(restMethod: "counters/\(nameToUrlString(counterName: counterName))/get/compareandset?expected=\(expected)&updatedvalue=\(updated)", httpMethod: .PUT, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+        BackendlessRequestManager(restMethod: "counters/\(nameToUrlString(counterName: counterName))/get/compareandset?expected=\(expected)&updatedvalue=\(updated)", httpMethod: .put, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let responseData = response.data {
                 do {
                     responseHandler(try JSONSerialization.jsonObject(with: responseData, options: .allowFragments) as! Bool)
@@ -61,28 +58,28 @@
                 catch {
                     let faultCode = response.response?.statusCode
                     let faultMessage = error.localizedDescription
-                    errorHandler(self.processResponse.faultConstructor(faultMessage, faultCode: faultCode!))
+                    errorHandler(ProcessResponse.shared.faultConstructor(faultMessage, faultCode: faultCode!))
                 }
             }
         })
     }
     
     open func get(counterName: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        BackendlessRequestManager(restMethod: "counters/\(nameToUrlString(counterName: counterName))", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: Int.self) {
+        BackendlessRequestManager(restMethod: "counters/\(nameToUrlString(counterName: counterName))", httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
             }
             else {
-                responseHandler(self.dataTypeUtils.dataToInt(data: response.data!))
+                responseHandler(DataTypesUtils.shared.dataToInt(data: response.data!))
             }
         })
     }
     
     open func reset(counterName: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        BackendlessRequestManager(restMethod: "counters/\(nameToUrlString(counterName: counterName))/reset", httpMethod: .PUT, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: NoReply.self) {
+        BackendlessRequestManager(restMethod: "counters/\(nameToUrlString(counterName: counterName))/reset", httpMethod: .put, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: NoReply.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -94,20 +91,20 @@
     }
     
     private func executeCounterMethod(restMethod: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        BackendlessRequestManager(restMethod: restMethod, httpMethod: .PUT, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: Int.self) {
+        BackendlessRequestManager(restMethod: restMethod, httpMethod: .put, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
             }
             else {
-                responseHandler(self.dataTypeUtils.dataToInt(data: response.data!))
+                responseHandler(DataTypesUtils.shared.dataToInt(data: response.data!))
             }
             
         })
     }
     
     private func nameToUrlString(counterName: String) -> String {
-        return dataTypeUtils.stringToUrlString(originalString: counterName)
+        return DataTypesUtils.shared.stringToUrlString(originalString: counterName)
     }
 }

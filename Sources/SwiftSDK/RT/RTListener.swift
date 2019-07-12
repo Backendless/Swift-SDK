@@ -56,12 +56,12 @@
         subscription.onStop = onStop
         subscription.ready = false
         
-        var typeName = RSO_CONNECT
+        var typeName = rtTypes.rsoConnect
         if options["channel"] != nil {
-            typeName = PUB_SUB_CONNECT
+            typeName = rtTypes.pubSubConnect
         }    
         if let name = data["name"] as? String,
-            name != PUB_SUB_CONNECT, name != RSO_CONNECT {
+            name != rtTypes.pubSubConnect, name != rtTypes.rsoConnect {
             if let event = (data["options"] as! [String : Any])["event"] as? String {
                 typeName = event
             }
@@ -85,17 +85,17 @@
         if let whereClause = whereClause {
             options["whereClause"] = whereClause
         }
-        if event == CREATED || event == UPDATED || event == DELETED {
+        if event == rtEventHandlers.created || event == rtEventHandlers.updated || event == rtEventHandlers.deleted {
             let wrappedBlock: (Any) -> () = { response in
                 if let response = response as? [String : Any] {
                     responseHandler(response)
                 }
             }
-            let subscription = createSubscription(type: OBJECTS_CHANGES, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            let subscription = createSubscription(type: rtTypes.objectChanges, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
             RTClient.shared.subscribe(data: subscription.data!, subscription: subscription)
             return subscription
         }
-        else if event == BULK_CREATED {
+        else if event == rtEventHandlers.bulkCreated {
             // return value is [String] but wrapped in [String : Any] to make this the subscribeForObjectChanges method universal
             let wrappedBlock: (Any) -> () = { response in
                 if let response = response as? [String] {
@@ -106,27 +106,27 @@
                     responseHandler(responseDictionary)
                 }
             }
-            let subscription = createSubscription(type: OBJECTS_CHANGES, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            let subscription = createSubscription(type: rtTypes.objectChanges, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
             RTClient.shared.subscribe(data: subscription.data!, subscription: subscription)
             return subscription
         }
-        else if event == BULK_UPDATED {
+        else if event == rtEventHandlers.bulkUpdated {
             let wrappedBlock: (Any) -> () = { response in
                 if let response = response as? [String : Any] {
                     responseHandler(response)
                 }
             }
-            let subscription = createSubscription(type: OBJECTS_CHANGES, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            let subscription = createSubscription(type: rtTypes.objectChanges, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
             RTClient.shared.subscribe(data: subscription.data!, subscription: subscription)
             return subscription
         }
-        else if event == BULK_DELETED {
+        else if event == rtEventHandlers.bulkDeleted {
             let wrappedBlock: (Any) -> () = { response in
                 if let response = response as? [String : Any] {
                     responseHandler(response)
                 }
             }
-            let subscription = createSubscription(type: OBJECTS_CHANGES, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            let subscription = createSubscription(type: rtTypes.objectChanges, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
             RTClient.shared.subscribe(data: subscription.data!, subscription: subscription)
             return subscription
         }
