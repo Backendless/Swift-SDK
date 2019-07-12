@@ -131,7 +131,7 @@
             if let data = data {
                 options["data"] = JSONUtils.shared.objectToJSON(objectToParse: data)
             }
-            RTMethod.shared.sendCommand(type: PUB_SUB_COMMAND, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            RTMethod.shared.sendCommand(type: rtTypes.pubSubCommand, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
     }
 }

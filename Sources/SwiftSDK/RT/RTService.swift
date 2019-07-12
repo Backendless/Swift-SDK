@@ -21,17 +21,15 @@
 
 @objcMembers open class RTService: NSObject {
     
-    private let rtClient = RTClient.shared
-    
     open func addConnectEventListener(responseHandler: (() -> Void)!) -> RTSubscription {
         let wrappedBlock: (Any) -> () = { response in
             responseHandler()
         }
-        return rtClient.addEventListener(type: rtClient.CONNECT_EVENT, responseHandler: wrappedBlock)
+        return RTClient.shared.addEventListener(type: connectEvents.connect, responseHandler: wrappedBlock)
     }
     
     open func removeConnectEventListeners() {
-        rtClient.removeEventListeners(type: rtClient.CONNECT_EVENT)
+        RTClient.shared.removeEventListeners(type: connectEvents.connect)
     }
     
     open func addConnectErrorEventListener(responseHandler: ((String) -> Void)!) -> RTSubscription {
@@ -40,11 +38,11 @@
                 responseHandler(response)
             }
         }
-        return rtClient.addEventListener(type: rtClient.CONNECT_ERROR_EVENT, responseHandler: wrappedBlock)
+        return RTClient.shared.addEventListener(type: connectEvents.connectError, responseHandler: wrappedBlock)
     }
     
     open func removeConnectErrorEventListeners() {
-        rtClient.removeEventListeners(type: rtClient.CONNECT_ERROR_EVENT)
+        RTClient.shared.removeEventListeners(type: connectEvents.connectError)
     }
 
     open func addDisсonnectEventListener(responseHandler: ((String) -> Void)!) -> RTSubscription {
@@ -53,11 +51,11 @@
                 responseHandler(response)
             }
         }
-        return rtClient.addEventListener(type: rtClient.DISCONNECT_EVENT, responseHandler: wrappedBlock)
+        return RTClient.shared.addEventListener(type: connectEvents.disconnect, responseHandler: wrappedBlock)
     }
 
     open func removeDisconnectEventListeners() {
-        rtClient.removeEventListeners(type: rtClient.DISCONNECT_EVENT)
+        RTClient.shared.removeEventListeners(type: connectEvents.disconnect)
     }
 
     open func addReconnectAttemptEventListener(responseHandler: ((ReconnectAttemptObject) -> Void)!) -> RTSubscription {
@@ -66,11 +64,11 @@
                 responseHandler(response)
             }
         }
-        return rtClient.addEventListener(type: rtClient.RECONNECT_ATTEMPT_EVENT, responseHandler: wrappedBlock)
+        return RTClient.shared.addEventListener(type: connectEvents.reconnectAttempt, responseHandler: wrappedBlock)
     }
 
     open func removeReconnectAttemptEventListeners() {
-        rtClient.removeEventListeners(type: rtClient.RECONNECT_ATTEMPT_EVENT)
+        RTClient.shared.removeEventListeners(type: connectEvents.reconnectAttempt)
     }
 
     open func removeConnectionListeners() {

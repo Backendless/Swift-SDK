@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 0.0.17 / ?, 2019
+* code refactoring
+
 ### 0.0.16 / July 8, 2019
 * added Codable and NSCoding support for LoadRelationsQueryBuilder
 * LoadRelationsQueryBuilder initializers updated

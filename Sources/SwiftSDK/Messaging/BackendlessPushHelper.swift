@@ -28,8 +28,6 @@ import UserNotifications
     
     public static let shared = BackendlessPushHelper()
     
-    private let fileManagerHelper = FileManagerHelper.shared
-    
     private override init() { }
     
     open func processMutableContent(request: UNNotificationRequest, contentHandler: @escaping (UNNotificationContent) -> Void) {
@@ -79,7 +77,7 @@ import UserNotifications
     
     func prepareRequestWithTemplate(request: UNNotificationRequest) -> UNNotificationRequest {
         let templateName = request.content.userInfo["template_name"] as! String
-        let iosPushTemplates = fileManagerHelper.getPushTemplates()
+        let iosPushTemplates = FileManagerHelper.shared.getPushTemplates()
         let iosPushTemplate = iosPushTemplates[templateName] as! [String : Any]
         return createRequestFromTemplate(iosPushTemplate: dictionaryWithoutNulls(dictionary: iosPushTemplate), request: request)
     }

@@ -25,14 +25,12 @@
     
     open var rt: EventHandlerForClass!
     
-    private var entityClass: Any
+    private var entityClass: AnyClass
     private var tableName: String
     
     private let persistenceServiceUtils = PersistenceServiceUtils()
-    private let processResponse = ProcessResponse.shared
-    private let mappings = Mappings.shared
     
-    init(entityClass: Any) {
+    init(entityClass: AnyClass) {
         self.entityClass = entityClass
         let tableName = persistenceServiceUtils.getTableName(entity: self.entityClass)
         self.tableName = tableName
@@ -43,11 +41,11 @@
     open func mapToTable(tableName: String) {
         self.tableName = tableName
         persistenceServiceUtils.setup(tableName: self.tableName)
-        mappings.mapTable(tableName: tableName, toClassNamed: persistenceServiceUtils.getClassName(entity: self.entityClass))
+        Mappings.shared.mapTable(tableName: tableName, toClassNamed: persistenceServiceUtils.getClassName(entity: self.entityClass))
     }
     
     open func mapColumn(columnName: String, toProperty: String) {
-        mappings.mapColumn(columnName: columnName, toProperty: toProperty, ofClassNamed: persistenceServiceUtils.getClassName(entity: self.entityClass))
+        Mappings.shared.mapColumn(columnName: columnName, toProperty: toProperty, ofClassNamed: persistenceServiceUtils.getClassName(entity: self.entityClass))
     }
     
     open func getObjectId(entity: Any) -> String? {
@@ -174,19 +172,19 @@
     }
     
     open func setRelation(columnName: String, parentObjectId: String, childrenObjectIds: [String], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, childrenObjectIds: childrenObjectIds, httpMethod: .POST, responseHandler: responseHandler, errorHandler: errorHandler)
+        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, childrenObjectIds: childrenObjectIds, httpMethod: .post, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     open func setRelation(columnName: String, parentObjectId: String, whereClause: String?, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, whereClause: whereClause, httpMethod: .POST, responseHandler: responseHandler, errorHandler: errorHandler)
+        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, whereClause: whereClause, httpMethod: .post, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     open func addRelation(columnName: String, parentObjectId: String, childrenObjectIds: [String], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, childrenObjectIds: childrenObjectIds, httpMethod: .PUT, responseHandler: responseHandler, errorHandler: errorHandler)
+        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, childrenObjectIds: childrenObjectIds, httpMethod: .put, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     open func addRelation(columnName: String, parentObjectId: String, whereClause: String?, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, whereClause: whereClause, httpMethod: .PUT, responseHandler: responseHandler, errorHandler: errorHandler)
+        persistenceServiceUtils.setOrAddRelation(columnName: columnName, parentObjectId: parentObjectId, whereClause: whereClause, httpMethod: .put, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     open func deleteRelation(columnName: String, parentObjectId: String, childrenObjectIds: [String], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
@@ -202,11 +200,11 @@
             var resultArray = [Any]()
             for responseObject in responseArray {
                 if responseObject["___class"] as? String == "Users",
-                    let userObject = self.processResponse.adaptToBackendlessUser(responseResult: responseObject) {
+                    let userObject = ProcessResponse.shared.adaptToBackendlessUser(responseResult: responseObject) {
                     resultArray.append(userObject as! BackendlessUser)
                 }
                 if responseObject["___class"] as? String == "DeviceRegistration" {
-                    let deviceRegistrationObject = self.processResponse.adaptToDeviceRegistration(responseResult: responseObject)
+                    let deviceRegistrationObject = ProcessResponse.shared.adaptToDeviceRegistration(responseResult: responseObject)
                     resultArray.append(deviceRegistrationObject)
                 }
                 else if let relationType = queryBuilder.getRelationType(),

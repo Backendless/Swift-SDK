@@ -25,12 +25,6 @@ class RTClient: NSObject {
     
     static let shared = RTClient()
     
-    let CONNECT_EVENT = "CONNECT_EVENT"
-    let CONNECT_ERROR_EVENT = "CONNECT_ERROR_EVENT"
-    let DISCONNECT_EVENT = "DISCONNECT_EVENT"
-    let RECONNECT_ATTEMPT_EVENT = "RECONNECT_ATTEMPT_EVENT"
-    let SET_USER_TOKEN = "SET_USER_TOKEN"
-    
     var waitingSubscriptions: [RTSubscription]
     
     private var socketManager: SocketManager?
@@ -64,7 +58,7 @@ class RTClient: NSObject {
         if onSocketConnectCallback == nil {
             onSocketConnectCallback = connected
         }
-        BackendlessRequestManager(restMethod: "rt/lookup", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+        BackendlessRequestManager(restMethod: "rt/lookup", httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if !self.socketCreated {
                 if let responseData = response.data,
                     let urlString = String(data: responseData, encoding: .utf8)?.replacingOccurrences(of: "\"", with: ""),
@@ -92,7 +86,7 @@ class RTClient: NSObject {
                     }
                 }
                 else {
-                    if let connectErrorSubscriptions = self.eventSubscriptions[self.CONNECT_ERROR_EVENT] {
+                    if let connectErrorSubscriptions = self.eventSubscriptions[connectEvents.connectError] {
                         for subscription in connectErrorSubscriptions {
                             subscription.onResult!("Lookup failed")
                         }
@@ -190,7 +184,7 @@ class RTClient: NSObject {
                 self.onResult()
                 self.onMethodResult()
                 
-                if let connectSubscriptions = self.eventSubscriptions[self.CONNECT_EVENT] {
+                if let connectSubscriptions = self.eventSubscriptions[connectEvents.connect] {
                     for connectSubscription in connectSubscriptions {
                         connectSubscription.onResult!(nil)
                     }
@@ -199,26 +193,26 @@ class RTClient: NSObject {
             
             self.socket?.on("connect_error", callback: { data, ack in
                 if let reason = data.first as? String {
-                    self.onConnectErrorOrDisconnect(reason: reason, type: self.CONNECT_ERROR_EVENT)
+                    self.onConnectErrorOrDisconnect(reason: reason, type: connectEvents.connectError)
                 }
             })
             
             self.socket?.on("connect_timeout", callback: { data, ack in
                 if let reason = data.first as? String {
-                    self.onConnectErrorOrDisconnect(reason: reason, type: self.CONNECT_ERROR_EVENT)
+                    self.onConnectErrorOrDisconnect(reason: reason, type: connectEvents.connectError)
                 }
             })
             
             self.socket?.on("error", callback: { data, ack in
                 if let reason = data.first as? String {
-                    self.onConnectErrorOrDisconnect(reason: reason, type: self.CONNECT_ERROR_EVENT)
+                    self.onConnectErrorOrDisconnect(reason: reason, type: connectEvents.connectError)
                 }
             })
             
             self.socket?.on("disconnect", callback: { data, ack in
                 self.socketManager?.disconnectSocket(self.socket!)
                 if let reason = data.first as? String {
-                    self.onConnectErrorOrDisconnect(reason: reason, type: self.DISCONNECT_EVENT)
+                    self.onConnectErrorOrDisconnect(reason: reason, type: connectEvents.disconnect)
                 }
             })
         }
@@ -236,7 +230,7 @@ class RTClient: NSObject {
     }
     
     func onReconnectAttempt() {
-        if let reconnectAttemptSubscriptions = eventSubscriptions[RECONNECT_ATTEMPT_EVENT] {
+        if let reconnectAttemptSubscriptions = eventSubscriptions[connectEvents.reconnectAttempt] {
             for subscription in reconnectAttemptSubscriptions {
                 let reconnectAttemptObject = ReconnectAttemptObject()
                 reconnectAttemptObject.attempt = NSNumber(value: self.reconnectAttempt)
@@ -344,7 +338,7 @@ class RTClient: NSObject {
     
     func userLoggedInWithToken(userToken: String?) {
         let methodId = UUID().uuidString
-        var data = ["id": methodId, "name": SET_USER_TOKEN] as [String : Any]
+        var data = ["id": methodId, "name": "SET_USER_TOKEN"] as [String : Any]
         if userToken != nil {
             data["options"] = ["userToken": userToken]
         }

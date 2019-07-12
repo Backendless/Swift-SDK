@@ -22,9 +22,9 @@
 import Foundation
 
 @objc public enum ExecutionType: Int {
-    case SYNC
-    case ASYNC
-    case ASYNC_LOW_PRIORITY
+    case sync
+    case async
+    case asyncLowPriority
 }
 
 class ExecutionTypeMethods: NSObject {

@@ -19,30 +19,38 @@
  *  ********************************************************************************************************************
  */
 
-// EventHandler
-let CREATED = "created"
-let UPDATED = "updated"
-let DELETED = "deleted"
-let BULK_CREATED = "bulk-created"
-let BULK_UPDATED = "bulk-updated"
-let BULK_DELETED = "bulk-deleted"
+enum rtEventHandlers {
+    static let created = "created"
+    static let updated = "updated"
+    static let deleted = "deleted"
+    static let bulkCreated = "bulk-created"
+    static let bulkUpdated = "bulk-updated"
+    static let bulkDeleted = "bulk-deleted"
+}
 
-// Type
-let ERROR = "ERROR"
-let OBJECTS_CHANGES = "OBJECTS_CHANGES"
-let PUB_SUB_CONNECT = "PUB_SUB_CONNECT"
-let PUB_SUB_MESSAGES = "PUB_SUB_MESSAGES"
-let SET_USER_TOKEN = "SET_USER_TOKEN"
-let PUB_SUB_COMMAND = "PUB_SUB_COMMAND"
-let PUB_SUB_COMMANDS = "PUB_SUB_COMMANDS"
-let PUB_SUB_USERS = "PUB_SUB_USERS"
-let RSO_CONNECT = "RSO_CONNECT"
-let RSO_CHANGES = "RSO_CHANGES"
-let RSO_CLEAR = "RSO_CLEAR"
-let RSO_CLEARED = "RSO_CLEARED"
-let RSO_COMMAND = "RSO_COMMAND"
-let RSO_COMMANDS = "RSO_COMMANDS"
-let RSO_USERS = "RSO_USERS"
-let RSO_GET = "RSO_GET"
-let RSO_SET = "RSO_SET"
-let RSO_INVOKE = "RSO_INVOKE"
+enum rtTypes {
+    static let error = "ERROR"
+    static let objectChanges = "OBJECTS_CHANGES"
+    static let pubSubConnect = "PUB_SUB_CONNECT"
+    static let pubSubMessages = "PUB_SUB_MESSAGES"
+    static let pubSubCommand = "PUB_SUB_COMMAND"
+    static let pubSubCommands = "PUB_SUB_COMMANDS"
+    static let pubSubUsers = "PUB_SUB_USERS"
+    static let rsoConnect = "RSO_CONNECT"
+    static let rsoChanges = "RSO_CHANGES"
+    static let rsoClear = "RSO_CLEAR"
+    static let rsoCleared = "RSO_CLEARED"
+    static let rsoCommand = "RSO_COMMAND"
+    static let rsoCommands = "RSO_COMMANDS"
+    static let rsoUsers = "RSO_USERS"
+    static let rsoGet = "RSO_GET"
+    static let rsoSet = "RSO_SET"
+    static let rsoInvoke = "RSO_INVOKE"
+}
+
+enum connectEvents {
+    static let connect = "CONNECT_EVENT"
+    static let connectError = "CONNECT_ERROR_EVENT"
+    static let disconnect = "DISCONNECT_EVENT"
+    static let reconnectAttempt = "RECONNECT_ATTEMPT_EVENT"
+}

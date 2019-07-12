@@ -32,12 +32,9 @@
     
     private var currentUser: BackendlessUser?
     
-    private let processResponse = ProcessResponse.shared
-    private let userDefaultsHelper = UserDefaultsHelper.shared
-    
     open func describeUserClass(responseHandler: (([UserProperty]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        BackendlessRequestManager(restMethod: "users/userclassprops", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: [UserProperty].self) {
+        BackendlessRequestManager(restMethod: "users/userclassprops", httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: [UserProperty].self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -58,8 +55,8 @@
         parameters["email"] = user.email
         parameters["password"] = user._password
         parameters["name"] = user.name        
-        BackendlessRequestManager(restMethod: "users/register", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: BackendlessUser.self) {
+        BackendlessRequestManager(restMethod: "users/register", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: BackendlessUser.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -73,8 +70,8 @@
     open func login(identity: String, password: String, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = ["login": identity, "password": password]
-        BackendlessRequestManager(restMethod: "users/login", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: BackendlessUser.self) {
+        BackendlessRequestManager(restMethod: "users/login", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: BackendlessUser.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -89,8 +86,8 @@
     open func logingWithFacebook(accessToken: String, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = ["accessToken": accessToken, "fieldsMapping": fieldsMapping] as [String : Any]
-        BackendlessRequestManager(restMethod: "users/social/facebook/login", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: BackendlessUser.self) {
+        BackendlessRequestManager(restMethod: "users/social/facebook/login", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: BackendlessUser.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -105,8 +102,8 @@
     open func loginWithTwitter(authToken: String, authTokenSecret: String, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {        
         let headers = ["Content-Type": "application/json"]
         let parameters = ["accessToken": authToken, "accessTokenSecret": authTokenSecret, "fieldsMapping": fieldsMapping] as [String : Any]
-        BackendlessRequestManager(restMethod: "users/social/twitter/login", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: BackendlessUser.self) {
+        BackendlessRequestManager(restMethod: "users/social/twitter/login", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: BackendlessUser.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -120,8 +117,8 @@
     open func loginWithGoogle(accessToken: String, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = ["accessToken": accessToken, "fieldsMapping": fieldsMapping] as [String : Any]
-        BackendlessRequestManager(restMethod: "users/social/googleplus/login", httpMethod: .POST, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: BackendlessUser.self) {
+        BackendlessRequestManager(restMethod: "users/social/googleplus/login", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: BackendlessUser.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -135,7 +132,7 @@
     
     open func isValidUserToken(responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         if let userToken = getPersistentUserToken() {
-            BackendlessRequestManager(restMethod: "users/isvalidusertoken/\(userToken)", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            BackendlessRequestManager(restMethod: "users/isvalidusertoken/\(userToken)", httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
                 if let responseData = response.data {
                     do {
                         responseHandler(try JSONSerialization.jsonObject(with: responseData, options: .allowFragments) as! Bool)
@@ -143,7 +140,7 @@
                     catch {
                         let faultCode = response.response?.statusCode
                         let faultMessage = error.localizedDescription
-                        errorHandler(self.processResponse.faultConstructor(faultMessage, faultCode: faultCode!))
+                        errorHandler(ProcessResponse.shared.faultConstructor(faultMessage, faultCode: faultCode!))
                     }
                 }
             })
@@ -164,8 +161,8 @@
             userId = userObjectId
         }
         if !userId.isEmpty {
-            BackendlessRequestManager(restMethod: "users/\(userId)", httpMethod: .PUT, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-                if let result = self.processResponse.adapt(response: response, to: BackendlessUser.self) {
+            BackendlessRequestManager(restMethod: "users/\(userId)", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+                if let result = ProcessResponse.shared.adapt(response: response, to: BackendlessUser.self) {
                     if result is Fault {
                         errorHandler(result as! Fault)
                     }
@@ -178,15 +175,15 @@
     }
     
     open func getCurrentUser() -> BackendlessUser? {
-        if let currentUser = userDefaultsHelper.getCurrentUser() {
+        if let currentUser = UserDefaultsHelper.shared.getCurrentUser() {
             return currentUser
         }
         return self.currentUser
     }
     
     open func logout(responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        BackendlessRequestManager(restMethod: "users/logout", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            let result = self.processResponse.adapt(response: response, to: NoReply.self)
+        BackendlessRequestManager(restMethod: "users/logout", httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            let result = ProcessResponse.shared.adapt(response: response, to: NoReply.self)
             if result is Fault {
                 errorHandler(result as! Fault)
             }
@@ -198,8 +195,8 @@
     }
     
     open func restorePassword(identity: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        BackendlessRequestManager(restMethod: "users/restorepassword/\(identity)", httpMethod: .GET, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            let result = self.processResponse.adapt(response: response, to: NoReply.self)
+        BackendlessRequestManager(restMethod: "users/restorepassword/\(identity)", httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            let result = ProcessResponse.shared.adapt(response: response, to: NoReply.self)
             if result is Fault {
                 errorHandler(result as! Fault)
             }
@@ -211,8 +208,8 @@
     
     open func getUserRoles(responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers: [String: String]? = nil
-        BackendlessRequestManager(restMethod: "users/userroles", httpMethod: .GET, headers: headers, parameters: nil).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: [String].self) {
+        BackendlessRequestManager(restMethod: "users/userroles", httpMethod: .get, headers: headers, parameters: nil).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: [String].self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -224,8 +221,8 @@
     }
     
     open func resendEmailConfirmation(email: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        BackendlessRequestManager(restMethod: "users/resendconfirmation/\(email)", httpMethod: .POST, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: NoReply.self) {
+        BackendlessRequestManager(restMethod: "users/resendconfirmation/\(email)", httpMethod: .post, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: NoReply.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -243,8 +240,8 @@
     
     func resetPersistentUser() {
         self.currentUser = nil
-        userDefaultsHelper.removePersistentUser()
-        userDefaultsHelper.removeCurrentUser()
+        UserDefaultsHelper.shared.removePersistentUser()
+        UserDefaultsHelper.shared.removeCurrentUser()
         
     }
     
@@ -252,25 +249,25 @@
         var properties = self.currentUser?.getProperties()
         properties?["user-token"] = self.currentUser?.userToken
         self.currentUser?.setProperties(properties: properties!)
-        userDefaultsHelper.savePersistentUserToken(token: currentUser.userToken!)
+        UserDefaultsHelper.shared.savePersistentUserToken(token: currentUser.userToken!)
         self.currentUser = currentUser
         if self.stayLoggedIn {
-            userDefaultsHelper.saveCurrentUser(currentUser: self.currentUser!)
+            UserDefaultsHelper.shared.saveCurrentUser(currentUser: self.currentUser!)
         }
     }
     
     func getPersistentUserToken() -> String? {
-        if let userToken = userDefaultsHelper.getPersistentUserToken() {
+        if let userToken = UserDefaultsHelper.shared.getPersistentUserToken() {
             return userToken
         }
         return nil
     }
     
     func setStayLoggedIn(stayLoggedIn: Bool) {
-        userDefaultsHelper.saveStayLoggedIn(stayLoggedIn: stayLoggedIn)
+        UserDefaultsHelper.shared.saveStayLoggedIn(stayLoggedIn: stayLoggedIn)
     }
     
     func getStayLoggedIn() -> Bool {
-        return userDefaultsHelper.getStayLoggedIn()
+        return UserDefaultsHelper.shared.getStayLoggedIn()
     }
 }

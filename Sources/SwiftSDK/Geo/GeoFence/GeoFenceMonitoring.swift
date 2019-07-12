@@ -24,15 +24,16 @@ import CoreLocation
 @available(iOS 8.0, watchOS 3.0, *)
 @available(OSX, unavailable)
 @available(tvOS, unavailable)
+
 class GeoFenceMonitoring: NSObject, ILocationTrackerListener {
     
     static let shared = GeoFenceMonitoring()
     
-    private let GEOFENCE_OR_CALLBACK_IS_NOT_VALUED = "The geofence or callback is not valued"
-    private let GEOFENCE_ALREADY_MONITORING = "The geofence is already being monitored. Monitoring of the geofence must be stopped before you start it again"
-    
-    private let geoMath = GeoMath.shared
-    
+    private enum LocationErrors {
+        static let notValued = "The geofence or callback is not valued"
+        static let alreadyMonitoring = "The geofence is already being monitored. Monitoring of the geofence must be stopped before you start it again"
+    }
+
     private var onStay = [GeoFence]()
     private var pointFences = [GeoFence]()
     private var previousFences = [GeoFence]()
@@ -70,7 +71,7 @@ class GeoFenceMonitoring: NSObject, ILocationTrackerListener {
     
     func addGeoFences(geoFences: [GeoFence]?, callback: ICallback?) -> Fault? {
         if callback == nil || geoFences == nil || geoFences?.count == nil {
-            return Fault(message: GEOFENCE_OR_CALLBACK_IS_NOT_VALUED, faultCode: 0)
+            return Fault(message: LocationErrors.notValued, faultCode: 0)
         }
         for geoFence in geoFences! {
             let _ = addGeoFence(geoFence: geoFence, callback: callback!)
@@ -80,12 +81,12 @@ class GeoFenceMonitoring: NSObject, ILocationTrackerListener {
     
     func addGeoFence(geoFence: GeoFence?, callback: ICallback?) -> Fault? {
         if geoFence == nil || callback == nil {
-            return Fault(message: GEOFENCE_OR_CALLBACK_IS_NOT_VALUED, faultCode: 0)
+            return Fault(message: LocationErrors.notValued, faultCode: 0)
         }
         let fencesToCallback = self.fencesToCallback
         let _callback = fencesToCallback[geoFence!]
         if _callback != nil && _callback!.equalCallbackParameter(object: callback as Any) {
-            return Fault(message: GEOFENCE_ALREADY_MONITORING, faultCode: 0)
+            return Fault(message: LocationErrors.alreadyMonitoring, faultCode: 0)
         }
         if isDefiniteRect(nwGeoPoint: geoFence!.nwGeoPoint, seGeoPoint: geoFence!.seGeoPoint) {
             definiteRect(geoFence: geoFence!)
@@ -161,7 +162,7 @@ class GeoFenceMonitoring: NSObject, ILocationTrackerListener {
             }
             if let nwGeoPoint = geoFence.nwGeoPoint,
                 let seGeoPoint = geoFence.seGeoPoint {
-                if geoMath.isPointInRectangular(geoPoint: geoPoint, nwGeoPoint: nwGeoPoint, seGeoPoint: seGeoPoint) {
+                if GeoMath.shared.isPointInRectangular(geoPoint: geoPoint, nwGeoPoint: nwGeoPoint, seGeoPoint: seGeoPoint) {
                     return true
                 }
                 return false
@@ -170,14 +171,14 @@ class GeoFenceMonitoring: NSObject, ILocationTrackerListener {
         if geoFence.geoFenceType == .CIRCLE {
             if let geoPoint1 = geoFence.nodes?[0],
                 let geoPoint2 = geoFence.nodes?[1] {
-                let radius = geoMath.distance(latitude1: geoPoint1.latitude, longitude1: geoPoint1.longitude, latitude2: geoPoint2.latitude, longitude2: geoPoint2.longitude)
-                return geoMath.isPointInCircle(geoPoint: geoPoint, center: geoPoint1, radius: radius)
+                let radius = GeoMath.shared.distance(latitude1: geoPoint1.latitude, longitude1: geoPoint1.longitude, latitude2: geoPoint2.latitude, longitude2: geoPoint2.longitude)
+                return GeoMath.shared.isPointInCircle(geoPoint: geoPoint, center: geoPoint1, radius: radius)
             }
             return false
         }
         if geoFence.geoFenceType == .SHAPE {
             if let nodes = geoFence.nodes {
-                return geoMath.isPointInShape(geoPoint: geoPoint, shape: nodes)
+                return GeoMath.shared.isPointInShape(geoPoint: geoPoint, shape: nodes)
             }
             return false
         }
@@ -238,14 +239,14 @@ class GeoFenceMonitoring: NSObject, ILocationTrackerListener {
         if geoFence.geoFenceType == .CIRCLE {
             if let center = geoFence.nodes?[0],
                 let bounded = geoFence.nodes?[1] {
-                let outRect = geoMath.getOutRectangle(center: center, bounded: bounded)
+                let outRect = GeoMath.shared.getOutRectangle(center: center, bounded: bounded)
                 geoFence.nwGeoPoint = GeoPoint(latitude: outRect.northLatitude, longitude: outRect.westLongitude)
                 geoFence.seGeoPoint = GeoPoint(latitude: outRect.southLatitude, longitude: outRect.eastLongitude)
             }
         }
         if geoFence.geoFenceType == .SHAPE {
             if let nodes = geoFence.nodes {
-                let outRect = geoMath.getOutRectangle(geoPoints: nodes)
+                let outRect = GeoMath.shared.getOutRectangle(geoPoints: nodes)
                 geoFence.nwGeoPoint = GeoPoint(latitude: outRect.northLatitude, longitude: outRect.westLongitude)
                 geoFence.seGeoPoint = GeoPoint(latitude: outRect.southLatitude, longitude: outRect.eastLongitude)
             }

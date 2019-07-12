@@ -23,18 +23,14 @@ class LogBuffer: NSObject {
     
     static let shared = LogBuffer()
     
-    private var logMessages: [LogMessage]!
+    private var logMessages = [LogMessage]()
     private var numberOfMessages: Int = 0
     private var timeFrequency: Int = 0
-    
-    private let dataTypesUtils = DataTypesUtils.shared
-    private let processResponse = ProcessResponse.shared
     
     private var timer: Timer?
     
     private override init() {
         super.init()
-        self.logMessages = [LogMessage]()
         self.numberOfMessages = 100
         self.timeFrequency = 60 * 5 // 5 minutes
         timer = Timer.scheduledTimer(timeInterval: Double(timeFrequency), target: self, selector: #selector(LogBuffer.flush), userInfo: nil, repeats: true)
@@ -50,7 +46,7 @@ class LogBuffer: NSObject {
     }
     
     func enqueue(logger: String, level: String, message: String, exception: String?) {
-        let logMessage = LogMessage(logger: logger, level: level, timestamp: self.dataTypesUtils.dateToInt(date: Date()), message: message, exception: exception)
+        let logMessage = LogMessage(logger: logger, level: level, timestamp: DataTypesUtils.shared.dateToInt(date: Date()), message: message, exception: exception)
         self.logMessages.append(logMessage)
         
         if logMessages.count >= numberOfMessages {
@@ -63,7 +59,7 @@ class LogBuffer: NSObject {
     }
     
     @objc private func flush() {
-        if self.logMessages?.count == 0 {
+        if logMessages.count == 0 {
             return
         }
         self.reportBatch(batch: logMessages)
@@ -71,9 +67,9 @@ class LogBuffer: NSObject {
     
     private func reportBatch(batch: [LogMessage]) {
         let headers = ["Content-Type": "application/json"]
-        let parameters = processResponse.adaptToLogMessagesArrayOfDict(logMessages: batch)
+        let parameters = ProcessResponse.shared.adaptToLogMessagesArrayOfDict(logMessages: batch)
         self.logMessages.removeAll()
-        BackendlessRequestManager(restMethod: "log", httpMethod: .PUT, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+        BackendlessRequestManager(restMethod: "log", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
         })
     }
 }

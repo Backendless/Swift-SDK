@@ -46,8 +46,6 @@
 
 @objcMembers open class FilePermission: NSObject {
     
-    private let processResponse = ProcessResponse.shared
-    
     private enum PermissionType: String {
         case GRANT
         case DENY
@@ -95,8 +93,8 @@
         if let roleName = roleName {
             parameters["role"] = roleName
         }
-        BackendlessRequestManager(restMethod: "files/permissions/\(permissionType)/\(path)", httpMethod: .PUT, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            let result = self.processResponse.adapt(response: response, to: NoReply.self)
+        BackendlessRequestManager(restMethod: "files/permissions/\(permissionType)/\(path)", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+            let result = ProcessResponse.shared.adapt(response: response, to: NoReply.self)
             if result is Fault {
                 errorHandler(result as! Fault)
             }

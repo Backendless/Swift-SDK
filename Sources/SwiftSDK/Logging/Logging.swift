@@ -23,15 +23,13 @@
     
     private var loggers = [String : Logger]()
     
-    private let logBuffer = LogBuffer.shared
-    
     public override init() {
         super.init()
         loggers.removeAll()
     }
     
     open func setLogReportingPolicy(numberOfMessages: Int, timeFrequencySec: Int) {
-        logBuffer.setLogReportingPolicy(numberOfMessges: numberOfMessages, timeFrequencySec: timeFrequencySec)
+        LogBuffer.shared.setLogReportingPolicy(numberOfMessges: numberOfMessages, timeFrequencySec: timeFrequencySec)
     }
     
     open func getLoggerClass(clazz: Any) -> Logger {
@@ -48,6 +46,6 @@
     }
     
     open func flush() {
-        logBuffer.forceFlush()
+        LogBuffer.shared.forceFlush()
     }
 }

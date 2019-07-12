@@ -46,9 +46,6 @@
 
 @objcMembers open class DataPermission: NSObject {
     
-    private let persistenceServiceUtils = PersistenceServiceUtils()
-    private let processResponse = ProcessResponse.shared
-    
     private enum PermissionType: String {
         case GRANT
         case DENY
@@ -97,7 +94,7 @@
             parameters["role"] = roleName
         }
         
-        if let objectId = persistenceServiceUtils.getObjectId(entity: entity) {
+        if let objectId = PersistenceServiceUtils().getObjectId(entity: entity) {
             var tableName = ""
             
             if let entityDictionary = entity as? [String : Any],
@@ -105,11 +102,11 @@
                 tableName = className
             }
             else {
-                tableName = persistenceServiceUtils.getTableName(entity: type(of: entity))
+                tableName = PersistenceServiceUtils().getTableName(entity: type(of: entity))
             }
             
-            BackendlessRequestManager(restMethod: "data/\(tableName)/permissions/\(permissionType)/\(objectId)", httpMethod: .PUT, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-                let result = self.processResponse.adapt(response: response, to: NoReply.self)
+            BackendlessRequestManager(restMethod: "data/\(tableName)/permissions/\(permissionType)/\(objectId)", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+                let result = ProcessResponse.shared.adapt(response: response, to: NoReply.self)
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
