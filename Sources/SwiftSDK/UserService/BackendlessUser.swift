@@ -49,6 +49,11 @@
     
     public override init() {
         self.email = ""
+        
+        if var userProperties = properties.dictionaryObject {
+            userProperties["blUserLocale"] = Locale.current.languageCode
+            self.properties = JSON(userProperties)
+        }
     }
     
     required public init(from decoder: Decoder) throws {
@@ -95,14 +100,23 @@
     }
     
     open func setProperty(propertyName: String, propertyValue: Any) {
+        var value: Any?
+        
         if propertyName == "name", propertyValue is String {
             self.name = propertyValue as? String
+            value = propertyValue
         }
         else if propertyName == "email", propertyValue is String {
             self.email = propertyValue as! String
+            value = propertyValue
+        }
+        else if propertyName == "blUserLocale", propertyValue is String {
+            if (propertyValue as! String).count == 2 {
+                value = propertyValue
+            }
         }
         var userProperties = getProperties()
-        userProperties[propertyName] = propertyValue
+        userProperties[propertyName] = value
         self.properties = JSON(userProperties)
     }
     
@@ -110,6 +124,10 @@
         for property in properties {
             setProperty(propertyName: property.key, propertyValue: property.value)
         }
+    }
+    
+    open func setLocale(languageCode: String) {
+        setProperty(propertyName: "blUserLocale", propertyValue: languageCode)
     }
     
     open func removeProperty(propertyName: String) {
