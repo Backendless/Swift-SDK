@@ -100,7 +100,7 @@
     }
     
     open func setProperty(propertyName: String, propertyValue: Any) {
-        var value: Any?
+        var value = propertyValue
         
         if propertyName == "name", propertyValue is String {
             self.name = propertyValue as? String
