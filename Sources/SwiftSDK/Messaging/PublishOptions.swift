@@ -19,12 +19,12 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class PublishOptions: NSObject, Codable {
+@objcMembers public class PublishOptions: NSObject, Codable {
     
-    open var publisherId: String?
+    public var publisherId: String?
     
     private var _headers: JSON?
-    open private(set) var headers: [String : Any]? {
+    public private(set) var headers: [String : Any]? {
         get {
             return _headers?.dictionaryObject
         }
@@ -43,18 +43,18 @@
         self.headers = ["ios-content-available": "1"]
     }
     
-    open func setHeaders(headers: [String : Any]) {
+    public func setHeaders(headers: [String : Any]) {
         self.headers = headers
     }
     
     
-    open func addHeader(name: String, value: Any) {
+    public func addHeader(name: String, value: Any) {
         if self.headers != nil {
             self.headers![name] = value
         }
     }
     
-    open func removeHeader(name: String) {
+    public func removeHeader(name: String) {
         if self.headers != nil {
             self.headers!.removeValue(forKey: name)
         }

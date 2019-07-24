@@ -19,10 +19,10 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class InvokeObject: NSObject {
+@objcMembers public class InvokeObject: NSObject {
     
-    open var method: String?
-    open var args: [Any]?
-    open var connectionId: String?
-    open var userId: String?
+    public var method: String?
+    public var args: [Any]?
+    public var connectionId: String?
+    public var userId: String?
 }

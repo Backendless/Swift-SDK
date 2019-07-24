@@ -19,10 +19,10 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class GeoQueryRectangle: NSObject, Codable {
+@objcMembers public class GeoQueryRectangle: NSObject, Codable {
     
-    open private(set) var nordWestPoint: GeoPoint?
-    open private(set) var southEastPoint: GeoPoint?
+    public private(set) var nordWestPoint: GeoPoint?
+    public private(set) var southEastPoint: GeoPoint?
     
     private override init() { }
     

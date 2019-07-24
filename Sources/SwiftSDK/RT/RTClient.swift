@@ -27,6 +27,9 @@ class RTClient: NSObject {
     
     var waitingSubscriptions: [RTSubscription]
     
+    private let backendless = Backendless.shared
+    private let deviceHelper = DeviceHelper.shared
+    
     private var socketManager: SocketManager?
     private var socket: SocketIOClient?
     private var subscriptions: [String : RTSubscription]
@@ -63,17 +66,17 @@ class RTClient: NSObject {
                 if let responseData = response.data,
                     let urlString = String(data: responseData, encoding: .utf8)?.replacingOccurrences(of: "\"", with: ""),
                     let url = URL(string: urlString) {
-                    let path = "/" + Backendless.shared.getApplictionId()
+                    let path = "/" + self.backendless.getApplictionId()
                     
                     var clientId = ""
                     #if os(iOS) || os(tvOS)
-                    clientId = DeviceHelper.shared.deviceId
+                    clientId = self.deviceHelper.deviceId
                     #elseif os(OSX)
-                    clientId = DeviceHelper.shared.deviceId
+                    clientId = deviceHelper.deviceId
                     #endif
                     
-                    var connectParams = ["apiKey": Backendless.shared.getApiKey(), "clientId": clientId]
-                    if let userToken = Backendless.shared.userService.getCurrentUser()?.userToken {
+                    var connectParams = ["apiKey": self.backendless.getApiKey(), "clientId": clientId]
+                    if let userToken = self.backendless.userService.getCurrentUser()?.userToken {
                         connectParams["userToken"] = userToken
                     }
                     self.socketManager = SocketManager(socketURL: url, config: ["path": path, "connectParams": connectParams])

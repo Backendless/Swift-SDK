@@ -23,6 +23,8 @@ class ProcessResponse: NSObject {
     
     static let shared = ProcessResponse()
     
+    private let jsonUtils = JSONUtils.shared
+    
     private override init() { }
     
     func adapt<T>(response: ReturnedResponse, to: T.Type) -> Any? where T: Decodable {
@@ -254,7 +256,7 @@ class ProcessResponse: NSObject {
             commandObject.userId = userId
         }
         if let data = commandObjectDictionary["data"] {
-            commandObject.data = JSONUtils.shared.JSONToObject(objectToParse: data)
+            commandObject.data = jsonUtils.JSONToObject(objectToParse: data)
         }
         return commandObject
     }
@@ -276,7 +278,7 @@ class ProcessResponse: NSObject {
             sharedObjectChanges.key = key
         }
         if let data = sharedObjectChangesDictionary["data"] {
-            sharedObjectChanges.data = JSONUtils.shared.JSONToObject(objectToParse: data)
+            sharedObjectChanges.data = jsonUtils.JSONToObject(objectToParse: data)
         }
         if let connectionId = sharedObjectChangesDictionary["connectionId"] as? String {
             sharedObjectChanges.connectionId = connectionId
@@ -310,7 +312,7 @@ class ProcessResponse: NSObject {
             invokeObject.userId = userId
         }
         if let args = invokeObjectDictionary["args"] {
-            invokeObject.args = JSONUtils.shared.JSONToObject(objectToParse: args) as? [Any]
+            invokeObject.args = jsonUtils.JSONToObject(objectToParse: args) as? [Any]
         }
         return invokeObject
     }

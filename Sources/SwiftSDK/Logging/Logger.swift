@@ -19,9 +19,11 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class Logger: NSObject {
+@objcMembers public class Logger: NSObject {
     
     private var name: String!
+    
+    private let logBuffer = LogBuffer.shared
     
     private override init() { }
     
@@ -29,39 +31,39 @@
         self.name = loggerName
     }
     
-    open func debug(message: String) {
-        LogBuffer.shared.enqueue(logger: name, level: "DEBUG", message: message, exception: nil)
+    public func debug(message: String) {
+        logBuffer.enqueue(logger: name, level: "DEBUG", message: message, exception: nil)
     }
     
-    open func info(message: String) {
-        LogBuffer.shared.enqueue(logger: name, level: "INFO", message: message, exception: nil)
+    public func info(message: String) {
+        logBuffer.enqueue(logger: name, level: "INFO", message: message, exception: nil)
     }
     
-    open func trace(message: String) {
-        LogBuffer.shared.enqueue(logger: name, level: "TRACE", message: message, exception: nil)
+    public func trace(message: String) {
+        logBuffer.enqueue(logger: name, level: "TRACE", message: message, exception: nil)
     }
     
-    open func warn(message: String) {
-        LogBuffer.shared.enqueue(logger: name, level: "WARN", message: message, exception: nil)
+    public func warn(message: String) {
+        logBuffer.enqueue(logger: name, level: "WARN", message: message, exception: nil)
     }
     
-    open func warn(message: String, exception: NSException) {
-        LogBuffer.shared.enqueue(logger: name, level: "WARN", message: message, exception: exception.reason)
+    public func warn(message: String, exception: NSException) {
+        logBuffer.enqueue(logger: name, level: "WARN", message: message, exception: exception.reason)
     }
     
-    open func error(message: String) {
-        LogBuffer.shared.enqueue(logger: name, level: "ERROR", message: message, exception: nil)
+    public func error(message: String) {
+        logBuffer.enqueue(logger: name, level: "ERROR", message: message, exception: nil)
     }
     
-    open func error(message: String, exception: NSException) {
-        LogBuffer.shared.enqueue(logger: name, level: "ERROR", message: message, exception: exception.reason)
+    public func error(message: String, exception: NSException) {
+        logBuffer.enqueue(logger: name, level: "ERROR", message: message, exception: exception.reason)
     }
     
-    open func fatal(message: String) {
-        LogBuffer.shared.enqueue(logger: name, level: "FATAL", message: message, exception: nil)
+    public func fatal(message: String) {
+        logBuffer.enqueue(logger: name, level: "FATAL", message: message, exception: nil)
     }
     
-    open func fatal(message: String, exception: NSException) {
-        LogBuffer.shared.enqueue(logger: name, level: "FATAL", message: message, exception: exception.reason)
+    public func fatal(message: String, exception: NSException) {
+        logBuffer.enqueue(logger: name, level: "FATAL", message: message, exception: exception.reason)
     }
 }

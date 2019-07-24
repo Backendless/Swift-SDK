@@ -19,8 +19,8 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class EmailBodyparts: NSObject {
+@objcMembers public class EmailBodyparts: NSObject {
     
-    open var textMessage: String?
-    open var htmlMessage: String?
+    public var textMessage: String?
+    public var htmlMessage: String?
 }

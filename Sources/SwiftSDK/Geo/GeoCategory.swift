@@ -19,11 +19,11 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class GeoCategory: NSObject, Codable {
+@objcMembers public class GeoCategory: NSObject, Codable {
     
-    open private(set) var objectId: String?
-    open private(set) var name: String?
-    open private(set) var size: NSNumber? {
+    public private(set) var objectId: String?
+    public private(set) var name: String?
+    public private(set) var size: NSNumber? {
         get {
             return NSNumber(integerLiteral: self._size)
         }

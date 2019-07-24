@@ -25,6 +25,8 @@ class DeviceHelper: NSObject {
     
     static let shared = DeviceHelper()
     
+    private let keychainUtils = KeychainUtils.shared
+    
     private override init() { }
     
     #if os(iOS) || os(tvOS)
@@ -37,15 +39,15 @@ class DeviceHelper: NSObject {
     }
     
     var deviceId: String {
-        if let _deviceId = KeychainUtils.shared.getDeviceId() {
+        if let _deviceId = keychainUtils.getDeviceId() {
             return _deviceId
         }
         if let _deviceId = UIDevice.current.identifierForVendor?.uuidString {
-            KeychainUtils.shared.saveDeviceId(deviceId: _deviceId)
+            keychainUtils.saveDeviceId(deviceId: _deviceId)
             return _deviceId
         }
         let _deviceId = UUID().uuidString
-        KeychainUtils.shared.saveDeviceId(deviceId: _deviceId)
+        keychainUtils.saveDeviceId(deviceId: _deviceId)
         return _deviceId
     }
     

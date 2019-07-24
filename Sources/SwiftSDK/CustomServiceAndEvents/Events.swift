@@ -19,13 +19,15 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class Events: NSObject {
+@objcMembers public class Events: NSObject {
     
-    open func dispatch(name: String, parameters: Any?, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    private let jsonUtils = JSONUtils.shared
+    
+    public func dispatch(name: String, parameters: Any?, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         dispatchEvent(name: name, parameters: parameters, executionType: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func dispatch(name: String, parameters: Any?, executionType: ExecutionType, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func dispatch(name: String, parameters: Any?, executionType: ExecutionType, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         dispatchEvent(name: name, parameters: parameters, executionType: executionType, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
@@ -35,7 +37,7 @@
             headers["bl-execution-type"] = ExecutionTypeMethods.shared.getExecutionTypeValue(executionType: executionType.rawValue)
         }
         if var parameters = parameters {
-            parameters = JSONUtils.shared.objectToJSON(objectToParse: parameters)
+            parameters = jsonUtils.objectToJSON(objectToParse: parameters)
             BackendlessRequestManager(restMethod: "servercode/events/\(name)", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
                 self.processDispatchResponse(response: response, responseHandler: responseHandler, errorHandler: errorHandler)
             })
@@ -54,13 +56,13 @@
             }
             else {
                 if let resultDictionary = (result as! JSON).dictionaryObject {
-                    var ress = [String : Any]()
+                    var resultDict = [String : Any]()
                     for key in Array(resultDictionary.keys) {
                         if let value = resultDictionary[key] {
-                            ress[key] = JSONUtils.shared.JSONToObject(objectToParse: value)
+                            resultDict[key] = jsonUtils.JSONToObject(objectToParse: value)
                         }
                     }
-                    responseHandler(ress)
+                    responseHandler(resultDict)
                 }
             }
         }

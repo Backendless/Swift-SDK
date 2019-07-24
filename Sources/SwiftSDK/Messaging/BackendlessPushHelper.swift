@@ -24,13 +24,13 @@
 import UserNotifications
 
 @available(iOS 10.0, *)
-@objcMembers open class BackendlessPushHelper: NSObject {
+@objcMembers public class BackendlessPushHelper: NSObject {
     
     public static let shared = BackendlessPushHelper()
     
     private override init() { }
     
-    open func processMutableContent(request: UNNotificationRequest, contentHandler: @escaping (UNNotificationContent) -> Void) {
+    public func processMutableContent(request: UNNotificationRequest, contentHandler: @escaping (UNNotificationContent) -> Void) {
         var request = request
         
         if request.content.userInfo["ios_immediate_push"] != nil {

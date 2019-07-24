@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class DataQueryBuilder: NSObject, Codable {
+@objcMembers public class DataQueryBuilder: NSObject, Codable {
     
     private var whereClause: String?
     private var relationsDepth: Int = 0
@@ -31,62 +31,62 @@
     private var groupBy: [String]?
     private var havingClause: String?
     
-    open func getWhereClause() -> String? {
+    public func getWhereClause() -> String? {
         return self.whereClause
     }
     
-    open func setWhereClause(whereClause: String) {
+    public func setWhereClause(whereClause: String) {
         self.whereClause = whereClause
     }
     
-    open func getRelationsDepth() -> Int {
+    public func getRelationsDepth() -> Int {
         return self.relationsDepth
     }
     
-    open func setRelationsDepth(relationsDepth: Int) {
+    public func setRelationsDepth(relationsDepth: Int) {
         self.relationsDepth = relationsDepth
     }
     
-    open func getPageSize() -> Int {
+    public func getPageSize() -> Int {
         return self.pageSize
     }
     
-    open func setPageSize(pageSize: Int) {
+    public func setPageSize(pageSize: Int) {
         self.pageSize = pageSize
     }
     
-    open func getOffset() -> Int {
+    public func getOffset() -> Int {
         return self.offset
     }
     
-    open func setOffset(offset: Int) {
+    public func setOffset(offset: Int) {
         self.offset = offset
     }
     
-    open func prepareNextPage() {
+    public func prepareNextPage() {
         self.offset += self.pageSize
     }
     
-    open func preparePreviousPage() {
+    public func preparePreviousPage() {
         self.offset -= self.pageSize
         if offset < 0 {
             offset = 0
         }
     }
     
-    open func getProperties() -> [String]? {
+    public func getProperties() -> [String]? {
         return self.properties
     }
     
-    open func setProperties(properties: [String]) {
+    public func setProperties(properties: [String]) {
         self.properties = properties
     }
     
-    open func addProperty(property: String) {
+    public func addProperty(property: String) {
         addProperties(properties: [property])
     }
     
-    open func addProperties(properties: [String]) {
+    public func addProperties(properties: [String]) {
         if self.properties != nil {
             for property in properties {
                 self.properties?.append(property)
@@ -97,19 +97,19 @@
         }
     }
     
-    open func getSortBy() -> [String]? {
+    public func getSortBy() -> [String]? {
         return self.sortBy
     }
     
-    open func setSortBy(sortBy: [String]) {
+    public func setSortBy(sortBy: [String]) {
         self.sortBy = sortBy
     }
     
-    open func addSortBy(sortBy: String) {
+    public func addSortBy(sortBy: String) {
         addSortBy(listSortBy: [sortBy])
     }
     
-    open func addSortBy(listSortBy: [String]) {
+    public func addSortBy(listSortBy: [String]) {
         if self.sortBy != nil {
             for sortBy in listSortBy {
                 self.sortBy?.append(sortBy)
@@ -120,19 +120,19 @@
         }
     }
     
-    open func getRelated() -> [String]? {
+    public func getRelated() -> [String]? {
         return self.related
     }
     
-    open func setRelated(related: [String]) {
+    public func setRelated(related: [String]) {
         self.related = related
     }
     
-    open func addRelated(related: String) {
+    public func addRelated(related: String) {
         addRelated(listRelated: [related])
     }
     
-    open func addRelated(listRelated: [String]) {
+    public func addRelated(listRelated: [String]) {
         if self.related != nil {
             for related in listRelated {
                 self.related?.append(related)
@@ -143,19 +143,19 @@
         }
     }
     
-    open func getGroupBy() -> [String]? {
+    public func getGroupBy() -> [String]? {
         return self.groupBy
     }
     
-    open func setGroupBy(groupBy: [String]) {
+    public func setGroupBy(groupBy: [String]) {
         self.groupBy = groupBy
     }
     
-    open func addGroupBy(groupBy: String) {
+    public func addGroupBy(groupBy: String) {
         addGroupBy(listGroupBy: [groupBy])
     }
     
-    open func addGroupBy(listGroupBy: [String]) {
+    public func addGroupBy(listGroupBy: [String]) {
         if self.groupBy != nil {
             for groupBy in listGroupBy {
                 self.groupBy?.append(groupBy)
@@ -166,11 +166,11 @@
         }
     }
     
-    open func getHavingClause() -> String? {
+    public func getHavingClause() -> String? {
         return self.havingClause
     }
     
-    open func setHavingClause(havingClause: String) {
+    public func setHavingClause(havingClause: String) {
         self.havingClause = havingClause
     }
 }

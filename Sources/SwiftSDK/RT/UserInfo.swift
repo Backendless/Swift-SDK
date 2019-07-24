@@ -19,8 +19,8 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class UserInfo: NSObject, Codable {
+@objcMembers public class UserInfo: NSObject, Codable {
     
-    open var connectionId: String?
-    open var userId: String?
+    public var connectionId: String?
+    public var userId: String?
 }

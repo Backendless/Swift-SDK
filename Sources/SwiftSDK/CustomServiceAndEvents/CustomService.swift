@@ -19,13 +19,15 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class CustomService: NSObject {
+@objcMembers public class CustomService: NSObject {
     
-    open func invoke(serviceName: String, method: String, parameters: Any?, responseHandler: ((Any?) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    private let jsonUtils = JSONUtils.shared
+    
+    public func invoke(serviceName: String, method: String, parameters: Any?, responseHandler: ((Any?) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         invokeService(serviceName: serviceName, method: method, parameters: parameters, executionType: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func invoke(serviceName: String, method: String, parameters: Any?, returnType: Any?, executionType: ExecutionType, responseHandler: ((Any?) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func invoke(serviceName: String, method: String, parameters: Any?, returnType: Any?, executionType: ExecutionType, responseHandler: ((Any?) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         invokeService(serviceName: serviceName, method: method, parameters: parameters, executionType: executionType, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
@@ -35,7 +37,7 @@
             headers["bl-execution-type"] = ExecutionTypeMethods.shared.getExecutionTypeValue(executionType: executionType.rawValue)
         }
         if var parameters = parameters {
-            parameters = JSONUtils.shared.objectToJSON(objectToParse: parameters)
+            parameters = jsonUtils.objectToJSON(objectToParse: parameters)
             BackendlessRequestManager(restMethod: "services/\(serviceName)/\(method)", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
                 self.processInvokeResponse(response: response, responseHandler: responseHandler, errorHandler: errorHandler)
             })
@@ -54,10 +56,10 @@
             }
             else {
                 if let resultDictionary = (result as! JSON).dictionaryObject {
-                    responseHandler(JSONUtils.shared.JSONToObject(objectToParse: resultDictionary))
+                    responseHandler(jsonUtils.JSONToObject(objectToParse: resultDictionary))
                 }
                 else if let resultArray = (result as! JSON).arrayObject {
-                    responseHandler(JSONUtils.shared.JSONToObject(objectToParse: resultArray))
+                    responseHandler(jsonUtils.JSONToObject(objectToParse: resultArray))
                 }
             }
         }

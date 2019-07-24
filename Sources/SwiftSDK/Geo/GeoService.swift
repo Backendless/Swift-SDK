@@ -19,9 +19,12 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class GeoService: NSObject {
+@objcMembers public class GeoService: NSObject {
     
-    open func saveGeoPoint(geoPoint: GeoPoint, responseHandler: ((GeoPoint) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    private let processResponse = ProcessResponse.shared
+    private let dataTypesUtils = DataTypesUtils.shared
+    
+    public func saveGeoPoint(geoPoint: GeoPoint, responseHandler: ((GeoPoint) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         
         var metadata = [String : Any]()
@@ -34,25 +37,25 @@
         }
         
         let parameters = ["latitude": geoPoint.latitude, "longitude": geoPoint.longitude, "categories": geoPoint.categories as Any, "metadata": metadata] as [String : Any]
-    
+        
         // update
         if let objectId = geoPoint.objectId {
             BackendlessRequestManager(restMethod: "geo/points/\(objectId)", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-                if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
+                if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                     if result is Fault {
                         errorHandler(result as! Fault)
                     }
                     else if let geoDictionary = (result as! JSON).dictionaryObject,
-                        let geoPoint = ProcessResponse.shared.adaptToGeoPoint(geoDictionary: geoDictionary) {
+                        let geoPoint = self.processResponse.adaptToGeoPoint(geoDictionary: geoDictionary) {
                         responseHandler(geoPoint)
                     }
                 }
             })
         }
-        // save
+            // save
         else {
             BackendlessRequestManager(restMethod: "geo/points", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-                if let result = ProcessResponse.shared.adapt(response: response, to: [String: GeoPoint].self) {
+                if let result = self.processResponse.adapt(response: response, to: [String: GeoPoint].self) {
                     if result is Fault {
                         errorHandler(result as! Fault)
                     }
@@ -64,10 +67,10 @@
         }
     }
     
-    open func removeGeoPoint(geoPoint: GeoPoint, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func removeGeoPoint(geoPoint: GeoPoint, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         if let objectId = geoPoint.objectId {
             BackendlessRequestManager(restMethod: "geo/points/\(objectId)", httpMethod: .delete, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-                if let result = ProcessResponse.shared.adapt(response: response, to: NoReply.self) {
+                if let result = self.processResponse.adapt(response: response, to: NoReply.self) {
                     if result is Fault {
                         errorHandler(result as! Fault)
                     }
@@ -83,10 +86,10 @@
         }
     }
     
-    open func loadMetadata(geoPoint: GeoPoint, responseHandler: ((GeoPoint) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func loadMetadata(geoPoint: GeoPoint, responseHandler: ((GeoPoint) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         if let pointId = geoPoint.objectId {
             BackendlessRequestManager(restMethod: "geo/points/\(pointId)/metadata", httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-                if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
+                if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                     if result is Fault {
                         errorHandler(result as! Fault)
                     }
@@ -100,10 +103,10 @@
         }
     }
     
-    open func relativeFind(geoQuery: BackendlessGeoQuery, responseHandler: (([SearchMatchesResult]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func relativeFind(geoQuery: BackendlessGeoQuery, responseHandler: (([SearchMatchesResult]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let restMethod = createRestMethod(restMethod: "geo/relative/points?", geoQuery: geoQuery)
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: [JSON].self) {
+            if let result = self.processResponse.adapt(response: response, to: [JSON].self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -111,7 +114,7 @@
                     var resultArray = [SearchMatchesResult]()
                     for matchesResult in matchesResultArray {
                         if let matchesResultDictionary = matchesResult.dictionaryObject,
-                            let searchMatchesResult = ProcessResponse.shared.adaptToSearchMatchesResult(searchMatchesResultDictionary: matchesResultDictionary) {
+                            let searchMatchesResult = self.processResponse.adaptToSearchMatchesResult(searchMatchesResultDictionary: matchesResultDictionary) {
                             resultArray.append(searchMatchesResult)
                         }
                     }                    
@@ -121,9 +124,9 @@
         })
     }
     
-    open func addCategory(categoryName: String, responseHandler: ((GeoCategory) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func addCategory(categoryName: String, responseHandler: ((GeoCategory) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         BackendlessRequestManager(restMethod: "geo/categories/\(categoryName)", httpMethod: .put, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: GeoCategory.self) {
+            if let result = self.processResponse.adapt(response: response, to: GeoCategory.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -134,9 +137,9 @@
         })
     }
     
-    open func deleteGeoCategory(categoryName: String, responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func deleteGeoCategory(categoryName: String, responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         BackendlessRequestManager(restMethod: "geo/categories/\(categoryName)", httpMethod: .delete, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
+            if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -147,9 +150,9 @@
         })
     }
     
-    open func getCategories(responseHandler: (([GeoCategory]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func getCategories(responseHandler: (([GeoCategory]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         BackendlessRequestManager(restMethod: "geo/categories", httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: [GeoCategory].self) {
+            if let result = self.processResponse.adapt(response: response, to: [GeoCategory].self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -160,40 +163,40 @@
         })
     }
     
-    open func getPointsCount(responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func getPointsCount(responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         getGeoPointsCount(geoQuery: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func getPointsCount(geoQuery: BackendlessGeoQuery, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func getPointsCount(geoQuery: BackendlessGeoQuery, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         getGeoPointsCount(geoQuery: geoQuery, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     private func getGeoPointsCount(geoQuery: BackendlessGeoQuery?, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let restMethod = createRestMethod(restMethod: "geo/count?", geoQuery: geoQuery)
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {
+            if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
             }
             else {
-                responseHandler(DataTypesUtils.shared.dataToInt(data: response.data!))
+                responseHandler(self.dataTypesUtils.dataToInt(data: response.data!))
             }
         })
     }
     
-    open func getPoints(responseHandler: (([GeoPoint]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func getPoints(responseHandler: (([GeoPoint]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         getGeoPoints(geoQuery: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func getPoints(geoQuery: BackendlessGeoQuery, responseHandler: (([GeoPoint]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func getPoints(geoQuery: BackendlessGeoQuery, responseHandler: (([GeoPoint]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         getGeoPoints(geoQuery: geoQuery, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     private func getGeoPoints(geoQuery: BackendlessGeoQuery?, responseHandler: (([GeoPoint]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let restMethod = createRestMethod(restMethod: "geo/points?", geoQuery: geoQuery)
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: [JSON].self) {
+            if let result = self.processResponse.adapt(response: response, to: [JSON].self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -202,11 +205,11 @@
                     for geoPointJSON in geoPointsArray {
                         if let geoPointDictionary = geoPointJSON.dictionaryObject {
                             if geoPointDictionary["totalPoints"] != nil,
-                                let geoCluster = ProcessResponse.shared.adaptToGeoCluster(geoDictionary: geoPointDictionary) {
+                                let geoCluster = self.processResponse.adaptToGeoCluster(geoDictionary: geoPointDictionary) {
                                 geoCluster.geoQuery = geoQuery
                                 resultArray.append(geoCluster)
                             }
-                            else if let geoPoint = ProcessResponse.shared.adaptToGeoPoint(geoDictionary: geoPointDictionary) {
+                            else if let geoPoint = self.processResponse.adaptToGeoPoint(geoDictionary: geoPointDictionary) {
                                 resultArray.append(geoPoint)
                             }
                         }
@@ -217,14 +220,14 @@
         })
     }
     
-    open func getClusterPoints(geoCluster: GeoCluster, responseHandler: (([GeoPoint]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func getClusterPoints(geoCluster: GeoCluster, responseHandler: (([GeoPoint]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         if let objectId = geoCluster.objectId,
             let geoQuery = geoCluster.geoQuery {
-            let categoriesString = DataTypesUtils.shared.arrayToString(array: geoCluster.categories)
-            let categoriesUrlString = DataTypesUtils.shared.stringToUrlString(originalString: categoriesString)
+            let categoriesString = dataTypesUtils.arrayToString(array: geoCluster.categories)
+            let categoriesUrlString = dataTypesUtils.stringToUrlString(originalString: categoriesString)
             let restMethod = createRestMethod(restMethod: "geo/clusters/\(objectId)/points?lat=\(geoCluster.latitude)&lon=\(geoCluster.longitude)&categories=\(categoriesUrlString)&dpp=\(geoQuery.degreePerPixel)&clusterGridSize=\(geoQuery.clusterGridSize)", geoQuery: nil)
             BackendlessRequestManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-                if let result = ProcessResponse.shared.adapt(response: response, to: [GeoPoint].self) {
+                if let result = self.processResponse.adapt(response: response, to: [GeoPoint].self) {
                     if result is Fault {
                         errorHandler(result as! Fault)
                     }
@@ -245,14 +248,14 @@
                 restMethod = "geo/rect?nwlat=\(nordWestPoint.latitude)&nwlon=\(nordWestPoint.longitude)&selat=\(southEastPoint.latitude)&selon=\(southEastPoint.longitude)"
             }
             if let categories = geoQuery.categories {
-                let categoriesString = DataTypesUtils.shared.arrayToString(array: categories)
-                restMethod += "&categories=\(DataTypesUtils.shared.stringToUrlString(originalString: categoriesString))"
+                let categoriesString = dataTypesUtils.arrayToString(array: categories)
+                restMethod += "&categories=\(dataTypesUtils.stringToUrlString(originalString: categoriesString))"
             }
             if let whereClause = geoQuery.whereClause {
-                restMethod += "&where=\(DataTypesUtils.shared.stringToUrlString(originalString: whereClause))"
+                restMethod += "&where=\(dataTypesUtils.stringToUrlString(originalString: whereClause))"
             }
             if let metadata = geoQuery.metadata,
-                let metadataString = DataTypesUtils.shared.dictionaryToUrlString(dictionary: metadata) {
+                let metadataString = dataTypesUtils.dictionaryToUrlString(dictionary: metadata) {
                 restMethod += "&metadata=\(metadataString)"
             }
             restMethod += "&pagesize=\(geoQuery.pageSize)"
@@ -265,7 +268,7 @@
             }
             restMethod += "&dpp=\(geoQuery.degreePerPixel)&clusterGridSize=\(geoQuery.clusterGridSize)"
             if let relativeFindMetadata = geoQuery.relativeFindMetadata,
-                let relativeFindMetadataString = DataTypesUtils.shared.dictionaryToUrlString(dictionary: relativeFindMetadata) {
+                let relativeFindMetadataString = dataTypesUtils.dictionaryToUrlString(dictionary: relativeFindMetadata) {
                 restMethod += "&relativeFindMetadata=\(relativeFindMetadataString)&relativeFindPercentThreshold=\(geoQuery.relativeFindPercentThreshold)"
             }
         }
@@ -274,42 +277,42 @@
     
     // **********************************
     
-    open func getFencePointsCount(geoFenceName: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func getFencePointsCount(geoFenceName: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         getFenceGeoPointsCount(geoFenceName: geoFenceName, geoQuery: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func getFencePointsCount(geoFenceName: String, geoQuery: BackendlessGeoQuery, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func getFencePointsCount(geoFenceName: String, geoQuery: BackendlessGeoQuery, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         getFenceGeoPointsCount(geoFenceName: geoFenceName, geoQuery: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     private func getFenceGeoPointsCount(geoFenceName: String, geoQuery: BackendlessGeoQuery?, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        let restMethod = createRestMethod(restMethod: "geo/count?geoFence=\(DataTypesUtils.shared.stringToUrlString(originalString: geoFenceName))", geoQuery: geoQuery)
+        let restMethod = createRestMethod(restMethod: "geo/count?geoFence=\(dataTypesUtils.stringToUrlString(originalString: geoFenceName))", geoQuery: geoQuery)
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {
+            if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
             }
             else {
-                responseHandler(DataTypesUtils.shared.dataToInt(data: response.data!))
+                responseHandler(self.dataTypesUtils.dataToInt(data: response.data!))
             }
         })
     }
     
     // **********************************
     
-    open func getFencePoints(geoFenceName: String, responseHandler: (([GeoPoint]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func getFencePoints(geoFenceName: String, responseHandler: (([GeoPoint]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         getFenceGeoPoints(geoFenceName: geoFenceName, geoQuery: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func getFencePoints(geoFenceName: String, geoQuery: BackendlessGeoQuery, responseHandler: (([GeoPoint]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func getFencePoints(geoFenceName: String, geoQuery: BackendlessGeoQuery, responseHandler: (([GeoPoint]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         getFenceGeoPoints(geoFenceName: geoFenceName, geoQuery: geoQuery, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     private func getFenceGeoPoints(geoFenceName: String, geoQuery: BackendlessGeoQuery?, responseHandler: (([GeoPoint]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let restMethod = createRestMethod(restMethod: "geo/points?geoFence=\(geoFenceName)", geoQuery: geoQuery)
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: [JSON].self) {
+            if let result = self.processResponse.adapt(response: response, to: [JSON].self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -318,11 +321,11 @@
                     for geoPointJSON in geoPointsArray {
                         if let geoPointDictionary = geoPointJSON.dictionaryObject {
                             if geoPointDictionary["totalPoints"] != nil,
-                                let geoCluster = ProcessResponse.shared.adaptToGeoCluster(geoDictionary: geoPointDictionary) {
+                                let geoCluster = self.processResponse.adaptToGeoCluster(geoDictionary: geoPointDictionary) {
                                 geoCluster.geoQuery = geoQuery
                                 resultArray.append(geoCluster)
                             }
-                            else if let geoPoint = ProcessResponse.shared.adaptToGeoPoint(geoDictionary: geoPointDictionary) {
+                            else if let geoPoint = self.processResponse.adaptToGeoPoint(geoDictionary: geoPointDictionary) {
                                 resultArray.append(geoPoint)
                             }
                         }
@@ -333,27 +336,27 @@
         })
     }
     
-    open func runOnEnterAction(geoFenceName: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func runOnEnterAction(geoFenceName: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         runOnAction(actionName: "onenter", geoFenceName: geoFenceName, geoPoint: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func runOnEnterAction(geoFenceName: String, geoPoint: GeoPoint, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func runOnEnterAction(geoFenceName: String, geoPoint: GeoPoint, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         runOnAction(actionName: "onenter", geoFenceName: geoFenceName, geoPoint: geoPoint, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func runOnStayAction(geoFenceName: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func runOnStayAction(geoFenceName: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         runOnAction(actionName: "onstay", geoFenceName: geoFenceName, geoPoint: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func runOnStayAction(geoFenceName: String, geoPoint: GeoPoint, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func runOnStayAction(geoFenceName: String, geoPoint: GeoPoint, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         runOnAction(actionName: "onstay", geoFenceName: geoFenceName, geoPoint: geoPoint, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func runOnExitAction(geoFenceName: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func runOnExitAction(geoFenceName: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         runOnAction(actionName: "onexit", geoFenceName: geoFenceName, geoPoint: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func runOnExitAction(geoFenceName: String, geoPoint: GeoPoint, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func runOnExitAction(geoFenceName: String, geoPoint: GeoPoint, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         runOnAction(actionName: "onexit", geoFenceName: geoFenceName, geoPoint: geoPoint, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
@@ -362,7 +365,7 @@
             let headers = ["Content-Type": "application/json"]
             let parameters = ["latitude": geoPoint.latitude, "longitude": geoPoint.longitude] as [String : Any]
             BackendlessRequestManager(restMethod: "geo/fence/\(actionName)?geoFence=\(geoFenceName)", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-                if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
+                if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                     if result is Fault {
                         errorHandler(result as! Fault)
                     }
@@ -374,7 +377,7 @@
         }
         else {
             BackendlessRequestManager(restMethod: "geo/fence/\(actionName)?geoFence=\(geoFenceName)", httpMethod: .post, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-                if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
+                if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                     if result is Fault {
                         errorHandler(result as! Fault)
                     }
@@ -385,39 +388,39 @@
             })
         }
     }
-
+    
     @available(iOS 8.0, watchOS 3.0, *)
     @available(OSX, unavailable)
     @available(tvOS, unavailable)
-    open func startGeoFenceMonitoring(geoPoint: GeoPoint, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func startGeoFenceMonitoring(geoPoint: GeoPoint, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         startGeoFenceMonitoring(callback: ServerCallback(geoPoint: geoPoint) as ICallback, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     @available(iOS 8.0, watchOS 3.0, *)
     @available(OSX, unavailable)
     @available(tvOS, unavailable)
-    open func startGeoFenceMonitoring(geoFenceName: String, geoPoint: GeoPoint, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func startGeoFenceMonitoring(geoFenceName: String, geoPoint: GeoPoint, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         startGeoFenceMonitoring(callback: ServerCallback(geoPoint: geoPoint) as ICallback, geoFenceName: geoFenceName, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     @available(iOS 8.0, watchOS 3.0, *)
     @available(OSX, unavailable)
     @available(tvOS, unavailable)
-    open func startGeoFenceMonitoring(geoFenceCallback: IGeofenceCallback, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func startGeoFenceMonitoring(geoFenceCallback: IGeofenceCallback, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         startGeoFenceMonitoring(callback: ClientCallback(geoFenceCallback: geoFenceCallback) as ICallback, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     @available(iOS 8.0, watchOS 3.0, *)
     @available(OSX, unavailable)
     @available(tvOS, unavailable)
-    open func startGeoFenceMonitoring(geoFenceName: String, geoFenceCallback: IGeofenceCallback, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func startGeoFenceMonitoring(geoFenceName: String, geoFenceCallback: IGeofenceCallback, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         startGeoFenceMonitoring(callback: ClientCallback(geoFenceCallback: geoFenceCallback) as ICallback, geoFenceName: geoFenceName, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     @available(iOS 8.0, watchOS 3.0, *)
     @available(OSX, unavailable)
     @available(tvOS, unavailable)
-    open func stopGeoFenceMonitoring() {
+    public func stopGeoFenceMonitoring() {
         GeoFenceMonitoring.shared.removeGeoFences()
         LocationTracker.shared.removeListener(name: GeoFenceMonitoring.shared.listenerName())
     }
@@ -425,7 +428,7 @@
     @available(iOS 8.0, watchOS 3.0, *)
     @available(OSX, unavailable)
     @available(tvOS, unavailable)
-    open func stopGeoFenceMonitoring(geoFenceName: String) {
+    public func stopGeoFenceMonitoring(geoFenceName: String) {
         GeoFenceMonitoring.shared.removeGeoFence(geoFenceName: geoFenceName)
         if !GeoFenceMonitoring.shared.isMonitoring() {
             LocationTracker.shared.removeListener(name: GeoFenceMonitoring.shared.listenerName())
@@ -452,10 +455,10 @@
     private func startGeoFenceMonitoring(geoFenceName: String?, callback: ICallback, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         var restMethod = "geo/fences?"
         if let geoFenceName = geoFenceName {
-            restMethod += "geoFence=\(DataTypesUtils.shared.stringToUrlString(originalString: geoFenceName))"
+            restMethod += "geoFence=\(dataTypesUtils.stringToUrlString(originalString: geoFenceName))"
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: [JSON].self) {
+            if let result = self.processResponse.adapt(response: response, to: [JSON].self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -463,7 +466,7 @@
                     var geoFences = [GeoFence]()
                     for geoFenceJSON in geoFencesArray {
                         if let geoFenceDictionary = geoFenceJSON.dictionaryObject,
-                            let geoFence = ProcessResponse.shared.adaptToGeoFence(geoFenceDictionary: geoFenceDictionary) {
+                            let geoFence = self.processResponse.adaptToGeoFence(geoFenceDictionary: geoFenceDictionary) {
                             geoFences.append(geoFence)
                         }
                     }
@@ -492,3 +495,4 @@
         responseHandler()
     }
 }
+

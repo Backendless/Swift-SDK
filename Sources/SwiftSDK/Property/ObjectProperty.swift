@@ -19,12 +19,12 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class ObjectProperty: NSObject, Codable {
+@objcMembers public class ObjectProperty: NSObject, Codable {
     
-    open var name: String
-    open var required: Bool = false
-    open var type: DataTypeEnum
-    open var defaultValue: Any? {
+    public var name: String
+    public var required: Bool = false
+    public var type: DataTypeEnum
+    public var defaultValue: Any? {
         get {
             return self._defaultValue?.object
         }
@@ -35,10 +35,10 @@
         }
     }
     var _defaultValue: JSON?
-    open var relatedTable: String?
-    open var customRegex: String?
-    open var autoLoad: Bool = false
-    open var isPrimaryKey: Bool = false
+    public var relatedTable: String?
+    public var customRegex: String?
+    public var autoLoad: Bool = false
+    public var isPrimaryKey: Bool = false
     
     enum CodingKeys: String, CodingKey {
         case name
@@ -79,7 +79,7 @@
         try container.encode(isPrimaryKey, forKey: .isPrimaryKey)
     }
     
-    open func getTypeName() -> String {
+    public func getTypeName() -> String {
         return self.type.rawValue
     }
 }

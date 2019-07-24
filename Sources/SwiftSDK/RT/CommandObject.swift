@@ -19,12 +19,12 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class CommandObject: NSObject {
+@objcMembers public class CommandObject: NSObject {
 
-    open var type: String?
-    open var connectionId: String?
-    open var userId: String?
-    open var data: Any?
+    public var type: String?
+    public var connectionId: String?
+    public var userId: String?
+    public var data: Any?
     
     public static func decodeFromJson(_ json: [String: Any]) -> CommandObject {
         return ProcessResponse.shared.adaptToCommandObject(commandObjectDictionary: json)

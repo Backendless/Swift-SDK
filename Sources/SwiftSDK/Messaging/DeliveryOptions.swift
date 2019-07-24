@@ -34,14 +34,14 @@
     case FOR_ALL = 15
 }
 
-@objcMembers open class DeliveryOptions: NSObject, Codable {
+@objcMembers public class DeliveryOptions: NSObject, Codable {
     
-    open var publishAt: Date?
-    open var repeatExpiresAt: Date?
-    open var segmentQuery: String?
+    public var publishAt: Date?
+    public var repeatExpiresAt: Date?
+    public var segmentQuery: String?
 
     private var _repeatEvery: Int?
-    open var repeatEvery: NSNumber? {
+    public var repeatEvery: NSNumber? {
         get {
             if let _repeatEvery = _repeatEvery {
                 return NSNumber(integerLiteral: _repeatEvery)
@@ -92,29 +92,29 @@
         try container.encode(pushBroadcast, forKey: .pushBroadcast)
     }
     
-    open func setPushSinglecast(singlecast: [String]) {
+    public func setPushSinglecast(singlecast: [String]) {
         self.pushSinglecast = singlecast
     }
     
-    open func addPushSingleCast(singlecast: String) {
+    public func addPushSingleCast(singlecast: String) {
         self.pushSinglecast.append(singlecast)
     }
     
-    open func removePushSinglecast(singlecast: String) {
+    public func removePushSinglecast(singlecast: String) {
         if let index = self.pushSinglecast.firstIndex(of: singlecast) {
             self.pushSinglecast.remove(at: index)
         }
     }
     
-    open func getPushSinglecast() -> [String] {
+    public func getPushSinglecast() -> [String] {
         return self.pushSinglecast
     }
     
-    open func setPublishPolicy(publishPolicy: Int) {
+    public func setPublishPolicy(publishPolicy: Int) {
         self.publishPolicy = publishPolicy
     }
     
-    open func getPublishPolicy() -> String {
+    public func getPublishPolicy() -> String {
         if self.publishPolicy == 0 {
             return "PUSH"
         }
@@ -124,11 +124,11 @@
         return "BOTH"
     }
     
-    open func setPushBroadcast(pushBroadcast: Int) {
+    public func setPushBroadcast(pushBroadcast: Int) {
         self.pushBroadcast = pushBroadcast
     }
     
-    open func getPushBroadcast() -> Int {
+    public func getPushBroadcast() -> Int {
         return self.pushBroadcast
     }
 }

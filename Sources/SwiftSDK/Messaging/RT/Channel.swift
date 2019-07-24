@@ -19,10 +19,10 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class Channel: NSObject {
+@objcMembers public class Channel: NSObject {
     
-    open private(set) var channelName: String!
-    open private(set) var isJoined = false
+    public private(set) var channelName: String!
+    public private(set) var isJoined = false
     
     private var rt: RTMessaging!
         
@@ -30,7 +30,7 @@
         self.channelName = channelName
     }
     
-    open func join() {
+    public func join() {
         if self.rt == nil {
             self.rt = RTFactory.shared.createRTMessaging(channel: self)
         }
@@ -45,84 +45,84 @@
         }
     }
     
-    open func leave() {
+    public func leave() {
         self.isJoined = false
         removeAllListeners()        
         self.rt.disconnect()
     }
     
-    open func addConnectListener(responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+    public func addConnectListener(responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         return self.rt.addConnectListener(responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func removeConnectListeners() {
+    public func removeConnectListeners() {
         self.rt.removeConnectListeners()
     }
     
-    open func addStringMessageListener(responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+    public func addStringMessageListener(responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         return self.rt.addStringMessageListener(selector: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func addStringMessageListener(selector: String, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+    public func addStringMessageListener(selector: String, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         return self.rt.addStringMessageListener(selector: selector, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func addDictionaryMessageListener(responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+    public func addDictionaryMessageListener(responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         return self.rt.addDictionaryMessageListener(selector: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func addDictionaryMessageListener(selector: String, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+    public func addDictionaryMessageListener(selector: String, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         return self.rt.addDictionaryMessageListener(selector: selector, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func addCustomObjectMessageListener(forClass: AnyClass, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+    public func addCustomObjectMessageListener(forClass: AnyClass, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         return self.rt.addCustomObjectMessageListener(forClass: forClass, selector: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func addCustomObjectMessageListener(forClass: AnyClass, selector: String, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+    public func addCustomObjectMessageListener(forClass: AnyClass, selector: String, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         return self.rt.addCustomObjectMessageListener(forClass: forClass, selector: selector, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func addMessageListener(responseHandler: ((PublishMessageInfo) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+    public func addMessageListener(responseHandler: ((PublishMessageInfo) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         return self.rt.addMessageListener(selector: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func addMessageListener(selector: String, responseHandler: ((PublishMessageInfo) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+    public func addMessageListener(selector: String, responseHandler: ((PublishMessageInfo) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         return self.rt.addMessageListener(selector: selector, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func removeMessageListeners(selector: String) {
+    public func removeMessageListeners(selector: String) {
         self.rt.removeMessageListeners(selector: selector)
     }
     
-    open func removeMessageListeners() {
+    public func removeMessageListeners() {
         self.rt.removeMessageListeners(selector: nil)
     }
     
-    open func addCommandListener(responseHandler: ((CommandObject) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+    public func addCommandListener(responseHandler: ((CommandObject) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         return self.rt.addCommandListener(responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func removeCommandListeners() {
+    public func removeCommandListeners() {
         self.rt.removeCommandListeners()
     }
     
-    open func addUserStatusListener(responseHandler: ((UserStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+    public func addUserStatusListener(responseHandler: ((UserStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         return self.rt.addUserStatusListener(responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func removeUserStatusListeners() {
+    public func removeUserStatusListeners() {
         self.rt.removeUserStatusListeners()
     }
     
-    open func removeAllListeners() {
+    public func removeAllListeners() {
         removeConnectListeners()
         removeMessageListeners()
         removeCommandListeners()
         removeUserStatusListeners()
     }
     
-    open func sendCommand(commandType: String, data: Any?, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func sendCommand(commandType: String, data: Any?, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let wrappedBlock: (Any) -> () = { response in
             responseHandler()
         }        

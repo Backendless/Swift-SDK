@@ -19,10 +19,10 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class ReconnectAttemptObject: NSObject, Codable {
+@objcMembers public class ReconnectAttemptObject: NSObject, Codable {
 
     private var _attempt: Int?
-    open var attempt: NSNumber? {
+    public var attempt: NSNumber? {
         get {
             if let _attempt = _attempt {
                 return NSNumber(integerLiteral: _attempt)
@@ -35,7 +35,7 @@
     }
 
     private var _timeout: Int?
-    open var timeout: NSNumber? {
+    public var timeout: NSNumber? {
         get {
             if let _timeout = _timeout {
                 return NSNumber(integerLiteral: _timeout)

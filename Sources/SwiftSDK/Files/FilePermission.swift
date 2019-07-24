@@ -44,42 +44,42 @@
     }
 }
 
-@objcMembers open class FilePermission: NSObject {
+@objcMembers public class FilePermission: NSObject {
     
     private enum PermissionType: String {
         case GRANT
         case DENY
     }
     
-    open func grantForUser(userId: String, path: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func grantForUser(userId: String, path: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         setPermission(path: path, permissionType: .GRANT, operation: operation, userId: userId, roleName: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func denyForUser(userId: String, path: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func denyForUser(userId: String, path: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         setPermission(path: path, permissionType: .DENY, operation: operation, userId: userId, roleName: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func grantForRole(role: String, path: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func grantForRole(role: String, path: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         setPermission(path: path, permissionType: .GRANT, operation: operation, userId: nil, roleName: role, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func denyForRole(role: String, path: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func denyForRole(role: String, path: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         setPermission(path: path, permissionType: .DENY, operation: operation, userId: nil, roleName: role, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func grantForAllUsers(path: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func grantForAllUsers(path: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         setPermission(path: path, permissionType: .GRANT, operation: operation, userId: "*", roleName: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func denyForAllUsers(path: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func denyForAllUsers(path: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         setPermission(path: path, permissionType: .DENY, operation: operation, userId: "*", roleName: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func grantForAllRoles(path: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func grantForAllRoles(path: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         setPermission(path: path, permissionType: .GRANT, operation: operation, userId: nil, roleName: "*", responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func denyForAllRoles(path: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func denyForAllRoles(path: String, operation: FilePermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         setPermission(path: path, permissionType: .DENY, operation: operation, userId: nil, roleName: "*", responseHandler: responseHandler, errorHandler: errorHandler)
     }
     

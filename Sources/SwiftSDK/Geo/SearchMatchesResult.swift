@@ -19,10 +19,10 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class SearchMatchesResult: NSObject, Codable {
+@objcMembers public class SearchMatchesResult: NSObject, Codable {
     
-    open private(set) var geoPoint: GeoPoint?
-    open private(set) var matches: Double = 0
+    public private(set) var geoPoint: GeoPoint?
+    public private(set) var matches: Double = 0
     
     init(geoPoint: GeoPoint?, matches: Double) {
         self.geoPoint = geoPoint

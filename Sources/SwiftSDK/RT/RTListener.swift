@@ -19,7 +19,9 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class RTListener: NSObject { 
+@objcMembers public class RTListener: NSObject { 
+    
+    private let rtClient = RTClient.shared
     
     private var subscriptions: [String : [RTSubscription]]!
     private var onStop: ((RTSubscription) -> Void)?
@@ -92,7 +94,7 @@
                 }
             }
             let subscription = createSubscription(type: rtTypes.objectChanges, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
-            RTClient.shared.subscribe(data: subscription.data!, subscription: subscription)
+            rtClient.subscribe(data: subscription.data!, subscription: subscription)
             return subscription
         }
         else if event == rtEventHandlers.bulkCreated {
@@ -107,7 +109,7 @@
                 }
             }
             let subscription = createSubscription(type: rtTypes.objectChanges, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
-            RTClient.shared.subscribe(data: subscription.data!, subscription: subscription)
+            rtClient.subscribe(data: subscription.data!, subscription: subscription)
             return subscription
         }
         else if event == rtEventHandlers.bulkUpdated {
@@ -117,7 +119,7 @@
                 }
             }
             let subscription = createSubscription(type: rtTypes.objectChanges, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
-            RTClient.shared.subscribe(data: subscription.data!, subscription: subscription)
+            rtClient.subscribe(data: subscription.data!, subscription: subscription)
             return subscription
         }
         else if event == rtEventHandlers.bulkDeleted {
@@ -127,7 +129,7 @@
                 }
             }
             let subscription = createSubscription(type: rtTypes.objectChanges, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
-            RTClient.shared.subscribe(data: subscription.data!, subscription: subscription)
+            rtClient.subscribe(data: subscription.data!, subscription: subscription)
             return subscription
         }
         return nil

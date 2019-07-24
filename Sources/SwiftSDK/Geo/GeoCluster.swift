@@ -19,8 +19,8 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class GeoCluster: GeoPoint {
+@objcMembers public class GeoCluster: GeoPoint {
     
-    open var totalPoints: Int = 0
-    open var geoQuery: BackendlessGeoQuery?
+    public var totalPoints: Int = 0
+    public var geoQuery: BackendlessGeoQuery?
 }

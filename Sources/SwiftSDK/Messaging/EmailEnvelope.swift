@@ -19,12 +19,12 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class EmailEnvelope: NSObject, Codable {
+@objcMembers public class EmailEnvelope: NSObject, Codable {
     
-    open var to: [String]?
-    open var cc: [String]?
-    open var bcc: [String]?
-    open var query: String?
+    public var to: [String]?
+    public var cc: [String]?
+    public var bcc: [String]?
+    public var query: String?
     
     enum CodingKeys: String, CodingKey {
         case to
@@ -51,21 +51,21 @@
         try container.encodeIfPresent(query, forKey: .query)
     }
     
-    open func addTo(to: [String]) {
+    public func addTo(to: [String]) {
         if self.to == nil {
             self.to = [String]()
         }
         self.to!.append(contentsOf: to)
     }
     
-    open func addCc(cc: [String]) {
+    public func addCc(cc: [String]) {
         if self.cc == nil {
             self.cc = [String]()
         }
         self.cc!.append(contentsOf: cc)
     }
     
-    open func addBcc(bcc: [String]) {
+    public func addBcc(bcc: [String]) {
         if self.bcc == nil {
             self.bcc = [String]()
         }
