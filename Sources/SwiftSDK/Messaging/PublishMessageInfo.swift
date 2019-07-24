@@ -19,16 +19,16 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class PublishMessageInfo: NSObject, Codable {
+@objcMembers public class PublishMessageInfo: NSObject, Codable {
     
-    open var messageId: String?
-    open var publisherId: String?
-    open var subtopic: String?
-    open var publishPolicy: String?
-    open var query: String?
+    public var messageId: String?
+    public var publisherId: String?
+    public var subtopic: String?
+    public var publishPolicy: String?
+    public var query: String?
     
     private var _message: JSON?
-    open var message: Any? {
+    public var message: Any? {
         get {
             if let messageObject = _message?.object {
                 if messageObject is [String : Any] {
@@ -50,10 +50,10 @@
         }
     }
     
-    open var pushSinglecast: [String]?
+    public var pushSinglecast: [String]?
     
     private var _headers: JSON?
-    open var headers: [String : Any]? {
+    public var headers: [String : Any]? {
         get {
             return _headers?.dictionaryObject
         }
@@ -66,7 +66,7 @@
     }
     
     private var _timestamp: Int?
-    open var timestamp: NSNumber? {
+    public var timestamp: NSNumber? {
         get {
             if let _timestamp = _timestamp {
                 return NSNumber(integerLiteral: _timestamp)
@@ -79,7 +79,7 @@
     }
     
     private var _pushBroadcast: String?
-    open var pushBroadcast: String? {
+    public var pushBroadcast: String? {
         get {
             if let _pushBroadcast = _pushBroadcast {
                 if let broadcast = PushBroadcastEnum(rawValue: Int(_pushBroadcast)!) {
@@ -111,7 +111,7 @@
     }
     
     private var _publishAt: Int?
-    open var publishAt: NSNumber? {
+    public var publishAt: NSNumber? {
         get {
             if let _publishAt = _publishAt {
                 return NSNumber(integerLiteral: _publishAt)
@@ -124,7 +124,7 @@
     }
     
     private var _repeatEvery: Int?
-    open var repeatEvery: NSNumber? {
+    public var repeatEvery: NSNumber? {
         get {
             if let _repeatEvery = _repeatEvery {
                 return NSNumber(integerLiteral: _repeatEvery)
@@ -137,7 +137,7 @@
     }
     
     private var _repeatExpiresAt: Int?
-    open var repeatExpiresAt: NSNumber? {
+    public var repeatExpiresAt: NSNumber? {
         get {
             if let _repeatExpiresAt = _repeatExpiresAt {
                 return NSNumber(integerLiteral: _repeatExpiresAt)

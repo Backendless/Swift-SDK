@@ -19,56 +19,59 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class FileService: NSObject {
+@objcMembers public class FileService: NSObject {
     
-    open lazy var permissions: FilePermission = {
+    public lazy var permissions: FilePermission = {
         let _permissions = FilePermission()
         return _permissions
     }()
     
-    open func uploadFile(fileName: String, filePath: String, content: Data, responseHandler: ((BackendlessFile) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    private let dataTypesUtils = DataTypesUtils.shared
+    private let processResponse = ProcessResponse.shared
+    
+    public func uploadFile(fileName: String, filePath: String, content: Data, responseHandler: ((BackendlessFile) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         self.uploadFile(fileName: fileName, filePath: filePath, fileContent: content, overwrite: false, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func uploadFile(fileName: String, filePath: String, content: Data, overwrite: Bool, responseHandler: ((BackendlessFile) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func uploadFile(fileName: String, filePath: String, content: Data, overwrite: Bool, responseHandler: ((BackendlessFile) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         self.uploadFile(fileName: fileName, filePath: filePath, fileContent: content, overwrite: overwrite, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     func uploadFile(fileName: String, filePath: String, fileContent: Data, overwrite: Bool, responseHandler: ((BackendlessFile) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        var restMethod = "files/\(filePath)/\(fileName)"
+        var restMethod = "files/\(filePath)/\(dataTypesUtils.stringToUrlString(originalString: fileName))"
         if overwrite {
             restMethod += "?overwrite=true"
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .post, headers: nil, parameters: nil).makeMultipartFormRequest(data: fileContent, fileName: fileName, getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
+            if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
                 else if let result = (result as? JSON)?.dictionaryObject {
-                    let backendlessFile = ProcessResponse.shared.adaptToBackendlessFile(backendlessFileDictionary: result)
+                    let backendlessFile = self.processResponse.adaptToBackendlessFile(backendlessFileDictionary: result)
                     responseHandler(backendlessFile)
                 }
             }
         })
     }
     
-    open func saveFile(fileName: String, filePath: String, base64Content: String, responseHandler: ((BackendlessFile) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func saveFile(fileName: String, filePath: String, base64Content: String, responseHandler: ((BackendlessFile) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         saveFile(fileName: fileName, filePath: filePath, base64FileContent: base64Content, overwrite: false, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func saveFile(fileName: String, filePath: String, base64Content: String, overwrite: Bool, responseHandler: ((BackendlessFile) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func saveFile(fileName: String, filePath: String, base64Content: String, overwrite: Bool, responseHandler: ((BackendlessFile) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         saveFile(fileName: fileName, filePath: filePath, base64FileContent: base64Content, overwrite: overwrite, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     func saveFile(fileName: String, filePath: String, base64FileContent: String, overwrite: Bool, responseHandler: ((BackendlessFile) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        var restMethod = "files/binary/\(filePath)/\(fileName)"
+        var restMethod = "files/binary/\(filePath)/\(dataTypesUtils.stringToUrlString(originalString: fileName))"
         if overwrite {
             restMethod += "?overwrite=true"
         }
         let headers = ["Content-Type": "text/plain"]
         let parameters = base64FileContent
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
+            if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -82,11 +85,11 @@
         })
     }
     
-    open func rename(path: String, newName: String, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func rename(path: String, newName: String, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
-        let parameters = ["oldPathName": path, "newName": newName]
+        let parameters = ["oldPathName": path, "newName": dataTypesUtils.stringToUrlString(originalString: newName)]
         BackendlessRequestManager(restMethod: "files/rename", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
+            if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -99,11 +102,11 @@
         })
     }
     
-    open func copy(sourcePath: String, targetPath: String, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func copy(sourcePath: String, targetPath: String, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = ["sourcePath": sourcePath, "targetPath": targetPath]
         BackendlessRequestManager(restMethod: "files/copy", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
+            if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -116,11 +119,11 @@
         })
     }
     
-    open func move(sourcePath: String, targetPath: String, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func move(sourcePath: String, targetPath: String, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = ["sourcePath": sourcePath, "targetPath": targetPath]
         BackendlessRequestManager(restMethod: "files/move", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
+            if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -133,24 +136,24 @@
         })
     }
     
-    open func listing(path: String, responseHandler: (([BackendlessFileInfo]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func listing(path: String, responseHandler: (([BackendlessFileInfo]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         filesListing(path: path, pattern: "*", recursive: false, pageSize: nil, offset: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func listing(pattern: String, recursive: Bool, responseHandler: (([BackendlessFileInfo]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func listing(pattern: String, recursive: Bool, responseHandler: (([BackendlessFileInfo]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         filesListing(path: "", pattern: pattern, recursive: recursive, pageSize: nil, offset: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func listing(path: String, pattern: String, recursive: Bool, responseHandler: (([BackendlessFileInfo]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func listing(path: String, pattern: String, recursive: Bool, responseHandler: (([BackendlessFileInfo]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         filesListing(path: path, pattern: pattern, recursive: recursive, pageSize: nil, offset: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func listing(path: String, pattern: String, recursive: Bool, pageSize: Int, offset: Int, responseHandler: (([BackendlessFileInfo]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func listing(path: String, pattern: String, recursive: Bool, pageSize: Int, offset: Int, responseHandler: (([BackendlessFileInfo]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         filesListing(path: path, pattern: pattern, recursive: recursive, pageSize: pageSize, offset: offset, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     func filesListing(path: String, pattern: String, recursive: Bool, pageSize: Int?, offset: Int?, responseHandler: (([BackendlessFileInfo]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        var restMethod = "files/\(path)?pattern=\(DataTypesUtils.shared.stringToUrlString(originalString: pattern))"
+        var restMethod = "files/\(path)?pattern=\(dataTypesUtils.stringToUrlString(originalString: pattern))"
         if recursive {
             restMethod += "&sub=true"
         }
@@ -164,7 +167,7 @@
             restMethod += "&offset=\(offset)"
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: [BackendlessFileInfo].self) {
+            if let result = self.processResponse.adapt(response: response, to: [BackendlessFileInfo].self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -175,24 +178,24 @@
         })
     }
     
-    open func getFileCount(responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func getFileCount(responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         getFileCount(path: "", pattern: "*", recursive: false, countDirectories: true, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func getFileCount(path: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func getFileCount(path: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         getFileCount(path: path, pattern: "*", recursive: false, countDirectories: true, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func getFileCount(path: String, pattern: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func getFileCount(path: String, pattern: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         getFileCount(path: path, pattern: pattern, recursive: false, countDirectories: true, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func getFileCount(path: String, pattern: String, recursive: Bool, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func getFileCount(path: String, pattern: String, recursive: Bool, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         getFileCount(path: path, pattern: pattern, recursive: recursive, countDirectories: true, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func getFileCount(path: String, pattern: String, recursive: Bool, countDirectories: Bool, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        var restMethod = "files/\(path)/?action=count&pattern=\(DataTypesUtils.shared.stringToUrlString(originalString: pattern))"
+    public func getFileCount(path: String, pattern: String, recursive: Bool, countDirectories: Bool, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        var restMethod = "files/\(path)/?action=count&pattern=\(dataTypesUtils.stringToUrlString(originalString: pattern))"
         if recursive {
             restMethod += "&sub=true"
         }
@@ -206,23 +209,23 @@
             restMethod += "&countDirectories=false"
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {
+            if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
             }
             else {
-                responseHandler(DataTypesUtils.shared.dataToInt(data: response.data!))
+                responseHandler(self.dataTypesUtils.dataToInt(data: response.data!))
             }
         })
     }
 
-    open func remove(path: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func remove(path: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         remove(path: path, pattern: "*", recursive: false, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func remove(path: String, pattern: String, recursive: Bool, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        var restMethod = "files/\(path)?pattern=\(DataTypesUtils.shared.stringToUrlString(originalString: pattern))"
+    public func remove(path: String, pattern: String, recursive: Bool, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        var restMethod = "files/\(path)?pattern=\(dataTypesUtils.stringToUrlString(originalString: pattern))"
         if recursive {
             restMethod += "&sub=true"
         }
@@ -230,7 +233,7 @@
             restMethod += "&sub=false"
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .delete, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: NoReply.self) {
+            if let result = self.processResponse.adapt(response: response, to: NoReply.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -241,7 +244,7 @@
         })
     }
     
-    open func exists(path: String, responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func exists(path: String, responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         BackendlessRequestManager(restMethod: "files/\(path)?action=exists", httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let responseData = response.data {
                 do {
@@ -250,7 +253,7 @@
                 catch {
                     let faultCode = response.response?.statusCode
                     let faultMessage = error.localizedDescription
-                    errorHandler(ProcessResponse.shared.faultConstructor(faultMessage, faultCode: faultCode!))
+                    errorHandler(self.processResponse.faultConstructor(faultMessage, faultCode: faultCode!))
                 }
             }
         })

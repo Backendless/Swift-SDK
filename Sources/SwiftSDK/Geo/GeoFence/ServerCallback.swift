@@ -30,6 +30,8 @@ class ServerCallback: NSObject, ICallback {
     var responseHandler: ((Int) -> Void)!
     var errorHandler: ((Fault) -> Void)!
     
+    private let backendless = Backendless.shared
+    
     override init() {
         self.responseHandler = { response in }
         self.errorHandler = { error in }
@@ -42,7 +44,7 @@ class ServerCallback: NSObject, ICallback {
     func callOnEnter(geoFence: GeoFence, location: CLLocation) {
         if let geoFenceName = geoFence.geofenceName,
             let geoPoint = self.geoPoint {           
-            Backendless.shared.geoService.runOnEnterAction(geoFenceName: geoFenceName, geoPoint: geoPoint, responseHandler: { response in
+            backendless.geoService.runOnEnterAction(geoFenceName: geoFenceName, geoPoint: geoPoint, responseHandler: { response in
                 self.responseHandler(response)
             }, errorHandler: { fault in
                 self.errorHandler(fault)
@@ -53,7 +55,7 @@ class ServerCallback: NSObject, ICallback {
     func callOnStay(geoFence: GeoFence, location: CLLocation) {
         if let geoFenceName = geoFence.geofenceName,
             let geoPoint = self.geoPoint {
-            Backendless.shared.geoService.runOnStayAction(geoFenceName: geoFenceName, geoPoint: geoPoint, responseHandler: { response in
+            backendless.geoService.runOnStayAction(geoFenceName: geoFenceName, geoPoint: geoPoint, responseHandler: { response in
                 self.responseHandler(response)
             }, errorHandler: { fault in
                 self.errorHandler(fault)
@@ -64,7 +66,7 @@ class ServerCallback: NSObject, ICallback {
     func callOnExit(geoFence: GeoFence, location: CLLocation) {
         if let geoFenceName = geoFence.geofenceName,
             let geoPoint = self.geoPoint {
-            Backendless.shared.geoService.runOnExitAction(geoFenceName: geoFenceName, geoPoint: geoPoint, responseHandler: { response in
+            backendless.geoService.runOnExitAction(geoFenceName: geoFenceName, geoPoint: geoPoint, responseHandler: { response in
                 self.responseHandler(response)
             }, errorHandler: { fault in
                 self.errorHandler(fault)

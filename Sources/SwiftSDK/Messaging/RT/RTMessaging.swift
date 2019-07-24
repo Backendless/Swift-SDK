@@ -21,6 +21,9 @@
 
 class RTMessaging: RTListener {
     
+    private let rtClient = RTClient.shared
+    private let processResponse = ProcessResponse.shared
+    
     private var channel: Channel
     private var channelName: String
     private var subscriptionId: String!
@@ -38,7 +41,7 @@ class RTMessaging: RTListener {
     }
     
     func disconnect() {
-        RTClient.shared.unsubscribe(subscriptionId: subscriptionId)
+        rtClient.unsubscribe(subscriptionId: subscriptionId)
         removeWaitingSubscriptions()
     }
     
@@ -51,12 +54,12 @@ class RTMessaging: RTListener {
         subscription.options = ["channel": channelName]
         subscription.onResult = wrappedBlock
         subscription.onError = errorHandler
-        RTClient.shared.addSimpleListener(type: rtTypes.pubSubConnect, subscription: subscription)
+        rtClient.addSimpleListener(type: rtTypes.pubSubConnect, subscription: subscription)
         return subscription
     }
     
     func removeConnectListeners() {
-        RTClient.shared.removeSimpleListeners(type: rtTypes.pubSubConnect)
+        rtClient.removeSimpleListeners(type: rtTypes.pubSubConnect)
     }
     
     func addStringMessageListener(selector: String?, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
@@ -132,7 +135,7 @@ class RTMessaging: RTListener {
     func addMessageListener(selector: String?, responseHandler: ((PublishMessageInfo) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         let wrappedBlock: (Any) -> () = { response in
             if let response = response as? [String : Any] {
-                let publishMessageInfo = ProcessResponse.shared.adapt(responseDictionary: response, to: PublishMessageInfo.self)
+                let publishMessageInfo = self.processResponse.adapt(responseDictionary: response, to: PublishMessageInfo.self)
                 responseHandler(publishMessageInfo as! PublishMessageInfo)
             }            
         }
@@ -157,7 +160,7 @@ class RTMessaging: RTListener {
     func addCommandListener(responseHandler: ((CommandObject) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         let wrappedBlock: (Any) -> () = { response in
             if let response = response as? [String : Any] {
-                let commandObject = ProcessResponse.shared.adaptToCommandObject(commandObjectDictionary: response)
+                let commandObject = self.processResponse.adaptToCommandObject(commandObjectDictionary: response)
                 responseHandler(commandObject)
             }
         }

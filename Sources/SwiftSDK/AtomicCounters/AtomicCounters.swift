@@ -19,38 +19,41 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class AtomicCounters: NSObject {
+@objcMembers public class AtomicCounters: NSObject {
     
-    open func of(counterName: String) -> IAtomic {
-        return AtomicCountersFactory(counterName: nameToUrlString(counterName: counterName))
+    private let dataTypesUtils = DataTypesUtils.shared
+    private let processResponse = ProcessResponse.shared
+    
+    public func of(counterName: String) -> IAtomic {
+        return AtomicCountersFactory(counterName: dataTypesUtils.stringToUrlString(originalString: counterName))
     }
     
-    open func getAndIncrement(counterName: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        executeCounterMethod(restMethod: "counters/\(nameToUrlString(counterName: counterName))/get/increment", responseHandler: responseHandler, errorHandler: errorHandler)
+    public func getAndIncrement(counterName: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        executeCounterMethod(restMethod: "counters/\(dataTypesUtils.stringToUrlString(originalString: counterName))/get/increment", responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func incrementAndGet(counterName: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        executeCounterMethod(restMethod: "counters/\(nameToUrlString(counterName: counterName))/increment/get", responseHandler: responseHandler, errorHandler: errorHandler)
+    public func incrementAndGet(counterName: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        executeCounterMethod(restMethod: "counters/\(dataTypesUtils.stringToUrlString(originalString: counterName))/increment/get", responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func getAndDecrement(counterName: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        executeCounterMethod(restMethod: "counters/\(nameToUrlString(counterName: counterName))/get/decrement", responseHandler: responseHandler, errorHandler: errorHandler)
+    public func getAndDecrement(counterName: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        executeCounterMethod(restMethod: "counters/\(dataTypesUtils.stringToUrlString(originalString: counterName))/get/decrement", responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func decrementAndGet(counterName: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        executeCounterMethod(restMethod: "counters/\(nameToUrlString(counterName: counterName))/decrement/get", responseHandler: responseHandler, errorHandler: errorHandler)
+    public func decrementAndGet(counterName: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        executeCounterMethod(restMethod: "counters/\(dataTypesUtils.stringToUrlString(originalString: counterName))/decrement/get", responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func getAndAdd(counterName: String, value: Int, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        executeCounterMethod(restMethod: "counters/\(nameToUrlString(counterName: counterName))/get/incrementby?value=\(value)", responseHandler: responseHandler, errorHandler: errorHandler)
+    public func getAndAdd(counterName: String, value: Int, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        executeCounterMethod(restMethod: "counters/\(dataTypesUtils.stringToUrlString(originalString: counterName))/get/incrementby?value=\(value)", responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func addAndGet(counterName: String, value: Int, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        executeCounterMethod(restMethod: "counters/\(nameToUrlString(counterName: counterName))/incrementby/get?value=\(value)", responseHandler: responseHandler, errorHandler: errorHandler)
+    public func addAndGet(counterName: String, value: Int, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        executeCounterMethod(restMethod: "counters/\(dataTypesUtils.stringToUrlString(originalString: counterName))/incrementby/get?value=\(value)", responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func compareAndSet(counterName: String, expected: Int, updated: Int, responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        BackendlessRequestManager(restMethod: "counters/\(nameToUrlString(counterName: counterName))/get/compareandset?expected=\(expected)&updatedvalue=\(updated)", httpMethod: .put, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+    public func compareAndSet(counterName: String, expected: Int, updated: Int, responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        BackendlessRequestManager(restMethod: "counters/\(dataTypesUtils.stringToUrlString(originalString: counterName))/get/compareandset?expected=\(expected)&updatedvalue=\(updated)", httpMethod: .put, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let responseData = response.data {
                 do {
                     responseHandler(try JSONSerialization.jsonObject(with: responseData, options: .allowFragments) as! Bool)
@@ -58,28 +61,28 @@
                 catch {
                     let faultCode = response.response?.statusCode
                     let faultMessage = error.localizedDescription
-                    errorHandler(ProcessResponse.shared.faultConstructor(faultMessage, faultCode: faultCode!))
+                    errorHandler(self.processResponse.faultConstructor(faultMessage, faultCode: faultCode!))
                 }
             }
         })
     }
     
-    open func get(counterName: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        BackendlessRequestManager(restMethod: "counters/\(nameToUrlString(counterName: counterName))", httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {
+    public func get(counterName: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        BackendlessRequestManager(restMethod: "counters/\(dataTypesUtils.stringToUrlString(originalString: counterName))", httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
             }
             else {
-                responseHandler(DataTypesUtils.shared.dataToInt(data: response.data!))
+                responseHandler(self.dataTypesUtils.dataToInt(data: response.data!))
             }
         })
     }
     
-    open func reset(counterName: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        BackendlessRequestManager(restMethod: "counters/\(nameToUrlString(counterName: counterName))/reset", httpMethod: .put, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: NoReply.self) {
+    public func reset(counterName: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        BackendlessRequestManager(restMethod: "counters/\(dataTypesUtils.stringToUrlString(originalString: counterName))/reset", httpMethod: .put, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = self.processResponse.adapt(response: response, to: NoReply.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -92,19 +95,14 @@
     
     private func executeCounterMethod(restMethod: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .put, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {
+            if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
             }
             else {
                 responseHandler(DataTypesUtils.shared.dataToInt(data: response.data!))
-            }
-            
+            }            
         })
-    }
-    
-    private func nameToUrlString(counterName: String) -> String {
-        return DataTypesUtils.shared.stringToUrlString(originalString: counterName)
     }
 }

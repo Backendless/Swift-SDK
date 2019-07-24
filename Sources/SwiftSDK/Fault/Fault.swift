@@ -19,10 +19,10 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class Fault: NSError {
+@objcMembers public class Fault: NSError {
     
-    open var message: String?
-    open var faultCode: Int = 0
+    public var message: String?
+    public var faultCode: Int = 0
     
     let backendlessDomain = "BackendlessErrorDomain"
     

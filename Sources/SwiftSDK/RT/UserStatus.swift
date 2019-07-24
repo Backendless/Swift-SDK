@@ -19,8 +19,8 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class UserStatus: NSObject {
+@objcMembers public class UserStatus: NSObject {
     
-    open var status: String?
-    open var data: [[String : Any]]?
+    public var status: String?
+    public var data: [[String : Any]]?
 }

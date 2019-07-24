@@ -19,11 +19,11 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class MessageStatus: NSObject, Codable {
+@objcMembers public class MessageStatus: NSObject, Codable {
     
-    open var messageId: String?
-    open var status: String?
-    open var errorMessage: String?
+    public var messageId: String?
+    public var status: String?
+    public var errorMessage: String?
         
     init(messageId: String?, status: String?, errorMessage: String?) {
         self.messageId = messageId

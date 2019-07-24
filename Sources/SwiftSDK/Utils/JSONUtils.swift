@@ -23,7 +23,7 @@ class JSONUtils: NSObject {
     
     static let shared = JSONUtils()
     
-    private let persistenceServiceUtils = PersistenceServiceUtils()
+    //private let persistenceServiceUtils = PersistenceServiceUtils()
     
     private override init() { }
     
@@ -52,7 +52,7 @@ class JSONUtils: NSObject {
                 resultObject = resultDictionary
             }
             else {
-                resultObject = persistenceServiceUtils.entityToDictionaryWithClassProperty(entity: objectToParse)
+                resultObject = PersistenceServiceUtils().entityToDictionaryWithClassProperty(entity: objectToParse)
             }
         }
         return resultObject
@@ -71,6 +71,7 @@ class JSONUtils: NSObject {
             else if let dictionaryToParse = objectToParse as? [String : Any] {
                 var resultDictionary = [String : Any]()
                 if let tableName = dictionaryToParse["___class"] as? String {
+                    let persistenceServiceUtils = PersistenceServiceUtils()
                     persistenceServiceUtils.setup(tableName: tableName)
                     resultObject = persistenceServiceUtils.dictionaryToEntity(dictionary: dictionaryToParse, className: tableName)!
                 }
@@ -97,7 +98,7 @@ class JSONUtils: NSObject {
             else {
                 if let dictionaryToParse = objectToParse as? [String : Any],
                     let className = dictionaryToParse["___class"] as? String {
-                    resultObject = persistenceServiceUtils.dictionaryToEntity(dictionary: dictionaryToParse, className: className)!
+                    resultObject = PersistenceServiceUtils().dictionaryToEntity(dictionary: dictionaryToParse, className: className)!
                 }
             }
         }

@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class EventHandlerForMap: RTListener, IEventHandler {
+@objcMembers public class EventHandlerForMap: RTListener, IEventHandler {
     
     typealias CustomType = [String : Any]
     
@@ -29,55 +29,55 @@
         self.tableName = tableName
     }
     
-    open func addCreateListener(responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+    public func addCreateListener(responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         return subscribeForObjectChanges(event: rtEventHandlers.created, tableName: tableName, whereClause: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func addCreateListener(whereClause: String, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+    public func addCreateListener(whereClause: String, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         return subscribeForObjectChanges(event: rtEventHandlers.created, tableName: tableName, whereClause: whereClause, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func removeCreateListeners(whereClause: String) {
+    public func removeCreateListeners(whereClause: String) {
         stopSubscription(event: rtEventHandlers.created, whereClause: whereClause)
     }
     
-    open func removeCreateListeners() {
+    public func removeCreateListeners() {
         stopSubscription(event: rtEventHandlers.created, whereClause: nil)
     }
     
-    open func addUpdateListener(responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+    public func addUpdateListener(responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         return subscribeForObjectChanges(event: rtEventHandlers.updated, tableName: tableName, whereClause: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func addUpdateListener(whereClause: String, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+    public func addUpdateListener(whereClause: String, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         return subscribeForObjectChanges(event: rtEventHandlers.updated, tableName: tableName, whereClause: whereClause, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func removeUpdateListeners(whereClause: String) {
+    public func removeUpdateListeners(whereClause: String) {
         stopSubscription(event: rtEventHandlers.updated, whereClause: whereClause)
     }
     
-    open func removeUpdateListeners() {
+    public func removeUpdateListeners() {
         stopSubscription(event: rtEventHandlers.updated, whereClause: nil)
     }
     
-    open func addDeleteListener(responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+    public func addDeleteListener(responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         return subscribeForObjectChanges(event: rtEventHandlers.deleted, tableName: tableName, whereClause: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func addDeleteListener(whereClause: String, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+    public func addDeleteListener(whereClause: String, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         return subscribeForObjectChanges(event: rtEventHandlers.deleted, tableName: tableName, whereClause: whereClause, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open func removeDeleteListeners(whereClause: String) {
+    public func removeDeleteListeners(whereClause: String) {
         stopSubscription(event: rtEventHandlers.deleted, whereClause: whereClause)
     }
     
-    open func removeDeleteListeners() {
+    public func removeDeleteListeners() {
         stopSubscription(event: rtEventHandlers.deleted, whereClause: nil)
     }
     
-    open func addBulkCreateListener(responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+    public func addBulkCreateListener(responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         let wrappedBlock: ([String : Any]) -> () = { response in
             var resultArray = [String]()
             for key in response.keys {
@@ -88,11 +88,11 @@
         return subscribeForObjectChanges(event: rtEventHandlers.bulkCreated, tableName: tableName, whereClause: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
     }
     
-    open func removeBulkCreateListeners() {
+    public func removeBulkCreateListeners() {
         stopSubscription(event: rtEventHandlers.bulkCreated, whereClause: nil)
     }
     
-    open func addBulkUpdateListener(responseHandler: ((BulkEvent) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+    public func addBulkUpdateListener(responseHandler: ((BulkEvent) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         let wrappedBlock: ([String : Any]) -> () = { response in            
             let bulkEvent = BulkEvent()
             if let whereClause = response["whereClause"] as? String {
@@ -106,7 +106,7 @@
         return subscribeForObjectChanges(event: rtEventHandlers.bulkUpdated, tableName: tableName, whereClause: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
     }
     
-    open func addBulkUpdateListener(whereClause: String, responseHandler: ((BulkEvent) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+    public func addBulkUpdateListener(whereClause: String, responseHandler: ((BulkEvent) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         let wrappedBlock: ([String : Any]) -> () = { response in
             let bulkEvent = BulkEvent()
             if let whereClause = response["whereClause"] as? String {
@@ -120,15 +120,15 @@
         return subscribeForObjectChanges(event: rtEventHandlers.bulkUpdated, tableName: tableName, whereClause: whereClause, responseHandler: wrappedBlock, errorHandler: errorHandler)
     }
     
-    open func removeBulkUpdateListeners(whereClause: String) {
+    public func removeBulkUpdateListeners(whereClause: String) {
         stopSubscription(event: rtEventHandlers.bulkUpdated, whereClause: whereClause)
     }
     
-    open func removeBulkUpdateListeners() {
+    public func removeBulkUpdateListeners() {
         stopSubscription(event: rtEventHandlers.bulkUpdated, whereClause: nil)
     }
     
-    open func addBulkDeleteListener(responseHandler: ((BulkEvent) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+    public func addBulkDeleteListener(responseHandler: ((BulkEvent) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         let wrappedBlock: ([String : Any]) -> () = { response in
             let bulkEvent = BulkEvent()
             if let whereClause = response["whereClause"] as? String {
@@ -142,7 +142,7 @@
         return subscribeForObjectChanges(event: rtEventHandlers.bulkDeleted, tableName: tableName, whereClause: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
     }
     
-    open func addBulkDeleteListener(whereClause: String, responseHandler: ((BulkEvent) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+    public func addBulkDeleteListener(whereClause: String, responseHandler: ((BulkEvent) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         let wrappedBlock: ([String : Any]) -> () = { response in
             let bulkEvent = BulkEvent()
             if let whereClause = response["whereClause"] as? String {
@@ -156,15 +156,15 @@
         return subscribeForObjectChanges(event: rtEventHandlers.bulkDeleted, tableName: tableName, whereClause: whereClause, responseHandler: wrappedBlock, errorHandler: errorHandler)
     }
     
-    open func removeBulkDeleteListeners(whereClause: String) {
+    public func removeBulkDeleteListeners(whereClause: String) {
         stopSubscription(event: rtEventHandlers.bulkDeleted, whereClause: whereClause)
     }
     
-    open func removeBulkDeleteListeners() {
+    public func removeBulkDeleteListeners() {
         stopSubscription(event: rtEventHandlers.bulkDeleted, whereClause: nil)
     }
     
-    open func removeAllListeners() {
+    public func removeAllListeners() {
         removeCreateListeners()
         removeUpdateListeners()
         removeDeleteListeners()

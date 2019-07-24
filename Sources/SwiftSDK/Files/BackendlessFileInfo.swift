@@ -19,15 +19,15 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class BackendlessFileInfo: NSObject, Codable {
+@objcMembers public class BackendlessFileInfo: NSObject, Codable {
     
-    open var name: String?
-    open var createdOn: Int = 0
-    open var publicUrl: String?
-    open var url: String?
+    public var name: String?
+    public var createdOn: Int = 0
+    public var publicUrl: String?
+    public var url: String?
     
     private var _size: Int?
-    open var size: NSNumber? {
+    public var size: NSNumber? {
         get {
             if let _size = _size {
                 return NSNumber(integerLiteral: _size)

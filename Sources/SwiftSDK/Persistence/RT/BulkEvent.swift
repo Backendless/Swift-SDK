@@ -19,12 +19,12 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class BulkEvent: NSObject, Codable {
+@objcMembers public class BulkEvent: NSObject, Codable {
     
-    open var whereClause: String?
+    public var whereClause: String?
     
     private var _count: Int?
-    open var count: NSNumber? {
+    public var count: NSNumber? {
         get {
             if let _count = _count {
                 return NSNumber(integerLiteral: _count)

@@ -21,6 +21,11 @@
 
 class PersistenceServiceUtils: NSObject {
     
+    private let processResponse = ProcessResponse.shared
+    private let dataTypesUtils = DataTypesUtils.shared
+    private let storedObjects = StoredObjects.shared
+    private let mappings = Mappings.shared
+    
     private var tableName: String = ""
     
     func setup(tableName: String?) {
@@ -36,7 +41,7 @@ class PersistenceServiceUtils: NSObject {
     
     func describe(tableName: String, responseHandler: (([ObjectProperty]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         BackendlessRequestManager(restMethod: "data/\(tableName)/properties", httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: [ObjectProperty].self) {
+            if let result = self.processResponse.adapt(response: response, to: [ObjectProperty].self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -51,7 +56,7 @@ class PersistenceServiceUtils: NSObject {
         let headers = ["Content-Type": "application/json"]
         let parameters = entity
         BackendlessRequestManager(restMethod: "data/\(tableName)", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
+            if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -66,7 +71,7 @@ class PersistenceServiceUtils: NSObject {
         let headers = ["Content-Type": "application/json"]
         let parameters = entities
         BackendlessRequestManager(restMethod: "data/bulk/\(tableName)", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: [String].self) {
+            if let result = self.processResponse.adapt(response: response, to: [String].self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -82,7 +87,7 @@ class PersistenceServiceUtils: NSObject {
         let parameters = entity
         if let objectId = entity["objectId"] as? String {
             BackendlessRequestManager(restMethod: "data/\(tableName)/\(objectId)", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-                if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
+                if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                     if result is Fault {
                         errorHandler(result as! Fault)
                     }
@@ -99,16 +104,16 @@ class PersistenceServiceUtils: NSObject {
         let parameters = changes
         var restMethod = "data/bulk/\(tableName)"
         if whereClause != nil, whereClause?.count ?? 0 > 0 {
-            restMethod += "?where=\(DataTypesUtils.shared.stringToUrlString(originalString: whereClause!))"
+            restMethod += "?where=\(dataTypesUtils.stringToUrlString(originalString: whereClause!))"
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {
+            if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
             }
             else {
-                responseHandler(DataTypesUtils.shared.dataToInt(data: response.data!))
+                responseHandler(self.dataTypesUtils.dataToInt(data: response.data!))
             }
         })
     }
@@ -116,12 +121,12 @@ class PersistenceServiceUtils: NSObject {
     func removeById(objectId: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = [String: String]()
         BackendlessRequestManager(restMethod: "data/\(tableName)/\(objectId)", httpMethod: .delete, headers: headers, parameters: nil).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
+            if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
                 else if let resultValue = (result as! JSON).dictionaryObject?.first?.value as? Int {
-                    StoredObjects.shared.removeObjectId(objectId: objectId)
+                    self.storedObjects.removeObjectId(objectId: objectId)
                     responseHandler(resultValue)
                 }
             }
@@ -135,14 +140,14 @@ class PersistenceServiceUtils: NSObject {
             parameters = ["where": "objectId != NULL"]
         }
         BackendlessRequestManager(restMethod: "data/bulk/\(tableName)/delete", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {
+            if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
             }
             else {
-                StoredObjects.shared.removeObjectIds(tableName: self.tableName)
-                responseHandler(DataTypesUtils.shared.dataToInt(data: response.data!))
+                self.storedObjects.removeObjectIds(tableName: self.tableName)
+                responseHandler(self.dataTypesUtils.dataToInt(data: response.data!))
             }
         })
     }
@@ -150,17 +155,17 @@ class PersistenceServiceUtils: NSObject {
     func getObjectCount(queryBuilder: DataQueryBuilder?, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         var restMethod = "data/\(tableName)/count"
         if let whereClause = queryBuilder?.getWhereClause(), whereClause.count > 0 {
-            restMethod += "?where=\(DataTypesUtils.shared.stringToUrlString(originalString: whereClause))"
+            restMethod += "?where=\(dataTypesUtils.stringToUrlString(originalString: whereClause))"
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {
+            if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
             }
             else {
-                StoredObjects.shared.removeObjectIds(tableName: self.tableName)
-                responseHandler(DataTypesUtils.shared.dataToInt(data: response.data!))
+                self.storedObjects.removeObjectIds(tableName: self.tableName)
+                responseHandler(self.dataTypesUtils.dataToInt(data: response.data!))
             }
         })
     }
@@ -175,13 +180,13 @@ class PersistenceServiceUtils: NSObject {
             parameters["relationsDepth"] = String(relationsDepth)
         }
         if let sortBy = queryBuilder?.getSortBy(), sortBy.count > 0 {
-            parameters["sortBy"] = DataTypesUtils.shared.arrayToString(array: sortBy)
+            parameters["sortBy"] = dataTypesUtils.arrayToString(array: sortBy)
         }
         if let related = queryBuilder?.getRelated() {
-            parameters["loadRelations"] = DataTypesUtils.shared.arrayToString(array: related)
+            parameters["loadRelations"] = dataTypesUtils.arrayToString(array: related)
         }
         if let groupBy = queryBuilder?.getGroupBy() {
-            parameters["groupBy"] = DataTypesUtils.shared.arrayToString(array: groupBy)
+            parameters["groupBy"] = dataTypesUtils.arrayToString(array: groupBy)
         }
         if let havingClause = queryBuilder?.getHavingClause() {
             parameters["having"] = havingClause
@@ -193,7 +198,7 @@ class PersistenceServiceUtils: NSObject {
             parameters["offset"] = offset
         }
         BackendlessRequestManager(restMethod: "data/\(tableName)/find", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: [JSON].self) {
+            if let result = self.processResponse.adapt(response: response, to: [JSON].self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -226,18 +231,18 @@ class PersistenceServiceUtils: NSObject {
         let relationsDepth = queryBuilder?.getRelationsDepth()
         
         if related != nil, relationsDepth! > 0 {
-            let relatedString = DataTypesUtils.shared.stringToUrlString(originalString: DataTypesUtils.shared.arrayToString(array: related!))
+            let relatedString = dataTypesUtils.stringToUrlString(originalString: dataTypesUtils.arrayToString(array: related!))
             restMethod += "?loadRelations=" + relatedString + "&relationsDepth=" + String(relationsDepth!)
         }
         else if related != nil, relationsDepth == 0 {
-            let relatedString = DataTypesUtils.shared.stringToUrlString(originalString: DataTypesUtils.shared.arrayToString(array: related!))
+            let relatedString = dataTypesUtils.stringToUrlString(originalString: dataTypesUtils.arrayToString(array: related!))
             restMethod += "?loadRelations=" + relatedString
         }
         else if related == nil, relationsDepth! > 0 {
             restMethod += "?relationsDepth=" + String(relationsDepth!)
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
+            if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -252,14 +257,14 @@ class PersistenceServiceUtils: NSObject {
         let headers = ["Content-Type": "application/json"]
         let parameters = childrenObjectIds
         BackendlessRequestManager(restMethod: "data/\(tableName)/\(parentObjectId)/\(columnName)", httpMethod: httpMethod, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {
+            if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
             }
             else {
-                StoredObjects.shared.removeObjectIds(tableName: self.tableName)
-                responseHandler(DataTypesUtils.shared.dataToInt(data: response.data!))
+                self.storedObjects.removeObjectIds(tableName: self.tableName)
+                responseHandler(self.dataTypesUtils.dataToInt(data: response.data!))
             }
         })
     }
@@ -267,20 +272,20 @@ class PersistenceServiceUtils: NSObject {
     func setOrAddRelation(columnName: String, parentObjectId: String, whereClause: String?, httpMethod: HTTPMethod, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         var restMethod = "data/\(tableName)/\(parentObjectId)/\(columnName)"
         if whereClause != nil, whereClause?.count ?? 0 > 0 {
-            restMethod += "?whereClause=\(DataTypesUtils.shared.stringToUrlString(originalString: whereClause!))"
+            restMethod += "?whereClause=\(dataTypesUtils.stringToUrlString(originalString: whereClause!))"
         }
         else {
-            restMethod += "?whereClause=\(DataTypesUtils.shared.stringToUrlString(originalString: "objectId != NULL"))"
+            restMethod += "?whereClause=\(dataTypesUtils.stringToUrlString(originalString: "objectId != NULL"))"
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: httpMethod, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {
+            if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
             }
             else {
-                StoredObjects.shared.removeObjectIds(tableName: self.tableName)
-                responseHandler(DataTypesUtils.shared.dataToInt(data: response.data!))
+                self.storedObjects.removeObjectIds(tableName: self.tableName)
+                responseHandler(self.dataTypesUtils.dataToInt(data: response.data!))
             }
         })
     }
@@ -289,14 +294,14 @@ class PersistenceServiceUtils: NSObject {
         let headers = ["Content-Type": "application/json"]
         let parameters = childrenObjectIds
         BackendlessRequestManager(restMethod: "data/\(tableName)/\(parentObjectId)/\(columnName)", httpMethod: .delete, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {
+            if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
             }
             else {
-                StoredObjects.shared.removeObjectIds(tableName: self.tableName)
-                responseHandler(DataTypesUtils.shared.dataToInt(data: response.data!))
+                self.storedObjects.removeObjectIds(tableName: self.tableName)
+                responseHandler(self.dataTypesUtils.dataToInt(data: response.data!))
             }
         })
     }
@@ -306,15 +311,15 @@ class PersistenceServiceUtils: NSObject {
         if whereClause == nil {
             whereClause = "objectId != NULL"
         }
-        BackendlessRequestManager(restMethod: "data/\(tableName)/\(parentObjectId)/\(columnName)?whereClause=\(DataTypesUtils.shared.stringToUrlString(originalString: whereClause!))", httpMethod: .delete, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {
+        BackendlessRequestManager(restMethod: "data/\(tableName)/\(parentObjectId)/\(columnName)?whereClause=\(dataTypesUtils.stringToUrlString(originalString: whereClause!))", httpMethod: .delete, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
             }
             else {
-                StoredObjects.shared.removeObjectIds(tableName: self.tableName)
-                responseHandler(DataTypesUtils.shared.dataToInt(data: response.data!))
+                self.storedObjects.removeObjectIds(tableName: self.tableName)
+                responseHandler(self.dataTypesUtils.dataToInt(data: response.data!))
             }
         })
     }
@@ -325,10 +330,10 @@ class PersistenceServiceUtils: NSObject {
         parameters["pageSize"] = queryBuilder.getPageSize()
         parameters["offset"] = queryBuilder.getOffset()
         if let sortBy = queryBuilder.getSortBy(), sortBy.count > 0 {
-            parameters["sortBy"] = DataTypesUtils.shared.arrayToString(array: sortBy)
+            parameters["sortBy"] = dataTypesUtils.arrayToString(array: sortBy)
         }
         if let props = queryBuilder.getProperties() {
-            parameters["props"] = DataTypesUtils.shared.arrayToString(array: props)
+            parameters["props"] = dataTypesUtils.arrayToString(array: props)
         }
         if queryBuilder.getRelationName().isEmpty {
             let fault = Fault(message: "Incorrect relationName property", faultCode: 0)
@@ -336,7 +341,7 @@ class PersistenceServiceUtils: NSObject {
         }
         else {
             BackendlessRequestManager(restMethod: "data/\(tableName)/\(objectId)/\(queryBuilder.getRelationName())/load", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-                if let result = ProcessResponse.shared.adapt(response: response, to: [JSON].self) {
+                if let result = self.processResponse.adapt(response: response, to: [JSON].self) {
                     if result is Fault {
                         errorHandler(result as! Fault)
                     }
@@ -414,7 +419,7 @@ class PersistenceServiceUtils: NSObject {
             if let properties = class_copyPropertyList(resultClass.self, &outCount) {
                 
                 let entityClassName = getClassName(entity: (entity as! NSObject).classForCoder)
-                let columnToPropertyMappings = Mappings.shared.getColumnToPropertyMappings(className: entityClassName)
+                let columnToPropertyMappings = mappings.getColumnToPropertyMappings(className: entityClassName)
                 
                 for i : UInt32 in 0..<outCount {
                     if let key = NSString(cString: property_getName(properties[Int(i)]), encoding: String.Encoding.utf8.rawValue) as String?, let value = (entity as! NSObject).value(forKey: key) {
@@ -444,7 +449,7 @@ class PersistenceServiceUtils: NSObject {
                                 resultValue = resultDictionary
                             }
                             else if let dateValue = value as? Date {
-                                resultValue = DataTypesUtils.shared.dateToInt(date: dateValue)
+                                resultValue = dataTypesUtils.dateToInt(date: dateValue)
                             }
                             else {
                                 resultValue = entityToDictionaryWithClassProperty(entity: value)
@@ -457,7 +462,7 @@ class PersistenceServiceUtils: NSObject {
                         else {
                             entityDictionary[key] = resultValue
                         }
-                        if let objectId = StoredObjects.shared.getObjectId(forObject: entity as! AnyHashable) {
+                        if let objectId = storedObjects.getObjectId(forObject: entity as! AnyHashable) {
                             entityDictionary["objectId"] = objectId
                         }
                     }
@@ -481,21 +486,21 @@ class PersistenceServiceUtils: NSObject {
     
     func dictionaryToEntity(dictionary: [String: Any], className: String) -> Any? {
         if tableName == "Users" || className == "Users",
-            let backendlessUser = ProcessResponse.shared.adaptToBackendlessUser(responseResult: dictionary) as? BackendlessUser {
+            let backendlessUser = processResponse.adaptToBackendlessUser(responseResult: dictionary) as? BackendlessUser {
             if let userId = backendlessUser.objectId {
-                StoredObjects.shared.rememberObjectId(objectId: userId, forObject: backendlessUser)
+                storedObjects.rememberObjectId(objectId: userId, forObject: backendlessUser)
             }
             return backendlessUser
         }
         if tableName == "DeviceRegistration" || className == "DeviceRegistration" {
-            let deviceRegistration = ProcessResponse.shared.adaptToDeviceRegistration(responseResult: dictionary)
+            let deviceRegistration = processResponse.adaptToDeviceRegistration(responseResult: dictionary)
             if let objectId = deviceRegistration.objectId {
-                StoredObjects.shared.rememberObjectId(objectId: objectId, forObject: deviceRegistration)
+                storedObjects.rememberObjectId(objectId: objectId, forObject: deviceRegistration)
                 return deviceRegistration
             }
         }
         var resultEntityTypeName = ""
-        let classMappings = Mappings.shared.getTableToClassMappings()
+        let classMappings = mappings.getTableToClassMappings()
         if classMappings.keys.contains(tableName) {
             resultEntityTypeName = classMappings[tableName]!
         }
@@ -513,7 +518,7 @@ class PersistenceServiceUtils: NSObject {
             let entityFields = getClassPropertiesWithType(entity: entity)
             let entityClassName = getClassName(entity: entity.classForCoder)
             
-            let columnToPropertyMappings = Mappings.shared.getColumnToPropertyMappings(className: entityClassName)
+            let columnToPropertyMappings = mappings.getColumnToPropertyMappings(className: entityClassName)
             for dictionaryField in dictionary.keys {
                 
                 if !(dictionary[dictionaryField] is NSNull) {
@@ -525,11 +530,11 @@ class PersistenceServiceUtils: NSObject {
                         if let relationDictionary = dictionary[dictionaryField] as? [String: Any] {
                             let relationClassName = getClassName(className: relationDictionary["___class"] as! String)
                             if relationDictionary["___class"] as? String == "Users",
-                                let userObject = ProcessResponse.shared.adaptToBackendlessUser(responseResult: relationDictionary) {
+                                let userObject = processResponse.adaptToBackendlessUser(responseResult: relationDictionary) {
                                 entity.setValue(userObject as! BackendlessUser, forKey: dictionaryField)
                             }
                             else if relationDictionary["___class"] as? String == "GeoPoint",
-                                let geoPointObject = ProcessResponse.shared.adaptToGeoPoint(geoDictionary: relationDictionary) {
+                                let geoPointObject = processResponse.adaptToGeoPoint(geoDictionary: relationDictionary) {
                                 entity.setValue(geoPointObject, forKey: dictionaryField)
                             }
                             else if let relationObject = dictionaryToEntity(dictionary: relationDictionary, className: relationClassName) {
@@ -541,11 +546,11 @@ class PersistenceServiceUtils: NSObject {
                             for relationDictionary in relationArrayOfDictionaries {
                                 let relationClassName = getClassName(className: relationDictionary["___class"] as! String)
                                 if relationDictionary["___class"] as? String == "Users",
-                                    let userObject = ProcessResponse.shared.adaptToBackendlessUser(responseResult: relationDictionary) {
+                                    let userObject = processResponse.adaptToBackendlessUser(responseResult: relationDictionary) {
                                     relationsArray.append(userObject as! BackendlessUser)
                                 }
                                 if relationDictionary["___class"] as? String == "GeoPoint",
-                                    let geoPointObject = ProcessResponse.shared.adaptToGeoPoint(geoDictionary: relationDictionary) {
+                                    let geoPointObject = processResponse.adaptToGeoPoint(geoDictionary: relationDictionary) {
                                     relationsArray.append(geoPointObject)
                                 }
                                 else if let relationObject = dictionaryToEntity(dictionary: relationDictionary, className: relationClassName) {
@@ -558,7 +563,7 @@ class PersistenceServiceUtils: NSObject {
                             if let valueType = entityFields[dictionaryField],
                                 valueType.contains("NSDate"),
                                 value is Int {
-                                entity.setValue(DataTypesUtils.shared.intToDate(intVal: value as! Int), forKey: dictionaryField)
+                                entity.setValue(dataTypesUtils.intToDate(intVal: value as! Int), forKey: dictionaryField)
                             }
                             else {
                                 entity.setValue(value, forKey: dictionaryField)
@@ -568,7 +573,7 @@ class PersistenceServiceUtils: NSObject {
                 }
             }
             if let objectId = dictionary["objectId"] as? String {
-                StoredObjects.shared.rememberObjectId(objectId: objectId, forObject: entity)
+                storedObjects.rememberObjectId(objectId: objectId, forObject: entity)
             }
             return entity
         }
@@ -580,7 +585,7 @@ class PersistenceServiceUtils: NSObject {
             let objectId = entity["objectId"] as? String {
             return objectId
         }
-        else if let objectId = StoredObjects.shared.getObjectId(forObject: entity as! AnyHashable) {
+        else if let objectId = storedObjects.getObjectId(forObject: entity as! AnyHashable) {
             return objectId
         }
         return nil

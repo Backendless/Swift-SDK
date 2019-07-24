@@ -27,14 +27,14 @@
     case FEET = 4
 }
 
-@objcMembers open class BackendlessGeoQuery: NSObject, Codable {
+@objcMembers public class BackendlessGeoQuery: NSObject, Codable {
     
-    open var geoPoint: GeoPoint?
-    open var categories: [String]?
-    open var includemetadata = false
+    public var geoPoint: GeoPoint?
+    public var categories: [String]?
+    public var includemetadata = false
     
     private var _radius: Double?
-    open var radius: NSNumber? {
+    public var radius: NSNumber? {
         get {
             if let _radius = _radius {
                 return NSNumber(floatLiteral: _radius)
@@ -47,7 +47,7 @@
     }
     
     private var _metadata: JSON?
-    open var metadata: [String : Any]? {
+    public var metadata: [String : Any]? {
         get {
             return _metadata?.dictionaryObject
         }
@@ -58,15 +58,15 @@
         }
     }
     
-    open var whereClause: String?
-    open var rectangle: GeoQueryRectangle?
-    open var pageSize: Int = 10
-    open var offset: Int = 0
-    open var relativeFindMetadata: [String : String]?
-    open var relativeFindPercentThreshold: Double = 0.0
+    public var whereClause: String?
+    public var rectangle: GeoQueryRectangle?
+    public var pageSize: Int = 10
+    public var offset: Int = 0
+    public var relativeFindMetadata: [String : String]?
+    public var relativeFindPercentThreshold: Double = 0.0
     
-    open private(set) var degreePerPixel: Double = 0.0
-    open private(set) var clusterGridSize: Double = 100.0
+    public private(set) var degreePerPixel: Double = 0.0
+    public private(set) var clusterGridSize: Double = 100.0
     
     private var units: Int?
     
@@ -122,11 +122,11 @@
         try container.encode(clusterGridSize, forKey: .clusterGridSize)
     }
     
-    open func setUnits(units: Int) {
+    public func setUnits(units: Int) {
         self.units = units
     }
     
-    open func getUnits() -> String {
+    public func getUnits() -> String {
         if self.units == 0 {
             return "METERS"
         }
@@ -145,16 +145,16 @@
         return "MILES"
     }
     
-    open func setClusteringParams(degreePerPixel: Double, clusterGridSize: Double) {
+    public func setClusteringParams(degreePerPixel: Double, clusterGridSize: Double) {
         self.degreePerPixel = degreePerPixel
         self.clusterGridSize = clusterGridSize
     }
     
-    open func setClusteringParams(westLongitude: Double, eastLongitude: Double, mapWidth: Int) {
+    public func setClusteringParams(westLongitude: Double, eastLongitude: Double, mapWidth: Int) {
         setClusteringParams(westLongitude: westLongitude, eastLongitude: eastLongitude, mapWidth: mapWidth, clusterGridSize: 100)
     }
     
-    open func setClusteringParams(westLongitude: Double, eastLongitude: Double, mapWidth: Int, clusterGridSize: Double) {
+    public func setClusteringParams(westLongitude: Double, eastLongitude: Double, mapWidth: Int, clusterGridSize: Double) {
         if eastLongitude - westLongitude < 0 {
             self.degreePerPixel = ((eastLongitude - westLongitude) + 360) / Double(mapWidth)
         }

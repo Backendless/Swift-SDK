@@ -44,15 +44,15 @@ public enum FenceType: Int, Codable {
     }
 }    
 
-@objcMembers open class GeoFence: NSObject {
+@objcMembers public class GeoFence: NSObject {
 
-    open internal(set) var objectId: String?
-    open var geofenceName: String?
-    open var onStayDuration: NSNumber?
-    open var geoFenceType: FenceType?
-    open var nodes: [GeoPoint]?
-    open var nwGeoPoint: GeoPoint?
-    open  var seGeoPoint: GeoPoint?
+    public internal(set) var objectId: String?
+    public var geofenceName: String?
+    public var onStayDuration: NSNumber?
+    public var geoFenceType: FenceType?
+    public var nodes: [GeoPoint]?
+    public var nwGeoPoint: GeoPoint?
+    public  var seGeoPoint: GeoPoint?
     
     public init(geofenceName: String) {
         self.geofenceName = geofenceName

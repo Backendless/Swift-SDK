@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class BackendlessFile: NSObject {
+@objcMembers public class BackendlessFile: NSObject {
     
-    open var fileUrl: String?
+    public var fileUrl: String?
 }

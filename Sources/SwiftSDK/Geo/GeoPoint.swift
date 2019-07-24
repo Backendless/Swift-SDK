@@ -19,14 +19,14 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class GeoPoint: NSObject, Codable {
+@objcMembers public class GeoPoint: NSObject, Codable {
     
-    open private(set) var objectId: String?
-    open var latitude: Double = 0.0
-    open var longitude: Double = 0.0
-    open var distance: Double = 0.0
-    open var categories: [String]
-    open var metadata: [String: Any]? {
+    public private(set) var objectId: String?
+    public var latitude: Double = 0.0
+    public var longitude: Double = 0.0
+    public var distance: Double = 0.0
+    public var categories: [String]
+    public var metadata: [String: Any]? {
         get {
             return self._metadata?.dictionaryObject
         }

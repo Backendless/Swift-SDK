@@ -19,18 +19,18 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class Backendless: NSObject {
+@objcMembers public class Backendless: NSObject {
     
     public static let shared = Backendless()
     
-    open var hostUrl = "https://api.backendless.com"
+    public var hostUrl = "https://api.backendless.com"
     
     private var applicationId = "AppId"
     private var apiKey = "APIKey"
     
     private override init() { }
     
-    open func initApp(applicationId: String, apiKey: String) {
+    public func initApp(applicationId: String, apiKey: String) {
         self.applicationId = applicationId
         self.apiKey = apiKey
         
@@ -38,94 +38,94 @@
         self.data.of(BackendlessUser.self).mapColumn(columnName: "password", toProperty: "_password")
     }
     
-    open func getApplictionId() -> String {
+    public func getApplictionId() -> String {
         return applicationId
     }
     
-    open func getApiKey() -> String {
+    public func getApiKey() -> String {
         return apiKey
     }
     
-    open lazy var rt: RTService = {
+    public lazy var rt: RTService = {
         return self.rtService
     }()
     
-    open lazy var rtService: RTService = {
+    public lazy var rtService: RTService = {
         let _rtSevice = RTService()
         return _rtSevice
     }()
     
-    open lazy var userService: UserService = {
+    public lazy var userService: UserService = {
         let _userSevice = UserService()
         return _userSevice
     }()
     
-    open lazy var data: PersistenceService = {
+    public lazy var data: PersistenceService = {
         return self.persistenceService
     }()
     
-    open lazy var persistenceService: PersistenceService = {
+    public lazy var persistenceService: PersistenceService = {
         let _persistenceSevice = PersistenceService()
         return _persistenceSevice
     }()
     
-    open lazy var messaging: MessagingService = {
+    public lazy var messaging: MessagingService = {
         return self.messagingService
     }()
     
-    open lazy var messagingService: MessagingService = {
+    public lazy var messagingService: MessagingService = {
         let _messagingSevice = MessagingService()
         return _messagingSevice
     }()
     
-    open lazy var file: FileService = {
+    public lazy var file: FileService = {
         return self.fileService
     }()
     
-    open lazy var fileService: FileService = {
+    public lazy var fileService: FileService = {
         let _fileSevice = FileService()
         return _fileSevice
     }()
     
-    open lazy var geo: GeoService = {
+    public lazy var geo: GeoService = {
         return self.geoService
     }()
     
-    open lazy var geoService: GeoService = {
+    public lazy var geoService: GeoService = {
         let _geoSevice = GeoService()
         return _geoSevice
     }()
     
-    open lazy var logging: Logging = {
+    public lazy var logging: Logging = {
         let _logging = Logging()
         return _logging
     }()
     
-    open lazy var cache: CacheService = {
+    public lazy var cache: CacheService = {
         return self.cacheService
     }()
     
-    open lazy var cacheService: CacheService = {
+    public lazy var cacheService: CacheService = {
         let _cacheSevice = CacheService()
         return _cacheSevice
     }()
     
-    open lazy var counters: AtomicCounters = {
+    public lazy var counters: AtomicCounters = {
         let _atomicCounters = AtomicCounters()
         return _atomicCounters
     }()
     
-    open lazy var customService: CustomService = {
+    public lazy var customService: CustomService = {
         let _customService = CustomService()
         return _customService
     }()
     
-    open lazy var events: Events = {
+    public lazy var events: Events = {
         let _events = Events()
         return _events
     }()
     
-    open func sharedObject(name: String) -> SharedObject {
+    public func sharedObject(name: String) -> SharedObject {
         return SharedObject(name: name)
     }
 }

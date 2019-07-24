@@ -19,15 +19,15 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class DeviceRegistration: NSObject, Codable {
+@objcMembers public class DeviceRegistration: NSObject, Codable {
     
-    open private(set) var objectId: String?
-    open var deviceToken: String?
-    open var deviceId: String?
-    open var os: String?
-    open var osVersion: String?
-    open var expiration: Date?
-    open var channels: [String]?
+    public private(set) var objectId: String?
+    public var deviceToken: String?
+    public var deviceId: String?
+    public var os: String?
+    public var osVersion: String?
+    public var expiration: Date?
+    public var channels: [String]?
     
     init(objectId: String?, deviceToken: String?, deviceId: String?, os: String?, osVersion: String?, expiration: Date?, channels: [String]?) {
         self.objectId = objectId

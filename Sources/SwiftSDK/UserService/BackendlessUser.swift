@@ -19,10 +19,10 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class BackendlessUser: NSObject, Codable {
+@objcMembers public class BackendlessUser: NSObject, Codable {
     
-    open var email: String
-    open var password: String? {
+    public var email: String
+    public var password: String? {
         get {
             return nil
         }
@@ -30,10 +30,10 @@
             self._password = newValue
         }
     }
-    open var name: String?
+    public var name: String?
     
-    open private(set) var objectId: String?
-    open private(set) var userToken: String?
+    public private(set) var objectId: String?
+    public private(set) var userToken: String?
     
     var _password: String?
     
@@ -74,12 +74,12 @@
         try container.encodeIfPresent(_password, forKey: ._password)
     }
     
-    open func getProperty(propertyName: String) -> Any? {
+    public func getProperty(propertyName: String) -> Any? {
         let userProperties = getProperties()
         return userProperties[propertyName] as Any?
     }
     
-    open func getProperties() -> [String: Any] {
+    public func getProperties() -> [String: Any] {
         var userProperties = [String: Any]()
         for (propertyName, propertyValue) in properties.dictionaryObject! {
           userProperties[propertyName] = propertyValue
@@ -99,7 +99,7 @@
         return userProperties
     }
     
-    open func setProperty(propertyName: String, propertyValue: Any) {
+    public func setProperty(propertyName: String, propertyValue: Any) {
         var value = propertyValue
         
         if propertyName == "name", propertyValue is String {
@@ -120,23 +120,23 @@
         self.properties = JSON(userProperties)
     }
     
-    open func setProperties(properties: [String: Any]) {
+    public func setProperties(properties: [String: Any]) {
         for property in properties {
             setProperty(propertyName: property.key, propertyValue: property.value)
         }
     }
     
-    open func setLocale(languageCode: String) {
+    public func setLocale(languageCode: String) {
         setProperty(propertyName: "blUserLocale", propertyValue: languageCode)
     }
     
-    open func removeProperty(propertyName: String) {
+    public func removeProperty(propertyName: String) {
         var userProperties = getProperties()
         userProperties[propertyName] = NSNull()
         self.properties = JSON(userProperties)
     }
     
-    open func removeProperties(propertiesToRemove: [String]) {
+    public func removeProperties(propertiesToRemove: [String]) {
         for propertyName in propertiesToRemove {
             removeProperty(propertyName: propertyName)
         }

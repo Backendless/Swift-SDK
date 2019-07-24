@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class LoadRelationsQueryBuilder: NSObject, Codable {
+@objcMembers public class LoadRelationsQueryBuilder: NSObject, Codable {
    
     private var entityClass: Any?
     
@@ -66,58 +66,58 @@
         self.relationName = relationName
     }
     
-    open func setRelationName(relationName: String) {
+    public func setRelationName(relationName: String) {
         self.relationName = relationName
     }
 
-    open func getRelationName() -> String {
+    public func getRelationName() -> String {
         return self.relationName
     }
     
-    open func getPageSize() -> Int {
+    public func getPageSize() -> Int {
         return self.pageSize
     }
     
-    open func setPageSize(pageSize: Int) {
+    public func setPageSize(pageSize: Int) {
         self.pageSize = pageSize
     }
     
-    open func getOffset() -> Int {
+    public func getOffset() -> Int {
         return self.offset
     }
     
-    open func setOffset(offset: Int) {
+    public func setOffset(offset: Int) {
         self.offset = offset
     }
     
-    open func prepareNextPage() {
+    public func prepareNextPage() {
         self.offset += self.pageSize
     }
     
-    open func preparePreviousPage() {
+    public func preparePreviousPage() {
         self.offset -= self.pageSize
         if offset < 0 {
             offset = 0
         }
     }
     
-    open func getRelationType() -> Any? {
+    public func getRelationType() -> Any? {
         return self.entityClass
     }
     
-    open func getProperties() -> [String]? {
+    public func getProperties() -> [String]? {
         return self.properties
     }
     
-    open func setProperties(properties: [String]) {
+    public func setProperties(properties: [String]) {
         self.properties = properties
     }
     
-    open func addProperty(property: String) {
+    public func addProperty(property: String) {
         addProperties(properties: [property])
     }
     
-    open func addProperties(properties: [String]) {
+    public func addProperties(properties: [String]) {
         if self.properties != nil {
             for property in properties {
                 self.properties?.append(property)
@@ -128,19 +128,19 @@
         }
     }
     
-    open func getSortBy() -> [String]? {
+    public func getSortBy() -> [String]? {
         return self.sortBy
     }
     
-    open func setSortBy(sortBy: [String]) {
+    public func setSortBy(sortBy: [String]) {
         self.sortBy = sortBy
     }
     
-    open func addSortBy(sortBy: String) {
+    public func addSortBy(sortBy: String) {
         addSortBy(listSortBy: [sortBy])
     }
     
-    open func addSortBy(listSortBy: [String]) {
+    public func addSortBy(listSortBy: [String]) {
         if self.sortBy != nil {
             for sortBy in listSortBy {
                 self.sortBy?.append(sortBy)

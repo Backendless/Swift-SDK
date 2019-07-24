@@ -19,9 +19,9 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class UserProperty: ObjectProperty {
+@objcMembers public class UserProperty: ObjectProperty {
     
-    open var identity = false
+    public var identity = false
     
     enum UserPropertyCodingKeys: String, CodingKey {
         case identity

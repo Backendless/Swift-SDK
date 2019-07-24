@@ -19,21 +19,21 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers open class PersistenceService: NSObject {
+@objcMembers public class PersistenceService: NSObject {
 
-    open func ofTable(_ tableName: String) -> MapDrivenDataStore {
+    public func ofTable(_ tableName: String) -> MapDrivenDataStore {
         return MapDrivenDataStore(tableName: tableName)
     }
     
-    open func of(_ entityClass: AnyClass) -> DataStoreFactory {
+    public func of(_ entityClass: AnyClass) -> DataStoreFactory {
         return DataStoreFactory(entityClass: entityClass)
     }
     
-    open func describe(tableName: String, responseHandler: (([ObjectProperty]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func describe(tableName: String, responseHandler: (([ObjectProperty]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         PersistenceServiceUtils().describe(tableName: tableName, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    open lazy var permissions: DataPermission = {
+    public lazy var permissions: DataPermission = {
         let _permissions = DataPermission()
         return _permissions
     }()
