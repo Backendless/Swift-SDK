@@ -45,10 +45,9 @@ class BackendlessRequestManager: NSObject {
         var request = URLRequest(url: URL(string: urlString+restMethod)!)
         request.httpMethod = httpMethod.rawValue
         if let headers = headers, headers.count > 0 {
-            for key in headers.keys {
-                if let value = headers[key] {
-                    request.addValue(value, forHTTPHeaderField: key)
-                }
+            
+            for (key, value) in headers {
+                request.addValue(value, forHTTPHeaderField: key)
             }
         }
         if let userToken = Backendless.shared.userService.getCurrentUser()?.userToken {
@@ -66,9 +65,9 @@ class BackendlessRequestManager: NSObject {
                 }
                 else {
                     if var params = parameters as? [String : Any] {
-                        for key in Array(params.keys) {
-                            if let dateParam = params[key] as? Date {
-                                params[key] = dateParam.timeIntervalSince1970
+                        for (key, value) in params {
+                            if let dateValue = value as? Date {
+                                params[key] = dateValue.timeIntervalSince1970
                             }
                         }
                         parameters = params

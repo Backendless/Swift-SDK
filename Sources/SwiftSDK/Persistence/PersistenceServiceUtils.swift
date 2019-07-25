@@ -409,8 +409,8 @@ class PersistenceServiceUtils: NSObject {
         
         if let userEntity = entity as? BackendlessUser {
             let properties = userEntity.getProperties()
-            for key in Array(properties.keys) {
-                entityDictionary[key] = properties[key]
+            for (key, value) in properties {
+                entityDictionary[key] = value
             }
         }
         else {
@@ -436,16 +436,14 @@ class PersistenceServiceUtils: NSObject {
                             }
                             else if let dictionaryValue = value as? [String : Any] {
                                 var resultDictionary = [String : Any]()
-                                for key in dictionaryValue.keys {
-                                    if let dictionaryVal = dictionaryValue[key] {
-                                        if !(dictionaryVal is String), !(dictionaryVal is NSNumber), !(dictionaryVal is NSNull) {
-                                            resultDictionary[key] = entityToDictionaryWithClassProperty(entity: dictionaryVal)
-                                        }
-                                        else {
-                                            resultDictionary[key] = dictionaryVal
-                                        }
+                                for (key, dictionaryVal) in dictionaryValue {
+                                    if !(dictionaryVal is String), !(dictionaryVal is NSNumber), !(dictionaryVal is NSNull) {
+                                        resultDictionary[key] = entityToDictionaryWithClassProperty(entity: dictionaryVal)
                                     }
-                                }
+                                    else {
+                                        resultDictionary[key] = dictionaryVal
+                                    }
+                                }                         
                                 resultValue = resultDictionary
                             }
                             else if let dateValue = value as? Date {

@@ -29,11 +29,9 @@
         
         var metadata = [String : Any]()
         if let geoMeta = geoPoint.metadata {
-            for key in Array(geoMeta.keys) {
-                if let value = geoMeta[key] {
-                    metadata[key] = JSONUtils.shared.objectToJSON(objectToParse: value)
-                }
-            }
+            for (key, value) in geoMeta {
+                metadata[key] = JSONUtils.shared.objectToJSON(objectToParse: value)
+            }         
         }
         
         let parameters = ["latitude": geoPoint.latitude, "longitude": geoPoint.longitude, "categories": geoPoint.categories as Any, "metadata": metadata] as [String : Any]

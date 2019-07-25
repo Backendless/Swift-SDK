@@ -39,11 +39,9 @@ class JSONUtils: NSObject {
             }
             else if let dictionaryToParse = objectToParse as? [String : Any] {
                 var resultDictionary = [String : Any]()
-                for key in dictionaryToParse.keys {
-                    let value = dictionaryToParse[key]
-                    
+                for (key, value) in dictionaryToParse {
                     if !(value is String), !(value is NSNumber), !(value is NSNull) {
-                        resultDictionary[key] = objectToJSON(objectToParse: value!)
+                        resultDictionary[key] = objectToJSON(objectToParse: value)
                     }
                     else {
                         resultDictionary[key] = value
@@ -76,8 +74,7 @@ class JSONUtils: NSObject {
                     resultObject = persistenceServiceUtils.dictionaryToEntity(dictionary: dictionaryToParse, className: tableName)!
                 }
                 else {
-                    for key in dictionaryToParse.keys {
-                        let value = dictionaryToParse[key]
+                    for (key, value) in dictionaryToParse {
                         if let value = value as? [String : Any] {
                             resultDictionary[key] = JSONToObject(objectToParse: value)
                         }
