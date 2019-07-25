@@ -57,11 +57,9 @@
             else {
                 if let resultDictionary = (result as! JSON).dictionaryObject {
                     var resultDict = [String : Any]()
-                    for key in Array(resultDictionary.keys) {
-                        if let value = resultDictionary[key] {
-                            resultDict[key] = jsonUtils.JSONToObject(objectToParse: value)
-                        }
-                    }
+                    for (key, value) in resultDictionary {
+                        resultDict[key] = jsonUtils.JSONToObject(objectToParse: value)
+                    }                       
                     responseHandler(resultDict)
                 }
             }

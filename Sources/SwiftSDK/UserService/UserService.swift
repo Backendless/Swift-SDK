@@ -52,8 +52,8 @@
         let headers = ["Content-Type": "application/json"]
         var parameters = [String : Any]()
         let userProperties = user.getProperties()
-        for key in Array(userProperties.keys) {
-            parameters[key] = userProperties[key]
+        for (key, value) in userProperties {
+            parameters[key] = value
         }
         parameters["email"] = user.email
         parameters["password"] = user._password

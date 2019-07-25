@@ -183,7 +183,7 @@ class RTSharedObject: RTListener {
     func get(key: String?, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let wrappedBlock: (Any) -> () = { response in
             var resultDictionary = [String : Any]()
-            if let response = response as? [String : Any] {
+            if let response = response as? [String : Any] {          
                 for key in response.keys {
                     let value = self.jsonUtils.JSONToObject(objectToParse: response[key] as Any)
                     resultDictionary[key] = value

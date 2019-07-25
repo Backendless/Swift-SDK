@@ -84,9 +84,8 @@ import UserNotifications
     
     func dictionaryWithoutNulls(dictionary: [String : Any]) -> [String : Any] {
         var resultDictionary = dictionary
-        for key in dictionary.keys {
-            if let value = dictionary[key],
-                value is NSNull {
+        for (key, value) in dictionary {
+            if value is NSNull {
                 resultDictionary.removeValue(forKey: key)
             }
         }
@@ -157,7 +156,7 @@ import UserNotifications
                 userInfo["attachment-url"] = attachmentUrl
             }
             
-            if let headers = iosPushTemplate["customHeaders"] as? [String : Any] {
+            if let headers = iosPushTemplate["customHeaders"] as? [String : Any] {           
                 for key in headers.keys {
                     if let value = request.content.userInfo[key] {
                         userInfo[key] = value
