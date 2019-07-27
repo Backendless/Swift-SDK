@@ -104,7 +104,7 @@ class PersistenceServiceUtils: NSObject {
         let parameters = changes
         var restMethod = "data/bulk/\(tableName)"
         if whereClause != nil, whereClause?.count ?? 0 > 0 {
-            restMethod += "?where=\(dataTypesUtils.stringToUrlString(originalString: whereClause!))"
+            restMethod += "?where=\(whereClause!)"
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: Int.self) {
@@ -155,7 +155,7 @@ class PersistenceServiceUtils: NSObject {
     func getObjectCount(queryBuilder: DataQueryBuilder?, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         var restMethod = "data/\(tableName)/count"
         if let whereClause = queryBuilder?.getWhereClause(), whereClause.count > 0 {
-            restMethod += "?where=\(dataTypesUtils.stringToUrlString(originalString: whereClause))"
+            restMethod += "?where=\(whereClause)"
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: Int.self) {
@@ -231,11 +231,11 @@ class PersistenceServiceUtils: NSObject {
         let relationsDepth = queryBuilder?.getRelationsDepth()
         
         if related != nil, relationsDepth! > 0 {
-            let relatedString = dataTypesUtils.stringToUrlString(originalString: dataTypesUtils.arrayToString(array: related!))
+            let relatedString = dataTypesUtils.arrayToString(array: related!)
             restMethod += "?loadRelations=" + relatedString + "&relationsDepth=" + String(relationsDepth!)
         }
         else if related != nil, relationsDepth == 0 {
-            let relatedString = dataTypesUtils.stringToUrlString(originalString: dataTypesUtils.arrayToString(array: related!))
+            let relatedString = dataTypesUtils.arrayToString(array: related!)
             restMethod += "?loadRelations=" + relatedString
         }
         else if related == nil, relationsDepth! > 0 {
@@ -272,10 +272,10 @@ class PersistenceServiceUtils: NSObject {
     func setOrAddRelation(columnName: String, parentObjectId: String, whereClause: String?, httpMethod: HTTPMethod, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         var restMethod = "data/\(tableName)/\(parentObjectId)/\(columnName)"
         if whereClause != nil, whereClause?.count ?? 0 > 0 {
-            restMethod += "?whereClause=\(dataTypesUtils.stringToUrlString(originalString: whereClause!))"
+            restMethod += "?whereClause=\(whereClause!)"
         }
         else {
-            restMethod += "?whereClause=\(dataTypesUtils.stringToUrlString(originalString: "objectId != NULL"))"
+            restMethod += "?whereClause=objectId!=NULL)"
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: httpMethod, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: Int.self) {
@@ -309,9 +309,9 @@ class PersistenceServiceUtils: NSObject {
     func deleteRelation(columnName: String, parentObjectId: String, whereClause: String?, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         var whereClause = whereClause
         if whereClause == nil {
-            whereClause = "objectId != NULL"
+            whereClause = "objectId!=NULL"
         }
-        BackendlessRequestManager(restMethod: "data/\(tableName)/\(parentObjectId)/\(columnName)?whereClause=\(dataTypesUtils.stringToUrlString(originalString: whereClause!))", httpMethod: .delete, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+        BackendlessRequestManager(restMethod: "data/\(tableName)/\(parentObjectId)/\(columnName)?whereClause=\(whereClause!)", httpMethod: .delete, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)

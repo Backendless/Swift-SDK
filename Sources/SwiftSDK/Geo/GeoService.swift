@@ -222,8 +222,7 @@
         if let objectId = geoCluster.objectId,
             let geoQuery = geoCluster.geoQuery {
             let categoriesString = dataTypesUtils.arrayToString(array: geoCluster.categories)
-            let categoriesUrlString = dataTypesUtils.stringToUrlString(originalString: categoriesString)
-            let restMethod = createRestMethod(restMethod: "geo/clusters/\(objectId)/points?lat=\(geoCluster.latitude)&lon=\(geoCluster.longitude)&categories=\(categoriesUrlString)&dpp=\(geoQuery.degreePerPixel)&clusterGridSize=\(geoQuery.clusterGridSize)", geoQuery: nil)
+            let restMethod = createRestMethod(restMethod: "geo/clusters/\(objectId)/points?lat=\(geoCluster.latitude)&lon=\(geoCluster.longitude)&categories=\(categoriesString)&dpp=\(geoQuery.degreePerPixel)&clusterGridSize=\(geoQuery.clusterGridSize)", geoQuery: nil)
             BackendlessRequestManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
                 if let result = self.processResponse.adapt(response: response, to: [GeoPoint].self) {
                     if result is Fault {
@@ -247,10 +246,10 @@
             }
             if let categories = geoQuery.categories {
                 let categoriesString = dataTypesUtils.arrayToString(array: categories)
-                restMethod += "&categories=\(dataTypesUtils.stringToUrlString(originalString: categoriesString))"
+                restMethod += "&categories=\(categoriesString)"
             }
             if let whereClause = geoQuery.whereClause {
-                restMethod += "&where=\(dataTypesUtils.stringToUrlString(originalString: whereClause))"
+                restMethod += "&where=\(whereClause)"
             }
             if let metadata = geoQuery.metadata,
                 let metadataString = dataTypesUtils.dictionaryToUrlString(dictionary: metadata) {
@@ -284,7 +283,7 @@
     }
     
     private func getFenceGeoPointsCount(geoFenceName: String, geoQuery: BackendlessGeoQuery?, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        let restMethod = createRestMethod(restMethod: "geo/count?geoFence=\(dataTypesUtils.stringToUrlString(originalString: geoFenceName))", geoQuery: geoQuery)
+        let restMethod = createRestMethod(restMethod: "geo/count?geoFence=\(geoFenceName)", geoQuery: geoQuery)
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: Int.self) {
                 if result is Fault {
@@ -453,7 +452,7 @@
     private func startGeoFenceMonitoring(geoFenceName: String?, callback: ICallback, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         var restMethod = "geo/fences?"
         if let geoFenceName = geoFenceName {
-            restMethod += "geoFence=\(dataTypesUtils.stringToUrlString(originalString: geoFenceName))"
+            restMethod += "geoFence=\(geoFenceName)"
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: [JSON].self) {

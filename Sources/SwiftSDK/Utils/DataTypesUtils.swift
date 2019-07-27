@@ -34,7 +34,7 @@ class DataTypesUtils: NSObject {
     }
     
     func stringToUrlString(originalString: String) -> String {
-        if let resultString = originalString.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) {
+        if let resultString = originalString.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed) {
             return resultString
         }
         return originalString

@@ -74,6 +74,10 @@
         try container.encodeIfPresent(_password, forKey: ._password)
     }
     
+    func setUserToken(value: String) {
+        self.userToken = value
+    }
+    
     public func getProperty(propertyName: String) -> Any? {
         let userProperties = getProperties()
         return userProperties[propertyName] as Any?

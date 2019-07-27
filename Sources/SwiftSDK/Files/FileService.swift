@@ -38,7 +38,7 @@
     }
     
     func uploadFile(fileName: String, filePath: String, fileContent: Data, overwrite: Bool, responseHandler: ((BackendlessFile) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        var restMethod = "files/\(filePath)/\(dataTypesUtils.stringToUrlString(originalString: fileName))"
+        var restMethod = "files/\(filePath)/\(fileName)"
         if overwrite {
             restMethod += "?overwrite=true"
         }
@@ -64,7 +64,7 @@
     }
     
     func saveFile(fileName: String, filePath: String, base64FileContent: String, overwrite: Bool, responseHandler: ((BackendlessFile) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        var restMethod = "files/binary/\(filePath)/\(dataTypesUtils.stringToUrlString(originalString: fileName))"
+        var restMethod = "files/binary/\(filePath)/\(fileName)"
         if overwrite {
             restMethod += "?overwrite=true"
         }
@@ -153,7 +153,7 @@
     }
     
     func filesListing(path: String, pattern: String, recursive: Bool, pageSize: Int?, offset: Int?, responseHandler: (([BackendlessFileInfo]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        var restMethod = "files/\(path)?pattern=\(dataTypesUtils.stringToUrlString(originalString: pattern))"
+        var restMethod = "files/\(path)?pattern=\(pattern)"
         if recursive {
             restMethod += "&sub=true"
         }
@@ -195,7 +195,7 @@
     }
     
     public func getFileCount(path: String, pattern: String, recursive: Bool, countDirectories: Bool, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        var restMethod = "files/\(path)/?action=count&pattern=\(dataTypesUtils.stringToUrlString(originalString: pattern))"
+        var restMethod = "files/\(path)/?action=count&pattern=\(pattern)"
         if recursive {
             restMethod += "&sub=true"
         }
@@ -225,7 +225,7 @@
     }
     
     public func remove(path: String, pattern: String, recursive: Bool, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        var restMethod = "files/\(path)?pattern=\(dataTypesUtils.stringToUrlString(originalString: pattern))"
+        var restMethod = "files/\(path)?pattern=\(pattern)"
         if recursive {
             restMethod += "&sub=true"
         }
