@@ -35,6 +35,14 @@
     private let processResponse = ProcessResponse.shared
     private let userDefaultsHelper = UserDefaultsHelper.shared
     
+    public func setUserToken(value: String) {
+        currentUser?.setUserToken(value: value)
+    }
+    
+    public func getUserToken() -> String? {
+        return currentUser?.userToken
+    }
+    
     public func describeUserClass(responseHandler: (([UserProperty]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         BackendlessRequestManager(restMethod: "users/userclassprops", httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: [UserProperty].self) {

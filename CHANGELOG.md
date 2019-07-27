@@ -4,6 +4,17 @@
 * code refactoring
 * added the blUserLocale property (two character code) to the BackendlessUser object
 * fixed crashes in the uploadFile and saveFile functions when file name contains unsupported characters
+* added methods to UserService:
+```
+func setUserToken(value: String)
+func getUserToken()
+```
+* added methods for Backendless headers:
+```
+func getHeaders() -> [String : String]
+func setHeader(key: String, value: String)
+func removeHeader(key: String)
+```
 
 ### 0.0.16 / July 8, 2019
 * added Codable and NSCoding support for LoadRelationsQueryBuilder

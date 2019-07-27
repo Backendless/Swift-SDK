@@ -28,6 +28,8 @@
     private var applicationId = "AppId"
     private var apiKey = "APIKey"
     
+    private var headers = [String : String]()
+    
     private override init() { }
     
     public func initApp(applicationId: String, apiKey: String) {
@@ -127,5 +129,24 @@
     
     public func sharedObject(name: String) -> SharedObject {
         return SharedObject(name: name)
+    }
+    
+    public func getHeaders() -> [String : String] {
+        return headers
+    }
+    
+    public func setHeader(key: String, value: String) {
+        if key == "user-token" {
+            UserDefaultsHelper.shared.savePersistentUserToken(token: value)
+            Backendless.shared.userService.setUserToken(value: value)
+        }
+        headers[key] = value
+    }
+    
+    public func removeHeader(key: String) {
+        if key == "user-token" {
+            UserDefaultsHelper.shared.removePersistentUser()
+        }
+        headers.removeValue(forKey: key)
     }
 }

@@ -28,6 +28,8 @@ enum HTTPMethod: String {
 
 class BackendlessRequestManager: NSObject {
     
+    private let dataTypesUtils = DataTypesUtils.shared
+    
     private var urlString = "\(Backendless.shared.hostUrl)/\(Backendless.shared.getApplictionId())/\(Backendless.shared.getApiKey())/"
     private var restMethod: String
     private var httpMethod: HTTPMethod
@@ -42,7 +44,7 @@ class BackendlessRequestManager: NSObject {
     }
     
     func makeRequest(getResponse: @escaping (ReturnedResponse) -> ()) {
-        var request = URLRequest(url: URL(string: urlString+restMethod)!)
+        var request = URLRequest(url: URL(string: urlString + dataTypesUtils.stringToUrlString(originalString: restMethod))!)
         request.httpMethod = httpMethod.rawValue
         if let headers = headers, headers.count > 0 {
             
@@ -52,6 +54,11 @@ class BackendlessRequestManager: NSObject {
         }
         if let userToken = Backendless.shared.userService.getCurrentUser()?.userToken {
             request.addValue(userToken, forHTTPHeaderField: "user-token")
+        }
+        for (key, value) in Backendless.shared.getHeaders() {
+            if key != "user-token" {
+                request.addValue(value, forHTTPHeaderField: key)
+            }
         }
         if var parameters = parameters {
             if headers == ["Content-Type": "application/json"] {
@@ -104,14 +111,18 @@ class BackendlessRequestManager: NSObject {
     }
     
     func makeMultipartFormRequest(data: Data, fileName: String, getResponse: @escaping (ReturnedResponse) -> ()) {
-        var request  = URLRequest(url: URL(string: urlString+restMethod)!)
+        var request = URLRequest(url: URL(string: urlString + dataTypesUtils.stringToUrlString(originalString: restMethod))!)
         request.httpMethod = httpMethod.rawValue
         let boundary = "Boundary-\(UUID().uuidString)"
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         if let userToken = Backendless.shared.userService.getCurrentUser()?.userToken {
             request.addValue(userToken, forHTTPHeaderField: "user-token")
         }
-        
+        for (key, value) in Backendless.shared.getHeaders() {
+            if key != "user-token" {
+                request.addValue(value, forHTTPHeaderField: key)
+            }            
+        }        
         request.httpBody = createBodyForMultipartForm(parameters: self.parameters, boundary: boundary, data: data, mimeType: data.mimeType, fileName: fileName)
         
         let dataTask = URLSession.shared.dataTask(with: request) { data, response, error in
