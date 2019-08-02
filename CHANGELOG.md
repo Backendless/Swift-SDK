@@ -7,12 +7,19 @@
 * added methods to UserService:
 ```
 func setUserToken(value: String)
+
 func getUserToken()
+
+func loginAsGuest(responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!)
+
+func loginAsGuest(stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!)
 ```
 * added methods for Backendless headers:
 ```
 func getHeaders() -> [String : String]
+
 func setHeader(key: String, value: String)
+
 func removeHeader(key: String)
 ```
 
@@ -25,11 +32,13 @@ func removeHeader(key: String)
 * added methods to GeoService:
 ```
 func getFencePointsCount(geoFenceName: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
+
 func getFencePointsCount(geoFenceName: String, geoQuery: BackendlessGeoQuery, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
 ```
 * the sendEmailFromTemplate functions signatures changed:
 ```
 func sendEmailFromTemplate(templateName: String, envelope: EmailEnvelope, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!)
+
 func sendEmailFromTemplate(templateName: String, envelope: EmailEnvelope, templateValues: [String : String], responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!)
 ```
 
@@ -37,6 +46,7 @@ func sendEmailFromTemplate(templateName: String, envelope: EmailEnvelope, templa
 * the sendEmails functions renamed into the sendEmailFromTemplate:
 ```
 func sendEmailFromTemplate(templateName: String, envelope: EmailEnvelope, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!)
+
 func sendEmailFromTemplate(templateName: String, templateValues: [String : String], envelope: EmailEnvelope, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!)
 ```
 * added custom serialization/deserialization for class BackendlessGeoQuery

@@ -125,23 +125,40 @@ class ProcessResponse: NSObject {
     
     func adaptToBackendlessUser(responseResult: Any?) -> Any? {
         if let responseResult = responseResult as? [String: Any] {
-            let properties = ["email": responseResult["email"], "name": responseResult["name"], "objectId": responseResult["objectId"], "userToken": responseResult["user-token"]]
-            do {
-                let responseData = try JSONSerialization.data(withJSONObject: properties)
+            if let userStatus = responseResult["userStatus"] as? String, userStatus == "GUSET" {
+                return adaptGuestToBackendlessUser(responseResult: responseResult)
+            }
+            else {
+                let properties = ["email": responseResult["email"], "name": responseResult["name"], "objectId": responseResult["objectId"], "userToken": responseResult["user-token"]]
                 do {
-                    let responseObject = try JSONDecoder().decode(BackendlessUser.self, from: responseData)
-                    responseObject.setProperties(properties: responseResult)
-                    return responseObject
+                    let responseData = try JSONSerialization.data(withJSONObject: properties)
+                    do {
+                        let responseObject = try JSONDecoder().decode(BackendlessUser.self, from: responseData)
+                        responseObject.setProperties(properties: responseResult)
+                        return responseObject
+                    }
+                    catch {
+                        return Fault(domain: (error as NSError).domain, code: (error as NSError).code, userInfo: (error as NSError).userInfo)
+                    }
                 }
                 catch {
                     return Fault(domain: (error as NSError).domain, code: (error as NSError).code, userInfo: (error as NSError).userInfo)
                 }
             }
-            catch {
-                return Fault(domain: (error as NSError).domain, code: (error as NSError).code, userInfo: (error as NSError).userInfo)
-            }
         }
         return nil
+    }
+    
+    private func adaptGuestToBackendlessUser(responseResult: Any?) -> Any? {
+        guard let responseResult = responseResult as? [String : Any],
+            let objectId = responseResult["objectId"] as? String,
+            let userToken = responseResult["user-token"] as? String else {
+                return nil
+        }
+        let responseObject = BackendlessUser()
+        responseObject.objectId = objectId
+        responseObject.setUserToken(value: userToken)
+        return responseObject
     }
     
     func adaptToDeviceRegistration(responseResult: Any?) -> DeviceRegistration {

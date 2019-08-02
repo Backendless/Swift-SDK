@@ -94,6 +94,25 @@
         })
     }
     
+    public func loginAsGuest(responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        loginAsGuest(stayLoggedIn: false, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    public func loginAsGuest(stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        self.stayLoggedIn = stayLoggedIn
+        BackendlessRequestManager(restMethod: "users/register/guest", httpMethod: .post, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = self.processResponse.adapt(response: response, to: BackendlessUser.self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else {
+                    self.setPersistentUser(currentUser: result as! BackendlessUser)
+                    responseHandler(result as! BackendlessUser)
+                }
+            }
+        })
+    }
+    
     public func logingWithFacebook(accessToken: String, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = ["accessToken": accessToken, "fieldsMapping": fieldsMapping] as [String : Any]
@@ -245,7 +264,7 @@
     }
     
     func setPersistentUser(currentUser: BackendlessUser) {
-        self.currentUser = currentUser        
+        self.currentUser = currentUser
         savePersistentUser(currentUser: self.currentUser!)
     }
     

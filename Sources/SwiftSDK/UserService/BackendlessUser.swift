@@ -21,7 +21,8 @@
 
 @objcMembers public class BackendlessUser: NSObject, Codable {
     
-    public var email: String
+    public var objectId: String?
+    public var email: String?
     public var password: String? {
         get {
             return nil
@@ -32,7 +33,6 @@
     }
     public var name: String?
     
-    public private(set) var objectId: String?
     public private(set) var userToken: String?
     
     var _password: String?
@@ -48,8 +48,6 @@
     }
     
     public override init() {
-        self.email = ""
-        
         if var userProperties = properties.dictionaryObject {
             userProperties["blUserLocale"] = Locale.current.languageCode
             self.properties = JSON(userProperties)
@@ -91,7 +89,7 @@
         if let name = self.name {
             userProperties["name"] = name
         }
-        if !self.email.isEmpty {
+        if let email = self.email, !email.isEmpty {
             userProperties["email"] = email
         }        
         if let objectId = self.objectId {
