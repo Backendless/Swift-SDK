@@ -65,7 +65,8 @@
         }
         parameters["email"] = user.email
         parameters["password"] = user._password
-        parameters["name"] = user.name        
+        parameters["name"] = user.name
+        
         BackendlessRequestManager(restMethod: "users/register", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: BackendlessUser.self) {
                 if result is Fault {

@@ -109,7 +109,7 @@
             value = propertyValue
         }
         else if propertyName == "email", propertyValue is String {
-            self.email = propertyValue as! String
+            self.email = propertyValue as? String
             value = propertyValue
         }
         else if propertyName == "blUserLocale", propertyValue is String {

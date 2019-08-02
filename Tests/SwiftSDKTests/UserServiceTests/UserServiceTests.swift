@@ -173,4 +173,18 @@ class UserServiceTests: XCTestCase {
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
+    
+    /*func test_10_loginAsGuest() {
+        let expectation = self.expectation(description: "PASSED: userService.loginAsGuest")
+        backendless.userService.loginAsGuest(responseHandler: { guestUser in
+            XCTAssertNotNil(guestUser.objectId)
+            XCTAssertNotNil(guestUser.userToken)
+            XCTAssertEqual((guestUser.getProperty(propertyName: "userStatus")) as? String, "GUEST")
+            expectation.fulfill()
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }*/
 }
