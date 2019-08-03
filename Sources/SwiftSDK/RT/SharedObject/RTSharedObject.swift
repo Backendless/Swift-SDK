@@ -134,49 +134,49 @@ class RTSharedObject: RTListener {
         stopSubscriptionForSharedObject(sharedObject: self.sharedObject, event: rtTypes.rsoCommands)
     }
     
-//    func addUserStatusListener(responseHandler: ((UserStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
-//        let wrappedBlock: (Any) -> () = { response in
-//            if let response = response as? [String : Any] {
-//                let userStatus = self.processResponse.adaptToUserStatus(userStatusDictionary: response)
-//                responseHandler(userStatus)
-//            }
-//        }
-//        if self.sharedObject.isConnected {
-//            let options = ["name": sharedObjectName] as [String : Any]
-//            let subscription = createSubscription(type: RSO_USERS, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
-//            subscription.subscribe()
-//            return subscription
-//        }
-//        else {
-//            return addWaitingSubscription(event: RSO_USERS, responseHandler: wrappedBlock, errorHandler: errorHandler)
-//        }
-//    }
-//
-//    func removeUserStatusListeners() {
-//        stopSubscriptionForSharedObject(sharedObject: self.sharedObject, event: RSO_USERS)
-//    }
-//
-//    func addInvokeListener(responseHandler: ((InvokeObject) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
-//        let wrappedBlock: (Any) -> () = { response in
-//            if let response = response as? [String : Any] {
-//                let invokeObject = self.processResponse.adaptToInvokeObject(invokeObjectDictionary: response)
-//                responseHandler(invokeObject)
-//            }
-//        }
-//        if self.sharedObject.isConnected {
-//            let options = ["name": sharedObjectName] as [String : Any]
-//            let subscription = createSubscription(type: RSO_INVOKE, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
-//            subscription.subscribe()
-//            return subscription
-//        }
-//        else {
-//            return addWaitingSubscription(event: RSO_INVOKE, responseHandler: wrappedBlock, errorHandler: errorHandler)
-//        }
-//    }
-//
-//    func removeInvokeListeners() {
-//        stopSubscriptionForSharedObject(sharedObject: self.sharedObject, event: RSO_INVOKE)
-//    }
+    func addUserStatusListener(responseHandler: ((UserStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        let wrappedBlock: (Any) -> () = { response in
+            if let response = response as? [String : Any] {
+                let userStatus = self.processResponse.adaptToUserStatus(userStatusDictionary: response)
+                responseHandler(userStatus)
+            }
+        }
+        if self.sharedObject.isConnected {
+            let options = ["name": sharedObjectName] as [String : Any]
+            let subscription = createSubscription(type: rtTypes.rsoUsers, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            subscription.subscribe()
+            return subscription
+        }
+        else {
+            return addWaitingSubscription(event: rtTypes.rsoUsers, responseHandler: wrappedBlock, errorHandler: errorHandler)
+        }
+    }
+    
+    func removeUserStatusListeners() {
+        stopSubscriptionForSharedObject(sharedObject: self.sharedObject, event: rtTypes.rsoUsers)
+    }
+    
+    func addInvokeListener(responseHandler: ((InvokeObject) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        let wrappedBlock: (Any) -> () = { response in
+            if let response = response as? [String : Any] {
+                let invokeObject = self.processResponse.adaptToInvokeObject(invokeObjectDictionary: response)
+                responseHandler(invokeObject)
+            }
+        }
+        if self.sharedObject.isConnected {
+            let options = ["name": sharedObjectName] as [String : Any]
+            let subscription = createSubscription(type: rtTypes.rsoInvoke, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            subscription.subscribe()
+            return subscription
+        }
+        else {
+            return addWaitingSubscription(event: rtTypes.rsoInvoke, responseHandler: wrappedBlock, errorHandler: errorHandler)
+        }
+    }
+    
+    func removeInvokeListeners() {
+        stopSubscriptionForSharedObject(sharedObject: self.sharedObject, event: rtTypes.rsoInvoke)
+    }
     
     // commands
     
@@ -257,23 +257,23 @@ class RTSharedObject: RTListener {
             waitingCommands.append(waitingCommand)
         }
     }
-
-//    `[connId1, connId2, null]` - will be invoked for 2 connections and for all users who is not logged in
-//    `[connId1, connId2, userId1, userId2, null]` - also correct
     
-//    func invoke(targets: [Any]?, method: String, args: [Any]?, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-//        let wrappedBlock: (Any) -> () = { response in
-//            responseHandler()
-//        }
-//        if self.sharedObject.isConnected {
-//            let options = ["name": sharedObjectName, "method": method] as [String : Any]
-//            rtMethod.sendCommand(type: RSO_INVOKE, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
-//        }
-//        else if self.sharedObject.rememberCommands {
-//            let waitingCommand = ["event": RSO_INVOKE, "method": method, "responseHandler": responseHandler, "errorHandler": errorHandler] as [String : Any]
-//            waitingCommands.append(waitingCommand)
-//        }
-//    }
+    //    `[connId1, connId2, null]` - will be invoked for 2 connections and for all users who is not logged in
+    //    `[connId1, connId2, userId1, userId2, null]` - also correct
+    
+    func invoke(targets: [Any]?, method: String, args: [Any]?, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        let wrappedBlock: (Any) -> () = { response in
+            responseHandler()
+        }
+        if self.sharedObject.isConnected {
+            let options = ["name": sharedObjectName, "method": method] as [String : Any]
+            rtMethod.sendCommand(type: rtTypes.rsoInvoke, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
+        }
+        else if self.sharedObject.rememberCommands {
+            let waitingCommand = ["event": rtTypes.rsoInvoke, "method": method, "responseHandler": responseHandler, "errorHandler": errorHandler] as [String : Any]
+            waitingCommands.append(waitingCommand)
+        }
+    }
     
     // ********************************************
     
@@ -366,12 +366,12 @@ class RTSharedObject: RTListener {
                 let errorHandler = waitingCommand["errorHandler"] as? ((Fault) -> Void) {
                 clear(responseHandler: responseHandler, errorHandler: errorHandler)
             }
-//            else if waitingCommand["event"] as? String == RSO_INVOKE,
-//                let method = waitingCommand["method"] as? String,
-//                let responseHandler = waitingCommand["responseHandler"] as? (() -> Void),
-//                let errorHandler = waitingCommand["errorHandler"] as? ((Fault) -> Void) {
-//                invoke(targets: waitingCommand["targets"] as? [Any], method: method, args: waitingCommand["args"] as? [Any], responseHandler: responseHandler, errorHandler: errorHandler)
-//            }
+            else if waitingCommand["event"] as? String == rtTypes.rsoInvoke,
+                let method = waitingCommand["method"] as? String,
+                let responseHandler = waitingCommand["responseHandler"] as? (() -> Void),
+                let errorHandler = waitingCommand["errorHandler"] as? ((Fault) -> Void) {
+                invoke(targets: waitingCommand["targets"] as? [Any], method: method, args: waitingCommand["args"] as? [Any], responseHandler: responseHandler, errorHandler: errorHandler)
+            }
         }
     }
 }

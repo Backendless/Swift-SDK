@@ -94,29 +94,29 @@
         self.rt.removeCommandListeners()
     }
     
-//    public func addUserStatusListener(responseHandler: ((UserStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
-//        return self.rt.addUserStatusListener(responseHandler: responseHandler, errorHandler: errorHandler)
-//    }
-//
-//    public func removeUserStatusListeners() {
-//        self.rt.removeUserStatusListeners()
-//    }
-//
-//    public func addInvokeListener(responseHandler: ((InvokeObject) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
-//        return self.rt.addInvokeListener(responseHandler: responseHandler, errorHandler: errorHandler)
-//    }
-//
-//    public func removeInvokeListeners() {
-//        self.rt.removeInvokeListeners()
-//    }
+    public func addUserStatusListener(responseHandler: ((UserStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        return self.rt.addUserStatusListener(responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+
+    public func removeUserStatusListeners() {
+        self.rt.removeUserStatusListeners()
+    }
+
+    public func addInvokeListener(responseHandler: ((InvokeObject) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        return self.rt.addInvokeListener(responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+
+    public func removeInvokeListeners() {
+        self.rt.removeInvokeListeners()
+    }
     
     public func removeAllListeners() {
         removeConnectListeners()
         removeChangesListeners()
         removeClearListeners()
         removeCommandListeners()
-//        removeUserStatusListeners()
-//        removeInvokeListeners()
+        removeUserStatusListeners()
+        removeInvokeListeners()
     }
     
     // commands
@@ -141,19 +141,19 @@
         self.rt.sendCommand(commandName: commandName, data: data, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-//    public func invokeOn(targets: [Any], method: String, args: [Any], responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-//        self.rt.invoke(targets: targets, method: method, args: args, responseHandler: responseHandler, errorHandler: errorHandler)
-//    }
-//    
-//    public func invokeOn(targets: [Any], method: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-//        self.rt.invoke(targets: targets, method: method, args: nil, responseHandler: responseHandler, errorHandler: errorHandler)
-//    }
-//    
-//    public func invoke(method: String, args: [Any], responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-//        self.rt.invoke(targets: nil, method: method, args: args, responseHandler: responseHandler, errorHandler: errorHandler)
-//    }
-//    
-//    public func invoke(method: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-//        self.rt.invoke(targets: nil, method: method, args: nil, responseHandler: responseHandler, errorHandler: errorHandler)
-//    }
+    public func invokeOn(targets: [Any], method: String, args: [Any], responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        self.rt.invoke(targets: targets, method: method, args: args, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    public func invokeOn(targets: [Any], method: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        self.rt.invoke(targets: targets, method: method, args: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    public func invoke(method: String, args: [Any], responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        self.rt.invoke(targets: nil, method: method, args: args, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    public func invoke(method: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        self.rt.invoke(targets: nil, method: method, args: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
 }
