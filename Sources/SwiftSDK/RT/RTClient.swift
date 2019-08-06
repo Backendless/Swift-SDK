@@ -72,7 +72,7 @@ class RTClient: NSObject {
                     #if os(iOS) || os(tvOS)
                     clientId = self.deviceHelper.deviceId
                     #elseif os(OSX)
-                    clientId = deviceHelper.deviceId
+                    clientId = self.deviceHelper.deviceId
                     #endif
                     
                     var connectParams = ["apiKey": self.backendless.getApiKey(), "clientId": clientId]
