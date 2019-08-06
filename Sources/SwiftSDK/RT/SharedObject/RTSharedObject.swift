@@ -270,7 +270,7 @@ class RTSharedObject: RTListener {
             rtMethod.sendCommand(type: rtTypes.rsoInvoke, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
         else if self.sharedObject.rememberCommands {
-            let waitingCommand = ["event": rtTypes.rsoInvoke, "method": method, "responseHandler": responseHandler, "errorHandler": errorHandler] as [String : Any]
+            let waitingCommand = ["event": rtTypes.rsoInvoke, "method": method, "responseHandler": responseHandler as Any, "errorHandler": errorHandler as Any] as [String : Any]
             waitingCommands.append(waitingCommand)
         }
     }

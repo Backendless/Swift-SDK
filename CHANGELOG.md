@@ -1,7 +1,7 @@
 # RELEASE HISTORY
 
-### 0.0.17 / ?, 2019
-* code refactoring
+### 0.0.17 / August 6, 2019
+* added the [BackendlessDataCollection class](https://github.com/olgadanylova/BackendlessDataCollection#description) for automatic data loading purposes
 * added the blUserLocale property (two character code) to the BackendlessUser object
 * fixed crashes in the uploadFile and saveFile functions when file name contains unsupported characters
 * added methods to UserService:
