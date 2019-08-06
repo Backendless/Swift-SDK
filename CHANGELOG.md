@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 0.0.18 / August 6, 2019
+* the BackendlessDataCollection class fix
+
 ### 0.0.17 / August 6, 2019
 * added the [BackendlessDataCollection class](https://github.com/olgadanylova/BackendlessDataCollection#description) for automatic data loading purposes
 * added the blUserLocale property (two character code) to the BackendlessUser object
