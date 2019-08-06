@@ -74,7 +74,7 @@
         case geoPoint
         case _radius = "radius"
         case categories
-        case includemetadata
+        case includemetadata = "includeMeta"
         case _metadata = "metadata"
         case whereClause
         case rectangle
