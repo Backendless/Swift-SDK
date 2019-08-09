@@ -1,6 +1,6 @@
 # RELEASE HISTORY
 
-### 0.0.19 / August ?, 2019
+### 0.0.19 / August 9, 2019
 * the BackendlessDataCollection whereClause fix
 
 ### 0.0.18 / August 6, 2019
