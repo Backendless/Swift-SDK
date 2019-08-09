@@ -48,7 +48,7 @@ enum CollectionErrors {
     public var dataChangedHandler: BackendlessDataChangedHandler?
     public var errorHandler: BackendlessFaultHandler?
     
-    public private(set) var slice = ""
+    public private(set) var whereClause = ""
     public private(set) var count = 0
     public private(set) var isEmpty: Bool {
         get { return backendlessCollection.isEmpty }
@@ -87,20 +87,20 @@ enum CollectionErrors {
     private init() { }
 
     public convenience init(entityType: AnyClass) {
-        self.init(entityType: entityType, slice: "")
+        self.init(entityType: entityType, whereClause: "")
     }
     
-    public convenience init(entityType: AnyClass, slice: String) {
+    public convenience init(entityType: AnyClass, whereClause: String) {
         self.init()
-        
-        dataStore = Backendless.shared.data.of(entityType.self)
-        self.entityType = entityType
-        self.slice = slice
-        self.count = getRealCount()
         
         queryBuilder = DataQueryBuilder()
         queryBuilder.setPageSize(pageSize: 50)
         queryBuilder.setOffset(offset: 0)
+        
+        dataStore = Backendless.shared.data.of(entityType.self)
+        self.entityType = entityType
+        self.whereClause = whereClause
+        self.count = getRealCount()
         
         let semaphore = DispatchSemaphore(value: 0)
         DispatchQueue.global().async {
@@ -132,6 +132,7 @@ enum CollectionErrors {
         }
         semaphore.wait()
         requestCompletedHandler?()
+        dataChangedHandler?()
         return
     }
     
@@ -148,28 +149,23 @@ enum CollectionErrors {
                 }
                 guard let savedObject = savedObject as? Identifiable, let objectId = savedObject.objectId else {
                     semaphore.signal()
-                    self.requestCompletedHandler?()
                     self.errorHandler?(Fault(message: CollectionErrors.nullObjectId, faultCode: 0))
                     return
                 }
-                if self.slice.isEmpty {
+                if self.whereClause.isEmpty {
                     self.backendlessCollection.append(savedObject)
                     self.count += 1
                     self.queryBuilder.setOffset(offset: self.queryBuilder.getOffset() + 1)
                     semaphore.signal()
-                    self.requestCompletedHandler?()
-                    self.dataChangedHandler?()
                 }
                 else {
                     self.queryBuilder.setWhereClause(whereClause: self.getQuery(objectId: objectId))
                     if self.getCount(queryBuilder: self.queryBuilder) == 0 {
                         self.dataStore.removeById(objectId: objectId, responseHandler: { removed in
                             semaphore.signal()
-                            self.requestCompletedHandler?()
                         }, errorHandler: { fault in
-                            semaphore.signal()
-                            self.requestCompletedHandler?()
                             self.errorHandler?(fault)
+                            semaphore.signal()
                         })
                     }
                     else {
@@ -177,17 +173,16 @@ enum CollectionErrors {
                         self.count += 1
                         self.queryBuilder.setOffset(offset: self.queryBuilder.getOffset() + 1)
                         semaphore.signal()
-                        self.requestCompletedHandler?()
-                        self.dataChangedHandler?()
                     }
                 }
                 }, errorHandler: { [weak self] fault in
-                    semaphore.signal()
-                    self?.requestCompletedHandler?()
                     self?.errorHandler?(fault)
+                    semaphore.signal()
             })
         }
         semaphore.wait()
+        self.requestCompletedHandler?()
+        self.dataChangedHandler?()
         return
     }
     
@@ -217,28 +212,22 @@ enum CollectionErrors {
                 }
                 guard let savedObject = savedObject as? Identifiable, let objectId = savedObject.objectId else {
                     semaphore.signal()
-                    self.requestCompletedHandler?()
-                    self.errorHandler?(Fault(message: CollectionErrors.nullObjectId, faultCode: 0))
                     return
                 }
-                if self.slice.isEmpty {
+                if self.whereClause.isEmpty {
                     self.backendlessCollection.insert(savedObject, at: at)
                     self.count += 1
                     self.queryBuilder.setOffset(offset: self.queryBuilder.getOffset() + 1)
                     semaphore.signal()
-                    self.requestCompletedHandler?()
-                    self.dataChangedHandler?()
                 }
                 else {
                     self.queryBuilder.setWhereClause(whereClause: self.getQuery(objectId: objectId))
                     if self.getCount(queryBuilder: self.queryBuilder) == 0 {
                         self.dataStore.removeById(objectId: objectId, responseHandler: { removed in
                             semaphore.signal()
-                            self.requestCompletedHandler?()
                         }, errorHandler: { fault in
-                            semaphore.signal()
-                            self.requestCompletedHandler?()
                             self.errorHandler?(fault)
+                            semaphore.signal()
                         })
                     }
                     else {
@@ -246,17 +235,16 @@ enum CollectionErrors {
                         self.count += 1
                         self.queryBuilder.setOffset(offset: self.queryBuilder.getOffset() + 1)
                         semaphore.signal()
-                        self.requestCompletedHandler?()
-                        self.dataChangedHandler?()
                     }
                 }
                 }, errorHandler: { [weak self] fault in
-                    semaphore.signal()
-                    self?.requestCompletedHandler?()
                     self?.errorHandler?(fault)
+                    semaphore.signal()
             })
         }
         semaphore.wait()
+        self.requestCompletedHandler?()
+        self.dataChangedHandler?()
         return
     }
     
@@ -292,16 +280,15 @@ enum CollectionErrors {
                     self.backendlessCollection.removeAll(where: { $0.objectId == objectId })
                     self.count -= 1
                     semaphore.signal()
-                    self.requestCompletedHandler?()
-                    self.dataChangedHandler?()
                     }, errorHandler: { [weak self] fault in
-                        semaphore.signal()
-                        self?.requestCompletedHandler?()
                         self?.errorHandler?(fault)
+                        semaphore.signal()
                 })
             }
         }
         semaphore.wait()
+        self.requestCompletedHandler?()
+        self.dataChangedHandler?()
         return
     }
     
@@ -317,7 +304,7 @@ enum CollectionErrors {
         requestStartedHandler?()
         let semaphore = DispatchSemaphore(value: 0)
         DispatchQueue.global().async {
-            var whereClause = self.slice
+            var whereClause = self.whereClause
             if whereClause.isEmpty {
                 whereClause = "objectId!=null"
             }
@@ -329,14 +316,13 @@ enum CollectionErrors {
                 self.backendlessCollection.removeAll()
                 self.count = 0
                 semaphore.signal()
-                self.requestCompletedHandler?()
-                self.dataChangedHandler?()
                 }, errorHandler: { [weak self] fault in
-                    semaphore.signal()
-                    self?.requestCompletedHandler?()
                     self?.errorHandler?(fault)
+                    semaphore.signal()
             })
         }
+        self.requestCompletedHandler?()
+        self.dataChangedHandler?()
         semaphore.wait()
         return
     }
@@ -356,7 +342,8 @@ enum CollectionErrors {
         var realCount = 0
         let semaphore = DispatchSemaphore(value: 0)
         DispatchQueue.global().async {
-            self.dataStore.getObjectCount(responseHandler: { totalObjects in
+            self.queryBuilder.setWhereClause(whereClause: self.whereClause)
+            self.dataStore.getObjectCount(queryBuilder: self.queryBuilder, responseHandler: { totalObjects in
                 realCount = totalObjects
                 semaphore.signal()
             }, errorHandler: { fault in
@@ -399,8 +386,8 @@ enum CollectionErrors {
     
     private func getQuery(objectId: String) -> String {
         var query = "objectId='\(objectId)'"
-        if !slice.isEmpty {
-            query += " and \(slice)"
+        if !whereClause.isEmpty {
+            query += " and \(whereClause)"
         }
         return query
     }
@@ -409,8 +396,8 @@ enum CollectionErrors {
         var query = ""
         if object is Identifiable, let objectId = (object as! Identifiable).objectId {
             query = "objectId='\(objectId)'"
-            if !slice.isEmpty {
-                query += " and \(slice)"
+            if !whereClause.isEmpty {
+                query += " and \(whereClause)"
             }       }
         return query
     }
@@ -418,8 +405,8 @@ enum CollectionErrors {
     private func loadNextPage() {
         let semaphore = DispatchSemaphore(value: 0)
         var offset = queryBuilder.getOffset()
-        if !slice.isEmpty {
-            self.queryBuilder.setWhereClause(whereClause: slice)
+        if !whereClause.isEmpty {
+            self.queryBuilder.setWhereClause(whereClause: whereClause)
         }
         
         dataStore.find(queryBuilder: queryBuilder, responseHandler: { [weak self] foundObjects in
