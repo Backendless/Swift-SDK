@@ -19,14 +19,17 @@
  *  ********************************************************************************************************************
  */
 
-public protocol Identifiable {
+@objc public protocol Identifiable {
     var objectId: String? { get set }
 }
 
 
-enum CollectionErrors {
-    static let invalidType = " is not a type of objects contained in this collection."
-    static let nullObjectId = "objectId is null."
+@objc public enum EventType: Int {
+    case dataLoaded
+    case created
+    case updated
+    case deleted
+    case bulkDeleted
 }
 
 
@@ -37,7 +40,7 @@ enum CollectionErrors {
     public typealias Element = BackendlessDataCollectionType.Element
     public typealias RequestStartedHandler = () -> Void
     public typealias RequestCompletedHandler = () -> Void
-    public typealias BackendlessDataChangedHandler = () -> Void
+    public typealias BackendlessDataChangedHandler = (EventType) -> Void
     public typealias BackendlessFaultHandler = (Fault) -> Void
     
     public var startIndex: Index { return backendlessCollection.startIndex }
@@ -60,6 +63,11 @@ enum CollectionErrors {
     private var dataStore: DataStoreFactory!
     private var queryBuilder: DataQueryBuilder!
     private var computedIndex = 0
+    
+    private enum CollectionErrors {
+        static let invalidType = " is not a type of objects contained in this collection."
+        static let nullObjectId = "objectId is null."
+    }
     
     public func index(after i: Int) -> Int {
         return i + 1
@@ -85,7 +93,7 @@ enum CollectionErrors {
     }
     
     private init() { }
-
+    
     public convenience init(entityType: AnyClass) {
         self.init(entityType: entityType, whereClause: "")
     }
@@ -101,6 +109,7 @@ enum CollectionErrors {
         self.entityType = entityType
         self.whereClause = whereClause
         self.count = getRealCount()
+        addRtListeners()
         
         let semaphore = DispatchSemaphore(value: 0)
         DispatchQueue.global().async {
@@ -111,6 +120,10 @@ enum CollectionErrors {
         }
         semaphore.wait()
         return
+    }
+    
+    deinit {
+        dataStore.rt.removeAllListeners()
     }
     
     /// Returns true, if the current collection ihas been fully loaded from Backendless
@@ -131,8 +144,8 @@ enum CollectionErrors {
             semaphore.signal()
         }
         semaphore.wait()
+        dataChangedHandler?(.dataLoaded)
         requestCompletedHandler?()
-        dataChangedHandler?()
         return
     }
     
@@ -181,8 +194,6 @@ enum CollectionErrors {
             })
         }
         semaphore.wait()
-        self.requestCompletedHandler?()
-        self.dataChangedHandler?()
         return
     }
     
@@ -243,8 +254,6 @@ enum CollectionErrors {
             })
         }
         semaphore.wait()
-        self.requestCompletedHandler?()
-        self.dataChangedHandler?()
         return
     }
     
@@ -287,8 +296,6 @@ enum CollectionErrors {
             }
         }
         semaphore.wait()
-        self.requestCompletedHandler?()
-        self.dataChangedHandler?()
         return
     }
     
@@ -321,8 +328,6 @@ enum CollectionErrors {
                     semaphore.signal()
             })
         }
-        self.requestCompletedHandler?()
-        self.dataChangedHandler?()
         semaphore.wait()
         return
     }
@@ -337,6 +342,64 @@ enum CollectionErrors {
     }
     
     // private functions
+    
+    private func addRtListeners() {
+        let eventHandler = dataStore.rt
+        if whereClause.isEmpty {
+            let _ = eventHandler?.addCreateListener(responseHandler: { [weak self] createdObject in
+                self?.dataChangedHandler?(.created)
+                self?.requestCompletedHandler?()
+                }, errorHandler: { [weak self] fault in
+                    self?.errorHandler?(fault)
+            })
+            let _ = eventHandler?.addUpdateListener(responseHandler: { [weak self] updatedObject in
+                self?.dataChangedHandler?(.updated)
+                self?.requestCompletedHandler?()
+                }, errorHandler: { [weak self] fault in
+                    self?.errorHandler?(fault)
+                    self?.requestCompletedHandler?()
+            })
+            let _ = eventHandler?.addDeleteListener(responseHandler: { [weak self] deletedObject in
+                self?.dataChangedHandler?(.deleted)
+                self?.requestCompletedHandler?()
+                }, errorHandler: { [weak self] fault in
+                    self?.errorHandler?(fault)
+                    self?.requestCompletedHandler?()
+            })
+            let _ = eventHandler?.addBulkDeleteListener(responseHandler: { [weak self] bulkEvent in
+                self?.dataChangedHandler?(.bulkDeleted)
+                self?.requestCompletedHandler?()
+                }, errorHandler: { [weak self] fault in
+                    self?.errorHandler?(fault)
+            })
+        }
+        else {
+            let _ = eventHandler?.addCreateListener(whereClause: whereClause, responseHandler: { [weak self] createdObject in
+                self?.dataChangedHandler?(.created)
+                self?.requestCompletedHandler?()
+                }, errorHandler: { [weak self] fault in
+                    self?.errorHandler?(fault)
+            })
+            let _ = eventHandler?.addUpdateListener(whereClause: whereClause, responseHandler: { [weak self] updatedObject in
+                self?.dataChangedHandler?(.updated)
+                self?.requestCompletedHandler?()
+                }, errorHandler: { [weak self] fault in
+                    self?.errorHandler?(fault)
+            })
+            let _ = eventHandler?.addDeleteListener(whereClause: whereClause, responseHandler: { [weak self] deletedObject in
+                self?.dataChangedHandler?(.deleted)
+                self?.requestCompletedHandler?()
+                }, errorHandler: { [weak self] fault in
+                    self?.errorHandler?(fault)
+            })
+            let _ = eventHandler?.addBulkDeleteListener(whereClause: whereClause, responseHandler: { [weak self] bulkEvent in
+                self?.dataChangedHandler?(.bulkDeleted)
+                self?.requestCompletedHandler?()
+                }, errorHandler: { [weak self] fault in
+                    self?.errorHandler?(fault)
+            })
+        }
+    }
     
     private func getRealCount() -> Int {
         var realCount = 0
@@ -408,7 +471,6 @@ enum CollectionErrors {
         if !whereClause.isEmpty {
             self.queryBuilder.setWhereClause(whereClause: whereClause)
         }
-        
         dataStore.find(queryBuilder: queryBuilder, responseHandler: { [weak self] foundObjects in
             guard let self = self else {
                 semaphore.signal()

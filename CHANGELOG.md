@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 0.0.? / August ?, 2019
+* added RT support to the BackendlessDataCollection class
+
 ### 0.0.19 / August 9, 2019
 * the BackendlessDataCollection whereClause fix
 
