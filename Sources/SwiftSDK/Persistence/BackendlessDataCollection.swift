@@ -37,7 +37,7 @@
     
     public typealias BackendlessDataCollectionType = [Identifiable]
     public typealias Index = BackendlessDataCollectionType.Index
-    public typealias Element = BackendlessDataCollectionType.Element
+    public typealias Element = BackendlessDataCollectionType.Element    
     public typealias RequestStartedHandler = () -> Void
     public typealias RequestCompletedHandler = () -> Void
     public typealias BackendlessDataChangedHandler = (EventType) -> Void
@@ -45,7 +45,6 @@
     
     public var startIndex: Index { return backendlessCollection.startIndex }
     public var endIndex: Index { return backendlessCollection.endIndex }
-    
     public var requestStartedHandler: RequestStartedHandler?
     public var requestCompletedHandler: RequestCompletedHandler?
     public var dataChangedHandler: BackendlessDataChangedHandler?

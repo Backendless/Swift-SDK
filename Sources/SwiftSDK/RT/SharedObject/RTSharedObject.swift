@@ -160,6 +160,9 @@ class RTSharedObject: RTListener {
         let wrappedBlock: (Any) -> () = { response in
             if let response = response as? [String : Any] {
                 let invokeObject = self.processResponse.adaptToInvokeObject(invokeObjectDictionary: response)
+                if let method = invokeObject.method {
+                    self.invokeMethod(methodName: method, args: invokeObject.args, invocationTarget: self.invocationTarget!)
+                }
                 responseHandler(invokeObject)
             }
         }
@@ -266,13 +269,60 @@ class RTSharedObject: RTListener {
             responseHandler()
         }
         if self.sharedObject.isConnected {
-            let options = ["name": sharedObjectName, "method": method] as [String : Any]
+            var options = ["name": sharedObjectName, "method": method] as [String : Any]
+            if args != nil {
+                options["args"] = args!
+            }
             rtMethod.sendCommand(type: rtTypes.rsoInvoke, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
         else if self.sharedObject.rememberCommands {
-            let waitingCommand = ["event": rtTypes.rsoInvoke, "method": method, "responseHandler": responseHandler as Any, "errorHandler": errorHandler as Any] as [String : Any]
+            var waitingCommand = ["event": rtTypes.rsoInvoke, "method": method, "responseHandler": responseHandler as Any, "errorHandler": errorHandler as Any] as [String : Any]
+            if args != nil {
+                waitingCommand["args"] = args!
+            }
             waitingCommands.append(waitingCommand)
         }
+    }
+    
+    private func invokeMethod(methodName: String, args: [Any]?, invocationTarget: Any) {
+        let classFunctions = getMethodsListOfInvocationTarget(invocationTargetClass: object_getClass(type(of: invocationTarget))!)
+        let instanceFunctions = getMethodsListOfInvocationTarget(invocationTargetClass: type(of: invocationTarget) as! AnyClass)
+        if classFunctions.count > 0 {
+            prepareToCallInvoke(methodName: methodName, methodsArray: classFunctions, args: args, invocationTarget: type(of: invocationTarget))
+        }
+        if instanceFunctions.count > 0 {
+            prepareToCallInvoke(methodName: methodName, methodsArray: instanceFunctions, args: args, invocationTarget: invocationTarget)
+        }
+    }
+    
+    private func getMethodsListOfInvocationTarget(invocationTargetClass: AnyClass) -> [String] {
+        var methodsArray = [String]()
+        var methodCount: UInt32 = 0
+        guard let methodList = class_copyMethodList(invocationTargetClass, &methodCount) else {
+            return methodsArray
+        }
+        for i in 0..<Int(methodCount) {
+            let selName = sel_getName(method_getName(methodList[i]))
+            if let methodName = String(cString: selName, encoding: .utf8) {
+                methodsArray.append(methodName)
+            }
+        }
+        return methodsArray
+    }
+    
+    private func prepareToCallInvoke(methodName: String, methodsArray: [String], args: [Any]?, invocationTarget: Any) {
+        for method in methodsArray {
+            if method == methodName {
+                invokeMethodWith(selector: NSSelectorFromString(methodName), args: args, invocationTarget: invocationTarget)
+            }
+        }
+    }
+    
+    private func invokeMethodWith(selector: Selector, args: [Any]?, invocationTarget: Any) {
+        guard let target = invocationTarget as? NSObject else {
+            return
+        }
+        target.perform(selector, with: args)
     }
     
     // ********************************************

@@ -327,8 +327,8 @@ class ProcessResponse: NSObject {
         }
         if let userId = invokeObjectDictionary["userId"] as? String {
             invokeObject.userId = userId
-        }
-        if let args = invokeObjectDictionary["args"] {
+        }        
+        if let args = invokeObjectDictionary["args"] as? [Any] {
             invokeObject.args = jsonUtils.JSONToObject(objectToParse: args) as? [Any]
         }
         return invokeObject
