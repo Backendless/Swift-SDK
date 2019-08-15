@@ -29,6 +29,15 @@
     public var expiration: Date?
     public var channels: [String]?
     
+    enum CodingKeys: String, CodingKey {
+        case objectId = "id"
+        case deviceToken
+        case os
+        case osVersion
+        case expiration
+        case channels
+    }
+    
     init(objectId: String?, deviceToken: String?, deviceId: String?, os: String?, osVersion: String?, expiration: Date?, channels: [String]?) {
         self.objectId = objectId
         self.deviceToken = deviceToken
