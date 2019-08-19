@@ -2,6 +2,7 @@
 
 ### 0.0.? / August ?, 2019
 * added RT support to the BackendlessDataCollection class
+* the SharedObject `invoke` method fixed
 
 ### 0.0.19 / August 9, 2019
 * the BackendlessDataCollection whereClause fix
