@@ -82,7 +82,7 @@
         case offset
         case relativeFindMetadata
         case relativeFindPercentThreshold
-        case degreePerPixel
+        case degreePerPixel = "dpp"
         case clusterGridSize
     }
     
