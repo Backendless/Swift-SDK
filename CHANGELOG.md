@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### ? / ?, 2019
+* fixed deserialization of BackendlessGeoQuery class
+
 ### 5.5.0 / August 28, 2019
 * added RT support to the BackendlessDataCollection class
 * the SharedObject `invoke` method fixed
