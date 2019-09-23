@@ -43,7 +43,9 @@ class LocationTracker: NSObject, CLLocationManagerDelegate {
             self.locationManager = CLLocationManager()
             self.locationManager.delegate = self
             self.locationManager.stopUpdatingLocation()
-            self.locationManager.requestAlwaysAuthorization()
+            if #available(iOS 9.0, watchOS 4.0, OSX 10.15, *) {
+                self.locationManager.requestAlwaysAuthorization()
+            }
             self.locationManager.startUpdatingLocation()
             self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
             if #available(iOS 9.0, watchOS 4.0, *) {
