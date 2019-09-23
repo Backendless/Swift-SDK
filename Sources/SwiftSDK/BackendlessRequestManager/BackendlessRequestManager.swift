@@ -29,6 +29,7 @@ enum HTTPMethod: String {
 class BackendlessRequestManager: NSObject {
     
     private let dataTypesUtils = DataTypesUtils.shared
+    private let mappings = Mappings.shared
     
     private var urlString = "\(Backendless.shared.hostUrl)/\(Backendless.shared.getApplictionId())/\(Backendless.shared.getApiKey())/"
     private var restMethod: String
@@ -44,6 +45,12 @@ class BackendlessRequestManager: NSObject {
     }
     
     func makeRequest(getResponse: @escaping (ReturnedResponse) -> ()) {
+        for (originTableName, mappedClassName) in mappings.tableToClassMappings {
+            guard let mappedName = mappedClassName.split(separator: ".").last else { return }
+            if restMethod.contains(mappedName) {
+                restMethod = restMethod.replacingOccurrences(of: mappedName, with: originTableName)
+            }
+        }
         var request = URLRequest(url: URL(string: urlString + dataTypesUtils.stringToUrlString(originalString: restMethod))!)
         request.httpMethod = httpMethod.rawValue
         if let headers = headers, headers.count > 0 {
