@@ -1,8 +1,8 @@
 language: objective-c
-osx_image: xcode10.2
+osx_image: xcode11
 xcode_workspace: SwiftSDK.xcworkspace
 xcode_scheme: SwiftSDK
-xcode_destination: platform=iOS Simulator,OS=12.2,name=iPhone Xs Max
+xcode_destination: platform=iOS Simulator,OS=13.0,name=iPhone 11 Pro Max
 
 notifications:
   slack:
