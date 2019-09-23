@@ -1,7 +1,8 @@
 # RELEASE HISTORY
 
-### ? / ?, 2019
+### 5.5.1 / September 23, 2019
 * fixed deserialization of BackendlessGeoQuery class
+* fixed class to table mappingw
 
 ### 5.5.0 / August 28, 2019
 * added RT support to the BackendlessDataCollection class
