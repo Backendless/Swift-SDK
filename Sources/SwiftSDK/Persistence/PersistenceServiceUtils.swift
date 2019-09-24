@@ -387,20 +387,30 @@ class PersistenceServiceUtils: NSObject {
     }
     
     private func getClassPropertiesWithType(entity: Any) -> [String : String] {
-        let resultClass = type(of: entity) as! NSObject.Type
-        var classProperties = [String : String]()
-        var outCount : UInt32 = 0
-        if let properties = class_copyPropertyList(resultClass.self, &outCount) {
-            for i : UInt32 in 0..<outCount {
-                let property = properties[Int(i)]
-                if let propertyName = String(cString: property_getName(property), encoding: .utf8),
-                    let propertyAttr = property_getAttributes(property) {
-                    let propertyType = String(cString: propertyAttr).components(separatedBy: ",")[0].replacingOccurrences(of: "T", with: "")
-                    classProperties[propertyName] = propertyType
+        var parentClass: AnyClass?
+        var entityProperties = [String : String]()
+        guard var entityClass = type(of: entity) as? AnyClass else { return entityProperties }
+        var entityInheritanceClasses = [AnyClass]()
+        entityInheritanceClasses.append(entityClass)
+        while class_getSuperclass(entityClass) != nil {
+            parentClass = class_getSuperclass(entityClass)
+            entityInheritanceClasses.append(parentClass!)
+            entityClass = parentClass!
+        }
+        for entityInheritanceClass in entityInheritanceClasses {
+            var outCount : UInt32 = 0
+            if let properties = class_copyPropertyList(entityInheritanceClass.self, &outCount) {
+                for i : UInt32 in 0..<outCount {
+                    let property = properties[Int(i)]
+                    if let propertyName = String(cString: property_getName(property), encoding: .utf8),
+                        let propertyAttr = property_getAttributes(property) {
+                        let propertyType = String(cString: propertyAttr).components(separatedBy: ",")[0].replacingOccurrences(of: "T", with: "")
+                        entityProperties[propertyName] = propertyType
+                    }
                 }
             }
         }
-        return classProperties
+        return entityProperties
     }
     
     func entityToDictionary(entity: Any) -> [String: Any] {
@@ -517,8 +527,8 @@ class PersistenceServiceUtils: NSObject {
             let entityClassName = getClassName(entity: entity.classForCoder)
             
             let columnToPropertyMappings = mappings.getColumnToPropertyMappings(className: entityClassName)
+            
             for dictionaryField in dictionary.keys {
-                
                 if !(dictionary[dictionaryField] is NSNull) {
                     if columnToPropertyMappings.keys.contains(dictionaryField) {
                         entity.setValue(dictionary[dictionaryField], forKey: columnToPropertyMappings[dictionaryField]!)
