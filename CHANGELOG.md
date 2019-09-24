@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 5.5.2 / September 24, 2019
+* fixed a bug when missing inherited object properties
+
 ### 5.5.1 / September 23, 2019
 * fixed deserialization of BackendlessGeoQuery class
 * fixed class to table mappings
