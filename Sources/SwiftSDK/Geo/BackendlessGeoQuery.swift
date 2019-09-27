@@ -60,7 +60,7 @@
     
     public var whereClause: String?
     public var rectangle: GeoQueryRectangle?
-    public var pageSize: Int = 10
+    public var pageSize: Int = 100
     public var offset: Int = 0
     public var relativeFindMetadata: [String : String]?
     public var relativeFindPercentThreshold: Double = 0.0
