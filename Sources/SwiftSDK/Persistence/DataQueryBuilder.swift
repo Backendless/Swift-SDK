@@ -23,7 +23,7 @@
     
     private var whereClause: String?
     private var relationsDepth: Int = 0
-    private var pageSize: Int = 100
+    private var pageSize: Int = 10
     private var offset: Int = 0
     private var properties: [String]?
     private var sortBy: [String]?
