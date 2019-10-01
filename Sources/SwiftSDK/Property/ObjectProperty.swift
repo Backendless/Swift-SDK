@@ -29,8 +29,8 @@
             return self._defaultValue?.object
         }
         set {
-            if defaultValue != nil {
-                self._defaultValue = JSON(defaultValue!)
+            if newValue != nil {
+                self._defaultValue = JSON(newValue!)
             }
         }
     }

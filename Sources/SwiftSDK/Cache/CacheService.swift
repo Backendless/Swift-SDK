@@ -44,7 +44,7 @@
         })
     }
 
-    public func get(key: String, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func get(key: String, responseHandler: ((Any?) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         BackendlessRequestManager(restMethod: "cache/\(key)", httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                 if result is Fault {
@@ -61,14 +61,17 @@
             }
             else {
                 if let resultString = String(bytes: response.data!, encoding: .utf8) {
-                    if let resultInt = Int(resultString) {
+                    if resultString == "null" {
+                        responseHandler(nil)
+                    }
+                    else if let resultInt = Int(resultString) {
                         responseHandler(resultInt)
                     }
                     else if let resultDouble = Double(resultString) {
                         responseHandler(resultDouble)
                     }
                     else {
-                        responseHandler(resultString)
+                        responseHandler(resultString.replacingOccurrences(of: "\"", with: ""))
                     }
                 }
             }
