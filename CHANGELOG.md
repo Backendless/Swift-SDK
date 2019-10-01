@@ -1,5 +1,9 @@
 # RELEASE HISTORY
 
+### 5.5.3 / October 1, 2019
+* the CacheService `get` method returns nil if cache for the key doesn't exsist
+* the CacheService `get` method fixed to return String values correctly
+
 ### 5.5.2 / September 24, 2019
 * fixed a bug when missing inherited object properties
 
