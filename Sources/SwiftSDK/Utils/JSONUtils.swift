@@ -23,13 +23,11 @@ class JSONUtils: NSObject {
     
     static let shared = JSONUtils()
     
-    //private let persistenceServiceUtils = PersistenceServiceUtils()
-    
     private override init() { }
     
     func objectToJSON(objectToParse: Any) -> Any {
         var resultObject = objectToParse
-        if !(objectToParse is String), !(objectToParse is NSNumber), !(objectToParse is NSNull) {
+        if !(objectToParse is String), !(objectToParse is NSNumber), !(objectToParse is NSNull), !(objectToParse is Date) {
             if let arrayToParse = objectToParse as? [Any] {
                 var resultArray = [Any]()
                 for object in arrayToParse {
@@ -39,7 +37,7 @@ class JSONUtils: NSObject {
             }
             else if let dictionaryToParse = objectToParse as? [String : Any] {
                 var resultDictionary = [String : Any]()
-                for (key, value) in dictionaryToParse {
+                for (key, value) in dictionaryToParse {                    
                     if !(value is String), !(value is NSNumber), !(value is NSNull) {
                         resultDictionary[key] = objectToJSON(objectToParse: value)
                     }
@@ -53,15 +51,18 @@ class JSONUtils: NSObject {
                 resultObject = PersistenceServiceUtils().entityToDictionaryWithClassProperty(entity: objectToParse)
             }
         }
+        else if objectToParse is Date {
+            resultObject = DataTypesUtils.shared.dateToInt(date: objectToParse as! Date)
+        }
         return resultObject
     }
     
     func JSONToObject(objectToParse: Any) -> Any {
         var resultObject = objectToParse
-        if !(objectToParse is String), !(objectToParse is NSNumber), !(objectToParse is NSNull) {            
+        if !(objectToParse is String), !(objectToParse is NSNumber), !(objectToParse is NSNull) {
             if let arrayToParse = objectToParse as? [Any] {
                 var resultArray = [Any]()
-                for object in arrayToParse {                    
+                for object in arrayToParse {
                     resultArray.append(JSONToObject(objectToParse: object))
                 }
                 resultObject = resultArray
@@ -85,7 +86,7 @@ class JSONUtils: NSObject {
                             }
                             resultDictionary[key] = valueArray
                         }
-                        else {
+                        else {                          
                             resultDictionary[key] = value
                         }
                     }
@@ -98,7 +99,7 @@ class JSONUtils: NSObject {
                     resultObject = PersistenceServiceUtils().dictionaryToEntity(dictionary: dictionaryToParse, className: className)!
                 }
             }
-        }
+        }        
         return resultObject
     }
 }

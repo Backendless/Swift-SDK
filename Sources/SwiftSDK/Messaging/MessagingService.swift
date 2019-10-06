@@ -79,7 +79,11 @@
     
     func registerDevice(deviceToken: Data, channels: [String], expirationDate: Date?, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
-        var parameters = ["deviceToken": deviceToken.map { String(format: "%02.2hhx", $0) }.joined(), "channels": channels] as [String : Any]
+        var deviceTokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+        if #available(iOS 13.0, *) {
+            deviceTokenString = deviceToken.map { String(format: "%02x", $0) }.joined()
+        }
+        var parameters = ["deviceToken": deviceTokenString, "channels": channels] as [String : Any]
         if let deviceId = deviceRegistration.deviceId {
             parameters["deviceId"] = deviceId
             KeychainUtils.shared.saveDeviceId(deviceId: deviceId)

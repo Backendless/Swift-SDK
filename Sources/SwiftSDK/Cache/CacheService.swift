@@ -31,7 +31,7 @@
     
     public func put(key: String, object: Any, timeToLiveSec: Int, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
-        let parameters = jsonUtils.objectToJSON(objectToParse: object)
+        let parameters = jsonUtils.objectToJSON(objectToParse: object)        
         BackendlessRequestManager(restMethod: "cache/\(key)?timeout=\(timeToLiveSec)", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: NoReply.self) {
                 if result is Fault {
@@ -43,9 +43,10 @@
             }
         })
     }
-
+    
     public func get(key: String, responseHandler: ((Any?) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        BackendlessRequestManager(restMethod: "cache/\(key)", httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+        let headers = ["Content-Type": "application/json"]
+        BackendlessRequestManager(restMethod: "cache/\(key)", httpMethod: .get, headers: headers, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
@@ -72,6 +73,106 @@
                     }
                     else {
                         responseHandler(resultString.replacingOccurrences(of: "\"", with: ""))
+                    }
+                }
+            }
+        })
+    }
+    
+    public func get(key: String, ofType: Any.Type, responseHandler: ((Any?) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        let ofTypeName = String(describing: ofType)
+        let parsingError = "Could not parse object to the "
+        let headers = ["Content-Type": "application/json"]
+        BackendlessRequestManager(restMethod: "cache/\(key)", httpMethod: .get, headers: headers, parameters: nil).makeRequest(getResponse: { response in
+            if let result = self.processResponse.adapt(response: response, to: JSON.self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else {
+                    if let resultDictionary = (result as! JSON).dictionaryObject {
+                        if type(of: resultDictionary) == ofType {
+                            responseHandler(resultDictionary)
+                        }
+                        else {
+                            if let className = resultDictionary["___class"] as? String,
+                                className == ofTypeName {
+                                responseHandler(self.jsonUtils.JSONToObject(objectToParse: resultDictionary))
+                            }
+                            else {
+                                errorHandler(Fault(message: parsingError + "'\(ofTypeName)'", faultCode: 0))
+                            }
+                        }
+                    }
+                    else if let resultArray = (result as! JSON).arrayObject {
+                        let parsedArray = self.jsonUtils.JSONToObject(objectToParse: resultArray)
+                        if type(of: parsedArray) == ofType {
+                            responseHandler(parsedArray)
+                        }
+                        else {
+                            errorHandler(Fault(message: parsingError + "'\(ofTypeName)'", faultCode: 0))
+                        }
+                    }
+                }
+            }
+            else {
+                if var resultString = String(bytes: response.data!, encoding: .utf8) {
+                    if resultString == "null" {
+                        responseHandler(nil)
+                    }
+                    else if let resultInt = Int(resultString) {
+                        if ofType == Int.self {
+                            responseHandler(resultInt)
+                        }
+                        else if ofType == Double.self {
+                            responseHandler(Double(resultInt))
+                        }
+                        else if ofType == Float.self {
+                            responseHandler(Float(resultInt))
+                        }
+                        else if ofType == NSNumber.self {
+                            responseHandler(NSNumber(integerLiteral: resultInt))
+                        }
+                        else if ofType == Bool.self {
+                            responseHandler(resultInt != 0)
+                        }
+                        else if ofType == Date.self {
+                            responseHandler(self.dataTypesUtils.intToDate(intVal: resultInt))
+                        }
+                        else {
+                            errorHandler(Fault(message: parsingError + "'\(ofTypeName)'", faultCode: 0))
+                        }
+                    }
+                    else if let resultDouble = Double(resultString) {
+                        if ofType == Double.self {
+                            responseHandler(resultDouble)
+                        }
+                        else if ofType == Float.self {
+                            responseHandler(Float(resultDouble))
+                        }
+                        else if ofType == NSNumber.self {
+                            responseHandler(NSNumber(floatLiteral: resultDouble))
+                        }
+                        else if ofType == Date.self {
+                            responseHandler(self.dataTypesUtils.intToDate(intVal: Int(resultDouble)))
+                        }
+                        else {
+                            errorHandler(Fault(message: parsingError + "'\(ofTypeName)'", faultCode: 0))
+                        }
+                    }
+                    else {
+                        resultString = resultString.replacingOccurrences(of: "\"", with: "")
+                        if ofType == Character.self, resultString.count == 1 {
+                            responseHandler(Character(resultString))
+                        }
+                        else if ofType == CharacterSet.self {
+                            responseHandler(CharacterSet(charactersIn: resultString))
+                        }
+                        else if ofType == String.self {
+                            responseHandler(resultString)
+                        }
+                        else {
+                            errorHandler(Fault(message: parsingError + "'\(ofTypeName)'", faultCode: 0))
+                        }
                     }
                 }
             }
