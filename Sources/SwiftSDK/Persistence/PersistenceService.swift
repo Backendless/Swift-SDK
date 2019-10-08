@@ -38,5 +38,3 @@
         return _permissions
     }()
 }
-
-

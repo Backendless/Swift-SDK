@@ -251,7 +251,7 @@
             if let whereClause = geoQuery.whereClause {
                 restMethod += "&where=\(whereClause)"
             }
-            if let metadata = geoQuery.metadata,
+            if let metadata = geoQuery.metadata, !metadata.isEmpty,
                 let metadataString = dataTypesUtils.dictionaryToUrlString(dictionary: metadata) {
                 restMethod += "&metadata=\(metadataString)"
             }

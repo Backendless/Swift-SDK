@@ -190,10 +190,20 @@ class ProcessResponse: NSObject {
     }
     
     func adaptToGeoPoint(geoDictionary: [String : Any]) -> GeoPoint? {
-        if let objectId = geoDictionary["objectId"] as? String,
-            let latitude = geoDictionary["latitude"] as? Double,
+        //        if let objectId = geoDictionary["objectId"] as? String,
+        //            let latitude = geoDictionary["latitude"] as? Double,
+        //            let longitude = geoDictionary["longitude"] as? Double,
+        //            let categories = geoDictionary["categories"] as? [String] {
+        //            let distance = geoDictionary["distance"] as? Double
+        //            if let metadata = geoDictionary["metadata"] as? [String: String] {
+        //                return GeoPoint(objectId: objectId, latitude: latitude, longitude: longitude, distance: distance ?? 0.0, categories: categories, metadata: JSON(metadata))
+        //            }
+        //            return GeoPoint(objectId: objectId, latitude: latitude, longitude: longitude, distance: distance ?? 0.0, categories: categories, metadata: nil)
+        //        }
+        if let latitude = geoDictionary["latitude"] as? Double,
             let longitude = geoDictionary["longitude"] as? Double,
             let categories = geoDictionary["categories"] as? [String] {
+            let objectId = geoDictionary["objectId"] as? String
             let distance = geoDictionary["distance"] as? Double
             if let metadata = geoDictionary["metadata"] as? [String: String] {
                 return GeoPoint(objectId: objectId, latitude: latitude, longitude: longitude, distance: distance ?? 0.0, categories: categories, metadata: JSON(metadata))

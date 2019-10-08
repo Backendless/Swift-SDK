@@ -370,7 +370,12 @@ class PersistenceServiceUtils: NSObject {
     }
     
     func getClassName(entity: Any) -> String {
-        return getClassName(className: String(describing: entity))
+        let className = getClassName(className: String(describing: entity))
+        if let name = className.components(separatedBy: ".").last {
+            return name
+        }
+        return className
+        //return getClassName(className: String(describing: entity))
     }
     
     func getClassName(className: String) -> String {
@@ -379,11 +384,20 @@ class PersistenceServiceUtils: NSObject {
             name = "BackendlessUser"
         }
         // for unit tests
+        // *************************
         if Bundle.main.infoDictionary![kCFBundleNameKey as String] as? String == "xctest" {
             let testBundle = Bundle(for: TestClass.self)
             return testBundle.infoDictionary![kCFBundleNameKey as String] as! String + "." + name
         }
-        return Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String + "." + name
+        // *************************
+        let classMappings = mappings.getTableToClassMappings()
+        if classMappings.keys.contains(name) {
+            name = classMappings[name]!
+        }
+        else {
+            name = Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String + "." + name
+        }
+        return name
     }
     
     private func getClassPropertiesWithType(entity: Any) -> [String : String] {
@@ -440,7 +454,12 @@ class PersistenceServiceUtils: NSObject {
                             if let arrayValue = value as? [Any] {
                                 var resultArray = [Any]()
                                 for arrayVal in arrayValue {
-                                    resultArray.append(entityToDictionaryWithClassProperty(entity: arrayVal))
+                                    if !(arrayVal is Bool), !(arrayVal is Int), !(arrayVal is Float), !(arrayVal is Double), !(arrayVal is Character), !(arrayVal is String), !(arrayVal is [String : Any]) {
+                                        resultArray.append(entityToDictionaryWithClassProperty(entity: arrayVal))
+                                    }
+                                    else {
+                                        resultArray.append(arrayVal)
+                                    }
                                 }
                                 resultValue = resultArray
                             }
@@ -482,11 +501,19 @@ class PersistenceServiceUtils: NSObject {
     
     func entityToDictionaryWithClassProperty(entity: Any) -> [String: Any] {
         var entityDictionary = entityToDictionary(entity: entity)
+//        var className = getClassName(entity: type(of: entity))
+//        if let name = className.components(separatedBy: ".").last {
+//            if name == "BackendlessUser" {
+//                className = "Users"
+//            }
+//            className = name
+//        }
+//        entityDictionary["___class"] = className
+//        return entityDictionary
+        
         var className = getClassName(entity: type(of: entity))
-        if let name = className.components(separatedBy: ".").last {
-            if name == "BackendlessUser" {
-                className = "Users"
-            }
+        if className == "BackendlessUser" {
+            className = "Users"
         }
         entityDictionary["___class"] = className
         return entityDictionary
@@ -500,43 +527,82 @@ class PersistenceServiceUtils: NSObject {
             }
             return backendlessUser
         }
-        if tableName == "DeviceRegistration" || className == "DeviceRegistration" {
+        else if tableName == "DeviceRegistration" || className == "DeviceRegistration" {
             let deviceRegistration = processResponse.adaptToDeviceRegistration(responseResult: dictionary)
             if let objectId = deviceRegistration.objectId {
                 storedObjects.rememberObjectId(objectId: objectId, forObject: deviceRegistration)
                 return deviceRegistration
             }
         }
-        var resultEntityTypeName = ""
-        let classMappings = mappings.getTableToClassMappings()
-        if classMappings.keys.contains(tableName) {
-            resultEntityTypeName = classMappings[tableName]!
+        else if tableName == "GeoPoint" || className == "GeoPoint",
+            let geoPoint = self.processResponse.adaptToGeoPoint(geoDictionary: dictionary) {
+            return geoPoint            
         }
-        else {
-            resultEntityTypeName = className
+        var resultEntityTypeName = className
+        let classMappings = mappings.getTableToClassMappings()
+        if classMappings.keys.contains(className) {
+            resultEntityTypeName = classMappings[className]!
         }
         resultEntityTypeName = resultEntityTypeName.replacingOccurrences(of: "-", with: "_")
         var resultEntityType = NSClassFromString(resultEntityTypeName) as? NSObject.Type
         if resultEntityType == nil {
+            resultEntityTypeName = getClassName(className: resultEntityTypeName)
+            resultEntityType = NSClassFromString(resultEntityTypeName) as? NSObject.Type
+        }
+        if resultEntityType == nil {
             resultEntityTypeName = resultEntityTypeName.components(separatedBy: ".").last!
+            resultEntityType = NSClassFromString(resultEntityTypeName) as? NSObject.Type
+        }
+        if resultEntityType == nil {
+            resultEntityTypeName = "SwiftSDK." + resultEntityTypeName
             resultEntityType = NSClassFromString(resultEntityTypeName) as? NSObject.Type
         }
         if let resultEntityType = resultEntityType {
             let entity = resultEntityType.init()
             let entityFields = getClassPropertiesWithType(entity: entity)
             let entityClassName = getClassName(entity: entity.classForCoder)
-            
             let columnToPropertyMappings = mappings.getColumnToPropertyMappings(className: entityClassName)
             
             for dictionaryField in dictionary.keys {
                 if !(dictionary[dictionaryField] is NSNull) {
                     if columnToPropertyMappings.keys.contains(dictionaryField) {
-                        entity.setValue(dictionary[dictionaryField], forKey: columnToPropertyMappings[dictionaryField]!)
+                        let mappedPropertyName = columnToPropertyMappings[dictionaryField]!
+                        
+                        if let arrayValue = dictionary[dictionaryField] as? [Any] {
+                            var result = [Any]()
+                            for value in arrayValue {
+                                if let dictionaryValue = value as? [String : Any],
+                                    var _className = dictionaryValue["___class"] as? String {
+                                    if Array(classMappings.keys).contains(_className) {
+                                        _className = classMappings[_className]!
+                                    }
+                                    if let resultVal = dictionaryToEntity(dictionary: dictionaryValue, className: _className) {
+                                        result.append(resultVal)
+                                    }
+                                }
+                                else {
+                                    result.append(value)
+                                }
+                            }
+                            entity.setValue(result, forKey: mappedPropertyName)
+                        }
+                            
+                        else if let dictionaryValue = dictionary[dictionaryField] as? [String : Any],
+                            var _className = dictionaryValue["___class"] as? String {
+                            if Array(classMappings.keys).contains(_className) {
+                                _className = classMappings[_className]!
+                            }
+                            if let value = dictionaryToEntity(dictionary: dictionaryValue, className: _className) {
+                                entity.setValue(value, forKey: mappedPropertyName)
+                            }
+                        }
+                        else {
+                            entity.setValue(dictionary[dictionaryField], forKey: mappedPropertyName)
+                        }
                     }
-                        // process relations
                     else if Array(entityFields.keys).contains(dictionaryField) {
                         if let relationDictionary = dictionary[dictionaryField] as? [String: Any] {
-                            let relationClassName = getClassName(className: relationDictionary["___class"] as! String)
+                            let relationClassName = getClassName(className: relationDictionary["___class"] as! String)//
                             if relationDictionary["___class"] as? String == "Users",
                                 let userObject = processResponse.adaptToBackendlessUser(responseResult: relationDictionary) {
                                 entity.setValue(userObject as! BackendlessUser, forKey: dictionaryField)

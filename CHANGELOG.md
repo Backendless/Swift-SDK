@@ -1,5 +1,16 @@
 # RELEASE HISTORY
 
+### 5.5.4 / October 8, 2019
+* fixed bug when mapped relations are broken
+* the FileService `saveFile` method fixed to return url String value correctly
+* fixed putting and getting custom types in the CacheService
+* added method to the CacheService
+```
+func get(key: String, ofType: Any.Type, responseHandler: ((Any?) -> Void)!, errorHandler: ((Fault) -> Void)!)
+```
+This method is available for Swift projects.
+* fixed error on sending BackendlessGeoQuery with empty metadata
+
 ### 5.5.3 / October 1, 2019
 * the CacheService `get` method returns nil if cache for the key doesn't exsist
 * the CacheService `get` method fixed to return String values correctly
