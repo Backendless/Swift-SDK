@@ -19,7 +19,8 @@
  *  ********************************************************************************************************************
  */
 
-@objc public enum DataTypeEnum: Int, Codable {
+@objc public enum DataTypeEnum: Int, Codable, CaseIterable {
+    
     case UNKNOWN
     case INT
     case STRING
@@ -50,7 +51,7 @@
         }
     }
     
-    public init?(rawValue: RawValue) {
+    public init(rawValue: RawValue) {
         switch rawValue {
         case "UNKNOWN": self = .UNKNOWN
         case "INT": self = .INT
@@ -64,6 +65,14 @@
         case "STRING_ID": self = .STRING_ID
         case "TEXT": self = .TEXT
         default: self = .UNKNOWN
+        }
+    }
+    
+    init(index: Int) {
+        if DataTypeEnum.allCases.indices.contains(index) {
+            self = DataTypeEnum.allCases[index]
+        } else {
+            self = .UNKNOWN
         }
     }
 }

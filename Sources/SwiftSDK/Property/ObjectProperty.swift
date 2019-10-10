@@ -53,13 +53,17 @@
     
     required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-
         name = try container.decodeIfPresent(String.self, forKey: .name) ?? ""
         required = try container.decodeIfPresent(Bool.self, forKey: .required) ?? false
-
-        let rawType = try container.decodeIfPresent(String.self, forKey: .type)
-        type = DataTypeEnum(rawValue: rawType ?? "UNKNOWN") ?? .UNKNOWN
-
+        if let rawType = try? container.decodeIfPresent(String.self, forKey: .type) {
+            type = DataTypeEnum(rawValue: rawType)
+        }
+        else if let index = try? container.decodeIfPresent(Int.self, forKey: .type) {
+            type = DataTypeEnum(index: index)
+        }
+        else {
+            type = .UNKNOWN
+        }
         _defaultValue = try container.decodeIfPresent(JSON.self, forKey: ._defaultValue)
         relatedTable = try container.decodeIfPresent(String.self, forKey: .relatedTable)
         customRegex = try container.decodeIfPresent(String.self, forKey: .customRegex)

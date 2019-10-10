@@ -60,6 +60,7 @@
     enum CodingKeys: String, CodingKey {
         case publishAt
         case repeatExpiresAt
+        case segmentQuery
         case _repeatEvery = "repeatEvery"
         case pushSinglecast
         case publishPolicy
@@ -76,6 +77,7 @@
         if let repeatExpiresAt = try container.decodeIfPresent(Double.self, forKey: .repeatExpiresAt) {
             self.repeatExpiresAt = Date(timeIntervalSince1970: repeatExpiresAt)
         }
+        segmentQuery = try container.decodeIfPresent(String.self, forKey: .segmentQuery)
         _repeatEvery = try container.decodeIfPresent(Int.self, forKey: ._repeatEvery)
         pushSinglecast = try container.decodeIfPresent([String].self, forKey: .pushSinglecast) ?? []
         publishPolicy = try container.decodeIfPresent(Int.self, forKey: .publishPolicy) ?? PublishPolicyEnum.BOTH.rawValue
@@ -86,6 +88,7 @@
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(publishAt, forKey: .publishAt)
         try container.encodeIfPresent(repeatExpiresAt, forKey: .repeatExpiresAt)
+        try container.encodeIfPresent(segmentQuery, forKey: .segmentQuery)
         try container.encodeIfPresent(_repeatEvery, forKey: ._repeatEvery)
         try container.encode(pushSinglecast, forKey: .pushSinglecast)
         try container.encode(publishPolicy, forKey: .publishPolicy)

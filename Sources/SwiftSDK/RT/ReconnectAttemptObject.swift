@@ -46,4 +46,27 @@
             _timeout = newTimeout?.intValue
         }
     }
+    
+    private enum CodingKeys: String, CodingKey {
+        case attempt
+        case timeout
+    }
+    
+    public init(attempt: NSNumber, timeout: NSNumber) {
+        super.init()
+        self.attempt = attempt
+        self.timeout = timeout
+    }
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        _attempt = try container.decodeIfPresent(Int.self, forKey: .attempt)
+        _timeout = try container.decodeIfPresent(Int.self, forKey: .timeout)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(_attempt, forKey: .attempt)
+        try container.encodeIfPresent(_timeout, forKey: .timeout)
+    }
 }

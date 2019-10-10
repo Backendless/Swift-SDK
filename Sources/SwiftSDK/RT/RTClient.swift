@@ -235,9 +235,9 @@ class RTClient: NSObject {
     func onReconnectAttempt() {
         if let reconnectAttemptSubscriptions = eventSubscriptions[connectEvents.reconnectAttempt] {
             for subscription in reconnectAttemptSubscriptions {
-                let reconnectAttemptObject = ReconnectAttemptObject()
-                reconnectAttemptObject.attempt = NSNumber(value: self.reconnectAttempt)
-                reconnectAttemptObject.timeout = NSNumber(value: maxTimeInterval * 1000)
+                let attempt = NSNumber(value: self.reconnectAttempt)
+                let timeout = NSNumber(value: maxTimeInterval * 1000)
+                let reconnectAttemptObject = ReconnectAttemptObject(attempt: attempt, timeout: timeout)                
                 subscription.onResult!(reconnectAttemptObject)
             }
         }

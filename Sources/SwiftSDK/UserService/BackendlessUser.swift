@@ -45,6 +45,7 @@
         case objectId
         case userToken
         case _password = "password"
+        case properties
     }
     
     public override init() {
@@ -61,15 +62,22 @@
         objectId = try container.decodeIfPresent(String.self, forKey: .objectId)
         userToken = try container.decodeIfPresent(String.self, forKey: .userToken)
         _password = try container.decodeIfPresent(String.self, forKey: ._password)
+        if let properties = try container.decodeIfPresent(JSON.self, forKey: .properties) {
+            self.properties = properties
+        } else {
+            let properties: [String: Any?] = ["blUserLocale": Locale.current.languageCode]
+            self.properties = JSON(properties)
+        }
     }
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(email, forKey: .email)
+        try container.encodeIfPresent(email, forKey: .email)
         try container.encodeIfPresent(name, forKey: .name)
-        try container.encode(objectId, forKey: .objectId)
+        try container.encodeIfPresent(objectId, forKey: .objectId)
         try container.encodeIfPresent(userToken, forKey: .userToken)
         try container.encodeIfPresent(_password, forKey: ._password)
+        try container.encode(properties, forKey: .properties)
     }
     
     func setUserToken(value: String) {
