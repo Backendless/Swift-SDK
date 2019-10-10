@@ -1,13 +1,13 @@
 # RELEASE HISTORY
 
 ### 5.5.5 / October 10, 2019
-* fixed error on decoding ObjectProperty received from Flutter (BKNDLSS-19716)
-* fixed serialization/deserialization of GeoCluster (BKNDLSS-19719)
-* fixed serialization/deserialization of MessageStatus (BKNDLSS-19721)
-* fixed CodingKeys in class DeviceRegistration (BKNDLSS-19724)
-* fixed serialization/deserialization of class DeliveryOptions (BKNDLSS-19725)
-* fixed serialization/deserialization of class ReconnectAttemptObject (BKNDLSS-19727)
-* fix serialization/deserialization of class BackendlessUser (BKNDLSS-19728)
+* fixed error on decoding ObjectProperty received from Flutter
+* fixed serialization/deserialization of GeoCluster
+* fixed serialization/deserialization of MessageStatus
+* fixed CodingKeys in class DeviceRegistration
+* fixed serialization/deserialization of class DeliveryOptions
+* fixed serialization/deserialization of class ReconnectAttemptObject
+* fixed serialization/deserialization of class BackendlessUser
 
 ### 5.5.4 / October 8, 2019
 * fixed bug when mapped relations are broken
