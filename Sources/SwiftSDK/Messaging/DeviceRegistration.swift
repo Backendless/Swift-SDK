@@ -32,6 +32,7 @@
     enum CodingKeys: String, CodingKey {
         case objectId = "id"
         case deviceToken
+        case deviceId
         case os
         case osVersion
         case expiration
