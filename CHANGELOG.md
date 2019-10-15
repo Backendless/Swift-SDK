@@ -1,10 +1,12 @@
 # RELEASE HISTORY
 
+### 5.5.6 / October 15, 2019
+* fixed CodingKeys in class DeviceRegistration
+
 ### 5.5.5 / October 10, 2019
 * fixed error on decoding ObjectProperty received from Flutter
 * fixed serialization/deserialization of GeoCluster
 * fixed serialization/deserialization of MessageStatus
-* fixed CodingKeys in class DeviceRegistration
 * fixed serialization/deserialization of class DeliveryOptions
 * fixed serialization/deserialization of class ReconnectAttemptObject
 * fixed serialization/deserialization of class BackendlessUser
