@@ -1,5 +1,9 @@
 # RELEASE HISTORY
 
+### 5.5.7 / October 18, 2019
+* fixed crash in the createBulk method
+* the update method returns fault when missing objectId
+
 ### 5.5.6 / October 15, 2019
 * fixed CodingKeys in class DeviceRegistration
 
