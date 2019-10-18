@@ -54,7 +54,6 @@ class BackendlessRequestManager: NSObject {
         var request = URLRequest(url: URL(string: urlString + dataTypesUtils.stringToUrlString(originalString: restMethod))!)
         request.httpMethod = httpMethod.rawValue
         if let headers = headers, headers.count > 0 {
-            
             for (key, value) in headers {
                 request.addValue(value, forHTTPHeaderField: key)
             }
@@ -69,7 +68,13 @@ class BackendlessRequestManager: NSObject {
         }
         if var parameters = parameters {
             if headers == ["Content-Type": "application/json"] {
-                if parameters is String {
+                
+                if let params = parameters as? [[String : Any]] {
+                    parameters = JSONUtils.shared.objectToJSON(objectToParse: params)
+                    request.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
+                }
+                
+                else if parameters is String {
                     parameters = "\"\(parameters as! String)\""
                     request.httpBody = (parameters as! String).data(using: .utf8)
                 }
