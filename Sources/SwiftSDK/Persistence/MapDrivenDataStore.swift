@@ -36,7 +36,16 @@
     }
     
     public func save(entity: [String : Any], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.save(entity: entity as [String : AnyObject], responseHandler: responseHandler, errorHandler: errorHandler)
+        if entity["objectId"] != nil {
+            update(entity: entity, responseHandler: responseHandler, errorHandler: errorHandler)
+        }
+        else {
+            create(entity: entity, responseHandler: responseHandler, errorHandler: errorHandler)
+        }
+    }
+    
+    public func create(entity: [String : Any], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        persistenceServiceUtils.create(entity: entity as [String : AnyObject], responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     public func createBulk(entities: [[String : Any]], responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) {

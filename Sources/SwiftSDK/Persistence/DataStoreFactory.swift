@@ -56,13 +56,22 @@
     }
     
     public func save(entity: Any, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        if persistenceServiceUtils.getObjectId(entity: entity) != nil {
+            update(entity: entity, responseHandler: responseHandler, errorHandler: errorHandler)
+        }
+        else {
+            create(entity: entity, responseHandler: responseHandler, errorHandler: errorHandler)
+        }
+    }
+    
+    public func create(entity: Any, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let entityDictionary = persistenceServiceUtils.entityToDictionary(entity: entity)
         let wrappedBlock: ([String: Any]) -> () = { responseDictionary in
             if let resultEntity = self.persistenceServiceUtils.dictionaryToEntity(dictionary: responseDictionary, className: self.persistenceServiceUtils.getClassName(entity: self.entityClass)) {
                 responseHandler(resultEntity)
             }
-        }        
-        persistenceServiceUtils.save(entity: entityDictionary, responseHandler: wrappedBlock, errorHandler: errorHandler)
+        }
+        persistenceServiceUtils.create(entity: entityDictionary, responseHandler: wrappedBlock, errorHandler: errorHandler)
     }
     
     public func createBulk(entities: [Any], responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) {

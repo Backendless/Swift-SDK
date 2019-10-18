@@ -53,10 +53,10 @@ class MapDrivenDataStoreTests: XCTestCase {
         Backendless.shared.data.ofTable("ChildTestClass").removeBulk(whereClause: nil, responseHandler: { removedObjects in }, errorHandler: { fault in })
     }
     
-    func test_01_save() {
-        let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.save")
+    func test_01_create() {
+        let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.create")
         let objectToSave = createDictionary()
-        dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+        dataStore.create(entity: objectToSave, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
             XCTAssert(type(of: savedObject) == [String: Any].self)
             XCTAssertEqual(savedObject["name"] as? String, "Bob")
