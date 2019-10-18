@@ -85,18 +85,20 @@ class PersistenceServiceUtils: NSObject {
     func update(entity: [String : Any], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = entity
-        if let objectId = entity["objectId"] as? String {
-            BackendlessRequestManager(restMethod: "data/\(tableName)/\(objectId)", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-                if let result = self.processResponse.adapt(response: response, to: JSON.self) {
-                    if result is Fault {
-                        errorHandler(result as! Fault)
-                    }
-                    else {
-                        responseHandler((result as! JSON).dictionaryObject!)
-                    }
-                }
-            })
+        guard let objectId = entity["objectId"] as? String else {
+            errorHandler(Fault(message: "the 'objectId' property not found", faultCode: 0))
+            return
         }
+        BackendlessRequestManager(restMethod: "data/\(tableName)/\(objectId)", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+            if let result = self.processResponse.adapt(response: response, to: JSON.self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else {
+                    responseHandler((result as! JSON).dictionaryObject!)
+                }
+            }
+        })
     }
     
     func updateBulk(whereClause: String?, changes: [String : Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
@@ -501,15 +503,15 @@ class PersistenceServiceUtils: NSObject {
     
     func entityToDictionaryWithClassProperty(entity: Any) -> [String: Any] {
         var entityDictionary = entityToDictionary(entity: entity)
-//        var className = getClassName(entity: type(of: entity))
-//        if let name = className.components(separatedBy: ".").last {
-//            if name == "BackendlessUser" {
-//                className = "Users"
-//            }
-//            className = name
-//        }
-//        entityDictionary["___class"] = className
-//        return entityDictionary
+        //        var className = getClassName(entity: type(of: entity))
+        //        if let name = className.components(separatedBy: ".").last {
+        //            if name == "BackendlessUser" {
+        //                className = "Users"
+        //            }
+        //            className = name
+        //        }
+        //        entityDictionary["___class"] = className
+        //        return entityDictionary
         
         var className = getClassName(entity: type(of: entity))
         if className == "BackendlessUser" {
