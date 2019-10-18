@@ -83,10 +83,10 @@ class DataStoreFactoryTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_02_save() {
-        let expectation = self.expectation(description: "PASSED: dataStoreFactory.save")
+    func test_02_create() {
+        let expectation = self.expectation(description: "PASSED: dataStoreFactory.create")
         let objectToSave = createTestClassObject()
-        dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+        dataStore.create(entity: objectToSave, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
             XCTAssert(type(of: savedObject) == TestClass.self)
             XCTAssertEqual((savedObject as! TestClass).name, "Bob")

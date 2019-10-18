@@ -52,7 +52,7 @@ class PersistenceServiceUtils: NSObject {
         })
     }
     
-    func save(entity: [String : Any], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    func create(entity: [String : Any], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = entity
         BackendlessRequestManager(restMethod: "data/\(tableName)", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
@@ -85,20 +85,18 @@ class PersistenceServiceUtils: NSObject {
     func update(entity: [String : Any], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = entity
-        guard let objectId = entity["objectId"] as? String else {
-            errorHandler(Fault(message: "the 'objectId' property not found", faultCode: 0))
-            return
+        if let objectId = entity["objectId"] as? String {
+            BackendlessRequestManager(restMethod: "data/\(tableName)/\(objectId)", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+                if let result = self.processResponse.adapt(response: response, to: JSON.self) {
+                    if result is Fault {
+                        errorHandler(result as! Fault)
+                    }
+                    else {
+                        responseHandler((result as! JSON).dictionaryObject!)
+                    }
+                }
+            })
         }
-        BackendlessRequestManager(restMethod: "data/\(tableName)/\(objectId)", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: JSON.self) {
-                if result is Fault {
-                    errorHandler(result as! Fault)
-                }
-                else {
-                    responseHandler((result as! JSON).dictionaryObject!)
-                }
-            }
-        })
     }
     
     func updateBulk(whereClause: String?, changes: [String : Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
@@ -326,7 +324,7 @@ class PersistenceServiceUtils: NSObject {
         })
     }
     
-    func loadRelations(objectId: String, queryBuilder: LoadRelationsQueryBuilder, responseHandler: (([[String : Any]]) -> Void)!, errorHandler: ((Fault) -> Void)!) {        
+    func loadRelations(objectId: String, queryBuilder: LoadRelationsQueryBuilder, responseHandler: (([[String : Any]]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         var parameters = [String: Any]()
         parameters["pageSize"] = queryBuilder.getPageSize()
@@ -474,7 +472,7 @@ class PersistenceServiceUtils: NSObject {
                                     else {
                                         resultDictionary[key] = dictionaryVal
                                     }
-                                }                         
+                                }
                                 resultValue = resultDictionary
                             }
                             else if let dateValue = value as? Date {
@@ -538,7 +536,7 @@ class PersistenceServiceUtils: NSObject {
         }
         else if tableName == "GeoPoint" || className == "GeoPoint",
             let geoPoint = self.processResponse.adaptToGeoPoint(geoDictionary: dictionary) {
-            return geoPoint            
+            return geoPoint
         }
         var resultEntityTypeName = className
         let classMappings = mappings.getTableToClassMappings()

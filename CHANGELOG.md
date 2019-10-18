@@ -1,5 +1,9 @@
 # RELEASE HISTORY
 
+### 5.5.8 / October 18, 2019
+* the `create` method added into the PersistenceService
+* the `save` method logic changed. When an `objectId != nil` it works like update, when `objectId == nil` it works like create
+
 ### 5.5.7 / October 18, 2019
 * fixed crash in the createBulk method
 * the update method returns fault when missing objectId
