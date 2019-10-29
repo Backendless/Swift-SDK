@@ -3,7 +3,7 @@
 ### 5.5.9 / October 29, 2019
 * fixed the BackendlessUser password is not updating issue
 * fixed the issue caused by spaces and dashes in the project's product name
-* updated the `blUserLocale` bahabior
+* updated the `blUserLocale` bahavior
 
 ### 5.5.8 / October 18, 2019
 * the `create` method added into the PersistenceService
