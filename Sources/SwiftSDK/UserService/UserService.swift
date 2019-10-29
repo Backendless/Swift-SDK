@@ -183,7 +183,8 @@
     
     public func update(user: BackendlessUser, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
-        let parameters = user.getProperties()
+        var parameters = user.getProperties()
+        parameters["password"] = user._password
         var userId = String()        
         if let userObjectId = user.objectId {
             userId = userObjectId
