@@ -62,11 +62,9 @@
         objectId = try container.decodeIfPresent(String.self, forKey: .objectId)
         userToken = try container.decodeIfPresent(String.self, forKey: .userToken)
         _password = try container.decodeIfPresent(String.self, forKey: ._password)
+        
         if let properties = try container.decodeIfPresent(JSON.self, forKey: .properties) {
             self.properties = properties
-        } else {
-            let properties: [String: Any?] = ["blUserLocale": Locale.current.languageCode]
-            self.properties = JSON(properties)
         }
     }
     
@@ -92,7 +90,7 @@
     public func getProperties() -> [String: Any] {
         var userProperties = [String: Any]()
         for (propertyName, propertyValue) in properties.dictionaryObject! {
-          userProperties[propertyName] = propertyValue
+            userProperties[propertyName] = propertyValue
         }
         if let name = self.name {
             userProperties["name"] = name
@@ -132,7 +130,9 @@
     
     public func setProperties(properties: [String: Any]) {
         for property in properties {
-            setProperty(propertyName: property.key, propertyValue: property.value)
+            if !(property.value is NSNull) {
+                setProperty(propertyName: property.key, propertyValue: property.value)
+            }
         }
     }
     

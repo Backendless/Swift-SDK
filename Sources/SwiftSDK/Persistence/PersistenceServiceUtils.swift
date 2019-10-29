@@ -395,7 +395,10 @@ class PersistenceServiceUtils: NSObject {
             name = classMappings[name]!
         }
         else {
-            name = Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String + "." + name
+            var bundleName = Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String
+            bundleName = bundleName.replacingOccurrences(of: " ", with: "_")
+            bundleName = bundleName.replacingOccurrences(of: "-", with: "_")
+            name = bundleName + "." + name
         }
         return name
     }

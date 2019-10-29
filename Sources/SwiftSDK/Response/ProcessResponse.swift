@@ -133,7 +133,7 @@ class ProcessResponse: NSObject {
                 do {
                     let responseData = try JSONSerialization.data(withJSONObject: properties)
                     do {
-                        let responseObject = try JSONDecoder().decode(BackendlessUser.self, from: responseData)
+                        let responseObject = try JSONDecoder().decode(BackendlessUser.self, from: responseData)                        
                         responseObject.setProperties(properties: responseResult)
                         return responseObject
                     }
