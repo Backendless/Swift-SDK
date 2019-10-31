@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 5.x / ?
+* fixed the `addRelated` methods bug when they worked as `setRelated`
+
 ### 5.5.9 / October 29, 2019
 * fixed the BackendlessUser password is not updating issue
 * fixed the issue caused by spaces and dashes in the project's product name
