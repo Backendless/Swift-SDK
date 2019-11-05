@@ -1,6 +1,6 @@
 # RELEASE HISTORY
 
-### 5.x / ?
+### 5.5.10 / November 5, 2019
 * fixed the `addRelated` methods bug when they worked as `setRelated`
 
 ### 5.5.9 / October 29, 2019
