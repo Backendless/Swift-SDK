@@ -80,6 +80,7 @@
     
     func setUserToken(value: String) {
         self.userToken = value
+        UserDefaultsHelper.shared.savePersistentUserToken(token: value)
     }
     
     public func getProperty(propertyName: String) -> Any? {

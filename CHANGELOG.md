@@ -1,5 +1,9 @@
 # RELEASE HISTORY
 
+### 5.5.11 / November 13, 2019
+* fixed the `userToken` update  issue
+* fixed the incorrect date format in the Backendless RequestManager class
+
 ### 5.5.10 / November 5, 2019
 * fixed the `addRelated` methods bug when they worked as `setRelated`
 
