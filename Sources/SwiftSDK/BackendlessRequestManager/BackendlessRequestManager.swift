@@ -85,8 +85,8 @@ class BackendlessRequestManager: NSObject {
                 else {
                     if var params = parameters as? [String : Any] {
                         for (key, value) in params {
-                            if let dateValue = value as? Date {
-                                params[key] = dateValue.timeIntervalSince1970
+                            if let dateValue = value as? Date {                                
+                                params[key] = dataTypesUtils.dateToInt(date: dateValue)
                             }
                         }
                         parameters = params
