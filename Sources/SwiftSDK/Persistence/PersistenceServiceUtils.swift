@@ -179,6 +179,9 @@ class PersistenceServiceUtils: NSObject {
         if let relationsDepth = queryBuilder?.getRelationsDepth() {
             parameters["relationsDepth"] = String(relationsDepth)
         }
+        if let relationsPageSize = queryBuilder?.getRelationsPageSize() {
+            parameters["relationsPageSize"] = relationsPageSize
+        }
         if let sortBy = queryBuilder?.getSortBy(), sortBy.count > 0 {
             parameters["sortBy"] = dataTypesUtils.arrayToString(array: sortBy)
         }
@@ -229,18 +232,35 @@ class PersistenceServiceUtils: NSObject {
         
         let related = queryBuilder?.getRelated()
         let relationsDepth = queryBuilder?.getRelationsDepth()
+        let relationsPageSize = queryBuilder?.getRelationsPageSize()
         
-        if related != nil, relationsDepth! > 0 {
-            let relatedString = dataTypesUtils.arrayToString(array: related!)
-            restMethod += "?loadRelations=" + relatedString + "&relationsDepth=" + String(relationsDepth!)
+        if relationsPageSize != nil {
+            restMethod += "?relationsPageSize=\(relationsPageSize!)"
+            if related != nil, relationsDepth! > 0 {
+                let relatedString = dataTypesUtils.arrayToString(array: related!)
+                restMethod += "&loadRelations=" + relatedString + "&relationsDepth=" + String(relationsDepth!)
+            }
+            else if related != nil, relationsDepth == 0 {
+                let relatedString = dataTypesUtils.arrayToString(array: related!)
+                restMethod += "&loadRelations=" + relatedString
+            }
+            else if related == nil, relationsDepth! > 0 {
+                restMethod += "&relationsDepth=" + String(relationsDepth!)
+            }
         }
-        else if related != nil, relationsDepth == 0 {
-            let relatedString = dataTypesUtils.arrayToString(array: related!)
-            restMethod += "?loadRelations=" + relatedString
-        }
-        else if related == nil, relationsDepth! > 0 {
-            restMethod += "?relationsDepth=" + String(relationsDepth!)
-        }
+        else {
+            if related != nil, relationsDepth! > 0 {
+                let relatedString = dataTypesUtils.arrayToString(array: related!)
+                restMethod += "?loadRelations=" + relatedString + "&relationsDepth=" + String(relationsDepth!)
+            }
+            else if related != nil, relationsDepth == 0 {
+                let relatedString = dataTypesUtils.arrayToString(array: related!)
+                restMethod += "?loadRelations=" + relatedString
+            }
+            else if related == nil, relationsDepth! > 0 {
+                restMethod += "?relationsDepth=" + String(relationsDepth!)
+            }
+        }  
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                 if result is Fault {

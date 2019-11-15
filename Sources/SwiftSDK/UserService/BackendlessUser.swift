@@ -103,7 +103,7 @@
             userProperties["objectId"] = objectId
         }
         if let userToken = self.userToken {
-            userProperties["userToken"] = userToken
+            userProperties["user-token"] = userToken
         }
         return userProperties
     }
