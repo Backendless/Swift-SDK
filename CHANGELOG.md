@@ -1,5 +1,11 @@
 # RELEASE HISTORY
 
+### 5.6.0 / November 15, 2019
+* added the `relationsPageSize` property to the DataQueryBuilder
+* added the `sortBy` property to the BackendlessGeoQuery
+* fixed CodingKeys in the BackendlessGeoQuery
+* fixed the `user-token` duplication in the UserService 
+
 ### 5.5.11 / November 13, 2019
 * fixed the `userToken` update  issue
 * fixed the incorrect date format in the Backendless RequestManager class

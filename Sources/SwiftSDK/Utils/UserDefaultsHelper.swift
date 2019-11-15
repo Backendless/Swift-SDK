@@ -33,7 +33,7 @@ class UserDefaultsHelper: NSObject {
     
     func savePersistentUserToken(token: String) {
         let userDefaults = UserDefaults.standard
-        let userToken: [String: String] = ["userToken": token]
+        let userToken: [String: String] = ["user-token": token]
         userDefaults.setValue(userToken, forKey: UserDefaultsKeys.persistentUserToken)
         userDefaults.synchronize()
     }
@@ -41,7 +41,7 @@ class UserDefaultsHelper: NSObject {
     func getPersistentUserToken() -> String? {
         let userDefaults = UserDefaults.standard
         if let userToken = userDefaults.value(forKey: UserDefaultsKeys.persistentUserToken),
-            let token = (userToken as! [String: String])["userToken"] {
+            let token = (userToken as! [String: String])["user-token"] {
             return token
         }
         return nil

@@ -59,6 +59,7 @@
     }
     
     public var whereClause: String?
+    public var sortBy: [String]?
     public var rectangle: GeoQueryRectangle?
     public var pageSize: Int = 10
     public var offset: Int = 0
@@ -84,6 +85,7 @@
         case relativeFindPercentThreshold
         case degreePerPixel = "dpp"
         case clusterGridSize
+        case units
     }
     
     public override init() { }

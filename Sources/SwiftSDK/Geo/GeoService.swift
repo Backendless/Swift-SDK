@@ -268,6 +268,9 @@
                 let relativeFindMetadataString = dataTypesUtils.dictionaryToUrlString(dictionary: relativeFindMetadata) {
                 restMethod += "&relativeFindMetadata=\(relativeFindMetadataString)&relativeFindPercentThreshold=\(geoQuery.relativeFindPercentThreshold)"
             }
+            if let sortBy = geoQuery.sortBy, sortBy.count > 0 {
+                restMethod += "&sortBy=\(dataTypesUtils.arrayToString(array: sortBy))"
+            }
         }
         return restMethod
     }

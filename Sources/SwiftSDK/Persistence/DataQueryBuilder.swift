@@ -23,6 +23,7 @@
     
     private var whereClause: String?
     private var relationsDepth: Int = 0
+    private var relationsPageSize: Int = 10
     private var pageSize: Int = 10
     private var offset: Int = 0
     private var properties: [String]?
@@ -45,6 +46,14 @@
     
     public func setRelationsDepth(relationsDepth: Int) {
         self.relationsDepth = relationsDepth
+    }
+    
+    public func getRelationsPageSize() -> Int {
+        return self.relationsPageSize
+    }
+    
+    public func setRelationsPageSize(relationsPageSize: Int) {
+        self.relationsPageSize = relationsPageSize
     }
     
     public func getPageSize() -> Int {

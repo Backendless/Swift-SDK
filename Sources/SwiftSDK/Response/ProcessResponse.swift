@@ -129,7 +129,7 @@ class ProcessResponse: NSObject {
                 return adaptGuestToBackendlessUser(responseResult: responseResult)
             }
             else {
-                let properties = ["email": responseResult["email"], "name": responseResult["name"], "objectId": responseResult["objectId"], "userToken": responseResult["user-token"]]
+                let properties = ["email": responseResult["email"], "name": responseResult["name"], "objectId": responseResult["objectId"], "user-token": responseResult["user-token"]]
                 do {
                     let responseData = try JSONSerialization.data(withJSONObject: properties)
                     do {
