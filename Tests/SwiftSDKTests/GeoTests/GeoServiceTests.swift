@@ -171,7 +171,7 @@ class GeoServiceTests: XCTestCase {
         let geoQuery = BackendlessGeoQuery()
         geoQuery.geoPoint = center
         geoQuery.radius = 100000
-        geoQuery.units = .METERS
+        geoQuery.units = Units.METERS.rawValue
         geoQuery.categories = [geoSampleCategory]
         backendless.geo.getPoints(geoQuery: geoQuery, responseHandler: { geoPoints in
             expectation.fulfill()
