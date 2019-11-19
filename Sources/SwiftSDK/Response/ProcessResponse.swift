@@ -24,6 +24,7 @@ class ProcessResponse: NSObject {
     static let shared = ProcessResponse()
     
     private let jsonUtils = JSONUtils.shared
+    private let storedObjects = StoredObjects.shared
     
     private override init() { }
     
@@ -49,22 +50,6 @@ class ProcessResponse: NSObject {
                             return responseObject
                         }
                     }
-                        // ***********************
-                        /* catch let DecodingError.dataCorrupted(context) {
-                         print(context)
-                         } catch let DecodingError.keyNotFound(key, context) {
-                         print("Key '\(key)' not found:", context.debugDescription)
-                         print("codingPath:", context.codingPath)
-                         } catch let DecodingError.valueNotFound(value, context) {
-                         print("Value '\(value)' not found:", context.debugDescription)
-                         print("codingPath:", context.codingPath)
-                         } catch let DecodingError.typeMismatch(type, context)  {
-                         print("Type '\(type)' mismatch:", context.debugDescription)
-                         print("codingPath:", context.codingPath)
-                         } catch {
-                         print("error: ", error)
-                         } */
-                        // ***********************
                     catch {
                         return Fault(domain: (error as NSError).domain, code: (error as NSError).code, userInfo: (error as NSError).userInfo)
                     }
@@ -135,6 +120,9 @@ class ProcessResponse: NSObject {
                     do {
                         let responseObject = try JSONDecoder().decode(BackendlessUser.self, from: responseData)                        
                         responseObject.setProperties(properties: responseResult)
+                        if responseObject.objectId != nil {
+                            storedObjects.rememberObjectId(objectId: responseObject.objectId!, forObject: responseObject)
+                        }
                         return responseObject
                     }
                     catch {
@@ -158,6 +146,7 @@ class ProcessResponse: NSObject {
         let responseObject = BackendlessUser()
         responseObject.objectId = objectId
         responseObject.setUserToken(value: userToken)
+        storedObjects.rememberObjectId(objectId: objectId, forObject: responseObject)
         return responseObject
     }
     
@@ -186,29 +175,30 @@ class ProcessResponse: NSObject {
                 deviceRegistration.channels = [channelName]
             }
         }
+        if deviceRegistration.objectId != nil {
+            storedObjects.rememberObjectId(objectId: deviceRegistration.objectId!, forObject: deviceRegistration)
+        }
         return deviceRegistration
     }
     
     func adaptToGeoPoint(geoDictionary: [String : Any]) -> GeoPoint? {
-        //        if let objectId = geoDictionary["objectId"] as? String,
-        //            let latitude = geoDictionary["latitude"] as? Double,
-        //            let longitude = geoDictionary["longitude"] as? Double,
-        //            let categories = geoDictionary["categories"] as? [String] {
-        //            let distance = geoDictionary["distance"] as? Double
-        //            if let metadata = geoDictionary["metadata"] as? [String: String] {
-        //                return GeoPoint(objectId: objectId, latitude: latitude, longitude: longitude, distance: distance ?? 0.0, categories: categories, metadata: JSON(metadata))
-        //            }
-        //            return GeoPoint(objectId: objectId, latitude: latitude, longitude: longitude, distance: distance ?? 0.0, categories: categories, metadata: nil)
-        //        }
         if let latitude = geoDictionary["latitude"] as? Double,
             let longitude = geoDictionary["longitude"] as? Double,
             let categories = geoDictionary["categories"] as? [String] {
             let objectId = geoDictionary["objectId"] as? String
             let distance = geoDictionary["distance"] as? Double
             if let metadata = geoDictionary["metadata"] as? [String: String] {
-                return GeoPoint(objectId: objectId, latitude: latitude, longitude: longitude, distance: distance ?? 0.0, categories: categories, metadata: JSON(metadata))
+                let geoPoint = GeoPoint(objectId: objectId, latitude: latitude, longitude: longitude, distance: distance ?? 0.0, categories: categories, metadata: JSON(metadata))
+                if objectId != nil {
+                    storedObjects.rememberObjectId(objectId: objectId!, forObject: geoPoint)
+                }
+                return geoPoint
             }
-            return GeoPoint(objectId: objectId, latitude: latitude, longitude: longitude, distance: distance ?? 0.0, categories: categories, metadata: nil)
+            let geoPoint = GeoPoint(objectId: objectId, latitude: latitude, longitude: longitude, distance: distance ?? 0.0, categories: categories, metadata: nil)
+            if objectId != nil {
+                storedObjects.rememberObjectId(objectId: objectId!, forObject: geoPoint)
+            }
+            return geoPoint
         }
         return nil
     }
@@ -223,10 +213,12 @@ class ProcessResponse: NSObject {
             if let metadata = geoDictionary["metadata"] as? [String: String] {
                 let geoCluster = GeoCluster(objectId: objectId, latitude: latitude, longitude: longitude, distance: distance ?? 0.0, categories: categories, metadata: JSON(metadata))
                 geoCluster.totalPoints = totalPoints
+                storedObjects.rememberObjectId(objectId: objectId, forObject: geoCluster)
                 return geoCluster
             }
             let geoCluster = GeoCluster(objectId: objectId, latitude: latitude, longitude: longitude, distance: distance ?? 0.0, categories: categories, metadata: nil)
             geoCluster.totalPoints = totalPoints
+            storedObjects.rememberObjectId(objectId: objectId, forObject: geoCluster)
             return geoCluster
         }
         return nil
@@ -255,6 +247,9 @@ class ProcessResponse: NSObject {
                     }
                 }
                 geoFence.nodes = geoFenceNodes
+            }
+            if geoFence.objectId != nil {
+                storedObjects.rememberObjectId(objectId: geoFence.objectId!, forObject: geoFence)
             }
             return geoFence
         }

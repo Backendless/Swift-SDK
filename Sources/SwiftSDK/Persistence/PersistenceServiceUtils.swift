@@ -92,6 +92,14 @@ class PersistenceServiceUtils: NSObject {
                         errorHandler(result as! Fault)
                     }
                     else {
+                        if let updatedUser = self.processResponse.adapt(response: response, to: BackendlessUser.self) as? BackendlessUser,
+                            Backendless.shared.userService.stayLoggedIn,
+                            let current = Backendless.shared.userService.getCurrentUser(),
+                            updatedUser.objectId == current.objectId,
+                            let currentToken = current.userToken {
+                            updatedUser.setUserToken(value: currentToken)
+                            Backendless.shared.userService.setPersistentUser(currentUser: updatedUser)
+                        }
                         responseHandler((result as! JSON).dictionaryObject!)
                     }
                 }
@@ -524,16 +532,6 @@ class PersistenceServiceUtils: NSObject {
     
     func entityToDictionaryWithClassProperty(entity: Any) -> [String: Any] {
         var entityDictionary = entityToDictionary(entity: entity)
-        //        var className = getClassName(entity: type(of: entity))
-        //        if let name = className.components(separatedBy: ".").last {
-        //            if name == "BackendlessUser" {
-        //                className = "Users"
-        //            }
-        //            className = name
-        //        }
-        //        entityDictionary["___class"] = className
-        //        return entityDictionary
-        
         var className = getClassName(entity: type(of: entity))
         if className == "BackendlessUser" {
             className = "Users"
