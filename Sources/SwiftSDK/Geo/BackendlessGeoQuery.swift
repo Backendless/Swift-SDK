@@ -86,6 +86,7 @@
         case degreePerPixel = "dpp"
         case clusterGridSize
         case units
+        case sortBy
     }
     
     public override init() { }
@@ -105,6 +106,7 @@
         relativeFindPercentThreshold = try container.decodeIfPresent(Double.self, forKey: .relativeFindPercentThreshold) ?? 0.0
         degreePerPixel = try container.decodeIfPresent(Double.self, forKey: .degreePerPixel) ?? 0.0
         clusterGridSize = try container.decodeIfPresent(Double.self, forKey: .clusterGridSize) ?? 100.0
+        sortBy = try container.decodeIfPresent([String].self, forKey: .sortBy)
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -122,6 +124,7 @@
         try container.encode(relativeFindPercentThreshold, forKey: .relativeFindPercentThreshold)
         try container.encode(degreePerPixel, forKey: .degreePerPixel)
         try container.encode(clusterGridSize, forKey: .clusterGridSize)
+        try container.encodeIfPresent(sortBy, forKey: .sortBy)
     }
     
     public func setUnits(units: Int) {

@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 5.6.2 / November 19, 2019
+* fixed CodingKeys in the BackendlessGeoQuery to work correctly with `sortBy` property
+
 ### 5.6.1 / November 19, 2019
 * fixed the currentUser wasn't updated  issue when `stayLoggedIn = true`
 * StoredObjects now store also the BackendlessUser and DeviceRegistration objects
