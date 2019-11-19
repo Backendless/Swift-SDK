@@ -25,6 +25,23 @@
     case YARDS = 2
     case KILOMETERS = 3
     case FEET = 4
+    
+    public init?(rawValue: Int) {
+        switch rawValue {
+        case 0:
+            self = .METERS
+        case 1:
+            self = .MILES
+        case 2:
+            self = .YARDS
+        case 3:
+            self = .KILOMETERS
+        case 4:
+            self = .FEET
+        default:
+            self = .METERS
+        }
+    }
 }
 
 @objcMembers public class BackendlessGeoQuery: NSObject, Codable {
@@ -69,7 +86,7 @@
     public private(set) var degreePerPixel: Double = 0.0
     public private(set) var clusterGridSize: Double = 100.0
     
-    private var units: Int?
+    public var units: Units?
     
     enum CodingKeys: String, CodingKey {
         case geoPoint
@@ -86,6 +103,7 @@
         case degreePerPixel = "dpp"
         case clusterGridSize
         case units
+        case sortBy
     }
     
     public override init() { }
@@ -105,6 +123,11 @@
         relativeFindPercentThreshold = try container.decodeIfPresent(Double.self, forKey: .relativeFindPercentThreshold) ?? 0.0
         degreePerPixel = try container.decodeIfPresent(Double.self, forKey: .degreePerPixel) ?? 0.0
         clusterGridSize = try container.decodeIfPresent(Double.self, forKey: .clusterGridSize) ?? 100.0
+        let rawUnits = try container.decodeIfPresent(Int.self, forKey: .units)
+        if let rawUnits = rawUnits {
+            units = Units(rawValue: rawUnits)
+        }
+        sortBy = try container.decodeIfPresent([String].self, forKey: .sortBy)
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -122,29 +145,10 @@
         try container.encode(relativeFindPercentThreshold, forKey: .relativeFindPercentThreshold)
         try container.encode(degreePerPixel, forKey: .degreePerPixel)
         try container.encode(clusterGridSize, forKey: .clusterGridSize)
-    }
-    
-    public func setUnits(units: Int) {
-        self.units = units
-    }
-    
-    public func getUnits() -> String {
-        if self.units == 0 {
-            return "METERS"
+        if let rawUnits = units?.rawValue {
+            try container.encode(rawUnits, forKey: .units)
         }
-        else if self.units == 1 {
-            return "MILES"
-        }
-        else if self.units == 2 {
-            return "YARDS"
-        }
-        else if self.units == 3 {
-            return "KILOMETERS"
-        }
-        else if self.units == 4 {
-            return "FEET"
-        }
-        return "MILES"
+        try container.encodeIfPresent(sortBy, forKey: .sortBy)
     }
     
     public func setClusteringParams(degreePerPixel: Double, clusterGridSize: Double) {
