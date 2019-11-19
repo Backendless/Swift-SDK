@@ -1,5 +1,9 @@
 # RELEASE HISTORY
 
+### 5.6.1 / November 19, 2019
+* fixed the currentUser wasn't updated  issue when `stayLoggedIn = true`
+* StoredObjects now store also the BackendlessUser and DeviceRegistration objects
+
 ### 5.6.0 / November 15, 2019
 * added the `relationsPageSize` property to the DataQueryBuilder
 * added the `sortBy` property to the BackendlessGeoQuery

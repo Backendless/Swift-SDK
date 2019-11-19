@@ -199,7 +199,15 @@
                         errorHandler(result as! Fault)
                     }
                     else {
-                        responseHandler(result as! BackendlessUser)
+                        let updatedUser = result as! BackendlessUser
+                        if self.stayLoggedIn,
+                            let current = self.getCurrentUser(),
+                            updatedUser.objectId == current.objectId,
+                            let currentToken = current.userToken {
+                            updatedUser.setUserToken(value: currentToken)
+                            self.setPersistentUser(currentUser: updatedUser)
+                        }
+                        responseHandler(updatedUser)
                     }
                 }
             })
@@ -274,7 +282,6 @@
         self.currentUser = nil
         userDefaultsHelper.removePersistentUser()
         userDefaultsHelper.removeCurrentUser()
-        
     }
     
     func savePersistentUser(currentUser: BackendlessUser) {
