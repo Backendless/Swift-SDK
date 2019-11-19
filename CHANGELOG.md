@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 5.6.3 / November 20, 2019
+* fixed Units in the BackendlessGeoQuery which was broken for Objective-C in v5.6.2
+
 ### 5.6.2 / November 19, 2019
 * fixed CodingKeys in the BackendlessGeoQuery to work correctly with `sortBy` property
 
