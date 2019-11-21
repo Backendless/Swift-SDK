@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 5.6.4 / November 21, 2019
+* customized encoding/decoding for DataQueryBuilder
+
 ### 5.6.3 / November 20, 2019
 * fixed Units in the BackendlessGeoQuery which was broken for Objective-C in v5.6.2
 

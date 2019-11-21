@@ -32,6 +32,70 @@
     private var groupBy: [String]?
     private var havingClause: String?
     
+    private enum CodingKeys: String, CodingKey {
+        case whereClause
+        case relationsDepth
+        case relationsPageSize
+        case pageSize
+        case offset
+        case properties
+        case sortBy
+        case related
+        case groupBy
+        case havingClause
+    }
+    
+    public override init() { }
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        whereClause = try container.decodeIfPresent(String.self, forKey: .whereClause)
+        
+        if let relationsDepth = try container.decodeIfPresent(Int.self, forKey: .relationsDepth) {
+            self.relationsDepth = relationsDepth
+        } else {
+            self.relationsDepth = 0
+        }
+        
+        if let relationsPageSize = try container.decodeIfPresent(Int.self, forKey: .relationsPageSize) {
+            self.relationsPageSize = relationsPageSize
+        } else {
+            self.relationsPageSize = 10
+        }
+        
+        if let pageSize = try container.decodeIfPresent(Int.self, forKey: .pageSize) {
+            self.pageSize = pageSize
+        } else {
+            self.pageSize = 10
+        }
+        
+        if let offset = try container.decodeIfPresent(Int.self, forKey: .offset) {
+            self.offset = offset
+        } else {
+            self.offset = 0
+        }
+        
+        properties = try container.decodeIfPresent([String].self, forKey: .properties)
+        sortBy = try container.decodeIfPresent([String].self, forKey: .sortBy)
+        related = try container.decodeIfPresent([String].self, forKey: .related)
+        groupBy = try container.decodeIfPresent([String].self, forKey: .groupBy)
+        havingClause = try container.decodeIfPresent(String.self, forKey: .havingClause)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)        
+        try container.encodeIfPresent(whereClause, forKey: .whereClause)
+        try container.encode(relationsDepth, forKey: .relationsDepth)
+        try container.encode(relationsPageSize, forKey: .relationsPageSize)
+        try container.encode(pageSize, forKey: .pageSize)
+        try container.encode(offset, forKey: .offset)
+        try container.encodeIfPresent(properties, forKey: .properties)
+        try container.encodeIfPresent(sortBy, forKey: .sortBy)
+        try container.encodeIfPresent(related, forKey: .related)
+        try container.encodeIfPresent(groupBy, forKey: .groupBy)
+        try container.encodeIfPresent(havingClause, forKey: .havingClause)
+    }
+    
     public func getWhereClause() -> String? {
         return self.whereClause
     }
