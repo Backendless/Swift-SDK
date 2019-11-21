@@ -106,7 +106,6 @@
         relativeFindPercentThreshold = try container.decodeIfPresent(Double.self, forKey: .relativeFindPercentThreshold) ?? 0.0
         degreePerPixel = try container.decodeIfPresent(Double.self, forKey: .degreePerPixel) ?? 0.0
         clusterGridSize = try container.decodeIfPresent(Double.self, forKey: .clusterGridSize) ?? 100.0
-        let rawUnits = try container.decodeIfPresent(Int.self, forKey: .units)
         units = try container.decodeIfPresent(Int.self, forKey: .units)
         sortBy = try container.decodeIfPresent([String].self, forKey: .sortBy)
     }
