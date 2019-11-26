@@ -27,7 +27,7 @@
     
     // ⚠️
     public func fromGeoJSON(_ geoJson: String) -> Geometry? {
-        if geoJson.contains("\"type\":\"Point\"") {
+        if geoJson.contains("\"type\":\"\(GeometryPoint.geoJsonType)\"") {
             return getPoint(geoJson: geoJson)
         }
         return GeometryPoint()
@@ -65,13 +65,7 @@
     func asGeoJSON(geometry: Geometry) -> String? {
         if geometry is GeometryPoint {
             let point = geometry as! GeometryPoint
-            var jsonString = "{\"type\":\"\(GeometryPoint.geoJsonType)\",\"coordinates\":[\(point.x),\(point.y)]"
-            if let srsId = point.srs?.srsId {
-                jsonString += ",\"srsId\":\(srsId)}"
-            }
-            else {
-                jsonString += "}"
-            }
+            let jsonString = "{\"type\":\"\(GeometryPoint.geoJsonType)\",\"coordinates\":[\(point.x),\(point.y)]}"
             return jsonString
         }
         return nil

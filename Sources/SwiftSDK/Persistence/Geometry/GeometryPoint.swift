@@ -31,10 +31,6 @@
     
     public override init() { }
     
-    public init(srs: SpatialReferenceSystemEnum) {
-        self.srs = srs
-    }
-    
     func getSrs() -> SpatialReferenceSystemEnum? {
         return self.srs
     }
