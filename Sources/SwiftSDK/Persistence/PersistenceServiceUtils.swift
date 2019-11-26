@@ -638,7 +638,6 @@ class PersistenceServiceUtils: NSObject {
                             
                             else if let _className = relationDictionary["__class"] as? String {
                                 if _className == "com.backendless.persistence.Point" {
-                                    print("💚")
                                     entity.setValue(geoJsonParser.dictionaryToPoint(relationDictionary), forKey: dictionaryField)
                                 }
                             }
