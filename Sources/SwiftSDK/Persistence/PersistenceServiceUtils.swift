@@ -20,11 +20,11 @@
  */
 
 class PersistenceServiceUtils: NSObject {
-    
     private let processResponse = ProcessResponse.shared
     private let dataTypesUtils = DataTypesUtils.shared
     private let storedObjects = StoredObjects.shared
     private let mappings = Mappings.shared
+    private let geoJsonParser = GeoJSONParser.shared
     
     private var tableName: String = ""
     
@@ -459,9 +459,7 @@ class PersistenceServiceUtils: NSObject {
     }
     
     func entityToDictionary(entity: Any) -> [String: Any] {
-        
         var entityDictionary = [String: Any]()
-        
         if let userEntity = entity as? BackendlessUser {
             let properties = userEntity.getProperties()
             for (key, value) in properties {
@@ -607,7 +605,6 @@ class PersistenceServiceUtils: NSObject {
                             }
                             entity.setValue(result, forKey: mappedPropertyName)
                         }
-                            
                         else if let dictionaryValue = dictionary[dictionaryField] as? [String : Any],
                             var _className = dictionaryValue["___class"] as? String {
                             if Array(classMappings.keys).contains(_className) {
@@ -623,18 +620,29 @@ class PersistenceServiceUtils: NSObject {
                     }
                     else if Array(entityFields.keys).contains(dictionaryField) {
                         if let relationDictionary = dictionary[dictionaryField] as? [String: Any] {
-                            let relationClassName = getClassName(className: relationDictionary["___class"] as! String)//
-                            if relationDictionary["___class"] as? String == "Users",
-                                let userObject = processResponse.adaptToBackendlessUser(responseResult: relationDictionary) {
-                                entity.setValue(userObject as! BackendlessUser, forKey: dictionaryField)
+                            
+                            if let _className = relationDictionary["___class"] as? String {
+                                let relationClassName = getClassName(className: _className)
+                                if relationDictionary["___class"] as? String == "Users",
+                                    let userObject = processResponse.adaptToBackendlessUser(responseResult: relationDictionary) {
+                                    entity.setValue(userObject as! BackendlessUser, forKey: dictionaryField)
+                                }
+                                else if relationDictionary["___class"] as? String == "GeoPoint",
+                                    let geoPointObject = processResponse.adaptToGeoPoint(geoDictionary: relationDictionary) {
+                                    entity.setValue(geoPointObject, forKey: dictionaryField)
+                                }
+                                else if let relationObject = dictionaryToEntity(dictionary: relationDictionary, className: relationClassName) {
+                                    entity.setValue(relationObject, forKey: dictionaryField)
+                                }
                             }
-                            else if relationDictionary["___class"] as? String == "GeoPoint",
-                                let geoPointObject = processResponse.adaptToGeoPoint(geoDictionary: relationDictionary) {
-                                entity.setValue(geoPointObject, forKey: dictionaryField)
+                            
+                            else if let _className = relationDictionary["__class"] as? String {
+                                if _className == "com.backendless.persistence.Point" {
+                                    print("💚")
+                                    entity.setValue(geoJsonParser.dictionaryToPoint(relationDictionary), forKey: dictionaryField)
+                                }
                             }
-                            else if let relationObject = dictionaryToEntity(dictionary: relationDictionary, className: relationClassName) {
-                                entity.setValue(relationObject, forKey: dictionaryField)
-                            }
+                            
                         }
                         else if let relationArrayOfDictionaries = dictionary[dictionaryField] as? [[String: Any]] {
                             var relationsArray = [Any]()

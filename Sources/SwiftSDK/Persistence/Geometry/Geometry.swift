@@ -1,5 +1,5 @@
 //
-//  ExecutionType.swift
+//  Geometry.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,25 +19,14 @@
  *  ********************************************************************************************************************
  */
 
-@objc public enum ExecutionType: Int {
-    case sync
-    case async
-    case asyncLowPriority
-}
-
-class ExecutionTypeMethods: NSObject {
+public protocol Geometry {
     
-    static let shared = ExecutionTypeMethods()
+    var srs: SpatialReferenceSystemEnum? { get set }
     
-    private override init() { }
-    
-    func getExecutionTypeValue(executionType: Int) -> String {
-        if executionType == 0 {
-            return "sync"
-        }
-        else if executionType == 1 {
-            return "async"
-        }
-        return "async-low-priority"
-    }
+    func getGeojsonType() -> String
+    func getWktType() -> String
+    func jsonCoordinatePairs() -> String
+    func wktCoordinatePairs() -> String
+    func asGeoJSON() -> String?
+    func asWKT() -> String?
 }

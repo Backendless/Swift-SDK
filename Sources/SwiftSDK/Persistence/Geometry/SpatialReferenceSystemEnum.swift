@@ -1,5 +1,5 @@
 //
-//  ExecutionType.swift
+//  SpatialReferenceSystemEnum.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,25 +19,46 @@
  *  ********************************************************************************************************************
  */
 
-@objc public enum ExecutionType: Int {
-    case sync
-    case async
-    case asyncLowPriority
-}
-
-class ExecutionTypeMethods: NSObject {
+@objc public enum SpatialReferenceSystemEnum: Int {
     
-    static let shared = ExecutionTypeMethods()
+    case cartesian
+    case pulkovo1995
+    case wgs84
+    case wgs84PseudoMercator
+    case wgs84WorldMercator
+    case unknown
     
-    private override init() { }
-    
-    func getExecutionTypeValue(executionType: Int) -> String {
-        if executionType == 0 {
-            return "sync"
+    public var name: String? {
+        switch self {
+        case .cartesian:
+            return "Cartesian"
+        case .pulkovo1995:
+            return "Pulkovo 1995"
+        case .wgs84:
+            return "WGS84"
+        case .wgs84PseudoMercator:
+            return "WGS 84 / Pseudo-Mercator"
+        case .wgs84WorldMercator:
+            return "WGS 84 / World Mercator"
+        case .unknown:
+            return nil
         }
-        else if executionType == 1 {
-            return "async"
+    }
+    
+    public var srsId: Int? {
+        switch self {
+        case .cartesian:
+            return 0
+        case .pulkovo1995:
+            return 4200
+        case .wgs84:
+            return 4326
+        case .wgs84PseudoMercator:
+            return 3857
+        case .wgs84WorldMercator:
+            return 3395
+        case .unknown:
+            return nil
         }
-        return "async-low-priority"
     }
 }

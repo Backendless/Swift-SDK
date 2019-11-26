@@ -1,5 +1,5 @@
 //
-//  ExecutionType.swift
+//  WKTParser.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,25 +19,43 @@
  *  ********************************************************************************************************************
  */
 
-@objc public enum ExecutionType: Int {
-    case sync
-    case async
-    case asyncLowPriority
-}
-
-class ExecutionTypeMethods: NSObject {
+@objcMembers public class WKTParser: NSObject {
     
-    static let shared = ExecutionTypeMethods()
+    static let shared = WKTParser()
     
     private override init() { }
     
-    func getExecutionTypeValue(executionType: Int) -> String {
-        if executionType == 0 {
-            return "sync"
+    // ⚠️
+    public func fromWKT(_ wkt: String) -> Geometry? {
+        if wkt.contains(GeometryPoint.wktType) {
+            return getPoint(wkt: wkt)
         }
-        else if executionType == 1 {
-            return "async"
+        return nil
+    }
+    
+    private func getPoint(wkt: String) -> GeometryPoint? {
+        let scanner = Scanner(string: wkt)
+        scanner.caseSensitive = false
+        if scanner.scanString(GeometryPoint.wktType, into: nil) && scanner.scanString("(", into: nil) {
+            var x: Double = 0
+            var y: Double = 0
+            
+            scanner.scanDouble(&x)
+            scanner.scanDouble(&y)
+            
+            let point = GeometryPoint()
+            point.x = x
+            point.y = y
+            return point
         }
-        return "async-low-priority"
+        return nil
+    }
+    
+    func asWKT(geometry: Geometry) -> String? {
+        if geometry is GeometryPoint {
+            let point = geometry as! GeometryPoint
+            return "\(GeometryPoint.wktType) (\(point.x) \(point.y))"
+        }
+        return nil
     }
 }
