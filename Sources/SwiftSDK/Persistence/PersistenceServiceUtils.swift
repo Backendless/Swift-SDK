@@ -509,6 +509,9 @@ class PersistenceServiceUtils: NSObject {
                             else if let dateValue = value as? Date {
                                 resultValue = dataTypesUtils.dateToInt(date: dateValue)
                             }
+                            else if let backendlessFileValue = value as? BackendlessFile {
+                                resultValue = backendlessFileValue.fileUrl ?? ""
+                            }
                             else {
                                 resultValue = entityToDictionaryWithClassProperty(entity: value)
                             }
@@ -621,9 +624,11 @@ class PersistenceServiceUtils: NSObject {
                             entity.setValue(dictionary[dictionaryField], forKey: mappedPropertyName)
                         }
                     }
+                        
+                    // no mappings
                     else if Array(entityFields.keys).contains(dictionaryField) {
                         if let relationDictionary = dictionary[dictionaryField] as? [String: Any] {
-                            let relationClassName = getClassName(className: relationDictionary["___class"] as! String)//
+                            let relationClassName = getClassName(className: relationDictionary["___class"] as! String)
                             if relationDictionary["___class"] as? String == "Users",
                                 let userObject = processResponse.adaptToBackendlessUser(responseResult: relationDictionary) {
                                 entity.setValue(userObject as! BackendlessUser, forKey: dictionaryField)
@@ -663,10 +668,15 @@ class PersistenceServiceUtils: NSObject {
                             }
                         }
                         else if let value = dictionary[dictionaryField] {
-                            if let valueType = entityFields[dictionaryField],
-                                valueType.contains("NSDate"),
-                                value is Int {
-                                entity.setValue(dataTypesUtils.intToDate(intVal: value as! Int), forKey: dictionaryField)
+                            if let valueType = entityFields[dictionaryField] {
+                                if valueType.contains("NSDate"), value is Int {
+                                    entity.setValue(dataTypesUtils.intToDate(intVal: value as! Int), forKey: dictionaryField)
+                                }
+                                else if valueType.contains("BackendlessFile"), value is String {
+                                    let backendlessFile = BackendlessFile()
+                                    backendlessFile.fileUrl = value as? String
+                                    entity.setValue(backendlessFile, forKey: dictionaryField)
+                                }
                             }
                             else {
                                 entity.setValue(value, forKey: dictionaryField)
