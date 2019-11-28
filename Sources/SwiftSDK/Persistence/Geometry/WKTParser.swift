@@ -26,24 +26,24 @@
     private override init() { }
     
     // ⚠️
-    public func fromWKT(_ wkt: String) -> Geometry? {
-        if wkt.contains(GeometryPoint.wktType) {
+    public func fromWKT(_ wkt: String) -> BLGeometry? {
+        if wkt.contains(BLPoint.wktType) {
             return getPoint(wkt: wkt)
         }
         return nil
     }
     
-    private func getPoint(wkt: String) -> GeometryPoint? {
+    private func getPoint(wkt: String) -> BLPoint? {
         let scanner = Scanner(string: wkt)
         scanner.caseSensitive = false
-        if scanner.scanString(GeometryPoint.wktType, into: nil) && scanner.scanString("(", into: nil) {
+        if scanner.scanString(BLPoint.wktType, into: nil) && scanner.scanString("(", into: nil) {
             var x: Double = 0
             var y: Double = 0
             
             scanner.scanDouble(&x)
             scanner.scanDouble(&y)
             
-            let point = GeometryPoint()
+            let point = BLPoint()
             point.x = x
             point.y = y
             return point
@@ -51,10 +51,10 @@
         return nil
     }
     
-    func asWKT(geometry: Geometry) -> String? {
-        if geometry is GeometryPoint {
-            let point = geometry as! GeometryPoint
-            return "\(GeometryPoint.wktType) (\(point.x) \(point.y))"
+    func asWKT(geometry: BLGeometry) -> String? {
+        if geometry is BLPoint {
+            let point = geometry as! BLPoint
+            return "\(BLPoint.wktType) (\(point.x) \(point.y))"
         }
         return nil
     }

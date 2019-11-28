@@ -37,8 +37,11 @@ class JSONUtils: NSObject {
             }
             else if let dictionaryToParse = objectToParse as? [String : Any] {
                 var resultDictionary = [String : Any]()
-                for (key, value) in dictionaryToParse {                    
-                    if !(value is String), !(value is NSNumber), !(value is NSNull) {
+                for (key, value) in dictionaryToParse {
+                    if (value is BLGeometry) {
+                        resultDictionary[key] = (value as! BLGeometry).asGeoJSON()
+                    }
+                    else if !(value is String), !(value is NSNumber), !(value is NSNull) {
                         resultDictionary[key] = objectToJSON(objectToParse: value)
                     }
                     else {
@@ -71,8 +74,13 @@ class JSONUtils: NSObject {
                 var resultDictionary = [String : Any]()
                 if let tableName = dictionaryToParse["___class"] as? String {
                     let persistenceServiceUtils = PersistenceServiceUtils()
-                    persistenceServiceUtils.setup(tableName: tableName)
-                    resultObject = persistenceServiceUtils.dictionaryToEntity(dictionary: dictionaryToParse, className: tableName)!
+                    if tableName == BLPoint.className {
+                        resultObject = persistenceServiceUtils.convertToGeometryType(dictionary: dictionaryToParse)
+                    }
+                    else {
+                        persistenceServiceUtils.setup(tableName: tableName)
+                        resultObject = persistenceServiceUtils.dictionaryToEntity(dictionary: dictionaryToParse, className: tableName)!
+                    }
                 }
                 else {
                     for (key, value) in dictionaryToParse {

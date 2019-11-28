@@ -1,5 +1,5 @@
 //
-//  GeometryPoint.swift
+//  BLPoint.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers public class GeometryPoint: NSObject, Geometry {
+@objcMembers public class BLPoint: NSObject, BLGeometry {
     
     public static let geoJsonType = "Point"
     public static let wktType = geoJsonType.uppercased()
@@ -28,6 +28,8 @@
     
     public var x: Double = 0
     public var y: Double = 0
+    
+    static let className = "com.backendless.persistence.Point"
     
     public override init() { }
     
@@ -52,11 +54,11 @@
     }
     
     public func getGeojsonType() -> String {
-        return GeometryPoint.geoJsonType
+        return BLPoint.geoJsonType
     }
     
     public func getWktType() -> String {
-        return GeometryPoint.wktType
+        return BLPoint.wktType
     }
     
     public func jsonCoordinatePairs() -> String {

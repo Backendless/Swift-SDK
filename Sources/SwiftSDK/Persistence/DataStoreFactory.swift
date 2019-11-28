@@ -219,9 +219,14 @@
                     let deviceRegistrationObject = self.processResponse.adaptToDeviceRegistration(responseResult: responseObject)
                     resultArray.append(deviceRegistrationObject)
                 }
-                else if let relationType = queryBuilder.getRelationType(),
-                    let resultObject = self.persistenceServiceUtils.dictionaryToEntity(dictionary: responseObject, className: self.persistenceServiceUtils.getClassName(entity: relationType)) {
-                    resultArray.append(resultObject)
+                // addGeo
+                else if let relationType = queryBuilder.getRelationType() {
+                    let relationPersistenceServiceUtils = PersistenceServiceUtils()
+                    let tableName = self.persistenceServiceUtils.getClassName(entity: relationType)
+                    relationPersistenceServiceUtils.setup(tableName: tableName)
+                    if let resultObject = relationPersistenceServiceUtils.dictionaryToEntity(dictionary: responseObject, className: tableName) {
+                        resultArray.append(resultObject)
+                    }
                 }
             }
             responseHandler(resultArray)

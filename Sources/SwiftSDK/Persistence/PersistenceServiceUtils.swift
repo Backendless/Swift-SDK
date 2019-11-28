@@ -20,6 +20,7 @@
  */
 
 class PersistenceServiceUtils: NSObject {
+    
     private let processResponse = ProcessResponse.shared
     private let dataTypesUtils = DataTypesUtils.shared
     private let storedObjects = StoredObjects.shared
@@ -54,14 +55,15 @@ class PersistenceServiceUtils: NSObject {
     
     func create(entity: [String : Any], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
-        let parameters = entity
+        let parameters = convertFromGeometryType(dictionary: entity)
         BackendlessRequestManager(restMethod: "data/\(tableName)", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: JSON.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
-                else {
-                    responseHandler((result as! JSON).dictionaryObject!)
+                else if var resultDictionary = (result as! JSON).dictionaryObject {
+                    resultDictionary = self.convertToGeometryType(dictionary: resultDictionary)
+                    responseHandler(resultDictionary)
                 }
             }
         })
@@ -69,7 +71,10 @@ class PersistenceServiceUtils: NSObject {
     
     func createBulk(entities: [[String: Any]], responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
-        let parameters = entities
+        var parameters = [[String: Any]]()
+        for entity in entities {
+            parameters.append(convertFromGeometryType(dictionary: entity))
+        }
         BackendlessRequestManager(restMethod: "data/bulk/\(tableName)", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: [String].self) {
                 if result is Fault {
@@ -84,7 +89,7 @@ class PersistenceServiceUtils: NSObject {
     
     func update(entity: [String : Any], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
-        let parameters = entity
+        let parameters = convertFromGeometryType(dictionary: entity)
         if let objectId = entity["objectId"] as? String {
             BackendlessRequestManager(restMethod: "data/\(tableName)/\(objectId)", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
                 if let result = self.processResponse.adapt(response: response, to: JSON.self) {
@@ -100,7 +105,10 @@ class PersistenceServiceUtils: NSObject {
                             updatedUser.setUserToken(value: currentToken)
                             Backendless.shared.userService.setPersistentUser(currentUser: updatedUser)
                         }
-                        responseHandler((result as! JSON).dictionaryObject!)
+                        else if var resultDictionary = (result as! JSON).dictionaryObject {
+                            resultDictionary = self.convertToGeometryType(dictionary: resultDictionary)
+                            responseHandler(resultDictionary)
+                        }
                     }
                 }
             })
@@ -109,7 +117,7 @@ class PersistenceServiceUtils: NSObject {
     
     func updateBulk(whereClause: String?, changes: [String : Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
-        let parameters = changes
+        let parameters = convertFromGeometryType(dictionary: changes)
         var restMethod = "data/bulk/\(tableName)"
         if whereClause != nil, whereClause?.count ?? 0 > 0 {
             restMethod += "?where=\(whereClause!)"
@@ -216,7 +224,8 @@ class PersistenceServiceUtils: NSObject {
                 else {
                     var resultArray = [[String: Any]]()
                     for resultObject in result as! [JSON] {
-                        if let resultDictionary = resultObject.dictionaryObject {
+                        if var resultDictionary = resultObject.dictionaryObject {
+                            resultDictionary = self.convertToGeometryType(dictionary: resultDictionary)
                             resultArray.append(resultDictionary)
                         }
                     }
@@ -274,8 +283,9 @@ class PersistenceServiceUtils: NSObject {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
-                else {
-                    responseHandler((result as! JSON).dictionaryObject!)
+                else if var resultDictionary = (result as! JSON).dictionaryObject {
+                    resultDictionary = self.convertToGeometryType(dictionary: resultDictionary)
+                    responseHandler(resultDictionary)
                 }
             }
         })
@@ -376,7 +386,8 @@ class PersistenceServiceUtils: NSObject {
                     else {
                         var resultArray = [[String: Any]]()
                         for resultObject in result as! [JSON] {
-                            if let resultDictionary = resultObject.dictionaryObject {
+                            if var resultDictionary = resultObject.dictionaryObject {
+                                resultDictionary = self.convertToGeometryType(dictionary: resultDictionary)
                                 resultArray.append(resultDictionary)
                             }
                         }
@@ -479,7 +490,7 @@ class PersistenceServiceUtils: NSObject {
                         
                         var resultValue = value
                         
-                        if !(value is String), !(value is NSNumber), !(value is NSNull) {
+                        if !(value is String), !(value is NSNumber), !(value is NSNull), !(value is BLGeometry) {
                             if let arrayValue = value as? [Any] {
                                 var resultArray = [Any]()
                                 for arrayVal in arrayValue {
@@ -539,7 +550,7 @@ class PersistenceServiceUtils: NSObject {
     }
     
     func dictionaryToEntity(dictionary: [String: Any], className: String) -> Any? {
-        if tableName == "Users" || className == "Users",
+        if tableName == "Users" || className == "Users", tableName == className,
             let backendlessUser = processResponse.adaptToBackendlessUser(responseResult: dictionary) as? BackendlessUser {
             if let userId = backendlessUser.objectId {
                 storedObjects.rememberObjectId(objectId: userId, forObject: backendlessUser)
@@ -585,6 +596,7 @@ class PersistenceServiceUtils: NSObject {
             for dictionaryField in dictionary.keys {
                 if !(dictionary[dictionaryField] is NSNull) {
                     if columnToPropertyMappings.keys.contains(dictionaryField) {
+                                                
                         let mappedPropertyName = columnToPropertyMappings[dictionaryField]!
                         
                         if let arrayValue = dictionary[dictionaryField] as? [Any] {
@@ -610,7 +622,10 @@ class PersistenceServiceUtils: NSObject {
                             if Array(classMappings.keys).contains(_className) {
                                 _className = classMappings[_className]!
                             }
-                            if let value = dictionaryToEntity(dictionary: dictionaryValue, className: _className) {
+                            if _className == BLPoint.className, let pointDict = dictionary[dictionaryField] as? [String : Any] {
+                                entity.setValue(geoJsonParser.dictionaryToPoint(pointDict), forKey: mappedPropertyName)
+                            }
+                            else if let value = dictionaryToEntity(dictionary: dictionaryValue, className: _className) {
                                 entity.setValue(value, forKey: mappedPropertyName)
                             }
                         }
@@ -620,7 +635,6 @@ class PersistenceServiceUtils: NSObject {
                     }
                     else if Array(entityFields.keys).contains(dictionaryField) {
                         if let relationDictionary = dictionary[dictionaryField] as? [String: Any] {
-                            
                             if let _className = relationDictionary["___class"] as? String {
                                 let relationClassName = getClassName(className: _className)
                                 if relationDictionary["___class"] as? String == "Users",
@@ -631,17 +645,17 @@ class PersistenceServiceUtils: NSObject {
                                     let geoPointObject = processResponse.adaptToGeoPoint(geoDictionary: relationDictionary) {
                                     entity.setValue(geoPointObject, forKey: dictionaryField)
                                 }
+                                else if relationDictionary["___class"] as? String == "DeviceRegistration" {
+                                    let deviceRegistrationObject = processResponse.adaptToDeviceRegistration(responseResult: relationDictionary)
+                                    entity.setValue(deviceRegistrationObject, forKey: dictionaryField)
+                                }
+                                else if relationDictionary["___class"] as? String == BLPoint.className {
+                                    entity.setValue(geoJsonParser.dictionaryToPoint(relationDictionary), forKey: dictionaryField)
+                                }
                                 else if let relationObject = dictionaryToEntity(dictionary: relationDictionary, className: relationClassName) {
                                     entity.setValue(relationObject, forKey: dictionaryField)
                                 }
                             }
-                            
-                            else if let _className = relationDictionary["__class"] as? String {
-                                if _className == "com.backendless.persistence.Point" {
-                                    entity.setValue(geoJsonParser.dictionaryToPoint(relationDictionary), forKey: dictionaryField)
-                                }
-                            }
-                            
                         }
                         else if let relationArrayOfDictionaries = dictionary[dictionaryField] as? [[String: Any]] {
                             var relationsArray = [Any]()
@@ -651,9 +665,13 @@ class PersistenceServiceUtils: NSObject {
                                     let userObject = processResponse.adaptToBackendlessUser(responseResult: relationDictionary) {
                                     relationsArray.append(userObject as! BackendlessUser)
                                 }
-                                if relationDictionary["___class"] as? String == "GeoPoint",
+                                else if relationDictionary["___class"] as? String == "GeoPoint",
                                     let geoPointObject = processResponse.adaptToGeoPoint(geoDictionary: relationDictionary) {
                                     relationsArray.append(geoPointObject)
+                                }
+                                else if relationDictionary["___class"] as? String == "DeviceRegistration" {
+                                    let deviceRegistrationObject = processResponse.adaptToDeviceRegistration(responseResult: relationDictionary)
+                                    relationsArray.append(deviceRegistrationObject)
                                 }
                                 else if let relationObject = dictionaryToEntity(dictionary: relationDictionary, className: relationClassName) {
                                     relationsArray.append(relationObject)
@@ -691,5 +709,27 @@ class PersistenceServiceUtils: NSObject {
             return objectId
         }
         return nil
+    }
+    
+    func convertToGeometryType(dictionary: [String : Any]) -> [String : Any] {
+        var resultDictionary = dictionary
+        for (key, value) in dictionary {
+            if let dictValue = value as? [String : Any] {
+                if dictValue["___class"] as? String == BLPoint.className {
+                    resultDictionary[key] = geoJsonParser.dictionaryToPoint(dictValue)
+                }
+            }
+        }
+        return resultDictionary
+    }
+    
+    private func convertFromGeometryType(dictionary: [String : Any]) -> [String : Any] {
+        var resultDictionary = dictionary
+        for (key, value) in dictionary {            
+            if let blPoint = value as? BLPoint {
+                resultDictionary[key] = blPoint.asGeoJSON()
+            }
+        }
+        return resultDictionary
     }
 }
