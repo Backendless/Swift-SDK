@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 5.6.5 / November ?, 2019
+* fixed LoadRelationsQueryBuilder issue with Users table
+
 ### 5.6.4 / November 21, 2019
 * customized encoding/decoding for DataQueryBuilder
 

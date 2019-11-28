@@ -548,16 +548,16 @@ class PersistenceServiceUtils: NSObject {
             }
             return backendlessUser
         }
+        else if tableName == "GeoPoint" || className == "GeoPoint",
+            let geoPoint = self.processResponse.adaptToGeoPoint(geoDictionary: dictionary) {
+            return geoPoint
+        }
         else if tableName == "DeviceRegistration" || className == "DeviceRegistration" {
             let deviceRegistration = processResponse.adaptToDeviceRegistration(responseResult: dictionary)
             if let objectId = deviceRegistration.objectId {
                 storedObjects.rememberObjectId(objectId: objectId, forObject: deviceRegistration)
                 return deviceRegistration
             }
-        }
-        else if tableName == "GeoPoint" || className == "GeoPoint",
-            let geoPoint = self.processResponse.adaptToGeoPoint(geoDictionary: dictionary) {
-            return geoPoint
         }
         var resultEntityTypeName = className
         let classMappings = mappings.getTableToClassMappings()
@@ -632,6 +632,10 @@ class PersistenceServiceUtils: NSObject {
                                 let geoPointObject = processResponse.adaptToGeoPoint(geoDictionary: relationDictionary) {
                                 entity.setValue(geoPointObject, forKey: dictionaryField)
                             }
+                            else if relationDictionary["___class"] as? String == "DeviceRegistration" {
+                                let deviceRegistrationObject = processResponse.adaptToDeviceRegistration(responseResult: relationDictionary)
+                                entity.setValue(deviceRegistrationObject, forKey: dictionaryField)
+                            }
                             else if let relationObject = dictionaryToEntity(dictionary: relationDictionary, className: relationClassName) {
                                 entity.setValue(relationObject, forKey: dictionaryField)
                             }
@@ -647,6 +651,10 @@ class PersistenceServiceUtils: NSObject {
                                 if relationDictionary["___class"] as? String == "GeoPoint",
                                     let geoPointObject = processResponse.adaptToGeoPoint(geoDictionary: relationDictionary) {
                                     relationsArray.append(geoPointObject)
+                                }
+                                if relationDictionary["___class"] as? String == "DeviceRegistration" {
+                                    let deviceRegistrationObject = processResponse.adaptToDeviceRegistration(responseResult: relationDictionary)
+                                    relationsArray.append(deviceRegistrationObject)
                                 }
                                 else if let relationObject = dictionaryToEntity(dictionary: relationDictionary, className: relationClassName) {
                                     relationsArray.append(relationObject)
