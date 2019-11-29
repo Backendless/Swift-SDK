@@ -225,9 +225,10 @@
                 }                    
                 else if let relationType = queryBuilder.getRelationType() {
                     let relationPersistenceServiceUtils = PersistenceServiceUtils()
-                    let tableName = self.persistenceServiceUtils.getClassName(entity: relationType)
+                    let tableName = relationPersistenceServiceUtils.getClassName(entity: relationType)
+                    let className = relationPersistenceServiceUtils.getClassName(className: tableName)
                     relationPersistenceServiceUtils.setup(tableName: tableName)
-                    if let resultObject = relationPersistenceServiceUtils.dictionaryToEntity(dictionary: responseObject, className: tableName) {
+                    if let resultObject = relationPersistenceServiceUtils.dictionaryToEntity(dictionary: responseObject, className: className) {
                         resultArray.append(resultObject)
                     }
                 }

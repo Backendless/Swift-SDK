@@ -403,7 +403,6 @@ class PersistenceServiceUtils: NSObject {
             return name
         }
         return className
-        //return getClassName(className: String(describing: entity))
     }
     
     func getClassName(className: String) -> String {
@@ -629,6 +628,7 @@ class PersistenceServiceUtils: NSObject {
                     else if Array(entityFields.keys).contains(dictionaryField) {
                         if let relationDictionary = dictionary[dictionaryField] as? [String: Any] {
                             let relationClassName = getClassName(className: relationDictionary["___class"] as! String)
+                            
                             if relationDictionary["___class"] as? String == "Users",
                                 let userObject = processResponse.adaptToBackendlessUser(responseResult: relationDictionary) {
                                 entity.setValue(userObject as! BackendlessUser, forKey: dictionaryField)
@@ -677,8 +677,11 @@ class PersistenceServiceUtils: NSObject {
                                     backendlessFile.fileUrl = value as? String
                                     entity.setValue(backendlessFile, forKey: dictionaryField)
                                 }
+                                else {
+                                    entity.setValue(value, forKey: dictionaryField)
+                                }
                             }
-                            else {
+                            else {                                
                                 entity.setValue(value, forKey: dictionaryField)
                             }
                         }
