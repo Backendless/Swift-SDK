@@ -1,5 +1,9 @@
 # RELEASE HISTORY
 
+### 5.6.5 / November 29, 2019
+* fixed LoadRelationsQueryBuilder issue with Users table
+* fixed problems with saving/getting objects with File Reference property
+
 ### 5.6.4 / November 21, 2019
 * customized encoding/decoding for DataQueryBuilder
 
