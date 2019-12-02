@@ -33,6 +33,7 @@
 		5E11113C21B542BA0044CAED /* UserServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E11113B21B542BA0044CAED /* UserServiceTests.swift */; };
 		5E13C3A622046F7C00EA3050 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E13C3A522046F7C00EA3050 /* JSON.swift */; };
 		5E15A06C223B9C9D0090F5A3 /* RTMessagingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E15A06B223B9C9D0090F5A3 /* RTMessagingTests.swift */; };
+		5E17A1AA23954E0400B078B5 /* BLLineString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E17A1A923954E0400B078B5 /* BLLineString.swift */; };
 		5E1CC2F72252534F0011D5C8 /* FileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1CC2F62252534F0011D5C8 /* FileService.swift */; };
 		5E1CC2F9225254140011D5C8 /* BackendlessFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1CC2F8225254140011D5C8 /* BackendlessFile.swift */; };
 		5E22155522B8D74F00491250 /* SearchMatchesResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E22155422B8D74F00491250 /* SearchMatchesResult.swift */; };
@@ -172,6 +173,7 @@
 		5E11113B21B542BA0044CAED /* UserServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserServiceTests.swift; sourceTree = "<group>"; };
 		5E13C3A522046F7C00EA3050 /* JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
 		5E15A06B223B9C9D0090F5A3 /* RTMessagingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTMessagingTests.swift; sourceTree = "<group>"; };
+		5E17A1A923954E0400B078B5 /* BLLineString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLLineString.swift; sourceTree = "<group>"; };
 		5E1CC2F62252534F0011D5C8 /* FileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileService.swift; sourceTree = "<group>"; };
 		5E1CC2F8225254140011D5C8 /* BackendlessFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessFile.swift; sourceTree = "<group>"; };
 		5E22155422B8D74F00491250 /* SearchMatchesResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMatchesResult.swift; sourceTree = "<group>"; };
@@ -629,6 +631,7 @@
 				5E9DFC0D2387FABF0019E750 /* SpatialReferenceSystemEnum.swift */,
 				5ECAB230238C41A60051F315 /* BLGeometry.swift */,
 				5ECAB22E238C417C0051F315 /* BLPoint.swift */,
+				5E17A1A923954E0400B078B5 /* BLLineString.swift */,
 				5ECAB232238C42060051F315 /* GeoJSONParser.swift */,
 				5ECAB234238C42360051F315 /* WKTParser.swift */,
 			);
@@ -980,6 +983,7 @@
 				5E922249225B8CCF0001688F /* GeoQueryRectangle.swift in Sources */,
 				5E642B9E227206DC00E091C4 /* Events.swift in Sources */,
 				5AC54CA621E7373400EC1F8C /* PersistenceServiceUtils.swift in Sources */,
+				5E17A1AA23954E0400B078B5 /* BLLineString.swift in Sources */,
 				5E64F0BF21C50D8E00590B04 /* BackendlessRequestManager.swift in Sources */,
 				5A2A785321E61D1700EC8007 /* DataStoreFactory.swift in Sources */,
 				5E90721121B66E9E00619C0D /* Fault.swift in Sources */,

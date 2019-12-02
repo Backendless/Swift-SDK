@@ -21,7 +21,7 @@
 
 @objcMembers public class WKTParser: NSObject {
     
-    static let shared = WKTParser()
+    public static let shared = WKTParser()
     
     private override init() { }
     
@@ -29,6 +29,9 @@
     public func fromWKT(_ wkt: String) -> BLGeometry? {
         if wkt.contains(BLPoint.wktType) {
             return getPoint(wkt: wkt)
+        }
+        else if wkt.contains(BLLineString.wktType) {
+            return getLineString(wkt: wkt)
         }
         return nil
     }
@@ -50,11 +53,45 @@
         }
         return nil
     }
+
+    private func getLineString(wkt: String) -> BLLineString? {
+        let scanner = Scanner(string: wkt)
+        scanner.caseSensitive = false
+        if scanner.scanString(BLLineString.wktType, into: nil) && scanner.scanString("(", into: nil) {
+            var coordinatesString: NSString?
+            scanner.scanUpTo(")", into: &coordinatesString)
+            let lineString = BLLineString()
+            if let pointsCoordinatesString = coordinatesString?.components(separatedBy: ", ") {
+                for pointCoordinatesString in pointsCoordinatesString {
+                    let pointsCoordinates = pointCoordinatesString.components(separatedBy: " ")
+                    if let xString = pointsCoordinates.first, let x = Double(xString),
+                        let yString = pointsCoordinates.last, let y = Double(yString) {
+                        let point = BLPoint()
+                        point.x = x
+                        point.y = y
+                        lineString.points.append(point)
+                    }
+                }
+            }
+            return lineString
+        }
+        return nil
+    }
     
     func asWKT(geometry: BLGeometry) -> String? {
         if geometry is BLPoint {
             let point = geometry as! BLPoint
             return "\(BLPoint.wktType) (\(point.x) \(point.y))"
+        }
+        else if geometry is BLLineString {
+            let lineString = geometry as! BLLineString
+            var wktString = "\(BLLineString.wktType) ("
+            for point in lineString.points {
+                wktString += "\(point.x) \(point.y), "
+            }
+            wktString.removeLast()
+            wktString += ")"
+            return wktString
         }
         return nil
     }
