@@ -1,5 +1,5 @@
 //
-//  BLLineString.swift
+//  BLPolygon.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,32 +19,45 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers public class BLLineString: NSObject, BLGeometry {
+@objcMembers public class BLPolygon: NSObject, BLGeometry {
     
-    public static let geoJsonType = "LineString"
+    public static let geoJsonType = "Polygon"
     public static let wktType = geoJsonType.uppercased()
     
-    public let geoJsonType = BLLineString.geoJsonType
-    public let wktType = BLLineString.wktType
+    public let geoJsonType = BLPolygon.geoJsonType
+    public let wktType = BLPolygon.wktType
     
     public var srs: SpatialReferenceSystemEnum?
-    public var points = [BLPoint]()
+    public var boundary: BLLineString?
+    public var holes: BLLineString?
     
-    static let className = "com.backendless.persistence.LineString"
+    static let className = "com.backendless.persistence.Polygon"
     
     public override init() { }
     
-    public init(points: [BLPoint]) {
-        self.points = points
+    public init(boundary: BLLineString, holes: BLLineString?) {
+        self.boundary = boundary
+        self.holes = holes
     }
-
+    
     public func jsonCoordinatePairs() -> String? {
-        if points.count > 0 {
-            var coordString = "["
-            for point in points {
+        if let boundary = boundary, boundary.points.count > 0 {
+            var coordString = "[["
+            
+            for point in boundary.points {
                 coordString += "[\(point.x), \(point.y)], "
             }
             coordString.removeLast(2)
+            coordString += "]"
+            
+            if let holes = holes, holes.points.count > 0 {
+                coordString += ", ["
+                for point in holes.points {
+                    coordString += "[\(point.x), \(point.y)], "
+                }
+                coordString.removeLast(2)
+                coordString += "]"
+            }
             coordString += "]"
             return coordString
         }
@@ -52,15 +65,25 @@
     }
     
     public func wktCoordinatePairs() -> String? {
-        if points.count > 0 {
-            var coordString = "("
-            for point in points {
-                let x = point.x
-                let y = point.y
-                coordString += "\(x) \(y), "
+        if let boundary = boundary, boundary.points.count > 0 {
+            var coordString = "(("
+            
+            for point in boundary.points {
+                coordString += "\(point.x) \(point.y), "
             }
             coordString.removeLast(2)
             coordString += ")"
+            
+            if let holes = holes, holes.points.count > 0 {
+                coordString += ", ("
+                for point in holes.points {
+                    coordString += "\(point.x) \(point.y), "
+                }
+                coordString.removeLast(2)
+                coordString += ")"
+            }
+            coordString += ")"
+            return coordString
         }
         return nil
     }

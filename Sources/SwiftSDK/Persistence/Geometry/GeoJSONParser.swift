@@ -27,13 +27,15 @@
     
     private override init() { }
     
-    // ⚠️
-    public func fromGeoJSON(_ geoJson: String) -> BLGeometry? {
+    public func fromGeoJson(_ geoJson: String) -> BLGeometry? {
         if geoJson.contains("\"type\":\"\(BLPoint.geoJsonType)\"") {
             return getPoint(geoJson: geoJson)
         }
         else if geoJson.contains("\"type\":\"\(BLLineString.geoJsonType)\"") {
             return getLineString(geoJson: geoJson)
+        }
+        else if geoJson.contains("\"type\":\"\(BLPolygon.geoJsonType)\"") {
+            return getPolygon(geoJson: geoJson)
         }
         return nil
     }
@@ -50,7 +52,7 @@
     }
     
     func dictionaryToPoint(_ pointDict: [String : Any]) -> BLPoint? {
-        if let type = pointDict["type"] as? String, type == "Point" {
+        if let type = pointDict["type"] as? String, type == BLPoint.geoJsonType {
             let point = BLPoint()
             guard let coordinates = pointDict["coordinates"] as? [Double] else {
                 return nil
@@ -79,17 +81,14 @@
     }
     
     func dictionaryToLineString(_ lineStringDict: [String : Any]) -> BLLineString? {
-        if let type = lineStringDict["type"] as? String, type == "LineString" {
+        if let type = lineStringDict["type"] as? String, type == BLLineString.geoJsonType {
             let lineString = BLLineString()
             guard let coordinates = lineStringDict["coordinates"] as? [[Double]] else {
                 return nil
             }
             for pointCoordinates in coordinates {
                 if let x = pointCoordinates.first, let y = pointCoordinates.last {
-                    let point = BLPoint()
-                    point.x = x
-                    point.y = y
-                    lineString.points.append(point)
+                    lineString.points.append(BLPoint(x: x, y: y))
                 }
             }
             if let srsId = lineStringDict["srsId"] as? Int {
@@ -100,7 +99,52 @@
         return nil
     }
     
-    func asGeoJSON(geometry: BLGeometry) -> String? {
+    private func getPolygon(geoJson: String) -> BLPolygon? {
+        var polygonDict: [String : Any]?
+        if let data = geoJson.data(using: .utf8) {
+            polygonDict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+        }
+        if let polygonDict = polygonDict {
+            return dictionaryToPolygon(polygonDict)
+        }
+        return nil
+    }
+    
+    func dictionaryToPolygon(_ polygonDict: [String : Any]) -> BLPolygon? {
+        if let type = polygonDict["type"] as? String, type == BLPolygon.geoJsonType {
+            let polygon = BLPolygon()
+            guard let coordinates = polygonDict["coordinates"] as? [[[Double]]] else {
+                return nil
+            }
+            
+            if let boundaryCoordinates = coordinates.first {
+                var lineStringCoordinates = [BLPoint]()
+                for pointCoordinates in boundaryCoordinates {
+                    if let x = pointCoordinates.first, let y = pointCoordinates.last {
+                        lineStringCoordinates.append(BLPoint(x: x, y: y))
+                    }
+                }
+                polygon.boundary = BLLineString(points: lineStringCoordinates)
+            }
+            if coordinates.count == 2 {
+                let holesCoordinates = coordinates[1]
+                var lineStringCoordinates = [BLPoint]()
+                for pointCoordinates in holesCoordinates {
+                    if let x = pointCoordinates.first, let y = pointCoordinates.last {
+                        lineStringCoordinates.append(BLPoint(x: x, y: y))
+                    }
+                }
+                polygon.holes = BLLineString(points: lineStringCoordinates)
+            }
+            if let srsId = polygonDict["srsId"] as? Int {
+                polygon.srs = SpatialReferenceSystemEnum(rawValue: srsId)
+            }
+            return polygon
+        }
+        return nil
+    }
+    
+    func asGeoJson(geometry: BLGeometry) -> String? {
         if geometry is BLPoint {
             let point = geometry as! BLPoint
             return "{\"type\":\"\(BLPoint.geoJsonType)\",\"coordinates\":[\(point.x),\(point.y)]}"
@@ -112,6 +156,29 @@
                 geoJsonString += "[\(point.x),\(point.y)],"
             }
             geoJsonString.removeLast()
+            geoJsonString += "]}"
+            return geoJsonString
+        }
+        else if geometry is BLPolygon {
+            let polygon = geometry as! BLPolygon
+            var geoJsonString = "{\"type\":\"\(BLPolygon.geoJsonType)\",\"coordinates\":["
+            
+            if let boundary = polygon.boundary, boundary.points.count > 0 {
+                geoJsonString += "["
+                for point in boundary.points {
+                    geoJsonString += "[\(point.x),\(point.y)],"
+                }
+                geoJsonString.removeLast()
+                geoJsonString += "]"
+            }
+            if let holes = polygon.holes, holes.points.count > 0 {
+                geoJsonString += ",["
+                for point in holes.points {
+                    geoJsonString += "[\(point.x),\(point.y)],"
+                }
+                geoJsonString.removeLast()
+                geoJsonString += "]"
+            }
             geoJsonString += "]}"
             return geoJsonString
         }

@@ -23,10 +23,8 @@ public protocol BLGeometry {
     
     var srs: SpatialReferenceSystemEnum? { get set }
     
-    func getGeojsonType() -> String
-    func getWktType() -> String
-    func jsonCoordinatePairs() -> String
-    func wktCoordinatePairs() -> String
-    func asGeoJSON() -> String?
-    func asWKT() -> String?
+    func jsonCoordinatePairs() -> String?
+    func wktCoordinatePairs() -> String?
+    func asGeoJson() -> String?
+    func asWkt() -> String?
 }

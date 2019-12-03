@@ -31,7 +31,7 @@
     
     public func put(key: String, object: Any, timeToLiveSec: Int, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
-        let parameters = jsonUtils.objectToJSON(objectToParse: object)        
+        let parameters = jsonUtils.objectToJson(objectToParse: object)        
         BackendlessRequestManager(restMethod: "cache/\(key)?timeout=\(timeToLiveSec)", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: NoReply.self) {
                 if result is Fault {
@@ -53,10 +53,10 @@
                 }
                 else {
                     if let resultDictionary = (result as! JSON).dictionaryObject {
-                        responseHandler(self.jsonUtils.JSONToObject(objectToParse: resultDictionary))
+                        responseHandler(self.jsonUtils.jsonToObject(objectToParse: resultDictionary))
                     }
                     else if let resultArray = (result as! JSON).arrayObject {
-                        responseHandler(self.jsonUtils.JSONToObject(objectToParse: resultArray))
+                        responseHandler(self.jsonUtils.jsonToObject(objectToParse: resultArray))
                     }
                 }
             }
@@ -96,7 +96,7 @@
                         else {
                             if let className = resultDictionary["___class"] as? String,
                                 className == ofTypeName {
-                                responseHandler(self.jsonUtils.JSONToObject(objectToParse: resultDictionary))
+                                responseHandler(self.jsonUtils.jsonToObject(objectToParse: resultDictionary))
                             }
                             else {
                                 errorHandler(Fault(message: parsingError + "'\(ofTypeName)'", faultCode: 0))
@@ -104,7 +104,7 @@
                         }
                     }
                     else if let resultArray = (result as! JSON).arrayObject {
-                        let parsedArray = self.jsonUtils.JSONToObject(objectToParse: resultArray)
+                        let parsedArray = self.jsonUtils.jsonToObject(objectToParse: resultArray)
                         if type(of: parsedArray) == ofType {
                             responseHandler(parsedArray)
                         }

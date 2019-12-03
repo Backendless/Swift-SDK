@@ -30,7 +30,7 @@
         var metadata = [String : Any]()
         if let geoMeta = geoPoint.metadata {
             for (key, value) in geoMeta {
-                metadata[key] = JSONUtils.shared.objectToJSON(objectToParse: value)
+                metadata[key] = JSONUtils.shared.objectToJson(objectToParse: value)
             }         
         }
         
@@ -91,8 +91,8 @@
                     if result is Fault {
                         errorHandler(result as! Fault)
                     }
-                    else if let metadataJSON = result as? JSON,
-                        let metaData = metadataJSON.dictionaryObject {
+                    else if let metadataJson = result as? JSON,
+                        let metaData = metadataJson.dictionaryObject {
                         geoPoint.metadata = metaData
                         responseHandler(geoPoint)
                     }
@@ -200,8 +200,8 @@
                 }
                 else if let geoPointsArray = result as? [JSON] {
                     var resultArray = [GeoPoint]()
-                    for geoPointJSON in geoPointsArray {
-                        if let geoPointDictionary = geoPointJSON.dictionaryObject {
+                    for geoPointJson in geoPointsArray {
+                        if let geoPointDictionary = geoPointJson.dictionaryObject {
                             if geoPointDictionary["totalPoints"] != nil,
                                 let geoCluster = self.processResponse.adaptToGeoCluster(geoDictionary: geoPointDictionary) {
                                 geoCluster.geoQuery = geoQuery

@@ -37,7 +37,7 @@
             headers["bl-execution-type"] = ExecutionTypeMethods.shared.getExecutionTypeValue(executionType: executionType.rawValue)
         }
         if var parameters = parameters {
-            parameters = jsonUtils.objectToJSON(objectToParse: parameters)
+            parameters = jsonUtils.objectToJson(objectToParse: parameters)
             BackendlessRequestManager(restMethod: "services/\(serviceName)/\(method)", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
                 self.processInvokeResponse(response: response, responseHandler: responseHandler, errorHandler: errorHandler)
             })
@@ -56,10 +56,10 @@
             }
             else {
                 if let resultDictionary = (result as! JSON).dictionaryObject {
-                    responseHandler(jsonUtils.JSONToObject(objectToParse: resultDictionary))
+                    responseHandler(jsonUtils.jsonToObject(objectToParse: resultDictionary))
                 }
                 else if let resultArray = (result as! JSON).arrayObject {
-                    responseHandler(jsonUtils.JSONToObject(objectToParse: resultArray))
+                    responseHandler(jsonUtils.jsonToObject(objectToParse: resultArray))
                 }
             }
         }

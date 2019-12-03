@@ -25,13 +25,13 @@ class JSONUtils: NSObject {
     
     private override init() { }
     
-    func objectToJSON(objectToParse: Any) -> Any {
+    func objectToJson(objectToParse: Any) -> Any {
         var resultObject = objectToParse
         if !(objectToParse is String), !(objectToParse is NSNumber), !(objectToParse is NSNull), !(objectToParse is Date) {
             if let arrayToParse = objectToParse as? [Any] {
                 var resultArray = [Any]()
                 for object in arrayToParse {
-                    resultArray.append(objectToJSON(objectToParse: object))
+                    resultArray.append(objectToJson(objectToParse: object))
                 }
                 resultObject = resultArray
             }
@@ -39,10 +39,10 @@ class JSONUtils: NSObject {
                 var resultDictionary = [String : Any]()
                 for (key, value) in dictionaryToParse {
                     if (value is BLGeometry) {
-                        resultDictionary[key] = (value as! BLGeometry).asGeoJSON()
+                        resultDictionary[key] = (value as! BLGeometry).asGeoJson()
                     }
                     else if !(value is String), !(value is NSNumber), !(value is NSNull) {
-                        resultDictionary[key] = objectToJSON(objectToParse: value)
+                        resultDictionary[key] = objectToJson(objectToParse: value)
                     }
                     else {
                         resultDictionary[key] = value
@@ -60,13 +60,13 @@ class JSONUtils: NSObject {
         return resultObject
     }
     
-    func JSONToObject(objectToParse: Any) -> Any {
+    func jsonToObject(objectToParse: Any) -> Any {
         var resultObject = objectToParse
         if !(objectToParse is String), !(objectToParse is NSNumber), !(objectToParse is NSNull) {
             if let arrayToParse = objectToParse as? [Any] {
                 var resultArray = [Any]()
                 for object in arrayToParse {
-                    resultArray.append(JSONToObject(objectToParse: object))
+                    resultArray.append(jsonToObject(objectToParse: object))
                 }
                 resultObject = resultArray
             }
@@ -77,6 +77,9 @@ class JSONUtils: NSObject {
                     if tableName == BLPoint.className {
                         resultObject = persistenceServiceUtils.convertToGeometryType(dictionary: dictionaryToParse)
                     }
+                    else if tableName == BLLineString.className {
+                        resultObject = persistenceServiceUtils.convertToGeometryType(dictionary: dictionaryToParse)
+                    }
                     else {
                         persistenceServiceUtils.setup(tableName: tableName)
                         resultObject = persistenceServiceUtils.dictionaryToEntity(dictionary: dictionaryToParse, className: tableName)!
@@ -85,12 +88,12 @@ class JSONUtils: NSObject {
                 else {
                     for (key, value) in dictionaryToParse {
                         if let value = value as? [String : Any] {
-                            resultDictionary[key] = JSONToObject(objectToParse: value)
+                            resultDictionary[key] = jsonToObject(objectToParse: value)
                         }
                         else if let value = value as? [Any] {
                             var valueArray = [Any]()
                             for valueElement in value {
-                                valueArray.append(JSONToObject(objectToParse: valueElement))
+                                valueArray.append(jsonToObject(objectToParse: valueElement))
                             }
                             resultDictionary[key] = valueArray
                         }

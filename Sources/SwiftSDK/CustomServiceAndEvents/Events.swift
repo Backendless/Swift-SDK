@@ -37,7 +37,7 @@
             headers["bl-execution-type"] = ExecutionTypeMethods.shared.getExecutionTypeValue(executionType: executionType.rawValue)
         }
         if var parameters = parameters {
-            parameters = jsonUtils.objectToJSON(objectToParse: parameters)
+            parameters = jsonUtils.objectToJson(objectToParse: parameters)
             BackendlessRequestManager(restMethod: "servercode/events/\(name)", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
                 self.processDispatchResponse(response: response, responseHandler: responseHandler, errorHandler: errorHandler)
             })
@@ -58,7 +58,7 @@
                 if let resultDictionary = (result as! JSON).dictionaryObject {
                     var resultDict = [String : Any]()
                     for (key, value) in resultDictionary {
-                        resultDict[key] = jsonUtils.JSONToObject(objectToParse: value)
+                        resultDict[key] = jsonUtils.jsonToObject(objectToParse: value)
                     }                       
                     responseHandler(resultDict)
                 }

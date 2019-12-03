@@ -25,13 +25,15 @@
     
     private override init() { }
     
-    // ⚠️
-    public func fromWKT(_ wkt: String) -> BLGeometry? {
+    public func fromWkt(_ wkt: String) -> BLGeometry? {
         if wkt.contains(BLPoint.wktType) {
             return getPoint(wkt: wkt)
         }
         else if wkt.contains(BLLineString.wktType) {
             return getLineString(wkt: wkt)
+        }
+        else if wkt.contains(BLPolygon.wktType) {
+            return getPolygon(wkt: wkt)
         }
         return nil
     }
@@ -42,14 +44,9 @@
         if scanner.scanString(BLPoint.wktType, into: nil) && scanner.scanString("(", into: nil) {
             var x: Double = 0
             var y: Double = 0
-            
             scanner.scanDouble(&x)
             scanner.scanDouble(&y)
-            
-            let point = BLPoint()
-            point.x = x
-            point.y = y
-            return point
+            return BLPoint(x: x, y: y)
         }
         return nil
     }
@@ -66,10 +63,7 @@
                     let pointsCoordinates = pointCoordinatesString.components(separatedBy: " ")
                     if let xString = pointsCoordinates.first, let x = Double(xString),
                         let yString = pointsCoordinates.last, let y = Double(yString) {
-                        let point = BLPoint()
-                        point.x = x
-                        point.y = y
-                        lineString.points.append(point)
+                        lineString.points.append(BLPoint(x: x, y: y))
                     }
                 }
             }
@@ -78,7 +72,56 @@
         return nil
     }
     
-    func asWKT(geometry: BLGeometry) -> String? {
+    private func getPolygon(wkt: String) -> BLPolygon? {
+        let scanner = Scanner(string: wkt)
+        scanner.caseSensitive = false
+        if scanner.scanString(BLPolygon.wktType, into: nil) && scanner.scanString("((", into: nil) {
+            var coordinatesString: NSString?
+            scanner.scanUpTo("))", into: &coordinatesString)
+            
+            var boundary: BLLineString?
+            var holes: BLLineString?
+            
+            if let lineStringsStr = coordinatesString?.components(separatedBy: "), ") {
+                if var boundaryString = lineStringsStr.first {
+                    let lineString = BLLineString()
+                    boundaryString = boundaryString.replacingOccurrences(of: "(", with: "")
+                    boundaryString = boundaryString.replacingOccurrences(of: ")", with: "")
+                    let points = boundaryString.components(separatedBy: ", ")
+                    for point in points {
+                        let coords = point.components(separatedBy: " ")
+                        if let xString = coords.first, let x = Double(xString),
+                            let yString = coords.last, let y = Double(yString) {
+                            lineString.points.append(BLPoint(x: x, y: y))
+                        }
+                    }
+                    boundary = lineString
+                }
+                
+                if lineStringsStr.count == 2 {
+                    var holesString = lineStringsStr[1]
+                    let lineString = BLLineString()
+                    holesString = holesString.replacingOccurrences(of: "(", with: "")
+                    holesString = holesString.replacingOccurrences(of: ")", with: "")
+                    let points = holesString.components(separatedBy: ", ")
+                    for point in points {
+                        let coords = point.components(separatedBy: " ")
+                        if let xString = coords.first, let x = Double(xString),
+                            let yString = coords.last, let y = Double(yString) {
+                            lineString.points.append(BLPoint(x: x, y: y))
+                        }
+                    }
+                    holes = lineString
+                }
+            }
+            if boundary != nil {
+                return BLPolygon(boundary: boundary!, holes: holes)
+            }
+        }
+        return nil
+    }
+    
+    func asWkt(geometry: BLGeometry) -> String? {
         if geometry is BLPoint {
             let point = geometry as! BLPoint
             return "\(BLPoint.wktType) (\(point.x) \(point.y))"
@@ -89,7 +132,30 @@
             for point in lineString.points {
                 wktString += "\(point.x) \(point.y), "
             }
-            wktString.removeLast()
+            wktString.removeLast(2)
+            wktString += ")"
+            return wktString
+        }
+        else if geometry is BLPolygon {
+            let polygon = geometry as! BLPolygon
+            var wktString = "\(BLPolygon.wktType) ("
+            
+            if let boundary = polygon.boundary, boundary.points.count > 0 {
+                wktString += "("
+                for point in boundary.points {
+                    wktString += "\(point.x) \(point.y), "
+                }
+                wktString.removeLast(2)
+                wktString += ")"
+            }
+            if let holes = polygon.holes, holes.points.count > 0 {
+                wktString += ", ("
+                for point in holes.points {
+                    wktString += "\(point.x) \(point.y), "
+                }
+                wktString.removeLast(2)
+                wktString += ")"
+            }
             wktString += ")"
             return wktString
         }

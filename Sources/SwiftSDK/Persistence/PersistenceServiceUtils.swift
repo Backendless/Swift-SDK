@@ -622,13 +622,14 @@ class PersistenceServiceUtils: NSObject {
                             if Array(classMappings.keys).contains(_className) {
                                 _className = classMappings[_className]!
                             }
-                            if _className == BLPoint.className, let pointDict = dictionary[dictionaryField] as? [String : Any] {
+                            else if _className == BLPoint.className, let pointDict = dictionary[dictionaryField] as? [String : Any] {
                                 entity.setValue(geoJsonParser.dictionaryToPoint(pointDict), forKey: mappedPropertyName)
                             }
-                            if _className == BLLineString.className, let pointsArray = dictionary[dictionaryField] as? [String : Any] {
-                                
-                                // ⚠️
-                                print("⚠️ \(pointsArray)")
+                            else if _className == BLLineString.className, let lineStringDict = dictionary[dictionaryField] as? [String : Any] {
+                                entity.setValue(geoJsonParser.dictionaryToLineString(lineStringDict), forKey: mappedPropertyName)
+                            }
+                            else if _className == BLPolygon.className, let polygonDict = dictionary[dictionaryField] as? [String : Any] {
+                                entity.setValue(geoJsonParser.dictionaryToPolygon(polygonDict), forKey: mappedPropertyName)
                             }
                             else if let value = dictionaryToEntity(dictionary: dictionaryValue, className: _className) {
                                 entity.setValue(value, forKey: mappedPropertyName)
@@ -638,6 +639,7 @@ class PersistenceServiceUtils: NSObject {
                             entity.setValue(dictionary[dictionaryField], forKey: mappedPropertyName)
                         }
                     }
+                    // no mappings
                     else if Array(entityFields.keys).contains(dictionaryField) {
                         if let relationDictionary = dictionary[dictionaryField] as? [String: Any] {
                             if let _className = relationDictionary["___class"] as? String {
@@ -659,6 +661,9 @@ class PersistenceServiceUtils: NSObject {
                                 }
                                 else if relationDictionary["___class"] as? String == BLLineString.className {
                                     entity.setValue(geoJsonParser.dictionaryToLineString(relationDictionary), forKey: dictionaryField)
+                                }
+                                else if relationDictionary["___class"] as? String == BLPolygon.className {
+                                    entity.setValue(geoJsonParser.dictionaryToPolygon(relationDictionary), forKey: dictionaryField)
                                 }
                                 else if let relationObject = dictionaryToEntity(dictionary: relationDictionary, className: relationClassName) {
                                     entity.setValue(relationObject, forKey: dictionaryField)
@@ -726,6 +731,12 @@ class PersistenceServiceUtils: NSObject {
                 if dictValue["___class"] as? String == BLPoint.className {
                     resultDictionary[key] = geoJsonParser.dictionaryToPoint(dictValue)
                 }
+                else if dictValue["___class"] as? String == BLLineString.className {
+                    resultDictionary[key] = geoJsonParser.dictionaryToLineString(dictValue)
+                }
+                else if dictValue["___class"] as? String == BLPolygon.className {
+                    resultDictionary[key] = geoJsonParser.dictionaryToPolygon(dictValue)
+                }
             }
         }
         return resultDictionary
@@ -734,8 +745,14 @@ class PersistenceServiceUtils: NSObject {
     private func convertFromGeometryType(dictionary: [String : Any]) -> [String : Any] {
         var resultDictionary = dictionary
         for (key, value) in dictionary {            
-            if let blPoint = value as? BLPoint {
-                resultDictionary[key] = blPoint.asGeoJSON()
+            if let point = value as? BLPoint {
+                resultDictionary[key] = point.asGeoJson()
+            }
+            else if let lineString = value as? BLLineString {
+                resultDictionary[key] = lineString.asGeoJson()
+            }
+            else if let polygon = value as? BLPolygon {
+                resultDictionary[key] = polygon.asGeoJson()
             }
         }
         return resultDictionary

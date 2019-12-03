@@ -188,7 +188,7 @@ class RTSharedObject: RTListener {
             var resultDictionary = [String : Any]()
             if let response = response as? [String : Any] {          
                 for key in response.keys {
-                    let value = self.jsonUtils.JSONToObject(objectToParse: response[key] as Any)
+                    let value = self.jsonUtils.jsonToObject(objectToParse: response[key] as Any)
                     resultDictionary[key] = value
                 }
             }
@@ -214,14 +214,14 @@ class RTSharedObject: RTListener {
         if self.sharedObject.isConnected {
             var options = ["name": sharedObjectName, "key": key] as [String : Any]
             if let data = data {
-                options["data"] = jsonUtils.objectToJSON(objectToParse: data)
+                options["data"] = jsonUtils.objectToJson(objectToParse: data)
             }
             rtMethod.sendCommand(type: rtTypes.rsoSet, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
         else if self.sharedObject.rememberCommands {
             var waitingCommand = ["event": rtTypes.rsoSet, "responseHandler": responseHandler as Any, "errorHandler": errorHandler as Any] as [String : Any]
             if let data = data {
-                waitingCommand["data"] = jsonUtils.objectToJSON(objectToParse: data)
+                waitingCommand["data"] = jsonUtils.objectToJson(objectToParse: data)
             }
             waitingCommands.append(waitingCommand)
         }
@@ -248,14 +248,14 @@ class RTSharedObject: RTListener {
         if self.sharedObject.isConnected {
             var options = ["name": sharedObjectName, "type": commandName] as [String : Any]
             if let data = data {
-                options["data"] = jsonUtils.objectToJSON(objectToParse: data)
+                options["data"] = jsonUtils.objectToJson(objectToParse: data)
             }
             rtMethod.sendCommand(type: rtTypes.rsoCommand, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
         else if self.sharedObject.rememberCommands {
             var waitingCommand = ["event": rtTypes.rsoCommand, "commandName": commandName, "responseHandler": responseHandler as Any, "errorHandler": errorHandler as Any] as [String : Any]
             if let data = data {
-                waitingCommand["data"] = jsonUtils.objectToJSON(objectToParse: data)
+                waitingCommand["data"] = jsonUtils.objectToJson(objectToParse: data)
             }
             waitingCommands.append(waitingCommand)
         }

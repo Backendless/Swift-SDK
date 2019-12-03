@@ -129,6 +129,7 @@
 		5ED765D02224369E009431CD /* BulkEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED765CF2224369E009431CD /* BulkEvent.swift */; };
 		5EE063BF22017EAA00B862EA /* LoadRelationsQueryBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE063BE22017EAA00B862EA /* LoadRelationsQueryBuilder.swift */; };
 		5EE2B40721C25EC600F90723 /* BackendlessUserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE2B40621C25EC600F90723 /* BackendlessUserTests.swift */; };
+		5EE335AB2396679300A245B1 /* BLPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE335AA2396679300A245B1 /* BLPolygon.swift */; };
 		5EE6920121B67791002E72A9 /* FaultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE6920021B67791002E72A9 /* FaultTests.swift */; };
 		5EFB60E922422F93004DFA2C /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFB60E822422F93004DFA2C /* UserInfo.swift */; };
 		5EFBA8FE21C1011E007B3BB0 /* BackendlessUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFBA8FD21C1011E007B3BB0 /* BackendlessUser.swift */; };
@@ -271,6 +272,7 @@
 		5ED765CF2224369E009431CD /* BulkEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulkEvent.swift; sourceTree = "<group>"; };
 		5EE063BE22017EAA00B862EA /* LoadRelationsQueryBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadRelationsQueryBuilder.swift; sourceTree = "<group>"; };
 		5EE2B40621C25EC600F90723 /* BackendlessUserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessUserTests.swift; sourceTree = "<group>"; };
+		5EE335AA2396679300A245B1 /* BLPolygon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLPolygon.swift; sourceTree = "<group>"; };
 		5EE6920021B67791002E72A9 /* FaultTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaultTests.swift; sourceTree = "<group>"; };
 		5EFB60E822422F93004DFA2C /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		5EFBA8FD21C1011E007B3BB0 /* BackendlessUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessUser.swift; sourceTree = "<group>"; };
@@ -632,6 +634,7 @@
 				5ECAB230238C41A60051F315 /* BLGeometry.swift */,
 				5ECAB22E238C417C0051F315 /* BLPoint.swift */,
 				5E17A1A923954E0400B078B5 /* BLLineString.swift */,
+				5EE335AA2396679300A245B1 /* BLPolygon.swift */,
 				5ECAB232238C42060051F315 /* GeoJSONParser.swift */,
 				5ECAB234238C42360051F315 /* WKTParser.swift */,
 			);
@@ -988,6 +991,7 @@
 				5A2A785321E61D1700EC8007 /* DataStoreFactory.swift in Sources */,
 				5E90721121B66E9E00619C0D /* Fault.swift in Sources */,
 				5E45F669225F52C5001DD7CF /* GeoMath.swift in Sources */,
+				5EE335AB2396679300A245B1 /* BLPolygon.swift in Sources */,
 				5E4E309C2243B85C00B479C8 /* DeviceHelper.swift in Sources */,
 				5EFB60E922422F93004DFA2C /* UserInfo.swift in Sources */,
 				5E81B28D2236A8300015AEDC /* RTMethod.swift in Sources */,

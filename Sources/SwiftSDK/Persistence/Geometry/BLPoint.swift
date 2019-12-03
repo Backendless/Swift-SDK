@@ -19,61 +19,55 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers public class BLPoint: NSObject, BLGeometry {
+@objcMembers public class BLPoint: NSObject, BLGeometry {    
     
     public static let geoJsonType = "Point"
     public static let wktType = geoJsonType.uppercased()
     
-    public var srs: SpatialReferenceSystemEnum?
+    public let geoJsonType = BLPoint.geoJsonType
+    public let wktType = BLPoint.wktType
     
+    public var srs: SpatialReferenceSystemEnum?
     public var x: Double = 0
     public var y: Double = 0
+    
+    public var latitude: Double {
+        get { return x }
+        set { x = newValue }
+    }
+    
+    public var longitude: Double {
+        get { return y }
+        set { y = newValue }
+    }
     
     static let className = "com.backendless.persistence.Point"
     
     public override init() { }
     
-    func getSrs() -> SpatialReferenceSystemEnum? {
-        return self.srs
-    }
-    
-    public func getLatitude() -> Double {
-        return x
-    }
-    
-    public func setLatitude(_ x: Double) {
+    public init(x: Double, y: Double) {
         self.x = x
-    }
-    
-    public func getLongitude() -> Double {
-        return self.y
-    }
-    
-    public func setLongitude(_ y: Double) {
         self.y = y
     }
     
-    public func getGeojsonType() -> String {
-        return BLPoint.geoJsonType
+    public init(latitude: Double, longitude: Double) {
+        self.x = latitude
+        self.y = longitude
     }
     
-    public func getWktType() -> String {
-        return BLPoint.wktType
+    public func jsonCoordinatePairs() -> String? {
+        return "[\(x), \(y)]"
     }
     
-    public func jsonCoordinatePairs() -> String {
-        return "[\(x),\(y)]"
+    public func wktCoordinatePairs() -> String? {
+        return "(\(x) \(y))"
     }
     
-    public func wktCoordinatePairs() -> String {
-        return "\(x) \(y)"
+    public func asGeoJson() -> String? {
+        return GeoJSONParser.shared.asGeoJson(geometry: self)
     }
     
-    public func asGeoJSON() -> String? {
-        return GeoJSONParser.shared.asGeoJSON(geometry: self)
-    }
-    
-    public func asWKT() -> String? {
-        return WKTParser.shared.asWKT(geometry: self)
+    public func asWkt() -> String? {
+        return WKTParser.shared.asWkt(geometry: self)
     }
 }
