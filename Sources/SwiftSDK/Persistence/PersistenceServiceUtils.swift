@@ -413,7 +413,6 @@ class PersistenceServiceUtils: NSObject {
             return name
         }
         return className
-        //return getClassName(className: String(describing: entity))
     }
     
     func getClassName(className: String) -> String {
@@ -517,6 +516,9 @@ class PersistenceServiceUtils: NSObject {
                             else if let dateValue = value as? Date {
                                 resultValue = dataTypesUtils.dateToInt(date: dateValue)
                             }
+                            else if let backendlessFileValue = value as? BackendlessFile {
+                                resultValue = backendlessFileValue.fileUrl ?? ""
+                            }
                             else {
                                 resultValue = entityToDictionaryWithClassProperty(entity: value)
                             }
@@ -556,16 +558,16 @@ class PersistenceServiceUtils: NSObject {
             }
             return backendlessUser
         }
+        else if tableName == "GeoPoint" || className == "GeoPoint",
+            let geoPoint = self.processResponse.adaptToGeoPoint(geoDictionary: dictionary) {
+            return geoPoint
+        }
         else if tableName == "DeviceRegistration" || className == "DeviceRegistration" {
             let deviceRegistration = processResponse.adaptToDeviceRegistration(responseResult: dictionary)
             if let objectId = deviceRegistration.objectId {
                 storedObjects.rememberObjectId(objectId: objectId, forObject: deviceRegistration)
                 return deviceRegistration
             }
-        }
-        else if tableName == "GeoPoint" || className == "GeoPoint",
-            let geoPoint = self.processResponse.adaptToGeoPoint(geoDictionary: dictionary) {
-            return geoPoint
         }
         var resultEntityTypeName = className
         let classMappings = mappings.getTableToClassMappings()
@@ -638,6 +640,7 @@ class PersistenceServiceUtils: NSObject {
                             entity.setValue(dictionary[dictionaryField], forKey: mappedPropertyName)
                         }
                     }
+                        
                     // no mappings
                     else if Array(entityFields.keys).contains(dictionaryField) {
                         if let relationDictionary = dictionary[dictionaryField] as? [String: Any] {
@@ -692,12 +695,20 @@ class PersistenceServiceUtils: NSObject {
                             }
                         }
                         else if let value = dictionary[dictionaryField] {
-                            if let valueType = entityFields[dictionaryField],
-                                valueType.contains("NSDate"),
-                                value is Int {
-                                entity.setValue(dataTypesUtils.intToDate(intVal: value as! Int), forKey: dictionaryField)
+                            if let valueType = entityFields[dictionaryField] {
+                                if valueType.contains("NSDate"), value is Int {
+                                    entity.setValue(dataTypesUtils.intToDate(intVal: value as! Int), forKey: dictionaryField)
+                                }
+                                else if valueType.contains("BackendlessFile"), value is String {
+                                    let backendlessFile = BackendlessFile()
+                                    backendlessFile.fileUrl = value as? String
+                                    entity.setValue(backendlessFile, forKey: dictionaryField)
+                                }
+                                else {
+                                    entity.setValue(value, forKey: dictionaryField)
+                                }
                             }
-                            else {
+                            else {                                
                                 entity.setValue(value, forKey: dictionaryField)
                             }
                         }

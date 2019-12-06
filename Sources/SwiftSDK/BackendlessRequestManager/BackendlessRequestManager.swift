@@ -51,7 +51,7 @@ class BackendlessRequestManager: NSObject {
                 restMethod = restMethod.replacingOccurrences(of: mappedName, with: originTableName)
             }
         }
-        var request = URLRequest(url: URL(string: urlString + dataTypesUtils.stringToUrlString(originalString: restMethod))!)
+        var request = URLRequest(url: URL(string: urlString + dataTypesUtils.stringToUrlString(originalString: restMethod))!)        
         request.httpMethod = httpMethod.rawValue
         if let headers = headers, headers.count > 0 {
             for (key, value) in headers {

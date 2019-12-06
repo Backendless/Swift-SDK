@@ -215,7 +215,11 @@
                     let userObject = self.processResponse.adaptToBackendlessUser(responseResult: responseObject) {
                     resultArray.append(userObject as! BackendlessUser)
                 }
-                if responseObject["___class"] as? String == "DeviceRegistration" {
+                else if responseObject["___class"] as? String == "GeoPoint",
+                    let geoPointObject = self.processResponse.adaptToGeoPoint(geoDictionary: responseObject) {
+                    resultArray.append(geoPointObject)
+                }
+                else if responseObject["___class"] as? String == "DeviceRegistration" {
                     let deviceRegistrationObject = self.processResponse.adaptToDeviceRegistration(responseResult: responseObject)
                     resultArray.append(deviceRegistrationObject)
                 }
