@@ -25,7 +25,6 @@ class PersistenceServiceUtils: NSObject {
     private let dataTypesUtils = DataTypesUtils.shared
     private let storedObjects = StoredObjects.shared
     private let mappings = Mappings.shared
-    private let geoJsonParser = GeoJSONParser.shared
     
     private var tableName: String = ""
     
@@ -623,13 +622,13 @@ class PersistenceServiceUtils: NSObject {
                                 _className = classMappings[_className]!
                             }
                             else if _className == BLPoint.className, let pointDict = dictionary[dictionaryField] as? [String : Any] {
-                                entity.setValue(geoJsonParser.dictionaryToPoint(pointDict), forKey: mappedPropertyName)
+                                entity.setValue(GeoJSONParser.dictionaryToPoint(pointDict), forKey: mappedPropertyName)
                             }
                             else if _className == BLLineString.className, let lineStringDict = dictionary[dictionaryField] as? [String : Any] {
-                                entity.setValue(geoJsonParser.dictionaryToLineString(lineStringDict), forKey: mappedPropertyName)
+                                entity.setValue(GeoJSONParser.dictionaryToLineString(lineStringDict), forKey: mappedPropertyName)
                             }
                             else if _className == BLPolygon.className, let polygonDict = dictionary[dictionaryField] as? [String : Any] {
-                                entity.setValue(geoJsonParser.dictionaryToPolygon(polygonDict), forKey: mappedPropertyName)
+                                entity.setValue(GeoJSONParser.dictionaryToPolygon(polygonDict), forKey: mappedPropertyName)
                             }
                             else if let value = dictionaryToEntity(dictionary: dictionaryValue, className: _className) {
                                 entity.setValue(value, forKey: mappedPropertyName)
@@ -657,13 +656,13 @@ class PersistenceServiceUtils: NSObject {
                                     entity.setValue(deviceRegistrationObject, forKey: dictionaryField)
                                 }
                                 else if relationDictionary["___class"] as? String == BLPoint.className {
-                                    entity.setValue(geoJsonParser.dictionaryToPoint(relationDictionary), forKey: dictionaryField)
+                                    entity.setValue(GeoJSONParser.dictionaryToPoint(relationDictionary), forKey: dictionaryField)
                                 }
                                 else if relationDictionary["___class"] as? String == BLLineString.className {
-                                    entity.setValue(geoJsonParser.dictionaryToLineString(relationDictionary), forKey: dictionaryField)
+                                    entity.setValue(GeoJSONParser.dictionaryToLineString(relationDictionary), forKey: dictionaryField)
                                 }
                                 else if relationDictionary["___class"] as? String == BLPolygon.className {
-                                    entity.setValue(geoJsonParser.dictionaryToPolygon(relationDictionary), forKey: dictionaryField)
+                                    entity.setValue(GeoJSONParser.dictionaryToPolygon(relationDictionary), forKey: dictionaryField)
                                 }
                                 else if let relationObject = dictionaryToEntity(dictionary: relationDictionary, className: relationClassName) {
                                     entity.setValue(relationObject, forKey: dictionaryField)
@@ -729,13 +728,13 @@ class PersistenceServiceUtils: NSObject {
         for (key, value) in dictionary {
             if let dictValue = value as? [String : Any] {
                 if dictValue["___class"] as? String == BLPoint.className {
-                    resultDictionary[key] = geoJsonParser.dictionaryToPoint(dictValue)
+                    resultDictionary[key] = GeoJSONParser.dictionaryToPoint(dictValue)
                 }
                 else if dictValue["___class"] as? String == BLLineString.className {
-                    resultDictionary[key] = geoJsonParser.dictionaryToLineString(dictValue)
+                    resultDictionary[key] = GeoJSONParser.dictionaryToLineString(dictValue)
                 }
                 else if dictValue["___class"] as? String == BLPolygon.className {
-                    resultDictionary[key] = geoJsonParser.dictionaryToPolygon(dictValue)
+                    resultDictionary[key] = GeoJSONParser.dictionaryToPolygon(dictValue)
                 }
             }
         }
@@ -746,13 +745,13 @@ class PersistenceServiceUtils: NSObject {
         var resultDictionary = dictionary
         for (key, value) in dictionary {            
             if let point = value as? BLPoint {
-                resultDictionary[key] = point.asGeoJson()
+                resultDictionary[key] = point.asWkt()
             }
             else if let lineString = value as? BLLineString {
-                resultDictionary[key] = lineString.asGeoJson()
+                resultDictionary[key] = lineString.asWkt()
             }
             else if let polygon = value as? BLPolygon {
-                resultDictionary[key] = polygon.asGeoJson()
+                resultDictionary[key] = polygon.asWkt()
             }
         }
         return resultDictionary

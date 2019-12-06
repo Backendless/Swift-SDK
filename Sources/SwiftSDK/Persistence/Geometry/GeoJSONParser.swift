@@ -27,20 +27,20 @@
     
     private override init() { }
     
-    public func fromGeoJson(_ geoJson: String) -> BLGeometry? {
-        if geoJson.contains("\"type\":\"\(BLPoint.geoJsonType)\"") {
+    public static func fromGeoJson(_ geoJson: String) -> BLGeometry? {
+        if geoJson.contains("\"\(BLPoint.geoJsonType)\"") {
             return getPoint(geoJson: geoJson)
         }
-        else if geoJson.contains("\"type\":\"\(BLLineString.geoJsonType)\"") {
+        else if geoJson.contains("\"\(BLLineString.geoJsonType)\"") {
             return getLineString(geoJson: geoJson)
         }
-        else if geoJson.contains("\"type\":\"\(BLPolygon.geoJsonType)\"") {
+        else if geoJson.contains("\"\(BLPolygon.geoJsonType)\"") {
             return getPolygon(geoJson: geoJson)
         }
         return nil
     }
     
-    private func getPoint(geoJson: String) -> BLPoint? {
+    private static func getPoint(geoJson: String) -> BLPoint? {
         var pointDict: [String : Any]?
         if let data = geoJson.data(using: .utf8) {
             pointDict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
@@ -51,7 +51,7 @@
         return nil
     }
     
-    func dictionaryToPoint(_ pointDict: [String : Any]) -> BLPoint? {
+    static func dictionaryToPoint(_ pointDict: [String : Any]) -> BLPoint? {
         if let type = pointDict["type"] as? String, type == BLPoint.geoJsonType {
             let point = BLPoint()
             guard let coordinates = pointDict["coordinates"] as? [Double] else {
@@ -69,7 +69,7 @@
         return nil
     }
     
-    private func getLineString(geoJson: String) -> BLLineString? {
+    private static func getLineString(geoJson: String) -> BLLineString? {
         var lineStringDict: [String : Any]?
         if let data = geoJson.data(using: .utf8) {
             lineStringDict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
@@ -80,7 +80,7 @@
         return nil
     }
     
-    func dictionaryToLineString(_ lineStringDict: [String : Any]) -> BLLineString? {
+    static func dictionaryToLineString(_ lineStringDict: [String : Any]) -> BLLineString? {
         if let type = lineStringDict["type"] as? String, type == BLLineString.geoJsonType {
             let lineString = BLLineString()
             guard let coordinates = lineStringDict["coordinates"] as? [[Double]] else {
@@ -99,7 +99,7 @@
         return nil
     }
     
-    private func getPolygon(geoJson: String) -> BLPolygon? {
+    private static func getPolygon(geoJson: String) -> BLPolygon? {
         var polygonDict: [String : Any]?
         if let data = geoJson.data(using: .utf8) {
             polygonDict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
@@ -110,7 +110,7 @@
         return nil
     }
     
-    func dictionaryToPolygon(_ polygonDict: [String : Any]) -> BLPolygon? {
+    static func dictionaryToPolygon(_ polygonDict: [String : Any]) -> BLPolygon? {
         if let type = polygonDict["type"] as? String, type == BLPolygon.geoJsonType {
             let polygon = BLPolygon()
             guard let coordinates = polygonDict["coordinates"] as? [[[Double]]] else {
@@ -144,7 +144,7 @@
         return nil
     }
     
-    func asGeoJson(geometry: BLGeometry) -> String? {
+    static func asGeoJson(geometry: BLGeometry) -> String? {
         if geometry is BLPoint {
             let point = geometry as! BLPoint
             return "{\"type\":\"\(BLPoint.geoJsonType)\",\"coordinates\":[\(point.x),\(point.y)]}"

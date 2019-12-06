@@ -25,7 +25,7 @@
     
     private override init() { }
     
-    public func fromWkt(_ wkt: String) -> BLGeometry? {
+    public static func fromWkt(_ wkt: String) -> BLGeometry? {
         if wkt.contains(BLPoint.wktType) {
             return getPoint(wkt: wkt)
         }
@@ -38,7 +38,7 @@
         return nil
     }
     
-    private func getPoint(wkt: String) -> BLPoint? {
+    private static func getPoint(wkt: String) -> BLPoint? {
         let scanner = Scanner(string: wkt)
         scanner.caseSensitive = false
         if scanner.scanString(BLPoint.wktType, into: nil) && scanner.scanString("(", into: nil) {
@@ -51,7 +51,7 @@
         return nil
     }
 
-    private func getLineString(wkt: String) -> BLLineString? {
+    private static func getLineString(wkt: String) -> BLLineString? {
         let scanner = Scanner(string: wkt)
         scanner.caseSensitive = false
         if scanner.scanString(BLLineString.wktType, into: nil) && scanner.scanString("(", into: nil) {
@@ -72,7 +72,7 @@
         return nil
     }
     
-    private func getPolygon(wkt: String) -> BLPolygon? {
+    private static func getPolygon(wkt: String) -> BLPolygon? {
         let scanner = Scanner(string: wkt)
         scanner.caseSensitive = false
         if scanner.scanString(BLPolygon.wktType, into: nil) && scanner.scanString("((", into: nil) {
@@ -121,7 +121,7 @@
         return nil
     }
     
-    func asWkt(geometry: BLGeometry) -> String? {
+    static func asWkt(geometry: BLGeometry) -> String? {
         if geometry is BLPoint {
             let point = geometry as! BLPoint
             return "\(BLPoint.wktType) (\(point.x) \(point.y))"

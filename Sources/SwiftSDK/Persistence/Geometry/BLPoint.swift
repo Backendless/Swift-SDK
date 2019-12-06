@@ -64,10 +64,10 @@
     }
     
     public func asGeoJson() -> String? {
-        return GeoJSONParser.shared.asGeoJson(geometry: self)
+        return GeoJSONParser.asGeoJson(geometry: self)
     }
     
     public func asWkt() -> String? {
-        return WKTParser.shared.asWkt(geometry: self)
+        return WKTParser.asWkt(geometry: self)
     }
 }
