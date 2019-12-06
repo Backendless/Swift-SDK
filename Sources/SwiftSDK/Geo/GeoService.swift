@@ -244,6 +244,11 @@
                 let southEastPoint = rectangle.southEastPoint {
                 restMethod = "geo/rect?nwlat=\(nordWestPoint.latitude)&nwlon=\(nordWestPoint.longitude)&selat=\(southEastPoint.latitude)&selon=\(southEastPoint.longitude)"
             }
+            if let radius = geoQuery.radius,
+                let lat = geoQuery.geoPoint?.latitude,
+                let long = geoQuery.geoPoint?.longitude {
+                restMethod += "lat=\(lat)&lon=\(long)&r=\(radius)&units=\(geoQuery.getUnits())"
+            }            
             if let categories = geoQuery.categories {
                 let categoriesString = dataTypesUtils.arrayToString(array: categories)
                 restMethod += "&categories=\(categoriesString)"
