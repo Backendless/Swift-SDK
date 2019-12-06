@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 5.6.6 / December 6, 2019
+* fixed the geolocation search in radius issue when all category points returned
+
 ### 5.6.5 / November 29, 2019
 * fixed LoadRelationsQueryBuilder issue with Users table
 * fixed problems with saving/getting objects with File Reference property
