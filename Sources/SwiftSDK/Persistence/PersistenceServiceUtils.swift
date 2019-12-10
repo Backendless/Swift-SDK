@@ -748,6 +748,17 @@ class PersistenceServiceUtils: NSObject {
                     resultDictionary[key] = GeoJSONParser.dictionaryToPolygon(dictValue)
                 }
             }
+            else if let dictValue = value as? String {
+                if dictValue.contains(BLPoint.wktType) {
+                    resultDictionary[key] = WKTParser.fromWkt(dictValue) as? BLPoint
+                }
+                else if dictValue.contains(BLLineString.wktType) {
+                    resultDictionary[key] = WKTParser.fromWkt(dictValue) as? BLLineString
+                }
+                else if dictValue.contains(BLPolygon.wktType) {
+                    resultDictionary[key] = WKTParser.fromWkt(dictValue) as? BLPolygon
+                }
+            }
         }
         return resultDictionary
     }
