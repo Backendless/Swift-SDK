@@ -21,6 +21,7 @@
 
 @objcMembers public class Backendless: NSObject {
     
+
     public static let shared = Backendless()
     
     public var hostUrl = "https://api.backendless.com"

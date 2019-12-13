@@ -33,6 +33,14 @@
     
     static let className = "com.backendless.persistence.Polygon"
     
+    public static func fromWkt(_ wkt: String) -> BLPolygon? {
+        return WKTParser.fromWkt(wkt) as? BLPolygon
+    }
+    
+    public static func fromGeoJson(_ geoJson: String) -> BLPolygon? {
+        return GeoJSONParser.fromGeoJson(geoJson) as? BLPolygon
+    }
+    
     public override init() { }
     
     public init(boundary: BLLineString, holes: BLLineString?) {
@@ -88,7 +96,7 @@
         return nil
     }
     
-    public func asGeoJson() -> String? {
+    public func asGeoJson() -> [String : Any]? {
         return GeoJSONParser.asGeoJson(geometry: self)
     }
     

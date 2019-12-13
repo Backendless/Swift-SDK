@@ -1,6 +1,6 @@
 //
 //
-//  GeometryClass.swift
+//  GeometryTestClass.swift
 //
 /*
  * *********************************************************************************************************************
@@ -22,7 +22,7 @@
 
 import Foundation
 
-@objcMembers class GeometryClass: NSObject {
+@objcMembers class GeometryTestClass: NSObject {
     var point: BLPoint?
     var lineString: BLLineString?
     var polygon: BLPolygon?

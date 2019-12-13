@@ -144,43 +144,40 @@
         return nil
     }
     
-    static func asGeoJson(geometry: BLGeometry) -> String? {
+    static func asGeoJson(geometry: BLGeometry) -> [String : Any]? {
         if geometry is BLPoint {
             let point = geometry as! BLPoint
-            return "{\"type\":\"\(BLPoint.geoJsonType)\",\"coordinates\":[\(point.x),\(point.y)]}"
+            return ["type": BLPoint.geoJsonType, "coordinates": [point.x, point.y]]
         }
         else if geometry is BLLineString {
             let lineString = geometry as! BLLineString
-            var geoJsonString = "{\"type\":\"\(BLLineString.geoJsonType)\",\"coordinates\":["
-            for point in lineString.points {
-                geoJsonString += "[\(point.x),\(point.y)],"
+            var pointsArray = [[Double]]()
+            let points = lineString.points
+            for point in points {
+                pointsArray.append([point.x, point.y])
             }
-            geoJsonString.removeLast()
-            geoJsonString += "]}"
-            return geoJsonString
+            return ["type": BLLineString.geoJsonType, "coordinates": pointsArray]
         }
         else if geometry is BLPolygon {
             let polygon = geometry as! BLPolygon
-            var geoJsonString = "{\"type\":\"\(BLPolygon.geoJsonType)\",\"coordinates\":["
+            var polygonPointsArray = [[[Double]]]()
+            var boundaryArray = [[Double]]()
+            var holesArray = [[Double]]()
             
             if let boundary = polygon.boundary, boundary.points.count > 0 {
-                geoJsonString += "["
                 for point in boundary.points {
-                    geoJsonString += "[\(point.x),\(point.y)],"
+                    boundaryArray.append([point.x, point.y])
                 }
-                geoJsonString.removeLast()
-                geoJsonString += "]"
+                polygonPointsArray.append(boundaryArray)
             }
+            
             if let holes = polygon.holes, holes.points.count > 0 {
-                geoJsonString += ",["
                 for point in holes.points {
-                    geoJsonString += "[\(point.x),\(point.y)],"
+                    holesArray.append([point.x, point.y])
                 }
-                geoJsonString.removeLast()
-                geoJsonString += "]"
+                polygonPointsArray.append(holesArray)
             }
-            geoJsonString += "]}"
-            return geoJsonString
+            return ["type": BLPolygon.geoJsonType, "coordinates": polygonPointsArray]
         }
         return nil
     }

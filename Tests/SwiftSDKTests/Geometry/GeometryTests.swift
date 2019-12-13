@@ -38,7 +38,7 @@ class GeometryTests: XCTestCase {
     
     // call before each test
     override func setUp() {
-        dataStore = backendless.data.of(GeometryClass.self)
+        dataStore = backendless.data.of(GeometryTestClass.self)
     }
     
     // call after all tests
@@ -47,7 +47,7 @@ class GeometryTests: XCTestCase {
     }
     
     class func clearTables() {
-        Backendless.shared.data.of(GeometryClass.self).removeBulk(whereClause: nil, responseHandler: { removedObjects in }, errorHandler: { fault in })
+        Backendless.shared.data.of(GeometryTestClass.self).removeBulk(whereClause: nil, responseHandler: { removedObjects in }, errorHandler: { fault in })
     }
     
     func test_01_createPoint() {
@@ -56,26 +56,26 @@ class GeometryTests: XCTestCase {
         point.y = 10
         XCTAssertNotNil(point)
         XCTAssert(point.x == 30 && point.y == 10)
-        XCTAssert(point.latitude == 30 && point.longitude == 10)
+        XCTAssert(point.latitude == 10 && point.longitude == 30)
     }
     
     func test_02_createPointWithCoords() {
-        let point = BLPoint(x: 30, y: 10)
+        let point = BLPoint(x: 10, y: 30)
         checkPoint(point)
     }
     
     func test_03_createPointWithLatLong() {
-        let point = BLPoint(latitude: 30, longitude: 10)
+        let point = BLPoint(latitude: 10, longitude: 30)
         checkPoint(point)
     }
     
     func test_04_createPointFromWKT() {
-        let point = WKTParser.fromWkt("POINT (30 10)") as? BLPoint
+        let point = BLPoint.fromWkt("POINT (10 30)")
         checkPoint(point)
     }
     
     func test_05_createPointFromGeoJson() {
-        let point = GeoJSONParser.fromGeoJson("{\"type\": \"Point\", \"coordinates\": [30, 10]}") as? BLPoint
+        let point = GeoJSONParser.fromGeoJson("{\"type\": \"Point\", \"coordinates\": [10, 30]}") as? BLPoint
         checkPoint(point)
     }
     
@@ -99,7 +99,7 @@ class GeometryTests: XCTestCase {
     }
     
     func test_08_createLineStringFromWKT() {
-        let lineString = WKTParser.fromWkt("LINESTRING (30 10, 10 30, 40 40)") as? BLLineString
+        let lineString = BLLineString.fromWkt("LINESTRING (30 10, 10 30, 40 40)")
         checkLineString(lineString)
     }
     
@@ -145,7 +145,7 @@ class GeometryTests: XCTestCase {
     }
     
     func test_12_createPolygonFromWKT() {
-        let polygon = WKTParser.fromWkt("POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10), (20 30, 35 35, 30 20, 20 30))") as? BLPolygon
+        let polygon = BLPolygon.fromWkt("POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10), (20 30, 35 35, 30 20, 20 30))")
         checkPolygon(polygon)
     }
     
@@ -156,14 +156,14 @@ class GeometryTests: XCTestCase {
     
     func test_14_toWKT() {
         let point1 = BLPoint(x: 30, y: 10)
-        let wktPoint = WKTParser.asWkt(geometry: point1)
+        let wktPoint = point1.asWkt()
         XCTAssertNotNil(wktPoint)
         XCTAssertFalse(wktPoint!.isEmpty)
         
         let point2 = BLPoint(x: 10, y: 30)
         let point3 = BLPoint(x: 40, y: 40)
         let lineString = BLLineString(points: [point1, point2, point3])
-        let wktLineString = WKTParser.asWkt(geometry: lineString)
+        let wktLineString = lineString.asWkt()
         XCTAssertNotNil(wktLineString)
         XCTAssertFalse(wktLineString!.isEmpty)
         
@@ -176,7 +176,7 @@ class GeometryTests: XCTestCase {
         let holePoint4 = BLPoint(x: 20, y: 30)
         let holes = BLLineString(points: [holePoint1, holePoint2, holePoint3, holePoint4])
         let polygon = BLPolygon(boundary: boundary, holes: holes)
-        let wktPolygon = WKTParser.asWkt(geometry: polygon)
+        let wktPolygon = polygon.asWkt()
         XCTAssertNotNil(wktPolygon)
         XCTAssertFalse(wktPolygon!.isEmpty)
     }
@@ -212,7 +212,7 @@ class GeometryTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: geometry.create")
         let geometryEntity = createGeometryClassEntity()
         dataStore.save(entity: geometryEntity, responseHandler: { created in
-            if let created = created as? GeometryClass {
+            if let created = created as? GeometryTestClass {
                 let point = created.point
                 let lineString = created.lineString
                 let polygon = created.polygon
@@ -248,12 +248,12 @@ class GeometryTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: geometry.update")
         let geometryEntity = createGeometryClassEntity()
         dataStore.save(entity: geometryEntity, responseHandler: { created in
-            if let created = created as? GeometryClass {
+            if let created = created as? GeometryTestClass {
                 created.point = BLPoint(x: 10, y: 40)
                 created.lineString = BLLineString(points: [BLPoint(x: 40, y: 40), BLPoint(x: 30, y: 30), BLPoint(x: 40, y: 20), BLPoint(x: 30, y: 10)])
                 created.polygon = BLPolygon(boundary: BLLineString(points: [BLPoint(x: 30, y: 20), BLPoint(x: 45, y: 40), BLPoint(x: 10, y: 40), BLPoint(x: 30, y: 20)]), holes: nil)
                 self.dataStore.update(entity: created, responseHandler: { updated in
-                    if let updated = updated as? GeometryClass {
+                    if let updated = updated as? GeometryTestClass {
                         let point = updated.point
                         let lineString = updated.lineString
                         let polygon = updated.polygon
@@ -284,7 +284,7 @@ class GeometryTests: XCTestCase {
     func test_19_remove() {
         let expectation = self.expectation(description: "PASSED: geometry.remove")
         dataStore.findFirst(responseHandler: { geometryEntity in
-            if let geometryEntity = geometryEntity as? GeometryClass {
+            if let geometryEntity = geometryEntity as? GeometryTestClass {
                 self.dataStore.remove(entity: geometryEntity, responseHandler: { removed in
                     expectation.fulfill()
                 }, errorHandler: { fault in
@@ -305,14 +305,14 @@ class GeometryTests: XCTestCase {
     
     private func checkPoint(_ point: BLPoint?) {
         XCTAssertNotNil(point)
-        XCTAssert(point?.x == 30 && point?.y == 10)
+        XCTAssert(point?.x == 10 && point?.y == 30)
         XCTAssert(point?.latitude == 30 && point?.longitude == 10)
     }
     
     private func checkUpdatedPoint(_ point: BLPoint?) {
         XCTAssertNotNil(point)
         XCTAssert(point?.x == 10 && point?.y == 40)
-        XCTAssert(point?.latitude == 10 && point?.longitude == 40)
+        XCTAssert(point?.latitude == 40 && point?.longitude == 10)
     }
     
     private func checkLineString(_ lineString: BLLineString?) {
@@ -321,11 +321,11 @@ class GeometryTests: XCTestCase {
             let point = lineString!.points[i]
             if i == 0 {
                 XCTAssert(point.x == 30 && point.y == 10)
-                XCTAssert(point.latitude == 30 && point.longitude == 10)
+                XCTAssert(point.latitude == 10 && point.longitude == 30)
             }
             else if i == 1 {
                 XCTAssert(point.x == 10 && point.y == 30)
-                XCTAssert(point.latitude == 10 && point.longitude == 30)
+                XCTAssert(point.latitude == 30 && point.longitude == 10)
             }
             else if i == 2 {
                 XCTAssert(point.x == 40 && point.y == 40)
@@ -348,11 +348,11 @@ class GeometryTests: XCTestCase {
             }
             else if i == 2 {
                 XCTAssert(point.x == 40 && point.y == 20)
-                XCTAssert(point.latitude == 40 && point.longitude == 20)
+                XCTAssert(point.latitude == 20 && point.longitude == 40)
             }
             else if i == 3 {
                 XCTAssert(point.x == 30 && point.y == 10)
-                XCTAssert(point.latitude == 30 && point.longitude == 10)
+                XCTAssert(point.latitude == 10 && point.longitude == 30)
             }
         }
     }
@@ -365,7 +365,7 @@ class GeometryTests: XCTestCase {
             let point = polygon!.boundary!.points[i]
             if i == 0 {
                 XCTAssert(point.x == 30 && point.y == 10)
-                XCTAssert(point.latitude == 30 && point.longitude == 10)
+                XCTAssert(point.latitude == 10 && point.longitude == 30)
             }
             else if i == 1 {
                 XCTAssert(point.x == 40 && point.y == 40)
@@ -373,22 +373,22 @@ class GeometryTests: XCTestCase {
             }
             else if i == 2 {
                 XCTAssert(point.x == 20 && point.y == 40)
-                XCTAssert(point.latitude == 20 && point.longitude == 40)
+                XCTAssert(point.latitude == 40 && point.longitude == 20)
             }
             else if i == 3 {
                 XCTAssert(point.x == 10 && point.y == 20)
-                XCTAssert(point.latitude == 10 && point.longitude == 20)
+                XCTAssert(point.latitude == 20 && point.longitude == 10)
             }
             else if i == 4 {
                 XCTAssert(point.x == 30 && point.y == 10)
-                XCTAssert(point.latitude == 30 && point.longitude == 10)
+                XCTAssert(point.latitude == 10 && point.longitude == 30)
             }
         }
         for i in 0..<polygon!.holes!.points.count {
             let point = polygon!.holes!.points[i]
             if i == 0 {
                 XCTAssert(point.x == 20 && point.y == 30)
-                XCTAssert(point.latitude == 20 && point.longitude == 30)
+                XCTAssert(point.latitude == 30 && point.longitude == 20)
             }
             else if i == 1 {
                 XCTAssert(point.x == 35 && point.y == 35)
@@ -396,11 +396,11 @@ class GeometryTests: XCTestCase {
             }
             else if i == 2 {
                 XCTAssert(point.x == 30 && point.y == 20)
-                XCTAssert(point.latitude == 30 && point.longitude == 20)
+                XCTAssert(point.latitude == 20 && point.longitude == 30)
             }
             else if i == 3 {
                 XCTAssert(point.x == 20 && point.y == 30)
-                XCTAssert(point.latitude == 20 && point.longitude == 30)
+                XCTAssert(point.latitude == 30 && point.longitude == 20)
             }
         }
     }
@@ -413,44 +413,44 @@ class GeometryTests: XCTestCase {
             let point = polygon!.boundary!.points[i]
             if i == 0 {
                 XCTAssert(point.x == 30 && point.y == 20)
-                XCTAssert(point.latitude == 30 && point.longitude == 20)
+                XCTAssert(point.latitude == 20 && point.longitude == 30)
             }
             else if i == 1 {
                 XCTAssert(point.x == 45 && point.y == 40)
-                XCTAssert(point.latitude == 45 && point.longitude == 40)
+                XCTAssert(point.latitude == 40 && point.longitude == 45)
             }
             else if i == 2 {
                 XCTAssert(point.x == 10 && point.y == 40)
-                XCTAssert(point.latitude == 10 && point.longitude == 40)
+                XCTAssert(point.latitude == 40 && point.longitude == 10)
             }
             else if i == 3 {
                 XCTAssert(point.x == 30 && point.y == 20)
-                XCTAssert(point.latitude == 30 && point.longitude == 20)
+                XCTAssert(point.latitude == 20 && point.longitude == 30)
             }
         }
     }
     
-    private func createGeometryClassEntity() -> GeometryClass {
-        let geometryClass = GeometryClass()
-        geometryClass.point = WKTParser.fromWkt("POINT (30 10)") as? BLPoint
-        geometryClass.lineString = WKTParser.fromWkt("LINESTRING (30 10, 10 30, 40 40)") as? BLLineString
-        geometryClass.polygon = WKTParser.fromWkt("POLYGON((30 10, 40 40, 20 40, 10 20, 30 10), (20 30, 35 35, 30 20, 20 30))") as? BLPolygon
+    private func createGeometryClassEntity() -> GeometryTestClass {
+        let geometryClass = GeometryTestClass()
+        geometryClass.point = BLPoint.fromWkt("POINT (10 30)")
+        geometryClass.lineString = BLLineString.fromWkt("LINESTRING (30 10, 10 30, 40 40)")
+        geometryClass.polygon = BLPolygon.fromWkt("POLYGON((30 10, 40 40, 20 40, 10 20, 30 10), (20 30, 35 35, 30 20, 20 30))")
         return geometryClass
     }
     
-    private func createGeometryClassEntityArray() -> [GeometryClass] {
-        var geometryClassArray = [GeometryClass]()
+    private func createGeometryClassEntityArray() -> [GeometryTestClass] {
+        var geometryClassArray = [GeometryTestClass]()
         
-        let geometryClass1 = GeometryClass()
-        geometryClass1.point = WKTParser.fromWkt("POINT (30 10)") as? BLPoint
-        geometryClass1.lineString = WKTParser.fromWkt("LINESTRING (30 10, 10 30, 40 40)") as? BLLineString
-        geometryClass1.polygon = WKTParser.fromWkt("POLYGON((30 10, 40 40, 20 40, 10 20, 30 10), (20 30, 35 35, 30 20, 20 30))") as? BLPolygon
+        let geometryClass1 = GeometryTestClass()
+        geometryClass1.point = BLPoint.fromWkt("POINT (30 10)")
+        geometryClass1.lineString = BLLineString.fromWkt("LINESTRING (30 10, 10 30, 40 40)")
+        geometryClass1.polygon = BLPolygon.fromWkt("POLYGON((30 10, 40 40, 20 40, 10 20, 30 10), (20 30, 35 35, 30 20, 20 30))")
         geometryClassArray.append(geometryClass1)
         
-        let geometryClass2 = GeometryClass()
-        geometryClass2.point = WKTParser.fromWkt("POINT (10 40)") as? BLPoint
-        geometryClass2.lineString = WKTParser.fromWkt("LINESTRING (10 10, 20 20, 10 40)") as? BLLineString
-        geometryClass2.polygon = WKTParser.fromWkt("POLYGON((40 40, 20 45, 45 30, 40 40), (20 35, 10 30, 10 10, 30 5, 45 20, 20 35))") as? BLPolygon
+        let geometryClass2 = GeometryTestClass()
+        geometryClass2.point = BLPoint.fromWkt("POINT (10 40)")
+        geometryClass2.lineString = BLLineString.fromWkt("LINESTRING (10 10, 20 20, 10 40)")
+        geometryClass2.polygon = BLPolygon.fromWkt("POLYGON((40 40, 20 45, 45 30, 40 40), (20 35, 10 30, 10 10, 30 5, 45 20, 20 35))")
         geometryClassArray.append(geometryClass2)
         
         return geometryClassArray

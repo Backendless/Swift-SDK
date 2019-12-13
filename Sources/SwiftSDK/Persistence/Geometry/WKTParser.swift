@@ -19,13 +19,13 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers public class WKTParser: NSObject {
+class WKTParser: NSObject {
     
-    public static let shared = WKTParser()
+    static let shared = WKTParser()
     
     private override init() { }
     
-    public static func fromWkt(_ wkt: String) -> BLGeometry? {
+    static func fromWkt(_ wkt: String) -> BLGeometry? {
         if wkt.contains(BLPoint.wktType) {
             return getPoint(wkt: wkt)
         }
@@ -58,9 +58,10 @@
             var coordinatesString: NSString?
             scanner.scanUpTo(")", into: &coordinatesString)
             let lineString = BLLineString()
-            if let pointsCoordinatesString = coordinatesString?.components(separatedBy: ", ") {
+            if let pointsCoordinatesString = coordinatesString?.components(separatedBy: ",") {
                 for pointCoordinatesString in pointsCoordinatesString {
-                    let pointsCoordinates = pointCoordinatesString.components(separatedBy: " ")
+                    var pointsCoordinates = pointCoordinatesString.components(separatedBy: " ")
+                    pointsCoordinates.removeAll(where: { $0.isEmpty })
                     if let xString = pointsCoordinates.first, let x = Double(xString),
                         let yString = pointsCoordinates.last, let y = Double(yString) {
                         lineString.points.append(BLPoint(x: x, y: y))

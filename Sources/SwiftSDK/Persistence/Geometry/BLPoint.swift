@@ -32,16 +32,24 @@
     public var y: Double = 0
     
     public var latitude: Double {
-        get { return x }
-        set { x = newValue }
-    }
-    
-    public var longitude: Double {
         get { return y }
         set { y = newValue }
     }
     
+    public var longitude: Double {
+        get { return x }
+        set { x = newValue }
+    }
+    
     static let className = "com.backendless.persistence.Point"
+    
+    public static func fromWkt(_ wkt: String) -> BLPoint? {
+        return WKTParser.fromWkt(wkt) as? BLPoint
+    }
+    
+    public static func fromGeoJson(_ geoJson: String) -> BLPoint? {
+        return GeoJSONParser.fromGeoJson(geoJson) as? BLPoint
+    }
     
     public override init() { }
     
@@ -50,9 +58,9 @@
         self.y = y
     }
     
-    public init(latitude: Double, longitude: Double) {
-        self.x = latitude
-        self.y = longitude
+    public init(longitude: Double, latitude: Double) {
+        self.x = longitude
+        self.y = latitude
     }
     
     public func jsonCoordinatePairs() -> String? {
@@ -63,7 +71,7 @@
         return "(\(x) \(y))"
     }
     
-    public func asGeoJson() -> String? {
+    public func asGeoJson() -> [String : Any]? {
         return GeoJSONParser.asGeoJson(geometry: self)
     }
     

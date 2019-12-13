@@ -484,59 +484,63 @@ class PersistenceServiceUtils: NSObject {
                 let columnToPropertyMappings = mappings.getColumnToPropertyMappings(className: entityClassName)
                 
                 for i : UInt32 in 0..<outCount {
-                    if let key = NSString(cString: property_getName(properties[Int(i)]), encoding: String.Encoding.utf8.rawValue) as String?, let value = (entity as! NSObject).value(forKey: key) {
-                        
-                        var resultValue = value
-                        
-                        if !(value is String), !(value is NSNumber), !(value is NSNull), !(value is BLGeometry) {
-                            if let arrayValue = value as? [Any] {
-                                var resultArray = [Any]()
-                                for arrayVal in arrayValue {
-                                    if !(arrayVal is Bool), !(arrayVal is Int), !(arrayVal is Float), !(arrayVal is Double), !(arrayVal is Character), !(arrayVal is String), !(arrayVal is [String : Any]) {
-                                        resultArray.append(entityToDictionaryWithClassProperty(entity: arrayVal))
+                    if let key = NSString(cString: property_getName(properties[Int(i)]), encoding: String.Encoding.utf8.rawValue) as String? {
+                        if let value = (entity as! NSObject).value(forKey: key) {
+                            var resultValue = value
+                            if !(value is String), !(value is NSNumber), !(value is NSNull), !(value is BLGeometry) {
+                                if let arrayValue = value as? [Any] {
+                                    var resultArray = [Any]()
+                                    for arrayVal in arrayValue {
+                                        if !(arrayVal is Bool), !(arrayVal is Int), !(arrayVal is Float), !(arrayVal is Double), !(arrayVal is Character), !(arrayVal is String), !(arrayVal is [String : Any]) {
+                                            resultArray.append(entityToDictionaryWithClassProperty(entity: arrayVal))
+                                        }
+                                        else {
+                                            resultArray.append(arrayVal)
+                                        }
                                     }
-                                    else {
-                                        resultArray.append(arrayVal)
-                                    }
+                                    resultValue = resultArray
                                 }
-                                resultValue = resultArray
-                            }
-                            else if let dictionaryValue = value as? [String : Any] {
-                                var resultDictionary = [String : Any]()
-                                for (key, dictionaryVal) in dictionaryValue {
-                                    if !(dictionaryVal is String), !(dictionaryVal is NSNumber), !(dictionaryVal is NSNull) {
-                                        resultDictionary[key] = entityToDictionaryWithClassProperty(entity: dictionaryVal)
+                                else if let dictionaryValue = value as? [String : Any] {
+                                    var resultDictionary = [String : Any]()
+                                    for (key, dictionaryVal) in dictionaryValue {
+                                        if !(dictionaryVal is String), !(dictionaryVal is NSNumber), !(dictionaryVal is NSNull) {
+                                            resultDictionary[key] = entityToDictionaryWithClassProperty(entity: dictionaryVal)
+                                        }
+                                        else {
+                                            resultDictionary[key] = dictionaryVal
+                                        }
                                     }
-                                    else {
-                                        resultDictionary[key] = dictionaryVal
-                                    }
+                                    resultValue = resultDictionary
                                 }
-                                resultValue = resultDictionary
+                                else if let dateValue = value as? Date {
+                                    resultValue = dataTypesUtils.dateToInt(date: dateValue)
+                                }
+                                else if let backendlessFileValue = value as? BackendlessFile {
+                                    resultValue = backendlessFileValue.fileUrl ?? ""
+                                }
+                                else {
+                                    resultValue = entityToDictionaryWithClassProperty(entity: value)
+                                }
                             }
-                            else if let dateValue = value as? Date {
-                                resultValue = dataTypesUtils.dateToInt(date: dateValue)
-                            }
-                            else if let backendlessFileValue = value as? BackendlessFile {
-                                resultValue = backendlessFileValue.fileUrl ?? ""
+                            
+                            if let mappedKey = columnToPropertyMappings.getKey(forValue: key) {
+                                entityDictionary[mappedKey] = resultValue
                             }
                             else {
-                                resultValue = entityToDictionaryWithClassProperty(entity: value)
+                                entityDictionary[key] = resultValue
+                            }
+                            if let objectId = storedObjects.getObjectId(forObject: entity as! AnyHashable) {
+                                entityDictionary["objectId"] = objectId
                             }
                         }
-                        
-                        if let mappedKey = columnToPropertyMappings.getKey(forValue: key) {
-                            entityDictionary[mappedKey] = resultValue
-                        }
-                        else {
-                            entityDictionary[key] = resultValue
-                        }
-                        if let objectId = storedObjects.getObjectId(forObject: entity as! AnyHashable) {
-                            entityDictionary["objectId"] = objectId
+                        else if (entity as! NSObject).value(forKey: key) == nil {
+                            entityDictionary[key] = NSNull()
                         }
                     }
                 }
             }
         }
+        entityDictionary["objectId"] = getObjectId(entity: entity)
         return entityDictionary
     }
     
@@ -597,7 +601,7 @@ class PersistenceServiceUtils: NSObject {
             for dictionaryField in dictionary.keys {
                 if !(dictionary[dictionaryField] is NSNull) {
                     if columnToPropertyMappings.keys.contains(dictionaryField) {
-                                                
+                        
                         let mappedPropertyName = columnToPropertyMappings[dictionaryField]!
                         
                         if let arrayValue = dictionary[dictionaryField] as? [Any] {
@@ -641,7 +645,7 @@ class PersistenceServiceUtils: NSObject {
                         }
                     }
                         
-                    // no mappings
+                        // no mappings
                     else if Array(entityFields.keys).contains(dictionaryField) {
                         if let relationDictionary = dictionary[dictionaryField] as? [String: Any] {
                             if let _className = relationDictionary["___class"] as? String {
@@ -738,25 +742,25 @@ class PersistenceServiceUtils: NSObject {
         var resultDictionary = dictionary
         for (key, value) in dictionary {
             if let dictValue = value as? [String : Any] {
-                if dictValue["___class"] as? String == BLPoint.className {
+                if dictValue["___class"] as? String == BLPoint.className || dictValue["type"] as? String == BLPoint.geoJsonType {
                     resultDictionary[key] = GeoJSONParser.dictionaryToPoint(dictValue)
                 }
-                else if dictValue["___class"] as? String == BLLineString.className {
+                else if dictValue["___class"] as? String == BLLineString.className || dictValue["type"] as? String == BLLineString.geoJsonType {
                     resultDictionary[key] = GeoJSONParser.dictionaryToLineString(dictValue)
                 }
-                else if dictValue["___class"] as? String == BLPolygon.className {
+                else if dictValue["___class"] as? String == BLPolygon.className || dictValue["type"] as? String == BLPolygon.geoJsonType {
                     resultDictionary[key] = GeoJSONParser.dictionaryToPolygon(dictValue)
                 }
             }
             else if let dictValue = value as? String {
                 if dictValue.contains(BLPoint.wktType) {
-                    resultDictionary[key] = WKTParser.fromWkt(dictValue) as? BLPoint
+                    resultDictionary[key] = BLPoint.fromWkt(dictValue)
                 }
                 else if dictValue.contains(BLLineString.wktType) {
-                    resultDictionary[key] = WKTParser.fromWkt(dictValue) as? BLLineString
+                    resultDictionary[key] = BLLineString.fromWkt(dictValue)
                 }
                 else if dictValue.contains(BLPolygon.wktType) {
-                    resultDictionary[key] = WKTParser.fromWkt(dictValue) as? BLPolygon
+                    resultDictionary[key] = BLPolygon.fromWkt(dictValue)
                 }
             }
         }
@@ -767,15 +771,15 @@ class PersistenceServiceUtils: NSObject {
         var resultDictionary = dictionary
         for (key, value) in dictionary {            
             if let point = value as? BLPoint {
-                resultDictionary[key] = point.asWkt()
+                resultDictionary[key] = point.asGeoJson()
             }
             else if let lineString = value as? BLLineString {
-                resultDictionary[key] = lineString.asWkt()
+                resultDictionary[key] = lineString.asGeoJson()
             }
             else if let polygon = value as? BLPolygon {
-                resultDictionary[key] = polygon.asWkt()
+                resultDictionary[key] = polygon.asGeoJson()
             }
-        }
+        }        
         return resultDictionary
     }
 }

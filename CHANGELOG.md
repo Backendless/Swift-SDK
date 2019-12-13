@@ -1,5 +1,9 @@
 # RELEASE HISTORY
 
+### 5.6.x / December ?, 2019
+* fixed the custom service invocation nil response
+* added Spatial Data support
+
 ### 5.6.6 / December 6, 2019
 * fixed the geolocation search in radius issue when all category points returned
 

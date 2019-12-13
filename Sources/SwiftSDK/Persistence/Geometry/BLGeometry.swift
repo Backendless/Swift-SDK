@@ -25,6 +25,6 @@ public protocol BLGeometry {
     
     func jsonCoordinatePairs() -> String?
     func wktCoordinatePairs() -> String?
-    func asGeoJson() -> String?
+    func asGeoJson() -> [String : Any]?
     func asWkt() -> String?
 }
