@@ -51,7 +51,7 @@
         return GeoJSONParser.fromGeoJson(geoJson) as? BLPoint
     }
     
-    public override init() { }
+    override init() { }
     
     public init(x: Double, y: Double) {
         self.x = x

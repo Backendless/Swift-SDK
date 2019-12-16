@@ -65,7 +65,7 @@ class GeometryTests: XCTestCase {
     }
     
     func test_03_createPointWithLatLong() {
-        let point = BLPoint(latitude: 10, longitude: 30)
+        let point = BLPoint(longitude: 10, latitude: 30)
         checkPoint(point)
     }
     
