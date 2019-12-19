@@ -57,7 +57,7 @@ class WKTParser: NSObject {
         if scanner.scanString(BLLineString.wktType, into: nil) && scanner.scanString("(", into: nil) {
             var coordinatesString: NSString?
             scanner.scanUpTo(")", into: &coordinatesString)
-            let lineString = BLLineString()
+            let lineString = BLLineString(points: [BLPoint]())
             if let pointsCoordinatesString = coordinatesString?.components(separatedBy: ",") {
                 for pointCoordinatesString in pointsCoordinatesString {
                     var pointsCoordinates = pointCoordinatesString.components(separatedBy: " ")
@@ -85,7 +85,7 @@ class WKTParser: NSObject {
             
             if let lineStringsStr = coordinatesString?.components(separatedBy: "), ") {
                 if var boundaryString = lineStringsStr.first {
-                    let lineString = BLLineString()
+                    let lineString = BLLineString(points: [BLPoint]())
                     boundaryString = boundaryString.replacingOccurrences(of: "(", with: "")
                     boundaryString = boundaryString.replacingOccurrences(of: ")", with: "")
                     let points = boundaryString.components(separatedBy: ", ")
@@ -101,7 +101,7 @@ class WKTParser: NSObject {
                 
                 if lineStringsStr.count == 2 {
                     var holesString = lineStringsStr[1]
-                    let lineString = BLLineString()
+                    let lineString = BLLineString(points: [BLPoint]())
                     holesString = holesString.replacingOccurrences(of: "(", with: "")
                     holesString = holesString.replacingOccurrences(of: ")", with: "")
                     let points = holesString.components(separatedBy: ", ")

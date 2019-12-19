@@ -40,8 +40,6 @@
         return GeoJSONParser.fromGeoJson(geoJson) as? BLLineString
     }
     
-    override init() { }
-    
     public init(points: [BLPoint]) {
         self.points = points
     }

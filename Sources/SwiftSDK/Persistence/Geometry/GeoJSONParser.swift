@@ -52,8 +52,13 @@
     }
     
     static func dictionaryToPoint(_ pointDict: [String : Any]) -> BLPoint? {
+        for key in pointDict.keys {
+            if key != "type" && key != "coordinates" && key != "srsId" {
+                return nil
+            }
+        }        
         if let type = pointDict["type"] as? String, type == BLPoint.geoJsonType {
-            let point = BLPoint()
+            let point = BLPoint(x: 0, y: 0)
             guard let coordinates = pointDict["coordinates"] as? [Double] else {
                 return nil
             }
@@ -82,7 +87,7 @@
     
     static func dictionaryToLineString(_ lineStringDict: [String : Any]) -> BLLineString? {
         if let type = lineStringDict["type"] as? String, type == BLLineString.geoJsonType {
-            let lineString = BLLineString()
+            let lineString = BLLineString(points: [BLPoint]())
             guard let coordinates = lineStringDict["coordinates"] as? [[Double]] else {
                 return nil
             }
@@ -112,7 +117,7 @@
     
     static func dictionaryToPolygon(_ polygonDict: [String : Any]) -> BLPolygon? {
         if let type = polygonDict["type"] as? String, type == BLPolygon.geoJsonType {
-            let polygon = BLPolygon()
+            let polygon = BLPolygon(boundary: BLLineString(points: [BLPoint]()), holes: nil)
             guard let coordinates = polygonDict["coordinates"] as? [[[Double]]] else {
                 return nil
             }

@@ -41,8 +41,6 @@
         return GeoJSONParser.fromGeoJson(geoJson) as? BLPolygon
     }
     
-    override init() { }
-    
     public init(boundary: BLLineString, holes: BLLineString?) {
         self.boundary = boundary
         self.holes = holes

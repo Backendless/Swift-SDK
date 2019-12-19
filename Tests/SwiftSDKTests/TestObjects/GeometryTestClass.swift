@@ -23,6 +23,7 @@
 import Foundation
 
 @objcMembers class GeometryTestClass: NSObject {
+    var name: String?
     var point: BLPoint?
     var lineString: BLLineString?
     var polygon: BLPolygon?
