@@ -84,6 +84,7 @@
 		5E7E8A6021ECC94A00AA04E1 /* UserDefaultsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7E8A5F21ECC94A00AA04E1 /* UserDefaultsHelper.swift */; };
 		5E81B28D2236A8300015AEDC /* RTMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E81B28C2236A8300015AEDC /* RTMethod.swift */; };
 		5E84136321B5265200869794 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E84136221B5265200869794 /* UserService.swift */; };
+		5E843AB523ACC61B0044CE17 /* BLLineStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E843AB423ACC61B0044CE17 /* BLLineStringTests.swift */; };
 		5E84E87A223158EA008B3F05 /* PublishingAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E84E879223158EA008B3F05 /* PublishingAPITests.swift */; };
 		5E84E87C22315E12008B3F05 /* EmailBodyparts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E84E87B22315E12008B3F05 /* EmailBodyparts.swift */; };
 		5E8A2A22226EF7DA007C2BAA /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8A2A21226EF7DA007C2BAA /* CacheService.swift */; };
@@ -225,6 +226,7 @@
 		5E7E8A5F21ECC94A00AA04E1 /* UserDefaultsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsHelper.swift; sourceTree = "<group>"; };
 		5E81B28C2236A8300015AEDC /* RTMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTMethod.swift; sourceTree = "<group>"; };
 		5E84136221B5265200869794 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
+		5E843AB423ACC61B0044CE17 /* BLLineStringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLLineStringTests.swift; sourceTree = "<group>"; };
 		5E84E879223158EA008B3F05 /* PublishingAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishingAPITests.swift; sourceTree = "<group>"; };
 		5E84E87B22315E12008B3F05 /* EmailBodyparts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailBodyparts.swift; sourceTree = "<group>"; };
 		5E8A2A21226EF7DA007C2BAA /* CacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheService.swift; sourceTree = "<group>"; };
@@ -661,6 +663,7 @@
 			isa = PBXGroup;
 			children = (
 				5EAA20B5239953E600A39A38 /* BLPointTests.swift */,
+				5E843AB423ACC61B0044CE17 /* BLLineStringTests.swift */,
 			);
 			path = Geometry;
 			sourceTree = "<group>";
@@ -1053,6 +1056,7 @@
 			files = (
 				5E7534682220579100BC31D4 /* EventHandlerForClassTests.swift in Sources */,
 				5AFE8E6621E8E5C00003477B /* DataStoreFactoryTests.swift in Sources */,
+				5E843AB523ACC61B0044CE17 /* BLLineStringTests.swift in Sources */,
 				5AFE8E6221E8E2620003477B /* MapDrivenDataStoreTests.swift in Sources */,
 				5E4CE08622536B73004571DA /* FileServiceTests.swift in Sources */,
 				5E5716E82242803A00C7B048 /* SharedObjectTests.swift in Sources */,

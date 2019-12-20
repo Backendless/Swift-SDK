@@ -50,11 +50,10 @@ class BLPointTests: XCTestCase {
         Backendless.shared.data.of(GeometryTestClass.self).removeBulk(whereClause: nil, responseHandler: { removedObjects in }, errorHandler: { fault in })
     }
     
-    func test_PT1() {
+    func testPT1() {
         let expectation = self.expectation(description: "PASSED: geometry.pointCreation")
-        let point = BLPoint(x: -87.52683788, y: 41.85716752)
         let geometryObject = GeometryTestClass()
-        geometryObject.point = point
+        geometryObject.point = BLPoint(x: -87.52683788, y: 41.85716752)
         Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
             XCTAssertNotNil((savedObject as? GeometryTestClass)?.point)
@@ -66,11 +65,10 @@ class BLPointTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_PT2() {
+    func testPT2() {
         let expectation = self.expectation(description: "PASSED: geometry.pointCreationWithBoundary")
-        let point = BLPoint(x: 180, y: 90)
         let geometryObject = GeometryTestClass()
-        geometryObject.point = point
+        geometryObject.point = BLPoint(x: 180, y: 90)
         Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
             XCTAssertNotNil((savedObject as? GeometryTestClass)?.point)
@@ -82,11 +80,10 @@ class BLPointTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_PT3() {
+    func testPT3() {
         let expectation = self.expectation(description: "PASSED: geometry.pointCreationWithBoundary")
-        let point = BLPoint(x: -180, y: -90)
         let geometryObject = GeometryTestClass()
-        geometryObject.point = point
+        geometryObject.point = BLPoint(x: -180, y: -90)
         Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
             XCTAssertNotNil((savedObject as? GeometryTestClass)?.point)
@@ -98,11 +95,10 @@ class BLPointTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_PT4() {
+    func testPT4() {
         let expectation = self.expectation(description: "PASSED: geometry.pointCreationWithBoundary")
-        let point = BLPoint(x: 180, y: -90)
         let geometryObject = GeometryTestClass()
-        geometryObject.point = point
+        geometryObject.point = BLPoint(x: 180, y: -90)
         Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
             XCTAssertNotNil((savedObject as? GeometryTestClass)?.point)
@@ -114,11 +110,10 @@ class BLPointTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_PT5() {
+    func testPT5() {
         let expectation = self.expectation(description: "PASSED: geometry.pointCreationWithBoundary")
-        let point = BLPoint(x: -180, y: 90)
         let geometryObject = GeometryTestClass()
-        geometryObject.point = point
+        geometryObject.point = BLPoint(x: -180, y: 90)
         Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
             XCTAssertNotNil((savedObject as? GeometryTestClass)?.point)
@@ -130,56 +125,10 @@ class BLPointTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    // ⚠️
-    /*func test_PT6() {
-     let expectation = self.expectation(description: "PASSED: geometry.pointCreationWithBoundary")
-     let point = BLPoint(x: -180.1, y: -90.1)
-     let geometryObject = GeometryTestClass()
-     geometryObject.point = point
-     Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
-     XCTFail("Lon and lat values are greater than limits")
-     }, errorHandler: { fault in
-     XCTAssertNotNil(fault)
-     expectation.fulfill()
-     })
-     waitForExpectations(timeout: timeout, handler: nil)
-     }
-     
-     // ⚠️
-     func test_PT7() {
-     let expectation = self.expectation(description: "PASSED: geometry.pointCreationWithBoundary")
-     let point = BLPoint(x: 180.1, y: 90)
-     let geometryObject = GeometryTestClass()
-     geometryObject.point = point
-     Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
-     XCTFail("Lon value is greater than limits")
-     }, errorHandler: { fault in
-     XCTAssertNotNil(fault)
-     expectation.fulfill()
-     })
-     waitForExpectations(timeout: timeout, handler: nil)
-     }
-     
-     // ⚠️
-     func test_PT8() {
-     let expectation = self.expectation(description: "PASSED: geometry.pointCreationWithBoundary")
-     let point = BLPoint(x: 78, y: 90.1)
-     let geometryObject = GeometryTestClass()
-     geometryObject.point = point
-     Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
-     XCTFail("Lat value is greater than limits")
-     }, errorHandler: { fault in
-     XCTAssertNotNil(fault)
-     expectation.fulfill()
-     })
-     waitForExpectations(timeout: timeout, handler: nil)
-     }*/
-    
-    func test_PT9() {
+    func testPT6() {
         let expectation = self.expectation(description: "PASSED: geometry.pointCreationWithBoundary")
-        let point = BLPoint(x: 122.111111111, y: 78.123456785)
         let geometryObject = GeometryTestClass()
-        geometryObject.point = point
+        geometryObject.point = BLPoint(x: -180.1, y: -90.1)
         Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
             XCTAssertNotNil((savedObject as? GeometryTestClass)?.point)
@@ -191,12 +140,10 @@ class BLPointTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_PT13() {
-        let expectation = self.expectation(description: "PASSED: geometry.pointCreationFromGeoJSON")
-        let pointJson = "{\"type\": \"Point\", \"coordinates\": [37.6189, 55.752917]}"
-        let point = BLPoint.fromGeoJson(pointJson)
+    func testPT7() {
+        let expectation = self.expectation(description: "PASSED: geometry.pointCreationWithBoundary")
         let geometryObject = GeometryTestClass()
-        geometryObject.point = point
+        geometryObject.point = BLPoint(x: 180.1, y: 90)
         Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
             XCTAssertNotNil((savedObject as? GeometryTestClass)?.point)
@@ -208,57 +155,147 @@ class BLPointTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_PT14() {
-        let pointJson = "{\"type\": \"null\", \"coordinates\": [37.6189, 55.752917]}"
-        let point = BLPoint.fromGeoJson(pointJson)
-        XCTAssertNil(point)
+    func testPT8() {
+        let expectation = self.expectation(description: "PASSED: geometry.pointCreationWithBoundary")
+        let geometryObject = GeometryTestClass()
+        geometryObject.point = BLPoint(x: 78, y: 90.1)
+        Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
+            XCTAssertNotNil(savedObject)
+            XCTAssertNotNil((savedObject as? GeometryTestClass)?.point)
+            expectation.fulfill()
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_PT16() {
-        let pointJson = "{\"type\": \"Point\"}"
-        let point = BLPoint.fromGeoJson(pointJson)
-        XCTAssertNil(point)
+    func testPT9() {
+        let expectation = self.expectation(description: "PASSED: geometry.pointCreationWithBoundary")
+        let geometryObject = GeometryTestClass()
+        geometryObject.point = BLPoint(x: 122.111111111, y: 78.123456785)
+        Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
+            XCTAssertNotNil(savedObject)
+            XCTAssertNotNil((savedObject as? GeometryTestClass)?.point)
+            expectation.fulfill()
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_PT17() {
-        let pointJson = "{\"type\": \"Point\", \"coordinates\": []}"
-        let point = BLPoint.fromGeoJson(pointJson)
-        XCTAssertNil(point)
+    func testPT13() {
+        let expectation = self.expectation(description: "PASSED: geometry.pointCreationFromGeoJson")
+        let geometryObject = GeometryTestClass()
+        do {
+            geometryObject.point = try BLPoint.fromGeoJson("{\"type\": \"Point\", \"coordinates\": [37.6189, 55.752917]}")
+        }
+        catch {
+            XCTFail(error.localizedDescription)
+        }
+        Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
+            XCTAssertNotNil(savedObject)
+            XCTAssertNotNil((savedObject as? GeometryTestClass)?.point)
+            expectation.fulfill()
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_PT18() {
-        let pointJson = "querty1234"
-        let point = BLPoint.fromGeoJson(pointJson)
-        XCTAssertNil(point)
+    func testPT14() {
+        do {
+            let _ = try BLPoint.fromGeoJson("{\"type\": \"null\", \"coordinates\": [37.6189, 55.752917]}")
+        }
+        catch {
+            XCTAssert(error is Fault)
+            XCTAssert(error.localizedDescription == geoParserErrors.wrongFormat)
+        }
     }
     
-    func test_PT19() {
-        // ⚠️
-        /*let pointJson = "{\"type\": \"Point\", \"coordinates\": [180.6189, 180.752917]}"
-         let point = BLPoint.fromGeoJson(pointJson)
-         XCTAssertNil(point)*/
+    func testPT15() {
+        do {
+            let _ = try BLPoint.fromGeoJson("{}")
+        }
+        catch {
+            XCTAssert(error is Fault)
+            XCTAssert(error.localizedDescription == geoParserErrors.wrongFormat)
+        }
     }
     
-    func test_PT20() {
-        let pointJson = "{\"type\": \"Point\", \"name\": \"Point\", \"coordinates\": [37.6189, 55.752917]}"
-        let point = BLPoint.fromGeoJson(pointJson)
-        XCTAssertNil(point)
+    func testPT16() {
+        do {
+            let _ = try BLPoint.fromGeoJson("{\"type\": \"Point\"}")
+        }
+        catch {
+            XCTAssert(error is Fault)
+            XCTAssert(error.localizedDescription == geoParserErrors.wrongFormat)
+        }
     }
     
-    func test_PT21() {
-        // ⚠️
-        /*pointJson = "{\"type\": \"Point\", \"coordinates\": [198.56, 55.752917]}"
-         point = BLPoint.fromGeoJson(pointJson)
-         XCTAssertNil(point)*/
+    func testPT17() {
+        do {
+            let _ = try BLPoint.fromGeoJson("{\"type\": \"Point\", \"coordinates\": []}]")
+        }
+        catch {
+            XCTAssert(error is Fault)
+            XCTAssert(error.localizedDescription == geoParserErrors.wrongFormat)
+        }
     }
     
-    func test_PT22() {
-        let pointJson = "{\"type\": \"Point\", \"coordinates\": [null, 55.752917]}"
-        let point = BLPoint.fromGeoJson(pointJson)
-        XCTAssertNil(point)
+    func testPT18() {
+        do {
+            let _ = try BLPoint.fromGeoJson("qwerty1234")
+        }
+        catch {
+            XCTAssert(error is Fault)
+            XCTAssert(error.localizedDescription == geoParserErrors.wrongFormat)
+        }
     }
     
-    func test_PT23() {
+    func testPT19() {
+        do {
+            let _ = try BLPoint.fromGeoJson("{\"type\": \"Point\", \"coordinates\": [180.6189, 180.752917]}")
+        }
+        catch {
+            XCTAssert(error is Fault)
+            XCTAssert(error.localizedDescription == geoParserErrors.wrongFormat)
+        }
+    }
+    
+    func testPT20() {
+        do {
+            let _ = try BLPoint.fromGeoJson("{\"type\": \"Point\", \"name\": \"Point\", \"coordinates\": [37.6189, 55.752917]}")
+        }
+        catch {
+            XCTAssert(error is Fault)
+            XCTAssert(error.localizedDescription == geoParserErrors.wrongFormat)
+        }
+    }
+    
+    func testPT21() {
+        do {
+            let _ = try BLPoint.fromGeoJson("{\"type\": \"Point\", \"name\": \"Point\", \"coordinates\": [198.56, 55.752917]}")
+        }
+        catch {
+            XCTAssert(error is Fault)
+            XCTAssert(error.localizedDescription == geoParserErrors.wrongFormat)
+        }
+    }
+    
+    func testPT22() {
+        do {
+            let _ = try BLPoint.fromGeoJson("{\"type\": \"Point\", \"coordinates\": [null, 55.752917]}")
+        }
+        catch {
+            XCTAssert(error is Fault)
+            XCTAssert(error.localizedDescription == geoParserErrors.nullLatLong)
+        }
+    }
+    
+    func testPT23() {
         let expectation = self.expectation(description: "PASSED: geometry.pointBulkCreation")
         let geometryObject1 = GeometryTestClass()
         geometryObject1.point = BLPoint(x: -87.52683788, y: 41.85716752)
@@ -274,9 +311,8 @@ class BLPointTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_PT24() {
-        // ⚠️
-        /*let expectation = self.expectation(description: "PASSED: geometry.pointBulkCreationWithBoundary")
+    func testPT24() {
+        let expectation = self.expectation(description: "PASSED: geometry.pointBulkCreationWithBoundary")
         let geometryObject1 = GeometryTestClass()
         geometryObject1.point = BLPoint(x: -87.52683788, y: 41.85716752)
         let geometryObject2 = GeometryTestClass()
@@ -288,14 +324,14 @@ class BLPointTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: timeout, handler: nil)*/
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_PT25() {
-        let expectation = self.expectation(description: "PASSED: geometry.pointBulkCreationWithNullValues")
+    func testPT25() {
+        let expectation = self.expectation(description: "PASSED: geometry.pointBulkCreation")
         let geometryObject1 = GeometryTestClass()
+        geometryObject1.point = BLPoint(x: -180.1, y: -90.1)
         let geometryObject2 = GeometryTestClass()
-        geometryObject2.point = BLPoint(x: -23.523788, y: 67.752)
         Backendless.shared.data.of(GeometryTestClass.self).createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
             XCTAssert(createdIds.count == 2)
             expectation.fulfill()
@@ -306,12 +342,17 @@ class BLPointTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_PT27() {
-        let expectation = self.expectation(description: "PASSED: geometry.pointBulkCreationFromGeoJSON")
+    func testPT27() {
+        let expectation = self.expectation(description: "PASSED: geometry.pointBulkCreationFromGeoJson")
         let geometryObject1 = GeometryTestClass()
-        geometryObject1.point = BLPoint.fromGeoJson("{\"type\": \"Point\", \"coordinates\": [37.6189, 55.752917]}")
         let geometryObject2 = GeometryTestClass()
-        geometryObject2.point = BLPoint.fromGeoJson("{\"type\": \"Point\", \"coordinates\": [37.6189, 55.752917]}")
+        do {
+            geometryObject1.point = try BLPoint.fromGeoJson("{\"type\": \"Point\", \"coordinates\": [-87.52683788, 41.85716752]}")
+            geometryObject2.point = try BLPoint.fromGeoJson("{\"type\": \"Point\", \"coordinates\": [-23.523788, 67.752]}")
+        }
+        catch {
+            XCTFail(error.localizedDescription)
+        }
         Backendless.shared.data.of(GeometryTestClass.self).createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
             XCTAssert(createdIds.count == 2)
             expectation.fulfill()
@@ -322,10 +363,10 @@ class BLPointTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_PT31() {
+    func testPT31() {
         let expectation = self.expectation(description: "PASSED: geometry.pointUpdate")
         let geometryObject = GeometryTestClass()
-        geometryObject.point = BLPoint(x: -23.523788, y: 67.752)
+        geometryObject.point = BLPoint(x: -87.52683788, y: 41.85716752)
         Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
             XCTAssertNotNil((savedObject as? GeometryTestClass)?.point)
@@ -333,8 +374,6 @@ class BLPointTests: XCTestCase {
             Backendless.shared.data.of(GeometryTestClass.self).save(entity: savedObject, responseHandler: { updatedObject in
                 XCTAssertNotNil(updatedObject)
                 XCTAssertNotNil((updatedObject as? GeometryTestClass)?.point)
-                XCTAssertTrue((updatedObject as! GeometryTestClass).point?.latitude == 1)
-                XCTAssertTrue((updatedObject as! GeometryTestClass).point?.longitude == 1)
                 expectation.fulfill()
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
@@ -347,11 +386,10 @@ class BLPointTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_PT32() {
-        // ⚠️
-        /*let expectation = self.expectation(description: "PASSED: geometry.pointUpdateWithBoundary")
+    func testPT32() {
+        let expectation = self.expectation(description: "PASSED: geometry.pointUpdateWithBoundary")
         let geometryObject = GeometryTestClass()
-        geometryObject.point = BLPoint(x: -23.523788, y: 67.752)
+        geometryObject.point = BLPoint(x: -87.52683788, y: 41.85716752)
         Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
             XCTAssertNotNil((savedObject as? GeometryTestClass)?.point)
@@ -359,8 +397,6 @@ class BLPointTests: XCTestCase {
             Backendless.shared.data.of(GeometryTestClass.self).save(entity: savedObject, responseHandler: { updatedObject in
                 XCTAssertNotNil(updatedObject)
                 XCTAssertNotNil((updatedObject as? GeometryTestClass)?.point)
-                XCTAssertTrue((updatedObject as! GeometryTestClass).point?.latitude == 1)
-                XCTAssertTrue((updatedObject as! GeometryTestClass).point?.longitude == 1)
                 expectation.fulfill()
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
@@ -370,41 +406,20 @@ class BLPointTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: timeout, handler: nil)*/
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_PT33() {
-        // ⚠️
-        /*let expectation = self.expectation(description: "PASSED: geometry.pointBulkUpdate")
-        let geometryObject1 = GeometryTestClass()
-        geometryObject1.name = "point"
-        geometryObject1.point = BLPoint(x: -23.523788, y: 67.752)
-        let geometryObject2 = GeometryTestClass()
-        geometryObject2.name = "point"
-        geometryObject2.point = BLPoint(x: -23.523788, y: 67.752)
-        Backendless.shared.data.of(GeometryTestClass.self).createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { saved in
-            Backendless.shared.data.of(GeometryTestClass.self).updateBulk(whereClause: "name = 'point'", changes: ["point": BLPoint(longitude: 54.5465464, latitude: 34.565656)], responseHandler: { updatedCount in
-                XCTAssert(updatedCount == 2)
-                expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
-                XCTFail("\(fault.code): \(fault.message!)")
-            })
-        }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
-            XCTFail("\(fault.code): \(fault.message!)")
-        })
-        waitForExpectations(timeout: timeout, handler: nil)*/
-    }
-    
-    func test_PT39() {
+    func testPT39() {
         let expectation = self.expectation(description: "PASSED: geometry.pointDelete")
         let geometryObject = GeometryTestClass()
         geometryObject.point = BLPoint(x: -87.52683788, y: 41.85716752)
         Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
-            Backendless.shared.data.of(GeometryTestClass.self).remove(entity: savedObject, responseHandler: { removed in
-                XCTAssertTrue(removed > 0)
+            XCTAssertNotNil((savedObject as? GeometryTestClass)?.point)
+            (savedObject as? GeometryTestClass)?.point = nil
+            Backendless.shared.data.of(GeometryTestClass.self).save(entity: savedObject, responseHandler: { updatedObject in
+                XCTAssertNotNil(updatedObject)
+                XCTAssertNil((updatedObject as? GeometryTestClass)?.point)
                 expectation.fulfill()
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
@@ -417,18 +432,24 @@ class BLPointTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_PT40() {
+    // ⚠️
+    /*func testPT41() {
         let expectation = self.expectation(description: "PASSED: geometry.pointBulkDelete")
         let geometryObject1 = GeometryTestClass()
+        geometryObject1.point = BLPoint(x: 10, y: 10)
         geometryObject1.name = "point"
-        geometryObject1.point = BLPoint(x: -87.52683788, y: 41.85716752)
         let geometryObject2 = GeometryTestClass()
+        geometryObject2.point = BLPoint(x: 10, y: 10)
         geometryObject2.name = "point"
-        geometryObject2.point = BLPoint(x: -87.52683788, y: 41.85716752)
-        Backendless.shared.data.of(GeometryTestClass.self).createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
-            XCTAssert(createdIds.count == 2)
-            Backendless.shared.data.of(GeometryTestClass.self).removeBulk(whereClause: "name = 'point'", responseHandler: { removed in
-                XCTAssertTrue(removed == 2)
+        let geometryObject3 = GeometryTestClass()
+        geometryObject3.point = BLPoint(x: 10, y: 10)
+        geometryObject3.name = "ppoint"
+        let geometryObject4 = GeometryTestClass()
+        geometryObject4.point = BLPoint(x: 20, y: 10)
+        geometryObject4.name = "point"
+        Backendless.shared.data.of(GeometryTestClass.self).createBulk(entities: [geometryObject1, geometryObject2, geometryObject3, geometryObject4], responseHandler: { createdIds in
+            Backendless.shared.data.of(GeometryTestClass.self).removeBulk(whereClause: "name='point' AND AsWkt(point)='POINT(10 10)'", responseHandler: { removedCount in
+                XCTAssert(removedCount >= 2)
                 expectation.fulfill()
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
@@ -439,60 +460,27 @@ class BLPointTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
-    }
+    }*/
     
-    func test_PT42() {
-        // ⚠️
-        /*let expectation = self.expectation(description: "PASSED: geometry.pointBulkDelete")
+    func testPT45() {
+        let expectation = self.expectation(description: "PASSED: geometry.pointRetrieve")
         let geometryObject1 = GeometryTestClass()
-        geometryObject1.name = "point"
-        geometryObject1.point = BLPoint(x: -87.52683788, y: 41.85716752)
-        let geometryObject2 = GeometryTestClass()
-        geometryObject2.name = "point"
-        geometryObject2.point = BLPoint(x: -87.52683788, y: 41.85716752)
-        Backendless.shared.data.of(GeometryTestClass.self).createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
-            XCTAssert(createdIds.count == 2)
-            Backendless.shared.data.of(GeometryTestClass.self).removeBulk(whereClause: "longitude > 1", responseHandler: { removed in
-                XCTAssertTrue(removed == 2)
-                expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
-                XCTFail("\(fault.code): \(fault.message!)")
-            })
-        }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
-            XCTFail("\(fault.code): \(fault.message!)")
-        })
-        waitForExpectations(timeout: timeout, handler: nil)*/
-    }
-    
-    func test_PT45() {
-        // ⚠️
-        /*let expectation = self.expectation(description: "PASSED: geometry.pointRetrieve")
-        let geometryObject1 = GeometryTestClass()
-        geometryObject1.name = "point"
         geometryObject1.point = BLPoint(x: 180, y: 90)
         let geometryObject2 = GeometryTestClass()
-        geometryObject2.name = "point"
         geometryObject2.point = BLPoint(x: 180, y: 90)
         Backendless.shared.data.of(GeometryTestClass.self).createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
             XCTAssert(createdIds.count == 2)
             let queryBuilder = DataQueryBuilder()
-            queryBuilder.setWhereClause(whereClause: "AsWKT(POINT) = 'POINT(180 90)'")
+            queryBuilder.setWhereClause(whereClause: "AsWKT(point)='POINT(180 90)'")
             Backendless.shared.data.of(GeometryTestClass.self).find(queryBuilder: queryBuilder, responseHandler: { foundObjects in
-                XCTAssert(foundObjects.count > 0)
-                if let foundObjects = foundObjects as? [GeometryTestClass] {
-                    var passed = false
-                    for object in foundObjects {
-                        passed = false
-                        let point = object.point
-                        //XCTAssert(point.longitude == 180)
-                        //XCTAssert(point.latitude == 90)
-                        passed = true
-                    }
-                    XCTAssertTrue(passed)
-                    expectation.fulfill()
+                XCTAssert(foundObjects is [GeometryTestClass])
+                for object in foundObjects as! [GeometryTestClass] {
+                    let point = object.point
+                    XCTAssertNotNil(point)
+                    XCTAssertTrue(point?.longitude == 180)
+                    XCTAssertTrue(point?.latitude == 90)
                 }
+                expectation.fulfill()
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
@@ -501,31 +489,51 @@ class BLPointTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: timeout, handler: nil)*/
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_PT54() {
-        let wkt = "POINT(10 10)"
-        let point = BLPoint.fromWkt(wkt)
-        guard let pointGeoJson = point?.asGeoJson() else {
-            XCTFail("GeoJSON not created")
-            return
+    func testPT51_52() {
+        let expectation = self.expectation(description: "PASSED: geometry.pointRetrieve")
+        let geometryObject = GeometryTestClass()
+        geometryObject.point = BLPoint(x: 41.92, y: -124.27)
+        Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
+            if let savedObject = savedObject as? GeometryTestClass,
+                let objectId = savedObject.objectId {
+                Backendless.shared.data.of(GeometryTestClass.self).findById(objectId: objectId, responseHandler: { foundObject in
+                    XCTAssertNotNil((foundObject as? GeometryTestClass)?.point)
+                    let point = (foundObject as! GeometryTestClass).point!
+                    XCTAssertNotNil(point.asWkt())
+                    XCTAssertNotNil(point.asGeoJson())
+                    expectation.fulfill()
+                }, errorHandler: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
+            }
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func testPT54() {
+        do {
+            let point = try BLPoint.fromWkt("POINT (10 10)")
+            XCTAssertNotNil(point?.asGeoJson())
         }
-        for (key, value) in pointGeoJson {
-            if key == "type" {
-                XCTAssertTrue(pointGeoJson[key] as? String == BLPoint.geoJsonType)
-            }
-            if key == "coordinates", value is [Double] {
-                XCTAssertTrue((value as! [Double]).first == 10)
-                XCTAssertTrue((value as! [Double]).last == 10)
-            }
+        catch {
+            XCTFail(error.localizedDescription)
         }
     }
     
-    func test_PT55() {
-        let geoJson = "{\"type\": \"Point\", \"coordinates\": [10, 10]}"
-        let point = BLPoint.fromGeoJson(geoJson)
-        let pointWkt = point?.asWkt()
-        XCTAssertNotNil(pointWkt)
+    func testPT55() {
+        do {
+            let point = try BLPoint.fromGeoJson("{\"type\": \"Point\", \"coordinates\": [37.6189, 55.752917]}")
+            XCTAssertNotNil(point?.asWkt())
+        }
+        catch {
+            XCTFail(error.localizedDescription)
+        }
     }
 }

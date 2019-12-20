@@ -25,9 +25,14 @@ class WKTParser: NSObject {
     
     private override init() { }
     
-    static func fromWkt(_ wkt: String) -> BLGeometry? {
+    static func fromWkt(_ wkt: String) throws -> BLGeometry? {
         if wkt.contains(BLPoint.wktType) {
-            return getPoint(wkt: wkt)
+            do {
+                return try getPoint(wkt: wkt)
+            }
+            catch {
+                throw error
+            }
         }
         else if wkt.contains(BLLineString.wktType) {
             return getLineString(wkt: wkt)
@@ -38,7 +43,7 @@ class WKTParser: NSObject {
         return nil
     }
     
-    private static func getPoint(wkt: String) -> BLPoint? {
+    private static func getPoint(wkt: String) throws -> BLPoint? {
         let scanner = Scanner(string: wkt)
         scanner.caseSensitive = false
         if scanner.scanString(BLPoint.wktType, into: nil) && scanner.scanString("(", into: nil) {
@@ -48,7 +53,7 @@ class WKTParser: NSObject {
             scanner.scanDouble(&y)
             return BLPoint(x: x, y: y)
         }
-        return nil
+        throw Fault(message: geoParserErrors.wrongFormat, faultCode: 0)
     }
 
     private static func getLineString(wkt: String) -> BLLineString? {

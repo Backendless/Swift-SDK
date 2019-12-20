@@ -628,7 +628,7 @@ class PersistenceServiceUtils: NSObject {
                                 _className = classMappings[_className]!
                             }
                             else if _className == BLPoint.className, let pointDict = dictionary[dictionaryField] as? [String : Any] {
-                                entity.setValue(GeoJSONParser.dictionaryToPoint(pointDict), forKey: mappedPropertyName)
+                                entity.setValue(try? GeoJSONParser.dictionaryToPoint(pointDict), forKey: mappedPropertyName)
                             }
                             else if _className == BLLineString.className, let lineStringDict = dictionary[dictionaryField] as? [String : Any] {
                                 entity.setValue(GeoJSONParser.dictionaryToLineString(lineStringDict), forKey: mappedPropertyName)
@@ -663,7 +663,7 @@ class PersistenceServiceUtils: NSObject {
                                     entity.setValue(deviceRegistrationObject, forKey: dictionaryField)
                                 }
                                 else if relationDictionary["___class"] as? String == BLPoint.className {
-                                    entity.setValue(GeoJSONParser.dictionaryToPoint(relationDictionary), forKey: dictionaryField)
+                                    entity.setValue(try? GeoJSONParser.dictionaryToPoint(relationDictionary), forKey: dictionaryField)
                                 }
                                 else if relationDictionary["___class"] as? String == BLLineString.className {
                                     entity.setValue(GeoJSONParser.dictionaryToLineString(relationDictionary), forKey: dictionaryField)
@@ -743,7 +743,7 @@ class PersistenceServiceUtils: NSObject {
         for (key, value) in dictionary {
             if let dictValue = value as? [String : Any] {
                 if dictValue["___class"] as? String == BLPoint.className || dictValue["type"] as? String == BLPoint.geoJsonType {
-                    resultDictionary[key] = GeoJSONParser.dictionaryToPoint(dictValue)
+                    resultDictionary[key] = try? GeoJSONParser.dictionaryToPoint(dictValue)
                 }
                 else if dictValue["___class"] as? String == BLLineString.className || dictValue["type"] as? String == BLLineString.geoJsonType {
                     resultDictionary[key] = GeoJSONParser.dictionaryToLineString(dictValue)
@@ -754,7 +754,7 @@ class PersistenceServiceUtils: NSObject {
             }
             else if let dictValue = value as? String {
                 if dictValue.contains(BLPoint.wktType) {
-                    resultDictionary[key] = BLPoint.fromWkt(dictValue)
+                    resultDictionary[key] = try? BLPoint.fromWkt(dictValue)
                 }
                 else if dictValue.contains(BLLineString.wktType) {
                     resultDictionary[key] = BLLineString.fromWkt(dictValue)

@@ -43,12 +43,22 @@
     
     static let className = "com.backendless.persistence.Point"
     
-    public static func fromWkt(_ wkt: String) -> BLPoint? {
-        return WKTParser.fromWkt(wkt) as? BLPoint
+    public static func fromWkt(_ wkt: String) throws -> BLPoint? {
+        do {
+            return try WKTParser.fromWkt(wkt) as? BLPoint
+        }
+        catch {
+            throw error
+        }
     }
     
-    public static func fromGeoJson(_ geoJson: String) -> BLPoint? {
-        return GeoJSONParser.fromGeoJson(geoJson) as? BLPoint
+    public static func fromGeoJson(_ geoJson: String) throws -> BLPoint? {
+        do {
+           return try GeoJSONParser.fromGeoJson(geoJson) as? BLPoint
+        }
+        catch {
+            throw error
+        }
     }
     
     public init(x: Double, y: Double) {

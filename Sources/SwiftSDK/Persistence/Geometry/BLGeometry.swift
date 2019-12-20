@@ -19,6 +19,11 @@
  *  ********************************************************************************************************************
  */
 
+enum geoParserErrors {
+    static let wrongFormat = "Provided geo data has wrong format"
+    static let nullLatLong = "Longitude or latitude can't be null"
+}
+
 public protocol BLGeometry {
     
     var srs: SpatialReferenceSystemEnum? { get set }
