@@ -35,7 +35,12 @@ class WKTParser: NSObject {
             }
         }
         else if wkt.contains(BLLineString.wktType) {
-            return getLineString(wkt: wkt)
+            do {
+                return try getLineString(wkt: wkt)
+            }
+            catch {
+                throw error
+            }
         }
         else if wkt.contains(BLPolygon.wktType) {
             return getPolygon(wkt: wkt)
@@ -56,7 +61,7 @@ class WKTParser: NSObject {
         throw Fault(message: geoParserErrors.wrongFormat, faultCode: 0)
     }
 
-    private static func getLineString(wkt: String) -> BLLineString? {
+    private static func getLineString(wkt: String) throws -> BLLineString? {
         let scanner = Scanner(string: wkt)
         scanner.caseSensitive = false
         if scanner.scanString(BLLineString.wktType, into: nil) && scanner.scanString("(", into: nil) {
@@ -75,7 +80,7 @@ class WKTParser: NSObject {
             }
             return lineString
         }
-        return nil
+        throw Fault(message: geoParserErrors.wrongFormat, faultCode: 0)
     }
     
     private static func getPolygon(wkt: String) -> BLPolygon? {

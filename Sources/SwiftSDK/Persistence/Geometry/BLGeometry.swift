@@ -20,8 +20,9 @@
  */
 
 enum geoParserErrors {
-    static let wrongFormat = "Provided geo data has wrong format"
+    static let wrongFormat = "Provided geo data has wrong format" // Invalid GIS data provided to function st_geometryfromtext
     static let nullLatLong = "Longitude or latitude can't be null"
+    static let lsPoints = "LineString must have more than 2 points"
 }
 
 public protocol BLGeometry {

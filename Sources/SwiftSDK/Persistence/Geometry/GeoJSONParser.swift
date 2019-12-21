@@ -37,7 +37,12 @@
             }
         }
         else if geoJson.lowercased().contains("\"\(BLLineString.geoJsonType.lowercased())\"") {
-            return getLineString(geoJson: geoJson)
+            do {
+                return try getLineString(geoJson: geoJson)
+            }
+            catch {
+                throw error
+            }
         }
         else if geoJson.lowercased().contains("\"\(BLPolygon.geoJsonType.lowercased())\"") {
             return getPolygon(geoJson: geoJson)
@@ -92,22 +97,47 @@
         throw Fault(message: geoParserErrors.wrongFormat, faultCode: 0)
     }
     
-    private static func getLineString(geoJson: String) -> BLLineString? {
+    private static func getLineString(geoJson: String) throws -> BLLineString? {
         var lineStringDict: [String : Any]?
         if let data = geoJson.data(using: .utf8) {
-            lineStringDict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+            do {
+                lineStringDict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+            }
+            catch {
+                throw Fault(message: geoParserErrors.wrongFormat, faultCode: 0)
+            }
         }
         if let lineStringDict = lineStringDict {
-            return dictionaryToLineString(lineStringDict)
+            do {
+                return try dictionaryToLineString(lineStringDict)
+            }
+            catch {
+                throw error
+            }
         }
         return nil
     }
     
-    static func dictionaryToLineString(_ lineStringDict: [String : Any]) -> BLLineString? {
+    static func dictionaryToLineString(_ lineStringDict: [String : Any]) throws -> BLLineString? {
+        for key in lineStringDict.keys {
+            if key != "type" && key != "coordinates" && key != "srsId" && key != "___class" {
+                throw Fault(message: geoParserErrors.wrongFormat, faultCode: 0)
+            }
+        }
         if let type = lineStringDict["type"] as? String, type.lowercased() == BLLineString.geoJsonType.lowercased() {
             let lineString = BLLineString(points: [BLPoint]())
             guard let coordinates = lineStringDict["coordinates"] as? [[Double]] else {
-                return nil
+                if let wrongCoordArray = lineStringDict["coordinates"] as? [[Any]] {
+                    for wrongCoord in wrongCoordArray {
+                        if wrongCoord.contains(where: {$0 is NSNull}) {
+                            throw Fault(message: geoParserErrors.nullLatLong, faultCode: 0)
+                        }
+                    }
+                }
+                throw Fault(message: geoParserErrors.wrongFormat, faultCode: 0)
+            }
+            if coordinates.count < 2 {
+                throw Fault(message: geoParserErrors.lsPoints, faultCode: 0)
             }
             for pointCoordinates in coordinates {
                 if let x = pointCoordinates.first, let y = pointCoordinates.last {
@@ -119,7 +149,7 @@
             }
             return lineString
         }
-        return nil
+        throw Fault(message: geoParserErrors.wrongFormat, faultCode: 0)
     }
     
     private static func getPolygon(geoJson: String) -> BLPolygon? {

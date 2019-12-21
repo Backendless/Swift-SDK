@@ -32,8 +32,13 @@
     
     static let className = "com.backendless.persistence.LineString"
     
-    public static func fromWkt(_ wkt: String) -> BLLineString? {
-        return try? WKTParser.fromWkt(wkt) as? BLLineString
+    public static func fromWkt(_ wkt: String) throws -> BLLineString? {
+        do {
+            return try WKTParser.fromWkt(wkt) as? BLLineString
+        }
+        catch {
+            throw error
+        }
     }
     
     public static func fromGeoJson(_ geoJson: String) throws -> BLLineString? {

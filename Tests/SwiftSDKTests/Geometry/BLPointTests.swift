@@ -66,7 +66,7 @@ class BLPointTests: XCTestCase {
     }
     
     func testPT2() {
-        let expectation = self.expectation(description: "PASSED: geometry.pointCreationWithBoundary")
+        let expectation = self.expectation(description: "PASSED: geometry.pointCreation")
         let geometryObject = GeometryTestClass()
         geometryObject.point = BLPoint(x: 180, y: 90)
         Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
@@ -81,7 +81,7 @@ class BLPointTests: XCTestCase {
     }
     
     func testPT3() {
-        let expectation = self.expectation(description: "PASSED: geometry.pointCreationWithBoundary")
+        let expectation = self.expectation(description: "PASSED: geometry.pointCreation")
         let geometryObject = GeometryTestClass()
         geometryObject.point = BLPoint(x: -180, y: -90)
         Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
@@ -96,7 +96,7 @@ class BLPointTests: XCTestCase {
     }
     
     func testPT4() {
-        let expectation = self.expectation(description: "PASSED: geometry.pointCreationWithBoundary")
+        let expectation = self.expectation(description: "PASSED: geometry.pointCreation")
         let geometryObject = GeometryTestClass()
         geometryObject.point = BLPoint(x: 180, y: -90)
         Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
@@ -111,7 +111,7 @@ class BLPointTests: XCTestCase {
     }
     
     func testPT5() {
-        let expectation = self.expectation(description: "PASSED: geometry.pointCreationWithBoundary")
+        let expectation = self.expectation(description: "PASSED: geometry.pointCreation")
         let geometryObject = GeometryTestClass()
         geometryObject.point = BLPoint(x: -180, y: 90)
         Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
@@ -126,7 +126,7 @@ class BLPointTests: XCTestCase {
     }
     
     func testPT6() {
-        let expectation = self.expectation(description: "PASSED: geometry.pointCreationWithBoundary")
+        let expectation = self.expectation(description: "PASSED: geometry.pointCreation")
         let geometryObject = GeometryTestClass()
         geometryObject.point = BLPoint(x: -180.1, y: -90.1)
         Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
@@ -141,7 +141,7 @@ class BLPointTests: XCTestCase {
     }
     
     func testPT7() {
-        let expectation = self.expectation(description: "PASSED: geometry.pointCreationWithBoundary")
+        let expectation = self.expectation(description: "PASSED: geometry.pointCreation")
         let geometryObject = GeometryTestClass()
         geometryObject.point = BLPoint(x: 180.1, y: 90)
         Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
@@ -156,7 +156,7 @@ class BLPointTests: XCTestCase {
     }
     
     func testPT8() {
-        let expectation = self.expectation(description: "PASSED: geometry.pointCreationWithBoundary")
+        let expectation = self.expectation(description: "PASSED: geometry.pointCreation")
         let geometryObject = GeometryTestClass()
         geometryObject.point = BLPoint(x: 78, y: 90.1)
         Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
@@ -171,7 +171,7 @@ class BLPointTests: XCTestCase {
     }
     
     func testPT9() {
-        let expectation = self.expectation(description: "PASSED: geometry.pointCreationWithBoundary")
+        let expectation = self.expectation(description: "PASSED: geometry.pointCreation")
         let geometryObject = GeometryTestClass()
         geometryObject.point = BLPoint(x: 122.111111111, y: 78.123456785)
         Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
@@ -312,7 +312,7 @@ class BLPointTests: XCTestCase {
     }
     
     func testPT24() {
-        let expectation = self.expectation(description: "PASSED: geometry.pointBulkCreationWithBoundary")
+        let expectation = self.expectation(description: "PASSED: geometry.pointBulkCreation")
         let geometryObject1 = GeometryTestClass()
         geometryObject1.point = BLPoint(x: -87.52683788, y: 41.85716752)
         let geometryObject2 = GeometryTestClass()
@@ -387,7 +387,7 @@ class BLPointTests: XCTestCase {
     }
     
     func testPT32() {
-        let expectation = self.expectation(description: "PASSED: geometry.pointUpdateWithBoundary")
+        let expectation = self.expectation(description: "PASSED: geometry.pointUpdate")
         let geometryObject = GeometryTestClass()
         geometryObject.point = BLPoint(x: -87.52683788, y: 41.85716752)
         Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
