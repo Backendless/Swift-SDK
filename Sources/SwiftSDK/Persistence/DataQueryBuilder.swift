@@ -170,6 +170,17 @@
         }
     }
     
+    public func addProperties(properties: String...) {
+        if self.properties != nil {
+            for property in properties {
+                self.properties?.append(property)
+            }
+        }
+        else {
+            self.properties = properties
+        }
+    }
+    
     public func getSortBy() -> [String]? {
         return self.sortBy
     }
