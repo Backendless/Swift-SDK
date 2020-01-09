@@ -127,7 +127,7 @@
         let headers = ["Content-Type": "application/json"]
         var parameters = ["accessToken": accessToken, "fieldsMapping": fieldsMapping] as [String : Any]
         if guestUser != nil {
-            parameters["guestUser"] = jsonUtils.objectToJSON(objectToParse: guestUser!)
+            parameters["guestUser"] = jsonUtils.objectToJson(objectToParse: guestUser!)
         }
         BackendlessRequestManager(restMethod: "users/social/facebook/login", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: BackendlessUser.self) {
@@ -154,7 +154,7 @@
         let headers = ["Content-Type": "application/json"]
         var parameters = ["accessToken": authToken, "accessTokenSecret": authTokenSecret, "fieldsMapping": fieldsMapping] as [String : Any]
         if guestUser != nil {
-            parameters["guestUser"] = jsonUtils.objectToJSON(objectToParse: guestUser!)
+            parameters["guestUser"] = jsonUtils.objectToJson(objectToParse: guestUser!)
         }
         BackendlessRequestManager(restMethod: "users/social/twitter/login", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: BackendlessUser.self) {
@@ -180,7 +180,7 @@
         let headers = ["Content-Type": "application/json"]
         var parameters = ["accessToken": accessToken, "fieldsMapping": fieldsMapping] as [String : Any]
         if guestUser != nil {
-            parameters["guestUser"] = jsonUtils.objectToJSON(objectToParse: guestUser!)
+            parameters["guestUser"] = jsonUtils.objectToJson(objectToParse: guestUser!)
         }
         BackendlessRequestManager(restMethod: "users/social/googleplus/login", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: BackendlessUser.self) {

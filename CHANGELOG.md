@@ -15,6 +15,8 @@ func loginWithGoogle(accessToken: String, guestUser: BackendlessUser, fieldsMapp
 func addProperties(properties: String...)
 ```
 
+* added Spatial Data support
+
 ### 5.6.6 / December 6, 2019
 * fixed the geolocation search in radius issue when all category points returned
 
