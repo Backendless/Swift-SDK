@@ -278,7 +278,7 @@ class ProcessResponse: NSObject {
             commandObject.userId = userId
         }
         if let data = commandObjectDictionary["data"] {
-            commandObject.data = jsonUtils.JSONToObject(objectToParse: data)
+            commandObject.data = jsonUtils.jsonToObject(objectToParse: data)
         }
         return commandObject
     }
@@ -300,7 +300,7 @@ class ProcessResponse: NSObject {
             sharedObjectChanges.key = key
         }
         if let data = sharedObjectChangesDictionary["data"] {
-            sharedObjectChanges.data = jsonUtils.JSONToObject(objectToParse: data)
+            sharedObjectChanges.data = jsonUtils.jsonToObject(objectToParse: data)
         }
         if let connectionId = sharedObjectChangesDictionary["connectionId"] as? String {
             sharedObjectChanges.connectionId = connectionId
@@ -334,7 +334,7 @@ class ProcessResponse: NSObject {
             invokeObject.userId = userId
         }        
         if let args = invokeObjectDictionary["args"] as? [Any] {
-            invokeObject.args = jsonUtils.JSONToObject(objectToParse: args) as? [Any]
+            invokeObject.args = jsonUtils.jsonToObject(objectToParse: args) as? [Any]
         }
         return invokeObject
     }

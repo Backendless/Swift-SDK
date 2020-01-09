@@ -70,7 +70,7 @@ class BackendlessRequestManager: NSObject {
             if headers == ["Content-Type": "application/json"] {
                 
                 if let params = parameters as? [[String : Any]] {
-                    parameters = JSONUtils.shared.objectToJSON(objectToParse: params)
+                    parameters = JSONUtils.shared.objectToJson(objectToParse: params)
                     request.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
                 }
                 

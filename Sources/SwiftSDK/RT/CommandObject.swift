@@ -31,6 +31,6 @@
     }
     
     public func encodeToJson() -> Any {
-        return JSONUtils.shared.objectToJSON(objectToParse: self)
+        return JSONUtils.shared.objectToJson(objectToParse: self)
     }
 }

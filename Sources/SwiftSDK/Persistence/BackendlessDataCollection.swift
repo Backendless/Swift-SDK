@@ -61,7 +61,6 @@
     private var entityType: AnyClass!
     private var dataStore: DataStoreFactory!
     private var queryBuilder: DataQueryBuilder!
-    private var computedIndex = 0
     
     private enum CollectionErrors {
         static let invalidType = " is not a type of objects contained in this collection."
@@ -94,22 +93,20 @@
     private init() { }
     
     public convenience init(entityType: AnyClass) {
-        self.init(entityType: entityType, whereClause: "")
+        let dataQueryBuilder = DataQueryBuilder()
+        dataQueryBuilder.setPageSize(pageSize: 100)
+        dataQueryBuilder.setOffset(offset: 0)
+        self.init(entityType: entityType, queryBuilder: dataQueryBuilder)
     }
     
-    public convenience init(entityType: AnyClass, whereClause: String) {
+    public convenience init(entityType: AnyClass, queryBuilder: DataQueryBuilder) {
         self.init()
-        
-        queryBuilder = DataQueryBuilder()
-        queryBuilder.setPageSize(pageSize: 50)
-        queryBuilder.setOffset(offset: 0)
-        
+        self.queryBuilder = queryBuilder
         dataStore = Backendless.shared.data.of(entityType.self)
         self.entityType = entityType
-        self.whereClause = whereClause
+        self.whereClause = self.queryBuilder.getWhereClause() ?? ""
         self.count = getRealCount()
-        addRtListeners()
-        
+        addRtListeners()        
         let semaphore = DispatchSemaphore(value: 0)
         DispatchQueue.global().async {
             for _ in 0 ..< 3 {
@@ -121,17 +118,41 @@
         return
     }
     
+    //    public convenience init(entityType: AnyClass, whereClause: String) {
+    //        self.init()
+    //
+    //        queryBuilder = DataQueryBuilder()
+    //        queryBuilder.setPageSize(pageSize: 100)
+    //        queryBuilder.setOffset(offset: 0)
+    //
+    //        dataStore = Backendless.shared.data.of(entityType.self)
+    //        self.entityType = entityType
+    //        self.whereClause = whereClause
+    //        self.count = getRealCount()
+    //        addRtListeners()
+    //
+    //        let semaphore = DispatchSemaphore(value: 0)
+    //        DispatchQueue.global().async {
+    //            for _ in 0 ..< 3 {
+    //                self.loadNextPage()
+    //            }
+    //            semaphore.signal()
+    //        }
+    //        semaphore.wait()
+    //        return
+    //    }
+    
     deinit {
         dataStore.rt.removeAllListeners()
     }
     
-    /// Returns true, if the current collection ihas been fully loaded from Backendless
+    // Returns true, if the current collection ihas been fully loaded from Backendless
     public func isLoaded() -> Bool {
         return backendlessCollection.count == count
     }
     
     
-    /// Fills up this collection with the values from the Backendless table
+    // Fills up this collection with the values from the Backendless table
     public func populate() {
         guard backendlessCollection.count < count else { return }
         requestStartedHandler?()
@@ -143,12 +164,12 @@
             semaphore.signal()
         }
         semaphore.wait()
+        self.requestCompletedHandler?()
         dataChangedHandler?(.dataLoaded)
-        requestCompletedHandler?()
         return
     }
     
-    /// Adds a new element to the Backendless collection
+    // Adds a new element to the Backendless collection
     public func add(newObject: Any) {
         checkObjectType(object: newObject)
         requestStartedHandler?()
@@ -196,7 +217,7 @@
         return
     }
     
-    /// Adds the elements of a sequence to the Backendless collection
+    // Adds the elements of a sequence to the Backendless collection
     public func add(contentsOf: [Any]) {
         let semaphore = DispatchSemaphore(value: 0)
         DispatchQueue.global().async {
@@ -209,7 +230,7 @@
         return
     }
     
-    /// Inserts a new element into the Backendless collection at the specified position
+    // Inserts a new element into the Backendless collection at the specified position
     public func insert(newObject: Any, at: Int) {
         checkObjectType(object: newObject)
         requestStartedHandler?()
@@ -256,7 +277,7 @@
         return
     }
     
-    /// Inserts the elements of a sequence into the Backendless collection at the specified position
+    // Inserts the elements of a sequence into the Backendless collection at the specified position
     public func insert(contentsOf: [Any], at: Int) {
         var index = at
         let semaphore = DispatchSemaphore(value: 0)
@@ -271,7 +292,7 @@
         return
     }
     
-    /// Removes object from the Backendless collection
+    // Removes object from the Backendless collection
     public func remove(object: Any) {
         checkObjectTypeAndId(object: object)
         requestStartedHandler?()
@@ -287,6 +308,7 @@
                     let objectId = (object as! Identifiable).objectId
                     self.backendlessCollection.removeAll(where: { $0.objectId == objectId })
                     self.count -= 1
+                    self.queryBuilder.setOffset(offset: self.queryBuilder.getOffset() - 1)
                     semaphore.signal()
                     }, errorHandler: { [weak self] fault in
                         self?.errorHandler?(fault)
@@ -298,14 +320,14 @@
         return
     }
     
-    /// Removes and returns the element at the specified position
+    // Removes and returns the element at the specified position
     public func remove(at: Int) -> Identifiable {
         let object = backendlessCollection[at]
         remove(object: object)
         return object
     }
     
-    /// Removes all the elements from the Backendless collection that satisfy the given slice
+    // Removes all the elements from the Backendless collection that satisfy the given slice
     public func removeAll() {
         requestStartedHandler?()
         let semaphore = DispatchSemaphore(value: 0)
@@ -331,12 +353,16 @@
         return
     }
     
-    public func makeIterator() -> AnyIterator<Identifiable> {
-        return AnyIterator {
-            if self.computedIndex == self.backendlessCollection.endIndex {
-                self.loadNextIteratorPage()
-            }
-            return self.getIteratorElement()
+    public func makeIterator() -> IndexingIterator<BackendlessDataCollectionType> {
+        return backendlessCollection.makeIterator()
+    }
+    
+    public func sort(by: (Identifiable, Identifiable) throws -> Bool) {
+        do {
+            backendlessCollection = try backendlessCollection.sorted(by: by)
+        }
+        catch {
+            return
         }
     }
     
@@ -346,57 +372,89 @@
         let eventHandler = dataStore.rt
         if whereClause.isEmpty {
             let _ = eventHandler?.addCreateListener(responseHandler: { [weak self] createdObject in
-                self?.dataChangedHandler?(.created)
+                
+                // ⚠️ create object in collection
+                
                 self?.requestCompletedHandler?()
+                self?.dataChangedHandler?(.created)
                 }, errorHandler: { [weak self] fault in
+                    self?.requestCompletedHandler?()
                     self?.errorHandler?(fault)
             })
             let _ = eventHandler?.addUpdateListener(responseHandler: { [weak self] updatedObject in
-                self?.dataChangedHandler?(.updated)
+                
+                // ⚠️ update object in collection
+                
                 self?.requestCompletedHandler?()
+                self?.dataChangedHandler?(.updated)
                 }, errorHandler: { [weak self] fault in
-                    self?.errorHandler?(fault)
                     self?.requestCompletedHandler?()
+                    self?.errorHandler?(fault)
             })
             let _ = eventHandler?.addDeleteListener(responseHandler: { [weak self] deletedObject in
-                self?.dataChangedHandler?(.deleted)
+                
+                // ⚠️ delete object in collection if exist
+                
                 self?.requestCompletedHandler?()
+                self?.dataChangedHandler?(.deleted)
                 }, errorHandler: { [weak self] fault in
-                    self?.errorHandler?(fault)
                     self?.requestCompletedHandler?()
+                    self?.errorHandler?(fault)
             })
             let _ = eventHandler?.addBulkDeleteListener(responseHandler: { [weak self] bulkEvent in
-                self?.dataChangedHandler?(.bulkDeleted)
+                
+                // ⚠️ remove everything from collection if present
+                
                 self?.requestCompletedHandler?()
+                self?.dataChangedHandler?(.bulkDeleted)
                 }, errorHandler: { [weak self] fault in
+                    self?.requestCompletedHandler?()
                     self?.errorHandler?(fault)
             })
         }
         else {
             let _ = eventHandler?.addCreateListener(whereClause: whereClause, responseHandler: { [weak self] createdObject in
-                self?.dataChangedHandler?(.created)
+                
+                // ⚠️ create object in collection
+                
                 self?.requestCompletedHandler?()
+                self?.dataChangedHandler?(.created)
                 }, errorHandler: { [weak self] fault in
+                    self?.requestCompletedHandler?()
                     self?.errorHandler?(fault)
             })
             let _ = eventHandler?.addUpdateListener(whereClause: whereClause, responseHandler: { [weak self] updatedObject in
-                self?.dataChangedHandler?(.updated)
+                
+                // ⚠️ update object in collection
+                
                 self?.requestCompletedHandler?()
+                self?.dataChangedHandler?(.updated)
                 }, errorHandler: { [weak self] fault in
+                    self?.requestCompletedHandler?()
                     self?.errorHandler?(fault)
             })
             let _ = eventHandler?.addDeleteListener(whereClause: whereClause, responseHandler: { [weak self] deletedObject in
-                self?.dataChangedHandler?(.deleted)
+                
+                // ⚠️ delete object in collection if exist
+                
                 self?.requestCompletedHandler?()
+                self?.dataChangedHandler?(.deleted)
                 }, errorHandler: { [weak self] fault in
+                    self?.requestCompletedHandler?()
                     self?.errorHandler?(fault)
             })
             let _ = eventHandler?.addBulkDeleteListener(whereClause: whereClause, responseHandler: { [weak self] bulkEvent in
-                self?.dataChangedHandler?(.bulkDeleted)
+                
+                // ⚠️ remove everything from collection if present
+                
                 self?.requestCompletedHandler?()
+                self?.dataChangedHandler?(.bulkDeleted)
                 }, errorHandler: { [weak self] fault in
+                    self?.requestCompletedHandler?()
                     self?.errorHandler?(fault)
             })
+            
+            // ⚠️ TODO?: sync backendlessCollection with remote in realtime?
         }
     }
     
@@ -491,24 +549,5 @@
                 self?.errorHandler?(fault)
         })
         semaphore.wait()
-    }
-    
-    private func loadNextIteratorPage() {
-        let semaphore = DispatchSemaphore(value: 0)
-        DispatchQueue.global().async {
-            self.loadNextPage()
-            semaphore.signal()
-        }
-        semaphore.wait()
-        return
-    }
-    
-    private func getIteratorElement() -> Identifiable? {
-        if computedIndex < self.backendlessCollection.endIndex {
-            let element = self.backendlessCollection[computedIndex]
-            computedIndex = self.backendlessCollection.index(after: computedIndex)
-            return element
-        }
-        return nil
     }
 }

@@ -129,7 +129,7 @@
         if let channelName = self.channelName {
             var options = ["channel": channelName, "type": commandType] as [String : Any]
             if let data = data {
-                options["data"] = JSONUtils.shared.objectToJSON(objectToParse: data)
+                options["data"] = JSONUtils.shared.objectToJson(objectToParse: data)
             }
             RTMethod.shared.sendCommand(type: rtTypes.pubSubCommand, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }

@@ -19,8 +19,6 @@
  *  ********************************************************************************************************************
  */
 
-import Foundation
-
 @objc public enum ExecutionType: Int {
     case sync
     case async
