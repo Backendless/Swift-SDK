@@ -1,6 +1,15 @@
 # RELEASE HISTORY
 
-### ? / ?, 2020
+### 5.7.0 / January ?, 2020
+* added guest login with social account:
+```
+public func loginWithFacebook(accessToken: String, guestUser: BackendlessUser, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!)
+
+func loginWithTwitter(authToken: String, authTokenSecret: String, guestUser: BackendlessUser, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!)
+
+func loginWithGoogle(accessToken: String, guestUser: BackendlessUser, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!)
+```
+
 * added function to DataQueryBuilder and LoadRelationsQueryBuilder: 
 ```
 func addProperties(properties: String...)
