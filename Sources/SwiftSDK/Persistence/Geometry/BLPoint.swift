@@ -41,7 +41,7 @@
         set { x = newValue }
     }
     
-    static let className = "com.backendless.persistence.Point"
+    static let geometryClassName = "com.backendless.persistence.Point"
     
     public static func fromWkt(_ wkt: String) throws -> BLPoint? {
         do {
