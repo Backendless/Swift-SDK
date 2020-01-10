@@ -31,7 +31,7 @@
     public var boundary: BLLineString?
     public var holes: BLLineString?
     
-    static let className = "com.backendless.persistence.Polygon"
+    static let geometryClassName = "com.backendless.persistence.Polygon"
     
     public static func fromWkt(_ wkt: String) -> BLPolygon? {
         return try? WKTParser.fromWkt(wkt) as? BLPolygon

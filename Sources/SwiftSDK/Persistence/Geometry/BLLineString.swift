@@ -30,7 +30,7 @@
     public var srs: SpatialReferenceSystemEnum?
     public var points = [BLPoint]()
     
-    static let className = "com.backendless.persistence.LineString"
+    static let geometryClassName = "com.backendless.persistence.LineString"
     
     public static func fromWkt(_ wkt: String) throws -> BLLineString? {
         do {

@@ -74,10 +74,10 @@ class JSONUtils: NSObject {
                 var resultDictionary = [String : Any]()
                 if let tableName = dictionaryToParse["___class"] as? String {
                     let persistenceServiceUtils = PersistenceServiceUtils()
-                    if tableName == BLPoint.className {
+                    if tableName == BLPoint.geometryClassName {
                         resultObject = persistenceServiceUtils.convertToGeometryType(dictionary: dictionaryToParse)
                     }
-                    else if tableName == BLLineString.className {
+                    else if tableName == BLLineString.geometryClassName {
                         resultObject = persistenceServiceUtils.convertToGeometryType(dictionary: dictionaryToParse)
                     }
                     else {
