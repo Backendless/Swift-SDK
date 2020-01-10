@@ -84,7 +84,7 @@ class RTClient: NSObject {
                     self.socketManager?.reconnects = false
                     self.socket = self.socketManager?.socket(forNamespace: path)
                     
-                    if self.socket != nil {
+                    if self.socket != nil {                        
                         self.socketCreated = true
                         self.onDisconnectCalledOnce = false
                         self.onConnectionHandlers(connected: connected)
@@ -227,6 +227,7 @@ class RTClient: NSObject {
     
     func onConnectErrorOrDisconnect(reason: String, type: String) {
         self.removeSocket()
+        self.needResubscribe = true
         if let connectErrorOrDisconnectSubscriptions = eventSubscriptions[type] {
             for subscription in connectErrorOrDisconnectSubscriptions {
                 subscription.onResult!(reason)
