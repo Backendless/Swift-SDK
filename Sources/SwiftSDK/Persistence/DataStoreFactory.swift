@@ -222,13 +222,13 @@
                 else if responseObject["___class"] as? String == "DeviceRegistration" {
                     let deviceRegistrationObject = self.processResponse.adaptToDeviceRegistration(responseResult: responseObject)
                     resultArray.append(deviceRegistrationObject)
-                }                    
+                }
+                // addGeo
                 else if let relationType = queryBuilder.getRelationType() {
                     let relationPersistenceServiceUtils = PersistenceServiceUtils()
-                    let tableName = relationPersistenceServiceUtils.getClassName(entity: relationType)
-                    let className = relationPersistenceServiceUtils.getClassName(className: tableName)
+                    let tableName = self.persistenceServiceUtils.getClassName(entity: relationType)
                     relationPersistenceServiceUtils.setup(tableName: tableName)
-                    if let resultObject = relationPersistenceServiceUtils.dictionaryToEntity(dictionary: responseObject, className: className) {
+                    if let resultObject = relationPersistenceServiceUtils.dictionaryToEntity(dictionary: responseObject, className: tableName) {
                         resultArray.append(resultObject)
                     }
                 }

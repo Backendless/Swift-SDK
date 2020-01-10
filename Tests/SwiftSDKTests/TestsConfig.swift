@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-struct BackendlessAppConfig {
+struct BackendlessAppConfig {    
     static let hostUrl = "http://api.backendless.com"
     static let appId = "12C7C18C-6E20-1ED5-FFA3-03F137213300"
     static let apiKey = "FC8DEE6D-D7ED-A519-FF8D-E5317CD22300"

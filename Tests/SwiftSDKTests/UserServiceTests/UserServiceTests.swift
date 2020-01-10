@@ -163,7 +163,7 @@ class UserServiceTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    /*func test_09_restoreUserPassword() {
+    func test_09_restoreUserPassword() {
         let expectation = self.expectation(description: "PASSED: userService.restoreUserPassword")
         backendless.userService.restorePassword(identity: USER_EMAIL, responseHandler: {
             expectation.fulfill()
@@ -172,7 +172,7 @@ class UserServiceTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
-    }*/
+    }
     
     func test_10_loginAsGuest() {
         let expectation = self.expectation(description: "PASSED: userService.loginAsGuest")

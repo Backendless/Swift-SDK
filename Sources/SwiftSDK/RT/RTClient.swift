@@ -41,10 +41,11 @@ class RTClient: NSObject {
     private var onConnectionHandlersReady = false
     private var onResultReady = false
     private var onMethodResultReady = false
+    private var onDisconnectCalledOnce = false
     private var _lock: NSLock
     private var reconnectAttempt: Int = 1
     private var timeInterval: Double = 0.2 // seconds
-    private var onSocketConnectCallback: (() -> Void)?    
+    private var onSocketConnectCallback: (() -> Void)?
     
     private let maxTimeInterval: Double = 60.0 // seconds
     
@@ -83,21 +84,24 @@ class RTClient: NSObject {
                     self.socketManager?.reconnects = false
                     self.socket = self.socketManager?.socket(forNamespace: path)
                     
-                    if self.socket != nil {
+                    if self.socket != nil {                        
                         self.socketCreated = true
+                        self.onDisconnectCalledOnce = false
                         self.onConnectionHandlers(connected: connected)
                     }
                 }
-                else {
+                else {                    
                     if let connectErrorSubscriptions = self.eventSubscriptions[connectEvents.connectError] {
                         for subscription in connectErrorSubscriptions {
-                            subscription.onResult!("Lookup failed")
+                            subscription.onResult!("Cannot connect to Backendless")
                         }
                     }
+                    if !self.onDisconnectCalledOnce {
+                        self.onDisconnectCalledOnce = true
+                        self.onConnectErrorOrDisconnect(reason: "Cannot connect to Backendless", type: connectEvents.disconnect)
+                    }
                     self.onReconnectAttempt()
-                    self.tryToReconnectSocket()
                 }
-                
                 if self.socketCreated, self.socketConnected {
                     connected()
                 }
@@ -223,12 +227,12 @@ class RTClient: NSObject {
     
     func onConnectErrorOrDisconnect(reason: String, type: String) {
         self.removeSocket()
+        self.needResubscribe = true
         if let connectErrorOrDisconnectSubscriptions = eventSubscriptions[type] {
             for subscription in connectErrorOrDisconnectSubscriptions {
                 subscription.onResult!(reason)
             }
             self.onReconnectAttempt()
-            self.tryToReconnectSocket()
         }
     }
     

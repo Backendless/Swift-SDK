@@ -1,6 +1,7 @@
 # RELEASE HISTORY
 
-### 5.7.0 / January ?, 2020
+### 5.7.0 / January 10, 2020
+* added Spatial Data support
 * added guest login with social account:
 ```
 public func loginWithFacebook(accessToken: String, guestUser: BackendlessUser, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!)
@@ -9,11 +10,11 @@ func loginWithTwitter(authToken: String, authTokenSecret: String, guestUser: Bac
 
 func loginWithGoogle(accessToken: String, guestUser: BackendlessUser, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!)
 ```
-
 * added function to DataQueryBuilder and LoadRelationsQueryBuilder: 
 ```
 func addProperties(properties: String...)
 ```
+* fixed issue when RT-subscriptions were lost after socket reconnection
 
 ### 5.6.6 / December 6, 2019
 * fixed the geolocation search in radius issue when all category points returned
