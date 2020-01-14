@@ -198,7 +198,7 @@ class RTClient: NSObject {
                 }
             })
             
-            self.socket?.on("connect_error", callback: { data, ack in
+            self.socket?.on("connect_error", callback: { data, ack in                
                 if let reason = data.first as? String {
                     self.onConnectErrorOrDisconnect(reason: reason, type: connectEvents.connectError)
                 }
@@ -212,6 +212,7 @@ class RTClient: NSObject {
             
             self.socket?.on("error", callback: { data, ack in
                 if let reason = data.first as? String {
+                    self.onConnectErrorOrDisconnect(reason: reason, type: connectEvents.disconnect)
                     self.onConnectErrorOrDisconnect(reason: reason, type: connectEvents.connectError)
                 }
             })
