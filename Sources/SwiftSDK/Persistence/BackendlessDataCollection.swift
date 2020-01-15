@@ -102,14 +102,20 @@
     public convenience init(entityType: AnyClass, queryBuilder: DataQueryBuilder) {
         self.init()
         self.queryBuilder = queryBuilder
-        dataStore = Backendless.shared.data.of(entityType.self)
+        self.dataStore = Backendless.shared.data.of(entityType.self)
         self.entityType = entityType
         self.whereClause = self.queryBuilder.getWhereClause() ?? ""
         self.count = getRealCount()
-        addRtListeners()        
+        
+        var pagesCount = self.count / queryBuilder.getPageSize()
+        if count % queryBuilder.getPageSize() > 0 {
+            pagesCount += 1
+        }
+        
+        //addRtListeners()
         let semaphore = DispatchSemaphore(value: 0)
         DispatchQueue.global().async {
-            for _ in 0 ..< 3 {
+            for _ in 0 ..< pagesCount {
                 self.loadNextPage()
             }
             semaphore.signal()
@@ -117,30 +123,6 @@
         semaphore.wait()
         return
     }
-    
-    //    public convenience init(entityType: AnyClass, whereClause: String) {
-    //        self.init()
-    //
-    //        queryBuilder = DataQueryBuilder()
-    //        queryBuilder.setPageSize(pageSize: 100)
-    //        queryBuilder.setOffset(offset: 0)
-    //
-    //        dataStore = Backendless.shared.data.of(entityType.self)
-    //        self.entityType = entityType
-    //        self.whereClause = whereClause
-    //        self.count = getRealCount()
-    //        addRtListeners()
-    //
-    //        let semaphore = DispatchSemaphore(value: 0)
-    //        DispatchQueue.global().async {
-    //            for _ in 0 ..< 3 {
-    //                self.loadNextPage()
-    //            }
-    //            semaphore.signal()
-    //        }
-    //        semaphore.wait()
-    //        return
-    //    }
     
     deinit {
         dataStore.rt.removeAllListeners()
@@ -172,128 +154,39 @@
     // Adds a new element to the Backendless collection
     public func add(newObject: Any) {
         checkObjectType(object: newObject)
-        requestStartedHandler?()
-        let semaphore = DispatchSemaphore(value: 0)
-        DispatchQueue.global().async {
-            self.dataStore.save(entity: newObject, responseHandler: { [weak self] savedObject in
-                guard let self = self else {
-                    semaphore.signal()
-                    return
-                }
-                guard let savedObject = savedObject as? Identifiable, let objectId = savedObject.objectId else {
-                    semaphore.signal()
-                    self.errorHandler?(Fault(message: CollectionErrors.nullObjectId, faultCode: 0))
-                    return
-                }
-                if self.whereClause.isEmpty {
-                    self.backendlessCollection.append(savedObject)
-                    self.count += 1
-                    self.queryBuilder.setOffset(offset: self.queryBuilder.getOffset() + 1)
-                    semaphore.signal()
-                }
-                else {
-                    self.queryBuilder.setWhereClause(whereClause: self.getQuery(objectId: objectId))
-                    if self.getCount(queryBuilder: self.queryBuilder) == 0 {
-                        self.dataStore.removeById(objectId: objectId, responseHandler: { removed in
-                            semaphore.signal()
-                        }, errorHandler: { fault in
-                            self.errorHandler?(fault)
-                            semaphore.signal()
-                        })
-                    }
-                    else {
-                        self.backendlessCollection.append(savedObject)
-                        self.count += 1
-                        self.queryBuilder.setOffset(offset: self.queryBuilder.getOffset() + 1)
-                        semaphore.signal()
-                    }
-                }
-                }, errorHandler: { [weak self] fault in
-                    self?.errorHandler?(fault)
-                    semaphore.signal()
-            })
-        }
-        semaphore.wait()
-        return
+        self.backendlessCollection.append(newObject as! Identifiable)
+        self.count += 1
+        self.queryBuilder.setOffset(offset: self.queryBuilder.getOffset() + 1)
+        dataChangedHandler?(.created)
     }
     
     // Adds the elements of a sequence to the Backendless collection
     public func add(contentsOf: [Any]) {
-        let semaphore = DispatchSemaphore(value: 0)
-        DispatchQueue.global().async {
-            for newObject in contentsOf {
-                self.add(newObject: newObject)
-            }
-            semaphore.signal()
+        for object in contentsOf {
+            add(newObject: object)
         }
-        semaphore.wait()
-        return
     }
     
     // Inserts a new element into the Backendless collection at the specified position
     public func insert(newObject: Any, at: Int) {
         checkObjectType(object: newObject)
-        requestStartedHandler?()
-        let semaphore = DispatchSemaphore(value: 0)
-        DispatchQueue.global().async {
-            self.dataStore.save(entity: newObject, responseHandler: { [weak self] savedObject in
-                guard let self = self else {
-                    semaphore.signal()
-                    return
-                }
-                guard let savedObject = savedObject as? Identifiable, let objectId = savedObject.objectId else {
-                    semaphore.signal()
-                    return
-                }
-                if self.whereClause.isEmpty {
-                    self.backendlessCollection.insert(savedObject, at: at)
-                    self.count += 1
-                    self.queryBuilder.setOffset(offset: self.queryBuilder.getOffset() + 1)
-                    semaphore.signal()
-                }
-                else {
-                    self.queryBuilder.setWhereClause(whereClause: self.getQuery(objectId: objectId))
-                    if self.getCount(queryBuilder: self.queryBuilder) == 0 {
-                        self.dataStore.removeById(objectId: objectId, responseHandler: { removed in
-                            semaphore.signal()
-                        }, errorHandler: { fault in
-                            self.errorHandler?(fault)
-                            semaphore.signal()
-                        })
-                    }
-                    else {
-                        self.backendlessCollection.insert(savedObject, at: at)
-                        self.count += 1
-                        self.queryBuilder.setOffset(offset: self.queryBuilder.getOffset() + 1)
-                        semaphore.signal()
-                    }
-                }
-                }, errorHandler: { [weak self] fault in
-                    self?.errorHandler?(fault)
-                    semaphore.signal()
-            })
-        }
-        semaphore.wait()
-        return
+        backendlessCollection.insert(newObject as! Identifiable, at: at)
+        self.count += 1
+        self.queryBuilder.setOffset(offset: self.queryBuilder.getOffset() + 1)
+        dataChangedHandler?(.created)
     }
     
     // Inserts the elements of a sequence into the Backendless collection at the specified position
     public func insert(contentsOf: [Any], at: Int) {
         var index = at
-        let semaphore = DispatchSemaphore(value: 0)
-        DispatchQueue.global().async {
-            for newObject in contentsOf {
-                self.insert(newObject: newObject, at: index)
-                index += 1
-            }
-            semaphore.signal()
+        for newObject in contentsOf {
+            self.insert(newObject: newObject, at: index)
+            index += 1
         }
-        semaphore.wait()
-        return
     }
     
     // Removes object from the Backendless collection
-    public func remove(object: Any) {
+    /*public func remove(object: Any) {
         checkObjectTypeAndId(object: object)
         requestStartedHandler?()
         let semaphore = DispatchSemaphore(value: 0)
@@ -318,17 +211,17 @@
         }
         semaphore.wait()
         return
-    }
+    }*/
     
     // Removes and returns the element at the specified position
-    public func remove(at: Int) -> Identifiable {
+    /*public func remove(at: Int) -> Identifiable {
         let object = backendlessCollection[at]
         remove(object: object)
         return object
-    }
+    }*/
     
     // Removes all the elements from the Backendless collection that satisfy the given slice
-    public func removeAll() {
+    /*public func removeAll() {
         requestStartedHandler?()
         let semaphore = DispatchSemaphore(value: 0)
         DispatchQueue.global().async {
@@ -351,7 +244,7 @@
         }
         semaphore.wait()
         return
-    }
+    }*/
     
     public func makeIterator() -> IndexingIterator<BackendlessDataCollectionType> {
         return backendlessCollection.makeIterator()
@@ -368,7 +261,7 @@
     
     // private functions
     
-    private func addRtListeners() {
+    /*private func addRtListeners() {
         let eventHandler = dataStore.rt
         if whereClause.isEmpty {
             let _ = eventHandler?.addCreateListener(responseHandler: { [weak self] createdObject in
@@ -456,7 +349,7 @@
             
             // ⚠️ TODO?: sync backendlessCollection with remote in realtime?
         }
-    }
+    }*/
     
     private func getRealCount() -> Int {
         var realCount = 0

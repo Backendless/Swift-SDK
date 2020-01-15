@@ -540,7 +540,9 @@ class PersistenceServiceUtils: NSObject {
                 }
             }
         }
-        entityDictionary["objectId"] = getObjectId(entity: entity)
+        if entityDictionary["objectId"] == nil {
+            entityDictionary["objectId"] = getObjectId(entity: entity)
+        }
         return entityDictionary
     }
     
