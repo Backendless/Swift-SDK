@@ -1,5 +1,9 @@
 # RELEASE HISTORY
 
+### 5.7.2 / ?, 2020
+* fixed the DataQueryBuilder `properties` property to work correctly in search queries
+* the BackendlessDataCollection class is in development, public access removed 
+
 ### 5.7.1 / January 15, 2020
 * fixed issue when BackendlessUser object lost its objectId while decoding
 * fixed issue when RT disconnect listener didn't trigger when internet disappeared

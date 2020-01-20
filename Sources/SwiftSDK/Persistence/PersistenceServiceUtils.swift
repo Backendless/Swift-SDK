@@ -197,6 +197,9 @@ class PersistenceServiceUtils: NSObject {
         if let relationsPageSize = queryBuilder?.getRelationsPageSize() {
             parameters["relationsPageSize"] = relationsPageSize
         }
+        if let properties = queryBuilder?.getProperties() {
+            parameters["props"] = properties
+        }
         if let sortBy = queryBuilder?.getSortBy(), sortBy.count > 0 {
             parameters["sortBy"] = dataTypesUtils.arrayToString(array: sortBy)
         }
