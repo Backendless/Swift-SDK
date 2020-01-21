@@ -53,8 +53,8 @@ class BLLineStringTests: XCTestCase {
     func testLS1_1() {
         let expectation = self.expectation(description: "PASSED: geometry.lineStringCreation")
         let geometryObject = GeometryTestClass()
-        geometryObject.lineString = BLLineString(points: [BLPoint(longitude: -87.52683788, latitude: 41.85716752)])
-        Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
+        geometryObject.linestring = BLLineString(points: [BLPoint(longitude: -87.52683788, latitude: 41.85716752)])
+        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
             XCTFail("Data truncation: Invalid GIS data provided to function st_geometryfromtext")
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
@@ -66,10 +66,10 @@ class BLLineStringTests: XCTestCase {
     func testLS1_2() {
         let expectation = self.expectation(description: "PASSED: geometry.lineStringCreation")
         let geometryObject = GeometryTestClass()
-        geometryObject.lineString = BLLineString(points: [BLPoint(longitude: -87.52683788, latitude: 41.85716752), BLPoint(longitude: 32.45645, latitude: 87.54654)])
-        Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
+        geometryObject.linestring = BLLineString(points: [BLPoint(longitude: -87.52683788, latitude: 41.85716752), BLPoint(longitude: 32.45645, latitude: 87.54654)])
+        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
-            XCTAssertNotNil((savedObject as? GeometryTestClass)?.lineString)
+            XCTAssertNotNil((savedObject as? GeometryTestClass)?.linestring)
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
@@ -85,10 +85,10 @@ class BLLineStringTests: XCTestCase {
         for i in 0..<20 {
             points.append(BLPoint(longitude: Double(i) + 10, latitude: Double(i) + 10.0))
         }
-        geometryObject.lineString = BLLineString(points: points)
-        Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
+        geometryObject.linestring = BLLineString(points: points)
+        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
-            XCTAssertNotNil((savedObject as? GeometryTestClass)?.lineString)
+            XCTAssertNotNil((savedObject as? GeometryTestClass)?.linestring)
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
@@ -100,10 +100,10 @@ class BLLineStringTests: XCTestCase {
     func testLS2() {
         let expectation = self.expectation(description: "PASSED: geometry.lineStringCreation")
         let geometryObject = GeometryTestClass()
-        geometryObject.lineString = BLLineString(points: [BLPoint(longitude: 180, latitude: 90), BLPoint(longitude: -180, latitude: -90)])
-        Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
+        geometryObject.linestring = BLLineString(points: [BLPoint(longitude: 180, latitude: 90), BLPoint(longitude: -180, latitude: -90)])
+        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
-            XCTAssertNotNil((savedObject as? GeometryTestClass)?.lineString)
+            XCTAssertNotNil((savedObject as? GeometryTestClass)?.linestring)
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
@@ -115,10 +115,10 @@ class BLLineStringTests: XCTestCase {
     func testLS3() {
         let expectation = self.expectation(description: "PASSED: geometry.lineStringCreation")
         let geometryObject = GeometryTestClass()
-        geometryObject.lineString = BLLineString(points: [BLPoint(longitude: 180, latitude: -90), BLPoint(longitude: -180, latitude: 90)])
-        Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
+        geometryObject.linestring = BLLineString(points: [BLPoint(longitude: 180, latitude: -90), BLPoint(longitude: -180, latitude: 90)])
+        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
-            XCTAssertNotNil((savedObject as? GeometryTestClass)?.lineString)
+            XCTAssertNotNil((savedObject as? GeometryTestClass)?.linestring)
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
@@ -130,10 +130,10 @@ class BLLineStringTests: XCTestCase {
     func testLS4() {
         let expectation = self.expectation(description: "PASSED: geometry.lineStringCreation")
         let geometryObject = GeometryTestClass()
-        geometryObject.lineString = BLLineString(points: [BLPoint(longitude: -180.1, latitude: -90.1), BLPoint(longitude: 76.4554, latitude: 34.6565)])
-        Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
+        geometryObject.linestring = BLLineString(points: [BLPoint(longitude: -180.1, latitude: -90.1), BLPoint(longitude: 76.4554, latitude: 34.6565)])
+        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
-            XCTAssertNotNil((savedObject as? GeometryTestClass)?.lineString)
+            XCTAssertNotNil((savedObject as? GeometryTestClass)?.linestring)
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
@@ -145,10 +145,10 @@ class BLLineStringTests: XCTestCase {
     func testLS5() {
         let expectation = self.expectation(description: "PASSED: geometry.lineStringCreation")
         let geometryObject = GeometryTestClass()
-        geometryObject.lineString = BLLineString(points: [BLPoint(longitude: 122.111111111, latitude: 78.123456785), BLPoint(longitude: 32.323234, latitude: 67)])
-        Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
+        geometryObject.linestring = BLLineString(points: [BLPoint(longitude: 122.111111111, latitude: 78.123456785), BLPoint(longitude: 32.323234, latitude: 67)])
+        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
-            XCTAssertNotNil((savedObject as? GeometryTestClass)?.lineString)
+            XCTAssertNotNil((savedObject as? GeometryTestClass)?.linestring)
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
@@ -160,10 +160,10 @@ class BLLineStringTests: XCTestCase {
     func testLS7() {
         let expectation = self.expectation(description: "PASSED: geometry.lineStringCreation")
         let geometryObject = GeometryTestClass()
-        geometryObject.lineString = BLLineString(points: [BLPoint(longitude: 1, latitude: 1), BLPoint(longitude: 1, latitude: 1)])
-        Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
+        geometryObject.linestring = BLLineString(points: [BLPoint(longitude: 1, latitude: 1), BLPoint(longitude: 1, latitude: 1)])
+        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
-            XCTAssertNotNil((savedObject as? GeometryTestClass)?.lineString)
+            XCTAssertNotNil((savedObject as? GeometryTestClass)?.linestring)
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
@@ -176,14 +176,14 @@ class BLLineStringTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: geometry.lineStringCreationFromGeoJson")
         let geometryObject = GeometryTestClass()
         do {
-            geometryObject.lineString = try BLLineString.fromGeoJson("{\"type\": \"linestring\", \"coordinates\": [[37.6189, 55.752917], [45.6189, 35.752917]]}")
+            geometryObject.linestring = try BLLineString.fromGeoJson("{\"type\": \"linestring\", \"coordinates\": [[37.6189, 55.752917], [45.6189, 35.752917]]}")
         }
         catch {
             XCTFail(error.localizedDescription)
         }
-        Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
+        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
-            XCTAssertNotNil((savedObject as? GeometryTestClass)?.lineString)
+            XCTAssertNotNil((savedObject as? GeometryTestClass)?.linestring)
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
@@ -275,10 +275,10 @@ class BLLineStringTests: XCTestCase {
     func testLS17() {
         let expectation = self.expectation(description: "PASSED: geometry.lineStringBulkCreation")
         let geometryObject1 = GeometryTestClass()
-        geometryObject1.lineString = BLLineString(points: [BLPoint(longitude: -87.52683788, latitude: 41.85716752), BLPoint(longitude: -23.523788, latitude: 67.752)])
+        geometryObject1.linestring = BLLineString(points: [BLPoint(longitude: -87.52683788, latitude: 41.85716752), BLPoint(longitude: -23.523788, latitude: 67.752)])
         let geometryObject2 = GeometryTestClass()
-        geometryObject2.lineString = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: 8.523788, latitude: 67.752)])
-        Backendless.shared.data.of(GeometryTestClass.self).createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+        geometryObject2.linestring = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: 8.523788, latitude: 67.752)])
+        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
             XCTAssert(createdIds.count == 2)
             expectation.fulfill()
         }, errorHandler: { fault in
@@ -291,12 +291,12 @@ class BLLineStringTests: XCTestCase {
     func testLS18() {
         let expectation = self.expectation(description: "PASSED: geometry.lineStringBulkCreation")
         let geometryObject1 = GeometryTestClass()
-        geometryObject1.lineString = BLLineString(points: [BLPoint(longitude: -87.52683788, latitude: 41.85716752), BLPoint(longitude: -180.1, latitude: -90.1)])
+        geometryObject1.linestring = BLLineString(points: [BLPoint(longitude: -87.52683788, latitude: 41.85716752), BLPoint(longitude: -180.1, latitude: -90.1)])
         let geometryObject2 = GeometryTestClass()
-        geometryObject2.lineString = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: -23.523788, latitude: 67.752)])
+        geometryObject2.linestring = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: -23.523788, latitude: 67.752)])
         let geometryObject3 = GeometryTestClass()
-        geometryObject3.lineString = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: 8.523788, latitude: 67.752)])
-        Backendless.shared.data.of(GeometryTestClass.self).createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
+        geometryObject3.linestring = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: 8.523788, latitude: 67.752)])
+        dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
             XCTAssert(createdIds.count == 3)
             expectation.fulfill()
         }, errorHandler: { fault in
@@ -310,10 +310,10 @@ class BLLineStringTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: geometry.lineStringBulkCreation")
         let geometryObject1 = GeometryTestClass()
         let geometryObject2 = GeometryTestClass()
-        geometryObject2.lineString = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: -23.523788, latitude: 67.752)])
+        geometryObject2.linestring = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: -23.523788, latitude: 67.752)])
         let geometryObject3 = GeometryTestClass()
-        geometryObject3.lineString = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: 8.523788, latitude: 67.752)])
-        Backendless.shared.data.of(GeometryTestClass.self).createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
+        geometryObject3.linestring = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: 8.523788, latitude: 67.752)])
+        dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
             XCTAssert(createdIds.count == 3)
             expectation.fulfill()
         }, errorHandler: { fault in
@@ -328,13 +328,13 @@ class BLLineStringTests: XCTestCase {
         let geometryObject1 = GeometryTestClass()
         let geometryObject2 = GeometryTestClass()
         do {
-            geometryObject1.lineString = try BLLineString.fromGeoJson("{\"type\": \"linestring\", \"coordinates\": [[37.6189, 55.752917], [45.6189, 35.752917]]}")
-            geometryObject2.lineString = try BLLineString.fromGeoJson("{\"type\": \"linestring\", \"coordinates\": [[37.6189, 55.752917], [37.6189, 55.752917]]}")
+            geometryObject1.linestring = try BLLineString.fromGeoJson("{\"type\": \"linestring\", \"coordinates\": [[37.6189, 55.752917], [45.6189, 35.752917]]}")
+            geometryObject2.linestring = try BLLineString.fromGeoJson("{\"type\": \"linestring\", \"coordinates\": [[37.6189, 55.752917], [37.6189, 55.752917]]}")
         }
         catch {
             XCTFail(error.localizedDescription)
         }
-        Backendless.shared.data.of(GeometryTestClass.self).createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
             XCTAssert(createdIds.count == 2)
             expectation.fulfill()
         }, errorHandler: { fault in
@@ -349,13 +349,13 @@ class BLLineStringTests: XCTestCase {
         let geometryObject1 = GeometryTestClass()
         let geometryObject2 = GeometryTestClass()
         do {
-            geometryObject1.lineString = try BLLineString.fromGeoJson("{\"type\": \"linestring\", \"coordinates\": [[198.56, 55.752917], [45.6189, 35.752917]]}")
-            geometryObject2.lineString = try BLLineString.fromGeoJson("{\"type\": \"linestring\", \"coordinates\": [[198.56, 55.752917], [37.6189, 55.752917]]}")
+            geometryObject1.linestring = try BLLineString.fromGeoJson("{\"type\": \"linestring\", \"coordinates\": [[198.56, 55.752917], [45.6189, 35.752917]]}")
+            geometryObject2.linestring = try BLLineString.fromGeoJson("{\"type\": \"linestring\", \"coordinates\": [[198.56, 55.752917], [37.6189, 55.752917]]}")
         }
         catch {
             XCTFail(error.localizedDescription)
         }
-        Backendless.shared.data.of(GeometryTestClass.self).createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
             XCTAssert(createdIds.count == 2)
             expectation.fulfill()
         }, errorHandler: { fault in
@@ -370,13 +370,13 @@ class BLLineStringTests: XCTestCase {
         let geometryObject1 = GeometryTestClass()
         let geometryObject2 = GeometryTestClass()
         do {
-            geometryObject1.lineString = try BLLineString.fromGeoJson("{\"type\": \"linestring\", \"coordinates\": [[40, 40], [55, 55]]}")
-            geometryObject2.lineString = try BLLineString.fromGeoJson("{\"type\": \"linestring\", \"coordinates\": [[20, 25], [45, 50]]}")
+            geometryObject1.linestring = try BLLineString.fromGeoJson("{\"type\": \"linestring\", \"coordinates\": [[40, 40], [55, 55]]}")
+            geometryObject2.linestring = try BLLineString.fromGeoJson("{\"type\": \"linestring\", \"coordinates\": [[20, 25], [45, 50]]}")
         }
         catch {
             XCTFail(error.localizedDescription)
         }
-        Backendless.shared.data.of(GeometryTestClass.self).createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
             XCTAssert(createdIds.count == 2)
             expectation.fulfill()
         }, errorHandler: { fault in
@@ -389,15 +389,15 @@ class BLLineStringTests: XCTestCase {
     func testLS27() {
         let expectation = self.expectation(description: "PASSED: geometry.lineStringUpdate")
         let geometryObject = GeometryTestClass()
-        geometryObject.lineString = BLLineString(points: [BLPoint(longitude: -87.52683788, latitude: 41.85716752), BLPoint(longitude: 32.45645, latitude: 87.54654)])
-        Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
+        geometryObject.linestring = BLLineString(points: [BLPoint(longitude: -87.52683788, latitude: 41.85716752), BLPoint(longitude: 32.45645, latitude: 87.54654)])
+        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
-            XCTAssertNotNil((savedObject as? GeometryTestClass)?.lineString)
-            (savedObject as? GeometryTestClass)?.lineString = BLLineString(points: [BLPoint(longitude: 1.34543, latitude: -120.34534), BLPoint(longitude: 12.234234, latitude: 4), BLPoint(longitude: 23.34234, latitude: 0)])
-            Backendless.shared.data.of(GeometryTestClass.self).save(entity: savedObject, responseHandler: { updatedObject in
+            XCTAssertNotNil((savedObject as? GeometryTestClass)?.linestring)
+            (savedObject as? GeometryTestClass)?.linestring = BLLineString(points: [BLPoint(longitude: 1.34543, latitude: -120.34534), BLPoint(longitude: 12.234234, latitude: 4), BLPoint(longitude: 23.34234, latitude: 0)])
+            self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
                 XCTAssertNotNil(updatedObject)
-                XCTAssertNotNil((updatedObject as? GeometryTestClass)?.lineString)
-                let lineString = (updatedObject as! GeometryTestClass).lineString!
+                XCTAssertNotNil((updatedObject as? GeometryTestClass)?.linestring)
+                let lineString = (updatedObject as! GeometryTestClass).linestring!
                 XCTAssert(lineString.points.count == 3)
                 for i in 0..<lineString.points.count {
                     if i == 0 {
@@ -428,15 +428,15 @@ class BLLineStringTests: XCTestCase {
     func testLS28() {
         let expectation = self.expectation(description: "PASSED: geometry.lineStringUpdate")
         let geometryObject = GeometryTestClass()
-        geometryObject.lineString = BLLineString(points: [BLPoint(longitude: -87.52683788, latitude: 41.85716752), BLPoint(longitude: 32.45645, latitude: 87.54654)])
-        Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
+        geometryObject.linestring = BLLineString(points: [BLPoint(longitude: -87.52683788, latitude: 41.85716752), BLPoint(longitude: 32.45645, latitude: 87.54654)])
+        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
-            XCTAssertNotNil((savedObject as? GeometryTestClass)?.lineString)
-            (savedObject as? GeometryTestClass)?.lineString = BLLineString(points: [BLPoint(longitude: 180, latitude: 180.1), BLPoint(longitude: -90.1, latitude: -90.1)])
-            Backendless.shared.data.of(GeometryTestClass.self).save(entity: savedObject, responseHandler: { updatedObject in
+            XCTAssertNotNil((savedObject as? GeometryTestClass)?.linestring)
+            (savedObject as? GeometryTestClass)?.linestring = BLLineString(points: [BLPoint(longitude: 180, latitude: 180.1), BLPoint(longitude: -90.1, latitude: -90.1)])
+            self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
                 XCTAssertNotNil(updatedObject)
-                XCTAssertNotNil((updatedObject as? GeometryTestClass)?.lineString)
-                let lineString = (updatedObject as! GeometryTestClass).lineString!
+                XCTAssertNotNil((updatedObject as? GeometryTestClass)?.linestring)
+                let lineString = (updatedObject as! GeometryTestClass).linestring!
                 XCTAssert(lineString.points.count == 2)
                 for i in 0..<lineString.points.count {
                     if i == 0 {
@@ -460,17 +460,25 @@ class BLLineStringTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func testLS36() {
-        let expectation = self.expectation(description: "PASSED: geometry.lineStringDelete")
-        let geometryObject = GeometryTestClass()
-        geometryObject.lineString = BLLineString(points: [BLPoint(longitude: -87.52683788, latitude: 41.85716752), BLPoint(longitude: 32.45645, latitude: 87.54654)])
-        Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
-            XCTAssertNotNil(savedObject)
-            XCTAssertNotNil((savedObject as? GeometryTestClass)?.lineString)
-            (savedObject as? GeometryTestClass)?.lineString = nil
-            Backendless.shared.data.of(GeometryTestClass.self).save(entity: savedObject, responseHandler: { updatedObject in
-                XCTAssertNotNil(updatedObject)
-                XCTAssertNil((updatedObject as? GeometryTestClass)?.lineString)
+    func testLS29() {
+        let expectation = self.expectation(description: "PASSED: geometry.lineStringBulkUpdate")
+        let geometryObject1 = GeometryTestClass()
+        geometryObject1.linestring = BLLineString(points: [BLPoint(longitude: -87.52683788, latitude: 41.85716752), BLPoint(longitude: -23.523788, latitude: 67.752)])
+        geometryObject1.name = "linestring"
+        let geometryObject2 = GeometryTestClass()
+        geometryObject2.name = "linestring"
+        geometryObject2.linestring = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: 8.523788, latitude: 67.752)])
+        let geometryObject3 = GeometryTestClass()
+        geometryObject3.linestring = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: 8.523788, latitude: 67.752)])
+        geometryObject3.name = "llinestring"
+        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+            let point1 = BLPoint(x: 10, y: 10)
+            let point2 = BLPoint(x: 20, y: 20)
+            guard let wkt = BLLineString(points: [point1, point2]).asWkt() else {
+                XCTFail("Cannot create WKT form BLLineString")
+                return
+            }
+            self.dataStore.updateBulk(whereClause: "name='linestring'", changes: ["linestring": wkt], responseHandler: { updated in
                 expectation.fulfill()
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
@@ -483,58 +491,324 @@ class BLLineStringTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    // ⚠️
-    /*func testLS42() {
+    func testLS30() {
+        let expectation = self.expectation(description: "PASSED: geometry.lineStringBulkUpdate")
+        let geometryObject1 = GeometryTestClass()
+        geometryObject1.linestring = BLLineString(points: [BLPoint(longitude: -87.52683788, latitude: 41.85716752), BLPoint(longitude: -23.523788, latitude: 67.752)])
+        geometryObject1.name = "linestring"
+        let geometryObject2 = GeometryTestClass()
+        geometryObject2.name = "linestring"
+        geometryObject2.linestring = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: 8.523788, latitude: 67.752)])
+        let geometryObject3 = GeometryTestClass()
+        geometryObject3.linestring = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: 8.523788, latitude: 67.752)])
+        geometryObject3.name = "llinestring"
+        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+            let point1 = BLPoint(longitude: -87.52683788, latitude: 41.85716752)
+            let point2 = BLPoint(longitude: -23.523788, latitude: 67.752)
+            guard let wkt = BLLineString(points: [point1, point2]).asWkt() else {
+                XCTFail("Cannot create WKT form BLLineString")
+                return
+            }
+            self.dataStore.updateBulk(whereClause: "name='linestring'", changes: ["linestring": wkt], responseHandler: { updated in
+                expectation.fulfill()
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func testLS31() {
+        let expectation = self.expectation(description: "PASSED: geometry.lineStringBulkUpdate")
+        let geometryObject1 = GeometryTestClass()
+        geometryObject1.linestring = BLLineString(points: [BLPoint(longitude: -87.52683788, latitude: 41.85716752), BLPoint(longitude: -23.523788, latitude: 67.752)])
+        geometryObject1.name = "linestring"
+        let geometryObject2 = GeometryTestClass()
+        geometryObject2.name = "linestring"
+        geometryObject2.linestring = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: 8.523788, latitude: 67.752)])
+        let geometryObject3 = GeometryTestClass()
+        geometryObject3.linestring = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: 8.523788, latitude: 67.752)])
+        geometryObject3.name = "llinestring"
+        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+            self.dataStore.updateBulk(whereClause: "name='linestring'", changes: ["linestring": "LINESTRING (null 40.90093567, -107.21433787 34.07527853)"], responseHandler: { updated in
+                XCTFail("Longitude or latitude can't be null")
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                expectation.fulfill()
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func testLS33() {
+        let expectation = self.expectation(description: "PASSED: geometry.lineStringBulkUpdate")
+        let geometryObject1 = GeometryTestClass()
+        geometryObject1.linestring = BLLineString(points: [BLPoint(longitude: -87.52683788, latitude: 41.85716752), BLPoint(longitude: -23.523788, latitude: 67.752)])
+        geometryObject1.name = "linestring"
+        let geometryObject2 = GeometryTestClass()
+        geometryObject2.name = "linestring"
+        geometryObject2.linestring = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: 8.523788, latitude: 67.752)])
+        let geometryObject3 = GeometryTestClass()
+        geometryObject3.linestring = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: 8.523788, latitude: 67.752)])
+        geometryObject3.name = "llinestring"
+        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+            let point1 = BLPoint(x: 10, y: 10)
+            let point2 = BLPoint(x: 20, y: 20)
+            guard let wkt = BLLineString(points: [point1, point2]).asWkt() else {
+                XCTFail("Cannot create WKT form BLLineString")
+                return
+            }
+            self.dataStore.updateBulk(whereClause: "GetLon(linestring)>1", changes: ["linestring": wkt], responseHandler: { updated in
+                expectation.fulfill()
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func testLS34() {
+        let expectation = self.expectation(description: "PASSED: geometry.lineStringBulkUpdate")
+        let geometryObject1 = GeometryTestClass()
+        geometryObject1.linestring = BLLineString(points: [BLPoint(longitude: -87.52683788, latitude: 41.85716752), BLPoint(longitude: -23.523788, latitude: 67.752)])
+        geometryObject1.name = "linestring"
+        let geometryObject2 = GeometryTestClass()
+        geometryObject2.name = "linestring"
+        geometryObject2.linestring = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: 8.523788, latitude: 67.752)])
+        let geometryObject3 = GeometryTestClass()
+        geometryObject3.linestring = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: 8.523788, latitude: 67.752)])
+        geometryObject3.name = "llinestring"
+        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+            let point1 = BLPoint(x: 10, y: 10)
+            let point2 = BLPoint(x: 20, y: 20)
+            guard let wkt = BLLineString(points: [point1, point2]).asWkt() else {
+                XCTFail("Cannot create WKT form BLLineString")
+                return
+            }
+            self.dataStore.updateBulk(whereClause: "GetLon(linestring)<80", changes: ["linestring": wkt], responseHandler: { updated in
+                expectation.fulfill()
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func testLS35() {
+        let expectation = self.expectation(description: "PASSED: geometry.lineStringBulkUpdate")
+        let geometryObject1 = GeometryTestClass()
+        geometryObject1.linestring = BLLineString(points: [BLPoint(longitude: -87.52683788, latitude: 41.85716752), BLPoint(longitude: -23.523788, latitude: 67.752)])
+        geometryObject1.name = "linestring"
+        let geometryObject2 = GeometryTestClass()
+        geometryObject2.name = "linestring"
+        geometryObject2.linestring = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: 8.523788, latitude: 67.752)])
+        let geometryObject3 = GeometryTestClass()
+        geometryObject3.linestring = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: 8.523788, latitude: 67.752)])
+        geometryObject3.name = "llinestring"
+        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+            let point1 = BLPoint(x: 10, y: 10)
+            let point2 = BLPoint(x: 20, y: 20)
+            guard let wkt = BLLineString(points: [point1, point2]).asWkt() else {
+                XCTFail("Cannot create WKT form BLLineString")
+                return
+            }
+            self.dataStore.updateBulk(whereClause: "GetLon(linestring)>1 AND GetLat(linestring)<50", changes: ["linestring": wkt], responseHandler: { updated in
+                expectation.fulfill()
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func testLS36() {
+        let expectation = self.expectation(description: "PASSED: geometry.lineStringDelete")
+        let geometryObject = GeometryTestClass()
+        geometryObject.linestring = BLLineString(points: [BLPoint(longitude: -87.52683788, latitude: 41.85716752), BLPoint(longitude: 32.45645, latitude: 87.54654)])
+        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+            XCTAssertNotNil(savedObject)
+            XCTAssertNotNil((savedObject as? GeometryTestClass)?.linestring)
+            (savedObject as? GeometryTestClass)?.linestring = nil
+            self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
+                XCTAssertNotNil(updatedObject)
+                XCTAssertNil((updatedObject as? GeometryTestClass)?.linestring)
+                expectation.fulfill()
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func testLS37() {
+        let expectation = self.expectation(description: "PASSED: geometry.lineStringBulkDelete")
+        let geometryObject1 = GeometryTestClass()
+        geometryObject1.linestring = BLLineString(points: [BLPoint(longitude: -87.52683788, latitude: 41.85716752), BLPoint(longitude: -23.523788, latitude: 67.752)])
+        geometryObject1.name = "linestring"
+        let geometryObject2 = GeometryTestClass()
+        geometryObject2.name = "linestring"
+        geometryObject2.linestring = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: 8.523788, latitude: 67.752)])
+        let geometryObject3 = GeometryTestClass()
+        geometryObject3.linestring = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: 8.523788, latitude: 67.752)])
+        geometryObject3.name = "llinestring"
+        dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
+            self.dataStore.removeBulk(whereClause: "name='linestring'", responseHandler: { removed in
+                expectation.fulfill()
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func testLS39() {
+        let expectation = self.expectation(description: "PASSED: geometry.lineStringBulkDelete")
+        let geometryObject1 = GeometryTestClass()
+        geometryObject1.linestring = BLLineString(points: [BLPoint(longitude: -87.52683788, latitude: 41.85716752), BLPoint(longitude: -23.523788, latitude: 67.752)])
+        let geometryObject2 = GeometryTestClass()
+        geometryObject2.linestring = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: 8.523788, latitude: 67.752)])
+        let geometryObject3 = GeometryTestClass()
+        geometryObject3.linestring = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: 8.523788, latitude: 67.752)])
+        dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
+            self.dataStore.removeBulk(whereClause: "GetLong(lineString)>1", responseHandler: { removed in
+                expectation.fulfill()
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func testLS40() {
+        let expectation = self.expectation(description: "PASSED: geometry.lineStringBulkDelete")
+        let geometryObject1 = GeometryTestClass()
+        geometryObject1.linestring = BLLineString(points: [BLPoint(longitude: -87.52683788, latitude: 41.85716752), BLPoint(longitude: -23.523788, latitude: 67.752)])
+        let geometryObject2 = GeometryTestClass()
+        geometryObject2.linestring = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: 8.523788, latitude: 67.752)])
+        let geometryObject3 = GeometryTestClass()
+        geometryObject3.linestring = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: 8.523788, latitude: 67.752)])
+        dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
+            self.dataStore.removeBulk(whereClause: "GetLat(lineString)<80", responseHandler: { removed in
+                expectation.fulfill()
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func testLS41() {
+        let expectation = self.expectation(description: "PASSED: geometry.lineStringBulkDelete")
+        let geometryObject1 = GeometryTestClass()
+        geometryObject1.linestring = BLLineString(points: [BLPoint(longitude: -87.52683788, latitude: 41.85716752), BLPoint(longitude: -23.523788, latitude: 67.752)])
+        let geometryObject2 = GeometryTestClass()
+        geometryObject2.linestring = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: 8.523788, latitude: 67.752)])
+        let geometryObject3 = GeometryTestClass()
+        geometryObject3.linestring = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: 8.523788, latitude: 67.752)])
+        dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
+            self.dataStore.removeBulk(whereClause: "GetLon(linestring)>1 AND GetLat(linestring)<50", responseHandler: { removed in
+                expectation.fulfill()
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func testLS42() {
+        let expectation = self.expectation(description: "PASSED: geometry.lineStringBulkDelete")
+        let geometryObject1 = GeometryTestClass()
+        geometryObject1.linestring = BLLineString(points: [BLPoint(longitude: -87.52683788, latitude: 41.85716752), BLPoint(longitude: -23.523788, latitude: 67.752)])
+        let geometryObject2 = GeometryTestClass()
+        geometryObject2.linestring = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: 8.523788, latitude: 67.752)])
+        let geometryObject3 = GeometryTestClass()
+        geometryObject3.linestring = BLLineString(points: [BLPoint(longitude: -87.53434788, latitude: 41.85716752), BLPoint(longitude: 8.523788, latitude: 67.752)])
+        let geometryObject4 = GeometryTestClass()
+        geometryObject4.linestring = BLLineString(points: [BLPoint(longitude: 54.5465464, latitude: 65.654), BLPoint(longitude: 54.5465464, latitude: 34.565656), BLPoint(longitude: 84.5465464, latitude: 13.5653656)])
+        dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3, geometryObject4], responseHandler: { createdIds in
+            let point1 = BLPoint(x: 54.5465464, y: 65.654)
+            let point2 = BLPoint(x: 54.5465464, y: 34.565656)
+            let point3 = BLPoint(x: 84.5465464, y: 13.5653656)
+            guard let wkt = BLLineString(points: [point1, point2, point3]).asWkt() else {
+                XCTFail("Cannot create WKT form BLLineString")
+                return
+            }
+            self.dataStore.removeBulk(whereClause: "linestring='\(wkt)'", responseHandler: { removed in
+                expectation.fulfill()
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+        
+    /*func testLS48_49() {
      let expectation = self.expectation(description: "PASSED: geometry.lineStringRetrieve")
      let geometryObject = GeometryTestClass()
-     geometryObject.lineString = BLLineString(points: [BLPoint(longitude: 54.5465464, latitude: 65.654), BLPoint(longitude: 54.5465464, latitude: 34.565656), BLPoint(longitude: 84.5465464, latitude: 13.5653656)])
-     Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
-     XCTAssertNotNil(savedObject)
-     let queryBuilder = DataQueryBuilder()
-     queryBuilder.setWhereClause(whereClause: "AsWKT(lineString)='LINESTRING (54.5465464 65.654, 54.5465464 34.565656, 84.5465464 13.5653656)'")
-     Backendless.shared.data.of(GeometryTestClass.self).find(queryBuilder: queryBuilder, responseHandler: { foundObjects in
-     XCTAssert(foundObjects is [GeometryTestClass])
-     for object in foundObjects as! [GeometryTestClass] {
-     let lineString = object.lineString
-     XCTAssertNotNil(lineString)
-     XCTAssertTrue(lineString?.asWkt() == "LINESTRING (54.5465464 65.654, 54.5465464 34.565656, 84.5465464 13.5653656)")
+     geometryObject.lineString = BLLineString(points: [BLPoint(longitude: -87.52683788, latitude: 41.85716752), BLPoint(longitude: 32.45645, latitude: 87.54654)])
+     dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+     if let savedObject = savedObject as? GeometryTestClass,
+     let objectId = savedObject.objectId {
+     dataStore.findById(objectId: objectId, responseHandler: { foundObject in
+     XCTAssertNotNil((foundObject as? GeometryTestClass)?.lineString)
+     let lineString = (foundObject as! GeometryTestClass).lineString!
+     XCTAssertNotNil(lineString.asWkt())
+     XCTAssertNotNil(lineString.asGeoJson())
      expectation.fulfill()
-     }
      }, errorHandler: { fault in
      XCTAssertNotNil(fault)
      XCTFail("\(fault.code): \(fault.message!)")
      })
+     }
      }, errorHandler: { fault in
      XCTAssertNotNil(fault)
      XCTFail("\(fault.code): \(fault.message!)")
      })
      waitForExpectations(timeout: timeout, handler: nil)
      }*/
-    
-    /*func testLS48_49() {
-        let expectation = self.expectation(description: "PASSED: geometry.lineStringRetrieve")
-        let geometryObject = GeometryTestClass()
-        geometryObject.lineString = BLLineString(points: [BLPoint(longitude: -87.52683788, latitude: 41.85716752), BLPoint(longitude: 32.45645, latitude: 87.54654)])
-        Backendless.shared.data.of(GeometryTestClass.self).save(entity: geometryObject, responseHandler: { savedObject in
-            if let savedObject = savedObject as? GeometryTestClass,
-                let objectId = savedObject.objectId {
-                Backendless.shared.data.of(GeometryTestClass.self).findById(objectId: objectId, responseHandler: { foundObject in
-                    XCTAssertNotNil((foundObject as? GeometryTestClass)?.lineString)
-                    let lineString = (foundObject as! GeometryTestClass).lineString!
-                    XCTAssertNotNil(lineString.asWkt())
-                    XCTAssertNotNil(lineString.asGeoJson())
-                    expectation.fulfill()
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
-                })
-            }
-        }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
-            XCTFail("\(fault.code): \(fault.message!)")
-        })
-        waitForExpectations(timeout: timeout, handler: nil)
-    }*/
     
     func testLS51() {
         do {

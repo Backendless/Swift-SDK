@@ -26,6 +26,6 @@ import Foundation
     var objectId: String?
     var name: String?
     var point: BLPoint?
-    var lineString: BLLineString?
+    var linestring: BLLineString?
     var polygon: BLPolygon?
 }
