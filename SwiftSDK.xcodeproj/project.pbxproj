@@ -52,6 +52,7 @@
 		5E384C99226F40E200743125 /* AtomicCountersFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E384C98226F40E200743125 /* AtomicCountersFactory.swift */; };
 		5E384C9B226F45B300743125 /* IAtomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E384C9A226F45B300743125 /* IAtomic.swift */; };
 		5E384C9E226F530A00743125 /* CountersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E384C9D226F530A00743125 /* CountersTests.swift */; };
+		5E3E2EFA23D84A6500C4C3E2 /* BLPolygonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3E2EF923D84A6500C4C3E2 /* BLPolygonTests.swift */; };
 		5E44C0502223EC4A00B391E7 /* RTServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E44C04F2223EC4A00B391E7 /* RTServiceTests.swift */; };
 		5E45F669225F52C5001DD7CF /* GeoMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E45F668225F52C5001DD7CF /* GeoMath.swift */; };
 		5E45F66B225F6C3B001DD7CF /* GeoFence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E45F66A225F6C3B001DD7CF /* GeoFence.swift */; };
@@ -191,6 +192,7 @@
 		5E384C98226F40E200743125 /* AtomicCountersFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicCountersFactory.swift; sourceTree = "<group>"; };
 		5E384C9A226F45B300743125 /* IAtomic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAtomic.swift; sourceTree = "<group>"; };
 		5E384C9D226F530A00743125 /* CountersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountersTests.swift; sourceTree = "<group>"; };
+		5E3E2EF923D84A6500C4C3E2 /* BLPolygonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLPolygonTests.swift; sourceTree = "<group>"; };
 		5E44C04F2223EC4A00B391E7 /* RTServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTServiceTests.swift; sourceTree = "<group>"; };
 		5E45F668225F52C5001DD7CF /* GeoMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoMath.swift; sourceTree = "<group>"; };
 		5E45F66A225F6C3B001DD7CF /* GeoFence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoFence.swift; sourceTree = "<group>"; };
@@ -661,6 +663,7 @@
 			children = (
 				5EAA20B5239953E600A39A38 /* BLPointTests.swift */,
 				5E843AB423ACC61B0044CE17 /* BLLineStringTests.swift */,
+				5E3E2EF923D84A6500C4C3E2 /* BLPolygonTests.swift */,
 			);
 			path = Geometry;
 			sourceTree = "<group>";
@@ -1053,6 +1056,7 @@
 				5E158BC623AE5DC100D29505 /* BLPointTests.swift in Sources */,
 				5E7534682220579100BC31D4 /* EventHandlerForClassTests.swift in Sources */,
 				5AFE8E6621E8E5C00003477B /* DataStoreFactoryTests.swift in Sources */,
+				5E3E2EFA23D84A6500C4C3E2 /* BLPolygonTests.swift in Sources */,
 				5E843AB523ACC61B0044CE17 /* BLLineStringTests.swift in Sources */,
 				5AFE8E6221E8E2620003477B /* MapDrivenDataStoreTests.swift in Sources */,
 				5E4CE08622536B73004571DA /* FileServiceTests.swift in Sources */,

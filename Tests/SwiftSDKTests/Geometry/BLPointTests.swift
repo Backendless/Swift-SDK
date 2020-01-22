@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -369,7 +369,7 @@ class BLPointTests: XCTestCase {
             XCTAssert(savedObject is GeometryTestClass)
             let point = (savedObject as! GeometryTestClass).point
             XCTAssertNotNil(point)
-            (savedObject as! GeometryTestClass).point = BLPoint(longitude: 1, latitude: 1)
+            (savedObject as! GeometryTestClass).point = BLPoint(x: 1, y: 1)
             self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
                 XCTAssert(updatedObject is GeometryTestClass)
                 let point = (updatedObject as! GeometryTestClass).point
@@ -396,9 +396,9 @@ class BLPointTests: XCTestCase {
         let geometryObject1 = GeometryTestClass()
         geometryObject1.name = "point"
         let geometryObject2 = GeometryTestClass()
-        geometryObject1.name = "point"
+        geometryObject2.name = "point"
         let geometryObject3 = GeometryTestClass()
-        geometryObject1.name = "ppoint"
+        geometryObject3.name = "ppoint"
         dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
             self.dataStore.updateBulk(whereClause: "name='point'", changes: ["point": "POINT(54.5465464 34.565656)"], responseHandler: { updated in
                 XCTAssert(updated >= 2)
@@ -415,6 +415,25 @@ class BLPointTests: XCTestCase {
     }
     
     func testPT34() {
+        let expectation = self.expectation(description: "PASSED: BLPoint.bulkUpdate")
+        let geometryObject1 = GeometryTestClass()
+        geometryObject1.name = "point"
+        let geometryObject2 = GeometryTestClass()
+        geometryObject2.name = "point"
+        let geometryObject3 = GeometryTestClass()
+        geometryObject3.name = "ppoint"
+        dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
+            self.dataStore.updateBulk(whereClause: "name='point'", changes: ["point": "POINT(54.5465464 null)"], responseHandler: { updated in
+                XCTFail("Longitude or latitude can't be null")
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                expectation.fulfill()
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     // ⚠️ TODO with SQL 8
@@ -556,7 +575,7 @@ class BLPointTests: XCTestCase {
     }
     
     func testPT46() {
-        let expectation = self.expectation(description: "PASSED: geometry.pointRetrieve")
+        let expectation = self.expectation(description: "PASSED: BLPoint.find")
         let queryBuilder = DataQueryBuilder()
         queryBuilder.setWhereClause(whereClause: "GetLon(point)>1")
         dataStore.find(queryBuilder: queryBuilder, responseHandler: { foundObjects in
@@ -574,7 +593,7 @@ class BLPointTests: XCTestCase {
     }
     
     func testPT47() {
-        let expectation = self.expectation(description: "PASSED: geometry.pointRetrieve")
+        let expectation = self.expectation(description: "PASSED: BLPoint.find")
         let queryBuilder = DataQueryBuilder()
         queryBuilder.setWhereClause(whereClause: "GetLat(point)=90")
         dataStore.find(queryBuilder: queryBuilder, responseHandler: { foundObjects in
@@ -592,9 +611,9 @@ class BLPointTests: XCTestCase {
     }
     
     func testPT48() {
-        let expectation = self.expectation(description: "PASSED: geometry.pointRetrieve")
+        let expectation = self.expectation(description: "PASSED: BLPoint.find")
         let queryBuilder = DataQueryBuilder()
-        queryBuilder.setWhereClause(whereClause: "GetLat(point)=90 AND GetLong(point)>1")
+        queryBuilder.setWhereClause(whereClause: "GetLat(point)=90 AND GetLon(point)>1")
         dataStore.find(queryBuilder: queryBuilder, responseHandler: { foundObjects in
             XCTAssert(foundObjects is [GeometryTestClass])
             for object in foundObjects as! [GeometryTestClass] {
@@ -610,7 +629,7 @@ class BLPointTests: XCTestCase {
     }
     
     func testPT49() {
-        let expectation = self.expectation(description: "PASSED: geometry.pointRetrieve")
+        let expectation = self.expectation(description: "PASSED: BLPoint.find")
         let queryBuilder = DataQueryBuilder()
         queryBuilder.setWhereClause(whereClause: "GetLat(point)=90 AND GetLon(point)>1")
         dataStore.find(queryBuilder: queryBuilder, responseHandler: { foundObjects in
@@ -633,7 +652,7 @@ class BLPointTests: XCTestCase {
     }
     
     func testPT51_52() {
-        let expectation = self.expectation(description: "PASSED: geometry.pointRetrieve")
+        let expectation = self.expectation(description: "PASSED: BLPoint.find")
         let geometryObject = GeometryTestClass()
         geometryObject.point = BLPoint(x: 41.92, y: -124.27)
         dataStore.save(entity: geometryObject, responseHandler: { savedObject in
