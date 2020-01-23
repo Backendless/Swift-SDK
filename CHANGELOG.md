@@ -2,8 +2,8 @@
 
 ### 5.7.2 / ?, 2020
 * fixed the DataQueryBuilder `properties` property to work correctly in search queries
-* fixed BLGeometry tests and methods that allow to get geometry objects from WKT or GeoJSON 
-* the BackendlessDataCollection class is in development, public access removed 
+* fixed BLGeometry tests and methods that allow to get geometry objects from WKT or GeoJSON
+* BackendlessDataCollection fixed
 
 ### 5.7.1 / January 15, 2020
 * fixed issue when BackendlessUser object lost its objectId while decoding
