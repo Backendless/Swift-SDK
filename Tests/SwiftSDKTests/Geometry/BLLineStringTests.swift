@@ -386,7 +386,6 @@ class BLLineStringTests: XCTestCase {
         }
     }
     
-    // ???
     func testLS26() {
         let expectation = self.expectation(description: "PASSED: BLLineString.createFromGeoJson")
         let geometryObject1 = GeometryTestClass()

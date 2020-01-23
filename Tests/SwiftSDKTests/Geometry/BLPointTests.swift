@@ -509,7 +509,7 @@ class BLPointTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    // PT41 ???
+    // PT41: incorrect case - won't be done
     
     func testPT42() {
         let expectation = self.expectation(description: "PASSED: BLPoint.bulkDelete")
@@ -677,7 +677,7 @@ class BLPointTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    // PT53 ???
+    // PT53 TBD
     
     func testPT54() {
         do {
