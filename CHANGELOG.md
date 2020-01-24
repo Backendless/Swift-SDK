@@ -1,6 +1,6 @@
 # RELEASE HISTORY
 
-### 5.7.2 / ?, 2020
+### 5.7.2 / January 24, 2020
 * fixed the DataQueryBuilder `properties` property to work correctly in search queries
 * fixed BLGeometry tests and methods that allow to get geometry objects from WKT or GeoJSON
 * BackendlessDataCollection fixed
