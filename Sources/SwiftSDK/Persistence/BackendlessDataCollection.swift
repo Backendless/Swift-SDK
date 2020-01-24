@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -23,35 +23,25 @@
     var objectId: String? { get set }
 }
 
-
-@objc public enum EventType: Int {
-    case dataLoaded
-    case created
-    case updated
-    case deleted
-    case bulkDeleted
-}
-
-
 @objcMembers public class BackendlessDataCollection: Collection {
     
     public typealias BackendlessDataCollectionType = [Identifiable]
     public typealias Index = BackendlessDataCollectionType.Index
-    public typealias Element = BackendlessDataCollectionType.Element    
-    public typealias RequestStartedHandler = () -> Void
-    public typealias RequestCompletedHandler = () -> Void
-    public typealias BackendlessDataChangedHandler = (EventType) -> Void
-    public typealias BackendlessFaultHandler = (Fault) -> Void
+    public typealias Element = BackendlessDataCollectionType.Element
     
     public var startIndex: Index { return backendlessCollection.startIndex }
     public var endIndex: Index { return backendlessCollection.endIndex }
-    public var requestStartedHandler: RequestStartedHandler?
-    public var requestCompletedHandler: RequestCompletedHandler?
-    public var dataChangedHandler: BackendlessDataChangedHandler?
-    public var errorHandler: BackendlessFaultHandler?
     
     public private(set) var whereClause = ""
-    public private(set) var count = 0
+    public private(set) var count: Int {
+        get {
+            if backendlessCollection.count > 0 {
+                return backendlessCollection.count
+            }
+            return self.totalCount
+        }
+        set { }
+    }
     public private(set) var isEmpty: Bool {
         get { return backendlessCollection.isEmpty }
         set { }
@@ -61,6 +51,7 @@
     private var entityType: AnyClass!
     private var dataStore: DataStoreFactory!
     private var queryBuilder: DataQueryBuilder!
+    private var totalCount: Int = 0
     
     private enum CollectionErrors {
         static let invalidType = " is not a type of objects contained in this collection."
@@ -72,10 +63,10 @@
     }
     
     public subscript (position: Int) -> Identifiable {
-        if position >= count {
+        if position >= backendlessCollection.count {
             fatalError("Index out of range")
         }
-        if queryBuilder.getOffset() == count {
+        if queryBuilder.getOffset() == backendlessCollection.count {
             return backendlessCollection[position]
         }
         else if position < queryBuilder.getOffset() - 2 * queryBuilder.getPageSize() {
@@ -94,7 +85,7 @@
     
     public convenience init(entityType: AnyClass) {
         let dataQueryBuilder = DataQueryBuilder()
-        dataQueryBuilder.setPageSize(pageSize: 100)
+        dataQueryBuilder.setPageSize(pageSize: 50)
         dataQueryBuilder.setOffset(offset: 0)
         self.init(entityType: entityType, queryBuilder: dataQueryBuilder)
     }
@@ -105,16 +96,13 @@
         self.dataStore = Backendless.shared.data.of(entityType.self)
         self.entityType = entityType
         self.whereClause = self.queryBuilder.getWhereClause() ?? ""
-        self.count = getRealCount()
-        
-        var pagesCount = self.count / queryBuilder.getPageSize()
-        if count % queryBuilder.getPageSize() > 0 {
-            pagesCount += 1
-        }
-        
-        //addRtListeners()
+        getRealCount()
         let semaphore = DispatchSemaphore(value: 0)
         DispatchQueue.global().async {
+            var pagesCount = (self.totalCount / queryBuilder.getPageSize())
+            if (self.totalCount % queryBuilder.getPageSize()) > 0 {
+                pagesCount += 1
+            }
             for _ in 0 ..< pagesCount {
                 self.loadNextPage()
             }
@@ -128,36 +116,11 @@
         dataStore.rt.removeAllListeners()
     }
     
-    // Returns true, if the current collection ihas been fully loaded from Backendless
-    public func isLoaded() -> Bool {
-        return backendlessCollection.count == count
-    }
-    
-    
-    // Fills up this collection with the values from the Backendless table
-    public func populate() {
-        guard backendlessCollection.count < count else { return }
-        requestStartedHandler?()
-        let semaphore = DispatchSemaphore(value: 0)
-        DispatchQueue.global().async {
-            while self.queryBuilder.getOffset() < self.count {
-                self.loadNextPage()
-            }
-            semaphore.signal()
-        }
-        semaphore.wait()
-        self.requestCompletedHandler?()
-        dataChangedHandler?(.dataLoaded)
-        return
-    }
-    
     // Adds a new element to the Backendless collection
     public func add(newObject: Any) {
         checkObjectType(object: newObject)
-        self.backendlessCollection.append(newObject as! Identifiable)
-        self.count += 1
-        self.queryBuilder.setOffset(offset: self.queryBuilder.getOffset() + 1)
-        dataChangedHandler?(.created)
+        backendlessCollection.append(newObject as! Identifiable)
+        queryBuilder.setOffset(offset: queryBuilder.getOffset() + 1)
     }
     
     // Adds the elements of a sequence to the Backendless collection
@@ -171,80 +134,42 @@
     public func insert(newObject: Any, at: Int) {
         checkObjectType(object: newObject)
         backendlessCollection.insert(newObject as! Identifiable, at: at)
-        self.count += 1
-        self.queryBuilder.setOffset(offset: self.queryBuilder.getOffset() + 1)
-        dataChangedHandler?(.created)
+        queryBuilder.setOffset(offset: queryBuilder.getOffset() + 1)
     }
     
     // Inserts the elements of a sequence into the Backendless collection at the specified position
     public func insert(contentsOf: [Any], at: Int) {
         var index = at
         for newObject in contentsOf {
-            self.insert(newObject: newObject, at: index)
+            insert(newObject: newObject, at: index)
             index += 1
         }
     }
     
     // Removes object from the Backendless collection
-    /*public func remove(object: Any) {
+    public func remove(object: Any) {
         checkObjectTypeAndId(object: object)
-        requestStartedHandler?()
-        let semaphore = DispatchSemaphore(value: 0)
-        DispatchQueue.global().async {
-            self.queryBuilder.setWhereClause(whereClause: self.getQuery(object: object))
-            if self.getCount(queryBuilder: self.queryBuilder) > 0 {
-                self.dataStore.remove(entity: object, responseHandler: { [weak self] removed in
-                    guard let self = self else {
-                        semaphore.signal()
-                        return
-                    }
-                    let objectId = (object as! Identifiable).objectId
-                    self.backendlessCollection.removeAll(where: { $0.objectId == objectId })
-                    self.count -= 1
-                    self.queryBuilder.setOffset(offset: self.queryBuilder.getOffset() - 1)
-                    semaphore.signal()
-                    }, errorHandler: { [weak self] fault in
-                        self?.errorHandler?(fault)
-                        semaphore.signal()
-                })
-            }
-        }
-        semaphore.wait()
-        return
-    }*/
+        let objectId = (object as! Identifiable).objectId
+        backendlessCollection.removeAll(where: { $0.objectId == objectId })
+        queryBuilder.setOffset(offset: queryBuilder.getOffset() - 1)
+    }
     
     // Removes and returns the element at the specified position
-    /*public func remove(at: Int) -> Identifiable {
+    public func remove(at: Int) -> Identifiable {
         let object = backendlessCollection[at]
         remove(object: object)
         return object
-    }*/
+    }
     
     // Removes all the elements from the Backendless collection that satisfy the given slice
-    /*public func removeAll() {
-        requestStartedHandler?()
-        let semaphore = DispatchSemaphore(value: 0)
-        DispatchQueue.global().async {
-            var whereClause = self.whereClause
-            if whereClause.isEmpty {
-                whereClause = "objectId!=null"
-            }
-            self.dataStore.removeBulk(whereClause: whereClause, responseHandler: { [weak self] removed in
-                guard let self = self else {
-                    semaphore.signal()
-                    return
-                }
-                self.backendlessCollection.removeAll()
-                self.count = 0
-                semaphore.signal()
-                }, errorHandler: { [weak self] fault in
-                    self?.errorHandler?(fault)
-                    semaphore.signal()
-            })
-        }
-        semaphore.wait()
-        return
-    }*/
+    
+    public func removeAll(where shouldBeRemoved: (Identifiable) throws -> Bool) rethrows {
+        try backendlessCollection.removeAll(where: shouldBeRemoved)
+    }
+    
+    public func removeAll() {
+        self.backendlessCollection.removeAll()
+    }
     
     public func makeIterator() -> IndexingIterator<BackendlessDataCollectionType> {
         return backendlessCollection.makeIterator()
@@ -261,127 +186,19 @@
     
     // private functions
     
-    /*private func addRtListeners() {
-        let eventHandler = dataStore.rt
-        if whereClause.isEmpty {
-            let _ = eventHandler?.addCreateListener(responseHandler: { [weak self] createdObject in
-                
-                // ⚠️ create object in collection
-                
-                self?.requestCompletedHandler?()
-                self?.dataChangedHandler?(.created)
-                }, errorHandler: { [weak self] fault in
-                    self?.requestCompletedHandler?()
-                    self?.errorHandler?(fault)
-            })
-            let _ = eventHandler?.addUpdateListener(responseHandler: { [weak self] updatedObject in
-                
-                // ⚠️ update object in collection
-                
-                self?.requestCompletedHandler?()
-                self?.dataChangedHandler?(.updated)
-                }, errorHandler: { [weak self] fault in
-                    self?.requestCompletedHandler?()
-                    self?.errorHandler?(fault)
-            })
-            let _ = eventHandler?.addDeleteListener(responseHandler: { [weak self] deletedObject in
-                
-                // ⚠️ delete object in collection if exist
-                
-                self?.requestCompletedHandler?()
-                self?.dataChangedHandler?(.deleted)
-                }, errorHandler: { [weak self] fault in
-                    self?.requestCompletedHandler?()
-                    self?.errorHandler?(fault)
-            })
-            let _ = eventHandler?.addBulkDeleteListener(responseHandler: { [weak self] bulkEvent in
-                
-                // ⚠️ remove everything from collection if present
-                
-                self?.requestCompletedHandler?()
-                self?.dataChangedHandler?(.bulkDeleted)
-                }, errorHandler: { [weak self] fault in
-                    self?.requestCompletedHandler?()
-                    self?.errorHandler?(fault)
-            })
-        }
-        else {
-            let _ = eventHandler?.addCreateListener(whereClause: whereClause, responseHandler: { [weak self] createdObject in
-                
-                // ⚠️ create object in collection
-                
-                self?.requestCompletedHandler?()
-                self?.dataChangedHandler?(.created)
-                }, errorHandler: { [weak self] fault in
-                    self?.requestCompletedHandler?()
-                    self?.errorHandler?(fault)
-            })
-            let _ = eventHandler?.addUpdateListener(whereClause: whereClause, responseHandler: { [weak self] updatedObject in
-                
-                // ⚠️ update object in collection
-                
-                self?.requestCompletedHandler?()
-                self?.dataChangedHandler?(.updated)
-                }, errorHandler: { [weak self] fault in
-                    self?.requestCompletedHandler?()
-                    self?.errorHandler?(fault)
-            })
-            let _ = eventHandler?.addDeleteListener(whereClause: whereClause, responseHandler: { [weak self] deletedObject in
-                
-                // ⚠️ delete object in collection if exist
-                
-                self?.requestCompletedHandler?()
-                self?.dataChangedHandler?(.deleted)
-                }, errorHandler: { [weak self] fault in
-                    self?.requestCompletedHandler?()
-                    self?.errorHandler?(fault)
-            })
-            let _ = eventHandler?.addBulkDeleteListener(whereClause: whereClause, responseHandler: { [weak self] bulkEvent in
-                
-                // ⚠️ remove everything from collection if present
-                
-                self?.requestCompletedHandler?()
-                self?.dataChangedHandler?(.bulkDeleted)
-                }, errorHandler: { [weak self] fault in
-                    self?.requestCompletedHandler?()
-                    self?.errorHandler?(fault)
-            })
-            
-            // ⚠️ TODO?: sync backendlessCollection with remote in realtime?
-        }
-    }*/
-    
-    private func getRealCount() -> Int {
-        var realCount = 0
+    private func getRealCount() {
         let semaphore = DispatchSemaphore(value: 0)
         DispatchQueue.global().async {
             self.queryBuilder.setWhereClause(whereClause: self.whereClause)
             self.dataStore.getObjectCount(queryBuilder: self.queryBuilder, responseHandler: { totalObjects in
-                realCount = totalObjects
+                self.totalCount = totalObjects
                 semaphore.signal()
             }, errorHandler: { fault in
                 semaphore.signal()
-                self.errorHandler?(fault)
             })
         }
         semaphore.wait()
-        return realCount
-    }
-    
-    private func getCount(queryBuilder: DataQueryBuilder) -> Int {
-        var queryCount = 0
-        let semaphore = DispatchSemaphore(value: 0)
-        DispatchQueue.global().async {
-            self.dataStore.getObjectCount(queryBuilder: queryBuilder, responseHandler: { totalObjects in
-                queryCount = totalObjects
-                semaphore.signal()
-            }, errorHandler: { fault in
-                semaphore.signal()
-                self.errorHandler?(fault)
-            })
-        }
-        semaphore.wait()
-        return queryCount
+        return
     }
     
     private func checkObjectType(object: Any) {
@@ -397,29 +214,11 @@
         }
     }
     
-    private func getQuery(objectId: String) -> String {
-        var query = "objectId='\(objectId)'"
-        if !whereClause.isEmpty {
-            query += " and \(whereClause)"
-        }
-        return query
-    }
-    
-    private func getQuery(object: Any) -> String {
-        var query = ""
-        if object is Identifiable, let objectId = (object as! Identifiable).objectId {
-            query = "objectId='\(objectId)'"
-            if !whereClause.isEmpty {
-                query += " and \(whereClause)"
-            }       }
-        return query
-    }
-    
     private func loadNextPage() {
         let semaphore = DispatchSemaphore(value: 0)
         var offset = queryBuilder.getOffset()
         if !whereClause.isEmpty {
-            self.queryBuilder.setWhereClause(whereClause: whereClause)
+            queryBuilder.setWhereClause(whereClause: whereClause)
         }
         dataStore.find(queryBuilder: queryBuilder, responseHandler: { [weak self] foundObjects in
             guard let self = self else {
@@ -437,9 +236,8 @@
                 self.queryBuilder.setOffset(offset: offset)
             }
             semaphore.signal()
-            }, errorHandler: { [weak self] fault in
+            }, errorHandler: { fault in
                 semaphore.signal()
-                self?.errorHandler?(fault)
         })
         semaphore.wait()
     }

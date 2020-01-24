@@ -197,6 +197,9 @@ class PersistenceServiceUtils: NSObject {
         if let relationsPageSize = queryBuilder?.getRelationsPageSize() {
             parameters["relationsPageSize"] = relationsPageSize
         }
+        if let properties = queryBuilder?.getProperties() {
+            parameters["props"] = properties
+        }
         if let sortBy = queryBuilder?.getSortBy(), sortBy.count > 0 {
             parameters["sortBy"] = dataTypesUtils.arrayToString(array: sortBy)
         }
@@ -636,7 +639,7 @@ class PersistenceServiceUtils: NSObject {
                                 entity.setValue(try? GeoJSONParser.dictionaryToLineString(lineStringDict), forKey: mappedPropertyName)
                             }
                             else if _className == BLPolygon.geometryClassName, let polygonDict = dictionary[dictionaryField] as? [String : Any] {
-                                entity.setValue(GeoJSONParser.dictionaryToPolygon(polygonDict), forKey: mappedPropertyName)
+                                entity.setValue(try? GeoJSONParser.dictionaryToPolygon(polygonDict), forKey: mappedPropertyName)
                             }
                             else if let value = dictionaryToEntity(dictionary: dictionaryValue, className: _className) {
                                 entity.setValue(value, forKey: mappedPropertyName)
@@ -671,7 +674,7 @@ class PersistenceServiceUtils: NSObject {
                                     entity.setValue(try? GeoJSONParser.dictionaryToLineString(relationDictionary), forKey: dictionaryField)
                                 }
                                 else if relationDictionary["___class"] as? String == BLPolygon.geometryClassName {
-                                    entity.setValue(GeoJSONParser.dictionaryToPolygon(relationDictionary), forKey: dictionaryField)
+                                    entity.setValue(try? GeoJSONParser.dictionaryToPolygon(relationDictionary), forKey: dictionaryField)
                                 }
                                 else if let relationObject = dictionaryToEntity(dictionary: relationDictionary, className: relationClassName) {
                                     entity.setValue(relationObject, forKey: dictionaryField)
@@ -751,7 +754,7 @@ class PersistenceServiceUtils: NSObject {
                     resultDictionary[key] = try? GeoJSONParser.dictionaryToLineString(dictValue)
                 }
                 else if dictValue["___class"] as? String == BLPolygon.geometryClassName || dictValue["type"] as? String == BLPolygon.geoJsonType {
-                    resultDictionary[key] = GeoJSONParser.dictionaryToPolygon(dictValue)
+                    resultDictionary[key] = try? GeoJSONParser.dictionaryToPolygon(dictValue)
                 }
             }
             else if let dictValue = value as? String {
@@ -762,7 +765,7 @@ class PersistenceServiceUtils: NSObject {
                     resultDictionary[key] = try? BLLineString.fromWkt(dictValue)
                 }
                 else if dictValue.contains(BLPolygon.wktType) {
-                    resultDictionary[key] = BLPolygon.fromWkt(dictValue)
+                    resultDictionary[key] = try? BLPolygon.fromWkt(dictValue)
                 }
             }
         }

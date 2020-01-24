@@ -45,7 +45,12 @@
             }
         }
         else if geoJson.lowercased().contains("\"\(BLPolygon.geoJsonType.lowercased())\"") {
-            return getPolygon(geoJson: geoJson)
+            do {
+                return try getPolygon(geoJson: geoJson)
+            }
+            catch {
+                throw error
+            }
         }
         throw Fault(message: geoParserErrors.wrongFormat, faultCode: 0)
     }
@@ -137,7 +142,7 @@
                 throw Fault(message: geoParserErrors.wrongFormat, faultCode: 0)
             }
             if coordinates.count < 2 {
-                throw Fault(message: geoParserErrors.lsPoints, faultCode: 0)
+                throw Fault(message: geoParserErrors.lineStringPointsCount, faultCode: 0)
             }
             for pointCoordinates in coordinates {
                 if let x = pointCoordinates.first, let y = pointCoordinates.last {
@@ -152,22 +157,36 @@
         throw Fault(message: geoParserErrors.wrongFormat, faultCode: 0)
     }
     
-    private static func getPolygon(geoJson: String) -> BLPolygon? {
+    private static func getPolygon(geoJson: String) throws -> BLPolygon? {
         var polygonDict: [String : Any]?
         if let data = geoJson.data(using: .utf8) {
             polygonDict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
         }
         if let polygonDict = polygonDict {
-            return dictionaryToPolygon(polygonDict)
+            do {
+                return try dictionaryToPolygon(polygonDict)
+            }
+            catch {
+                throw error
+            }
         }
         return nil
     }
     
-    static func dictionaryToPolygon(_ polygonDict: [String : Any]) -> BLPolygon? {
+    static func dictionaryToPolygon(_ polygonDict: [String : Any]) throws -> BLPolygon? {
         if let type = polygonDict["type"] as? String, type.lowercased() == BLPolygon.geoJsonType.lowercased() {
             let polygon = BLPolygon(boundary: BLLineString(points: [BLPoint]()), holes: nil)
             guard let coordinates = polygonDict["coordinates"] as? [[[Double]]] else {
-                return nil
+                if let wrongCoordinates = polygonDict["coordinates"] as? [[[Any]]] {
+                    for wrongCoordArray in wrongCoordinates {
+                        for wrongCoord in wrongCoordArray {
+                            if wrongCoord.contains(where: {$0 is NSNull}) {
+                                throw Fault(message: geoParserErrors.nullLatLong, faultCode: 0)
+                            }
+                        }
+                    }
+                }
+                throw Fault(message: geoParserErrors.wrongFormat, faultCode: 0)
             }
             
             if let boundaryCoordinates = coordinates.first {
@@ -178,6 +197,16 @@
                     }
                 }
                 polygon.boundary = BLLineString(points: lineStringCoordinates)
+                if polygon.boundary!.points.count <= 3 {
+                    throw Fault(message: geoParserErrors.polygonPointsCount, faultCode: 0)
+                }
+                else {
+                    let firstPoint = polygon.boundary?.points.first
+                    let lastPoint = polygon.boundary?.points.last
+                    if firstPoint?.x != lastPoint?.x || firstPoint?.y != lastPoint?.y {
+                        throw Fault(message: geoParserErrors.polygonPoints, faultCode: 0)
+                    }
+                }
             }
             if coordinates.count == 2 {
                 let holesCoordinates = coordinates[1]
@@ -188,6 +217,16 @@
                     }
                 }
                 polygon.holes = BLLineString(points: lineStringCoordinates)
+                if polygon.holes!.points.count <= 3 {
+                    throw Fault(message: geoParserErrors.polygonPointsCount, faultCode: 0)
+                }
+                else {
+                    let firstPoint = polygon.holes?.points.first
+                    let lastPoint = polygon.holes?.points.last
+                    if firstPoint?.x != lastPoint?.x || firstPoint?.y != lastPoint?.y {
+                        throw Fault(message: geoParserErrors.polygonPoints, faultCode: 0)
+                    }
+                }
             }
             if let srsId = polygonDict["srsId"] as? Int {
                 polygon.srs = SpatialReferenceSystemEnum(rawValue: srsId)

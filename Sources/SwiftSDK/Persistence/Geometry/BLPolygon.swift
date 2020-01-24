@@ -33,8 +33,13 @@
     
     static let geometryClassName = "com.backendless.persistence.Polygon"
     
-    public static func fromWkt(_ wkt: String) -> BLPolygon? {
-        return try? WKTParser.fromWkt(wkt) as? BLPolygon
+    public static func fromWkt(_ wkt: String) throws -> BLPolygon? {
+        do {
+            return try WKTParser.fromWkt(wkt) as? BLPolygon
+        }
+        catch {
+            throw error
+        }
     }
     
     public static func fromGeoJson(_ geoJson: String) throws -> BLPolygon? {
