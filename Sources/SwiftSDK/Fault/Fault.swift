@@ -30,15 +30,24 @@
         super.init(coder: aDecoder)
     }
     
+    public init(error: Error) {
+        let message = error.localizedDescription
+        let code = (error as NSError).code
+        let domain = (error as NSError).domain
+        let userInfo = (error as NSError).userInfo
+        super.init(domain: domain, code: code, userInfo: userInfo)
+        self.message = message
+        self.faultCode = code   
+    }
+    
     public init(message: String?, faultCode: Int) {
-        super.init(domain: backendlessDomain, code: faultCode, userInfo: [NSLocalizedDescriptionKey:message ?? "Unrecognized Backendless Server Error"])
+        super.init(domain: backendlessDomain, code: faultCode, userInfo: [NSLocalizedDescriptionKey:message ?? "Unrecognized Backendless Error"])
         self.message = message
         self.faultCode = faultCode
     }
     
-    override init(domain: String, code: Int, userInfo dict: [String : Any]? = nil) {
-        super.init(domain: domain, code: code, userInfo: dict)
-        self.message = super.localizedDescription
-        self.faultCode = super.code
+    public init(message: String?) {
+        super.init(domain: backendlessDomain, code: 0, userInfo: [NSLocalizedDescriptionKey:message ?? "Unrecognized Backendless Error"])
+        self.message = message
     }
 }

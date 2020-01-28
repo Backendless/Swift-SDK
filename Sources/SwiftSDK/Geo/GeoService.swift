@@ -79,8 +79,7 @@
             })
         }
         else {
-            let fault = Fault(message: "geoPoint not found", faultCode: 0)
-            errorHandler(fault)
+            errorHandler(Fault(message: "geoPoint not found"))
         }
     }
     

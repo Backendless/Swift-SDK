@@ -73,7 +73,7 @@ class GeoFenceMonitoring: NSObject, ILocationTrackerListener {
     
     func addGeoFences(geoFences: [GeoFence]?, callback: ICallback?) -> Fault? {
         if callback == nil || geoFences == nil || geoFences?.count == nil {
-            return Fault(message: LocationErrors.notValued, faultCode: 0)
+            return Fault(message: LocationErrors.notValued)
         }
         for geoFence in geoFences! {
             let _ = addGeoFence(geoFence: geoFence, callback: callback!)
@@ -83,12 +83,12 @@ class GeoFenceMonitoring: NSObject, ILocationTrackerListener {
     
     func addGeoFence(geoFence: GeoFence?, callback: ICallback?) -> Fault? {
         if geoFence == nil || callback == nil {
-            return Fault(message: LocationErrors.notValued, faultCode: 0)
+            return Fault(message: LocationErrors.notValued)
         }
         let fencesToCallback = self.fencesToCallback
         let _callback = fencesToCallback[geoFence!]
         if _callback != nil && _callback!.equalCallbackParameter(object: callback as Any) {
-            return Fault(message: LocationErrors.alreadyMonitoring, faultCode: 0)
+            return Fault(message: LocationErrors.alreadyMonitoring)
         }
         if isDefiniteRect(nwGeoPoint: geoFence!.nwGeoPoint, seGeoPoint: geoFence!.seGeoPoint) {
             definiteRect(geoFence: geoFence!)

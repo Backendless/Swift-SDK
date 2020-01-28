@@ -1,5 +1,10 @@
 # RELEASE HISTORY
 
+### 5.7.3 / January 28, 2020
+* fixed `isValidUserToken` method to return error when Internet connection is not available
+* refactored Fault contructor to handle URLSession errors correctly 
+* fixed tests according to the last server changes
+
 ### 5.7.2 / January 24, 2020
 * fixed the DataQueryBuilder `properties` property to work correctly in search queries
 * fixed BLGeometry tests and methods that allow to get geometry objects from WKT or GeoJSON
