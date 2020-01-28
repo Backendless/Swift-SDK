@@ -297,8 +297,7 @@ class EventHandlerForClassTests: XCTestCase {
         let _ = eventHandler.addDeleteListener(responseHandler: { deletedObject in
             XCTAssertNotNil(deletedObject)
             XCTAssert(type(of: deletedObject) == TestClass.self)
-            XCTAssertEqual((deletedObject as! TestClass).name, "Bob")
-            XCTAssertEqual((deletedObject as! TestClass).age, 25)
+            XCTAssertNotNil((deletedObject as! TestClass).objectId)
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
@@ -325,8 +324,7 @@ class EventHandlerForClassTests: XCTestCase {
         let _ = eventHandler.addDeleteListener(whereClause: "age > 20", responseHandler: { deletedObject in
             XCTAssertNotNil(deletedObject)
             XCTAssert(type(of: deletedObject) == TestClass.self)
-            XCTAssertEqual((deletedObject as! TestClass).name, "Bob")
-            XCTAssert((deletedObject as! TestClass).age > 20)
+            XCTAssertNotNil((deletedObject as! TestClass).objectId)
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
@@ -353,8 +351,7 @@ class EventHandlerForClassTests: XCTestCase {
         let _ = eventHandler.addDeleteListener(whereClause: "age > 20", responseHandler: { deletedObject in
             XCTAssertNotNil(deletedObject)
             XCTAssert(type(of: deletedObject) == TestClass.self)
-            XCTAssertEqual((deletedObject as! TestClass).name, "Bob")
-            XCTAssert((deletedObject as! TestClass).age > 20)
+            XCTAssertNotNil((deletedObject as! TestClass).objectId)
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)

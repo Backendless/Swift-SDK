@@ -25,7 +25,7 @@ import XCTest
 class FaultTests: XCTestCase {
     
     func testFaultInit() {
-        let fault = Fault(message: "Fault message", faultCode: 0)
+        let fault = Fault(message: "Fault message")
         XCTAssertNotNil(fault)
         XCTAssertNotNil(fault.message)
         XCTAssertNotNil(fault.faultCode)

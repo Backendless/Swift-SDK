@@ -203,10 +203,11 @@
                         responseHandler(try JSONSerialization.jsonObject(with: responseData, options: .allowFragments) as! Bool)
                     }
                     catch {
-                        let faultCode = response.response?.statusCode
-                        let faultMessage = error.localizedDescription
-                        errorHandler(self.processResponse.faultConstructor(faultMessage, faultCode: faultCode!))
+                        errorHandler(Fault(error: error))
                     }
+                }
+                else if let error = response.error {
+                    errorHandler(Fault(error: error))
                 }
             })
         }

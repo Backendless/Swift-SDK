@@ -51,7 +51,7 @@ class ProcessResponse: NSObject {
                         }
                     }
                     catch {
-                        return Fault(domain: (error as NSError).domain, code: (error as NSError).code, userInfo: (error as NSError).userInfo)
+                        return Fault(error: error)
                     }
                 }
             }
@@ -69,12 +69,7 @@ class ProcessResponse: NSObject {
     
     func getResponseResult(response: ReturnedResponse) -> Any? {
         if let error = response.error {
-            var faultCode = 0
-            if let code = response.response?.statusCode {
-                faultCode = code
-            }
-            let faultMessage = error.localizedDescription
-            return faultConstructor(faultMessage, faultCode: faultCode)
+            return Fault(error: error)
         }
         else if let _response = response.response {
             if let data = response.data {
@@ -82,7 +77,7 @@ class ProcessResponse: NSObject {
                 if let faultDictionary = responseResultDictionary as? [String: Any],
                     let faultCode = faultDictionary["code"] as? Int,
                     let faultMessage = faultDictionary["message"] as? String {
-                    return faultConstructor(faultMessage, faultCode: faultCode)
+                    return Fault(message: faultMessage, faultCode: faultCode)
                 }
                 if responseResultDictionary != nil {
                     return responseResultDictionary
@@ -90,22 +85,12 @@ class ProcessResponse: NSObject {
                 else if _response.statusCode < 200 || _response.statusCode > 400 {
                     let faultCode = _response.statusCode
                     let faultMessage = "Backendless server error"
-                    return faultConstructor(faultMessage, faultCode: faultCode)
+                    return Fault(message: faultMessage, faultCode: faultCode)
                 }
                 return responseResultDictionary
             }
         }
         return nil
-    }
-    
-    func faultConstructor(_ faultMessage: String, faultCode: Int) -> Fault {
-        var message = faultMessage
-        if faultCode < 200 || faultCode > 400 {
-            if faultCode == 404 {
-                message = "Not Found"
-            }
-        }
-        return Fault(message: message, faultCode: faultCode)
     }
     
     func adaptToBackendlessUser(responseResult: Any?) -> Any? {
@@ -126,11 +111,11 @@ class ProcessResponse: NSObject {
                         return responseObject
                     }
                     catch {
-                        return Fault(domain: (error as NSError).domain, code: (error as NSError).code, userInfo: (error as NSError).userInfo)
+                        return Fault(error: error)
                     }
                 }
                 catch {
-                    return Fault(domain: (error as NSError).domain, code: (error as NSError).code, userInfo: (error as NSError).userInfo)
+                    return Fault(error: error)
                 }
             }
         }

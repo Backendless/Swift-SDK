@@ -310,8 +310,7 @@ class EventHanderForMapTests: XCTestCase {
         let _ = eventHandler.addDeleteListener(responseHandler: { deletedObject in
             XCTAssertNotNil(deletedObject)
             XCTAssert(type(of: deletedObject) == [String: Any].self)
-            XCTAssertEqual(deletedObject["name"] as? String, "Bob")
-            XCTAssertEqual(deletedObject["age"] as? Int, 25)
+            XCTAssertNotNil(deletedObject["objectId"] as? String)
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
@@ -338,10 +337,7 @@ class EventHanderForMapTests: XCTestCase {
         let _ = eventHandler.addDeleteListener(whereClause:"age > 20", responseHandler: { deletedObject in
             XCTAssertNotNil(deletedObject)
             XCTAssert(type(of: deletedObject) == [String: Any].self)
-            XCTAssertEqual(deletedObject["name"] as? String, "Bob")
-            if let age = deletedObject["age"] as? Int {
-                XCTAssert(age > 20)
-            }
+            XCTAssertNotNil(deletedObject["objectId"] as? String)
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
@@ -368,10 +364,7 @@ class EventHanderForMapTests: XCTestCase {
         let _ = eventHandler.addDeleteListener(whereClause: "age > 20", responseHandler: { deletedObject in
             XCTAssertNotNil(deletedObject)
             XCTAssert(type(of: deletedObject) == [String: Any].self)
-            XCTAssertEqual(deletedObject["name"] as? String, "Bob")
-            if let age = deletedObject["age"] as? Int {
-                XCTAssert(age > 20)
-            }
+            XCTAssertNotNil(deletedObject["objectId"] as? String)
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)

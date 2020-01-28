@@ -58,7 +58,7 @@ class WKTParser: NSObject {
             scanner.scanDouble(&y)
             return BLPoint(x: x, y: y)
         }
-        throw Fault(message: geoParserErrors.wrongFormat, faultCode: 0)
+        throw Fault(message: geoParserErrors.wrongFormat)
     }
 
     private static func getLineString(wkt: String) throws -> BLLineString? {
@@ -80,7 +80,7 @@ class WKTParser: NSObject {
             }
             return lineString
         }
-        throw Fault(message: geoParserErrors.wrongFormat, faultCode: 0)
+        throw Fault(message: geoParserErrors.wrongFormat)
     }
     
     private static func getPolygon(wkt: String) -> BLPolygon? {

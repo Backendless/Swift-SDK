@@ -376,7 +376,7 @@ class PersistenceServiceUtils: NSObject {
             parameters["props"] = dataTypesUtils.arrayToString(array: props)
         }
         if queryBuilder.getRelationName().isEmpty {
-            let fault = Fault(message: "Incorrect relationName property", faultCode: 0)
+            let fault = Fault(message: "Incorrect relationName property")
             errorHandler(fault)
         }
         else {

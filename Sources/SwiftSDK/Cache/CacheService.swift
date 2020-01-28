@@ -99,7 +99,7 @@
                                 responseHandler(self.jsonUtils.jsonToObject(objectToParse: resultDictionary))
                             }
                             else {
-                                errorHandler(Fault(message: parsingError + "'\(ofTypeName)'", faultCode: 0))
+                                errorHandler(Fault(message: parsingError + "'\(ofTypeName)'"))
                             }
                         }
                     }
@@ -109,7 +109,7 @@
                             responseHandler(parsedArray)
                         }
                         else {
-                            errorHandler(Fault(message: parsingError + "'\(ofTypeName)'", faultCode: 0))
+                            errorHandler(Fault(message: parsingError + "'\(ofTypeName)'"))
                         }
                     }
                 }
@@ -139,7 +139,7 @@
                             responseHandler(self.dataTypesUtils.intToDate(intVal: resultInt))
                         }
                         else {
-                            errorHandler(Fault(message: parsingError + "'\(ofTypeName)'", faultCode: 0))
+                            errorHandler(Fault(message: parsingError + "'\(ofTypeName)'"))
                         }
                     }
                     else if let resultDouble = Double(resultString) {
@@ -156,7 +156,7 @@
                             responseHandler(self.dataTypesUtils.intToDate(intVal: Int(resultDouble)))
                         }
                         else {
-                            errorHandler(Fault(message: parsingError + "'\(ofTypeName)'", faultCode: 0))
+                            errorHandler(Fault(message: parsingError + "'\(ofTypeName)'"))
                         }
                     }
                     else {
@@ -171,7 +171,7 @@
                             responseHandler(resultString)
                         }
                         else {
-                            errorHandler(Fault(message: parsingError + "'\(ofTypeName)'", faultCode: 0))
+                            errorHandler(Fault(message: parsingError + "'\(ofTypeName)'"))
                         }
                     }
                 }
@@ -186,9 +186,7 @@
                     responseHandler(try JSONSerialization.jsonObject(with: responseData, options: .allowFragments) as! Bool)
                 }
                 catch {
-                    let faultCode = response.response?.statusCode
-                    let faultMessage = error.localizedDescription
-                    errorHandler(self.processResponse.faultConstructor(faultMessage, faultCode: faultCode!))
+                    errorHandler(Fault(error: error))
                 }
             }
         })
