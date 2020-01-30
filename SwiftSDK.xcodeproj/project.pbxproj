@@ -37,10 +37,17 @@
 		5E17A1AA23954E0400B078B5 /* BLLineString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E17A1A923954E0400B078B5 /* BLLineString.swift */; };
 		5E1CC2F72252534F0011D5C8 /* FileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1CC2F62252534F0011D5C8 /* FileService.swift */; };
 		5E1CC2F9225254140011D5C8 /* BackendlessFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1CC2F8225254140011D5C8 /* BackendlessFile.swift */; };
+		5E1DB58F23E19FAA00955319 /* UnitOfWork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1DB58E23E19FAA00955319 /* UnitOfWork.swift */; };
+		5E1DB59123E1A0BA00955319 /* OpResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1DB59023E1A0BA00955319 /* OpResult.swift */; };
+		5E1DB59323E1A27A00955319 /* UnitOfWorkCreate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1DB59223E1A27A00955319 /* UnitOfWorkCreate.swift */; };
 		5E22155522B8D74F00491250 /* SearchMatchesResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E22155422B8D74F00491250 /* SearchMatchesResult.swift */; };
 		5E238A612271BDCF00227859 /* CustomService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E238A602271BDCF00227859 /* CustomService.swift */; };
 		5E238A662271CE8100227859 /* ExecutionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E238A652271CE8100227859 /* ExecutionType.swift */; };
 		5E275CA0224B8142002F89FC /* FileManagerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E275C9F224B8142002F89FC /* FileManagerHelper.swift */; };
+		5E28D58423E2F8A000FA139C /* TransactionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E28D58323E2F8A000FA139C /* TransactionHelper.swift */; };
+		5E28D58723E300AF00FA139C /* UnitOfWorkResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E28D58623E300AF00FA139C /* UnitOfWorkResult.swift */; };
+		5E28D58923E313FF00FA139C /* TransactionOperationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E28D58823E313FF00FA139C /* TransactionOperationError.swift */; };
+		5E28D58D23E32B4E00FA139C /* PayloadHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E28D58C23E32B4E00FA139C /* PayloadHelper.swift */; };
 		5E309B22225FBCF800BE6720 /* ServerCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E309B21225FBCF700BE6720 /* ServerCallback.swift */; };
 		5E309B24225FC2D000BE6720 /* ClientCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E309B23225FC2D000BE6720 /* ClientCallback.swift */; };
 		5E338D90225C97AB00709630 /* LocationTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E338D8F225C97AB00709630 /* LocationTracker.swift */; };
@@ -131,6 +138,7 @@
 		5ECFEFBB23D9C88F004A5DD0 /* BackendlessDataCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECFEFBA23D9C88F004A5DD0 /* BackendlessDataCollection.swift */; };
 		5ED51D0D22456E8600D22F11 /* BackendlessPushHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED51D0C22456E8600D22F11 /* BackendlessPushHelper.swift */; };
 		5ED765D02224369E009431CD /* BulkEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED765CF2224369E009431CD /* BulkEvent.swift */; };
+		5EDB502023E1CE5700E36E62 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EDB501F23E1CE5700E36E62 /* Operation.swift */; };
 		5EE063BF22017EAA00B862EA /* LoadRelationsQueryBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE063BE22017EAA00B862EA /* LoadRelationsQueryBuilder.swift */; };
 		5EE2B40721C25EC600F90723 /* BackendlessUserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE2B40621C25EC600F90723 /* BackendlessUserTests.swift */; };
 		5EE335AB2396679300A245B1 /* BLPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE335AA2396679300A245B1 /* BLPolygon.swift */; };
@@ -181,10 +189,17 @@
 		5E17A1A923954E0400B078B5 /* BLLineString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLLineString.swift; sourceTree = "<group>"; };
 		5E1CC2F62252534F0011D5C8 /* FileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileService.swift; sourceTree = "<group>"; };
 		5E1CC2F8225254140011D5C8 /* BackendlessFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessFile.swift; sourceTree = "<group>"; };
+		5E1DB58E23E19FAA00955319 /* UnitOfWork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfWork.swift; sourceTree = "<group>"; };
+		5E1DB59023E1A0BA00955319 /* OpResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpResult.swift; sourceTree = "<group>"; };
+		5E1DB59223E1A27A00955319 /* UnitOfWorkCreate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfWorkCreate.swift; sourceTree = "<group>"; };
 		5E22155422B8D74F00491250 /* SearchMatchesResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMatchesResult.swift; sourceTree = "<group>"; };
 		5E238A602271BDCF00227859 /* CustomService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomService.swift; sourceTree = "<group>"; };
 		5E238A652271CE8100227859 /* ExecutionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutionType.swift; sourceTree = "<group>"; };
 		5E275C9F224B8142002F89FC /* FileManagerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerHelper.swift; sourceTree = "<group>"; };
+		5E28D58323E2F8A000FA139C /* TransactionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHelper.swift; sourceTree = "<group>"; };
+		5E28D58623E300AF00FA139C /* UnitOfWorkResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfWorkResult.swift; sourceTree = "<group>"; };
+		5E28D58823E313FF00FA139C /* TransactionOperationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionOperationError.swift; sourceTree = "<group>"; };
+		5E28D58C23E32B4E00FA139C /* PayloadHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayloadHelper.swift; sourceTree = "<group>"; };
 		5E309B21225FBCF700BE6720 /* ServerCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerCallback.swift; sourceTree = "<group>"; };
 		5E309B23225FC2D000BE6720 /* ClientCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCallback.swift; sourceTree = "<group>"; };
 		5E338D8F225C97AB00709630 /* LocationTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTracker.swift; sourceTree = "<group>"; };
@@ -278,6 +293,7 @@
 		5ECFEFBA23D9C88F004A5DD0 /* BackendlessDataCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessDataCollection.swift; sourceTree = "<group>"; };
 		5ED51D0C22456E8600D22F11 /* BackendlessPushHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessPushHelper.swift; sourceTree = "<group>"; };
 		5ED765CF2224369E009431CD /* BulkEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulkEvent.swift; sourceTree = "<group>"; };
+		5EDB501F23E1CE5700E36E62 /* Operation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
 		5EE063BE22017EAA00B862EA /* LoadRelationsQueryBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadRelationsQueryBuilder.swift; sourceTree = "<group>"; };
 		5EE2B40621C25EC600F90723 /* BackendlessUserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessUserTests.swift; sourceTree = "<group>"; };
 		5EE335AA2396679300A245B1 /* BLPolygon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLPolygon.swift; sourceTree = "<group>"; };
@@ -335,6 +351,7 @@
 		5A2A784B21E6103100EC8007 /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
+				5E1DB58D23E19EFD00955319 /* Transaction */,
 				5ECFEFBA23D9C88F004A5DD0 /* BackendlessDataCollection.swift */,
 				5E467F812201E20700E70772 /* DataPermission.swift */,
 				5E72EABC21F6EB89006C8C5C /* DataQueryBuilder.swift */,
@@ -420,6 +437,19 @@
 			path = Files;
 			sourceTree = "<group>";
 		};
+		5E1DB58D23E19EFD00955319 /* Transaction */ = {
+			isa = PBXGroup;
+			children = (
+				5E28D58A23E3294A00FA139C /* UOW */,
+				5EDB501F23E1CE5700E36E62 /* Operation.swift */,
+				5E1DB59023E1A0BA00955319 /* OpResult.swift */,
+				5E28D58823E313FF00FA139C /* TransactionOperationError.swift */,
+				5E28D58323E2F8A000FA139C /* TransactionHelper.swift */,
+				5E28D58C23E32B4E00FA139C /* PayloadHelper.swift */,
+			);
+			path = Transaction;
+			sourceTree = "<group>";
+		};
 		5E238A5F2271BDAD00227859 /* CustomServiceAndEvents */ = {
 			isa = PBXGroup;
 			children = (
@@ -428,6 +458,16 @@
 				5E238A652271CE8100227859 /* ExecutionType.swift */,
 			);
 			path = CustomServiceAndEvents;
+			sourceTree = "<group>";
+		};
+		5E28D58A23E3294A00FA139C /* UOW */ = {
+			isa = PBXGroup;
+			children = (
+				5E1DB58E23E19FAA00955319 /* UnitOfWork.swift */,
+				5E1DB59223E1A27A00955319 /* UnitOfWorkCreate.swift */,
+				5E28D58623E300AF00FA139C /* UnitOfWorkResult.swift */,
+			);
+			path = UOW;
 			sourceTree = "<group>";
 		};
 		5E384C95226F3E6300743125 /* AtomicCounters */ = {
@@ -968,13 +1008,17 @@
 				5ECAB22F238C417C0051F315 /* BLPoint.swift in Sources */,
 				5E795598225503D900E8ED65 /* FilePermission.swift in Sources */,
 				5E6C1E452203362700903B7A /* ReturnedResponse.swift in Sources */,
+				5E28D58723E300AF00FA139C /* UnitOfWorkResult.swift in Sources */,
 				5E7722DD2236D91E00E7B346 /* RTTypes.swift in Sources */,
+				5E28D58D23E32B4E00FA139C /* PayloadHelper.swift in Sources */,
 				5E11113721B532450044CAED /* UserProperty.swift in Sources */,
 				5EE063BF22017EAA00B862EA /* LoadRelationsQueryBuilder.swift in Sources */,
 				5ECAB233238C42060051F315 /* GeoJSONParser.swift in Sources */,
 				5EFBA8FE21C1011E007B3BB0 /* BackendlessUser.swift in Sources */,
 				5ECAB231238C41A60051F315 /* BLGeometry.swift in Sources */,
+				5E28D58423E2F8A000FA139C /* TransactionHelper.swift in Sources */,
 				5E8A2A24226EFA16007C2BAA /* NoReply.swift in Sources */,
+				5E28D58923E313FF00FA139C /* TransactionOperationError.swift in Sources */,
 				5E971912221C27CB00857603 /* EventHandlerForMap.swift in Sources */,
 				5E275CA0224B8142002F89FC /* FileManagerHelper.swift in Sources */,
 				5E4CE08122536196004571DA /* DataExtension.swift in Sources */,
@@ -1004,6 +1048,8 @@
 				5E722B5E21BE9DE800AA9A8F /* DataTypeEnum.swift in Sources */,
 				5EA2B69B21F2324B00CFDC37 /* StoredObjects.swift in Sources */,
 				5E7955962254D9A300E8ED65 /* BackendlessFileInfo.swift in Sources */,
+				5E1DB59323E1A27A00955319 /* UnitOfWorkCreate.swift in Sources */,
+				5EDB502023E1CE5700E36E62 /* Operation.swift in Sources */,
 				5E922249225B8CCF0001688F /* GeoQueryRectangle.swift in Sources */,
 				5E642B9E227206DC00E091C4 /* Events.swift in Sources */,
 				5AC54CA621E7373400EC1F8C /* PersistenceServiceUtils.swift in Sources */,
@@ -1021,6 +1067,7 @@
 				5EA87B95221D720100A8B93F /* RTListener.swift in Sources */,
 				5ED765D02224369E009431CD /* BulkEvent.swift in Sources */,
 				5E72EABD21F6EB89006C8C5C /* DataQueryBuilder.swift in Sources */,
+				5E1DB59123E1A0BA00955319 /* OpResult.swift in Sources */,
 				5E338D90225C97AB00709630 /* LocationTracker.swift in Sources */,
 				5ED51D0D22456E8600D22F11 /* BackendlessPushHelper.swift in Sources */,
 				5E3706F722037C8E00E08C50 /* TestClass.swift in Sources */,
@@ -1045,6 +1092,7 @@
 				5E03A3BF22291C74005A538D /* MessagingService.swift in Sources */,
 				5AA2969A2237C19D007104C7 /* JSONUtils.swift in Sources */,
 				5E1CC2F72252534F0011D5C8 /* FileService.swift in Sources */,
+				5E1DB58F23E19FAA00955319 /* UnitOfWork.swift in Sources */,
 				5E92224B225BAA8C0001688F /* GeoCluster.swift in Sources */,
 				5E572D4B21B8043E000713B0 /* ProcessResponse.swift in Sources */,
 				5EB28E1921B1799A0007AC30 /* Backendless.swift in Sources */,

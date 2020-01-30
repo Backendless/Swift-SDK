@@ -400,8 +400,6 @@ class PersistenceServiceUtils: NSObject {
         }
     }
     
-    // ***********************************************
-    
     func getTableName(entity: Any) -> String {
         var name = String(describing: entity)
         if name == "BackendlessUser" {
@@ -768,11 +766,14 @@ class PersistenceServiceUtils: NSObject {
                     resultDictionary[key] = try? BLPolygon.fromWkt(dictValue)
                 }
             }
+            else if var dictValue = value as? [String : Any] {
+                dictValue = convertToGeometryType(dictionary: dictValue)
+            }
         }
         return resultDictionary
     }
     
-    private func convertFromGeometryType(dictionary: [String : Any]) -> [String : Any] {
+    func convertFromGeometryType(dictionary: [String : Any]) -> [String : Any] {
         var resultDictionary = dictionary
         for (key, value) in dictionary {            
             if let point = value as? BLPoint {

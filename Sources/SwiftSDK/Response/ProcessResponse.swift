@@ -353,4 +353,31 @@ class ProcessResponse: NSObject {
         }
         return resultArray
     }
+    
+    func adaptToUnitOfWorkResult(unitOfWorkDictionary: [String : Any]) -> UnitOfWorkResult {
+        let uowResult = UnitOfWorkResult()
+        if let success = unitOfWorkDictionary["success"] as? Bool {
+            if success == true {
+                uowResult.success = true
+            }
+            else if let errorDictionary = unitOfWorkDictionary["error"] as? [String : Any] {
+                uowResult.error = adaptToTransactionOperationError(errorDictionary: errorDictionary)
+            }
+        }
+        return uowResult
+    }
+    
+    func adaptToTransactionOperationError(errorDictionary: [String : Any]) -> TransactionOperationError? {
+        if let message = errorDictionary["message"] as? String,
+            let operationDictionary = errorDictionary["operation"] as? [String : Any],
+            let operationTypeString = operationDictionary["operationType"] as? String,
+            let operationType = OperationType.from(stringValue: operationTypeString),
+            let tableName = operationDictionary["table"] as? String,
+            let opResultId = operationDictionary["opResultId"] as? String,
+            let payload = operationDictionary["payload"] as? [String : Any] {
+            let operation = Operation(operationType: operationType, tableName: tableName, opResultId: opResultId, payload: payload)
+            return TransactionOperationError(message: message, operation: operation)
+        }
+        return nil
+    }
 }
