@@ -45,11 +45,14 @@ enum uowProperties {
     private let psu = PersistenceServiceUtils()
     private let processResponse = ProcessResponse.shared
     private let payloadHelper = PayloadHelper.shared
+    private let transactionHelper = TransactionHelper.shared
     
     private var uowCreate: UnitOfWorkCreate
+    private var uowUpdate: UnitOfWorkUpdate
     
     public override init() {
         uowCreate = UnitOfWorkCreate()
+        uowUpdate = UnitOfWorkUpdate()
     }
     
     public convenience init(isolation: IsolationLevel) {
@@ -65,9 +68,51 @@ enum uowProperties {
         return opRes
     }
     
+    public func create(entity: Any) -> OpResult {
+        let (tableName, entityDictionary) = transactionHelper.tableAndDictionaryFromEntity(entity: entity)
+        let (operation, opRes) = uowCreate.create(tableName: tableName, entity: entityDictionary as! [String : Any])
+        operations.append(operation)
+        return opRes
+    }
+    
+    // bulk create
+    
+    public func bulkCreate(tableName: String, entities: [[String : Any]]) -> OpResult {
+        let (operation, opRes) = uowCreate.bulkCreate(tableName: tableName, entities: entities)
+        operations.append(operation)
+        return opRes
+    }
+    
+    public func bulkCreate(entities: [Any]) -> OpResult {
+        let (tableName, dictArray) = transactionHelper.tableAndDictionaryFromEntity(entity: entities)
+        let (operation, opRes) = uowCreate.bulkCreate(tableName: tableName, entities: dictArray as! [[String : Any]])
+        operations.append(operation)
+        return opRes
+    }
+    
+    // update
+    public func update(tableName: String, entity: [String : Any]) -> OpResult {
+        let (operation, opRes) = uowUpdate.update(tableName: tableName, entity: entity)
+        operations.append(operation)
+        return opRes
+    }
+    
+    public func update(entity: Any) -> OpResult {
+        let (tableName, entityDictionary) = transactionHelper.tableAndDictionaryFromEntity(entity: entity)
+        let (operation, opRes) = uowUpdate.update(tableName: tableName, entity: entityDictionary as! [String : Any])
+        operations.append(operation)
+        return opRes
+    }
+    
+    public func update(result: OpResult, changes: [String : Any]) -> OpResult {
+        let (operation, opRes) = uowUpdate.update(result: result, changes: changes)
+        
+    }
+    
     // execute
     public func execute(responseHandler: ((UnitOfWorkResult) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
+
         let parameters = payloadHelper.generatePayload(isolation: isolation, operations: operations)
         BackendlessRequestManager(restMethod: "transaction/unit-of-work", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = self.processResponse.adapt(response: response, to: JSON.self),

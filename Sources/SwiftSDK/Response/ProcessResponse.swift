@@ -374,7 +374,7 @@ class ProcessResponse: NSObject {
             let operationType = OperationType.from(stringValue: operationTypeString),
             let tableName = operationDictionary["table"] as? String,
             let opResultId = operationDictionary["opResultId"] as? String,
-            let payload = operationDictionary["payload"] as? [String : Any] {
+            let payload = operationDictionary["payload"] {
             let operation = Operation(operationType: operationType, tableName: tableName, opResultId: opResultId, payload: payload)
             return TransactionOperationError(message: message, operation: operation)
         }

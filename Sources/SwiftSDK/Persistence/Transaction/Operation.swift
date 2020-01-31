@@ -33,11 +33,17 @@
     
     static func from(stringValue: String) -> OperationType? {
         if stringValue == "CREATE" { return .CREATE }
+        if stringValue == "CREATE_BULK" { return .CREATE_BULK }
+        if stringValue == "UPDATE" { return .UPDATE }
+        if stringValue == "UPDATE_BULK" { return .UPDATE_BULK }
         return nil
     }
     
     static func from(intValue: Int) -> String? {
         if intValue == 0 { return "CREATE" }
+        if intValue == 1 { return "CREATE_BULK" }
+        if intValue == 2 { return "UPDATE" }
+        if intValue == 3 { return "UPDATE_BULK" }
         return nil
     }
 }
@@ -49,9 +55,9 @@
     public var operationType: OperationType?
     public var tableName: String?
     public var opResultId: String?
-    public var payload: [String : Any]?
+    public var payload: Any?
     
-    init(operationType: OperationType, tableName: String, opResultId: String, payload: [String : Any]) {
+    init(operationType: OperationType, tableName: String, opResultId: String, payload: Any) {
         self.operationType = operationType
         self.tableName = tableName
         self.opResultId = opResultId

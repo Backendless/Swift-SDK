@@ -24,6 +24,7 @@ class UnitOfWorkCreate {
     private let transactionHelper = TransactionHelper.shared
     
     private var countCreate = 1
+    private var countBulkCreate = 1
     
     func create(tableName: String, entity: [String : Any]) -> (Operation, OpResult) {
         let operationTypeString = OperationType.from(intValue: OperationType.CREATE.rawValue)!
@@ -32,5 +33,14 @@ class UnitOfWorkCreate {
         let operationCreate = Operation(operationType: .CREATE, tableName: tableName, opResultId: operationResultId, payload: entity)
         let opResult = transactionHelper.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .CREATE)
         return (operationCreate, opResult)
+    }
+    
+    func bulkCreate(tableName: String, entities: [[String : Any]]) -> (Operation, OpResult) {
+        let operationTypeString = OperationType.from(intValue: OperationType.CREATE_BULK.rawValue)!
+        let operationResultId = "\(operationTypeString)_\(countCreate)"
+        countBulkCreate += 1
+        let operationBulkCreate = Operation(operationType: .CREATE_BULK, tableName: tableName, opResultId: operationResultId, payload: entities)        
+        let opResult = transactionHelper.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .CREATE_BULK)
+        return (operationBulkCreate, opResult)
     }
 }

@@ -22,11 +22,28 @@
 class TransactionHelper {
     
     static let shared = TransactionHelper()
-
+    
+    private let psu = PersistenceServiceUtils()
+    
     func makeOpResult(tableName: String, operationResultId: String, operationType: OperationType) -> OpResult {
         var reference = [String : Any]()
         reference[uowProperties.referenceMarker] = true
         reference[uowProperties.opResultId] = operationResultId
         return OpResult(tableName: tableName, reference: reference, operationType: operationType)
+    }
+    
+    func tableAndDictionaryFromEntity(entity: Any) -> (String, Any) {
+        if entity is [Any] {
+            var tableName = ""
+            var dictionaryArray = [[String : Any]]()
+            for element in entity as! [Any] {
+                tableName = psu.getTableName(entity: type(of: element))
+                dictionaryArray.append(psu.entityToDictionary(entity: element))
+            }
+            return (tableName, dictionaryArray)
+        }
+        let tableName = psu.getTableName(entity: type(of: entity))
+        let entityDictionary = psu.entityToDictionary(entity: entity)
+        return (tableName, entityDictionary)
     }
 }

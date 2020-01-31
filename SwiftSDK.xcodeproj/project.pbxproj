@@ -143,6 +143,7 @@
 		5EE2B40721C25EC600F90723 /* BackendlessUserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE2B40621C25EC600F90723 /* BackendlessUserTests.swift */; };
 		5EE335AB2396679300A245B1 /* BLPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE335AA2396679300A245B1 /* BLPolygon.swift */; };
 		5EE6920121B67791002E72A9 /* FaultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE6920021B67791002E72A9 /* FaultTests.swift */; };
+		5EF0C79D23E43CBE00880F31 /* UnitOfWorkUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF0C79C23E43CBE00880F31 /* UnitOfWorkUpdate.swift */; };
 		5EFB60E922422F93004DFA2C /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFB60E822422F93004DFA2C /* UserInfo.swift */; };
 		5EFBA8FE21C1011E007B3BB0 /* BackendlessUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFBA8FD21C1011E007B3BB0 /* BackendlessUser.swift */; };
 		6452098867FA50BF746CA158 /* Pods_SwiftSDKTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C5DAA07253AE8AD64C55E4 /* Pods_SwiftSDKTests.framework */; };
@@ -298,6 +299,7 @@
 		5EE2B40621C25EC600F90723 /* BackendlessUserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessUserTests.swift; sourceTree = "<group>"; };
 		5EE335AA2396679300A245B1 /* BLPolygon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLPolygon.swift; sourceTree = "<group>"; };
 		5EE6920021B67791002E72A9 /* FaultTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaultTests.swift; sourceTree = "<group>"; };
+		5EF0C79C23E43CBE00880F31 /* UnitOfWorkUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfWorkUpdate.swift; sourceTree = "<group>"; };
 		5EFB60E822422F93004DFA2C /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		5EFBA8FD21C1011E007B3BB0 /* BackendlessUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessUser.swift; sourceTree = "<group>"; };
 		A5BFCA65D60B7561FBB334B2 /* Pods-SwiftSDKTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSDKTests.release.xcconfig"; path = "Target Support Files/Pods-SwiftSDKTests/Pods-SwiftSDKTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -465,6 +467,7 @@
 			children = (
 				5E1DB58E23E19FAA00955319 /* UnitOfWork.swift */,
 				5E1DB59223E1A27A00955319 /* UnitOfWorkCreate.swift */,
+				5EF0C79C23E43CBE00880F31 /* UnitOfWorkUpdate.swift */,
 				5E28D58623E300AF00FA139C /* UnitOfWorkResult.swift */,
 			);
 			path = UOW;
@@ -1011,6 +1014,7 @@
 				5E28D58723E300AF00FA139C /* UnitOfWorkResult.swift in Sources */,
 				5E7722DD2236D91E00E7B346 /* RTTypes.swift in Sources */,
 				5E28D58D23E32B4E00FA139C /* PayloadHelper.swift in Sources */,
+				5EF0C79D23E43CBE00880F31 /* UnitOfWorkUpdate.swift in Sources */,
 				5E11113721B532450044CAED /* UserProperty.swift in Sources */,
 				5EE063BF22017EAA00B862EA /* LoadRelationsQueryBuilder.swift in Sources */,
 				5ECAB233238C42060051F315 /* GeoJSONParser.swift in Sources */,
