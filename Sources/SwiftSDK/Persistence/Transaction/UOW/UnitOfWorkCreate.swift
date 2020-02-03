@@ -30,17 +30,17 @@ class UnitOfWorkCreate {
         let operationTypeString = OperationType.from(intValue: OperationType.CREATE.rawValue)!
         let operationResultId = "\(operationTypeString)_\(countCreate)"
         countCreate += 1
-        let operationCreate = Operation(operationType: .CREATE, tableName: tableName, opResultId: operationResultId, payload: entity)
+        let operation = Operation(operationType: .CREATE, tableName: tableName, opResultId: operationResultId, payload: entity)
         let opResult = transactionHelper.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .CREATE)
-        return (operationCreate, opResult)
+        return (operation, opResult)
     }
     
     func bulkCreate(tableName: String, entities: [[String : Any]]) -> (Operation, OpResult) {
         let operationTypeString = OperationType.from(intValue: OperationType.CREATE_BULK.rawValue)!
-        let operationResultId = "\(operationTypeString)_\(countCreate)"
+        let operationResultId = "\(operationTypeString)_\(countBulkCreate)"
         countBulkCreate += 1
-        let operationBulkCreate = Operation(operationType: .CREATE_BULK, tableName: tableName, opResultId: operationResultId, payload: entities)        
+        let operation = Operation(operationType: .CREATE_BULK, tableName: tableName, opResultId: operationResultId, payload: entities)
         let opResult = transactionHelper.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .CREATE_BULK)
-        return (operationBulkCreate, opResult)
+        return (operation, opResult)
     }
 }

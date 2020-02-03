@@ -33,17 +33,23 @@
     
     static func from(stringValue: String) -> OperationType? {
         if stringValue == "CREATE" { return .CREATE }
-        if stringValue == "CREATE_BULK" { return .CREATE_BULK }
-        if stringValue == "UPDATE" { return .UPDATE }
-        if stringValue == "UPDATE_BULK" { return .UPDATE_BULK }
+        else if stringValue == "CREATE_BULK" { return .CREATE_BULK }
+        else if stringValue == "UPDATE" { return .UPDATE }
+        else if stringValue == "UPDATE_BULK" { return .UPDATE_BULK }
+        else if stringValue == "DELETE" { return .DELETE }
+        else if stringValue == "DELETE_BULK" { return .DELETE_BULK }
+        else if stringValue == "FIND" { return .FIND }
         return nil
     }
     
     static func from(intValue: Int) -> String? {
         if intValue == 0 { return "CREATE" }
-        if intValue == 1 { return "CREATE_BULK" }
-        if intValue == 2 { return "UPDATE" }
-        if intValue == 3 { return "UPDATE_BULK" }
+        else if intValue == 1 { return "CREATE_BULK" }
+        else if intValue == 2 { return "UPDATE" }
+        else if intValue == 3 { return "UPDATE_BULK" }
+        else if intValue == 4 { return "DELETE" }
+        else if intValue == 5 { return "DELETE_BULK" }
+        else if intValue == 6 { return "FIND" }
         return nil
     }
 }

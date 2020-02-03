@@ -49,10 +49,14 @@ enum uowProperties {
     
     private var uowCreate: UnitOfWorkCreate
     private var uowUpdate: UnitOfWorkUpdate
+    private var uowDelete: UnitOfWorkDelete
+    private var uowFind: UnitOfWorkFind
     
     public override init() {
         uowCreate = UnitOfWorkCreate()
         uowUpdate = UnitOfWorkUpdate()
+        uowDelete = UnitOfWorkDelete()
+        uowFind = UnitOfWorkFind()
     }
     
     public convenience init(isolation: IsolationLevel) {
@@ -104,21 +108,72 @@ enum uowProperties {
         return opRes
     }
     
-    public func update(result: OpResult, changes: [String : Any]) -> OpResult {
-        let (operation, opRes) = uowUpdate.update(result: result, changes: changes)
-        
+    public func update(result: OpResult, entity: [String : Any]) -> OpResult {
+        let (operation, opRes) = uowUpdate.update(result: result, entity: entity)
+        operations.append(operation)
+        return opRes
+    }
+    
+    public func update(result: OpResult, propertyName: String, propertyValue: Any) -> OpResult {
+        let entity = [propertyName: propertyValue]
+        let (operation, opRes) = uowUpdate.update(result: result, entity: entity)
+        operations.append(operation)
+        return opRes
+    }
+    
+    public func bulkUpdate(tableName: String, whereClause: String, entity: [String : Any]) -> OpResult {
+        let (operation, opRes) = uowUpdate.bulkUpdate(tableName: tableName, whereClause: whereClause, entity: entity)
+        operations.append(operation)
+        return opRes
+    }
+    
+    public func bulkUpdate(whereClause: String, entity: Any) -> OpResult {
+        let (tableName, entityDictionary) = transactionHelper.tableAndDictionaryFromEntity(entity: entity)
+        let (operation, opRes) = uowUpdate.bulkUpdate(tableName: tableName, whereClause: whereClause, entity: entityDictionary as! [String : Any])
+        operations.append(operation)
+        return opRes
+    }
+    
+    public func bulkUpdate(tableName: String, objectIds: [String], entity: [String : Any]) -> OpResult {
+        let (operation, opRes) = uowUpdate.bulkUpdate(tableName: tableName, objectIds: objectIds, entity: entity)
+        operations.append(operation)
+        return opRes
+    }
+    
+    public func bulkUpdate(result: OpResult, entity: [String : Any]) -> OpResult {
+        let (operation, opRes) = uowUpdate.bulkUpdate(result: result, entity: entity)
+        operations.append(operation)
+        return opRes
+    }
+    
+    // find
+    
+    public func find(tableName: String, queryBuilder: DataQueryBuilder?) -> (OpResult) {
+        if queryBuilder != nil {
+            let (operation, opRes) = uowFind.find(tableName: tableName, queryBuilder: queryBuilder!)
+            operations.append(operation)
+            return opRes
+        }
+        else {
+            let (operation, opRes) = uowFind.find(tableName: tableName, queryBuilder: DataQueryBuilder())
+            operations.append(operation)
+            return opRes
+        }        
     }
     
     // execute
-    public func execute(responseHandler: ((UnitOfWorkResult) -> Void)!) {
+    public func execute(responseHandler: ((UnitOfWorkResult) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
-
         let parameters = payloadHelper.generatePayload(isolation: isolation, operations: operations)
         BackendlessRequestManager(restMethod: "transaction/unit-of-work", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: JSON.self),
-                var resultDictionary = (result as! JSON).dictionaryObject {
-                resultDictionary = self.psu.convertToGeometryType(dictionary: resultDictionary)
-                responseHandler(self.processResponse.adaptToUnitOfWorkResult(unitOfWorkDictionary: resultDictionary))
+            if let result = self.processResponse.adapt(response: response, to: JSON.self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else if var resultDictionary = (result as! JSON).dictionaryObject {
+                    resultDictionary = self.psu.convertToGeometryType(dictionary: resultDictionary)
+                    responseHandler(self.processResponse.adaptToUnitOfWorkResult(unitOfWorkDictionary: resultDictionary))
+                }
             }
         })
     }
