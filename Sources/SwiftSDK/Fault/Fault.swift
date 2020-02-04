@@ -37,7 +37,7 @@
         let userInfo = (error as NSError).userInfo
         super.init(domain: domain, code: code, userInfo: userInfo)
         self.message = message
-        self.faultCode = code   
+        self.faultCode = code
     }
     
     public init(message: String?, faultCode: Int) {

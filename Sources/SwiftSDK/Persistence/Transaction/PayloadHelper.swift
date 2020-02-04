@@ -29,80 +29,84 @@ class PayloadHelper {
         var payload = [String : Any]()
         var _operations = [[String : Any]]()
         for operation in operations {
-            if operation.operationType == .CREATE || operation.operationType == .CREATE_BULK {
-                let _operation = generateCreatePayload(operation: operation)
-                _operations.append(_operation)
+            
+            if operation.operationType == .CREATE {
+                let _operationPayload = generateCreatePayload(operation: operation)
+                _operations.append(_operationPayload)
             }
-            else if operation.operationType == .UPDATE || operation.operationType == .UPDATE_BULK {
-                let _operation = generateUpdatePayload(operation: operation)
-                _operations.append(_operation)
+            else if operation.operationType == .CREATE_BULK {
+                let _operationPayload = generateBulkCreatePayload(operation: operation)
+                _operations.append(_operationPayload)
             }
-            else if operation.operationType == .DELETE || operation.operationType == .DELETE_BULK {
-                // TODO
+            else if operation.operationType == .UPDATE {
+                let _operationPayload = generateUpdatePayload(operation: operation)
+                _operations.append(_operationPayload)
+            }
+            else if operation.operationType == .UPDATE_BULK{
+                let _operationPayload = generateBulkUpdatePayload(operation: operation)
+                _operations.append(_operationPayload)
             }
             else if operation.operationType == .FIND {
-                let _operation = generateFindPayload(operation: operation)
-                _operations.append(_operation)
+                let _operationPayload = generateFindPayload(operation: operation)
+                _operations.append(_operationPayload)
             }
+            
         }
         payload["operations"] = _operations
         payload["isolationLevelEnum"] = isolation
         return payload
     }
     
-    // **********************************************
+    // ************************************************************************************************
     
-    private func generateFindPayload(operation: Operation) -> [String : Any] {
-        if let _ = operation.payload as? [String : Any] {
-            // create and find payloads are similar
-            return generateSingleCreatePayload(operation: operation)
-        }
-        return [String : Any]()
-    }
-    
-    // **********************************************
-    
-    private func generateUpdatePayload(operation: Operation) -> [String : Any] {
-        if let payload = operation.payload as? [String : Any] {
-            if let _ = payload["objectId"] {
-                // create and update payloads are similar
-                return generateCreatePayload(operation: operation)
-            }
-            else if let payloadVal = payload["payload"] as? [String : Any],
-                let _ = payloadVal["objectId"] as? [String : Any] {
-                return generateSingleUpdateRefPayload(operation: operation)
-            }
-            else if let _ = payload["changes"] as? [String : Any] {
-                return generateBulkUpdatePayload(operation: operation)
-            }
-        }
-        return [String : Any]()
-    }
-    
-    private func generateSingleUpdateRefPayload(operation: Operation) -> [String : Any] {
+    private func generateCreatePayload(operation: Operation) -> [String : Any] {
         var operationPayload = [String : Any]()
-        if let operationType = operation.operationType {
-            operationPayload["operationType"] = OperationType.from(intValue: operationType.rawValue)
-        }
-        if let payload = operation.payload as? [String : Any],
-            var payloadVal = payload["payload"] as? [String : Any],
-            let _ = payloadVal["objectId"] as? [String : Any] {
-            payloadVal = psu.convertFromGeometryType(dictionary: payloadVal)
-            operationPayload["payload"] = payloadVal
-        }
         operationPayload["table"] = operation.tableName
         operationPayload["opResultId"] = operation.opResultId
+        operationPayload["operationType"] = OperationType.from(intValue: OperationType.CREATE.rawValue)
+        if let payload = operation.payload as? [String : Any] {
+            operationPayload["payload"] = psu.convertFromGeometryType(dictionary: payload)
+        }
+        return operationPayload
+    }
+    
+    private func generateBulkCreatePayload(operation: Operation) -> [String : Any] {
+        var operationPayload = [String : Any]()
+        operationPayload["table"] = operation.tableName
+        operationPayload["opResultId"] = operation.opResultId
+        operationPayload["operationType"] = OperationType.from(intValue: OperationType.CREATE_BULK.rawValue)
+        if let payload = operation.payload as? [[String : Any]] {
+            for var payloadDict in payload {
+                payloadDict = psu.convertFromGeometryType(dictionary: payloadDict)
+            }
+            operationPayload["payload"] = payload
+        }
+        return operationPayload
+    }
+    
+    private func generateUpdatePayload(operation: Operation) -> [String : Any] {
+        var operationPayload = [String : Any]()
+        operationPayload["table"] = operation.tableName
+        operationPayload["opResultId"] = operation.opResultId
+        operationPayload["operationType"] = OperationType.from(intValue: OperationType.UPDATE.rawValue)
+        
+        if let payload = operation.payload as? [String : Any],
+            let _ = payload["objectId"] {
+            operationPayload["payload"] = psu.convertFromGeometryType(dictionary: payload)
+        }
+        
         return operationPayload
     }
     
     private func generateBulkUpdatePayload(operation: Operation) -> [String : Any] {
         var operationPayload = [String : Any]()
-        if let operationType = operation.operationType {
-            operationPayload["operationType"] = OperationType.from(intValue: operationType.rawValue)
-        }
+        operationPayload["table"] = operation.tableName
+        operationPayload["opResultId"] = operation.opResultId
+        operationPayload["operationType"] = OperationType.from(intValue: OperationType.UPDATE_BULK.rawValue)
         if let payload = operation.payload as? [String : Any],
             var changes = payload["changes"] as? [String : Any] {
             changes = psu.convertFromGeometryType(dictionary: changes)
+            
             if let whereClause = payload["conditional"] as? String {
                 operationPayload["payload"] = ["conditional": whereClause, "changes": changes]
             }
@@ -111,48 +115,19 @@ class PayloadHelper {
             }
             else if let ref = payload["unconditional"] as? [String : Any] {
                 operationPayload["payload"] = ["unconditional": ref, "changes": changes]
-            }            
+            }
         }
-        operationPayload["table"] = operation.tableName
-        operationPayload["opResultId"] = operation.opResultId
         return operationPayload
     }
     
-    // **********************************************
-    
-    private func generateCreatePayload(operation: Operation) -> [String : Any] {
-        if let _ = operation.payload as? [String : Any] {
-            return generateSingleCreatePayload(operation: operation)
-        }
-        return generateBulkCreatePayload(operation: operation)
-    }
-    
-    private func generateSingleCreatePayload(operation: Operation) -> [String : Any] {
+    private func generateFindPayload(operation: Operation) -> [String : Any] {
         var operationPayload = [String : Any]()
-        if let operationType = operation.operationType {
-            operationPayload["operationType"] = OperationType.from(intValue: operationType.rawValue)
-        }
+        operationPayload["table"] = operation.tableName
+        operationPayload["opResultId"] = operation.opResultId
+        operationPayload["operationType"] = OperationType.from(intValue: OperationType.FIND.rawValue)
         if let payload = operation.payload as? [String : Any] {
             operationPayload["payload"] = psu.convertFromGeometryType(dictionary: payload)
         }
-        operationPayload["table"] = operation.tableName
-        operationPayload["opResultId"] = operation.opResultId
-        return operationPayload
-    }
-    
-    private func generateBulkCreatePayload(operation: Operation) -> [String : Any] {
-        var operationPayload = [String : Any]()
-        if let operationType = operation.operationType {
-            operationPayload["operationType"] = OperationType.from(intValue: operationType.rawValue)
-        }
-        if let payload = operation.payload as? [[String : Any]] {
-            for var payloadDict in payload {
-                payloadDict = psu.convertFromGeometryType(dictionary: payloadDict)
-            }
-            operationPayload["payload"] = payload
-        }
-        operationPayload["table"] = operation.tableName
-        operationPayload["opResultId"] = operation.opResultId
         return operationPayload
     }
 }

@@ -32,4 +32,41 @@
         self.reference = reference
         self.operationType = operationType
     }
+    
+    public func resolveTo(propertyName: String) -> [String : Any] {
+        var referencePropName = reference
+        if referencePropName == nil {
+            referencePropName = [String : Any]()
+        }
+        referencePropName![uowProps.propName] = propertyName
+        return referencePropName!
+    }
+    
+    public func resolveTo(opResultIndex: Int) -> [String : Any] {
+        var referenceIndex = reference
+        if referenceIndex == nil {
+            referenceIndex = [String : Any]()
+        }
+        referenceIndex![uowProps.resultIndex] = opResultIndex
+        return referenceIndex!
+    }
+    
+    public func resolveTo(opResultIndex: Int, propertyName: String) -> [String : Any] {
+        var referenceIndexPropName = reference
+        if referenceIndexPropName == nil {
+            referenceIndexPropName = [String : Any]()
+        }
+        referenceIndexPropName![uowProps.resultIndex] = opResultIndex
+        referenceIndexPropName![uowProps.propName] = propertyName
+        return referenceIndexPropName!
+    }
+    
+    public func resolveToIndex(opResultIndex: Int) -> OpResultIndex {
+        var referenceIndex = reference
+        if referenceIndex == nil {
+            referenceIndex = [String : Any]()
+        }
+        referenceIndex![uowProps.resultIndex] = opResultIndex
+        return OpResultIndex(tableName: tableName!, reference: referenceIndex!, operationType: operationType!)
+    }
 }

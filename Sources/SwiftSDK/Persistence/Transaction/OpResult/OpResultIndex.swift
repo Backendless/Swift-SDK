@@ -21,7 +21,7 @@
 
 @objcMembers public class OpResultIndex: OpResult {
     
-    override init(tableName: String, reference: [String : Any], operationType: OperationType) {
+    override public init(tableName: String, reference: [String : Any], operationType: OperationType) {
         super.init(tableName: tableName, reference: reference, operationType: operationType)
     }
 }

@@ -28,8 +28,8 @@
 
 // **************************************************************
 
-enum uowProperties {
-    static let referenceMarker = "___ref"
+enum uowProps {
+    static let ref = "___ref"
     static let opResultId = "opResultId"
     static let resultIndex = "resultIndex"
     static let propName = "propName"
@@ -74,9 +74,7 @@ enum uowProperties {
     
     public func create(entity: Any) -> OpResult {
         let (tableName, entityDictionary) = transactionHelper.tableAndDictionaryFromEntity(entity: entity)
-        let (operation, opRes) = uowCreate.create(tableName: tableName, entity: entityDictionary as! [String : Any])
-        operations.append(operation)
-        return opRes
+        return create(tableName: tableName, entity: entityDictionary as! [String : Any])
     }
     
     // bulk create
@@ -89,59 +87,62 @@ enum uowProperties {
     
     public func bulkCreate(entities: [Any]) -> OpResult {
         let (tableName, dictArray) = transactionHelper.tableAndDictionaryFromEntity(entity: entities)
-        let (operation, opRes) = uowCreate.bulkCreate(tableName: tableName, entities: dictArray as! [[String : Any]])
-        operations.append(operation)
-        return opRes
+        return bulkCreate(tableName: tableName, entities: dictArray as! [[String : Any]])
     }
     
     // update
-    public func update(tableName: String, entity: [String : Any]) -> OpResult {
-        let (operation, opRes) = uowUpdate.update(tableName: tableName, entity: entity)
+    public func update(tableName: String, changes: [String : Any]) -> OpResult {
+        let (operation, opRes) = uowUpdate.update(tableName: tableName, changes: changes)
         operations.append(operation)
         return opRes
     }
     
-    public func update(entity: Any) -> OpResult {
-        let (tableName, entityDictionary) = transactionHelper.tableAndDictionaryFromEntity(entity: entity)
-        let (operation, opRes) = uowUpdate.update(tableName: tableName, entity: entityDictionary as! [String : Any])
-        operations.append(operation)
-        return opRes
+    public func update(changes: Any) -> OpResult {
+        let (tableName, changesDictionary) = transactionHelper.tableAndDictionaryFromEntity(entity: changes)
+        return update(tableName: tableName, changes: changesDictionary as! [String : Any])
     }
     
-    public func update(result: OpResult, entity: [String : Any]) -> OpResult {
-        let (operation, opRes) = uowUpdate.update(result: result, entity: entity)
+    public func update(result: OpResult, changes: [String : Any]) -> OpResult {
+        let (operation, opRes) = uowUpdate.update(result: result, changes: changes)
         operations.append(operation)
         return opRes
     }
     
     public func update(result: OpResult, propertyName: String, propertyValue: Any) -> OpResult {
-        let entity = [propertyName: propertyValue]
-        let (operation, opRes) = uowUpdate.update(result: result, entity: entity)
+        return update(result: result, changes: [propertyName: propertyValue])
+    }
+    
+    public func update(resultIndex: OpResultIndex, changes: [String : Any]) -> OpResult {
+        let (operation, opRes) = uowUpdate.update(result: resultIndex, changes: changes)
         operations.append(operation)
         return opRes
     }
     
-    public func bulkUpdate(tableName: String, whereClause: String, entity: [String : Any]) -> OpResult {
-        let (operation, opRes) = uowUpdate.bulkUpdate(tableName: tableName, whereClause: whereClause, entity: entity)
+    public func update(resultIndex: OpResultIndex, propertyName: String, propertyValue: Any) -> OpResult {
+        return update(resultIndex: resultIndex, changes: [propertyName: propertyValue])
+    }
+    
+    // bulk update
+    
+    public func bulkUpdate(tableName: String, whereClause: String, changes: [String : Any]) -> OpResult {
+        let (operation, opRes) = uowUpdate.bulkUpdate(tableName: tableName, whereClause: whereClause, changes: changes)
         operations.append(operation)
         return opRes
     }
     
-    public func bulkUpdate(whereClause: String, entity: Any) -> OpResult {
-        let (tableName, entityDictionary) = transactionHelper.tableAndDictionaryFromEntity(entity: entity)
-        let (operation, opRes) = uowUpdate.bulkUpdate(tableName: tableName, whereClause: whereClause, entity: entityDictionary as! [String : Any])
+    public func bulkUpdate(whereClause: String, changes: Any) -> OpResult {
+        let (tableName, changesDictionary) = transactionHelper.tableAndDictionaryFromEntity(entity: changes)
+        return bulkUpdate(tableName: tableName, whereClause: whereClause, changes: changesDictionary as! [String : Any])
+    }
+    
+    public func bulkUpdate(tableName: String, objectIds: [String], changes: [String : Any]) -> OpResult {
+        let (operation, opRes) = uowUpdate.bulkUpdate(tableName: tableName, objectIds: objectIds, changes: changes)
         operations.append(operation)
         return opRes
     }
     
-    public func bulkUpdate(tableName: String, objectIds: [String], entity: [String : Any]) -> OpResult {
-        let (operation, opRes) = uowUpdate.bulkUpdate(tableName: tableName, objectIds: objectIds, entity: entity)
-        operations.append(operation)
-        return opRes
-    }
-    
-    public func bulkUpdate(result: OpResult, entity: [String : Any]) -> OpResult {
-        let (operation, opRes) = uowUpdate.bulkUpdate(result: result, entity: entity)
+    public func bulkUpdate(result: OpResult, changes: [String : Any]) -> OpResult {
+        let (operation, opRes) = uowUpdate.bulkUpdate(result: result, changes: changes)
         operations.append(operation)
         return opRes
     }

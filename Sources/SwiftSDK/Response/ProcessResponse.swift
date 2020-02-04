@@ -41,17 +41,22 @@ class ProcessResponse: NSObject {
                     return responseResult as! Fault
                 }
                 else {
-                    do {
-                        if to == BackendlessUser.self {
-                            return adaptToBackendlessUser(responseResult: responseResult)
-                        }
-                        else if let responseData = response.data {
-                            let responseObject = try JSONDecoder().decode(to, from: responseData)
-                            return responseObject
-                        }
+                    if responseResult is String, to != String.self {
+                        return Fault(message: responseResult as? String)
                     }
-                    catch {
-                        return Fault(error: error)
+                    else {
+                        do {
+                            if to == BackendlessUser.self {
+                                return adaptToBackendlessUser(responseResult: responseResult)
+                            }
+                            else if let responseData = response.data {
+                                let responseObject = try JSONDecoder().decode(to, from: responseData)
+                                return responseObject
+                            }
+                        }
+                        catch {
+                            return Fault(error: error)
+                        }
                     }
                 }
             }
@@ -73,21 +78,22 @@ class ProcessResponse: NSObject {
         }
         else if let _response = response.response {
             if let data = response.data {
-                let responseResultDictionary =  try? JSONSerialization.jsonObject(with: data, options: [])
-                if let faultDictionary = responseResultDictionary as? [String: Any],
-                    let faultCode = faultDictionary["code"] as? Int,
-                    let faultMessage = faultDictionary["message"] as? String {
-                    return Fault(message: faultMessage, faultCode: faultCode)
-                }
-                if responseResultDictionary != nil {
+                if let responseResultDictionary =  try? JSONSerialization.jsonObject(with: data, options: []) {
+                    if let faultDictionary = responseResultDictionary as? [String: Any],
+                        let faultCode = faultDictionary["code"] as? Int,
+                        let faultMessage = faultDictionary["message"] as? String {
+                        return Fault(message: faultMessage, faultCode: faultCode)
+                    }
+                    else if _response.statusCode < 200 || _response.statusCode > 400 {
+                        let faultCode = _response.statusCode
+                        let faultMessage = "Backendless server error"
+                        return Fault(message: faultMessage, faultCode: faultCode)
+                    }
                     return responseResultDictionary
                 }
-                else if _response.statusCode < 200 || _response.statusCode > 400 {
-                    let faultCode = _response.statusCode
-                    let faultMessage = "Backendless server error"
-                    return Fault(message: faultMessage, faultCode: faultCode)
+                else if let responseString = String(data: data, encoding: .utf8) {
+                    return responseString
                 }
-                return responseResultDictionary
             }
         }
         return nil
