@@ -42,8 +42,16 @@ class PayloadHelper {
                 let _operationPayload = generateUpdatePayload(operation: operation)
                 _operations.append(_operationPayload)
             }
-            else if operation.operationType == .UPDATE_BULK{
+            else if operation.operationType == .UPDATE_BULK {
                 let _operationPayload = generateBulkUpdatePayload(operation: operation)
+                _operations.append(_operationPayload)
+            }
+            else if operation.operationType == .DELETE {
+                let _operationPayload = generateDeletePayload(operation: operation)
+                _operations.append(_operationPayload)
+            }
+            else if operation.operationType == .DELETE_BULK {
+                let _operationPayload = generateBulkDeletePayload(operation: operation)
                 _operations.append(_operationPayload)
             }
             else if operation.operationType == .FIND {
@@ -89,12 +97,10 @@ class PayloadHelper {
         operationPayload["table"] = operation.tableName
         operationPayload["opResultId"] = operation.opResultId
         operationPayload["operationType"] = OperationType.from(intValue: OperationType.UPDATE.rawValue)
-        
         if let payload = operation.payload as? [String : Any],
             let _ = payload["objectId"] {
             operationPayload["payload"] = psu.convertFromGeometryType(dictionary: payload)
         }
-        
         return operationPayload
     }
     
@@ -106,7 +112,6 @@ class PayloadHelper {
         if let payload = operation.payload as? [String : Any],
             var changes = payload["changes"] as? [String : Any] {
             changes = psu.convertFromGeometryType(dictionary: changes)
-            
             if let whereClause = payload["conditional"] as? String {
                 operationPayload["payload"] = ["conditional": whereClause, "changes": changes]
             }
@@ -115,6 +120,39 @@ class PayloadHelper {
             }
             else if let ref = payload["unconditional"] as? [String : Any] {
                 operationPayload["payload"] = ["unconditional": ref, "changes": changes]
+            }
+        }
+        return operationPayload
+    }
+    
+    private func generateDeletePayload(operation: Operation) -> [String : Any] {
+        var operationPayload = [String : Any]()
+        operationPayload["table"] = operation.tableName
+        operationPayload["opResultId"] = operation.opResultId
+        operationPayload["operationType"] = OperationType.from(intValue: OperationType.DELETE.rawValue)
+        if let payload = operation.payload as? String {
+            operationPayload["payload"] = payload
+        }
+        else if let payload = operation.payload as? [String : Any] {
+            operationPayload["payload"] = psu.convertFromGeometryType(dictionary: payload)
+        }
+        return operationPayload
+    }
+    
+    private func generateBulkDeletePayload(operation: Operation) -> [String : Any] {
+        var operationPayload = [String : Any]()
+        operationPayload["table"] = operation.tableName
+        operationPayload["opResultId"] = operation.opResultId
+        operationPayload["operationType"] = OperationType.from(intValue: OperationType.DELETE_BULK.rawValue)
+        if let payload = operation.payload as? [String : Any] {
+            if let whereClause = payload["conditional"] as? String {
+                operationPayload["payload"] = ["conditional": whereClause]
+            }
+            else if let objectIds = payload["unconditional"] as? [String] {
+                operationPayload["payload"] = ["unconditional": objectIds]
+            }
+            else if let ref = payload["unconditional"] as? [String : Any] {
+                operationPayload["payload"] = ["unconditional": ref]
             }
         }
         return operationPayload

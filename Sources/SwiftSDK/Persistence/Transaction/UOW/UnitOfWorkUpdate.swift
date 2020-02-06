@@ -1,3 +1,4 @@
+//
 //  UnitOfWorkUpdate.swift
 //
 /*
@@ -98,7 +99,6 @@ class UnitOfWorkUpdate {
         let operationTypeString = OperationType.from(intValue: OperationType.UPDATE_BULK.rawValue)!
         let operationResultId = "\(operationTypeString)_\(countBulkUpdate)"
         countBulkUpdate += 1
-        
         let tableName = result.tableName!
         
         var payload = [String : Any]()

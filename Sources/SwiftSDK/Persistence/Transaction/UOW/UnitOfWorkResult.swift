@@ -23,5 +23,5 @@
     
     public var success = false
     public var error: TransactionOperationError?
-    public var results: [[String : Any]]?
+    public var results: Any?
 }

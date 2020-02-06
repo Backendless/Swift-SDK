@@ -370,6 +370,7 @@ class ProcessResponse: NSObject {
                 uowResult.error = adaptToTransactionOperationError(errorDictionary: errorDictionary)
             }
         }
+        uowResult.results = unitOfWorkDictionary["results"]
         return uowResult
     }
     

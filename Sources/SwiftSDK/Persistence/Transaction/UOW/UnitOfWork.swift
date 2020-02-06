@@ -147,6 +147,66 @@ enum uowProps {
         return opRes
     }
     
+    // delete
+    
+    public func delete(tableName: String, entity: [String : Any]) -> OpResult {
+        let (operation, opRes) = uowDelete.delete(tableName: tableName, entity: entity)
+        operations.append(operation)
+        return opRes
+    }
+    
+    public func delete(entity: Any) -> OpResult {
+        let (tableName, entityDictionary) = transactionHelper.tableAndDictionaryFromEntity(entity: entity)
+        return delete(tableName: tableName, entity: entityDictionary as! [String : Any])
+    }
+    
+    public func delete(tableName: String, objectId: String) -> OpResult {
+        return delete(tableName: tableName, entity: ["objectId": objectId])
+    }
+    
+    public func delete(result: OpResult) -> OpResult {
+        let (operation, opRes) = uowDelete.delete(result: result)
+        operations.append(operation)
+        return opRes
+    }
+    
+    public func delete(resultIndex: OpResultIndex) -> OpResult {
+        let (operation, opRes) = uowDelete.delete(result: resultIndex)
+        operations.append(operation)
+        return opRes
+    }
+    
+    // bulk delete
+    
+    public func bulkDelete(tableName: String, entities: [[String : Any]]) -> OpResult {
+        let (operation, opRes) = uowDelete.bulkDelete(tableName: tableName, entities: entities)
+        operations.append(operation)
+        return opRes
+    }
+    
+    public func bulkDelete(entities: [Any]) -> OpResult {
+        let (tableName, entitiesArray) = transactionHelper.tableAndDictionaryFromEntity(entity: entities)
+        return bulkDelete(tableName: tableName, entities: entitiesArray as! [[String : Any]])
+    }
+    
+    public func bulkDelete(tableName: String, objectIds: [String]) -> OpResult {
+        let (operation, opRes) = uowDelete.bulkDelete(tableName: tableName, objectIds: objectIds)
+        operations.append(operation)
+        return opRes
+    }
+    
+    public func bulkDelete(tableName: String, whereClause: String) -> OpResult {
+        let (operation, opRes) = uowDelete.bulkDelete(tableName: tableName, whereClause: whereClause)
+        operations.append(operation)
+        return opRes
+    }
+    
+    public func bulkDelete(result: OpResult) -> OpResult {
+        let (operation, opRes) = uowDelete.bulkDelete(result: result)
+        operations.append(operation)
+        return opRes
+    }
+    
     // find
     
     public func find(tableName: String, queryBuilder: DataQueryBuilder?) -> (OpResult) {
