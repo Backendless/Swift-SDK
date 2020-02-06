@@ -125,6 +125,7 @@
 		5EA87B75221D4A3100A8B93F /* ReconnectAttemptObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA87B74221D4A3100A8B93F /* ReconnectAttemptObject.swift */; };
 		5EA87B95221D720100A8B93F /* RTListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA87B94221D720100A8B93F /* RTListener.swift */; };
 		5EAA20B823995B1D00A39A38 /* GeometryTestClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAA20B723995B1D00A39A38 /* GeometryTestClass.swift */; };
+		5EACCB5B23EC5871007AC3C4 /* UnitOfWorkAddToRelation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EACCB5A23EC5871007AC3C4 /* UnitOfWorkAddToRelation.swift */; };
 		5EB28E1921B1799A0007AC30 /* Backendless.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB28E1821B1799A0007AC30 /* Backendless.swift */; };
 		5EB28E2021B1833A0007AC30 /* BackendlessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB28E1F21B1833A0007AC30 /* BackendlessTests.swift */; };
 		5EC7D161222FB56700FD3FF4 /* PublishOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC7D160222FB56700FD3FF4 /* PublishOptions.swift */; };
@@ -283,6 +284,7 @@
 		5EA87B94221D720100A8B93F /* RTListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTListener.swift; sourceTree = "<group>"; };
 		5EAA20B5239953E600A39A38 /* BLPointTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLPointTests.swift; sourceTree = "<group>"; };
 		5EAA20B723995B1D00A39A38 /* GeometryTestClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryTestClass.swift; sourceTree = "<group>"; };
+		5EACCB5A23EC5871007AC3C4 /* UnitOfWorkAddToRelation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfWorkAddToRelation.swift; sourceTree = "<group>"; };
 		5EB28E1821B1799A0007AC30 /* Backendless.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backendless.swift; sourceTree = "<group>"; };
 		5EB28E1F21B1833A0007AC30 /* BackendlessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessTests.swift; sourceTree = "<group>"; };
 		5EC7D160222FB56700FD3FF4 /* PublishOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishOptions.swift; sourceTree = "<group>"; };
@@ -476,6 +478,7 @@
 				5EF0C79C23E43CBE00880F31 /* UnitOfWorkUpdate.swift */,
 				5EED4AEC23E837D900DB006F /* UnitOfWorkDelete.swift */,
 				5E65257C23E860CA00C7E006 /* UnitOfWorkFind.swift */,
+				5EACCB5A23EC5871007AC3C4 /* UnitOfWorkAddToRelation.swift */,
 				5E28D58623E300AF00FA139C /* UnitOfWorkResult.swift */,
 			);
 			path = UOW;
@@ -1117,6 +1120,7 @@
 				5AA2969A2237C19D007104C7 /* JSONUtils.swift in Sources */,
 				5E1CC2F72252534F0011D5C8 /* FileService.swift in Sources */,
 				5E1DB58F23E19FAA00955319 /* UnitOfWork.swift in Sources */,
+				5EACCB5B23EC5871007AC3C4 /* UnitOfWorkAddToRelation.swift in Sources */,
 				5E92224B225BAA8C0001688F /* GeoCluster.swift in Sources */,
 				5E572D4B21B8043E000713B0 /* ProcessResponse.swift in Sources */,
 				5EB28E1921B1799A0007AC30 /* Backendless.swift in Sources */,

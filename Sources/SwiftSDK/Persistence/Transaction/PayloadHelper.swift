@@ -58,6 +58,10 @@ class PayloadHelper {
                 let _operationPayload = generateFindPayload(operation: operation)
                 _operations.append(_operationPayload)
             }
+            else if operation.operationType == .ADD_RELATION {
+                let _operationPayload = generateAddRelationPayload(operation: operation)
+                _operations.append(_operationPayload)
+            }
             
         }
         payload["operations"] = _operations
@@ -163,6 +167,17 @@ class PayloadHelper {
         operationPayload["table"] = operation.tableName
         operationPayload["opResultId"] = operation.opResultId
         operationPayload["operationType"] = OperationType.from(intValue: OperationType.FIND.rawValue)
+        if let payload = operation.payload as? [String : Any] {
+            operationPayload["payload"] = psu.convertFromGeometryType(dictionary: payload)
+        }
+        return operationPayload
+    }
+    
+    private func generateAddRelationPayload(operation: Operation) -> [String : Any] {
+        var operationPayload = [String : Any]()
+        operationPayload["table"] = operation.tableName
+        operationPayload["opResultId"] = operation.opResultId
+        operationPayload["operationType"] = OperationType.from(intValue: OperationType.ADD_RELATION.rawValue)
         if let payload = operation.payload as? [String : Any] {
             operationPayload["payload"] = psu.convertFromGeometryType(dictionary: payload)
         }

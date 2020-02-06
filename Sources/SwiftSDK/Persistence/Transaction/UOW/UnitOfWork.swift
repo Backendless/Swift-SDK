@@ -51,12 +51,14 @@ enum uowProps {
     private var uowUpdate: UnitOfWorkUpdate
     private var uowDelete: UnitOfWorkDelete
     private var uowFind: UnitOfWorkFind
+    private var uowAddRel: UnitOfWorkAddToRelation
     
     public override init() {
         uowCreate = UnitOfWorkCreate()
         uowUpdate = UnitOfWorkUpdate()
         uowDelete = UnitOfWorkDelete()
         uowFind = UnitOfWorkFind()
+        uowAddRel = UnitOfWorkAddToRelation()
     }
     
     public convenience init(isolation: IsolationLevel) {
@@ -220,6 +222,26 @@ enum uowProps {
             operations.append(operation)
             return opRes
         }        
+    }
+    
+    // add relation
+    
+    public func addToRelation(parentTableName: String, parentObject: [String : Any], columnName: String, children: [[String : Any]]) -> (OpResult) {
+        let (operation, opRes) = uowAddRel.addToRelation(parentTableName: parentTableName, parentObject: parentObject, columnName: columnName, children: children)
+        operations.append(operation)
+        return opRes
+    }
+    
+    public func addToRelation(parentObject: Any, columnName: String, children: [Any]) -> (OpResult) {
+        let (parentTableName, parentDict) = transactionHelper.tableAndDictionaryFromEntity(entity: parentObject)
+        let (_, childrenArray) = transactionHelper.tableAndDictionaryFromEntity(entity: children)
+        let (operation, opRes) = uowAddRel.addToRelation(parentTableName: parentTableName, parentObject: parentDict as! [String : Any], columnName: columnName, children: childrenArray as! [[String : Any]])
+        operations.append(operation)
+        return opRes
+    }
+    
+    public func addToRelation(parentObject: OpResult, columnName: String, children: [[String : Any]]) -> (OpResult) {
+        
     }
     
     // execute
