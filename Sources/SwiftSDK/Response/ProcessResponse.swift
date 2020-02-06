@@ -41,9 +41,11 @@ class ProcessResponse: NSObject {
                     return responseResult as! Fault
                 }
                 else {
-                    if responseResult is String, to != String.self {
-                        return Fault(message: responseResult as? String)
-                    }
+                    if responseResult is String {
+                        if to != String.self, to != Int.self {
+                            return Fault(message: responseResult as? String)
+                        }
+                    }              
                     else {
                         do {
                             if to == BackendlessUser.self {
