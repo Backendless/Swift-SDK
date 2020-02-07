@@ -29,7 +29,6 @@ class PayloadHelper {
         var payload = [String : Any]()
         var _operations = [[String : Any]]()
         for operation in operations {
-            
             if operation.operationType == .CREATE {
                 let _operationPayload = generateCreatePayload(operation: operation)
                 _operations.append(_operationPayload)
@@ -62,7 +61,14 @@ class PayloadHelper {
                 let _operationPayload = generateAddRelationPayload(operation: operation)
                 _operations.append(_operationPayload)
             }
-            
+            else if operation.operationType == .SET_RELATION {
+                let _operationPayload = generateSetRelationPayload(operation: operation)
+                _operations.append(_operationPayload)
+            }
+            else if operation.operationType == .DELETE_RELATION {
+                let _operationPayload = generateDeleteRelationPayload(operation: operation)
+                _operations.append(_operationPayload)
+            }
         }
         payload["operations"] = _operations
         payload["isolationLevelEnum"] = isolation
@@ -178,6 +184,28 @@ class PayloadHelper {
         operationPayload["table"] = operation.tableName
         operationPayload["opResultId"] = operation.opResultId
         operationPayload["operationType"] = OperationType.from(intValue: OperationType.ADD_RELATION.rawValue)
+        if let payload = operation.payload as? [String : Any] {
+            operationPayload["payload"] = psu.convertFromGeometryType(dictionary: payload)
+        }
+        return operationPayload
+    }
+    
+    private func generateSetRelationPayload(operation: Operation) -> [String : Any] {
+        var operationPayload = [String : Any]()
+        operationPayload["table"] = operation.tableName
+        operationPayload["opResultId"] = operation.opResultId
+        operationPayload["operationType"] = OperationType.from(intValue: OperationType.SET_RELATION.rawValue)
+        if let payload = operation.payload as? [String : Any] {
+            operationPayload["payload"] = psu.convertFromGeometryType(dictionary: payload)
+        }
+        return operationPayload
+    }
+    
+    private func generateDeleteRelationPayload(operation: Operation) -> [String : Any] {
+        var operationPayload = [String : Any]()
+        operationPayload["table"] = operation.tableName
+        operationPayload["opResultId"] = operation.opResultId
+        operationPayload["operationType"] = OperationType.from(intValue: OperationType.DELETE_RELATION.rawValue)
         if let payload = operation.payload as? [String : Any] {
             operationPayload["payload"] = psu.convertFromGeometryType(dictionary: payload)
         }

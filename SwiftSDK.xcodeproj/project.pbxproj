@@ -59,6 +59,8 @@
 		5E384C99226F40E200743125 /* AtomicCountersFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E384C98226F40E200743125 /* AtomicCountersFactory.swift */; };
 		5E384C9B226F45B300743125 /* IAtomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E384C9A226F45B300743125 /* IAtomic.swift */; };
 		5E384C9E226F530A00743125 /* CountersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E384C9D226F530A00743125 /* CountersTests.swift */; };
+		5E39E65B23ED5EFE00A8BD10 /* UnitOfWorkSetRelation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E39E65A23ED5EFE00A8BD10 /* UnitOfWorkSetRelation.swift */; };
+		5E39E65D23ED742500A8BD10 /* UnitOfWorkDeleteRelation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E39E65C23ED742500A8BD10 /* UnitOfWorkDeleteRelation.swift */; };
 		5E3E2EFA23D84A6500C4C3E2 /* BLPolygonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3E2EF923D84A6500C4C3E2 /* BLPolygonTests.swift */; };
 		5E44C0502223EC4A00B391E7 /* RTServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E44C04F2223EC4A00B391E7 /* RTServiceTests.swift */; };
 		5E45F669225F52C5001DD7CF /* GeoMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E45F668225F52C5001DD7CF /* GeoMath.swift */; };
@@ -125,7 +127,7 @@
 		5EA87B75221D4A3100A8B93F /* ReconnectAttemptObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA87B74221D4A3100A8B93F /* ReconnectAttemptObject.swift */; };
 		5EA87B95221D720100A8B93F /* RTListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA87B94221D720100A8B93F /* RTListener.swift */; };
 		5EAA20B823995B1D00A39A38 /* GeometryTestClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAA20B723995B1D00A39A38 /* GeometryTestClass.swift */; };
-		5EACCB5B23EC5871007AC3C4 /* UnitOfWorkAddToRelation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EACCB5A23EC5871007AC3C4 /* UnitOfWorkAddToRelation.swift */; };
+		5EACCB5B23EC5871007AC3C4 /* UnitOfWorkAddRelation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EACCB5A23EC5871007AC3C4 /* UnitOfWorkAddRelation.swift */; };
 		5EB28E1921B1799A0007AC30 /* Backendless.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB28E1821B1799A0007AC30 /* Backendless.swift */; };
 		5EB28E2021B1833A0007AC30 /* BackendlessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB28E1F21B1833A0007AC30 /* BackendlessTests.swift */; };
 		5EC7D161222FB56700FD3FF4 /* PublishOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC7D160222FB56700FD3FF4 /* PublishOptions.swift */; };
@@ -213,6 +215,8 @@
 		5E384C98226F40E200743125 /* AtomicCountersFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicCountersFactory.swift; sourceTree = "<group>"; };
 		5E384C9A226F45B300743125 /* IAtomic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAtomic.swift; sourceTree = "<group>"; };
 		5E384C9D226F530A00743125 /* CountersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountersTests.swift; sourceTree = "<group>"; };
+		5E39E65A23ED5EFE00A8BD10 /* UnitOfWorkSetRelation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfWorkSetRelation.swift; sourceTree = "<group>"; };
+		5E39E65C23ED742500A8BD10 /* UnitOfWorkDeleteRelation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfWorkDeleteRelation.swift; sourceTree = "<group>"; };
 		5E3E2EF923D84A6500C4C3E2 /* BLPolygonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLPolygonTests.swift; sourceTree = "<group>"; };
 		5E44C04F2223EC4A00B391E7 /* RTServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTServiceTests.swift; sourceTree = "<group>"; };
 		5E45F668225F52C5001DD7CF /* GeoMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoMath.swift; sourceTree = "<group>"; };
@@ -284,7 +288,7 @@
 		5EA87B94221D720100A8B93F /* RTListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTListener.swift; sourceTree = "<group>"; };
 		5EAA20B5239953E600A39A38 /* BLPointTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLPointTests.swift; sourceTree = "<group>"; };
 		5EAA20B723995B1D00A39A38 /* GeometryTestClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryTestClass.swift; sourceTree = "<group>"; };
-		5EACCB5A23EC5871007AC3C4 /* UnitOfWorkAddToRelation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfWorkAddToRelation.swift; sourceTree = "<group>"; };
+		5EACCB5A23EC5871007AC3C4 /* UnitOfWorkAddRelation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfWorkAddRelation.swift; sourceTree = "<group>"; };
 		5EB28E1821B1799A0007AC30 /* Backendless.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backendless.swift; sourceTree = "<group>"; };
 		5EB28E1F21B1833A0007AC30 /* BackendlessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessTests.swift; sourceTree = "<group>"; };
 		5EC7D160222FB56700FD3FF4 /* PublishOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishOptions.swift; sourceTree = "<group>"; };
@@ -478,7 +482,9 @@
 				5EF0C79C23E43CBE00880F31 /* UnitOfWorkUpdate.swift */,
 				5EED4AEC23E837D900DB006F /* UnitOfWorkDelete.swift */,
 				5E65257C23E860CA00C7E006 /* UnitOfWorkFind.swift */,
-				5EACCB5A23EC5871007AC3C4 /* UnitOfWorkAddToRelation.swift */,
+				5EACCB5A23EC5871007AC3C4 /* UnitOfWorkAddRelation.swift */,
+				5E39E65A23ED5EFE00A8BD10 /* UnitOfWorkSetRelation.swift */,
+				5E39E65C23ED742500A8BD10 /* UnitOfWorkDeleteRelation.swift */,
 				5E28D58623E300AF00FA139C /* UnitOfWorkResult.swift */,
 			);
 			path = UOW;
@@ -1102,6 +1108,7 @@
 				5A2A784D21E6104F00EC8007 /* IDataStore.swift in Sources */,
 				5E341B7C21F5E11A00C32598 /* ObjectProperty.swift in Sources */,
 				5E971914221C296A00857603 /* RTService.swift in Sources */,
+				5E39E65B23ED5EFE00A8BD10 /* UnitOfWorkSetRelation.swift in Sources */,
 				5EA31F2722561EC6008DF081 /* BackendlessGeoQuery.swift in Sources */,
 				5E467F822201E20700E70772 /* DataPermission.swift in Sources */,
 				5E971916221C2A8700857603 /* RTClient.swift in Sources */,
@@ -1111,6 +1118,7 @@
 				5ECD9C7E21DE57DA002CBB7D /* GeoPoint.swift in Sources */,
 				5E22155522B8D74F00491250 /* SearchMatchesResult.swift in Sources */,
 				5E03A3BD22291882005A538D /* RTMessaging.swift in Sources */,
+				5E39E65D23ED742500A8BD10 /* UnitOfWorkDeleteRelation.swift in Sources */,
 				5E03A3C122294A4B005A538D /* PublishMessageInfo.swift in Sources */,
 				5EA5D2CA223BE6440027EA49 /* SharedObjectChanges.swift in Sources */,
 				5E65257D23E860CA00C7E006 /* UnitOfWorkFind.swift in Sources */,
@@ -1120,7 +1128,7 @@
 				5AA2969A2237C19D007104C7 /* JSONUtils.swift in Sources */,
 				5E1CC2F72252534F0011D5C8 /* FileService.swift in Sources */,
 				5E1DB58F23E19FAA00955319 /* UnitOfWork.swift in Sources */,
-				5EACCB5B23EC5871007AC3C4 /* UnitOfWorkAddToRelation.swift in Sources */,
+				5EACCB5B23EC5871007AC3C4 /* UnitOfWorkAddRelation.swift in Sources */,
 				5E92224B225BAA8C0001688F /* GeoCluster.swift in Sources */,
 				5E572D4B21B8043E000713B0 /* ProcessResponse.swift in Sources */,
 				5EB28E1921B1799A0007AC30 /* Backendless.swift in Sources */,

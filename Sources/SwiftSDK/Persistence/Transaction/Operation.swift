@@ -40,6 +40,8 @@
         else if stringValue == "DELETE_BULK" { return .DELETE_BULK }
         else if stringValue == "FIND" { return .FIND }
         else if stringValue == "ADD_RELATION" { return .ADD_RELATION }
+        else if stringValue == "SET_RELATION" { return .SET_RELATION }
+        else if stringValue == "DELETE_RELATION" { return .DELETE_RELATION }
         return nil
     }
     
@@ -52,6 +54,8 @@
         else if intValue == 5 { return "DELETE_BULK" }
         else if intValue == 6 { return "FIND" }
         else if intValue == 7 { return "ADD_RELATION" }
+        else if intValue == 8 { return "SET_RELATION" }
+        else if intValue == 9 { return "DELETE_RELATION" }
         return nil
     }
 }
