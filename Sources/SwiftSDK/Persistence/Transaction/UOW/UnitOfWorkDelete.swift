@@ -25,26 +25,30 @@ class UnitOfWorkDelete {
     
     private var countDelete = 1
     private var countBulkDelete = 1
+    private var uow: UnitOfWork
+    
+    init(uow: UnitOfWork) {
+        self.uow = uow
+    }
     
     func delete(tableName: String, entity: [String : Any]) -> (Operation, OpResult) {
-        let operationTypeString = OperationType.from(intValue: OperationType.DELETE.rawValue)!
-        let operationResultId = "\(operationTypeString)_\(countDelete)"
+        let operationTypeString = transactionHelper.generateOperationTypeString(.DELETE)
+        let operationResultId = "\(operationTypeString)\(tableName)\(countDelete)"
         countDelete += 1
         var payload = ""
         if let objectId = entity["objectId"] as? String {
             payload = objectId
         }
         let operation = Operation(operationType: .DELETE, tableName: tableName, opResultId: operationResultId, payload: payload)
-        let opResult = transactionHelper.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .DELETE)
+        let opResult = transactionHelper.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .DELETE, uow: uow)
         return (operation, opResult)
     }
     
     func delete(result: OpResult) -> (Operation, OpResult) {
-        let operationTypeString = OperationType.from(intValue: OperationType.DELETE.rawValue)!
-        let operationResultId = "\(operationTypeString)_\(countDelete)"
-        countDelete += 1
-        
         let tableName = result.tableName!
+        let operationTypeString = transactionHelper.generateOperationTypeString(.DELETE)
+        let operationResultId = "\(operationTypeString)\(tableName)\(countDelete)"
+        countDelete += 1
         
         var payload = [String : Any]()
         
@@ -67,7 +71,17 @@ class UnitOfWorkDelete {
             payload[uowProps.opResultId] = result.reference?[uowProps.opResultId]
         }
         let operation = Operation(operationType: .DELETE, tableName: tableName, opResultId: operationResultId, payload: payload)
-        let opResult = transactionHelper.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .DELETE)
+        let opResult = transactionHelper.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .DELETE, uow: uow)
+        return (operation, opResult)
+    }
+    
+    func bulkDelete(tableName: String, objectIds: [String]) -> (Operation, OpResult) {
+        let operationTypeString = transactionHelper.generateOperationTypeString(.DELETE_BULK)
+        let operationResultId = "\(operationTypeString)\(tableName)\(countBulkDelete)"
+        countBulkDelete += 1
+        let payload = ["unconditional": objectIds]
+        let operation = Operation(operationType: .DELETE_BULK, tableName: tableName, opResultId: operationResultId, payload: payload)
+        let opResult = transactionHelper.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .DELETE_BULK, uow: uow)
         return (operation, opResult)
     }
     
@@ -81,37 +95,27 @@ class UnitOfWorkDelete {
         return bulkDelete(tableName: tableName, objectIds: objectIds)
     }
     
-    func bulkDelete(tableName: String, objectIds: [String]) -> (Operation, OpResult) {
-        let operationTypeString = OperationType.from(intValue: OperationType.DELETE_BULK.rawValue)!
-        let operationResultId = "\(operationTypeString)_\(countBulkDelete)"
-        countBulkDelete += 1
-        let payload = ["unconditional": objectIds]
-        let operation = Operation(operationType: .DELETE_BULK, tableName: tableName, opResultId: operationResultId, payload: payload)
-        let opResult = transactionHelper.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .DELETE_BULK)
-        return (operation, opResult)
-    }
-    
     func bulkDelete(tableName: String, whereClause: String) -> (Operation, OpResult) {
-        let operationTypeString = OperationType.from(intValue: OperationType.DELETE_BULK.rawValue)!
-        let operationResultId = "\(operationTypeString)_\(countBulkDelete)"
+        let operationTypeString = transactionHelper.generateOperationTypeString(.DELETE_BULK)
+        let operationResultId = "\(operationTypeString)\(tableName)\(countBulkDelete)"
         countBulkDelete += 1
         let payload = ["conditional": whereClause]
         let operation = Operation(operationType: .DELETE_BULK, tableName: tableName, opResultId: operationResultId, payload: payload)
-        let opResult = transactionHelper.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .DELETE_BULK)
+        let opResult = transactionHelper.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .DELETE_BULK, uow: uow)
         return (operation, opResult)
     }
     
     func bulkDelete(result: OpResult) -> (Operation, OpResult) {
-        let operationTypeString = OperationType.from(intValue: OperationType.DELETE_BULK.rawValue)!
-        let operationResultId = "\(operationTypeString)_\(countBulkDelete)"
-        countBulkDelete += 1
         let tableName = result.tableName!
+        let operationTypeString = transactionHelper.generateOperationTypeString(.DELETE_BULK)
+        let operationResultId = "\(operationTypeString)\(tableName)\(countBulkDelete)"
+        countBulkDelete += 1
         
         var payload = [String : Any]()
         payload["unconditional"] = [uowProps.ref: true, uowProps.opResultId: result.reference?[uowProps.opResultId]]
     
         let operation = Operation(operationType: .DELETE_BULK, tableName: tableName, opResultId: operationResultId, payload: payload)
-        let opResult = transactionHelper.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .DELETE_BULK)
+        let opResult = transactionHelper.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .DELETE_BULK, uow: uow)
         return (operation, opResult)
     }
 }

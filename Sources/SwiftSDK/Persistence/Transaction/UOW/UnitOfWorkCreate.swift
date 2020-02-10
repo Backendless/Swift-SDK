@@ -25,22 +25,27 @@ class UnitOfWorkCreate {
     
     private var countCreate = 1
     private var countBulkCreate = 1
+    private var uow: UnitOfWork
+    
+    init(uow: UnitOfWork) {
+        self.uow = uow
+    }
     
     func create(tableName: String, entity: [String : Any]) -> (Operation, OpResult) {
-        let operationTypeString = OperationType.from(intValue: OperationType.CREATE.rawValue)!
-        let operationResultId = "\(operationTypeString)_\(countCreate)"
+        let operationTypeString = transactionHelper.generateOperationTypeString(.CREATE)
+        let operationResultId = "\(operationTypeString)\(tableName)\(countCreate)"
         countCreate += 1
         let operation = Operation(operationType: .CREATE, tableName: tableName, opResultId: operationResultId, payload: entity)
-        let opResult = transactionHelper.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .CREATE)
+        let opResult = transactionHelper.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .CREATE, uow: uow)
         return (operation, opResult)
     }
     
     func bulkCreate(tableName: String, entities: [[String : Any]]) -> (Operation, OpResult) {
-        let operationTypeString = OperationType.from(intValue: OperationType.CREATE_BULK.rawValue)!
-        let operationResultId = "\(operationTypeString)_\(countBulkCreate)"
+        let operationTypeString = transactionHelper.generateOperationTypeString(.CREATE_BULK)
+        let operationResultId = "\(operationTypeString)\(tableName)\(countBulkCreate)"
         countBulkCreate += 1
         let operation = Operation(operationType: .CREATE_BULK, tableName: tableName, opResultId: operationResultId, payload: entities)
-        let opResult = transactionHelper.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .CREATE_BULK)
+        let opResult = transactionHelper.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .CREATE_BULK, uow: uow)
         return (operation, opResult)
     }
 }

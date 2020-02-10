@@ -47,22 +47,23 @@ enum uowProps {
     private let payloadHelper = PayloadHelper.shared
     private let transactionHelper = TransactionHelper.shared
     
-    private var uowCreate: UnitOfWorkCreate
-    private var uowUpdate: UnitOfWorkUpdate
-    private var uowDelete: UnitOfWorkDelete
-    private var uowFind: UnitOfWorkFind
-    private var uowAddRel: UnitOfWorkAddRelation
-    private var uowSetRel: UnitOfWorkSetRelation
-    private var uowDeleteRel: UnitOfWorkDeleteRelation
+    private var uowCreate: UnitOfWorkCreate?
+    private var uowUpdate: UnitOfWorkUpdate?
+    private var uowDelete: UnitOfWorkDelete?
+    private var uowFind: UnitOfWorkFind?
+    private var uowAddRel: UnitOfWorkAddRelation?
+    private var uowSetRel: UnitOfWorkSetRelation?
+    private var uowDeleteRel: UnitOfWorkDeleteRelation?
     
     public override init() {
-        uowCreate = UnitOfWorkCreate()
-        uowUpdate = UnitOfWorkUpdate()
-        uowDelete = UnitOfWorkDelete()
-        uowFind = UnitOfWorkFind()
-        uowAddRel = UnitOfWorkAddRelation()
-        uowSetRel = UnitOfWorkSetRelation()
-        uowDeleteRel = UnitOfWorkDeleteRelation()
+        super.init()
+        uowCreate = UnitOfWorkCreate(uow: self)
+        uowUpdate = UnitOfWorkUpdate(uow: self)
+        uowDelete = UnitOfWorkDelete(uow: self)
+        uowFind = UnitOfWorkFind(uow: self)
+        uowAddRel = UnitOfWorkAddRelation(uow: self)
+        uowSetRel = UnitOfWorkSetRelation(uow: self)
+        uowDeleteRel = UnitOfWorkDeleteRelation(uow: self)
     }
     
     public convenience init(isolation: IsolationLevel) {
@@ -73,7 +74,7 @@ enum uowProps {
     // create
     
     public func create(tableName: String, entity: [String : Any]) -> OpResult {
-        let (operation, opRes) = uowCreate.create(tableName: tableName, entity: entity)
+        let (operation, opRes) = uowCreate!.create(tableName: tableName, entity: entity)
         operations.append(operation)
         return opRes
     }
@@ -86,7 +87,7 @@ enum uowProps {
     // bulk create
     
     public func bulkCreate(tableName: String, entities: [[String : Any]]) -> OpResult {
-        let (operation, opRes) = uowCreate.bulkCreate(tableName: tableName, entities: entities)
+        let (operation, opRes) = uowCreate!.bulkCreate(tableName: tableName, entities: entities)
         operations.append(operation)
         return opRes
     }
@@ -98,7 +99,7 @@ enum uowProps {
     
     // update
     public func update(tableName: String, changes: [String : Any]) -> OpResult {
-        let (operation, opRes) = uowUpdate.update(tableName: tableName, changes: changes)
+        let (operation, opRes) = uowUpdate!.update(tableName: tableName, changes: changes)
         operations.append(operation)
         return opRes
     }
@@ -109,7 +110,7 @@ enum uowProps {
     }
     
     public func update(result: OpResult, changes: [String : Any]) -> OpResult {
-        let (operation, opRes) = uowUpdate.update(result: result, changes: changes)
+        let (operation, opRes) = uowUpdate!.update(result: result, changes: changes)
         operations.append(operation)
         return opRes
     }
@@ -119,7 +120,7 @@ enum uowProps {
     }
     
     public func update(resultIndex: OpResultIndex, changes: [String : Any]) -> OpResult {
-        let (operation, opRes) = uowUpdate.update(result: resultIndex, changes: changes)
+        let (operation, opRes) = uowUpdate!.update(result: resultIndex, changes: changes)
         operations.append(operation)
         return opRes
     }
@@ -131,7 +132,7 @@ enum uowProps {
     // bulk update
     
     public func bulkUpdate(tableName: String, whereClause: String, changes: [String : Any]) -> OpResult {
-        let (operation, opRes) = uowUpdate.bulkUpdate(tableName: tableName, whereClause: whereClause, changes: changes)
+        let (operation, opRes) = uowUpdate!.bulkUpdate(tableName: tableName, whereClause: whereClause, changes: changes)
         operations.append(operation)
         return opRes
     }
@@ -142,13 +143,13 @@ enum uowProps {
     }
     
     public func bulkUpdate(tableName: String, objectIds: [String], changes: [String : Any]) -> OpResult {
-        let (operation, opRes) = uowUpdate.bulkUpdate(tableName: tableName, objectIds: objectIds, changes: changes)
+        let (operation, opRes) = uowUpdate!.bulkUpdate(tableName: tableName, objectIds: objectIds, changes: changes)
         operations.append(operation)
         return opRes
     }
     
     public func bulkUpdate(result: OpResult, changes: [String : Any]) -> OpResult {
-        let (operation, opRes) = uowUpdate.bulkUpdate(result: result, changes: changes)
+        let (operation, opRes) = uowUpdate!.bulkUpdate(result: result, changes: changes)
         operations.append(operation)
         return opRes
     }
@@ -156,7 +157,7 @@ enum uowProps {
     // delete
     
     public func delete(tableName: String, entity: [String : Any]) -> OpResult {
-        let (operation, opRes) = uowDelete.delete(tableName: tableName, entity: entity)
+        let (operation, opRes) = uowDelete!.delete(tableName: tableName, entity: entity)
         operations.append(operation)
         return opRes
     }
@@ -171,13 +172,13 @@ enum uowProps {
     }
     
     public func delete(result: OpResult) -> OpResult {
-        let (operation, opRes) = uowDelete.delete(result: result)
+        let (operation, opRes) = uowDelete!.delete(result: result)
         operations.append(operation)
         return opRes
     }
     
     public func delete(resultIndex: OpResultIndex) -> OpResult {
-        let (operation, opRes) = uowDelete.delete(result: resultIndex)
+        let (operation, opRes) = uowDelete!.delete(result: resultIndex)
         operations.append(operation)
         return opRes
     }
@@ -185,7 +186,7 @@ enum uowProps {
     // bulk delete
     
     public func bulkDelete(tableName: String, entities: [[String : Any]]) -> OpResult {
-        let (operation, opRes) = uowDelete.bulkDelete(tableName: tableName, entities: entities)
+        let (operation, opRes) = uowDelete!.bulkDelete(tableName: tableName, entities: entities)
         operations.append(operation)
         return opRes
     }
@@ -196,19 +197,19 @@ enum uowProps {
     }
     
     public func bulkDelete(tableName: String, objectIds: [String]) -> OpResult {
-        let (operation, opRes) = uowDelete.bulkDelete(tableName: tableName, objectIds: objectIds)
+        let (operation, opRes) = uowDelete!.bulkDelete(tableName: tableName, objectIds: objectIds)
         operations.append(operation)
         return opRes
     }
     
     public func bulkDelete(tableName: String, whereClause: String) -> OpResult {
-        let (operation, opRes) = uowDelete.bulkDelete(tableName: tableName, whereClause: whereClause)
+        let (operation, opRes) = uowDelete!.bulkDelete(tableName: tableName, whereClause: whereClause)
         operations.append(operation)
         return opRes
     }
     
     public func bulkDelete(result: OpResult) -> OpResult {
-        let (operation, opRes) = uowDelete.bulkDelete(result: result)
+        let (operation, opRes) = uowDelete!.bulkDelete(result: result)
         operations.append(operation)
         return opRes
     }
@@ -217,12 +218,12 @@ enum uowProps {
     
     public func find(tableName: String, queryBuilder: DataQueryBuilder?) -> (OpResult) {
         if queryBuilder != nil {
-            let (operation, opRes) = uowFind.find(tableName: tableName, queryBuilder: queryBuilder!)
+            let (operation, opRes) = uowFind!.find(tableName: tableName, queryBuilder: queryBuilder!)
             operations.append(operation)
             return opRes
         }
         else {
-            let (operation, opRes) = uowFind.find(tableName: tableName, queryBuilder: DataQueryBuilder())
+            let (operation, opRes) = uowFind!.find(tableName: tableName, queryBuilder: DataQueryBuilder())
             operations.append(operation)
             return opRes
         }        
@@ -231,7 +232,7 @@ enum uowProps {
     // add relation
     
     public func addToRelation(parentTableName: String, parentObject: [String : Any], columnName: String, children: [[String : Any]]) -> (OpResult) {
-        let (operation, opRes) = uowAddRel.addToRelation(parentTableName: parentTableName, parentObject: parentObject, columnName: columnName, children: children)
+        let (operation, opRes) = uowAddRel!.addToRelation(parentTableName: parentTableName, parentObject: parentObject, columnName: columnName, children: children)
         operations.append(operation)
         return opRes
     }
@@ -239,51 +240,51 @@ enum uowProps {
     public func addToRelation(parentObject: Any, columnName: String, children: [Any]) -> (OpResult) {
         let (parentTableName, parentDict) = transactionHelper.tableAndDictionaryFromEntity(entity: parentObject)
         let (_, childrenDictArray) = transactionHelper.tableAndDictionaryFromEntity(entity: children)
-        let (operation, opRes) = uowAddRel.addToRelation(parentTableName: parentTableName, parentObject: parentDict as! [String : Any], columnName: columnName, children: childrenDictArray as! [[String : Any]])
+        let (operation, opRes) = uowAddRel!.addToRelation(parentTableName: parentTableName, parentObject: parentDict as! [String : Any], columnName: columnName, children: childrenDictArray as! [[String : Any]])
         operations.append(operation)
         return opRes
     }
     
     public func addToRelation(parentObjectResult: OpResult, columnName: String, children: [[String : Any]]) -> (OpResult) {
-        let (operation, opRes) = uowAddRel.addToRelation(parentObjectResult: parentObjectResult, columnName: columnName, children: children)
+        let (operation, opRes) = uowAddRel!.addToRelation(parentObjectResult: parentObjectResult, columnName: columnName, children: children)
         operations.append(operation)
         return opRes
     }
     
     public func addToRelation(parentObjectResult: OpResult, columnName: String, childrenObjects: [Any]) -> (OpResult) {
         let (_, childrenDictArray) = transactionHelper.tableAndDictionaryFromEntity(entity: childrenObjects)
-        let (operation, opRes) = uowAddRel.addToRelation(parentObjectResult: parentObjectResult, columnName: columnName, children: childrenDictArray as! [[String : Any]])
+        let (operation, opRes) = uowAddRel!.addToRelation(parentObjectResult: parentObjectResult, columnName: columnName, children: childrenDictArray as! [[String : Any]])
         operations.append(operation)
         return opRes
     }
     
     public func addToRelation(parentObjectResultIndex: OpResultIndex, columnName: String, children: [[String : Any]]) -> (OpResult) {
-        let (operation, opRes) = uowAddRel.addToRelation(parentObjectResult: parentObjectResultIndex, columnName: columnName, children: children)
+        let (operation, opRes) = uowAddRel!.addToRelation(parentObjectResult: parentObjectResultIndex, columnName: columnName, children: children)
         operations.append(operation)
         return opRes
     }
     
     public func addToRelation(parentTableName: String, parentObject: [String : Any], columnName: String, whereClauseForChildren: String) -> (OpResult) {
-        let (operation, opRes) = uowAddRel.addToRelation(parentTableName: parentTableName, parentObject: parentObject, columnName: columnName, whereClauseForChildren: whereClauseForChildren)
+        let (operation, opRes) = uowAddRel!.addToRelation(parentTableName: parentTableName, parentObject: parentObject, columnName: columnName, whereClauseForChildren: whereClauseForChildren)
         operations.append(operation)
         return opRes
     }
     
     public func addToRelation(parentObject: Any, columnName: String, whereClauseForChildren: String) -> (OpResult) {
         let (parentTableName, parentDict) = transactionHelper.tableAndDictionaryFromEntity(entity: parentObject)
-        let (operation, opRes) = uowAddRel.addToRelation(parentTableName: parentTableName, parentObject: parentDict as! [String : Any], columnName: columnName, whereClauseForChildren: whereClauseForChildren)
+        let (operation, opRes) = uowAddRel!.addToRelation(parentTableName: parentTableName, parentObject: parentDict as! [String : Any], columnName: columnName, whereClauseForChildren: whereClauseForChildren)
         operations.append(operation)
         return opRes
     }
     
     public func addToRelation(parentObjectResult: OpResult, columnName: String, whereClauseForChildren: String) -> (OpResult) {
-        let (operation, opRes) = uowAddRel.addToRelation(parentObjectResult: parentObjectResult, columnName: columnName, whereClauseForChildren: whereClauseForChildren)
+        let (operation, opRes) = uowAddRel!.addToRelation(parentObjectResult: parentObjectResult, columnName: columnName, whereClauseForChildren: whereClauseForChildren)
         operations.append(operation)
         return opRes
     }
     
     public func addToRelation(parentTableName: String, parentObjectId: String, columnName: String, childrenResult: OpResult) -> (OpResult) {
-        let (operation, opRes) = uowAddRel.addToRelation(parentTableName: parentTableName, parentObjectId: parentObjectId, columnName: columnName, childrenResult: childrenResult)
+        let (operation, opRes) = uowAddRel!.addToRelation(parentTableName: parentTableName, parentObjectId: parentObjectId, columnName: columnName, childrenResult: childrenResult)
         operations.append(operation)
         return opRes
     }
@@ -291,7 +292,7 @@ enum uowProps {
     // set relation
     
     public func setToRelation(parentTableName: String, parentObject: [String : Any], columnName: String, children: [[String : Any]]) -> (OpResult) {
-        let (operation, opRes) = uowSetRel.setToRelation(parentTableName: parentTableName, parentObject: parentObject, columnName: columnName, children: children)
+        let (operation, opRes) = uowSetRel!.setToRelation(parentTableName: parentTableName, parentObject: parentObject, columnName: columnName, children: children)
         operations.append(operation)
         return opRes
     }
@@ -299,51 +300,51 @@ enum uowProps {
     public func setToRelation(parentObject: Any, columnName: String, children: [Any]) -> (OpResult) {
         let (parentTableName, parentDict) = transactionHelper.tableAndDictionaryFromEntity(entity: parentObject)
         let (_, childrenDictArray) = transactionHelper.tableAndDictionaryFromEntity(entity: children)
-        let (operation, opRes) = uowSetRel.setToRelation(parentTableName: parentTableName, parentObject: parentDict as! [String : Any], columnName: columnName, children: childrenDictArray as! [[String : Any]])
+        let (operation, opRes) = uowSetRel!.setToRelation(parentTableName: parentTableName, parentObject: parentDict as! [String : Any], columnName: columnName, children: childrenDictArray as! [[String : Any]])
         operations.append(operation)
         return opRes
     }
     
     public func setToRelation(parentObjectResult: OpResult, columnName: String, children: [[String : Any]]) -> (OpResult) {
-        let (operation, opRes) = uowSetRel.setToRelation(parentObjectResult: parentObjectResult, columnName: columnName, children: children)
+        let (operation, opRes) = uowSetRel!.setToRelation(parentObjectResult: parentObjectResult, columnName: columnName, children: children)
         operations.append(operation)
         return opRes
     }
     
     public func setToRelation(parentObjectResult: OpResult, columnName: String, childrenObjects: [Any]) -> (OpResult) {
         let (_, childrenDictArray) = transactionHelper.tableAndDictionaryFromEntity(entity: childrenObjects)
-        let (operation, opRes) = uowSetRel.setToRelation(parentObjectResult: parentObjectResult, columnName: columnName, children: childrenDictArray as! [[String : Any]])
+        let (operation, opRes) = uowSetRel!.setToRelation(parentObjectResult: parentObjectResult, columnName: columnName, children: childrenDictArray as! [[String : Any]])
         operations.append(operation)
         return opRes
     }
     
     public func setToRelation(parentObjectResultIndex: OpResultIndex, columnName: String, children: [[String : Any]]) -> (OpResult) {
-        let (operation, opRes) = uowSetRel.setToRelation(parentObjectResult: parentObjectResultIndex, columnName: columnName, children: children)
+        let (operation, opRes) = uowSetRel!.setToRelation(parentObjectResult: parentObjectResultIndex, columnName: columnName, children: children)
         operations.append(operation)
         return opRes
     }
     
     public func setToRelation(parentTableName: String, parentObject: [String : Any], columnName: String, whereClauseForChildren: String) -> (OpResult) {
-        let (operation, opRes) = uowSetRel.setToRelation(parentTableName: parentTableName, parentObject: parentObject, columnName: columnName, whereClauseForChildren: whereClauseForChildren)
+        let (operation, opRes) = uowSetRel!.setToRelation(parentTableName: parentTableName, parentObject: parentObject, columnName: columnName, whereClauseForChildren: whereClauseForChildren)
         operations.append(operation)
         return opRes
     }
     
     public func setToRelation(parentObject: Any, columnName: String, whereClauseForChildren: String) -> (OpResult) {
         let (parentTableName, parentDict) = transactionHelper.tableAndDictionaryFromEntity(entity: parentObject)
-        let (operation, opRes) = uowSetRel.setToRelation(parentTableName: parentTableName, parentObject: parentDict as! [String : Any], columnName: columnName, whereClauseForChildren: whereClauseForChildren)
+        let (operation, opRes) = uowSetRel!.setToRelation(parentTableName: parentTableName, parentObject: parentDict as! [String : Any], columnName: columnName, whereClauseForChildren: whereClauseForChildren)
         operations.append(operation)
         return opRes
     }
     
     public func setToRelation(parentObjectResult: OpResult, columnName: String, whereClauseForChildren: String) -> (OpResult) {
-        let (operation, opRes) = uowSetRel.setToRelation(parentObjectResult: parentObjectResult, columnName: columnName, whereClauseForChildren: whereClauseForChildren)
+        let (operation, opRes) = uowSetRel!.setToRelation(parentObjectResult: parentObjectResult, columnName: columnName, whereClauseForChildren: whereClauseForChildren)
         operations.append(operation)
         return opRes
     }
     
     public func setToRelation(parentTableName: String, parentObjectId: String, columnName: String, childrenResult: OpResult) -> (OpResult) {
-        let (operation, opRes) = uowSetRel.setToRelation(parentTableName: parentTableName, parentObjectId: parentObjectId, columnName: columnName, childrenResult: childrenResult)
+        let (operation, opRes) = uowSetRel!.setToRelation(parentTableName: parentTableName, parentObjectId: parentObjectId, columnName: columnName, childrenResult: childrenResult)
         operations.append(operation)
         return opRes
     }
@@ -351,7 +352,7 @@ enum uowProps {
     // delete relation
     
     public func deleteRelation(parentTableName: String, parentObject: [String : Any], columnName: String, children: [[String : Any]]) -> (OpResult) {
-        let (operation, opRes) = uowDeleteRel.deleteRelation(parentTableName: parentTableName, parentObject: parentObject, columnName: columnName, children: children)
+        let (operation, opRes) = uowDeleteRel!.deleteRelation(parentTableName: parentTableName, parentObject: parentObject, columnName: columnName, children: children)
         operations.append(operation)
         return opRes
     }
@@ -359,51 +360,51 @@ enum uowProps {
     public func deleteRelation(parentObject: Any, columnName: String, children: [Any]) -> (OpResult) {
         let (parentTableName, parentDict) = transactionHelper.tableAndDictionaryFromEntity(entity: parentObject)
         let (_, childrenDictArray) = transactionHelper.tableAndDictionaryFromEntity(entity: children)
-        let (operation, opRes) = uowDeleteRel.deleteRelation(parentTableName: parentTableName, parentObject: parentDict as! [String : Any], columnName: columnName, children: childrenDictArray as! [[String : Any]])
+        let (operation, opRes) = uowDeleteRel!.deleteRelation(parentTableName: parentTableName, parentObject: parentDict as! [String : Any], columnName: columnName, children: childrenDictArray as! [[String : Any]])
         operations.append(operation)
         return opRes
     }
     
     public func deleteRelation(parentObjectResult: OpResult, columnName: String, children: [[String : Any]]) -> (OpResult) {
-        let (operation, opRes) = uowDeleteRel.deleteRelation(parentObjectResult: parentObjectResult, columnName: columnName, children: children)
+        let (operation, opRes) = uowDeleteRel!.deleteRelation(parentObjectResult: parentObjectResult, columnName: columnName, children: children)
         operations.append(operation)
         return opRes
     }
     
     public func deleteRelation(parentObjectResult: OpResult, columnName: String, childrenObjects: [Any]) -> (OpResult) {
         let (_, childrenDictArray) = transactionHelper.tableAndDictionaryFromEntity(entity: childrenObjects)
-        let (operation, opRes) = uowDeleteRel.deleteRelation(parentObjectResult: parentObjectResult, columnName: columnName, children: childrenDictArray as! [[String : Any]])
+        let (operation, opRes) = uowDeleteRel!.deleteRelation(parentObjectResult: parentObjectResult, columnName: columnName, children: childrenDictArray as! [[String : Any]])
         operations.append(operation)
         return opRes
     }
     
     public func deleteRelation(parentObjectResultIndex: OpResultIndex, columnName: String, children: [[String : Any]]) -> (OpResult) {
-        let (operation, opRes) = uowDeleteRel.deleteRelation(parentObjectResult: parentObjectResultIndex, columnName: columnName, children: children)
+        let (operation, opRes) = uowDeleteRel!.deleteRelation(parentObjectResult: parentObjectResultIndex, columnName: columnName, children: children)
         operations.append(operation)
         return opRes
     }
     
     public func deleteRelation(parentTableName: String, parentObject: [String : Any], columnName: String, whereClauseForChildren: String) -> (OpResult) {
-        let (operation, opRes) = uowDeleteRel.deleteRelation(parentTableName: parentTableName, parentObject: parentObject, columnName: columnName, whereClauseForChildren: whereClauseForChildren)
+        let (operation, opRes) = uowDeleteRel!.deleteRelation(parentTableName: parentTableName, parentObject: parentObject, columnName: columnName, whereClauseForChildren: whereClauseForChildren)
         operations.append(operation)
         return opRes
     }
     
     public func deleteRelation(parentObject: Any, columnName: String, whereClauseForChildren: String) -> (OpResult) {
         let (parentTableName, parentDict) = transactionHelper.tableAndDictionaryFromEntity(entity: parentObject)
-        let (operation, opRes) = uowDeleteRel.deleteRelation(parentTableName: parentTableName, parentObject: parentDict as! [String : Any], columnName: columnName, whereClauseForChildren: whereClauseForChildren)
+        let (operation, opRes) = uowDeleteRel!.deleteRelation(parentTableName: parentTableName, parentObject: parentDict as! [String : Any], columnName: columnName, whereClauseForChildren: whereClauseForChildren)
         operations.append(operation)
         return opRes
     }
     
     public func deleteRelation(parentObjectResult: OpResult, columnName: String, whereClauseForChildren: String) -> (OpResult) {
-        let (operation, opRes) = uowDeleteRel.deleteRelation(parentObjectResult: parentObjectResult, columnName: columnName, whereClauseForChildren: whereClauseForChildren)
+        let (operation, opRes) = uowDeleteRel!.deleteRelation(parentObjectResult: parentObjectResult, columnName: columnName, whereClauseForChildren: whereClauseForChildren)
         operations.append(operation)
         return opRes
     }
     
     public func deleteRelation(parentTableName: String, parentObjectId: String, columnName: String, childrenResult: OpResult) -> (OpResult) {
-        let (operation, opRes) = uowDeleteRel.deleteRelation(parentTableName: parentTableName, parentObjectId: parentObjectId, columnName: columnName, childrenResult: childrenResult)
+        let (operation, opRes) = uowDeleteRel!.deleteRelation(parentTableName: parentTableName, parentObjectId: parentObjectId, columnName: columnName, childrenResult: childrenResult)
         operations.append(operation)
         return opRes
     }

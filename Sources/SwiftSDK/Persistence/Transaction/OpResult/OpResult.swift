@@ -19,18 +19,58 @@
  *  ********************************************************************************************************************
  */
 
+enum OpResultErrors: Error {
+    case noUOW
+    case resultIdExists
+}
+
+extension OpResultErrors: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .noUOW:
+            return NSLocalizedString("Unit of Work doesn't exist", comment: "OpResult error")
+        case .resultIdExists:
+            return NSLocalizedString("Result Id already exists, change is not accepted", comment: "OpResult error")
+        }
+    }
+}
+
+// ******************************************************
+
 @objcMembers public class OpResult: NSObject {
     
     public var tableName: String?
     public var reference: [String : Any]?
     public var operationType: OperationType?
-
+    
+    private var uow: UnitOfWork?
+    
     override public init() { }
     
     init(tableName: String, reference: [String : Any], operationType: OperationType) {
         self.tableName = tableName
         self.reference = reference
         self.operationType = operationType
+    }
+    
+    init(tableName: String, reference: [String : Any], operationType: OperationType, uow: UnitOfWork) {
+        self.tableName = tableName
+        self.reference = reference
+        self.operationType = operationType
+        self.uow = uow
+    }
+    
+    public func setOpResultId(newValue: String) throws {
+        guard let operations = uow?.operations else {
+            throw OpResultErrors.noUOW
+        }
+        if operations.contains(where: { $0.opResultId == newValue }) {
+            throw OpResultErrors.resultIdExists
+        }
+        else if let operation = operations.first(where: { $0.opResultId == reference?["opResultId"] as? String }) {
+            operation.opResultId = newValue
+            self.reference?["opResultId"] = newValue
+        }
     }
     
     public func resolveTo(propertyName: String) -> [String : Any] {

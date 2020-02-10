@@ -112,10 +112,6 @@
         return
     }
     
-    deinit {
-        dataStore.rt.removeAllListeners()
-    }
-    
     // Adds a new element to the Backendless collection
     public func add(newObject: Any) {
         checkObjectType(object: newObject)

@@ -24,10 +24,15 @@ class UnitOfWorkSetRelation {
     private let transactionHelper = TransactionHelper.shared
     
     private var countSetRel = 1
+    private var uow: UnitOfWork
+    
+    init(uow: UnitOfWork) {
+        self.uow = uow
+    }
     
     func setToRelation(parentTableName: String, parentObject: [String : Any], columnName: String, children: [[String : Any]]) -> (Operation, OpResult) {
-        let operationTypeString = OperationType.from(intValue: OperationType.SET_RELATION.rawValue)!
-        let operationResultId = "\(operationTypeString)_\(countSetRel)"
+        let operationTypeString = transactionHelper.generateOperationTypeString(.SET_RELATION)
+        let operationResultId = "\(operationTypeString)\(parentTableName)\(countSetRel)"
         countSetRel += 1
         
         var payload = [String : Any]()
@@ -36,13 +41,13 @@ class UnitOfWorkSetRelation {
         payload["unconditional"] = getChildrenIds(children: children)
         
         let operation = Operation(operationType: .SET_RELATION, tableName: parentTableName, opResultId: operationResultId, payload: payload)
-        let opResult = transactionHelper.makeOpResult(tableName: parentTableName, operationResultId: operationResultId, operationType: .SET_RELATION)
+        let opResult = transactionHelper.makeOpResult(tableName: parentTableName, operationResultId: operationResultId, operationType: .SET_RELATION, uow: uow)
         return (operation, opResult)
     }
     
     func setToRelation(parentTableName: String, parentObject: [String : Any], columnName: String, whereClauseForChildren: String) -> (Operation, OpResult) {
-        let operationTypeString = OperationType.from(intValue: OperationType.SET_RELATION.rawValue)!
-        let operationResultId = "\(operationTypeString)_\(countSetRel)"
+        let operationTypeString = transactionHelper.generateOperationTypeString(.SET_RELATION)
+        let operationResultId = "\(operationTypeString)\(parentTableName)\(countSetRel)"
         countSetRel += 1
         
         var payload = [String : Any]()
@@ -51,16 +56,15 @@ class UnitOfWorkSetRelation {
         payload["conditional"] = whereClauseForChildren
         
         let operation = Operation(operationType: .SET_RELATION, tableName: parentTableName, opResultId: operationResultId, payload: payload)
-        let opResult = transactionHelper.makeOpResult(tableName: parentTableName, operationResultId: operationResultId, operationType: .SET_RELATION)
+        let opResult = transactionHelper.makeOpResult(tableName: parentTableName, operationResultId: operationResultId, operationType: .SET_RELATION, uow: uow)
         return (operation, opResult)
     }
     
     func setToRelation(parentObjectResult: OpResult, columnName: String, children: [[String : Any]]) -> (Operation, OpResult) {
-        let operationTypeString = OperationType.from(intValue: OperationType.SET_RELATION.rawValue)!
-        let operationResultId = "\(operationTypeString)_\(countSetRel)"
-        countSetRel += 1
-        
         let tableName = parentObjectResult.tableName!
+        let operationTypeString = transactionHelper.generateOperationTypeString(.SET_RELATION)
+        let operationResultId = "\(operationTypeString)\(tableName)\(countSetRel)"
+        countSetRel += 1
         
         var payload = [String : Any]()
         payload["relationColumn"] = columnName
@@ -85,16 +89,15 @@ class UnitOfWorkSetRelation {
                                        uowProps.opResultId: parentObjectResult.reference?[uowProps.opResultId]]
         }
         let operation = Operation(operationType: .SET_RELATION, tableName: tableName, opResultId: operationResultId, payload: payload)
-        let opResult = transactionHelper.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .SET_RELATION)
+        let opResult = transactionHelper.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .SET_RELATION, uow: uow)
         return (operation, opResult)
     }
     
     func setToRelation(parentObjectResult: OpResult, columnName: String, whereClauseForChildren: String) -> (Operation, OpResult) {
-        let operationTypeString = OperationType.from(intValue: OperationType.SET_RELATION.rawValue)!
-        let operationResultId = "\(operationTypeString)_\(countSetRel)"
-        countSetRel += 1
-        
         let tableName = parentObjectResult.tableName!
+        let operationTypeString = transactionHelper.generateOperationTypeString(.SET_RELATION)
+        let operationResultId = "\(operationTypeString)\(tableName)\(countSetRel)"
+        countSetRel += 1
         
         var payload = [String : Any]()
         payload["relationColumn"] = columnName
@@ -103,13 +106,13 @@ class UnitOfWorkSetRelation {
                                    uowProps.propName: "objectId",
                                    uowProps.opResultId: parentObjectResult.reference?[uowProps.opResultId]]
         let operation = Operation(operationType: .SET_RELATION, tableName: tableName, opResultId: operationResultId, payload: payload)
-        let opResult = transactionHelper.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .SET_RELATION)
+        let opResult = transactionHelper.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .SET_RELATION, uow: uow)
         return (operation, opResult)
     }
     
     func setToRelation(parentTableName: String, parentObjectId: String, columnName: String, childrenResult: OpResult) -> (Operation, OpResult) {
-        let operationTypeString = OperationType.from(intValue: OperationType.SET_RELATION.rawValue)!
-        let operationResultId = "\(operationTypeString)_\(countSetRel)"
+        let operationTypeString = transactionHelper.generateOperationTypeString(.SET_RELATION)
+        let operationResultId = "\(operationTypeString)\(parentTableName)\(countSetRel)"
         countSetRel += 1
         
         var payload = [String : Any]()
@@ -120,7 +123,7 @@ class UnitOfWorkSetRelation {
                                      uowProps.opResultId: childrenResult.reference?[uowProps.opResultId]]]
         
         let operation = Operation(operationType: .SET_RELATION, tableName: parentTableName, opResultId: operationResultId, payload: payload)
-        let opResult = transactionHelper.makeOpResult(tableName: parentTableName, operationResultId: operationResultId, operationType: .SET_RELATION)
+        let opResult = transactionHelper.makeOpResult(tableName: parentTableName, operationResultId: operationResultId, operationType: .SET_RELATION, uow: uow)
         return (operation, opResult)
     }
     

@@ -24,10 +24,15 @@ class UnitOfWorkDeleteRelation {
     private let transactionHelper = TransactionHelper.shared
     
     private var countDelRel = 1
+    private var uow: UnitOfWork
+    
+    init(uow: UnitOfWork) {
+        self.uow = uow
+    }
     
     func deleteRelation(parentTableName: String, parentObject: [String : Any], columnName: String, children: [[String : Any]]) -> (Operation, OpResult) {
-        let operationTypeString = OperationType.from(intValue: OperationType.DELETE_RELATION.rawValue)!
-        let operationResultId = "\(operationTypeString)_\(countDelRel)"
+        let operationTypeString = transactionHelper.generateOperationTypeString(.DELETE_RELATION)
+        let operationResultId = "\(operationTypeString)\(parentTableName)\(countDelRel)"
         countDelRel += 1
         
         var payload = [String : Any]()
@@ -36,13 +41,13 @@ class UnitOfWorkDeleteRelation {
         payload["unconditional"] = getChildrenIds(children: children)
         
         let operation = Operation(operationType: .DELETE_RELATION, tableName: parentTableName, opResultId: operationResultId, payload: payload)
-        let opResult = transactionHelper.makeOpResult(tableName: parentTableName, operationResultId: operationResultId, operationType: .DELETE_RELATION)
+        let opResult = transactionHelper.makeOpResult(tableName: parentTableName, operationResultId: operationResultId, operationType: .DELETE_RELATION, uow: uow)
         return (operation, opResult)
     }
     
     func deleteRelation(parentTableName: String, parentObject: [String : Any], columnName: String, whereClauseForChildren: String) -> (Operation, OpResult) {
-        let operationTypeString = OperationType.from(intValue: OperationType.DELETE_RELATION.rawValue)!
-        let operationResultId = "\(operationTypeString)_\(countDelRel)"
+        let operationTypeString = transactionHelper.generateOperationTypeString(.DELETE_RELATION)
+        let operationResultId = "\(operationTypeString)\(parentTableName)\(countDelRel)"
         countDelRel += 1
         
         var payload = [String : Any]()
@@ -51,16 +56,15 @@ class UnitOfWorkDeleteRelation {
         payload["conditional"] = whereClauseForChildren
         
         let operation = Operation(operationType: .DELETE_RELATION, tableName: parentTableName, opResultId: operationResultId, payload: payload)
-        let opResult = transactionHelper.makeOpResult(tableName: parentTableName, operationResultId: operationResultId, operationType: .DELETE_RELATION)
+        let opResult = transactionHelper.makeOpResult(tableName: parentTableName, operationResultId: operationResultId, operationType: .DELETE_RELATION, uow: uow)
         return (operation, opResult)
     }
     
     func deleteRelation(parentObjectResult: OpResult, columnName: String, children: [[String : Any]]) -> (Operation, OpResult) {
-        let operationTypeString = OperationType.from(intValue: OperationType.DELETE_RELATION.rawValue)!
-        let operationResultId = "\(operationTypeString)_\(countDelRel)"
-        countDelRel += 1
-        
         let tableName = parentObjectResult.tableName!
+        let operationTypeString = transactionHelper.generateOperationTypeString(.DELETE_RELATION)
+        let operationResultId = "\(operationTypeString)\(tableName)\(countDelRel)"
+        countDelRel += 1
         
         var payload = [String : Any]()
         payload["relationColumn"] = columnName
@@ -85,16 +89,15 @@ class UnitOfWorkDeleteRelation {
                                        uowProps.opResultId: parentObjectResult.reference?[uowProps.opResultId]]
         }
         let operation = Operation(operationType: .DELETE_RELATION, tableName: tableName, opResultId: operationResultId, payload: payload)
-        let opResult = transactionHelper.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .DELETE_RELATION)
+        let opResult = transactionHelper.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .DELETE_RELATION, uow: uow)
         return (operation, opResult)
     }
     
     func deleteRelation(parentObjectResult: OpResult, columnName: String, whereClauseForChildren: String) -> (Operation, OpResult) {
-        let operationTypeString = OperationType.from(intValue: OperationType.DELETE_RELATION.rawValue)!
-        let operationResultId = "\(operationTypeString)_\(countDelRel)"
-        countDelRel += 1
-        
         let tableName = parentObjectResult.tableName!
+        let operationTypeString = transactionHelper.generateOperationTypeString(.DELETE_RELATION)
+        let operationResultId = "\(operationTypeString)\(tableName)\(countDelRel)"
+        countDelRel += 1
         
         var payload = [String : Any]()
         payload["relationColumn"] = columnName
@@ -103,13 +106,13 @@ class UnitOfWorkDeleteRelation {
                                    uowProps.propName: "objectId",
                                    uowProps.opResultId: parentObjectResult.reference?[uowProps.opResultId]]
         let operation = Operation(operationType: .DELETE_RELATION, tableName: tableName, opResultId: operationResultId, payload: payload)
-        let opResult = transactionHelper.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .DELETE_RELATION)
+        let opResult = transactionHelper.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .DELETE_RELATION, uow: uow)
         return (operation, opResult)
     }
     
     func deleteRelation(parentTableName: String, parentObjectId: String, columnName: String, childrenResult: OpResult) -> (Operation, OpResult) {
-        let operationTypeString = OperationType.from(intValue: OperationType.DELETE_RELATION.rawValue)!
-        let operationResultId = "\(operationTypeString)_\(countDelRel)"
+        let operationTypeString = transactionHelper.generateOperationTypeString(.DELETE_RELATION)
+        let operationResultId = "\(operationTypeString)\(parentTableName)\(countDelRel)"
         countDelRel += 1
         
         var payload = [String : Any]()
@@ -120,7 +123,7 @@ class UnitOfWorkDeleteRelation {
                                      uowProps.opResultId: childrenResult.reference?[uowProps.opResultId]]]
         
         let operation = Operation(operationType: .DELETE_RELATION, tableName: parentTableName, opResultId: operationResultId, payload: payload)
-        let opResult = transactionHelper.makeOpResult(tableName: parentTableName, operationResultId: operationResultId, operationType: .DELETE_RELATION)
+        let opResult = transactionHelper.makeOpResult(tableName: parentTableName, operationResultId: operationResultId, operationType: .DELETE_RELATION, uow: uow)
         return (operation, opResult)
     }
     
