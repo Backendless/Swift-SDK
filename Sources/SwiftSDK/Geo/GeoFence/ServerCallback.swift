@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -21,18 +21,17 @@
 
 import CoreLocation
 
+@available(*, deprecated, message: "The ServerCallback class is deprecated and will be removed from SDK in the nearest future")
 @available(iOS 8.0, watchOS 3.0, *)
 @available(OSX, unavailable)
 @available(tvOS, unavailable)
-class ServerCallback: NSObject, ICallback {
+class ServerCallback: ICallback {
     
     var geoPoint: GeoPoint?
     var responseHandler: ((Int) -> Void)!
     var errorHandler: ((Fault) -> Void)!
     
-    private let backendless = Backendless.shared
-    
-    override init() {
+    init() {
         self.responseHandler = { response in }
         self.errorHandler = { error in }
     }
@@ -44,7 +43,7 @@ class ServerCallback: NSObject, ICallback {
     func callOnEnter(geoFence: GeoFence, location: CLLocation) {
         if let geoFenceName = geoFence.geofenceName,
             let geoPoint = self.geoPoint {           
-            backendless.geoService.runOnEnterAction(geoFenceName: geoFenceName, geoPoint: geoPoint, responseHandler: { response in
+            Backendless.shared.geoService.runOnEnterAction(geoFenceName: geoFenceName, geoPoint: geoPoint, responseHandler: { response in
                 self.responseHandler(response)
             }, errorHandler: { fault in
                 self.errorHandler(fault)
@@ -55,7 +54,7 @@ class ServerCallback: NSObject, ICallback {
     func callOnStay(geoFence: GeoFence, location: CLLocation) {
         if let geoFenceName = geoFence.geofenceName,
             let geoPoint = self.geoPoint {
-            backendless.geoService.runOnStayAction(geoFenceName: geoFenceName, geoPoint: geoPoint, responseHandler: { response in
+            Backendless.shared.geoService.runOnStayAction(geoFenceName: geoFenceName, geoPoint: geoPoint, responseHandler: { response in
                 self.responseHandler(response)
             }, errorHandler: { fault in
                 self.errorHandler(fault)
@@ -66,7 +65,7 @@ class ServerCallback: NSObject, ICallback {
     func callOnExit(geoFence: GeoFence, location: CLLocation) {
         if let geoFenceName = geoFence.geofenceName,
             let geoPoint = self.geoPoint {
-            backendless.geoService.runOnExitAction(geoFenceName: geoFenceName, geoPoint: geoPoint, responseHandler: { response in
+            Backendless.shared.geoService.runOnExitAction(geoFenceName: geoFenceName, geoPoint: geoPoint, responseHandler: { response in
                 self.responseHandler(response)
             }, errorHandler: { fault in
                 self.errorHandler(fault)

@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -20,8 +20,6 @@
  */
 
 @objcMembers public class CustomService: NSObject {
-    
-    private let jsonUtils = JSONUtils.shared
     
     public func invoke(serviceName: String, method: String, parameters: Any?, responseHandler: ((Any?) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         invokeService(serviceName: serviceName, method: method, parameters: parameters, executionType: nil, responseHandler: responseHandler, errorHandler: errorHandler)
@@ -37,7 +35,7 @@
             headers["bl-execution-type"] = ExecutionTypeMethods.shared.getExecutionTypeValue(executionType: executionType.rawValue)
         }
         if var parameters = parameters {
-            parameters = jsonUtils.objectToJson(objectToParse: parameters)
+            parameters = JSONUtils.shared.objectToJson(objectToParse: parameters)
             BackendlessRequestManager(restMethod: "services/\(serviceName)/\(method)", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
                 self.processInvokeResponse(response: response, responseHandler: responseHandler, errorHandler: errorHandler)
             })
@@ -56,10 +54,10 @@
             }
             else {
                 if let resultDictionary = (result as! JSON).dictionaryObject {
-                    responseHandler(jsonUtils.jsonToObject(objectToParse: resultDictionary))
+                    responseHandler(JSONUtils.shared.jsonToObject(objectToParse: resultDictionary))
                 }
                 else if let resultArray = (result as! JSON).arrayObject {
-                    responseHandler(jsonUtils.jsonToObject(objectToParse: resultArray))
+                    responseHandler(JSONUtils.shared.jsonToObject(objectToParse: resultArray))
                 }
             }
         }

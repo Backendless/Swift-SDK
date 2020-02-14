@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -19,13 +19,13 @@
  *  ********************************************************************************************************************
  */
 
-class StoredObjects: NSObject {
+class StoredObjects {
     
     static let shared = StoredObjects()
     
     var storedObjects = [AnyHashable: String]()
     
-    private override init() { }
+    private init() { }
     
     func rememberObjectId(objectId: String, forObject: AnyHashable) {
         storedObjects[forObject] = objectId
@@ -51,9 +51,9 @@ class StoredObjects: NSObject {
     }
     
     func removeObjectIds(tableName: String) {
-        for storedObjectEntity in storedObjects.keys {
-            if PersistenceServiceUtils().getTableName(entity: storedObjectEntity) == tableName {
-                storedObjects.removeValue(forKey: storedObjectEntity)
+        for storedObject in storedObjects.keys {
+            if PersistenceHelper.shared.getTableNameFor(storedObject) == tableName {
+                storedObjects.removeValue(forKey: storedObject)
             }
         }
     }

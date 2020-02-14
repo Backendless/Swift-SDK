@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -20,8 +20,6 @@
  */
 
 @objcMembers public class Events: NSObject {
-    
-    private let jsonUtils = JSONUtils.shared
     
     public func dispatch(name: String, parameters: Any?, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         dispatchEvent(name: name, parameters: parameters, executionType: nil, responseHandler: responseHandler, errorHandler: errorHandler)
@@ -37,7 +35,7 @@
             headers["bl-execution-type"] = ExecutionTypeMethods.shared.getExecutionTypeValue(executionType: executionType.rawValue)
         }
         if var parameters = parameters {
-            parameters = jsonUtils.objectToJson(objectToParse: parameters)
+            parameters = JSONUtils.shared.objectToJson(objectToParse: parameters)
             BackendlessRequestManager(restMethod: "servercode/events/\(name)", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
                 self.processDispatchResponse(response: response, responseHandler: responseHandler, errorHandler: errorHandler)
             })
@@ -58,7 +56,7 @@
                 if let resultDictionary = (result as! JSON).dictionaryObject {
                     var resultDict = [String : Any]()
                     for (key, value) in resultDictionary {
-                        resultDict[key] = jsonUtils.jsonToObject(objectToParse: value)
+                        resultDict[key] = JSONUtils.shared.jsonToObject(objectToParse: value)
                     }                       
                     responseHandler(resultDict)
                 }

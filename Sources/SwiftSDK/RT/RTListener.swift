@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -19,9 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers public class RTListener: NSObject { 
-    
-    private let rtClient = RTClient.shared
+@objcMembers public class RTListener: NSObject {
     
     private var subscriptions: [String : [RTSubscription]]!
     private var onStop: ((RTSubscription) -> Void)?
@@ -94,7 +92,7 @@
                 }
             }
             let subscription = createSubscription(type: rtTypes.objectChanges, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
-            rtClient.subscribe(data: subscription.data!, subscription: subscription)
+            RTClient.shared.subscribe(data: subscription.data!, subscription: subscription)
             return subscription
         }
         else if event == rtEventHandlers.bulkCreated {
@@ -109,7 +107,7 @@
                 }
             }
             let subscription = createSubscription(type: rtTypes.objectChanges, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
-            rtClient.subscribe(data: subscription.data!, subscription: subscription)
+            RTClient.shared.subscribe(data: subscription.data!, subscription: subscription)
             return subscription
         }
         else if event == rtEventHandlers.bulkUpdated {
@@ -119,7 +117,7 @@
                 }
             }
             let subscription = createSubscription(type: rtTypes.objectChanges, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
-            rtClient.subscribe(data: subscription.data!, subscription: subscription)
+            RTClient.shared.subscribe(data: subscription.data!, subscription: subscription)
             return subscription
         }
         else if event == rtEventHandlers.bulkDeleted {
@@ -129,7 +127,7 @@
                 }
             }
             let subscription = createSubscription(type: rtTypes.objectChanges, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
-            rtClient.subscribe(data: subscription.data!, subscription: subscription)
+            RTClient.shared.subscribe(data: subscription.data!, subscription: subscription)
             return subscription
         }
         return nil

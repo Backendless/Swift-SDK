@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -93,18 +93,15 @@
         if let roleName = roleName {
             parameters["role"] = roleName
         }
-        
-        if let objectId = PersistenceServiceUtils().getObjectId(entity: entity) {
+        if let objectId = PersistenceHelper.shared.getObjectId(entity: entity) {
             var tableName = ""
-            
             if let entityDictionary = entity as? [String : Any],
                 let className = entityDictionary["___class"] as? String {
                 tableName = className
             }
             else {
-                tableName = PersistenceServiceUtils().getTableName(entity: type(of: entity))
+                tableName = PersistenceHelper.shared.getTableNameFor(type(of: entity))
             }
-            
             BackendlessRequestManager(restMethod: "data/\(tableName)/permissions/\(permissionType)/\(objectId)", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
                 let result = ProcessResponse.shared.adapt(response: response, to: NoReply.self)
                 if result is Fault {

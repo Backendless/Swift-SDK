@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -30,20 +30,18 @@
     var onError: ((Fault) -> Void)?
     var onStop: ((RTSubscription) -> Void)?
     var ready = false
-    
-    private let rtClient = RTClient.shared
 
     func subscribe() {       
         if let data = self.data {
-            rtClient.subscribe(data: data, subscription: self)
+            RTClient.shared.subscribe(data: data, subscription: self)
         }        
     }
     
     public func stop() {
-        if let index = rtClient.waitingSubscriptions.firstIndex(where: { $0.subscriptionId == self.subscriptionId }) {
-            rtClient.removeWaitingSubscription(index: index)
+        if let index = RTClient.shared.waitingSubscriptions.firstIndex(where: { $0.subscriptionId == self.subscriptionId }) {
+            RTClient.shared.removeWaitingSubscription(index: index)
         }
-        rtClient.unsubscribe(subscriptionId: self.subscriptionId!)
+        RTClient.shared.unsubscribe(subscriptionId: self.subscriptionId!)
         if self.onStop != nil {
             self.onStop!(self)
         }

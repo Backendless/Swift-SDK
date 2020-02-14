@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -26,18 +26,19 @@
     private var entityClass: AnyClass
     private var tableName: String
     
-    private let persistenceServiceUtils = PersistenceServiceUtils()
+    private var persistenceServiceUtils: PersistenceServiceUtils
     
     init(entityClass: AnyClass, tableName: String) {
         self.entityClass = entityClass
         self.tableName = tableName
-        persistenceServiceUtils.setup(tableName: tableName)
+        persistenceServiceUtils = PersistenceServiceUtils(tableName: self.tableName)
     }
     
     public func addCreateListener(responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         let wrappedBlock: (Any) -> () = { response in
+            let className = PersistenceHelper.shared.getTableNameFor(self.entityClass)
             if let responseDictionary = response as? [String : Any],
-                let resultEntity = self.persistenceServiceUtils.dictionaryToEntity(dictionary: responseDictionary, className: self.persistenceServiceUtils.getClassName(entity: self.entityClass)) {
+                let resultEntity = PersistenceHelper.shared.dictionaryToEntity(dictionary: responseDictionary, className: className) {
                 responseHandler(resultEntity)
             }
         }
@@ -46,8 +47,9 @@
     
     public func addCreateListener(whereClause: String, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         let wrappedBlock: (Any) -> () = { response in
+            let className = PersistenceHelper.shared.getTableNameFor(self.entityClass)
             if let responseDictionary = response as? [String : Any],
-                let resultEntity = self.persistenceServiceUtils.dictionaryToEntity(dictionary: responseDictionary, className: self.persistenceServiceUtils.getClassName(entity: self.entityClass)) {
+                let resultEntity = PersistenceHelper.shared.dictionaryToEntity(dictionary: responseDictionary, className: className) {
                 responseHandler(resultEntity)
             }
         }
@@ -64,8 +66,9 @@
     
     public func addUpdateListener(responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         let wrappedBlock: (Any) -> () = { response in
+            let className = PersistenceHelper.shared.getTableNameFor(self.entityClass)
             if let responseDictionary = response as? [String : Any],
-                let resultEntity = self.persistenceServiceUtils.dictionaryToEntity(dictionary: responseDictionary, className: self.persistenceServiceUtils.getClassName(entity: self.entityClass)) {
+                let resultEntity = PersistenceHelper.shared.dictionaryToEntity(dictionary: responseDictionary, className: className) {
                 responseHandler(resultEntity)
             }
         }
@@ -74,8 +77,9 @@
     
     public func addUpdateListener(whereClause: String, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         let wrappedBlock: (Any) -> () = { response in
+            let className = PersistenceHelper.shared.getTableNameFor(self.entityClass)
             if let responseDictionary = response as? [String : Any],
-                let resultEntity = self.persistenceServiceUtils.dictionaryToEntity(dictionary: responseDictionary, className: self.persistenceServiceUtils.getClassName(entity: self.entityClass)) {
+                let resultEntity = PersistenceHelper.shared.dictionaryToEntity(dictionary: responseDictionary, className: className) {
                 responseHandler(resultEntity)
             }
         }
@@ -91,9 +95,10 @@
     }
     
     public func addDeleteListener(responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        let className = PersistenceHelper.shared.getTableNameFor(self.entityClass)
         let wrappedBlock: (Any) -> () = { response in
             if let responseDictionary = response as? [String : Any],
-                let resultEntity = self.persistenceServiceUtils.dictionaryToEntity(dictionary: responseDictionary, className: self.persistenceServiceUtils.getClassName(entity: self.entityClass)) {
+                let resultEntity = PersistenceHelper.shared.dictionaryToEntity(dictionary: responseDictionary, className: className) {
                 responseHandler(resultEntity)
             }
         }
@@ -102,8 +107,9 @@
     
     public func addDeleteListener(whereClause: String, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         let wrappedBlock: (Any) -> () = { response in
+            let className = PersistenceHelper.shared.getTableNameFor(self.entityClass)
             if let responseDictionary = response as? [String : Any],
-                let resultEntity = self.persistenceServiceUtils.dictionaryToEntity(dictionary: responseDictionary, className: self.persistenceServiceUtils.getClassName(entity: self.entityClass)) {
+                let resultEntity = PersistenceHelper.shared.dictionaryToEntity(dictionary: responseDictionary, className: className) {
                 responseHandler(resultEntity)
             }
         }

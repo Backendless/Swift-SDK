@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -19,6 +19,7 @@
  *  ********************************************************************************************************************
  */
 
+@available(*, deprecated, message: "The Units enum is deprecated and will be removed from SDK in the nearest future")
 @objc public enum Units: Int {
     case METERS = 0
     case MILES = 1
@@ -27,6 +28,7 @@
     case FEET = 4
 }
 
+@available(*, deprecated, message: "The BackendlessGeoQuery class is deprecated and will be removed from SDK in the nearest future")
 @objcMembers public class BackendlessGeoQuery: NSObject, Codable {
     
     public var geoPoint: GeoPoint?

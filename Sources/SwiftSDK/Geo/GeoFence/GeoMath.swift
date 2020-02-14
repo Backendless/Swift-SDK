@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -19,6 +19,7 @@
  *  ********************************************************************************************************************
  */
 
+@available(*, deprecated, message: "The GeoRectangle struct is deprecated and will be removed from SDK in the nearest future")
 @available(iOS 8.0, watchOS 3.0, *)
 @available(OSX, unavailable)
 @available(tvOS, unavailable)
@@ -29,10 +30,11 @@ struct GeoRectangle {
     var eastLongitude: Double = 0.0
 }
 
+@available(*, deprecated, message: "The GeoMath class is deprecated and will be removed from SDK in the nearest future")
 @available(iOS 8.0, watchOS 3.0, *)
 @available(OSX, unavailable)
 @available(tvOS, unavailable)
-class GeoMath: NSObject {
+class GeoMath {
     
     static let shared = GeoMath()
     
@@ -44,7 +46,7 @@ class GeoMath: NSObject {
         case NO_INTERSECT
     }
     
-    private override init() { }
+    private init() { }
     
     func distance(latitude1: Double, longitude1: Double, latitude2: Double, longitude2: Double) -> Double {
         let deltaLongitude = (longitude1 - longitude2) * .pi / 180

@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -21,15 +21,14 @@
 
 import CoreLocation
 
+@available(*, deprecated, message: "The GeoFenceMonitoring class is deprecated and will be removed from SDK in the nearest future")
 @available(iOS 8.0, watchOS 3.0, *)
 @available(OSX, unavailable)
 @available(tvOS, unavailable)
 
-class GeoFenceMonitoring: NSObject, ILocationTrackerListener {
+class GeoFenceMonitoring: ILocationTrackerListener {
     
     static let shared = GeoFenceMonitoring()
-    
-    private let geoMath = GeoMath.shared
     
     private enum LocationErrors {
         static let notValued = "The geofence or callback is not valued"
@@ -42,7 +41,7 @@ class GeoFenceMonitoring: NSObject, ILocationTrackerListener {
     private var fencesToCallback = [GeoFence : ICallback]()
     private var location: CLLocation?
     
-    private override init() { }
+    private init() { }
     
     func onLocationChanged(location: CLLocation) {
         DispatchQueue.main.async {
@@ -164,7 +163,7 @@ class GeoFenceMonitoring: NSObject, ILocationTrackerListener {
             }
             if let nwGeoPoint = geoFence.nwGeoPoint,
                 let seGeoPoint = geoFence.seGeoPoint {
-                if geoMath.isPointInRectangular(geoPoint: geoPoint, nwGeoPoint: nwGeoPoint, seGeoPoint: seGeoPoint) {
+                if GeoMath.shared.isPointInRectangular(geoPoint: geoPoint, nwGeoPoint: nwGeoPoint, seGeoPoint: seGeoPoint) {
                     return true
                 }
                 return false
@@ -173,14 +172,14 @@ class GeoFenceMonitoring: NSObject, ILocationTrackerListener {
         if geoFence.geoFenceType == .CIRCLE {
             if let geoPoint1 = geoFence.nodes?[0],
                 let geoPoint2 = geoFence.nodes?[1] {
-                let radius = geoMath.distance(latitude1: geoPoint1.latitude, longitude1: geoPoint1.longitude, latitude2: geoPoint2.latitude, longitude2: geoPoint2.longitude)
-                return geoMath.isPointInCircle(geoPoint: geoPoint, center: geoPoint1, radius: radius)
+                let radius = GeoMath.shared.distance(latitude1: geoPoint1.latitude, longitude1: geoPoint1.longitude, latitude2: geoPoint2.latitude, longitude2: geoPoint2.longitude)
+                return GeoMath.shared.isPointInCircle(geoPoint: geoPoint, center: geoPoint1, radius: radius)
             }
             return false
         }
         if geoFence.geoFenceType == .SHAPE {
             if let nodes = geoFence.nodes {
-                return geoMath.isPointInShape(geoPoint: geoPoint, shape: nodes)
+                return GeoMath.shared.isPointInShape(geoPoint: geoPoint, shape: nodes)
             }
             return false
         }
@@ -241,14 +240,14 @@ class GeoFenceMonitoring: NSObject, ILocationTrackerListener {
         if geoFence.geoFenceType == .CIRCLE {
             if let center = geoFence.nodes?[0],
                 let bounded = geoFence.nodes?[1] {
-                let outRect = geoMath.getOutRectangle(center: center, bounded: bounded)
+                let outRect = GeoMath.shared.getOutRectangle(center: center, bounded: bounded)
                 geoFence.nwGeoPoint = GeoPoint(latitude: outRect.northLatitude, longitude: outRect.westLongitude)
                 geoFence.seGeoPoint = GeoPoint(latitude: outRect.southLatitude, longitude: outRect.eastLongitude)
             }
         }
         if geoFence.geoFenceType == .SHAPE {
             if let nodes = geoFence.nodes {
-                let outRect = geoMath.getOutRectangle(geoPoints: nodes)
+                let outRect = GeoMath.shared.getOutRectangle(geoPoints: nodes)
                 geoFence.nwGeoPoint = GeoPoint(latitude: outRect.northLatitude, longitude: outRect.westLongitude)
                 geoFence.seGeoPoint = GeoPoint(latitude: outRect.southLatitude, longitude: outRect.eastLongitude)
             }
