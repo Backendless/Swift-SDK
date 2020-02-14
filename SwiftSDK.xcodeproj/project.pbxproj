@@ -25,6 +25,7 @@
 		5E03A3C122294A4B005A538D /* PublishMessageInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E03A3C022294A4B005A538D /* PublishMessageInfo.swift */; };
 		5E03A3C322296D03005A538D /* CommandObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E03A3C222296D03005A538D /* CommandObject.swift */; };
 		5E03A3C52229711F005A538D /* UserStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E03A3C42229711F005A538D /* UserStatus.swift */; };
+		5E06AD4D23F6759700950993 /* PersistenceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E06AD4C23F6759700950993 /* PersistenceHelper.swift */; };
 		5E09B00C22645B9A0073DA5E /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E09B00B22645B9A0073DA5E /* Logging.swift */; };
 		5E09B00E22645BBC0073DA5E /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E09B00D22645BBC0073DA5E /* Logger.swift */; };
 		5E09B01022645BCF0073DA5E /* LogBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E09B00F22645BCF0073DA5E /* LogBuffer.swift */; };
@@ -170,6 +171,7 @@
 		5E03A3C022294A4B005A538D /* PublishMessageInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishMessageInfo.swift; sourceTree = "<group>"; };
 		5E03A3C222296D03005A538D /* CommandObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandObject.swift; sourceTree = "<group>"; };
 		5E03A3C42229711F005A538D /* UserStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStatus.swift; sourceTree = "<group>"; };
+		5E06AD4C23F6759700950993 /* PersistenceHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceHelper.swift; sourceTree = "<group>"; };
 		5E09B00B22645B9A0073DA5E /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		5E09B00D22645BBC0073DA5E /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		5E09B00F22645BCF0073DA5E /* LogBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogBuffer.swift; sourceTree = "<group>"; };
@@ -346,6 +348,7 @@
 				5E4DE64221EF8E92009AE503 /* Mappings.swift */,
 				5A2A785021E6114800EC8007 /* PersistenceService.swift */,
 				5AC54CA521E7373400EC1F8C /* PersistenceServiceUtils.swift */,
+				5E06AD4C23F6759700950993 /* PersistenceHelper.swift */,
 				5E9718F8221BFD0D00857603 /* RT */,
 				5EA2B69A21F2324B00CFDC37 /* StoredObjects.swift */,
 			);
@@ -1019,6 +1022,7 @@
 				5E973115228D33A900F64B49 /* KeychainUtils.swift in Sources */,
 				5ECFEFBB23D9C88F004A5DD0 /* BackendlessDataCollection.swift in Sources */,
 				5EA87B95221D720100A8B93F /* RTListener.swift in Sources */,
+				5E06AD4D23F6759700950993 /* PersistenceHelper.swift in Sources */,
 				5ED765D02224369E009431CD /* BulkEvent.swift in Sources */,
 				5E72EABD21F6EB89006C8C5C /* DataQueryBuilder.swift in Sources */,
 				5E338D90225C97AB00709630 /* LocationTracker.swift in Sources */,

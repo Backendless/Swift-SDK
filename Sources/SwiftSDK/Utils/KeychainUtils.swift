@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -19,13 +19,13 @@
  *  ********************************************************************************************************************
  */
 
-class KeychainUtils: NSObject {
+class KeychainUtils {
     
     static let shared = KeychainUtils()
     
     private let deviceIdKey = "BackendlessDeviceId"
     
-    private override init() { }
+    private init() { }
     
     func saveDeviceId(deviceId: String) {
         if let _ = getDeviceId() {

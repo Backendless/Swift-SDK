@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -23,15 +23,13 @@
     
     private var loggers = [String : Logger]()
     
-    private let logBuffer = LogBuffer.shared
-    
     public override init() {
         super.init()
         loggers.removeAll()
     }
     
     public func setLogReportingPolicy(numberOfMessages: Int, timeFrequencySec: Int) {
-        logBuffer.setLogReportingPolicy(numberOfMessges: numberOfMessages, timeFrequencySec: timeFrequencySec)
+        LogBuffer.shared.setLogReportingPolicy(numberOfMessges: numberOfMessages, timeFrequencySec: timeFrequencySec)
     }
     
     public func getLoggerClass(clazz: Any) -> Logger {
@@ -48,6 +46,6 @@
     }
     
     public func flush() {
-        logBuffer.forceFlush()
+        LogBuffer.shared.forceFlush()
     }
 }

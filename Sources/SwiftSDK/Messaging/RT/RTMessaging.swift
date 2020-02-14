@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -20,9 +20,6 @@
  */
 
 class RTMessaging: RTListener {
-    
-    private let rtClient = RTClient.shared
-    private let processResponse = ProcessResponse.shared
     
     private var channel: Channel
     private var channelName: String
@@ -41,7 +38,7 @@ class RTMessaging: RTListener {
     }
     
     func disconnect() {
-        rtClient.unsubscribe(subscriptionId: subscriptionId)
+        RTClient.shared.unsubscribe(subscriptionId: subscriptionId)
         removeWaitingSubscriptions()
     }
     
@@ -54,12 +51,12 @@ class RTMessaging: RTListener {
         subscription.options = ["channel": channelName]
         subscription.onResult = wrappedBlock
         subscription.onError = errorHandler
-        rtClient.addSimpleListener(type: rtTypes.pubSubConnect, subscription: subscription)
+        RTClient.shared.addSimpleListener(type: rtTypes.pubSubConnect, subscription: subscription)
         return subscription
     }
     
     func removeConnectListeners() {
-        rtClient.removeSimpleListeners(type: rtTypes.pubSubConnect)
+        RTClient.shared.removeSimpleListeners(type: rtTypes.pubSubConnect)
     }
     
     func addStringMessageListener(selector: String?, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
@@ -112,8 +109,8 @@ class RTMessaging: RTListener {
             if let response = response as? [String : Any],
                 let message = response["message"] as? [String : Any],
                 let className = message["___class"] as? String,
-                className == PersistenceServiceUtils().getClassName(entity: forClass),
-                let result = PersistenceServiceUtils().dictionaryToEntity(dictionary: message, className: className) {
+                className == PersistenceHelper.shared.getClassNameWithoutModule(forClass),
+                let result = PersistenceHelper.shared.dictionaryToEntity(dictionary: message, className: className) {
                 responseHandler(result)
             }
         }        
@@ -135,7 +132,7 @@ class RTMessaging: RTListener {
     func addMessageListener(selector: String?, responseHandler: ((PublishMessageInfo) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         let wrappedBlock: (Any) -> () = { response in
             if let response = response as? [String : Any] {
-                let publishMessageInfo = self.processResponse.adapt(responseDictionary: response, to: PublishMessageInfo.self)
+                let publishMessageInfo = ProcessResponse.shared.adapt(responseDictionary: response, to: PublishMessageInfo.self)
                 responseHandler(publishMessageInfo as! PublishMessageInfo)
             }            
         }
@@ -160,7 +157,7 @@ class RTMessaging: RTListener {
     func addCommandListener(responseHandler: ((CommandObject) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         let wrappedBlock: (Any) -> () = { response in
             if let response = response as? [String : Any] {
-                let commandObject = self.processResponse.adaptToCommandObject(commandObjectDictionary: response)
+                let commandObject = ProcessResponse.shared.adaptToCommandObject(commandObjectDictionary: response)
                 responseHandler(commandObject)
             }
         }

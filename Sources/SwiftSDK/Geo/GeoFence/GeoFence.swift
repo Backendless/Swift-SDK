@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -19,6 +19,7 @@
  *  ********************************************************************************************************************
  */
 
+@available(*, deprecated, message: "The FenceType enum is deprecated and will be removed from SDK in the nearest future")
 public enum FenceType: Int, Codable {
     case CIRCLE
     case RECT
@@ -44,6 +45,7 @@ public enum FenceType: Int, Codable {
     }
 }    
 
+@available(*, deprecated, message: "The GeoFence class is deprecated and will be removed from SDK in the nearest future")
 @objcMembers public class GeoFence: NSObject {
 
     public internal(set) var objectId: String?

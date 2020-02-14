@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -19,11 +19,11 @@
  *  ********************************************************************************************************************
  */
 
-class DataTypesUtils: NSObject {
+class DataTypesUtils {
     
     static let shared = DataTypesUtils()
     
-    private override init() { }
+    private init() { }
     
     func dateToInt(date: Date) -> Int {
         return Int((date.timeIntervalSince1970 * 1000.0).rounded())

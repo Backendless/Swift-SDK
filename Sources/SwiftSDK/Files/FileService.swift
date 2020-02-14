@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -26,9 +26,6 @@
         return _permissions
     }()
     
-    private let dataTypesUtils = DataTypesUtils.shared
-    private let processResponse = ProcessResponse.shared
-    
     public func uploadFile(fileName: String, filePath: String, content: Data, responseHandler: ((BackendlessFile) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         self.uploadFile(fileName: fileName, filePath: filePath, fileContent: content, overwrite: false, responseHandler: responseHandler, errorHandler: errorHandler)
     }
@@ -43,12 +40,12 @@
             restMethod += "?overwrite=true"
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .post, headers: nil, parameters: nil).makeMultipartFormRequest(data: fileContent, fileName: fileName, getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: JSON.self) {
+            if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
                 else if let result = (result as? JSON)?.dictionaryObject {
-                    let backendlessFile = self.processResponse.adaptToBackendlessFile(backendlessFileDictionary: result)
+                    let backendlessFile = ProcessResponse.shared.adaptToBackendlessFile(backendlessFileDictionary: result)
                     responseHandler(backendlessFile)
                 }
             }
@@ -71,7 +68,7 @@
         let headers = ["Content-Type": "text/plain"]
         let parameters = base64FileContent
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: JSON.self) {
+            if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -87,9 +84,9 @@
     
     public func rename(path: String, newName: String, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
-        let parameters = ["oldPathName": path, "newName": dataTypesUtils.stringToUrlString(originalString: newName)]
+        let parameters = ["oldPathName": path, "newName": DataTypesUtils.shared.stringToUrlString(originalString: newName)]
         BackendlessRequestManager(restMethod: "files/rename", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: JSON.self) {
+            if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -106,7 +103,7 @@
         let headers = ["Content-Type": "application/json"]
         let parameters = ["sourcePath": sourcePath, "targetPath": targetPath]
         BackendlessRequestManager(restMethod: "files/copy", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: JSON.self) {
+            if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -123,7 +120,7 @@
         let headers = ["Content-Type": "application/json"]
         let parameters = ["sourcePath": sourcePath, "targetPath": targetPath]
         BackendlessRequestManager(restMethod: "files/move", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: JSON.self) {
+            if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -167,7 +164,7 @@
             restMethod += "&offset=\(offset)"
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: [BackendlessFileInfo].self) {
+            if let result = ProcessResponse.shared.adapt(response: response, to: [BackendlessFileInfo].self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -209,13 +206,13 @@
             restMethod += "&countDirectories=false"
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: Int.self) {
+            if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
             }
             else {
-                responseHandler(self.dataTypesUtils.dataToInt(data: response.data!))
+                responseHandler(DataTypesUtils.shared.dataToInt(data: response.data!))
             }
         })
     }
@@ -233,7 +230,7 @@
             restMethod += "&sub=false"
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .delete, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: NoReply.self) {
+            if let result = ProcessResponse.shared.adapt(response: response, to: NoReply.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }

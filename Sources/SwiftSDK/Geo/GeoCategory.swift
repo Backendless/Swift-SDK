@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -19,6 +19,7 @@
  *  ********************************************************************************************************************
  */
 
+@available(*, deprecated, message: "The GeoCategory class is deprecated and will be removed from SDK in the nearest future")
 @objcMembers public class GeoCategory: NSObject, Codable {
     
     public private(set) var objectId: String?

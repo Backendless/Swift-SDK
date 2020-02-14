@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -20,9 +20,6 @@
  */
 
 @objcMembers public class AtomicCounters: NSObject {
-    
-    private let dataTypesUtils = DataTypesUtils.shared
-    private let processResponse = ProcessResponse.shared
     
     public func of(counterName: String) -> IAtomic {
         return AtomicCountersFactory(counterName: counterName)
@@ -68,20 +65,20 @@
     
     public func get(counterName: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         BackendlessRequestManager(restMethod: "counters/\(counterName)", httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: Int.self) {
+            if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
             }
             else {
-                responseHandler(self.dataTypesUtils.dataToInt(data: response.data!))
+                responseHandler(DataTypesUtils.shared.dataToInt(data: response.data!))
             }
         })
     }
     
     public func reset(counterName: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         BackendlessRequestManager(restMethod: "counters/\(counterName)/reset", httpMethod: .put, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: NoReply.self) {
+            if let result = ProcessResponse.shared.adapt(response: response, to: NoReply.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -94,7 +91,7 @@
     
     private func executeCounterMethod(restMethod: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .put, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: Int.self) {
+            if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }

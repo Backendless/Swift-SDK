@@ -1,5 +1,11 @@
 # RELEASE HISTORY
 
+### 5.7.4 / February 14, 2020
+* code refactored
+* added the PersistenceHelper class
+* classes related to current GeoService marked as deprecated
+* fixed Backendless system classes  conversion when working with dictionary approach
+
 ### 5.7.3 / January 28, 2020
 * fixed `isValidUserToken` method to return error when Internet connection is not available
 * refactored Fault contructor to handle URLSession errors correctly 

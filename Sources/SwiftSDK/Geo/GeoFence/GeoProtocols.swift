@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -21,6 +21,7 @@
 
 import CoreLocation
 
+@available(*, deprecated, message: "The ILocationTrackerListener protocol is deprecated and will be removed from SDK in the nearest future")
 @available(iOS 8.0, watchOS 3.0, *)
 @available(OSX, unavailable)
 @available(tvOS, unavailable)
@@ -29,6 +30,7 @@ protocol ILocationTrackerListener {
     func onLocationFailed(error: Error)
 }
 
+@available(*, deprecated, message: "The ICallback protocol is deprecated and will be removed from SDK in the nearest future")
 @available(iOS 8.0, watchOS 3.0, *)
 @available(OSX, unavailable)
 @available(tvOS, unavailable)
@@ -39,6 +41,7 @@ public protocol ICallback {
     func equalCallbackParameter(object: Any?) -> Bool
 }
 
+@available(*, deprecated, message: "The IGeofenceCallback protocol is deprecated and will be removed from SDK in the nearest future")
 @available(iOS 8.0, watchOS 3.0, *)
 @available(OSX, unavailable)
 @available(tvOS, unavailable)

@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -21,13 +21,11 @@
 
 import SocketIO
 
-class DeviceHelper: NSObject {
+class DeviceHelper {
     
     static let shared = DeviceHelper()
     
-    private let keychainUtils = KeychainUtils.shared
-    
-    private override init() { }
+    private init() { }
     
     #if os(iOS) || os(tvOS)
     var currentDeviceName: String {
@@ -39,15 +37,15 @@ class DeviceHelper: NSObject {
     }
     
     var deviceId: String {
-        if let _deviceId = keychainUtils.getDeviceId() {
+        if let _deviceId = KeychainUtils.shared.getDeviceId() {
             return _deviceId
         }
         if let _deviceId = UIDevice.current.identifierForVendor?.uuidString {
-            keychainUtils.saveDeviceId(deviceId: _deviceId)
+            KeychainUtils.shared.saveDeviceId(deviceId: _deviceId)
             return _deviceId
         }
         let _deviceId = UUID().uuidString
-        keychainUtils.saveDeviceId(deviceId: _deviceId)
+        KeychainUtils.shared.saveDeviceId(deviceId: _deviceId)
         return _deviceId
     }
     

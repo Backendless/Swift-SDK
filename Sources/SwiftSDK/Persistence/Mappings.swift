@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -19,14 +19,14 @@
  *  ********************************************************************************************************************
  */
 
-class Mappings: NSObject {
+class Mappings {
     
     static let shared = Mappings()
     
     var tableToClassMappings = [String: String]()
     var columnToPropertyMappings = [String: [String: String]]()
     
-    private override init() { }
+    private init() { }
 
     func mapTable(tableName: String, toClassNamed: String) {
         tableToClassMappings[tableName] = toClassNamed

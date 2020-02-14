@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -25,38 +25,36 @@
     
     public var rt: EventHandlerForClass!
     
-    private let mappings = Mappings.shared
-    private let processResponse = ProcessResponse.shared
-    
     private var entityClass: AnyClass
     private var tableName: String
     
-    private let persistenceServiceUtils = PersistenceServiceUtils()
+    private var persistenceServiceUtils: PersistenceServiceUtils
     
     init(entityClass: AnyClass) {
         self.entityClass = entityClass
-        let tableName = persistenceServiceUtils.getTableName(entity: self.entityClass)
-        self.tableName = tableName
-        persistenceServiceUtils.setup(tableName: self.tableName)
+        self.tableName = PersistenceHelper.shared.getTableNameFor(self.entityClass)
         self.rt = RTFactory.shared.creteEventHandlerForClass(entityClass: entityClass, tableName: tableName)
+        persistenceServiceUtils = PersistenceServiceUtils(tableName: self.tableName)
     }
     
     public func mapToTable(tableName: String) {
         self.tableName = tableName
-        persistenceServiceUtils.setup(tableName: self.tableName)
-        mappings.mapTable(tableName: tableName, toClassNamed: persistenceServiceUtils.getClassName(entity: self.entityClass))
+        let className = PersistenceHelper.shared.getClassNameWithoutModule(self.entityClass)
+        Mappings.shared.mapTable(tableName: tableName, toClassNamed: className)
+        persistenceServiceUtils = PersistenceServiceUtils(tableName: self.tableName)
     }
     
     public func mapColumn(columnName: String, toProperty: String) {
-        mappings.mapColumn(columnName: columnName, toProperty: toProperty, ofClassNamed: persistenceServiceUtils.getClassName(entity: self.entityClass))
+        let className = PersistenceHelper.shared.getClassNameWithoutModule(self.entityClass)
+        Mappings.shared.mapColumn(columnName: columnName, toProperty: toProperty, ofClassNamed: className)
     }
     
     public func getObjectId(entity: Any) -> String? {
-        return persistenceServiceUtils.getObjectId(entity: entity)
+        return PersistenceHelper.shared.getObjectId(entity: entity)
     }
     
     public func save(entity: Any, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        if persistenceServiceUtils.getObjectId(entity: entity) != nil {
+        if PersistenceHelper.shared.getObjectId(entity: entity) != nil {
             update(entity: entity, responseHandler: responseHandler, errorHandler: errorHandler)
         }
         else {
@@ -65,9 +63,10 @@
     }
     
     public func create(entity: Any, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        let entityDictionary = persistenceServiceUtils.entityToDictionary(entity: entity)
+        let entityDictionary = PersistenceHelper.shared.entityToDictionary(entity: entity)
         let wrappedBlock: ([String: Any]) -> () = { responseDictionary in
-            if let resultEntity = self.persistenceServiceUtils.dictionaryToEntity(dictionary: responseDictionary, className: self.persistenceServiceUtils.getClassName(entity: self.entityClass)) {
+            let className = PersistenceHelper.shared.getClassNameWithoutModule(self.entityClass)
+            if let resultEntity = PersistenceHelper.shared.dictionaryToEntity(dictionary: responseDictionary, className: className) {
                 responseHandler(resultEntity)
             }
         }
@@ -77,15 +76,16 @@
     public func createBulk(entities: [Any], responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         var entitiesDictionaries = [[String: Any]]()
         for entity in entities {
-            entitiesDictionaries.append(persistenceServiceUtils.entityToDictionary(entity: entity))
+            entitiesDictionaries.append(PersistenceHelper.shared.entityToDictionary(entity: entity))
         }
         persistenceServiceUtils.createBulk(entities: entitiesDictionaries, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     public func update(entity: Any, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        let entityDictionary = persistenceServiceUtils.entityToDictionary(entity: entity)
+        let entityDictionary = PersistenceHelper.shared.entityToDictionary(entity: entity)
         let wrappedBlock: ([String: Any]) -> () = { responseDictionary in
-            if let resultEntity = self.persistenceServiceUtils.dictionaryToEntity(dictionary: responseDictionary, className: self.persistenceServiceUtils.getClassName(entity: self.entityClass)) {
+            let className = PersistenceHelper.shared.getClassNameWithoutModule(self.entityClass)
+            if let resultEntity = PersistenceHelper.shared.dictionaryToEntity(dictionary: responseDictionary, className: className) {
                 responseHandler(resultEntity)
             }
         }
@@ -101,7 +101,7 @@
     }
     
     public func remove(entity: Any, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        if let objectId = persistenceServiceUtils.getObjectId(entity: entity) {
+        if let objectId = PersistenceHelper.shared.getObjectId(entity: entity) {
             persistenceServiceUtils.removeById(objectId: objectId, responseHandler: responseHandler, errorHandler: errorHandler)
         }
     }
@@ -122,7 +122,8 @@
         let wrappedBlock: ([[String: Any]]) -> () = { responseArray in
             var resultArray = [Any]()
             for responseObject in responseArray {
-                if let resultObject = self.persistenceServiceUtils.dictionaryToEntity(dictionary: responseObject, className: self.persistenceServiceUtils.getClassName(entity: self.entityClass)) {
+                let className = PersistenceHelper.shared.getClassNameWithoutModule(self.entityClass)
+                if let resultObject = PersistenceHelper.shared.dictionaryToEntity(dictionary: responseObject, className: className) {
                     resultArray.append(resultObject)
                 }
             }
@@ -135,7 +136,8 @@
         let wrappedBlock: ([[String: Any]]) -> () = { responseArray in
             var resultArray = [Any]()
             for responseObject in responseArray {
-                if let resultObject = self.persistenceServiceUtils.dictionaryToEntity(dictionary: responseObject, className: self.persistenceServiceUtils.getClassName(entity: self.entityClass)) {
+                let className = PersistenceHelper.shared.getClassNameWithoutModule(self.entityClass)
+                if let resultObject = PersistenceHelper.shared.dictionaryToEntity(dictionary: responseObject, className: className) {
                     resultArray.append(resultObject)
                 }
             }
@@ -150,7 +152,8 @@
     
     public func findFirst(queryBuilder: DataQueryBuilder, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let wrappedBlock: ([String: Any]) -> () = { responseDictionary in
-            if let resultEntity = self.persistenceServiceUtils.dictionaryToEntity(dictionary: responseDictionary, className: self.persistenceServiceUtils.getClassName(entity: self.entityClass)) {
+            let className = PersistenceHelper.shared.getClassNameWithoutModule(self.entityClass)
+            if let resultEntity = PersistenceHelper.shared.dictionaryToEntity(dictionary: responseDictionary, className: className) {
                 responseHandler(resultEntity)
             }
         }
@@ -163,7 +166,8 @@
     
     public func findLast(queryBuilder: DataQueryBuilder, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let wrappedBlock: ([String: Any]) -> () = { responseDictionary in
-            if let resultEntity = self.persistenceServiceUtils.dictionaryToEntity(dictionary: responseDictionary, className: self.persistenceServiceUtils.getClassName(entity: self.entityClass)) {
+            let className = PersistenceHelper.shared.getClassNameWithoutModule(self.entityClass)
+            if let resultEntity = PersistenceHelper.shared.dictionaryToEntity(dictionary: responseDictionary, className: className) {
                 responseHandler(resultEntity)
             }
         }
@@ -176,7 +180,8 @@
     
     public func findById(objectId: String, queryBuilder: DataQueryBuilder, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let wrappedBlock: ([String: Any]) -> () = { responseDictionary in
-            if let resultEntity = self.persistenceServiceUtils.dictionaryToEntity(dictionary: responseDictionary, className: self.persistenceServiceUtils.getClassName(entity: self.entityClass)) {
+            let className = PersistenceHelper.shared.getClassNameWithoutModule(self.entityClass)
+            if let resultEntity = PersistenceHelper.shared.dictionaryToEntity(dictionary: responseDictionary, className: className) {
                 responseHandler(resultEntity)
             }
         }
@@ -212,23 +217,21 @@
             var resultArray = [Any]()
             for responseObject in responseArray {
                 if responseObject["___class"] as? String == "Users",
-                    let userObject = self.processResponse.adaptToBackendlessUser(responseResult: responseObject) {
+                    let userObject = ProcessResponse.shared.adaptToBackendlessUser(responseResult: responseObject) {
                     resultArray.append(userObject as! BackendlessUser)
                 }
                 else if responseObject["___class"] as? String == "GeoPoint",
-                    let geoPointObject = self.processResponse.adaptToGeoPoint(geoDictionary: responseObject) {
+                    let geoPointObject = ProcessResponse.shared.adaptToGeoPoint(geoDictionary: responseObject) {
                     resultArray.append(geoPointObject)
                 }
                 else if responseObject["___class"] as? String == "DeviceRegistration" {
-                    let deviceRegistrationObject = self.processResponse.adaptToDeviceRegistration(responseResult: responseObject)
+                    let deviceRegistrationObject = ProcessResponse.shared.adaptToDeviceRegistration(responseResult: responseObject)
                     resultArray.append(deviceRegistrationObject)
                 }
                 // addGeo
                 else if let relationType = queryBuilder.getRelationType() {
-                    let relationPersistenceServiceUtils = PersistenceServiceUtils()
-                    let tableName = self.persistenceServiceUtils.getClassName(entity: relationType)
-                    relationPersistenceServiceUtils.setup(tableName: tableName)
-                    if let resultObject = relationPersistenceServiceUtils.dictionaryToEntity(dictionary: responseObject, className: tableName) {
+                    let tableName = PersistenceHelper.shared.getClassNameWithoutModule(relationType)
+                    if let resultObject = PersistenceHelper.shared.dictionaryToEntity(dictionary: responseObject, className: tableName) {
                         resultArray.append(resultObject)
                     }
                 }
