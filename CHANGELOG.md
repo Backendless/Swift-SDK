@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 5.7.5 / February 20, 2020
+* fixed issue when parsing Geometry types for Flutter-SDK
+
 ### 5.7.4 / February 14, 2020
 * code refactored
 * added the PersistenceHelper class
