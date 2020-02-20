@@ -131,7 +131,7 @@ class PersistenceHelper {
                 else if className == BLPolygon.geometryClassName || dictValue["type"] as? String == BLPolygon.geoJsonType {
                     resultDictionary[key] = try? GeoJSONParser.dictionaryToPolygon(dictValue)
                 }
-                if let entity = dictionaryToEntity(dictionary: dictValue, className: className) {
+                else if let entity = dictionaryToEntity(dictionary: dictValue, className: className) {
                     resultDictionary[key] = entity
                 }
             }
