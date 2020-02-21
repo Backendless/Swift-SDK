@@ -42,12 +42,7 @@ class BackendlessRequestManager {
     }
     
     func makeRequest(getResponse: @escaping (ReturnedResponse) -> ()) {
-        for (originTableName, mappedClassName) in Mappings.shared.tableToClassMappings {
-            guard let mappedName = mappedClassName.split(separator: ".").last else { return }
-            if restMethod.contains(mappedName) {
-                restMethod = restMethod.replacingOccurrences(of: mappedName, with: originTableName)
-            }
-        }
+        prepareRestMethodWithMappings()
         var request = URLRequest(url: URL(string: urlString + DataTypesUtils.shared.stringToUrlString(originalString: restMethod))!)
         request.httpMethod = httpMethod.rawValue
         if let headers = headers, headers.count > 0 {
@@ -120,6 +115,7 @@ class BackendlessRequestManager {
     }
     
     func makeMultipartFormRequest(data: Data, fileName: String, getResponse: @escaping (ReturnedResponse) -> ()) {
+        prepareRestMethodWithMappings()
         var request = URLRequest(url: URL(string: urlString + DataTypesUtils.shared.stringToUrlString(originalString: restMethod))!)
         request.httpMethod = httpMethod.rawValue
         let boundary = "Boundary-\(UUID().uuidString)"
@@ -170,5 +166,21 @@ class BackendlessRequestManager {
         body.appendString("--".appending(boundary.appending("--")))
         
         return body as Data
+    }
+    
+    private func prepareRestMethodWithMappings() {
+        var restMethodComponents = restMethod.split(separator: "/")
+        for (originTableName, mappedClassName) in Mappings.shared.tableToClassMappings {
+            guard let mappedName = mappedClassName.split(separator: ".").last else { return }
+            if restMethodComponents.contains(mappedName),
+                let index = restMethodComponents.firstIndex(of: mappedName) {
+                restMethodComponents[index] = Substring(originTableName)
+            }
+        }
+        restMethod = ""
+        for component in restMethodComponents {
+            restMethod += component + "/"
+        }
+        restMethod.removeLast()
     }
 }
