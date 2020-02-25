@@ -38,7 +38,7 @@
         let wrappedBlock: (Any) -> () = { response in
             let className = PersistenceHelper.shared.getTableNameFor(self.entityClass)
             if let responseDictionary = response as? [String : Any],
-                let resultEntity = PersistenceHelper.shared.dictionaryToEntity(dictionary: responseDictionary, className: className) {
+                let resultEntity = PersistenceHelper.shared.dictionaryToEntity(responseDictionary, className: className) {
                 responseHandler(resultEntity)
             }
         }
@@ -49,7 +49,7 @@
         let wrappedBlock: (Any) -> () = { response in
             let className = PersistenceHelper.shared.getTableNameFor(self.entityClass)
             if let responseDictionary = response as? [String : Any],
-                let resultEntity = PersistenceHelper.shared.dictionaryToEntity(dictionary: responseDictionary, className: className) {
+                let resultEntity = PersistenceHelper.shared.dictionaryToEntity(responseDictionary, className: className) {
                 responseHandler(resultEntity)
             }
         }
@@ -68,7 +68,7 @@
         let wrappedBlock: (Any) -> () = { response in
             let className = PersistenceHelper.shared.getTableNameFor(self.entityClass)
             if let responseDictionary = response as? [String : Any],
-                let resultEntity = PersistenceHelper.shared.dictionaryToEntity(dictionary: responseDictionary, className: className) {
+                let resultEntity = PersistenceHelper.shared.dictionaryToEntity(responseDictionary, className: className) {
                 responseHandler(resultEntity)
             }
         }
@@ -79,7 +79,7 @@
         let wrappedBlock: (Any) -> () = { response in
             let className = PersistenceHelper.shared.getTableNameFor(self.entityClass)
             if let responseDictionary = response as? [String : Any],
-                let resultEntity = PersistenceHelper.shared.dictionaryToEntity(dictionary: responseDictionary, className: className) {
+                let resultEntity = PersistenceHelper.shared.dictionaryToEntity(responseDictionary, className: className) {
                 responseHandler(resultEntity)
             }
         }
@@ -98,7 +98,7 @@
         let className = PersistenceHelper.shared.getTableNameFor(self.entityClass)
         let wrappedBlock: (Any) -> () = { response in
             if let responseDictionary = response as? [String : Any],
-                let resultEntity = PersistenceHelper.shared.dictionaryToEntity(dictionary: responseDictionary, className: className) {
+                let resultEntity = PersistenceHelper.shared.dictionaryToEntity(responseDictionary, className: className) {
                 responseHandler(resultEntity)
             }
         }
@@ -109,7 +109,7 @@
         let wrappedBlock: (Any) -> () = { response in
             let className = PersistenceHelper.shared.getTableNameFor(self.entityClass)
             if let responseDictionary = response as? [String : Any],
-                let resultEntity = PersistenceHelper.shared.dictionaryToEntity(dictionary: responseDictionary, className: className) {
+                let resultEntity = PersistenceHelper.shared.dictionaryToEntity(responseDictionary, className: className) {
                 responseHandler(resultEntity)
             }
         }

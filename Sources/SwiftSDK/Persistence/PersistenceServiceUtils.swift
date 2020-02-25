@@ -55,9 +55,9 @@ class PersistenceServiceUtils {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
-                else if var resultDictionary = (result as! JSON).dictionaryObject {
-                    resultDictionary = PersistenceHelper.shared.convertDictionaryValuesToBLType(resultDictionary)
-                    responseHandler(resultDictionary)
+                else if let resultDictionary = (result as! JSON).dictionaryObject,
+                    let responseDictionary = PersistenceHelper.shared.convertToBLType(resultDictionary) as? [String : Any] {
+                    responseHandler(responseDictionary)
                 }
             }
         })
@@ -99,9 +99,9 @@ class PersistenceServiceUtils {
                             updatedUser.setUserToken(value: currentToken)
                             Backendless.shared.userService.setPersistentUser(currentUser: updatedUser)
                         }
-                        else if var resultDictionary = (result as! JSON).dictionaryObject {
-                            resultDictionary = PersistenceHelper.shared.convertDictionaryValuesToBLType(resultDictionary)
-                            responseHandler(resultDictionary)
+                        else if let resultDictionary = (result as! JSON).dictionaryObject,
+                            let responseDictionary = PersistenceHelper.shared.convertToBLType(resultDictionary) as? [String : Any] {
+                            responseHandler(responseDictionary)
                         }
                     }
                 }
@@ -221,9 +221,9 @@ class PersistenceServiceUtils {
                 else {
                     var resultArray = [[String: Any]]()
                     for resultObject in result as! [JSON] {
-                        if var resultDictionary = resultObject.dictionaryObject {
-                            resultDictionary = PersistenceHelper.shared.convertDictionaryValuesToBLType(resultDictionary)
-                            resultArray.append(resultDictionary)
+                        if let resultDictionary = resultObject.dictionaryObject,
+                            let responseDictionary = PersistenceHelper.shared.convertToBLType(resultDictionary) as? [String : Any] {
+                            resultArray.append(responseDictionary)
                         }
                     }
                     responseHandler(resultArray)
@@ -280,9 +280,9 @@ class PersistenceServiceUtils {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
-                else if var resultDictionary = (result as! JSON).dictionaryObject {
-                    resultDictionary = PersistenceHelper.shared.convertDictionaryValuesToBLType(resultDictionary)
-                    responseHandler(resultDictionary)
+                else if let resultDictionary = (result as! JSON).dictionaryObject,
+                    let responseDictionary = PersistenceHelper.shared.convertToBLType(resultDictionary) as? [String : Any] {
+                    responseHandler(responseDictionary)
                 }
             }
         })
@@ -359,7 +359,7 @@ class PersistenceServiceUtils {
         })
     }
     
-    func loadRelations(objectId: String, queryBuilder: LoadRelationsQueryBuilder, responseHandler: (([[String : Any]]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    func loadRelations(objectId: String, queryBuilder: LoadRelationsQueryBuilder, responseHandler: (([Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         var parameters = [String: Any]()
         parameters["pageSize"] = queryBuilder.getPageSize()
@@ -381,11 +381,10 @@ class PersistenceServiceUtils {
                         errorHandler(result as! Fault)
                     }
                     else {
-                        var resultArray = [[String: Any]]()
+                        var resultArray = [Any]()
                         for resultObject in result as! [JSON] {
-                            if var resultDictionary = resultObject.dictionaryObject {
-                                resultDictionary = PersistenceHelper.shared.convertDictionaryValuesToBLType(resultDictionary)
-                                resultArray.append(resultDictionary)
+                            if let resultDictionary = resultObject.dictionaryObject {
+                                resultArray.append(PersistenceHelper.shared.convertToBLType(resultDictionary))
                             }
                         }
                         responseHandler(resultArray)

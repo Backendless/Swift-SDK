@@ -34,7 +34,7 @@
                 if messageObject is [String : Any] {
                     let messageDictionary = messageObject as! [String : Any]
                     if let className = messageDictionary["___class"] as? String {
-                        return PersistenceHelper.shared.dictionaryToEntity(dictionary: messageDictionary, className: className)
+                        return PersistenceHelper.shared.dictionaryToEntity(messageDictionary, className: className)
                     }
                     return messageDictionary
                 }

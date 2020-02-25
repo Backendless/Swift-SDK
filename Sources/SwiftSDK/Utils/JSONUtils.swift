@@ -72,15 +72,9 @@ class JSONUtils {
             }
             else if let dictionaryToParse = objectToParse as? [String : Any] {
                 var resultDictionary = [String : Any]()
-                if let tableName = dictionaryToParse["___class"] as? String {
-                    if tableName == BLPoint.geometryClassName ||
-                        tableName == BLLineString.geometryClassName ||
-                        tableName == BLPolygon.geometryClassName {
-                        resultObject = PersistenceHelper.shared.convertDictionaryValuesToBLType(dictionaryToParse)
-                    }
-                    else {
-                        resultObject = PersistenceHelper.shared.dictionaryToEntity(dictionary: dictionaryToParse, className: tableName)!
-                    }
+                if let className = dictionaryToParse["___class"] as? String {
+                    resultObject = PersistenceHelper.shared.convertToBLType(dictionaryToParse)
+                    resultObject = PersistenceHelper.shared.dictionaryToEntity(dictionaryToParse, className: className)!
                 }
                 else {
                     for (key, value) in dictionaryToParse {
@@ -104,7 +98,7 @@ class JSONUtils {
             else {
                 if let dictionaryToParse = objectToParse as? [String : Any],
                     let className = dictionaryToParse["___class"] as? String {
-                    resultObject = PersistenceHelper.shared.dictionaryToEntity(dictionary: dictionaryToParse, className: className)!
+                    resultObject = PersistenceHelper.shared.dictionaryToEntity(dictionaryToParse, className: className)!
                 }
             }
         }        

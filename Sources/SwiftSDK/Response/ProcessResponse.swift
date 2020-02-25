@@ -163,7 +163,7 @@ class ProcessResponse {
         return deviceRegistration
     }
     
-    func adaptToGeoPoint(geoDictionary: [String : Any]) -> GeoPoint? {
+    func adaptToGeoPoint(geoDictionary: [String : Any]) -> GeoPoint? { 
         if let latitude = geoDictionary["latitude"] as? Double,
             let longitude = geoDictionary["longitude"] as? Double,
             let categories = geoDictionary["categories"] as? [String] {
