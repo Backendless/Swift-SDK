@@ -1,7 +1,8 @@
 # RELEASE HISTORY
 
-### 5.7.6 / February ?, 2020
+### 5.7.6 / February 25, 2020
 * fixed class to table mapping issue
+* fixed type casting for Backendless types
 
 ### 5.7.5 / February 20, 2020
 * fixed issue when parsing Geometry types for Flutter-SDK

@@ -66,7 +66,7 @@
         let entityDictionary = PersistenceHelper.shared.entityToDictionary(entity: entity)
         let wrappedBlock: ([String: Any]) -> () = { responseDictionary in
             let className = PersistenceHelper.shared.getClassNameWithoutModule(self.entityClass)
-            if let resultEntity = PersistenceHelper.shared.dictionaryToEntity(dictionary: responseDictionary, className: className) {
+            if let resultEntity = PersistenceHelper.shared.dictionaryToEntity(responseDictionary, className: className) {
                 responseHandler(resultEntity)
             }
         }
@@ -85,7 +85,7 @@
         let entityDictionary = PersistenceHelper.shared.entityToDictionary(entity: entity)
         let wrappedBlock: ([String: Any]) -> () = { responseDictionary in
             let className = PersistenceHelper.shared.getClassNameWithoutModule(self.entityClass)
-            if let resultEntity = PersistenceHelper.shared.dictionaryToEntity(dictionary: responseDictionary, className: className) {
+            if let resultEntity = PersistenceHelper.shared.dictionaryToEntity(responseDictionary, className: className) {
                 responseHandler(resultEntity)
             }
         }
@@ -123,7 +123,7 @@
             var resultArray = [Any]()
             for responseObject in responseArray {
                 let className = PersistenceHelper.shared.getClassNameWithoutModule(self.entityClass)
-                if let resultObject = PersistenceHelper.shared.dictionaryToEntity(dictionary: responseObject, className: className) {
+                if let resultObject = PersistenceHelper.shared.dictionaryToEntity(responseObject, className: className) {
                     resultArray.append(resultObject)
                 }
             }
@@ -137,7 +137,7 @@
             var resultArray = [Any]()
             for responseObject in responseArray {
                 let className = PersistenceHelper.shared.getClassNameWithoutModule(self.entityClass)
-                if let resultObject = PersistenceHelper.shared.dictionaryToEntity(dictionary: responseObject, className: className) {
+                if let resultObject = PersistenceHelper.shared.dictionaryToEntity(responseObject, className: className) {
                     resultArray.append(resultObject)
                 }
             }
@@ -153,7 +153,7 @@
     public func findFirst(queryBuilder: DataQueryBuilder, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let wrappedBlock: ([String: Any]) -> () = { responseDictionary in
             let className = PersistenceHelper.shared.getClassNameWithoutModule(self.entityClass)
-            if let resultEntity = PersistenceHelper.shared.dictionaryToEntity(dictionary: responseDictionary, className: className) {
+            if let resultEntity = PersistenceHelper.shared.dictionaryToEntity(responseDictionary, className: className) {
                 responseHandler(resultEntity)
             }
         }
@@ -167,7 +167,7 @@
     public func findLast(queryBuilder: DataQueryBuilder, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let wrappedBlock: ([String: Any]) -> () = { responseDictionary in
             let className = PersistenceHelper.shared.getClassNameWithoutModule(self.entityClass)
-            if let resultEntity = PersistenceHelper.shared.dictionaryToEntity(dictionary: responseDictionary, className: className) {
+            if let resultEntity = PersistenceHelper.shared.dictionaryToEntity(responseDictionary, className: className) {
                 responseHandler(resultEntity)
             }
         }
@@ -181,7 +181,7 @@
     public func findById(objectId: String, queryBuilder: DataQueryBuilder, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let wrappedBlock: ([String: Any]) -> () = { responseDictionary in
             let className = PersistenceHelper.shared.getClassNameWithoutModule(self.entityClass)
-            if let resultEntity = PersistenceHelper.shared.dictionaryToEntity(dictionary: responseDictionary, className: className) {
+            if let resultEntity = PersistenceHelper.shared.dictionaryToEntity(responseDictionary, className: className) {
                 responseHandler(resultEntity)
             }
         }
@@ -213,27 +213,18 @@
     }
     
     public func loadRelations(objectId: String, queryBuilder: LoadRelationsQueryBuilder, responseHandler: (([Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        let wrappedBlock: ([[String: Any]]) -> () = { responseArray in
+        let wrappedBlock: ([Any]) -> () = { responseArray in
             var resultArray = [Any]()
             for responseObject in responseArray {
-                if responseObject["___class"] as? String == "Users",
-                    let userObject = ProcessResponse.shared.adaptToBackendlessUser(responseResult: responseObject) {
-                    resultArray.append(userObject as! BackendlessUser)
-                }
-                else if responseObject["___class"] as? String == "GeoPoint",
-                    let geoPointObject = ProcessResponse.shared.adaptToGeoPoint(geoDictionary: responseObject) {
-                    resultArray.append(geoPointObject)
-                }
-                else if responseObject["___class"] as? String == "DeviceRegistration" {
-                    let deviceRegistrationObject = ProcessResponse.shared.adaptToDeviceRegistration(responseResult: responseObject)
-                    resultArray.append(deviceRegistrationObject)
-                }
-                // addGeo
-                else if let relationType = queryBuilder.getRelationType() {
-                    let tableName = PersistenceHelper.shared.getClassNameWithoutModule(relationType)
-                    if let resultObject = PersistenceHelper.shared.dictionaryToEntity(dictionary: responseObject, className: tableName) {
+                if let dictResponse = responseObject as? [String : Any],
+                    let relationType = queryBuilder.getRelationType() {
+                    let className = PersistenceHelper.shared.getClassNameWithoutModule(relationType)
+                    if let resultObject = PersistenceHelper.shared.dictionaryToEntity(dictResponse, className: className) {
                         resultArray.append(resultObject)
                     }
+                }
+                else {
+                    resultArray.append(responseObject)
                 }
             }
             responseHandler(resultArray)

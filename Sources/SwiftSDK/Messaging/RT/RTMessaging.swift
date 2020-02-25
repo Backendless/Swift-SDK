@@ -110,7 +110,7 @@ class RTMessaging: RTListener {
                 let message = response["message"] as? [String : Any],
                 let className = message["___class"] as? String,
                 className == PersistenceHelper.shared.getClassNameWithoutModule(forClass),
-                let result = PersistenceHelper.shared.dictionaryToEntity(dictionary: message, className: className) {
+                let result = PersistenceHelper.shared.dictionaryToEntity(message, className: className) {
                 responseHandler(result)
             }
         }        
