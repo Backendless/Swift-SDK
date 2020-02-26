@@ -193,7 +193,15 @@ class PersistenceServiceUtils {
             parameters["relationsPageSize"] = relationsPageSize
         }
         if let properties = queryBuilder?.getProperties() {
-            parameters["props"] = properties
+            var props = [String]()
+            for property in properties {
+                if !property.isEmpty {
+                    props.append(property)
+                }
+            }
+            if !props.isEmpty {
+                parameters["props"] = props
+            }
         }
         if let sortBy = queryBuilder?.getSortBy(), sortBy.count > 0 {
             parameters["sortBy"] = DataTypesUtils.shared.arrayToString(array: sortBy)
@@ -274,7 +282,18 @@ class PersistenceServiceUtils {
             else if related == nil, relationsDepth! > 0 {
                 restMethod += "?relationsDepth=" + String(relationsDepth!)
             }
-        }  
+        }
+        if let properties = queryBuilder?.getProperties() {
+            var props = [String]()
+            for property in properties {
+                if !property.isEmpty {
+                    props.append(property)
+                }
+            }
+            if !props.isEmpty {
+                restMethod += "&props=" + DataTypesUtils.shared.arrayToString(array: props)
+            }
+        }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
                 if result is Fault {
@@ -367,8 +386,16 @@ class PersistenceServiceUtils {
         if let sortBy = queryBuilder.getSortBy(), sortBy.count > 0 {
             parameters["sortBy"] = DataTypesUtils.shared.arrayToString(array: sortBy)
         }
-        if let props = queryBuilder.getProperties() {
-            parameters["props"] = DataTypesUtils.shared.arrayToString(array: props)
+        if let properties = queryBuilder.getProperties() {
+            var props = [String]()
+            for property in properties {
+                if !property.isEmpty {
+                    props.append(property)
+                }
+            }
+            if !props.isEmpty {
+                parameters["props"] = DataTypesUtils.shared.arrayToString(array: props)
+            }
         }
         if queryBuilder.getRelationName().isEmpty {
             let fault = Fault(message: "Incorrect relationName property")
