@@ -2,6 +2,7 @@
 
 ### xxx / xx, 2020
 * the `properties` of DataQueryBuilder and LoadRelationsQueryBuilder fixed to return all values when user set only one property as empty string
+* fixed issue when DataStore methods didn't process Backendless types in response 
 
 ### 5.7.6 / February 25, 2020
 * fixed class to table mapping issue
