@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -22,11 +22,6 @@
 class RTSharedObject: RTListener {
     
     var invocationTarget: Any?
-    
-    private let jsonUtils = JSONUtils.shared
-    private let rtClient = RTClient.shared
-    private let rtMethod = RTMethod.shared
-    private let processResponse = ProcessResponse.shared
     
     private var sharedObject: SharedObject
     private var sharedObjectName: String
@@ -47,7 +42,7 @@ class RTSharedObject: RTListener {
     }
     
     func disconnect() {
-        rtClient.unsubscribe(subscriptionId: subscriptionId)
+        RTClient.shared.unsubscribe(subscriptionId: subscriptionId)
         removeWaitingSubscriptions()
     }
     
@@ -60,18 +55,18 @@ class RTSharedObject: RTListener {
         subscription.options = ["name": sharedObjectName]
         subscription.onResult = wrappedBlock
         subscription.onError = errorHandler
-        rtClient.addSimpleListener(type: rtTypes.rsoConnect, subscription: subscription)
+        RTClient.shared.addSimpleListener(type: rtTypes.rsoConnect, subscription: subscription)
         return subscription
     }
     
     func removeConnectListeners() {
-        rtClient.removeSimpleListeners(type: rtTypes.rsoConnect)
+        RTClient.shared.removeSimpleListeners(type: rtTypes.rsoConnect)
     }
     
     func addChangesListener(responseHandler: ((SharedObjectChanges) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         let wrappedBlock: (Any) -> () = { response in
             if let response = response as? [String : Any] {
-                let sharedObjectChanges = self.processResponse.adaptToSharedObjectChanges(sharedObjectChangesDictionary: response)
+                let sharedObjectChanges = ProcessResponse.shared.adaptToSharedObjectChanges(sharedObjectChangesDictionary: response)
                 responseHandler(sharedObjectChanges)
             }
         }
@@ -93,7 +88,7 @@ class RTSharedObject: RTListener {
     func addClearListener(responseHandler: ((UserInfo) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         let wrappedBlock: (Any) -> () = { response in
             if let response = response as? [String : Any] {
-                let userInfo = self.processResponse.adaptToUserInfo(userInfoDictionary: response)
+                let userInfo = ProcessResponse.shared.adaptToUserInfo(userInfoDictionary: response)
                 responseHandler(userInfo)
             }
         }
@@ -115,7 +110,7 @@ class RTSharedObject: RTListener {
     func addCommandListener(responseHandler: ((CommandObject) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         let wrappedBlock: (Any) -> () = { response in
             if let response = response as? [String : Any] {
-                let commandObject = self.processResponse.adaptToCommandObject(commandObjectDictionary: response)
+                let commandObject = ProcessResponse.shared.adaptToCommandObject(commandObjectDictionary: response)
                 responseHandler(commandObject)
             }
         }
@@ -137,7 +132,7 @@ class RTSharedObject: RTListener {
     func addUserStatusListener(responseHandler: ((UserStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         let wrappedBlock: (Any) -> () = { response in
             if let response = response as? [String : Any] {
-                let userStatus = self.processResponse.adaptToUserStatus(userStatusDictionary: response)
+                let userStatus = ProcessResponse.shared.adaptToUserStatus(userStatusDictionary: response)
                 responseHandler(userStatus)
             }
         }
@@ -159,7 +154,7 @@ class RTSharedObject: RTListener {
     func addInvokeListener(responseHandler: ((InvokeObject) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         let wrappedBlock: (Any) -> () = { response in
             if let response = response as? [String : Any] {
-                let invokeObject = self.processResponse.adaptToInvokeObject(invokeObjectDictionary: response)
+                let invokeObject = ProcessResponse.shared.adaptToInvokeObject(invokeObjectDictionary: response)
                 if let method = invokeObject.method {
                     self.invokeMethod(methodName: method, args: invokeObject.args, invocationTarget: self.invocationTarget!)
                 }
@@ -188,7 +183,7 @@ class RTSharedObject: RTListener {
             var resultDictionary = [String : Any]()
             if let response = response as? [String : Any] {          
                 for key in response.keys {
-                    let value = self.jsonUtils.jsonToObject(objectToParse: response[key] as Any)
+                    let value = JSONUtils.shared.jsonToObject(objectToParse: response[key] as Any)
                     resultDictionary[key] = value
                 }
             }
@@ -199,7 +194,7 @@ class RTSharedObject: RTListener {
             if let key = key {
                 options["key"] = key
             }
-            rtMethod.sendCommand(type: rtTypes.rsoGet, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            RTMethod.shared.sendCommand(type: rtTypes.rsoGet, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
         else if self.sharedObject.rememberCommands {
             let waitingCommand = ["event": rtTypes.rsoGet, "responseHandler": responseHandler as Any, "errorHandler": errorHandler as Any] as [String : Any]
@@ -214,14 +209,14 @@ class RTSharedObject: RTListener {
         if self.sharedObject.isConnected {
             var options = ["name": sharedObjectName, "key": key] as [String : Any]
             if let data = data {
-                options["data"] = jsonUtils.objectToJson(objectToParse: data)
+                options["data"] = JSONUtils.shared.objectToJson(objectToParse: data)
             }
-            rtMethod.sendCommand(type: rtTypes.rsoSet, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            RTMethod.shared.sendCommand(type: rtTypes.rsoSet, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
         else if self.sharedObject.rememberCommands {
             var waitingCommand = ["event": rtTypes.rsoSet, "responseHandler": responseHandler as Any, "errorHandler": errorHandler as Any] as [String : Any]
             if let data = data {
-                waitingCommand["data"] = jsonUtils.objectToJson(objectToParse: data)
+                waitingCommand["data"] = JSONUtils.shared.objectToJson(objectToParse: data)
             }
             waitingCommands.append(waitingCommand)
         }
@@ -233,7 +228,7 @@ class RTSharedObject: RTListener {
         }
         if self.sharedObject.isConnected {
             let options = ["name": sharedObjectName] as [String : Any]
-            rtMethod.sendCommand(type: rtTypes.rsoClear, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            RTMethod.shared.sendCommand(type: rtTypes.rsoClear, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
         else if self.sharedObject.rememberCommands {
             let waitingCommand = ["event": rtTypes.rsoClear, "responseHandler": responseHandler as Any, "errorHandler": errorHandler as Any] as [String : Any]
@@ -248,14 +243,14 @@ class RTSharedObject: RTListener {
         if self.sharedObject.isConnected {
             var options = ["name": sharedObjectName, "type": commandName] as [String : Any]
             if let data = data {
-                options["data"] = jsonUtils.objectToJson(objectToParse: data)
+                options["data"] = JSONUtils.shared.objectToJson(objectToParse: data)
             }
-            rtMethod.sendCommand(type: rtTypes.rsoCommand, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            RTMethod.shared.sendCommand(type: rtTypes.rsoCommand, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
         else if self.sharedObject.rememberCommands {
             var waitingCommand = ["event": rtTypes.rsoCommand, "commandName": commandName, "responseHandler": responseHandler as Any, "errorHandler": errorHandler as Any] as [String : Any]
             if let data = data {
-                waitingCommand["data"] = jsonUtils.objectToJson(objectToParse: data)
+                waitingCommand["data"] = JSONUtils.shared.objectToJson(objectToParse: data)
             }
             waitingCommands.append(waitingCommand)
         }
@@ -273,7 +268,7 @@ class RTSharedObject: RTListener {
             if args != nil {
                 options["args"] = args!
             }
-            rtMethod.sendCommand(type: rtTypes.rsoInvoke, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            RTMethod.shared.sendCommand(type: rtTypes.rsoInvoke, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
         else if self.sharedObject.rememberCommands {
             var waitingCommand = ["event": rtTypes.rsoInvoke, "method": method, "responseHandler": responseHandler as Any, "errorHandler": errorHandler as Any] as [String : Any]
@@ -334,14 +329,14 @@ class RTSharedObject: RTListener {
             waitingSubscription = createSubscription(type: event, options: options, connectionHandler: nil, responseHandler: responseHandler, errorHandler: errorHandler)
         }
         if let waitingSubscription = waitingSubscription {
-            rtClient.waitingSubscriptions.append(waitingSubscription)
+            RTClient.shared.waitingSubscriptions.append(waitingSubscription)
         }
         return waitingSubscription
     }
     
     func removeWaitingSubscriptions() {
         var indexesToRemove = [Int]() // waiting subscriptions will be removed
-        for waitingSubscription in rtClient.waitingSubscriptions {
+        for waitingSubscription in RTClient.shared.waitingSubscriptions {
             if let data = waitingSubscription.data,
                 let name = data["name"] as? String,
                 name == rtTypes.rsoChanges,
@@ -351,17 +346,17 @@ class RTSharedObject: RTListener {
                     name == rtTypes.rsoInvoke,
                 let options = waitingSubscription.options,
                 options["name"] as? String == self.sharedObjectName {
-                indexesToRemove.append(rtClient.waitingSubscriptions.firstIndex(of: waitingSubscription)!)
+                indexesToRemove.append(RTClient.shared.waitingSubscriptions.firstIndex(of: waitingSubscription)!)
             }
         }
-        rtClient.waitingSubscriptions = rtClient.waitingSubscriptions.enumerated().compactMap {
+        RTClient.shared.waitingSubscriptions = RTClient.shared.waitingSubscriptions.enumerated().compactMap {
             indexesToRemove.contains($0.0) ? nil : $0.1
         }
     }
     
     func subscribeForWaiting() {        
         var indexesToRemove = [Int]() // waiting subscriptions will be removed after subscription is done
-        for waitingSubscription in rtClient.waitingSubscriptions {
+        for waitingSubscription in RTClient.shared.waitingSubscriptions {
             if let data = waitingSubscription.data,
                 let name = data["name"] as? String,
                 name == rtTypes.rsoChanges ||
@@ -372,16 +367,16 @@ class RTSharedObject: RTListener {
                 let options = waitingSubscription.options,
                 options["name"] as? String == self.sharedObjectName {
                 waitingSubscription.subscribe()
-                indexesToRemove.append(rtClient.waitingSubscriptions.firstIndex(of: waitingSubscription)!)
+                indexesToRemove.append(RTClient.shared.waitingSubscriptions.firstIndex(of: waitingSubscription)!)
             }
         }
-        rtClient.waitingSubscriptions = rtClient.waitingSubscriptions.enumerated().compactMap {
+        RTClient.shared.waitingSubscriptions = RTClient.shared.waitingSubscriptions.enumerated().compactMap {
             indexesToRemove.contains($0.0) ? nil : $0.1
         }
     }
     
     func processConnectSubscriptions() {
-        if var connectSubscriptions = rtClient.getSimpleListeners(type: rtTypes.rsoConnect) {
+        if var connectSubscriptions = RTClient.shared.getSimpleListeners(type: rtTypes.rsoConnect) {
             connectSubscriptions = connectSubscriptions.filter({ $0.options?.contains(where: { $0.value as? String == self.sharedObjectName }) ?? false })
             for subscription in connectSubscriptions {
                 subscription.onResult!(nil)
@@ -390,7 +385,7 @@ class RTSharedObject: RTListener {
     }
     
     func processConnectErrors(fault: Fault) {
-        if var connectSubscriptions = rtClient.getSimpleListeners(type: rtTypes.rsoConnect) {
+        if var connectSubscriptions = RTClient.shared.getSimpleListeners(type: rtTypes.rsoConnect) {
             connectSubscriptions = connectSubscriptions.filter({ $0.options?.contains(where: { $0.value as? String == self.sharedObjectName }) ?? false })
             for subscription in connectSubscriptions {
                 subscription.onError!(fault)

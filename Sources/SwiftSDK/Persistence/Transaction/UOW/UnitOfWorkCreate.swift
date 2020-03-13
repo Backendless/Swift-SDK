@@ -21,8 +21,6 @@
 
 class UnitOfWorkCreate {
     
-    private let transactionHelper = TransactionHelper.shared
-    
     private var countCreate = 1
     private var countBulkCreate = 1
     private var uow: UnitOfWork
@@ -32,20 +30,35 @@ class UnitOfWorkCreate {
     }
     
     func create(tableName: String, entity: [String : Any]) -> (Operation, OpResult) {
-        let operationTypeString = transactionHelper.generateOperationTypeString(.CREATE)
-        let operationResultId = "\(operationTypeString)\(tableName)\(countCreate)"
-        countCreate += 1
-        let operation = Operation(operationType: .CREATE, tableName: tableName, opResultId: operationResultId, payload: entity)
-        let opResult = transactionHelper.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .CREATE, uow: uow)
+        let opResultId = generateOpResultId(operationType: .CREATE, tableName: tableName)
+        let payload = TransactionHelper.shared.preparePayloadWithOpResultValueReference(entity)
+        let operation = Operation(operationType: .CREATE, tableName: tableName, opResultId: opResultId, payload: payload)
+        let opResult = TransactionHelper.shared.makeOpResult(tableName: tableName, operationResultId: opResultId, operationType: .CREATE, uow: uow)
         return (operation, opResult)
     }
     
     func bulkCreate(tableName: String, entities: [[String : Any]]) -> (Operation, OpResult) {
-        let operationTypeString = transactionHelper.generateOperationTypeString(.CREATE_BULK)
-        let operationResultId = "\(operationTypeString)\(tableName)\(countBulkCreate)"
-        countBulkCreate += 1
-        let operation = Operation(operationType: .CREATE_BULK, tableName: tableName, opResultId: operationResultId, payload: entities)
-        let opResult = transactionHelper.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .CREATE_BULK, uow: uow)
+        var preparedPayload = [[String : Any]]()
+        for entity in entities {
+            let payload = TransactionHelper.shared.preparePayloadWithOpResultValueReference(entity)
+            preparedPayload.append(payload)
+        }
+        let opResultId = generateOpResultId(operationType: .CREATE_BULK, tableName: tableName)
+        let operation = Operation(operationType: .CREATE_BULK, tableName: tableName, opResultId: opResultId, payload: preparedPayload)
+        let opResult = TransactionHelper.shared.makeOpResult(tableName: tableName, operationResultId: opResultId, operationType: .CREATE_BULK, uow: uow)
         return (operation, opResult)
+    }
+    
+    private func generateOpResultId(operationType: OperationType, tableName: String) -> String {
+        var opResultId = TransactionHelper.shared.generateOperationTypeString(operationType) + tableName
+        if operationType == .CREATE {
+            opResultId += String(countCreate)
+            countCreate += 1
+        }
+        else if operationType == .CREATE_BULK {
+            opResultId += String(countBulkCreate)
+            countBulkCreate += 1
+        }
+        return opResultId
     }
 }

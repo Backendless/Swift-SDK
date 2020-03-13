@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -21,11 +21,13 @@
 
 #if os(iOS)
 
-class FileManagerHelper: NSObject {
+class FileManagerHelper {
     
     static let shared = FileManagerHelper()
     
     private var PUSH_TEMPLATES_FILE_NAME = "pushTemplates"
+    
+    private init() { }
     
     private func getAppGroup() -> String? {
         if let projectName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String,

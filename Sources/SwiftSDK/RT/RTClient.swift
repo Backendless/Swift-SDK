@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -21,14 +21,11 @@
 
 import SocketIO
 
-class RTClient: NSObject {
+class RTClient {
     
     static let shared = RTClient()
     
     var waitingSubscriptions: [RTSubscription]
-    
-    private let backendless = Backendless.shared
-    private let deviceHelper = DeviceHelper.shared
     
     private var socketManager: SocketManager?
     private var socket: SocketIOClient?
@@ -49,13 +46,12 @@ class RTClient: NSObject {
     
     private let maxTimeInterval: Double = 60.0 // seconds
     
-    private override init() {
+    private init() {
         self.waitingSubscriptions = [RTSubscription]()
         self.subscriptions = [String : RTSubscription]()
         self.eventSubscriptions = [String : [RTSubscription]]()
         self.methods = [String : RTMethodRequest]()
         _lock = NSLock()
-        super.init()
     }
     
     func connectSocket(connected: (() -> Void)!) {
@@ -67,17 +63,17 @@ class RTClient: NSObject {
                 if let responseData = response.data,
                     let urlString = String(data: responseData, encoding: .utf8)?.replacingOccurrences(of: "\"", with: ""),
                     let url = URL(string: urlString) {
-                    let path = "/" + self.backendless.getApplictionId()
+                    let path = "/" + Backendless.shared.getApplictionId()
                     
                     var clientId = ""
                     #if os(iOS) || os(tvOS)
-                    clientId = self.deviceHelper.deviceId
+                    clientId = DeviceHelper.shared.deviceId
                     #elseif os(OSX)
-                    clientId = self.deviceHelper.deviceId
+                    clientId = DeviceHelper.shared.deviceId
                     #endif
                     
-                    var connectParams = ["apiKey": self.backendless.getApiKey(), "clientId": clientId]
-                    if let userToken = self.backendless.userService.getCurrentUser()?.userToken {
+                    var connectParams = ["apiKey": Backendless.shared.getApiKey(), "clientId": clientId]
+                    if let userToken = Backendless.shared.userService.getCurrentUser()?.userToken {
                         connectParams["userToken"] = userToken
                     }
                     self.socketManager = SocketManager(socketURL: url, config: ["path": path, "connectParams": connectParams])

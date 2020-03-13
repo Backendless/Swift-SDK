@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -19,12 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-//@objcMembers public class GeoCluster: GeoPoint {
-//
-//    public var totalPoints: Int = 0
-//    public var geoQuery: BackendlessGeoQuery?
-//}
-
+@available(*, deprecated, message: "The GeoCluster class is deprecated and will be removed from SDK in the nearest future")
 @objcMembers public class GeoCluster: GeoPoint {
     
     public var totalPoints: Int = 0

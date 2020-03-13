@@ -21,8 +21,6 @@
 
 class UnitOfWorkAddRelation {
     
-    private let transactionHelper = TransactionHelper.shared
-    
     private var countAddRel = 1
     private var uow: UnitOfWork
     
@@ -31,7 +29,7 @@ class UnitOfWorkAddRelation {
     }
     
     func addToRelation(parentTableName: String, parentObject: [String : Any], columnName: String, children: [[String : Any]]) -> (Operation, OpResult) {
-        let operationTypeString = transactionHelper.generateOperationTypeString(.ADD_RELATION)
+        let operationTypeString = TransactionHelper.shared.generateOperationTypeString(.ADD_RELATION)
         let operationResultId = "\(operationTypeString)\(parentTableName)\(countAddRel)"
         countAddRel += 1
         
@@ -41,12 +39,12 @@ class UnitOfWorkAddRelation {
         payload["unconditional"] = getChildrenIds(children: children)
         
         let operation = Operation(operationType: .ADD_RELATION, tableName: parentTableName, opResultId: operationResultId, payload: payload)
-        let opResult = transactionHelper.makeOpResult(tableName: parentTableName, operationResultId: operationResultId, operationType: .ADD_RELATION, uow: uow)
+        let opResult = TransactionHelper.shared.makeOpResult(tableName: parentTableName, operationResultId: operationResultId, operationType: .ADD_RELATION, uow: uow)
         return (operation, opResult)
     }
     
     func addToRelation(parentTableName: String, parentObject: [String : Any], columnName: String, whereClauseForChildren: String) -> (Operation, OpResult) {
-        let operationTypeString = transactionHelper.generateOperationTypeString(.ADD_RELATION)
+        let operationTypeString = TransactionHelper.shared.generateOperationTypeString(.ADD_RELATION)
         let operationResultId = "\(operationTypeString)\(parentTableName)\(countAddRel)"
         countAddRel += 1
         
@@ -56,13 +54,13 @@ class UnitOfWorkAddRelation {
         payload["conditional"] = whereClauseForChildren
         
         let operation = Operation(operationType: .ADD_RELATION, tableName: parentTableName, opResultId: operationResultId, payload: payload)
-        let opResult = transactionHelper.makeOpResult(tableName: parentTableName, operationResultId: operationResultId, operationType: .ADD_RELATION, uow: uow)
+        let opResult = TransactionHelper.shared.makeOpResult(tableName: parentTableName, operationResultId: operationResultId, operationType: .ADD_RELATION, uow: uow)
         return (operation, opResult)
     }
     
     func addToRelation(parentObjectResult: OpResult, columnName: String, children: [[String : Any]]) -> (Operation, OpResult) {
         let tableName = parentObjectResult.tableName!
-        let operationTypeString = transactionHelper.generateOperationTypeString(.ADD_RELATION)
+        let operationTypeString = TransactionHelper.shared.generateOperationTypeString(.ADD_RELATION)
         let operationResultId = "\(operationTypeString)\(tableName)\(countAddRel)"
         countAddRel += 1
         
@@ -70,7 +68,7 @@ class UnitOfWorkAddRelation {
         payload["relationColumn"] = columnName
         payload["unconditional"] = getChildrenIds(children: children)
         
-        if parentObjectResult is OpResultIndex {
+        /*if parentObjectResult is OpResultIndex {
             if parentObjectResult.operationType == .CREATE_BULK {
                 payload["parentObject"] = [uowProps.ref: true,
                                            uowProps.opResultId: parentObjectResult.reference?[uowProps.opResultId],
@@ -87,15 +85,15 @@ class UnitOfWorkAddRelation {
             payload["parentObject"] = [uowProps.ref: true,
                                        uowProps.propName: "objectId",
                                        uowProps.opResultId: parentObjectResult.reference?[uowProps.opResultId]]
-        }       
+        }*/
         let operation = Operation(operationType: .ADD_RELATION, tableName: tableName, opResultId: operationResultId, payload: payload)
-        let opResult = transactionHelper.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .ADD_RELATION, uow: uow)
+        let opResult = TransactionHelper.shared.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .ADD_RELATION, uow: uow)
         return (operation, opResult)
     }
     
     func addToRelation(parentObjectResult: OpResult, columnName: String, whereClauseForChildren: String) -> (Operation, OpResult) {
         let tableName = parentObjectResult.tableName!
-        let operationTypeString = transactionHelper.generateOperationTypeString(.ADD_RELATION)
+        let operationTypeString = TransactionHelper.shared.generateOperationTypeString(.ADD_RELATION)
         let operationResultId = "\(operationTypeString)\(tableName)\(countAddRel)"
         countAddRel += 1
         
@@ -104,14 +102,14 @@ class UnitOfWorkAddRelation {
         payload["conditional"] = whereClauseForChildren
         payload["parentObject"] = [uowProps.ref: true,
                                    uowProps.propName: "objectId",
-                                   uowProps.opResultId: parentObjectResult.reference?[uowProps.opResultId]]
+                                   uowProps.opResultId: parentObjectResult.makeReference()[uowProps.opResultId]]
         let operation = Operation(operationType: .ADD_RELATION, tableName: tableName, opResultId: operationResultId, payload: payload)
-        let opResult = transactionHelper.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .ADD_RELATION, uow: uow)
+        let opResult = TransactionHelper.shared.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .ADD_RELATION, uow: uow)
         return (operation, opResult)
     }
     
     func addToRelation(parentTableName: String, parentObjectId: String, columnName: String, childrenResult: OpResult) -> (Operation, OpResult) {
-        let operationTypeString = transactionHelper.generateOperationTypeString(.ADD_RELATION)
+        let operationTypeString = TransactionHelper.shared.generateOperationTypeString(.ADD_RELATION)
         let operationResultId = "\(operationTypeString)\(parentTableName)\(countAddRel)"
         countAddRel += 1
         
@@ -120,10 +118,10 @@ class UnitOfWorkAddRelation {
         payload["parentObject"] = parentObjectId
         payload["unconditional"] = [[uowProps.ref: true,
                                     uowProps.propName: "objectId",
-                                    uowProps.opResultId: childrenResult.reference?[uowProps.opResultId]]]
+                                    uowProps.opResultId: childrenResult.makeReference()[uowProps.opResultId]]]
         
         let operation = Operation(operationType: .ADD_RELATION, tableName: parentTableName, opResultId: operationResultId, payload: payload)
-        let opResult = transactionHelper.makeOpResult(tableName: parentTableName, operationResultId: operationResultId, operationType: .ADD_RELATION, uow: uow)
+        let opResult = TransactionHelper.shared.makeOpResult(tableName: parentTableName, operationResultId: operationResultId, operationType: .ADD_RELATION, uow: uow)
         return (operation, opResult)
     }
     

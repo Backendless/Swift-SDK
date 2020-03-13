@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -19,14 +19,11 @@
  *  ********************************************************************************************************************
  */
 
-class ProcessResponse: NSObject {
+class ProcessResponse {
     
     static let shared = ProcessResponse()
     
-    private let jsonUtils = JSONUtils.shared
-    private let storedObjects = StoredObjects.shared
-    
-    private override init() { }
+    private init() { }
     
     func adapt<T>(response: ReturnedResponse, to: T.Type) -> Any? where T: Decodable {
         if response.data?.count == 0 {
@@ -102,11 +99,11 @@ class ProcessResponse: NSObject {
     }
     
     func adaptToBackendlessUser(responseResult: Any?) -> Any? {
-        if let responseResult = responseResult as? [String: Any] {
+        if let responseResult = responseResult as? [String: Any] {            
             if let userStatus = responseResult["userStatus"] as? String, userStatus == "GUSET" {
                 return adaptGuestToBackendlessUser(responseResult: responseResult)
             }
-            else {
+            else {                
                 let properties = ["email": responseResult["email"], "name": responseResult["name"], "objectId": responseResult["objectId"], "userToken": responseResult["user-token"]]
                 do {
                     let responseData = try JSONSerialization.data(withJSONObject: properties)
@@ -114,7 +111,7 @@ class ProcessResponse: NSObject {
                         let responseObject = try JSONDecoder().decode(BackendlessUser.self, from: responseData)                        
                         responseObject.setProperties(properties: responseResult)
                         if responseObject.objectId != nil {
-                            storedObjects.rememberObjectId(objectId: responseObject.objectId!, forObject: responseObject)
+                            StoredObjects.shared.rememberObjectId(objectId: responseObject.objectId!, forObject: responseObject)
                         }
                         return responseObject
                     }
@@ -139,7 +136,7 @@ class ProcessResponse: NSObject {
         let responseObject = BackendlessUser()
         responseObject.objectId = objectId
         responseObject.setUserToken(value: userToken)
-        storedObjects.rememberObjectId(objectId: objectId, forObject: responseObject)
+        StoredObjects.shared.rememberObjectId(objectId: objectId, forObject: responseObject)
         return responseObject
     }
     
@@ -169,12 +166,12 @@ class ProcessResponse: NSObject {
             }
         }
         if deviceRegistration.objectId != nil {
-            storedObjects.rememberObjectId(objectId: deviceRegistration.objectId!, forObject: deviceRegistration)
+            StoredObjects.shared.rememberObjectId(objectId: deviceRegistration.objectId!, forObject: deviceRegistration)
         }
         return deviceRegistration
     }
     
-    func adaptToGeoPoint(geoDictionary: [String : Any]) -> GeoPoint? {
+    func adaptToGeoPoint(geoDictionary: [String : Any]) -> GeoPoint? { 
         if let latitude = geoDictionary["latitude"] as? Double,
             let longitude = geoDictionary["longitude"] as? Double,
             let categories = geoDictionary["categories"] as? [String] {
@@ -183,13 +180,13 @@ class ProcessResponse: NSObject {
             if let metadata = geoDictionary["metadata"] as? [String: String] {
                 let geoPoint = GeoPoint(objectId: objectId, latitude: latitude, longitude: longitude, distance: distance ?? 0.0, categories: categories, metadata: JSON(metadata))
                 if objectId != nil {
-                    storedObjects.rememberObjectId(objectId: objectId!, forObject: geoPoint)
+                    StoredObjects.shared.rememberObjectId(objectId: objectId!, forObject: geoPoint)
                 }
                 return geoPoint
             }
             let geoPoint = GeoPoint(objectId: objectId, latitude: latitude, longitude: longitude, distance: distance ?? 0.0, categories: categories, metadata: nil)
             if objectId != nil {
-                storedObjects.rememberObjectId(objectId: objectId!, forObject: geoPoint)
+                StoredObjects.shared.rememberObjectId(objectId: objectId!, forObject: geoPoint)
             }
             return geoPoint
         }
@@ -206,12 +203,12 @@ class ProcessResponse: NSObject {
             if let metadata = geoDictionary["metadata"] as? [String: String] {
                 let geoCluster = GeoCluster(objectId: objectId, latitude: latitude, longitude: longitude, distance: distance ?? 0.0, categories: categories, metadata: JSON(metadata))
                 geoCluster.totalPoints = totalPoints
-                storedObjects.rememberObjectId(objectId: objectId, forObject: geoCluster)
+                StoredObjects.shared.rememberObjectId(objectId: objectId, forObject: geoCluster)
                 return geoCluster
             }
             let geoCluster = GeoCluster(objectId: objectId, latitude: latitude, longitude: longitude, distance: distance ?? 0.0, categories: categories, metadata: nil)
             geoCluster.totalPoints = totalPoints
-            storedObjects.rememberObjectId(objectId: objectId, forObject: geoCluster)
+            StoredObjects.shared.rememberObjectId(objectId: objectId, forObject: geoCluster)
             return geoCluster
         }
         return nil
@@ -242,7 +239,7 @@ class ProcessResponse: NSObject {
                 geoFence.nodes = geoFenceNodes
             }
             if geoFence.objectId != nil {
-                storedObjects.rememberObjectId(objectId: geoFence.objectId!, forObject: geoFence)
+                StoredObjects.shared.rememberObjectId(objectId: geoFence.objectId!, forObject: geoFence)
             }
             return geoFence
         }
@@ -271,7 +268,7 @@ class ProcessResponse: NSObject {
             commandObject.userId = userId
         }
         if let data = commandObjectDictionary["data"] {
-            commandObject.data = jsonUtils.jsonToObject(objectToParse: data)
+            commandObject.data = JSONUtils.shared.jsonToObject(objectToParse: data)
         }
         return commandObject
     }
@@ -293,7 +290,7 @@ class ProcessResponse: NSObject {
             sharedObjectChanges.key = key
         }
         if let data = sharedObjectChangesDictionary["data"] {
-            sharedObjectChanges.data = jsonUtils.jsonToObject(objectToParse: data)
+            sharedObjectChanges.data = JSONUtils.shared.jsonToObject(objectToParse: data)
         }
         if let connectionId = sharedObjectChangesDictionary["connectionId"] as? String {
             sharedObjectChanges.connectionId = connectionId
@@ -327,7 +324,7 @@ class ProcessResponse: NSObject {
             invokeObject.userId = userId
         }        
         if let args = invokeObjectDictionary["args"] as? [Any] {
-            invokeObject.args = jsonUtils.jsonToObject(objectToParse: args) as? [Any]
+            invokeObject.args = JSONUtils.shared.jsonToObject(objectToParse: args) as? [Any]
         }
         return invokeObject
     }
@@ -362,20 +359,6 @@ class ProcessResponse: NSObject {
         return resultArray
     }
     
-    func adaptToUnitOfWorkResult(unitOfWorkDictionary: [String : Any]) -> UnitOfWorkResult {
-        let uowResult = UnitOfWorkResult()
-        if let success = unitOfWorkDictionary["success"] as? Bool {
-            if success == true {
-                uowResult.success = true
-            }
-            else if let errorDictionary = unitOfWorkDictionary["error"] as? [String : Any] {
-                uowResult.error = adaptToTransactionOperationError(errorDictionary: errorDictionary)
-            }
-        }
-        uowResult.results = unitOfWorkDictionary["results"]
-        return uowResult
-    }
-    
     func adaptToTransactionOperationError(errorDictionary: [String : Any]) -> TransactionOperationError? {
         if let message = errorDictionary["message"] as? String,
             let operationDictionary = errorDictionary["operation"] as? [String : Any],
@@ -388,5 +371,57 @@ class ProcessResponse: NSObject {
             return TransactionOperationError(message: message, operation: operation)
         }
         return nil
+    }
+    
+    func adaptToUnitOfWorkResult(unitOfWorkDictionary: [String : Any]) -> UnitOfWorkResult {
+        let uowResult = UnitOfWorkResult()
+        if let success = unitOfWorkDictionary["success"] as? Bool {
+            if success == true {
+                uowResult.success = true
+            }
+            else if let errorDictionary = unitOfWorkDictionary["error"] as? [String : Any] {
+                uowResult.error = adaptToTransactionOperationError(errorDictionary: errorDictionary)
+            }
+        }
+        if var results = unitOfWorkDictionary["results"] as? [String : Any] {
+            for (key, value) in results {
+                if value is [String : Any] {
+                    results[key] = processResultValue(value as! [String : Any])
+                }
+            }
+            uowResult.results = results
+        }
+        return uowResult
+    }
+    
+    private func processResultValue(_ dictionary: [String : Any]) -> Any {
+        let dictionary = PersistenceHelper.shared.convertToBLType(dictionary)
+        if !(dictionary is [String : Any]) {
+            return dictionary
+        }
+        var resultDictionary = dictionary as! [String : Any]
+        if let className = resultDictionary["___class"] as? String,
+            let customObject = PersistenceHelper.shared.dictionaryToEntity(resultDictionary, className: className) {
+            return customObject
+        }
+        for (key, value) in resultDictionary {
+            if let dictValue = value as? [String : Any] {
+                if let className = dictValue["___class"] as? String,
+                    let customObject = PersistenceHelper.shared.dictionaryToEntity(dictValue, className: className) {
+                    resultDictionary[key] = customObject
+                }
+                else {
+                    resultDictionary[key] = dictValue
+                }
+            }
+            else if let arrayValue = value as? [[String : Any]] {
+                var resultArray = [Any]()
+                for dictValue in arrayValue {
+                    resultArray.append(processResultValue(dictValue))
+                }
+                resultDictionary[key] = resultArray
+            }
+        }
+        return resultDictionary
     }
 }

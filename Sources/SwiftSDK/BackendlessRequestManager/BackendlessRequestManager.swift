@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -26,10 +26,7 @@ enum HTTPMethod: String {
     case delete
 }
 
-class BackendlessRequestManager: NSObject {
-    
-    private let dataTypesUtils = DataTypesUtils.shared
-    private let mappings = Mappings.shared
+class BackendlessRequestManager {
     
     private var urlString = "\(Backendless.shared.hostUrl)/\(Backendless.shared.getApplictionId())/\(Backendless.shared.getApiKey())/"
     private var restMethod: String
@@ -45,13 +42,8 @@ class BackendlessRequestManager: NSObject {
     }
     
     func makeRequest(getResponse: @escaping (ReturnedResponse) -> ()) {
-        for (originTableName, mappedClassName) in mappings.tableToClassMappings {
-            guard let mappedName = mappedClassName.split(separator: ".").last else { return }
-            if restMethod.contains(mappedName) {
-                restMethod = restMethod.replacingOccurrences(of: mappedName, with: originTableName)
-            }
-        }
-        var request = URLRequest(url: URL(string: urlString + dataTypesUtils.stringToUrlString(originalString: restMethod))!)        
+        prepareRestMethodWithMappings()
+        var request = URLRequest(url: URL(string: urlString + DataTypesUtils.shared.stringToUrlString(originalString: restMethod))!)
         request.httpMethod = httpMethod.rawValue
         if let headers = headers, headers.count > 0 {
             for (key, value) in headers {
@@ -86,7 +78,7 @@ class BackendlessRequestManager: NSObject {
                     if var params = parameters as? [String : Any] {
                         for (key, value) in params {
                             if let dateValue = value as? Date {                                
-                                params[key] = dataTypesUtils.dateToInt(date: dateValue)
+                                params[key] = DataTypesUtils.shared.dateToInt(date: dateValue)
                             }
                         }
                         parameters = params
@@ -123,7 +115,8 @@ class BackendlessRequestManager: NSObject {
     }
     
     func makeMultipartFormRequest(data: Data, fileName: String, getResponse: @escaping (ReturnedResponse) -> ()) {
-        var request = URLRequest(url: URL(string: urlString + dataTypesUtils.stringToUrlString(originalString: restMethod))!)
+        prepareRestMethodWithMappings()
+        var request = URLRequest(url: URL(string: urlString + DataTypesUtils.shared.stringToUrlString(originalString: restMethod))!)
         request.httpMethod = httpMethod.rawValue
         let boundary = "Boundary-\(UUID().uuidString)"
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
@@ -173,5 +166,21 @@ class BackendlessRequestManager: NSObject {
         body.appendString("--".appending(boundary.appending("--")))
         
         return body as Data
+    }
+    
+    private func prepareRestMethodWithMappings() {
+        var restMethodComponents = restMethod.split(separator: "/")
+        for (originTableName, mappedClassName) in Mappings.shared.tableToClassMappings {
+            guard let mappedName = mappedClassName.split(separator: ".").last else { return }
+            if restMethodComponents.contains(mappedName),
+                let index = restMethodComponents.firstIndex(of: mappedName) {
+                restMethodComponents[index] = Substring(originTableName)
+            }
+        }
+        restMethod = ""
+        for component in restMethodComponents {
+            restMethod += component + "/"
+        }
+        restMethod.removeLast()
     }
 }

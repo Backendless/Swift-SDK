@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-class RTMethod: NSObject {
+class RTMethod {
     
     static let shared = RTMethod()
     
@@ -28,7 +28,7 @@ class RTMethod: NSObject {
     private var onError: ((Fault) -> Void)?
     private var onStop: ((RTMethodRequest) -> Void)?
 
-    private override init() {
+    private init() {
         self.methods = [String : [RTMethodRequest]]()
     }
     

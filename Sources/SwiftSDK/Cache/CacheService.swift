@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -21,19 +21,15 @@
 
 @objcMembers public class CacheService: NSObject {
     
-    private let dataTypesUtils = DataTypesUtils.shared
-    private let jsonUtils = JSONUtils.shared
-    private let processResponse = ProcessResponse.shared
-    
     public func put(key: String, object: Any, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         put(key: key, object: object, timeToLiveSec: 7200, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     public func put(key: String, object: Any, timeToLiveSec: Int, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
-        let parameters = jsonUtils.objectToJson(objectToParse: object)        
+        let parameters = JSONUtils.shared.objectToJson(objectToParse: object)
         BackendlessRequestManager(restMethod: "cache/\(key)?timeout=\(timeToLiveSec)", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: NoReply.self) {
+            if let result = ProcessResponse.shared.adapt(response: response, to: NoReply.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -47,16 +43,19 @@
     public func get(key: String, responseHandler: ((Any?) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         BackendlessRequestManager(restMethod: "cache/\(key)", httpMethod: .get, headers: headers, parameters: nil).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: JSON.self) {
+            if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
                 else {
                     if let resultDictionary = (result as! JSON).dictionaryObject {
-                        responseHandler(self.jsonUtils.jsonToObject(objectToParse: resultDictionary))
+                        responseHandler(JSONUtils.shared.jsonToObject(objectToParse: resultDictionary))
                     }
                     else if let resultArray = (result as! JSON).arrayObject {
-                        responseHandler(self.jsonUtils.jsonToObject(objectToParse: resultArray))
+                        responseHandler(JSONUtils.shared.jsonToObject(objectToParse: resultArray))
+                    }
+                    else {
+                        responseHandler(nil)
                     }
                 }
             }
@@ -84,7 +83,7 @@
         let parsingError = "Could not parse object to the "
         let headers = ["Content-Type": "application/json"]
         BackendlessRequestManager(restMethod: "cache/\(key)", httpMethod: .get, headers: headers, parameters: nil).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: JSON.self) {
+            if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -96,7 +95,7 @@
                         else {
                             if let className = resultDictionary["___class"] as? String,
                                 className == ofTypeName {
-                                responseHandler(self.jsonUtils.jsonToObject(objectToParse: resultDictionary))
+                                responseHandler(JSONUtils.shared.jsonToObject(objectToParse: resultDictionary))
                             }
                             else {
                                 errorHandler(Fault(message: parsingError + "'\(ofTypeName)'"))
@@ -104,13 +103,16 @@
                         }
                     }
                     else if let resultArray = (result as! JSON).arrayObject {
-                        let parsedArray = self.jsonUtils.jsonToObject(objectToParse: resultArray)
+                        let parsedArray = JSONUtils.shared.jsonToObject(objectToParse: resultArray)
                         if type(of: parsedArray) == ofType {
                             responseHandler(parsedArray)
                         }
                         else {
                             errorHandler(Fault(message: parsingError + "'\(ofTypeName)'"))
                         }
+                    }
+                    else {
+                        responseHandler(nil)
                     }
                 }
             }
@@ -136,7 +138,7 @@
                             responseHandler(resultInt != 0)
                         }
                         else if ofType == Date.self {
-                            responseHandler(self.dataTypesUtils.intToDate(intVal: resultInt))
+                            responseHandler(DataTypesUtils.shared.intToDate(intVal: resultInt))
                         }
                         else {
                             errorHandler(Fault(message: parsingError + "'\(ofTypeName)'"))
@@ -153,7 +155,7 @@
                             responseHandler(NSNumber(floatLiteral: resultDouble))
                         }
                         else if ofType == Date.self {
-                            responseHandler(self.dataTypesUtils.intToDate(intVal: Int(resultDouble)))
+                            responseHandler(DataTypesUtils.shared.intToDate(intVal: Int(resultDouble)))
                         }
                         else {
                             errorHandler(Fault(message: parsingError + "'\(ofTypeName)'"))
@@ -194,7 +196,7 @@
     
     public func expireIn(key: String, seconds: Int, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         BackendlessRequestManager(restMethod: "cache/\(key)/expireIn?timeout=\(seconds)", httpMethod: .put, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: NoReply.self) {
+            if let result = ProcessResponse.shared.adapt(response: response, to: NoReply.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -206,8 +208,8 @@
     }
     
     public func expireAt(key: String, date: Date, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        BackendlessRequestManager(restMethod: "cache/\(key)/expireAt?timestamp=\(dataTypesUtils.dateToInt(date: date))", httpMethod: .put, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: NoReply.self) {
+        BackendlessRequestManager(restMethod: "cache/\(key)/expireAt?timestamp=\(DataTypesUtils.shared.dateToInt(date: date))", httpMethod: .put, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: NoReply.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
@@ -220,7 +222,7 @@
     
     public func remove(key: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         BackendlessRequestManager(restMethod: "cache/\(key)", httpMethod: .delete, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = self.processResponse.adapt(response: response, to: NoReply.self) {
+            if let result = ProcessResponse.shared.adapt(response: response, to: NoReply.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }

@@ -1,5 +1,22 @@
 # RELEASE HISTORY
 
+### xxx / xx, 2020
+* the `properties` of DataQueryBuilder and LoadRelationsQueryBuilder fixed to return all values when user set only one property as empty string
+* fixed issue when DataStore methods didn't process Backendless types in response 
+
+### 5.7.6 / February 25, 2020
+* fixed class to table mapping issue
+* fixed type casting for Backendless types
+
+### 5.7.5 / February 20, 2020
+* fixed issue when parsing Geometry types for Flutter-SDK
+
+### 5.7.4 / February 14, 2020
+* code refactored
+* added the PersistenceHelper class
+* classes related to current GeoService marked as deprecated
+* fixed Backendless system classes  conversion when working with dictionary approach
+
 ### 5.7.3 / January 28, 2020
 * fixed `isValidUserToken` method to return error when Internet connection is not available
 * refactored Fault contructor to handle URLSession errors correctly 

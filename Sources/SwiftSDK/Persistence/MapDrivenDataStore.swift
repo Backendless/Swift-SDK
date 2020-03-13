@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -27,12 +27,12 @@
     
     private var tableName: String
     
-    private let persistenceServiceUtils = PersistenceServiceUtils()
+    private var persistenceServiceUtils: PersistenceServiceUtils
     
     init(tableName: String) {
         self.tableName = tableName
-        persistenceServiceUtils.setup(tableName: tableName)
         self.rt = RTFactory.shared.createEventHandlerForMap(tableName: tableName)
+        persistenceServiceUtils = PersistenceServiceUtils(tableName: self.tableName)
     }
     
     public func save(entity: [String : Any], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
@@ -138,7 +138,7 @@
         persistenceServiceUtils.deleteRelation(columnName: columnName, parentObjectId: parentObjectId, whereClause: whereClause, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    public func loadRelations(objectId: String, queryBuilder: LoadRelationsQueryBuilder, responseHandler: (([[String : Any]]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func loadRelations(objectId: String, queryBuilder: LoadRelationsQueryBuilder, responseHandler: (([Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         persistenceServiceUtils.loadRelations(objectId: objectId, queryBuilder: queryBuilder, responseHandler: responseHandler, errorHandler: errorHandler)
     }
 }

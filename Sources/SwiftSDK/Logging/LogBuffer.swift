@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-class LogBuffer: NSObject {
+class LogBuffer {
     
     static let shared = LogBuffer()
     
@@ -29,8 +29,7 @@ class LogBuffer: NSObject {
     
     private var timer: Timer?
     
-    private override init() {
-        super.init()
+    private init() {
         self.numberOfMessages = 100
         self.timeFrequency = 60 * 5 // 5 minutes
         timer = Timer.scheduledTimer(timeInterval: Double(timeFrequency), target: self, selector: #selector(LogBuffer.flush), userInfo: nil, repeats: true)

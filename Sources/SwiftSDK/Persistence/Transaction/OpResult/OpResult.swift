@@ -40,73 +40,55 @@ extension OpResultErrors: LocalizedError {
 @objcMembers public class OpResult: NSObject {
     
     public var tableName: String?
-    public var reference: [String : Any]?
     public var operationType: OperationType?
+    public var opResultId: String?
     
     private var uow: UnitOfWork?
     
     override public init() { }
     
-    init(tableName: String, reference: [String : Any], operationType: OperationType) {
+    init(tableName: String, operationType: OperationType, opResultId: String) {
         self.tableName = tableName
-        self.reference = reference
         self.operationType = operationType
+        self.opResultId = opResultId
     }
     
-    init(tableName: String, reference: [String : Any], operationType: OperationType, uow: UnitOfWork) {
+    init(tableName: String, operationType: OperationType, opResultId: String, uow: UnitOfWork) {
         self.tableName = tableName
-        self.reference = reference
         self.operationType = operationType
+        self.opResultId = opResultId
         self.uow = uow
     }
     
-    public func setOpResultId(newValue: String) throws {
-        guard let operations = uow?.operations else {
-            throw OpResultErrors.noUOW
-        }
-        if operations.contains(where: { $0.opResultId == newValue }) {
-            throw OpResultErrors.resultIdExists
-        }
-        else if let operation = operations.first(where: { $0.opResultId == reference?["opResultId"] as? String }) {
-            operation.opResultId = newValue
-            self.reference?["opResultId"] = newValue
-        }
+    public func resolveTo(resultIndex: NSNumber, propName: String) -> OpResultValueReference {
+        return OpResultValueReference(opResult: self, resultIndex: resultIndex, propName: propName)
     }
     
-    public func resolveTo(propertyName: String) -> [String : Any] {
-        var referencePropName = reference
-        if referencePropName == nil {
-            referencePropName = [String : Any]()
-        }
-        referencePropName![uowProps.propName] = propertyName
-        return referencePropName!
+    public func resolveTo(resultIndex: NSNumber) -> OpResultValueReference {
+        return OpResultValueReference(opResult: self, resultIndex: resultIndex)
     }
     
-    public func resolveTo(opResultIndex: Int) -> [String : Any] {
-        var referenceIndex = reference
-        if referenceIndex == nil {
-            referenceIndex = [String : Any]()
-        }
-        referenceIndex![uowProps.resultIndex] = opResultIndex
-        return referenceIndex!
+    public func resolveTo(propName: String) -> OpResultValueReference {
+        return OpResultValueReference(opResult: self, propName: propName)
     }
     
-    public func resolveTo(opResultIndex: Int, propertyName: String) -> [String : Any] {
-        var referenceIndexPropName = reference
-        if referenceIndexPropName == nil {
-            referenceIndexPropName = [String : Any]()
-        }
-        referenceIndexPropName![uowProps.resultIndex] = opResultIndex
-        referenceIndexPropName![uowProps.propName] = propertyName
-        return referenceIndexPropName!
+    public func makeReference() -> [String : Any] {
+        var reference = [String : Any]()
+        reference[uowProps.ref] = true
+        reference[uowProps.opResultId] = opResultId
+        return reference
     }
     
-    public func resolveToIndex(opResultIndex: Int) -> OpResultIndex {
-        var referenceIndex = reference
-        if referenceIndex == nil {
-            referenceIndex = [String : Any]()
+    public func setOpResultId(uow: UnitOfWork, newOpResultId: String) {
+        let existingOperation = uow.operations.first(where: { $0.opResultId == newOpResultId })
+        if existingOperation == nil {
+            for operation in uow.operations {
+                if operation.opResultId == opResultId {
+                    operation.opResultId = newOpResultId
+                    break
+                }
+            }
+            opResultId = newOpResultId
         }
-        referenceIndex![uowProps.resultIndex] = opResultIndex
-        return OpResultIndex(tableName: tableName!, reference: referenceIndex!, operationType: operationType!)
     }
 }

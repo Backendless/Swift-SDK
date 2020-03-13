@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -19,11 +19,11 @@
  *  ********************************************************************************************************************
  */
 
-class JSONUtils: NSObject {
+class JSONUtils {
     
     static let shared = JSONUtils()
     
-    private override init() { }
+    private init() { }
     
     func objectToJson(objectToParse: Any) -> Any {
         var resultObject = objectToParse
@@ -51,7 +51,7 @@ class JSONUtils: NSObject {
                 resultObject = resultDictionary
             }
             else {
-                resultObject = PersistenceServiceUtils().entityToDictionaryWithClassProperty(entity: objectToParse)
+                resultObject = PersistenceHelper.shared.entityToDictionaryWithClassProperty(entity: objectToParse)
             }
         }
         else if objectToParse is Date {
@@ -72,18 +72,9 @@ class JSONUtils: NSObject {
             }
             else if let dictionaryToParse = objectToParse as? [String : Any] {
                 var resultDictionary = [String : Any]()
-                if let tableName = dictionaryToParse["___class"] as? String {
-                    let persistenceServiceUtils = PersistenceServiceUtils()
-                    if tableName == BLPoint.geometryClassName {
-                        resultObject = persistenceServiceUtils.convertToGeometryType(dictionary: dictionaryToParse)
-                    }
-                    else if tableName == BLLineString.geometryClassName {
-                        resultObject = persistenceServiceUtils.convertToGeometryType(dictionary: dictionaryToParse)
-                    }
-                    else {
-                        persistenceServiceUtils.setup(tableName: tableName)
-                        resultObject = persistenceServiceUtils.dictionaryToEntity(dictionary: dictionaryToParse, className: tableName)!
-                    }
+                if let className = dictionaryToParse["___class"] as? String {
+                    resultObject = PersistenceHelper.shared.convertToBLType(dictionaryToParse)
+                    resultObject = PersistenceHelper.shared.dictionaryToEntity(dictionaryToParse, className: className)!
                 }
                 else {
                     for (key, value) in dictionaryToParse {
@@ -107,7 +98,7 @@ class JSONUtils: NSObject {
             else {
                 if let dictionaryToParse = objectToParse as? [String : Any],
                     let className = dictionaryToParse["___class"] as? String {
-                    resultObject = PersistenceServiceUtils().dictionaryToEntity(dictionary: dictionaryToParse, className: className)!
+                    resultObject = PersistenceHelper.shared.dictionaryToEntity(dictionaryToParse, className: className)!
                 }
             }
         }        

@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2019 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -30,7 +30,7 @@
     }
     
     public func describe(tableName: String, responseHandler: (([ObjectProperty]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        PersistenceServiceUtils().describe(tableName: tableName, responseHandler: responseHandler, errorHandler: errorHandler)
+        PersistenceServiceUtils(tableName: tableName).describe(responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     public lazy var permissions: DataPermission = {

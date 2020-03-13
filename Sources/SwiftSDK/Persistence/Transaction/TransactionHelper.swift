@@ -23,13 +23,13 @@ class TransactionHelper {
     
     static let shared = TransactionHelper()
     
-    private let psu = PersistenceServiceUtils()
+    private let psu = PersistenceServiceUtils(tableName: "")
 
     func makeOpResult(tableName: String, operationResultId: String, operationType: OperationType, uow: UnitOfWork) -> OpResult {
         var reference = [String : Any]()
         reference[uowProps.ref] = true
         reference[uowProps.opResultId] = operationResultId
-        return OpResult(tableName: tableName, reference: reference, operationType: operationType, uow: uow)
+        return OpResult(tableName: tableName, operationType: operationType, opResultId: operationResultId, uow: uow)
     }
     
     func tableAndDictionaryFromEntity(entity: Any) -> (String, Any) {
@@ -49,5 +49,15 @@ class TransactionHelper {
     
     func generateOperationTypeString(_ operationType: OperationType) -> String {
         return OperationType.from(intValue: operationType.rawValue)!.lowercased().replacingOccurrences(of: "_", with: "")
+    }
+    
+    func preparePayloadWithOpResultValueReference(_ payload: [String : Any]) -> [String : Any] {
+        var payload = payload
+        for (key, value) in payload {
+            if let valueRef = value as? OpResultValueReference {
+                payload[key] = valueRef.makeReference()
+            }
+        }
+        return payload
     }
 }

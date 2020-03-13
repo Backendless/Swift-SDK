@@ -21,8 +21,6 @@
 
 class UnitOfWorkFind {
     
-    private let transactionHelper = TransactionHelper.shared
-    
     private var countFind = 1
     private var uow: UnitOfWork
     
@@ -31,7 +29,7 @@ class UnitOfWorkFind {
     }
     
     func find(tableName: String, queryBuilder: DataQueryBuilder) -> (Operation, OpResult) {
-        let operationTypeString = transactionHelper.generateOperationTypeString(.FIND)
+        let operationTypeString = TransactionHelper.shared.generateOperationTypeString(.FIND)
         let operationResultId = "\(operationTypeString)\(tableName)\(countFind)"
         countFind += 1
         
@@ -51,7 +49,7 @@ class UnitOfWorkFind {
         payload["queryOptions"] = queryOptions
         
         let operation = Operation(operationType: .FIND, tableName: tableName, opResultId: operationResultId, payload: payload)
-        let opResult = transactionHelper.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .FIND, uow: uow)
+        let opResult = TransactionHelper.shared.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .FIND, uow: uow)
         return (operation, opResult)
     }
 }
