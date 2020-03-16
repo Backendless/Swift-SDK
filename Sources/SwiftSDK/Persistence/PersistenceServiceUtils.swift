@@ -211,6 +211,17 @@ class PersistenceServiceUtils {
                 parameters["props"] = props
             }
         }
+        if let excludedProperties = queryBuilder?.getExcludedProperties() {
+            var excludeProps = [String]()
+            for property in excludedProperties {
+                if !property.isEmpty {
+                    excludeProps.append(property)
+                }
+            }
+            if !excludeProps.isEmpty {
+                parameters["excludeProps"] = excludeProps
+            }
+        }
         if let sortBy = queryBuilder?.getSortBy(), sortBy.count > 0 {
             parameters["sortBy"] = DataTypesUtils.shared.arrayToString(array: sortBy)
         }
@@ -304,6 +315,17 @@ class PersistenceServiceUtils {
             }
             if !props.isEmpty {
                 restMethod += "&props=" + DataTypesUtils.shared.arrayToString(array: props)
+            }
+        }
+        if let excludedProperties = queryBuilder?.getExcludedProperties() {
+            var excludeProps = [String]()
+            for property in excludedProperties {
+                if !property.isEmpty {
+                    excludeProps.append(property)
+                }
+            }
+            if !excludeProps.isEmpty {
+                restMethod += "&excludeProps=" + DataTypesUtils.shared.arrayToString(array: excludeProps)
             }
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
