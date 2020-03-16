@@ -27,6 +27,7 @@
     private var pageSize: Int = 10
     private var offset: Int = 0
     private var properties: [String]?
+    private var excludedProperties: [String]?
     private var sortBy: [String]?
     private var related: [String]?
     private var groupBy: [String]?
@@ -178,6 +179,45 @@
         }
         else {
             self.properties = properties
+        }
+    }
+    
+    public func addAllProperties() {
+        self.properties = ["*"]
+    }
+    
+    public func getExcludedProperties() -> [String]? {
+        return self.excludedProperties
+    }
+    
+    public func excludeProperty(_ property: String) {
+        if self.excludedProperties != nil {
+            self.excludedProperties?.append(property)
+        }
+        else {
+            self.excludedProperties = [property]
+        }
+    }
+    
+    public func excludeProperties(_ properties: [String]) {
+        if self.excludedProperties != nil {
+            for property in properties {
+                self.excludedProperties?.append(property)
+            }
+        }
+        else {
+            self.excludedProperties = properties
+        }
+    }
+    
+    public func excludeProperties(_ properties: String...) {
+        if self.excludedProperties != nil {
+            for property in properties {
+                self.excludedProperties?.append(property)
+            }
+        }
+        else {
+            self.excludedProperties = properties
         }
     }
     
