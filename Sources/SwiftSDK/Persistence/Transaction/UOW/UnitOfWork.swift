@@ -70,40 +70,41 @@ enum uowProps {
     
     // create
     
-    public func create(tableName: String, entity: [String : Any]) -> OpResult {
-        let (operation, opRes) = uowCreate!.create(tableName: tableName, entity: entity)
+    public func create(tableName: String, objectToSave: [String : Any]) -> OpResult {
+        let (operation, opRes) = uowCreate!.create(tableName: tableName, objectToSave: objectToSave)
         operations.append(operation)
         return opRes
     }
     
-    public func create(entity: Any) -> OpResult {
-        let (tableName, entityDictionary) = TransactionHelper.shared.tableAndDictionaryFromEntity(entity: entity)
-        return create(tableName: tableName, entity: entityDictionary as! [String : Any])
+    public func create(objectToSave: Any) -> OpResult {
+        let (tableName, objectToSaveDict) = TransactionHelper.shared.tableAndDictionaryFromEntity(objectToSave)
+        return create(tableName: tableName, objectToSave: objectToSaveDict as! [String : Any])
     }
     
     // bulk create
     
-    public func bulkCreate(tableName: String, entities: [[String : Any]]) -> OpResult {
-        let (operation, opRes) = uowCreate!.bulkCreate(tableName: tableName, entities: entities)
+    public func bulkCreate(tableName: String, objectsToSave: [[String : Any]]) -> OpResult {
+        let (operation, opRes) = uowCreate!.bulkCreate(tableName: tableName, objectsToSave: objectsToSave)
         operations.append(operation)
         return opRes
     }
     
     public func bulkCreate(entities: [Any]) -> OpResult {
-        let (tableName, entitiesDictArray) = TransactionHelper.shared.tableAndDictionaryFromEntity(entity: entities)
-        return bulkCreate(tableName: tableName, entities: entitiesDictArray as! [[String : Any]])
+        let (tableName, objectsToSaveDict) = TransactionHelper.shared.tableAndDictionaryFromEntity(entities)
+        return bulkCreate(tableName: tableName, objectsToSave: objectsToSaveDict as! [[String : Any]])
     }
     
     // update
-    public func update(tableName: String, changes: [String : Any]) -> OpResult {
-        let (operation, opRes) = uowUpdate!.update(tableName: tableName, changes: changes)
+    
+    public func update(tableName: String, objectToUpdate: [String : Any]) -> OpResult {
+        let (operation, opRes) = uowUpdate!.update(tableName: tableName, objectToUpdate: objectToUpdate)
         operations.append(operation)
         return opRes
     }
     
-    public func update(changes: Any) -> OpResult {
-        let (tableName, changesDictionary) = TransactionHelper.shared.tableAndDictionaryFromEntity(entity: changes)
-        return update(tableName: tableName, changes: changesDictionary as! [String : Any])
+    public func update(objectToUpdate: Any) -> OpResult {
+        let (tableName, objectToUpdateDict) = TransactionHelper.shared.tableAndDictionaryFromEntity(objectToUpdate)
+        return update(tableName: tableName, objectToUpdate: objectToUpdateDict as! [String : Any])
     }
     
     public func update(result: OpResult, changes: [String : Any]) -> OpResult {
@@ -134,38 +135,27 @@ enum uowProps {
         return opRes
     }
     
-    public func bulkUpdate(whereClause: String, changes: Any) -> OpResult {
-        let (tableName, changesDictionary) = TransactionHelper.shared.tableAndDictionaryFromEntity(entity: changes)
-        return bulkUpdate(tableName: tableName, whereClause: whereClause, changes: changesDictionary as! [String : Any])
-    }
-    
     public func bulkUpdate(tableName: String, objectIds: [String], changes: [String : Any]) -> OpResult {
         let (operation, opRes) = uowUpdate!.bulkUpdate(tableName: tableName, objectIds: objectIds, changes: changes)
         operations.append(operation)
         return opRes
     }
     
-    public func bulkUpdate(result: OpResult, changes: [String : Any]) -> OpResult {
-        let (operation, opRes) = uowUpdate!.bulkUpdate(result: result, changes: changes)
-        operations.append(operation)
-        return opRes
-    }
-    
     // delete
     
-    public func delete(tableName: String, entity: [String : Any]) -> OpResult {
-        let (operation, opRes) = uowDelete!.delete(tableName: tableName, entity: entity)
+    public func delete(tableName: String, objectToDelete: [String : Any]) -> OpResult {
+        let (operation, opRes) = uowDelete!.delete(tableName: tableName, objectToDelete: objectToDelete)
         operations.append(operation)
         return opRes
     }
     
-    public func delete(entity: Any) -> OpResult {
-        let (tableName, entityDictionary) = TransactionHelper.shared.tableAndDictionaryFromEntity(entity: entity)
-        return delete(tableName: tableName, entity: entityDictionary as! [String : Any])
+    public func delete(objectToDelete: Any) -> OpResult {
+        let (tableName, objectToDeleteDict) = TransactionHelper.shared.tableAndDictionaryFromEntity(objectToDelete)
+        return delete(tableName: tableName, objectToDelete: objectToDeleteDict as! [String : Any])
     }
     
     public func delete(tableName: String, objectId: String) -> OpResult {
-        return delete(tableName: tableName, entity: ["objectId": objectId])
+        return delete(tableName: tableName, objectToDelete: ["objectId": objectId])
     }
     
     public func delete(result: OpResult) -> OpResult {
@@ -174,24 +164,13 @@ enum uowProps {
         return opRes
     }
     
-    public func delete(opResultValueReference: OpResultValueReference) -> OpResult {
-        let (operation, opRes) = uowDelete!.delete(opResultValueReference: opResultValueReference)
+    public func delete(valueReference: OpResultValueReference) -> OpResult {
+        let (operation, opRes) = uowDelete!.delete(valueReference: valueReference)
         operations.append(operation)
         return opRes
     }
     
     // bulk delete
-    
-    public func bulkDelete(tableName: String, entities: [[String : Any]]) -> OpResult {
-        let (operation, opRes) = uowDelete!.bulkDelete(tableName: tableName, entities: entities)
-        operations.append(operation)
-        return opRes
-    }
-    
-    public func bulkDelete(entities: [Any]) -> OpResult {
-        let (tableName, entitiesDictArray) = TransactionHelper.shared.tableAndDictionaryFromEntity(entity: entities)
-        return bulkDelete(tableName: tableName, entities: entitiesDictArray as! [[String : Any]])
-    }
     
     public func bulkDelete(tableName: String, objectIds: [String]) -> OpResult {
         let (operation, opRes) = uowDelete!.bulkDelete(tableName: tableName, objectIds: objectIds)
@@ -199,16 +178,15 @@ enum uowProps {
         return opRes
     }
     
-    public func bulkDelete(tableName: String, whereClause: String) -> OpResult {
-        let (operation, opRes) = uowDelete!.bulkDelete(tableName: tableName, whereClause: whereClause)
+    public func bulkDelete(tableName: String, objectsToDelete: [[String : Any]]) -> OpResult {
+        let (operation, opRes) = uowDelete!.bulkDelete(tableName: tableName, objectsToDelete: objectsToDelete)
         operations.append(operation)
         return opRes
     }
     
-    public func bulkDelete(result: OpResult) -> OpResult {
-        let (operation, opRes) = uowDelete!.bulkDelete(result: result)
-        operations.append(operation)
-        return opRes
+    public func bulkDelete(objectsToDelete: [Any]) -> OpResult {
+        let (tableName, objectsToDeleteDict) = TransactionHelper.shared.tableAndDictionaryFromEntity(objectsToDelete)
+        return bulkDelete(tableName: tableName, objectsToDelete: objectsToDeleteDict as! [[String : Any]])
     }
     
     // find
@@ -228,48 +206,80 @@ enum uowProps {
     
     // add relation
     
-    public func addToRelation(parentTableName: String, parentObject: [String : Any], columnName: String, children: [[String : Any]]) -> (OpResult) {
-        let (operation, opRes) = uowAddRel!.addToRelation(parentTableName: parentTableName, parentObject: parentObject, columnName: columnName, children: children)
+    public func addToRelation(parentTableName: String, parentObjectId: String, columnName: String, childrenObjectIds: [String]) -> (OpResult) {
+        let (operation, opRes) = uowAddRel!.addToRelation(parentTableName: parentTableName, parentObjectId: parentObjectId, columnName: columnName, childrenObjectIds: childrenObjectIds)
         operations.append(operation)
         return opRes
+    }
+    
+    public func addToRelation(parentTableName: String, parentObjectId: String, columnName: String, children: [Any]) -> (OpResult) {
+        let childrenObjectIds = TransactionHelper.shared.objectIdsFromCustomEntities(children)
+        return addToRelation(parentTableName: parentTableName, parentObjectId: parentObjectId, columnName: columnName, childrenObjectIds: childrenObjectIds)
+    }
+    
+    public func addToRelation(parentTableName: String, parentObject: [String : Any], columnName: String, childrenObjectIds: [String]) -> (OpResult) {
+        let parentObjectId = TransactionHelper.shared.objectIdFromDictionary(parentObject)
+        return addToRelation(parentTableName: parentTableName, parentObjectId: parentObjectId, columnName: columnName, childrenObjectIds: childrenObjectIds)
+    }
+    
+    public func addToRelation(parentTableName: String, parentObject: [String : Any], columnName: String, children: [Any]) -> (OpResult) {
+        let parentObjectId = TransactionHelper.shared.objectIdFromDictionary(parentObject)
+        let childrenObjectIds = TransactionHelper.shared.objectIdsFromCustomEntities(children)
+        return addToRelation(parentTableName: parentTableName, parentObjectId: parentObjectId, columnName: columnName, childrenObjectIds: childrenObjectIds)
+    }
+    
+    public func addToRelation(parentObject: Any, columnName: String, childrenObjectIds: [String]) -> (OpResult) {
+        let (parentTableName, parentObjectId) = TransactionHelper.shared.tableAndObjectIdFromEntity(entity: parentObject)
+        return addToRelation(parentTableName: parentTableName, parentObjectId: parentObjectId, columnName: columnName, childrenObjectIds: childrenObjectIds)
     }
     
     public func addToRelation(parentObject: Any, columnName: String, children: [Any]) -> (OpResult) {
-        let (parentTableName, parentDict) = TransactionHelper.shared.tableAndDictionaryFromEntity(entity: parentObject)
-        let (_, childrenDictArray) = TransactionHelper.shared.tableAndDictionaryFromEntity(entity: children)
-        let (operation, opRes) = uowAddRel!.addToRelation(parentTableName: parentTableName, parentObject: parentDict as! [String : Any], columnName: columnName, children: childrenDictArray as! [[String : Any]])
+        let (parentTableName, parentObjectId) = TransactionHelper.shared.tableAndObjectIdFromEntity(entity: parentObject)
+        let childrenObjectIds = TransactionHelper.shared.objectIdsFromCustomEntities(children)
+        return addToRelation(parentTableName: parentTableName, parentObjectId: parentObjectId, columnName: columnName, childrenObjectIds: childrenObjectIds)
+    }
+    
+    public func addToRelation(parentObjectResult: OpResult, columnName: String, childrenObjectIds: [String]) -> (OpResult) {
+        let (operation, opRes) = uowAddRel!.addToRelation(parentObjectResult: parentObjectResult, columnName: columnName, childrenObjectIds: childrenObjectIds)
         operations.append(operation)
         return opRes
     }
     
-    public func addToRelation(parentObjectResult: OpResult, columnName: String, children: [[String : Any]]) -> (OpResult) {
-        let (operation, opRes) = uowAddRel!.addToRelation(parentObjectResult: parentObjectResult, columnName: columnName, children: children)
+    public func addToRelation(parentObjectResult: OpResult, columnName: String, children: [Any]) -> (OpResult) {
+        let childrenObjectIds = TransactionHelper.shared.objectIdsFromCustomEntities(children)
+        let (operation, opRes) = uowAddRel!.addToRelation(parentObjectResult: parentObjectResult, columnName: columnName, childrenObjectIds: childrenObjectIds)
         operations.append(operation)
         return opRes
     }
     
-    public func addToRelation(parentObjectResult: OpResult, columnName: String, childrenObjects: [Any]) -> (OpResult) {
-        let (_, childrenDictArray) = TransactionHelper.shared.tableAndDictionaryFromEntity(entity: childrenObjects)
-        let (operation, opRes) = uowAddRel!.addToRelation(parentObjectResult: parentObjectResult, columnName: columnName, children: childrenDictArray as! [[String : Any]])
+    public func addToRelation(parentObjectResult: OpResult, columnName: String, childrenResult: OpResult) -> (OpResult) {
+        let (operation, opRes) = uowAddRel!.addToRelation(parentObjectResult: parentObjectResult, columnName: columnName, childrenResult: childrenResult)
         operations.append(operation)
         return opRes
     }
     
-    /*public func addToRelation(parentObjectResultIndex: OpResultIndex, columnName: String, children: [[String : Any]]) -> (OpResult) {
-        let (operation, opRes) = uowAddRel!.addToRelation(parentObjectResult: parentObjectResultIndex, columnName: columnName, children: children)
+    public func addToRelation(parentValueReference: OpResultValueReference, columnName: String, childrenResult: OpResult) -> (OpResult) {
+        let (operation, opRes) = uowAddRel!.addToRelation(parentValueReference: parentValueReference, columnName: columnName, childrenResult: childrenResult)
         operations.append(operation)
         return opRes
-    }*/
+    }
+    
+    public func addToRelation(parentTableName: String, parentObjectId: String, columnName: String, whereClauseForChildren: String) -> (OpResult) {
+        let (operation, opRes) = uowAddRel!.addToRelation(parentTableName: parentTableName, parentObjectId: parentObjectId, columnName: columnName, whereClauseForChildren: whereClauseForChildren)
+        operations.append(operation)
+        return opRes
+    }
     
     public func addToRelation(parentTableName: String, parentObject: [String : Any], columnName: String, whereClauseForChildren: String) -> (OpResult) {
-        let (operation, opRes) = uowAddRel!.addToRelation(parentTableName: parentTableName, parentObject: parentObject, columnName: columnName, whereClauseForChildren: whereClauseForChildren)
+        let parentObjectId = TransactionHelper.shared.objectIdFromDictionary(parentObject)
+        let (operation, opRes) = uowAddRel!.addToRelation(parentTableName: parentTableName, parentObjectId: parentObjectId, columnName: columnName, whereClauseForChildren: whereClauseForChildren)
         operations.append(operation)
         return opRes
     }
     
     public func addToRelation(parentObject: Any, columnName: String, whereClauseForChildren: String) -> (OpResult) {
-        let (parentTableName, parentDict) = TransactionHelper.shared.tableAndDictionaryFromEntity(entity: parentObject)
-        let (operation, opRes) = uowAddRel!.addToRelation(parentTableName: parentTableName, parentObject: parentDict as! [String : Any], columnName: columnName, whereClauseForChildren: whereClauseForChildren)
+        let (parentTableName, parentObjectId) = TransactionHelper.shared.tableAndObjectIdFromEntity(entity: parentObject)
+        let (operation, opRes) = uowAddRel!.addToRelation(parentTableName: parentTableName, parentObjectId: parentObjectId, columnName: columnName, whereClauseForChildren: whereClauseForChildren)
         operations.append(operation)
         return opRes
     }
@@ -280,58 +290,61 @@ enum uowProps {
         return opRes
     }
     
-    public func addToRelation(parentTableName: String, parentObjectId: String, columnName: String, childrenResult: OpResult) -> (OpResult) {
-        let (operation, opRes) = uowAddRel!.addToRelation(parentTableName: parentTableName, parentObjectId: parentObjectId, columnName: columnName, childrenResult: childrenResult)
+    public func addToRelation(parentValueReference: OpResultValueReference, columnName: String, whereClauseForChildren: String) -> (OpResult) {
+        let (operation, opRes) = uowAddRel!.addToRelation(parentValueReference: parentValueReference, columnName: columnName, whereClauseForChildren: whereClauseForChildren)
         operations.append(operation)
         return opRes
     }
     
     // set relation
     
-    public func setRelation(parentTableName: String, parentObject: [String : Any], columnName: String, children: [[String : Any]]) -> (OpResult) {
-        let (operation, opRes) = uowSetRel!.setRelation(parentTableName: parentTableName, parentObject: parentObject, columnName: columnName, children: children)
+    public func setRelation(parentTableName: String, parentObjectId: String, columnName: String, childrenObjectIds: [String]) -> (OpResult) {
+        let (operation, opRes) = uowSetRel!.setRelation(parentTableName: parentTableName, parentObjectId: parentObjectId, columnName: columnName, childrenObjectIds: childrenObjectIds)
         operations.append(operation)
         return opRes
+    }
+    
+    public func setRelation(parentTableName: String, parentObjectId: String, columnName: String, children: [Any]) -> (OpResult) {
+        let childrenObjectIds = TransactionHelper.shared.objectIdsFromCustomEntities(children)
+        return setRelation(parentTableName: parentTableName, parentObjectId: parentObjectId, columnName: columnName, childrenObjectIds: childrenObjectIds)
+    }
+    
+    public func setRelation(parentTableName: String, parentObject: [String : Any], columnName: String, childrenObjectIds: [String]) -> (OpResult) {
+        let parentObjectId = TransactionHelper.shared.objectIdFromDictionary(parentObject)
+        return setRelation(parentTableName: parentTableName, parentObjectId: parentObjectId, columnName: columnName, childrenObjectIds: childrenObjectIds)
+    }
+    
+    public func setRelation(parentTableName: String, parentObject: [String : Any], columnName: String, children: [Any]) -> (OpResult) {
+        let parentObjectId = TransactionHelper.shared.objectIdFromDictionary(parentObject)
+        let childrenObjectIds = TransactionHelper.shared.objectIdsFromCustomEntities(children)
+        return setRelation(parentTableName: parentTableName, parentObjectId: parentObjectId, columnName: columnName, childrenObjectIds: childrenObjectIds)
+    }
+    
+    public func setRelation(parentObject: Any, columnName: String, childrenObjectIds: [String]) -> (OpResult) {
+        let (parentTableName, parentObjectId) = TransactionHelper.shared.tableAndObjectIdFromEntity(entity: parentObject)
+        return setRelation(parentTableName: parentTableName, parentObjectId: parentObjectId, columnName: columnName, childrenObjectIds: childrenObjectIds)
     }
     
     public func setRelation(parentObject: Any, columnName: String, children: [Any]) -> (OpResult) {
-        let (parentTableName, parentDict) = TransactionHelper.shared.tableAndDictionaryFromEntity(entity: parentObject)
-        let (_, childrenDictArray) = TransactionHelper.shared.tableAndDictionaryFromEntity(entity: children)
-        let (operation, opRes) = uowSetRel!.setRelation(parentTableName: parentTableName, parentObject: parentDict as! [String : Any], columnName: columnName, children: childrenDictArray as! [[String : Any]])
+        let (parentTableName, parentObjectId) = TransactionHelper.shared.tableAndObjectIdFromEntity(entity: parentObject)
+        let childrenObjectIds = TransactionHelper.shared.objectIdsFromCustomEntities(children)
+        return setRelation(parentTableName: parentTableName, parentObjectId: parentObjectId, columnName: columnName, childrenObjectIds: childrenObjectIds)
+    }
+    
+    public func setRelation(parentTableName: String, parentObjectId: String, columnName: String, whereClauseForChildren: String) -> (OpResult) {
+        let (operation, opRes) = uowSetRel!.setRelation(parentTableName: parentTableName, parentObjectId: parentObjectId, columnName: columnName, whereClauseForChildren: whereClauseForChildren)
         operations.append(operation)
         return opRes
     }
-    
-    public func setRelation(parentObjectResult: OpResult, columnName: String, children: [[String : Any]]) -> (OpResult) {
-        let (operation, opRes) = uowSetRel!.setRelation(parentObjectResult: parentObjectResult, columnName: columnName, children: children)
-        operations.append(operation)
-        return opRes
-    }
-    
-    public func setRelation(parentObjectResult: OpResult, columnName: String, childrenObjects: [Any]) -> (OpResult) {
-        let (_, childrenDictArray) = TransactionHelper.shared.tableAndDictionaryFromEntity(entity: childrenObjects)
-        let (operation, opRes) = uowSetRel!.setRelation(parentObjectResult: parentObjectResult, columnName: columnName, children: childrenDictArray as! [[String : Any]])
-        operations.append(operation)
-        return opRes
-    }
-    
-    /*public func setRelation(parentObjectResultIndex: OpResultIndex, columnName: String, children: [[String : Any]]) -> (OpResult) {
-        let (operation, opRes) = uowSetRel!.setRelation(parentObjectResult: parentObjectResultIndex, columnName: columnName, children: children)
-        operations.append(operation)
-        return opRes
-    }*/
     
     public func setRelation(parentTableName: String, parentObject: [String : Any], columnName: String, whereClauseForChildren: String) -> (OpResult) {
-        let (operation, opRes) = uowSetRel!.setRelation(parentTableName: parentTableName, parentObject: parentObject, columnName: columnName, whereClauseForChildren: whereClauseForChildren)
-        operations.append(operation)
-        return opRes
+        let parentObjectId = TransactionHelper.shared.objectIdFromDictionary(parentObject)
+        return setRelation(parentTableName: parentTableName, parentObjectId: parentObjectId, columnName: columnName, whereClauseForChildren: whereClauseForChildren)
     }
     
     public func setRelation(parentObject: Any, columnName: String, whereClauseForChildren: String) -> (OpResult) {
-        let (parentTableName, parentDict) = TransactionHelper.shared.tableAndDictionaryFromEntity(entity: parentObject)
-        let (operation, opRes) = uowSetRel!.setRelation(parentTableName: parentTableName, parentObject: parentDict as! [String : Any], columnName: columnName, whereClauseForChildren: whereClauseForChildren)
-        operations.append(operation)
-        return opRes
+        let (parentTableName, parentObjectId) = TransactionHelper.shared.tableAndObjectIdFromEntity(entity: parentObject)
+        return setRelation(parentTableName: parentTableName, parentObjectId: parentObjectId, columnName: columnName, whereClauseForChildren: whereClauseForChildren)
     }
     
     public func setRelation(parentObjectResult: OpResult, columnName: String, whereClauseForChildren: String) -> (OpResult) {
@@ -340,15 +353,19 @@ enum uowProps {
         return opRes
     }
     
-    public func setRelation(parentTableName: String, parentObjectId: String, columnName: String, childrenResult: OpResult) -> (OpResult) {
-        let (operation, opRes) = uowSetRel!.setRelation(parentTableName: parentTableName, parentObjectId: parentObjectId, columnName: columnName, childrenResult: childrenResult)
+    public func setRelation(parentValueReference: OpResultValueReference, columnName: String, whereClauseForChildren: String) -> (OpResult) {
+        let (operation, opRes) = uowSetRel!.setRelation(parentValueReference: parentValueReference, columnName: columnName, whereClauseForChildren: whereClauseForChildren)
         operations.append(operation)
         return opRes
     }
     
+    // TODO
+    
+    // ********************************************************************************************************************************************************
+    
     // delete relation
     
-    public func deleteRelation(parentTableName: String, parentObject: [String : Any], columnName: String, children: [[String : Any]]) -> (OpResult) {
+    /*public func deleteRelation(parentTableName: String, parentObject: [String : Any], columnName: String, children: [[String : Any]]) -> (OpResult) {
         let (operation, opRes) = uowDeleteRel!.deleteRelation(parentTableName: parentTableName, parentObject: parentObject, columnName: columnName, children: children)
         operations.append(operation)
         return opRes
@@ -404,7 +421,7 @@ enum uowProps {
         let (operation, opRes) = uowDeleteRel!.deleteRelation(parentTableName: parentTableName, parentObjectId: parentObjectId, columnName: columnName, childrenResult: childrenResult)
         operations.append(operation)
         return opRes
-    }
+    }*/
     
     // execute
     public func execute(responseHandler: ((UnitOfWorkResult) -> Void)!, errorHandler: ((Fault) -> Void)!) {

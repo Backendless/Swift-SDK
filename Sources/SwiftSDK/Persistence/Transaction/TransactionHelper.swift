@@ -32,7 +32,17 @@ class TransactionHelper {
         return OpResult(tableName: tableName, operationType: operationType, opResultId: operationResultId, uow: uow)
     }
     
-    func tableAndDictionaryFromEntity(entity: Any) -> (String, Any) {
+    func tableAndObjectIdFromEntity(entity: Any) -> (String, String) {
+        let tableName = psu.getTableName(entity: type(of: entity))
+        let entityDictionary = psu.entityToDictionary(entity: entity)
+        var objectId = ""
+        if let entityObjectId = entityDictionary["objectId"] as? String {
+            objectId = entityObjectId
+        }
+        return (tableName, objectId)
+    }
+    
+    func tableAndDictionaryFromEntity(_ entity: Any) -> (String, Any) {
         if entity is [Any] {
             var tableName = ""
             var dictionaryArray = [[String : Any]]()
@@ -45,6 +55,32 @@ class TransactionHelper {
         let tableName = psu.getTableName(entity: type(of: entity))
         let entityDictionary = psu.entityToDictionary(entity: entity)
         return (tableName, entityDictionary)
+    }
+    
+    func objectIdFromDictionary(_ dictionary: [String : Any]) -> String {
+        if let objectId = dictionary["objectId"] as? String {
+            return objectId
+        }
+        return ""
+    }
+    
+    func objectIdFromCustomEntity(_ entity: Any) -> String {
+        let entityDict = PersistenceHelper.shared.entityToDictionary(entity: entity)
+        if let objectId = entityDict["objectId"] as? String {
+            return objectId
+        }
+        return ""
+    }
+    
+    func objectIdsFromCustomEntities(_ entities: [Any]) -> [String] {
+        var objectIds = [String]()
+        for entity in entities {
+            let objectId = objectIdFromCustomEntity(entity)
+            if !objectId.isEmpty {
+                objectIds.append(objectId)
+            }
+        }
+        return objectIds
     }
     
     func generateOperationTypeString(_ operationType: OperationType) -> String {

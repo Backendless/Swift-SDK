@@ -29,18 +29,18 @@ class UnitOfWorkCreate {
         self.uow = uow
     }
     
-    func create(tableName: String, entity: [String : Any]) -> (Operation, OpResult) {
+    func create(tableName: String, objectToSave: [String : Any]) -> (Operation, OpResult) {
         let opResultId = generateOpResultId(operationType: .CREATE, tableName: tableName)
-        let payload = TransactionHelper.shared.preparePayloadWithOpResultValueReference(entity)
+        let payload = TransactionHelper.shared.preparePayloadWithOpResultValueReference(objectToSave)
         let operation = Operation(operationType: .CREATE, tableName: tableName, opResultId: opResultId, payload: payload)
         let opResult = TransactionHelper.shared.makeOpResult(tableName: tableName, operationResultId: opResultId, operationType: .CREATE, uow: uow)
         return (operation, opResult)
     }
     
-    func bulkCreate(tableName: String, entities: [[String : Any]]) -> (Operation, OpResult) {
+    func bulkCreate(tableName: String, objectsToSave: [[String : Any]]) -> (Operation, OpResult) {
         var preparedPayload = [[String : Any]]()
-        for entity in entities {
-            let payload = TransactionHelper.shared.preparePayloadWithOpResultValueReference(entity)
+        for objectToSave in objectsToSave {
+            let payload = TransactionHelper.shared.preparePayloadWithOpResultValueReference(objectToSave)
             preparedPayload.append(payload)
         }
         let opResultId = generateOpResultId(operationType: .CREATE_BULK, tableName: tableName)
