@@ -47,7 +47,7 @@ class PersistenceServiceUtils {
         })
     }
     
-    func create(entity: [String : Any], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    func create(entity: [String : Any], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {        
         let headers = ["Content-Type": "application/json"]
         let parameters = PersistenceHelper.shared.convertDictionaryValuesFromGeometryType(entity)
         BackendlessRequestManager(restMethod: "data/\(tableName)", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
@@ -55,9 +55,13 @@ class PersistenceServiceUtils {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
-                else if let resultDictionary = (result as! JSON).dictionaryObject,
-                    let responseDictionary = PersistenceHelper.shared.convertToBLType(resultDictionary) as? [String : Any] {
-                    responseHandler(responseDictionary)
+                else if let resultDictionary = (result as! JSON).dictionaryObject {
+                    if let responseDictionary = PersistenceHelper.shared.convertToBLType(resultDictionary) as? [String : Any] {
+                        responseHandler(responseDictionary)
+                    }
+                    else {
+                        responseHandler(resultDictionary)
+                    }
                 }
             }
         })
@@ -99,9 +103,13 @@ class PersistenceServiceUtils {
                             updatedUser.setUserToken(value: currentToken)
                             Backendless.shared.userService.setPersistentUser(currentUser: updatedUser)
                         }
-                        else if let resultDictionary = (result as! JSON).dictionaryObject,
-                            let responseDictionary = PersistenceHelper.shared.convertToBLType(resultDictionary) as? [String : Any] {
-                            responseHandler(responseDictionary)
+                        if let resultDictionary = (result as! JSON).dictionaryObject {
+                            if let responseDictionary = PersistenceHelper.shared.convertToBLType(resultDictionary) as? [String : Any] {
+                                responseHandler(responseDictionary)
+                            }
+                            else {
+                                responseHandler(resultDictionary)
+                            }
                         }
                     }
                 }
@@ -193,7 +201,26 @@ class PersistenceServiceUtils {
             parameters["relationsPageSize"] = relationsPageSize
         }
         if let properties = queryBuilder?.getProperties() {
-            parameters["props"] = properties
+            var props = [String]()
+            for property in properties {
+                if !property.isEmpty {
+                    props.append(property)
+                }
+            }
+            if !props.isEmpty {
+                parameters["props"] = props
+            }
+        }
+        if let excludedProperties = queryBuilder?.getExcludedProperties() {
+            var excludeProps = [String]()
+            for property in excludedProperties {
+                if !property.isEmpty {
+                    excludeProps.append(property)
+                }
+            }
+            if !excludeProps.isEmpty {
+                parameters["excludeProps"] = DataTypesUtils.shared.arrayToString(array: excludeProps)
+            }
         }
         if let sortBy = queryBuilder?.getSortBy(), sortBy.count > 0 {
             parameters["sortBy"] = DataTypesUtils.shared.arrayToString(array: sortBy)
@@ -221,10 +248,14 @@ class PersistenceServiceUtils {
                 else {
                     var resultArray = [[String: Any]]()
                     for resultObject in result as! [JSON] {
-                        if let resultDictionary = resultObject.dictionaryObject,
-                            let responseDictionary = PersistenceHelper.shared.convertToBLType(resultDictionary) as? [String : Any] {
-                            resultArray.append(responseDictionary)
-                        }
+                        if let resultDictionary = resultObject.dictionaryObject {
+                            if let responseDictionary = PersistenceHelper.shared.convertToBLType(resultDictionary) as? [String : Any] {
+                                resultArray.append(responseDictionary)
+                            }
+                            else {
+                                resultArray.append(resultDictionary)
+                            }
+                        }                            
                     }
                     responseHandler(resultArray)
                 }
@@ -250,39 +281,65 @@ class PersistenceServiceUtils {
         
         if relationsPageSize != nil {
             restMethod += "?relationsPageSize=\(relationsPageSize!)"
-            if related != nil, relationsDepth! > 0 {
+            if related != nil, relationsDepth != nil, relationsDepth! > 0 {
                 let relatedString = DataTypesUtils.shared.arrayToString(array: related!)
                 restMethod += "&loadRelations=" + relatedString + "&relationsDepth=" + String(relationsDepth!)
             }
-            else if related != nil, relationsDepth == 0 {
+            else if related != nil, relationsDepth != nil, relationsDepth == 0 {
                 let relatedString = DataTypesUtils.shared.arrayToString(array: related!)
                 restMethod += "&loadRelations=" + relatedString
             }
-            else if related == nil, relationsDepth! > 0 {
+            else if related == nil, relationsDepth != nil, relationsDepth! > 0 {
                 restMethod += "&relationsDepth=" + String(relationsDepth!)
             }
         }
         else {
-            if related != nil, relationsDepth! > 0 {
+            if related != nil, relationsDepth != nil, relationsDepth! > 0 {
                 let relatedString = DataTypesUtils.shared.arrayToString(array: related!)
                 restMethod += "?loadRelations=" + relatedString + "&relationsDepth=" + String(relationsDepth!)
             }
-            else if related != nil, relationsDepth == 0 {
+            else if related != nil, relationsDepth != nil, relationsDepth == 0 {
                 let relatedString = DataTypesUtils.shared.arrayToString(array: related!)
                 restMethod += "?loadRelations=" + relatedString
             }
-            else if related == nil, relationsDepth! > 0 {
+            else if related == nil, relationsDepth != nil, relationsDepth! > 0 {
                 restMethod += "?relationsDepth=" + String(relationsDepth!)
             }
-        }  
+        }
+        if let properties = queryBuilder?.getProperties() {
+            var props = [String]()
+            for property in properties {
+                if !property.isEmpty {
+                    props.append(property)
+                }
+            }
+            if !props.isEmpty {
+                restMethod += "&props=" + DataTypesUtils.shared.arrayToString(array: props)
+            }
+        }
+        if let excludedProperties = queryBuilder?.getExcludedProperties() {
+            var excludeProps = [String]()
+            for property in excludedProperties {
+                if !property.isEmpty {
+                    excludeProps.append(property)
+                }
+            }
+            if !excludeProps.isEmpty {
+                restMethod += "&excludeProps=" + DataTypesUtils.shared.arrayToString(array: excludeProps)
+            }
+        }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
-                else if let resultDictionary = (result as! JSON).dictionaryObject,
-                    let responseDictionary = PersistenceHelper.shared.convertToBLType(resultDictionary) as? [String : Any] {
-                    responseHandler(responseDictionary)
+                else if let resultDictionary = (result as! JSON).dictionaryObject {
+                    if let responseDictionary = PersistenceHelper.shared.convertToBLType(resultDictionary) as? [String : Any] {
+                        responseHandler(responseDictionary)
+                    }
+                    else {
+                        responseHandler(resultDictionary)
+                    }
                 }
             }
         })
@@ -367,8 +424,16 @@ class PersistenceServiceUtils {
         if let sortBy = queryBuilder.getSortBy(), sortBy.count > 0 {
             parameters["sortBy"] = DataTypesUtils.shared.arrayToString(array: sortBy)
         }
-        if let props = queryBuilder.getProperties() {
-            parameters["props"] = DataTypesUtils.shared.arrayToString(array: props)
+        if let properties = queryBuilder.getProperties() {
+            var props = [String]()
+            for property in properties {
+                if !property.isEmpty {
+                    props.append(property)
+                }
+            }
+            if !props.isEmpty {
+                parameters["props"] = DataTypesUtils.shared.arrayToString(array: props)
+            }
         }
         if queryBuilder.getRelationName().isEmpty {
             let fault = Fault(message: "Incorrect relationName property")

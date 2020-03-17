@@ -53,6 +53,10 @@ class PersistenceHelper {
         else if let objectId = StoredObjects.shared.getObjectId(forObject: entity as! AnyHashable) {
             return objectId
         }
+        let entityDict = PersistenceHelper.shared.entityToDictionary(entity: entity)
+        if let objectId = entityDict ["objectId"] as? String {
+            return objectId
+        }
         return nil
     }
     
@@ -121,73 +125,76 @@ class PersistenceHelper {
     }
     
     func entityToDictionary(entity: Any) -> [String: Any] {
-        var entityDictionary = [String: Any]()
-        if let userEntity = entity as? BackendlessUser {
-            let properties = userEntity.getProperties()
-            for (key, value) in properties {
-                entityDictionary[key] = value
+        if let user = entity as? BackendlessUser {
+            var userDict = [String : Any]()
+            let userProperties = user.getProperties()
+            for (key, value) in userProperties {
+                userDict[key] = value
             }
-        }
-        else {
-            let resultClass = type(of: entity) as! NSObject.Type
-            var outCount : UInt32 = 0
-            if let properties = class_copyPropertyList(resultClass.self, &outCount) {
-                
-                let entityClassName = getClassNameWithoutModule((entity as! NSObject).classForCoder)
-                let columnToPropertyMappings = Mappings.shared.getColumnToPropertyMappings(className: entityClassName)
-                
-                for i : UInt32 in 0..<outCount {
-                    if let key = NSString(cString: property_getName(properties[Int(i)]), encoding: String.Encoding.utf8.rawValue) as String? {
-                        if let value = (entity as! NSObject).value(forKey: key) {
-                            var resultValue = value
-                            if !(value is String), !(value is NSNumber), !(value is NSNull), !(value is BLGeometry) {
-                                if let arrayValue = value as? [Any] {
-                                    var resultArray = [Any]()
-                                    for arrayVal in arrayValue {
-                                        if !(arrayVal is Bool), !(arrayVal is Int), !(arrayVal is Float), !(arrayVal is Double), !(arrayVal is Character), !(arrayVal is String), !(arrayVal is [String : Any]) {
-                                            resultArray.append(entityToDictionaryWithClassProperty(entity: arrayVal))
-                                        }
-                                        else {
-                                            resultArray.append(arrayVal)
-                                        }
+            userDict["email"] = user.email
+            userDict["password"] = user._password
+            userDict["name"] = user.name
+            return userDict
+        }  
+        var entityDictionary = [String: Any]()
+        let resultClass = type(of: entity) as! NSObject.Type
+        var outCount : UInt32 = 0
+        if let properties = class_copyPropertyList(resultClass.self, &outCount) {
+            
+            let entityClassName = getClassNameWithoutModule((entity as! NSObject).classForCoder)
+            let columnToPropertyMappings = Mappings.shared.getColumnToPropertyMappings(className: entityClassName)
+            
+            for i : UInt32 in 0..<outCount {
+                if let key = NSString(cString: property_getName(properties[Int(i)]), encoding: String.Encoding.utf8.rawValue) as String? {
+                    if let value = (entity as! NSObject).value(forKey: key) {
+                        var resultValue = value
+                        if !(value is String), !(value is NSNumber), !(value is NSNull), !(value is BLGeometry) {
+                            if let arrayValue = value as? [Any] {
+                                var resultArray = [Any]()
+                                for arrayVal in arrayValue {
+                                    if !(arrayVal is Bool), !(arrayVal is Int), !(arrayVal is Float), !(arrayVal is Double), !(arrayVal is Character), !(arrayVal is String), !(arrayVal is [String : Any]) {
+                                        resultArray.append(entityToDictionaryWithClassProperty(entity: arrayVal))
                                     }
-                                    resultValue = resultArray
-                                }
-                                else if let dictionaryValue = value as? [String : Any] {
-                                    var resultDictionary = [String : Any]()
-                                    for (key, dictionaryVal) in dictionaryValue {
-                                        if !(dictionaryVal is String), !(dictionaryVal is NSNumber), !(dictionaryVal is NSNull) {
-                                            resultDictionary[key] = entityToDictionaryWithClassProperty(entity: dictionaryVal)
-                                        }
-                                        else {
-                                            resultDictionary[key] = dictionaryVal
-                                        }
+                                    else {
+                                        resultArray.append(arrayVal)
                                     }
-                                    resultValue = resultDictionary
                                 }
-                                else if let dateValue = value as? Date {
-                                    resultValue = DataTypesUtils.shared.dateToInt(date: dateValue)
-                                }
-                                else if let backendlessFileValue = value as? BackendlessFile {
-                                    resultValue = backendlessFileValue.fileUrl ?? ""
-                                }
-                                else {
-                                    resultValue = entityToDictionaryWithClassProperty(entity: value)
-                                }
+                                resultValue = resultArray
                             }
-                            if let mappedKey = columnToPropertyMappings.getKey(forValue: key) {
-                                entityDictionary[mappedKey] = resultValue
+                            else if let dictionaryValue = value as? [String : Any] {
+                                var resultDictionary = [String : Any]()
+                                for (key, dictionaryVal) in dictionaryValue {
+                                    if !(dictionaryVal is String), !(dictionaryVal is NSNumber), !(dictionaryVal is NSNull) {
+                                        resultDictionary[key] = entityToDictionaryWithClassProperty(entity: dictionaryVal)
+                                    }
+                                    else {
+                                        resultDictionary[key] = dictionaryVal
+                                    }
+                                }
+                                resultValue = resultDictionary
+                            }
+                            else if let dateValue = value as? Date {
+                                resultValue = DataTypesUtils.shared.dateToInt(date: dateValue)
+                            }
+                            else if let backendlessFileValue = value as? BackendlessFile {
+                                resultValue = backendlessFileValue.fileUrl ?? ""
                             }
                             else {
-                                entityDictionary[key] = resultValue
-                            }
-                            if let objectId = StoredObjects.shared.getObjectId(forObject: entity as! AnyHashable) {
-                                entityDictionary["objectId"] = objectId
+                                resultValue = entityToDictionaryWithClassProperty(entity: value)
                             }
                         }
-                        else if (entity as! NSObject).value(forKey: key) == nil {
-                            entityDictionary[key] = NSNull()
+                        if let mappedKey = columnToPropertyMappings.getKey(forValue: key) {
+                            entityDictionary[mappedKey] = resultValue
                         }
+                        else {
+                            entityDictionary[key] = resultValue
+                        }
+                        if let objectId = StoredObjects.shared.getObjectId(forObject: entity as! AnyHashable) {
+                            entityDictionary["objectId"] = objectId
+                        }
+                    }
+                    else if (entity as! NSObject).value(forKey: key) == nil {
+                        entityDictionary[key] = NSNull()
                     }
                 }
             }
@@ -209,6 +216,12 @@ class PersistenceHelper {
     }
     
     func dictionaryToEntity(_ dictionary: [String: Any], className: String) -> Any? {
+        
+        let convertedEntity = convertToBLType(dictionary)
+        if !(convertedEntity is [String : Any]) {
+            return convertedEntity
+        }
+        
         var entityClassNameWithModule = className
         let classMappings = Mappings.shared.getTableToClassMappings()
         if classMappings.keys.contains(className) {
@@ -342,7 +355,7 @@ class PersistenceHelper {
         }
         return stringValue
     }
-
+    
     private func dictionaryToMappedClass(_ dictionary: [String : Any]) -> Any? {
         if var className = dictionary["___class"] as? String {
             let classMappings = Mappings.shared.getTableToClassMappings()

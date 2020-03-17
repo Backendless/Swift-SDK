@@ -39,7 +39,7 @@
         case channels
     }
     
-    init(objectId: String?, deviceToken: String?, deviceId: String?, os: String?, osVersion: String?, expiration: Date?, channels: [String]?) {
+    public init(objectId: String?, deviceToken: String?, deviceId: String?, os: String?, osVersion: String?, expiration: Date?, channels: [String]?) {
         self.objectId = objectId
         self.deviceToken = deviceToken
         self.deviceId = deviceId

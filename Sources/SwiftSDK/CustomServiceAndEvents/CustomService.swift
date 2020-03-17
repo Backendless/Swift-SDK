@@ -59,6 +59,9 @@
                 else if let resultArray = (result as! JSON).arrayObject {
                     responseHandler(JSONUtils.shared.jsonToObject(objectToParse: resultArray))
                 }
+                else {
+                    responseHandler(nil)
+                }
             }
         }
         else {
