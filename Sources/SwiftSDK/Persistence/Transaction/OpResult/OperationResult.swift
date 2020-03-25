@@ -1,5 +1,5 @@
 //
-//  UnitOfWorkResult.swift
+//  OperationResult.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,9 +19,8 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers public class UnitOfWorkResult: NSObject {
+@objcMembers public class OperationResult: NSObject {
     
-    public var success = false
-    public var error: TransactionOperationError?
-    public var results: [String : OperationResult]?
+    public var operationType: OperationType?
+    public var result: Any?
 }

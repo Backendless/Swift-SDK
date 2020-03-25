@@ -71,7 +71,7 @@ class PayloadHelper {
             }
         }
         payload["operations"] = _operations
-        payload["isolationLevelEnum"] = isolation        
+        payload["isolationLevelEnum"] = isolation?.getName()
         return payload
     }
     

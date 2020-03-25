@@ -383,13 +383,21 @@ class ProcessResponse {
                 uowResult.error = adaptToTransactionOperationError(errorDictionary: errorDictionary)
             }
         }
-        if var results = unitOfWorkDictionary["results"] as? [String : Any] {
-            for (key, value) in results {
-                if value is [String : Any] {
-                    results[key] = processResultValue(value as! [String : Any])
+        if let results = unitOfWorkDictionary["results"] as? [String : Any] {
+            uowResult.results = [String : OperationResult]()
+            for (opResultId, operationResultDict) in results {
+                if let operationResultDict = operationResultDict as? [String : Any] {
+                    let operationResult = OperationResult()
+                    if let type = operationResultDict["type"] as? String {
+                        operationResult.operationType = OperationType.from(stringValue: type)
+                    }
+                    if let result = operationResultDict["result"] as? [String : Any] {
+                        operationResult.result = processResultValue(result)
+                    }
+                    // else if result is Array, int or smth else...
+                    uowResult.results?[opResultId] = operationResult
                 }
             }
-            uowResult.results = results
         }
         return uowResult
     }

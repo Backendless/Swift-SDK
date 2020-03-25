@@ -81,6 +81,7 @@
 		5E545EEE21DFBA4400881ED0 /* GeoPointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E545EED21DFBA4400881ED0 /* GeoPointTests.swift */; };
 		5E5716E82242803A00C7B048 /* SharedObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5716E72242803A00C7B048 /* SharedObjectTests.swift */; };
 		5E572D4B21B8043E000713B0 /* ProcessResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E572D4A21B8043E000713B0 /* ProcessResponse.swift */; };
+		5E5EA767242B9B8100690818 /* OperationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5EA766242B9B8100690818 /* OperationResult.swift */; };
 		5E60834B21EF721900268B4D /* DictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E60834A21EF721900268B4D /* DictionaryExtension.swift */; };
 		5E642B9E227206DC00E091C4 /* Events.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E642B9D227206DC00E091C4 /* Events.swift */; };
 		5E64F0BF21C50D8E00590B04 /* BackendlessRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E64F0BE21C50D8E00590B04 /* BackendlessRequestManager.swift */; };
@@ -243,6 +244,7 @@
 		5E545EED21DFBA4400881ED0 /* GeoPointTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoPointTests.swift; sourceTree = "<group>"; };
 		5E5716E72242803A00C7B048 /* SharedObjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedObjectTests.swift; sourceTree = "<group>"; };
 		5E572D4A21B8043E000713B0 /* ProcessResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessResponse.swift; sourceTree = "<group>"; wrapsLines = 0; };
+		5E5EA766242B9B8100690818 /* OperationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationResult.swift; sourceTree = "<group>"; };
 		5E5FE02821F7359700387F8B /* ChildTestClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChildTestClass.swift; sourceTree = "<group>"; };
 		5E60834A21EF721900268B4D /* DictionaryExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryExtension.swift; sourceTree = "<group>"; };
 		5E642B9D227206DC00E091C4 /* Events.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Events.swift; sourceTree = "<group>"; };
@@ -835,6 +837,7 @@
 		5EED4AEE23E84B9F00DB006F /* OpResult */ = {
 			isa = PBXGroup;
 			children = (
+				5E5EA766242B9B8100690818 /* OperationResult.swift */,
 				5E1DB59023E1A0BA00955319 /* OpResult.swift */,
 				5E91F492241A811E00E97260 /* OpResultValueReference.swift */,
 			);
@@ -1026,6 +1029,7 @@
 				5E7E8A6021ECC94A00AA04E1 /* UserDefaultsHelper.swift in Sources */,
 				5E09B01222645CE60073DA5E /* LogMessage.swift in Sources */,
 				5EC7D161222FB56700FD3FF4 /* PublishOptions.swift in Sources */,
+				5E5EA767242B9B8100690818 /* OperationResult.swift in Sources */,
 				5E09B00C22645B9A0073DA5E /* Logging.swift in Sources */,
 				5E1CC2F9225254140011D5C8 /* BackendlessFile.swift in Sources */,
 				5EAA20B823995B1D00A39A38 /* GeometryTestClass.swift in Sources */,

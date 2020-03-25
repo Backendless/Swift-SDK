@@ -58,6 +58,10 @@
         else if intValue == 9 { return "DELETE_RELATION" }
         return nil
     }
+    
+    public func getOperationName() -> String? {
+        return OperationType.from(intValue: self.rawValue)
+    }
 }
 
 // ***************************************************

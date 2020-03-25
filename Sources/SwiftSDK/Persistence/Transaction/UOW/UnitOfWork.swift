@@ -24,6 +24,14 @@
     case READ_COMMITTED
     case READ_UNCOMMITTED
     case SERIALIZABLE
+    
+    public func getName() -> String {
+        if self == .REPEATABLE_READ { return "REPEATABLE_READ" }
+        else if self == .READ_COMMITTED { return "READ_COMMITTED" }
+        else if self == .READ_UNCOMMITTED { return "READ_UNCOMMITTED" }
+        else if self == .SERIALIZABLE { return "SERIALIZABLE" }
+        return "REPEATABLE_READ"
+    }
 }
 
 // **************************************************************
@@ -39,7 +47,7 @@ enum uowProps {
 
 @objcMembers public class UnitOfWork: NSObject {
     
-    var isolation: IsolationLevel?
+    public var isolation = IsolationLevel.REPEATABLE_READ
     var operations = [Operation]()
     
     private let psu = PersistenceServiceUtils(tableName: "")
