@@ -83,6 +83,16 @@ class TransactionHelper {
         return objectIds
     }
     
+    func objectIdsFromDictionaries(_ dictionaries: [[String : Any]]) -> [String] {
+        var objectIds = [String]()
+        for dictionary in dictionaries {
+            if let objectId = dictionary["objectId"] as? String {
+                objectIds.append(objectId)
+            }
+        }
+        return objectIds
+    }
+    
     func generateOperationTypeString(_ operationType: OperationType) -> String {
         return OperationType.from(intValue: operationType.rawValue)!.lowercased().replacingOccurrences(of: "_", with: "")
     }

@@ -394,7 +394,16 @@ class ProcessResponse {
                     if let result = operationResultDict["result"] as? [String : Any] {
                         operationResult.result = processResultValue(result)
                     }
-                    // else if result is Array, int or smth else...
+                    else if let result = operationResultDict["result"] as? [[String : Any]] {
+                        var resultArray = [Any]()
+                        for dictionary in result {
+                            resultArray.append(processResultValue(dictionary))
+                        }
+                        operationResult.result = resultArray
+                    }
+                    else {
+                        operationResult.result = operationResultDict["result"]
+                    }
                     uowResult.results?[opResultId] = operationResult
                 }
             }

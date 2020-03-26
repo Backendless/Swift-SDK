@@ -38,6 +38,88 @@ class UnitOfWorkSetRelation {
         return (operation, opResult)
     }
     
+    func setRelation(parentTableName: String, parentObjectId: String, columnName: String, childrenResult: OpResult) -> (Operation, OpResult) {
+        let opResultId = generateOpResultId(tableName: parentTableName)
+        let payload = ["parentObject": parentObjectId,
+                        "relationColumn": columnName,
+                        "unconditional": [[uowProps.ref: true,
+                                           uowProps.propName: "objectId",
+                                           uowProps.opResultId: childrenResult.makeReference()[uowProps.opResultId]]]] as [String : Any]
+        let operation = Operation(operationType: .SET_RELATION, tableName: parentTableName, opResultId: opResultId, payload: payload)
+        let opResult = TransactionHelper.shared.makeOpResult(tableName: parentTableName, operationResultId: opResultId, operationType: .SET_RELATION, uow: uow)
+        return (operation, opResult)
+    }
+    
+    func setRelation(parentObjectResult: OpResult, columnName: String, childrenObjectIds: [String]) -> (Operation, OpResult) {
+        let parentTableName = parentObjectResult.tableName!
+        let opResultId = generateOpResultId(tableName: parentTableName)
+        let payload = ["parentObject": [uowProps.ref: true,
+                                        uowProps.propName: "objectId",
+                                        uowProps.opResultId: parentObjectResult.makeReference()[uowProps.opResultId]],
+                       "relationColumn" : columnName,
+                       "unconditional": childrenObjectIds] as [String : Any]
+        let operation = Operation(operationType: .SET_RELATION, tableName: parentTableName, opResultId: opResultId, payload: payload)
+        let opResult = TransactionHelper.shared.makeOpResult(tableName: parentTableName, operationResultId: opResultId, operationType: .SET_RELATION, uow: uow)
+        return (operation, opResult)
+    }
+    
+    func setRelation(parentObjectResult: OpResult, columnName: String, childrenResult: OpResult) -> (Operation, OpResult) {
+        let parentTableName = parentObjectResult.tableName!
+        let opResultId = generateOpResultId(tableName: parentTableName)
+        let payload = ["parentObject": [uowProps.ref: true,
+                                        uowProps.propName: "objectId",
+                                        uowProps.opResultId: parentObjectResult.makeReference()[uowProps.opResultId]],
+                       "relationColumn" : columnName,
+                       "unconditional": [[uowProps.ref: true,
+                                          uowProps.propName: "objectId",
+                                          uowProps.opResultId: childrenResult.makeReference()[uowProps.opResultId]]]] as [String : Any]
+        let operation = Operation(operationType: .SET_RELATION, tableName: parentTableName, opResultId: opResultId, payload: payload)
+        let opResult = TransactionHelper.shared.makeOpResult(tableName: parentTableName, operationResultId: opResultId, operationType: .SET_RELATION, uow: uow)
+        return (operation, opResult)
+    }
+    
+    func setRelation(parentValueReference: OpResultValueReference, columnName: String, childrenObjectIds: [String]) -> (Operation, OpResult) {
+        let parentObjectResult = parentValueReference.opResult!
+        let (parentTableName, opResultId) = prepareForSetRelation(result: parentObjectResult)
+        var payload = ["relationColumn": columnName, "unconditional": childrenObjectIds] as [String : Any]
+        if parentObjectResult.operationType == .CREATE_BULK {
+            payload["parentObject"] = [uowProps.ref: true,
+                                       uowProps.opResultId: parentValueReference.makeReference()?[uowProps.opResultId],
+                                       uowProps.resultIndex: parentValueReference.makeReference()?[uowProps.resultIndex]]
+        }
+        else if parentObjectResult.operationType == .FIND {
+            payload["parentObject"] = [uowProps.ref: true,
+                                       uowProps.propName: "objectId",
+                                       uowProps.opResultId: parentValueReference.makeReference()?[uowProps.opResultId],
+                                       uowProps.resultIndex: parentValueReference.makeReference()?[uowProps.resultIndex]]
+        }
+        let operation = Operation(operationType: .SET_RELATION, tableName: parentTableName, opResultId: opResultId, payload: payload)
+        let opResult = TransactionHelper.shared.makeOpResult(tableName: parentTableName, operationResultId: opResultId, operationType: .SET_RELATION, uow: uow)
+        return (operation, opResult)
+    }
+    
+    func setRelation(parentValueReference: OpResultValueReference, columnName: String, childrenResult: OpResult) -> (Operation, OpResult) {
+        let parentObjectResult = parentValueReference.opResult!
+        let (parentTableName, opResultId) = prepareForSetRelation(result: parentObjectResult)
+        var payload = ["relationColumn": columnName, "unconditional": [[uowProps.ref: true,
+                                                                        uowProps.propName: "objectId",
+                                                                        uowProps.opResultId: childrenResult.makeReference()[uowProps.opResultId]]]] as [String : Any]
+        if parentObjectResult.operationType == .CREATE_BULK {
+            payload["parentObject"] = [uowProps.ref: true,
+                                       uowProps.opResultId: parentValueReference.makeReference()?[uowProps.opResultId],
+                                       uowProps.resultIndex: parentValueReference.makeReference()?[uowProps.resultIndex]]
+        }
+        else if parentObjectResult.operationType == .FIND {
+            payload["parentObject"] = [uowProps.ref: true,
+                                       uowProps.propName: "objectId",
+                                       uowProps.opResultId: parentValueReference.makeReference()?[uowProps.opResultId],
+                                       uowProps.resultIndex: parentValueReference.makeReference()?[uowProps.resultIndex]]
+        }
+        let operation = Operation(operationType: .SET_RELATION, tableName: parentTableName, opResultId: opResultId, payload: payload)
+        let opResult = TransactionHelper.shared.makeOpResult(tableName: parentTableName, operationResultId: opResultId, operationType: .SET_RELATION, uow: uow)
+        return (operation, opResult)
+    }
+    
     func setRelation(parentTableName: String, parentObjectId: String, columnName: String, whereClauseForChildren: String) -> (Operation, OpResult) {
         let opResultId = generateOpResultId(tableName: parentTableName)
         let payload = ["parentObject": parentObjectId,
@@ -51,11 +133,11 @@ class UnitOfWorkSetRelation {
     func setRelation(parentObjectResult: OpResult, columnName: String, whereClauseForChildren: String) -> (Operation, OpResult) {
         let tableName = parentObjectResult.tableName!
         let opResultId = generateOpResultId(tableName: tableName)
-        let payload = ["relationColumn": columnName,
-                       "conditional": whereClauseForChildren,
-                       "parentObject": [uowProps.ref: true,
+        let payload = ["parentObject": [uowProps.ref: true,
                                         uowProps.propName: "objectId",
-                                        uowProps.opResultId: parentObjectResult.makeReference()[uowProps.opResultId]]] as [String : Any]
+                                        uowProps.opResultId: parentObjectResult.makeReference()[uowProps.opResultId]],
+                       "relationColumn": columnName,
+                       "conditional": whereClauseForChildren] as [String : Any]
         let operation = Operation(operationType: .SET_RELATION, tableName: tableName, opResultId: opResultId, payload: payload)
         let opResult = TransactionHelper.shared.makeOpResult(tableName: tableName, operationResultId: opResultId, operationType: .SET_RELATION, uow: uow)
         return (operation, opResult)

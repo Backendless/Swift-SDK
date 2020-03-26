@@ -42,7 +42,6 @@ extension OpResultErrors: LocalizedError {
     public var tableName: String?
     public var operationType: OperationType?
     public var opResultId: String?
-    public var result: [String : OperationResult]?
     
     private var uow: UnitOfWork?
     
