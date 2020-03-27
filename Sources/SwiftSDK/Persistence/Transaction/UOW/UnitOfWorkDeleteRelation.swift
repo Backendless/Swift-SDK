@@ -28,110 +28,154 @@ class UnitOfWorkDeleteRelation {
         self.uow = uow
     }
     
-    func deleteRelation(parentTableName: String, parentObject: [String : Any], columnName: String, children: [[String : Any]]) -> (Operation, OpResult) {
-        let operationTypeString = TransactionHelper.shared.generateOperationTypeString(.DELETE_RELATION)
-        let operationResultId = "\(operationTypeString)\(parentTableName)\(countDelRel)"
-        countDelRel += 1
-        
-        var payload = [String : Any]()
-        payload["parentObject"] = parentObject["objectId"] as? String
-        payload["relationColumn"] = columnName
-        payload["unconditional"] = getChildrenIds(children: children)
-        
-        let operation = Operation(operationType: .DELETE_RELATION, tableName: parentTableName, opResultId: operationResultId, payload: payload)
-        let opResult = TransactionHelper.shared.makeOpResult(tableName: parentTableName, operationResultId: operationResultId, operationType: .DELETE_RELATION, uow: uow)
-        return (operation, opResult)
-    }
-    
-    func deleteRelation(parentTableName: String, parentObject: [String : Any], columnName: String, whereClauseForChildren: String) -> (Operation, OpResult) {
-        let operationTypeString = TransactionHelper.shared.generateOperationTypeString(.DELETE_RELATION)
-        let operationResultId = "\(operationTypeString)\(parentTableName)\(countDelRel)"
-        countDelRel += 1
-        
-        var payload = [String : Any]()
-        payload["parentObject"] = parentObject["objectId"] as? String
-        payload["relationColumn"] = columnName
-        payload["conditional"] = whereClauseForChildren
-        
-        let operation = Operation(operationType: .DELETE_RELATION, tableName: parentTableName, opResultId: operationResultId, payload: payload)
-        let opResult = TransactionHelper.shared.makeOpResult(tableName: parentTableName, operationResultId: operationResultId, operationType: .DELETE_RELATION, uow: uow)
-        return (operation, opResult)
-    }
-    
-    func deleteRelation(parentObjectResult: OpResult, columnName: String, children: [[String : Any]]) -> (Operation, OpResult) {
-        let tableName = parentObjectResult.tableName!
-        let operationTypeString = TransactionHelper.shared.generateOperationTypeString(.DELETE_RELATION)
-        let operationResultId = "\(operationTypeString)\(tableName)\(countDelRel)"
-        countDelRel += 1
-        
-        var payload = [String : Any]()
-        payload["relationColumn"] = columnName
-        payload["unconditional"] = getChildrenIds(children: children)
-        
-        /*if parentObjectResult is OpResultIndex {
-            if parentObjectResult.operationType == .CREATE_BULK {
-                payload["parentObject"] = [uowProps.ref: true,
-                                           uowProps.opResultId: parentObjectResult.reference?[uowProps.opResultId],
-                                           uowProps.resultIndex: parentObjectResult.reference?[uowProps.resultIndex]]
-            }
-            else if parentObjectResult.operationType == .FIND {
-                payload["parentObject"] = [uowProps.ref: true,
-                                           uowProps.propName: "objectId",
-                                           uowProps.opResultId: parentObjectResult.reference?[uowProps.opResultId],
-                                           uowProps.resultIndex: parentObjectResult.reference?[uowProps.resultIndex]]
-            }
-        }
-        else {
-            payload["parentObject"] = [uowProps.ref: true,
-                                       uowProps.propName: "objectId",
-                                       uowProps.opResultId: parentObjectResult.reference?[uowProps.opResultId]]
-        }*/
-        let operation = Operation(operationType: .DELETE_RELATION, tableName: tableName, opResultId: operationResultId, payload: payload)
-        let opResult = TransactionHelper.shared.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .DELETE_RELATION, uow: uow)
-        return (operation, opResult)
-    }
-    
-    func deleteRelation(parentObjectResult: OpResult, columnName: String, whereClauseForChildren: String) -> (Operation, OpResult) {
-        let tableName = parentObjectResult.tableName!
-        let operationTypeString = TransactionHelper.shared.generateOperationTypeString(.DELETE_RELATION)
-        let operationResultId = "\(operationTypeString)\(tableName)\(countDelRel)"
-        countDelRel += 1
-        
-        var payload = [String : Any]()
-        payload["relationColumn"] = columnName
-        payload["conditional"] = whereClauseForChildren
-        payload["parentObject"] = [uowProps.ref: true,
-                                   uowProps.propName: "objectId",
-                                   uowProps.opResultId: parentObjectResult.makeReference()[uowProps.opResultId]]
-        let operation = Operation(operationType: .DELETE_RELATION, tableName: tableName, opResultId: operationResultId, payload: payload)
-        let opResult = TransactionHelper.shared.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .DELETE_RELATION, uow: uow)
+    func deleteRelation(parentTableName: String, parentObjectId: String, columnName: String, childrenObjectIds: [String]) -> (Operation, OpResult) {
+        let opResultId = generateOpResultId(tableName: parentTableName)
+        let payload = ["parentObject" : parentObjectId,
+                       "relationColumn": columnName,
+                       "unconditional": childrenObjectIds] as [String : Any]
+        let operation = Operation(operationType: .DELETE_RELATION, tableName: parentTableName, opResultId: opResultId, payload: payload)
+        let opResult = TransactionHelper.shared.makeOpResult(tableName: parentTableName, operationResultId: opResultId, operationType: .DELETE_RELATION, uow: uow)
         return (operation, opResult)
     }
     
     func deleteRelation(parentTableName: String, parentObjectId: String, columnName: String, childrenResult: OpResult) -> (Operation, OpResult) {
-        let operationTypeString = TransactionHelper.shared.generateOperationTypeString(.DELETE_RELATION)
-        let operationResultId = "\(operationTypeString)\(parentTableName)\(countDelRel)"
-        countDelRel += 1
-        
-        var payload = [String : Any]()
-        payload["relationColumn"] = columnName
-        payload["parentObject"] = parentObjectId
-        payload["unconditional"] = [[uowProps.ref: true,
-                                     uowProps.propName: "objectId",
-                                     uowProps.opResultId: childrenResult.makeReference()[uowProps.opResultId]]]
-        
-        let operation = Operation(operationType: .DELETE_RELATION, tableName: parentTableName, opResultId: operationResultId, payload: payload)
-        let opResult = TransactionHelper.shared.makeOpResult(tableName: parentTableName, operationResultId: operationResultId, operationType: .DELETE_RELATION, uow: uow)
+        let opResultId = generateOpResultId(tableName: parentTableName)
+        let payload = ["parentObject": parentObjectId,
+                       "relationColumn": columnName,
+                       "unconditional": [uowProps.ref: true,
+                                          uowProps.propName: "objectId",
+                                          uowProps.opResultId: childrenResult.makeReference()[uowProps.opResultId]]] as [String : Any]
+        let operation = Operation(operationType: .DELETE_RELATION, tableName: parentTableName, opResultId: opResultId, payload: payload)
+        let opResult = TransactionHelper.shared.makeOpResult(tableName: parentTableName, operationResultId: opResultId, operationType: .DELETE_RELATION, uow: uow)
         return (operation, opResult)
     }
     
-    private func getChildrenIds(children: [[String : Any]]) -> [String] {
-        var childrenIds = [String]()
-        for child in children {
-            if let objectId = child["objectId"] as? String {
-                childrenIds.append(objectId)
-            }
+    func deleteRelation(parentResult: OpResult, columnName: String, childrenObjectIds: [String]) -> (Operation, OpResult) {
+        let parentTableName = parentResult.tableName!
+        let opResultId = generateOpResultId(tableName: parentTableName)
+        let payload = ["parentObject": [uowProps.ref: true,
+                                        uowProps.propName: "objectId",
+                                        uowProps.opResultId: parentResult.makeReference()[uowProps.opResultId]],
+                       "relationColumn": columnName,
+                       "unconditional": childrenObjectIds] as [String : Any]
+        let operation = Operation(operationType: .DELETE_RELATION, tableName: parentTableName, opResultId: opResultId, payload: payload)
+        let opResult = TransactionHelper.shared.makeOpResult(tableName: parentTableName, operationResultId: opResultId, operationType: .DELETE_RELATION, uow: uow)
+        return (operation, opResult)
+    }
+    
+    func deleteRelation(parentResult: OpResult, columnName: String, childrenResult: OpResult) -> (Operation, OpResult) {
+        let parentTableName = parentResult.tableName!
+        let opResultId = generateOpResultId(tableName: parentTableName)
+        let payload = ["parentObject": [uowProps.ref: true,
+                                        uowProps.propName: "objectId",
+                                        uowProps.opResultId: parentResult.makeReference()[uowProps.opResultId]],
+                       "relationColumn": columnName,
+                       "unconditional": [uowProps.ref: true,
+                                          uowProps.propName: "objectId",
+                                          uowProps.opResultId: childrenResult.makeReference()[uowProps.opResultId]]] as [String : Any]
+        let operation = Operation(operationType: .DELETE_RELATION, tableName: parentTableName, opResultId: opResultId, payload: payload)
+        let opResult = TransactionHelper.shared.makeOpResult(tableName: parentTableName, operationResultId: opResultId, operationType: .DELETE_RELATION, uow: uow)
+        return (operation, opResult)
+    }
+    
+    func deleteRelation(parentValueReference: OpResultValueReference, columnName: String, childrenObjectIds: [String]) -> (Operation, OpResult) {
+        let parentResult = parentValueReference.opResult!
+        let (parentTableName, opResultId) = prepareForDeleteRelation(result: parentResult)
+        var payload = ["relationColumn": columnName, "unconditional": childrenObjectIds] as [String : Any]
+        if parentResult.operationType == .CREATE_BULK {
+            payload["parentObject"] = [uowProps.ref: true,
+                                       uowProps.opResultId: parentValueReference.makeReference()?[uowProps.opResultId],
+                                       uowProps.resultIndex: parentValueReference.makeReference()?[uowProps.resultIndex]]
         }
-        return childrenIds
+        else if parentResult.operationType == .FIND {
+            payload["parentObject"] = [uowProps.ref: true,
+                                       uowProps.propName: "objectId",
+                                       uowProps.opResultId: parentValueReference.makeReference()?[uowProps.opResultId],
+                                       uowProps.resultIndex: parentValueReference.makeReference()?[uowProps.resultIndex]]
+        }
+        let operation = Operation(operationType: .DELETE_RELATION, tableName: parentTableName, opResultId: opResultId, payload: payload)
+        let opResult = TransactionHelper.shared.makeOpResult(tableName: parentTableName, operationResultId: opResultId, operationType: .DELETE_RELATION, uow: uow)
+        return (operation, opResult)
+    }
+    
+    func deleteRelation(parentValueReference: OpResultValueReference, columnName: String, childrenResult: OpResult) -> (Operation, OpResult) {
+        let parentResult = parentValueReference.opResult!
+        let (parentTableName, opResultId) = prepareForDeleteRelation(result: parentResult)
+        var payload = ["relationColumn": columnName,
+                       "unconditional": [uowProps.ref: true,
+                                          uowProps.propName: "objectId",
+                                          uowProps.opResultId: childrenResult.makeReference()[uowProps.opResultId]]] as [String : Any]
+        if parentResult.operationType == .CREATE_BULK {
+            payload["parentObject"] = [uowProps.ref: true,
+                                       uowProps.opResultId: parentValueReference.makeReference()?[uowProps.opResultId],
+                                       uowProps.resultIndex: parentValueReference.makeReference()?[uowProps.resultIndex]]
+        }
+        else if parentResult.operationType == .FIND {
+            payload["parentObject"] = [uowProps.ref: true,
+                                       uowProps.propName: "objectId",
+                                       uowProps.opResultId: parentValueReference.makeReference()?[uowProps.opResultId],
+                                       uowProps.resultIndex: parentValueReference.makeReference()?[uowProps.resultIndex]]
+        }
+        let operation = Operation(operationType: .DELETE_RELATION, tableName: parentTableName, opResultId: opResultId, payload: payload)
+        let opResult = TransactionHelper.shared.makeOpResult(tableName: parentTableName, operationResultId: opResultId, operationType: .DELETE_RELATION, uow: uow)
+        return (operation, opResult)
+    }
+    
+    func deleteRelation(parentTableName: String, parentObjectId: String, columnName: String, whereClauseForChildren: String) -> (Operation, OpResult) {
+        let opResultId = generateOpResultId(tableName: parentTableName)
+        let payload = ["parentObject" : parentObjectId,
+                       "relationColumn": columnName,
+                       "conditional": whereClauseForChildren] as [String : Any]
+        let operation = Operation(operationType: .DELETE_RELATION, tableName: parentTableName, opResultId: opResultId, payload: payload)
+        let opResult = TransactionHelper.shared.makeOpResult(tableName: parentTableName, operationResultId: opResultId, operationType: .DELETE_RELATION, uow: uow)
+        return (operation, opResult)
+    }
+    
+    func deleteRelation(parentResult: OpResult, columnName: String, whereClauseForChildren: String) -> (Operation, OpResult) {
+        let parentTableName = parentResult.tableName!
+        let opResultId = generateOpResultId(tableName: parentTableName)
+        let payload = ["parentObject" : [uowProps.ref: true,
+                                         uowProps.propName: "objectId",
+                                         uowProps.opResultId: parentResult.makeReference()[uowProps.opResultId]],
+                       "relationColumn": columnName,
+                       "conditional": whereClauseForChildren] as [String : Any]
+        let operation = Operation(operationType: .DELETE_RELATION, tableName: parentTableName, opResultId: opResultId, payload: payload)
+        let opResult = TransactionHelper.shared.makeOpResult(tableName: parentTableName, operationResultId: opResultId, operationType: .DELETE_RELATION, uow: uow)
+        return (operation, opResult)
+    }
+    
+    func deleteRelation(parentValueReference: OpResultValueReference, columnName: String, whereClauseForChildren: String) -> (Operation, OpResult) {
+        let parentResult = parentValueReference.opResult!
+        let (parentTableName, opResultId) = prepareForDeleteRelation(result: parentResult)
+        var payload = ["relationColumn": columnName, "conditional": whereClauseForChildren] as [String : Any]
+        if parentResult.operationType == .CREATE_BULK {
+            payload["parentObject"] = [uowProps.ref: true,
+                                       uowProps.opResultId: parentValueReference.makeReference()?[uowProps.opResultId],
+                                       uowProps.resultIndex: parentValueReference.makeReference()?[uowProps.resultIndex]]
+        }
+        else if parentResult.operationType == .FIND {
+            payload["parentObject"] = [uowProps.ref: true,
+                                       uowProps.propName: "objectId",
+                                       uowProps.opResultId: parentValueReference.makeReference()?[uowProps.opResultId],
+                                       uowProps.resultIndex: parentValueReference.makeReference()?[uowProps.resultIndex]]
+        }
+        let operation = Operation(operationType: .DELETE_RELATION, tableName: parentTableName, opResultId: opResultId, payload: payload)
+        let opResult = TransactionHelper.shared.makeOpResult(tableName: parentTableName, operationResultId: opResultId, operationType: .DELETE_RELATION, uow: uow)
+        return (operation, opResult)
+    }
+    
+    private func generateOpResultId(tableName: String) -> String {
+        var opResultId = TransactionHelper.shared.generateOperationTypeString(.DELETE_RELATION) + tableName
+        opResultId += String(countDelRel)
+        countDelRel += 1
+        return opResultId
+    }
+    
+    private func prepareForDeleteRelation(result: OpResult) -> (String, String) {
+        let tableName = result.tableName!
+        let operationTypeString = TransactionHelper.shared.generateOperationTypeString(.DELETE_RELATION)
+        let operationResultId = "\(operationTypeString)\(tableName)\(countDelRel)"
+        countDelRel += 1
+        return (tableName, operationResultId)
     }
 }
