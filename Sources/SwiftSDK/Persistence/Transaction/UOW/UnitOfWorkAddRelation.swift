@@ -43,7 +43,6 @@ class UnitOfWorkAddRelation {
         let payload = ["parentObject": parentObjectId,
                         "relationColumn": columnName,
                         "unconditional": [uowProps.ref: true,
-                                           uowProps.propName: "objectId",
                                            uowProps.opResultId: childrenResult.makeReference()[uowProps.opResultId]]] as [String : Any]
         let operation = Operation(operationType: .ADD_RELATION, tableName: parentTableName, opResultId: opResultId, payload: payload)
         let opResult = TransactionHelper.shared.makeOpResult(tableName: parentTableName, operationResultId: opResultId, operationType: .ADD_RELATION, uow: uow)
@@ -71,7 +70,6 @@ class UnitOfWorkAddRelation {
                                         uowProps.opResultId: parentResult.makeReference()[uowProps.opResultId]],
                        "relationColumn": columnName,
                        "unconditional": [uowProps.ref: true,
-                                          uowProps.propName: "objectId",
                                           uowProps.opResultId: childrenResult.makeReference()[uowProps.opResultId]]] as [String : Any]
         let operation = Operation(operationType: .ADD_RELATION, tableName: parentTableName, opResultId: opResultId, payload: payload)
         let opResult = TransactionHelper.shared.makeOpResult(tableName: parentTableName, operationResultId: opResultId, operationType: .ADD_RELATION, uow: uow)
@@ -103,7 +101,6 @@ class UnitOfWorkAddRelation {
         let (parentTableName, opResultId) = prepareForAddRelation(result: parentResult)
         var payload = ["relationColumn": columnName,
                        "unconditional": [uowProps.ref: true,
-                                          uowProps.propName: "objectId",
                                           uowProps.opResultId: childrenResult.makeReference()[uowProps.opResultId]]] as [String : Any]
         if parentResult.operationType == .CREATE_BULK {
             payload["parentObject"] = [uowProps.ref: true,

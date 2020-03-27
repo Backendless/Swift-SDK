@@ -43,7 +43,6 @@ class UnitOfWorkDeleteRelation {
         let payload = ["parentObject": parentObjectId,
                        "relationColumn": columnName,
                        "unconditional": [uowProps.ref: true,
-                                          uowProps.propName: "objectId",
                                           uowProps.opResultId: childrenResult.makeReference()[uowProps.opResultId]]] as [String : Any]
         let operation = Operation(operationType: .DELETE_RELATION, tableName: parentTableName, opResultId: opResultId, payload: payload)
         let opResult = TransactionHelper.shared.makeOpResult(tableName: parentTableName, operationResultId: opResultId, operationType: .DELETE_RELATION, uow: uow)
@@ -67,11 +66,9 @@ class UnitOfWorkDeleteRelation {
         let parentTableName = parentResult.tableName!
         let opResultId = generateOpResultId(tableName: parentTableName)
         let payload = ["parentObject": [uowProps.ref: true,
-                                        uowProps.propName: "objectId",
                                         uowProps.opResultId: parentResult.makeReference()[uowProps.opResultId]],
                        "relationColumn": columnName,
                        "unconditional": [uowProps.ref: true,
-                                          uowProps.propName: "objectId",
                                           uowProps.opResultId: childrenResult.makeReference()[uowProps.opResultId]]] as [String : Any]
         let operation = Operation(operationType: .DELETE_RELATION, tableName: parentTableName, opResultId: opResultId, payload: payload)
         let opResult = TransactionHelper.shared.makeOpResult(tableName: parentTableName, operationResultId: opResultId, operationType: .DELETE_RELATION, uow: uow)

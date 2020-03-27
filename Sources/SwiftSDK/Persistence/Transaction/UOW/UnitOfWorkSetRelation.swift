@@ -43,7 +43,6 @@ class UnitOfWorkSetRelation {
         let payload = ["parentObject": parentObjectId,
                         "relationColumn": columnName,
                         "unconditional": [uowProps.ref: true,
-                                           uowProps.propName: "objectId",
                                            uowProps.opResultId: childrenResult.makeReference()[uowProps.opResultId]]] as [String : Any]
         let operation = Operation(operationType: .SET_RELATION, tableName: parentTableName, opResultId: opResultId, payload: payload)
         let opResult = TransactionHelper.shared.makeOpResult(tableName: parentTableName, operationResultId: opResultId, operationType: .SET_RELATION, uow: uow)
@@ -102,7 +101,6 @@ class UnitOfWorkSetRelation {
         let (parentTableName, opResultId) = prepareForSetRelation(result: parentResult)
         var payload = ["relationColumn": columnName,
                        "unconditional": [uowProps.ref: true,
-                                          uowProps.propName: "objectId",
                                           uowProps.opResultId: childrenResult.makeReference()[uowProps.opResultId]]] as [String : Any]
         if parentResult.operationType == .CREATE_BULK {
             payload["parentObject"] = [uowProps.ref: true,
