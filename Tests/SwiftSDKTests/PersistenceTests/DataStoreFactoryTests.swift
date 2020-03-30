@@ -25,6 +25,7 @@ import XCTest
 class DataStoreFactoryTests: XCTestCase {
     
     private let backendless = Backendless.shared
+    private let testObjectsUtils = TestObjectsUtils.shared
     private let timeout: Double = 10.0
     private let storedObjects = StoredObjects.shared
     
@@ -85,7 +86,7 @@ class DataStoreFactoryTests: XCTestCase {
     
     func test_02_create() {
         let expectation = self.expectation(description: "PASSED: dataStoreFactory.create")
-        let objectToSave = createTestClassObject()
+        let objectToSave = testObjectsUtils.createTestClassObject()
         dataStore.create(entity: objectToSave, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
             XCTAssert(type(of: savedObject) == TestClass.self)
@@ -101,7 +102,7 @@ class DataStoreFactoryTests: XCTestCase {
     
     func test_03_createBulk() {
         let expectation = self.expectation(description: "PASSED: dataStoreFactory.createBulk")
-        let objectsToSave = createTestClassObjects(numberOfObjects: 2)
+        let objectsToSave = testObjectsUtils.createTestClassObjects(numberOfObjects: 2)
         dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
             XCTAssertNotNil(savedObjects)
             XCTAssert(type(of: savedObjects) == [String].self)
@@ -115,7 +116,7 @@ class DataStoreFactoryTests: XCTestCase {
     
     func test_04_update() {
         let expectation = self.expectation(description: "PASSED: dataStoreFactory.update")
-        let objectToSave = createTestClassObject()
+        let objectToSave = testObjectsUtils.createTestClassObject()
         dataStore.save(entity: objectToSave, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
             XCTAssert(type(of: savedObject) == TestClass.self)
@@ -154,7 +155,7 @@ class DataStoreFactoryTests: XCTestCase {
     
     func test_06_removeById() {
         let expectation = self.expectation(description: "PASSED: dataStoreFactory.removeById")
-        let objectToSave = createTestClassObject()
+        let objectToSave = testObjectsUtils.createTestClassObject()
         dataStore.save(entity: objectToSave, responseHandler: { savedObject in
             if let objectId = self.dataStore.getObjectId(entity: savedObject) {
                 self.dataStore.removeById(objectId: objectId, responseHandler: { removed in
@@ -176,7 +177,7 @@ class DataStoreFactoryTests: XCTestCase {
     
     func test_07_remove() {
         let expectation = self.expectation(description: "PASSED: dataStoreFactory.remove")
-        let objectToSave = createTestClassObject()
+        let objectToSave = testObjectsUtils.createTestClassObject()
         dataStore.save(entity: objectToSave, responseHandler: { savedObject in
             self.dataStore.remove(entity: savedObject, responseHandler: { removedObjects in
                 XCTAssertNotNil(removedObjects)
@@ -195,7 +196,7 @@ class DataStoreFactoryTests: XCTestCase {
     
     func test_08_removeBulk() {
         let expectation = self.expectation(description: "PASSED: dataStoreFactory.removeBulk")
-        let objectsToSave = createTestClassObjects(numberOfObjects: 3)
+        let objectsToSave = testObjectsUtils.createTestClassObjects(numberOfObjects: 3)
         dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
             XCTAssertNotNil(savedObjects)
             XCTAssert(type(of: savedObjects) == [String].self)
@@ -217,7 +218,7 @@ class DataStoreFactoryTests: XCTestCase {
     
     func test_09_getObjectCount() {
         let expectation = self.expectation(description: "PASSED: dataStoreFactory.getObjectCount")
-        let objectsToSave = createTestClassObjects(numberOfObjects: 2)
+        let objectsToSave = testObjectsUtils.createTestClassObjects(numberOfObjects: 2)
         dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
             XCTAssertNotNil(savedObjects)
             XCTAssert(type(of: savedObjects) == [String].self)
@@ -239,7 +240,7 @@ class DataStoreFactoryTests: XCTestCase {
     
     func test_10_getObjectCountWithCondition() {
         let expectation = self.expectation(description: "PASSED: dataStoreFactory.getObjectCountWithCondition")
-        let objectsToSave = createTestClassObjects(numberOfObjects: 3)
+        let objectsToSave = testObjectsUtils.createTestClassObjects(numberOfObjects: 3)
         dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
             XCTAssertNotNil(savedObjects)
             XCTAssert(type(of: savedObjects) == [String].self)
@@ -263,7 +264,7 @@ class DataStoreFactoryTests: XCTestCase {
     
     func test_11_find() {
         let expectation = self.expectation(description: "PASSED: dataStoreFactory.find")
-        let objectsToSave = createTestClassObjects(numberOfObjects: 2)
+        let objectsToSave = testObjectsUtils.createTestClassObjects(numberOfObjects: 2)
         dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
             XCTAssertNotNil(savedObjects)
             self.dataStore.find(responseHandler: { foundObjects in
@@ -283,7 +284,7 @@ class DataStoreFactoryTests: XCTestCase {
     
     func test_12_findWithCondition() {
         let expectation = self.expectation(description: "PASSED: dataStoreFactory.findWithCondition")
-        let objectsToSave = createTestClassObjects(numberOfObjects: 10)
+        let objectsToSave = testObjectsUtils.createTestClassObjects(numberOfObjects: 10)
         dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
             XCTAssertNotNil(savedObjects)
             let queryBuilder = DataQueryBuilder()
@@ -308,7 +309,7 @@ class DataStoreFactoryTests: XCTestCase {
     
     func test_13_findFirst() {
         let expectation = self.expectation(description: "PASSED: dataStoreFactory.findFirst")
-        let objectToSave = createTestClassObject()
+        let objectToSave = testObjectsUtils.createTestClassObject()
         dataStore.save(entity: objectToSave, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
             self.dataStore.findFirst(responseHandler: { first in
@@ -328,7 +329,7 @@ class DataStoreFactoryTests: XCTestCase {
     
     func test_14_findLast() {
         let expectation = self.expectation(description: "PASSED: dataStoreFactory.findLast")
-        let objectToSave = createTestClassObject()
+        let objectToSave = testObjectsUtils.createTestClassObject()
         dataStore.save(entity: objectToSave, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
             self.dataStore.findLast(responseHandler: { last in
@@ -348,7 +349,7 @@ class DataStoreFactoryTests: XCTestCase {
     
     func test_15_findById() {
         let expectation = self.expectation(description: "PASSED: dataStoreFactory.findById")
-        let objectToSave = createTestClassObject()
+        let objectToSave = testObjectsUtils.createTestClassObject()
         dataStore.save(entity: objectToSave, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
             if let objectId = (savedObject as! TestClass).objectId {
@@ -370,7 +371,7 @@ class DataStoreFactoryTests: XCTestCase {
     
     func test_16_findByIdWithCondition() {
         let expectation = self.expectation(description: "PASSED: dataStoreFactory.findByIdWithCondition")
-        let parentObjectToSave = createTestClassObject()
+        let parentObjectToSave = testObjectsUtils.createTestClassObject()
         
         dataStore.save(entity: parentObjectToSave, responseHandler: { parentObject in
             XCTAssertNotNil(parentObject)
@@ -469,7 +470,7 @@ class DataStoreFactoryTests: XCTestCase {
         childObjectToSave.foo = "bar"
         
         childDataStore.save(entity: childObjectToSave, responseHandler: { savedChildObject in
-            let parentObjectToSave = self.createTestClassObject()
+            let parentObjectToSave = self.testObjectsUtils.createTestClassObject()
             self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
                 // 1:1
                 if let parentObjectId = (savedParentObject as! TestClass).objectId,
@@ -502,7 +503,7 @@ class DataStoreFactoryTests: XCTestCase {
         
         childDataStore.save(entity: childObjectToSave, responseHandler: { savedChildObject in
             if let childObjectId = (savedChildObject as! ChildTestClass).objectId {
-                let parentObjectToSave = self.createTestClassObject()
+                let parentObjectToSave = self.testObjectsUtils.createTestClassObject()
                 self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
                     // 1:1
                     if let parentObjectId = (savedParentObject as! TestClass).objectId {
@@ -534,7 +535,7 @@ class DataStoreFactoryTests: XCTestCase {
         childObjectToSave.foo = "bar"
         
         childDataStore.save(entity: childObjectToSave, responseHandler: { savedChildObject in
-            let parentObjectToSave = self.createTestClassObject()
+            let parentObjectToSave = self.testObjectsUtils.createTestClassObject()
             self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
                 // 1:1
                 if let parentObjectId = (savedParentObject as! TestClass).objectId,
@@ -567,7 +568,7 @@ class DataStoreFactoryTests: XCTestCase {
         
         childDataStore.save(entity: childObjectToSave, responseHandler: { savedChildObject in
             if let childObjectId = (savedChildObject as! ChildTestClass).objectId {
-                let parentObjectToSave = self.createTestClassObject()
+                let parentObjectToSave = self.testObjectsUtils.createTestClassObject()
                 self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
                     // 1:1
                     if let parentObjectId = (savedParentObject as! TestClass).objectId {
@@ -599,7 +600,7 @@ class DataStoreFactoryTests: XCTestCase {
         childObjectToSave.foo = "bar"
         
         childDataStore.save(entity: childObjectToSave, responseHandler: { savedChildObject in
-            let parentObjectToSave = self.createTestClassObject()
+            let parentObjectToSave = self.testObjectsUtils.createTestClassObject()
             self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
                 // 1:1
                 if let parentObjectId = (savedParentObject as! TestClass).objectId,
@@ -639,7 +640,7 @@ class DataStoreFactoryTests: XCTestCase {
         childObjectToSave.foo = "bar"
         
         childDataStore.save(entity: childObjectToSave, responseHandler: { savedChildObject in
-            let parentObjectToSave = self.createTestClassObject()
+            let parentObjectToSave = self.testObjectsUtils.createTestClassObject()
             self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
                 // 1:1
                 if let parentObjectId = (savedParentObject as! TestClass).objectId,
@@ -679,7 +680,7 @@ class DataStoreFactoryTests: XCTestCase {
         childObjectToSave.foo = "bar"
         
         childDataStore.save(entity: childObjectToSave, responseHandler: { savedChildObject in
-            let parentObjectToSave = self.createTestClassObject()
+            let parentObjectToSave = self.testObjectsUtils.createTestClassObject()
             self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
                 // 1:1
                 if let parentObjectId = (savedParentObject as! TestClass).objectId,
@@ -714,100 +715,5 @@ class DataStoreFactoryTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
-    }
-    
-    // ***************************************
-    
-    func createTestClassObject() -> TestClass {
-        let object = TestClass()
-        object.name = "Bob"
-        object.age = 25
-        return object
-    }
-    
-    func createTestClassObjects(numberOfObjects: Int) -> [TestClass] {
-        var objects = [TestClass]()
-        if numberOfObjects == 2 {
-            let objectToSave1 = TestClass()
-            objectToSave1.name = "Bob"
-            objectToSave1.age = 25
-            
-            let objectToSave2 = TestClass()
-            objectToSave2.name = "Ann"
-            objectToSave2.age = 45
-            
-            objects.append(objectToSave1)
-            objects.append(objectToSave2)
-        }
-        else if numberOfObjects == 3 {
-            let objectToSave1 = TestClass()
-            objectToSave1.name = "Bob"
-            objectToSave1.age = 25
-            
-            let objectToSave2 = TestClass()
-            objectToSave2.name = "Ann"
-            objectToSave2.age = 45
-            
-            let objectToSave3 = TestClass()
-            objectToSave3.name = "Jack"
-            objectToSave3.age = 26
-            
-            objects.append(objectToSave1)
-            objects.append(objectToSave2)
-            objects.append(objectToSave3)
-        }
-        else if numberOfObjects == 10 {
-            let objectToSave1 = TestClass()
-            objectToSave1.name = "Bob"
-            objectToSave1.age = 25
-            
-            let objectToSave2 = TestClass()
-            objectToSave2.name = "Ann"
-            objectToSave2.age = 45
-            
-            let objectToSave3 = TestClass()
-            objectToSave3.name = "Jack"
-            objectToSave3.age = 26
-            
-            let objectToSave4 = TestClass()
-            objectToSave4.name = "Kate"
-            objectToSave4.age = 70
-            
-            let objectToSave5 = TestClass()
-            objectToSave5.name = "John"
-            objectToSave5.age = 55
-            
-            let objectToSave6 = TestClass()
-            objectToSave6.name = "Alex"
-            objectToSave6.age = 33
-            
-            let objectToSave7 = TestClass()
-            objectToSave7.name = "Peter"
-            objectToSave7.age = 14
-            
-            let objectToSave8 = TestClass()
-            objectToSave8.name = "Linda"
-            objectToSave8.age = 34
-            
-            let objectToSave9 = TestClass()
-            objectToSave9.name = "Mary"
-            objectToSave9.age = 30
-            
-            let objectToSave10 = TestClass()
-            objectToSave10.name = "Bruce"
-            objectToSave10.age = 60
-            
-            objects.append(objectToSave1)
-            objects.append(objectToSave2)
-            objects.append(objectToSave3)
-            objects.append(objectToSave4)
-            objects.append(objectToSave5)
-            objects.append(objectToSave6)
-            objects.append(objectToSave7)
-            objects.append(objectToSave8)
-            objects.append(objectToSave9)
-            objects.append(objectToSave10)
-        }
-        return objects
     }
 }

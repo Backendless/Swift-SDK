@@ -506,10 +506,6 @@ enum uowProps {
         return opRes
     }
     
-    // ********************************************************************************************************************************************************
-    
-    // TODO
-    
     // delete relation
     
     public func deleteRelation(parentTableName: String, parentObjectId: String, columnName: String, childrenObjectIds: [String]) -> OpResult {
