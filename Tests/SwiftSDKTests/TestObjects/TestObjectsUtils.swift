@@ -238,7 +238,7 @@ class TestObjectsUtils {
     
     func bulkCreateChildTestClassObjects(responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         var childTestObjects = [[String : Any]]()
-        for i in 0..<5 {
+        for i in 0..<2 {
             childTestObjects.append(["foo": "bar\(i)"])
         }
         Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { objectIds in
