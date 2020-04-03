@@ -80,7 +80,17 @@ class PayloadHelper {
         operationPayload["table"] = operation.tableName
         operationPayload["opResultId"] = operation.opResultId
         operationPayload["operationType"] = OperationType.from(intValue: OperationType.CREATE.rawValue)
-        if let payload = operation.payload as? [String : Any] {
+        if var payload = operation.payload as? [String : Any] {
+            for (key,value) in payload {
+                if let opResultValue = value as? OpResult,
+                    let tableName = opResultValue.tableName,
+                    let operationType = opResultValue.operationType,
+                    let opResultId = opResultValue.opResultId {
+                    payload[key] = ["tableName": tableName,
+                                    "operationType": OperationType.from(intValue: operationType.rawValue),
+                                    "opResultId": opResultId]
+                }
+            }
             operationPayload["payload"] = psu.convertFromGeometryType(dictionary: payload)
         }
         return operationPayload
@@ -92,10 +102,21 @@ class PayloadHelper {
         operationPayload["opResultId"] = operation.opResultId
         operationPayload["operationType"] = OperationType.from(intValue: OperationType.CREATE_BULK.rawValue)
         if let payload = operation.payload as? [[String : Any]] {
+            var resultPayload = [[String : Any]]()
             for var payloadDict in payload {
-                payloadDict = psu.convertFromGeometryType(dictionary: payloadDict)
+                for (key,value) in payloadDict {
+                    if let opResultValue = value as? OpResult,
+                        let tableName = opResultValue.tableName,
+                        let operationType = opResultValue.operationType,
+                        let opResultId = opResultValue.opResultId {
+                        payloadDict[key] = ["tableName": tableName,
+                                            "operationType": OperationType.from(intValue: operationType.rawValue),
+                                            "opResultId": opResultId]
+                    }                    
+                }
+                resultPayload.append(psu.convertFromGeometryType(dictionary: payloadDict))
             }
-            operationPayload["payload"] = payload
+            operationPayload["payload"] = resultPayload
         }
         return operationPayload
     }
@@ -105,8 +126,17 @@ class PayloadHelper {
         operationPayload["table"] = operation.tableName
         operationPayload["opResultId"] = operation.opResultId
         operationPayload["operationType"] = OperationType.from(intValue: OperationType.UPDATE.rawValue)
-        if let payload = operation.payload as? [String : Any],
-            let _ = payload["objectId"] {
+        if var payload = operation.payload as? [String : Any], payload["objectId"] != nil {            
+            for (key,value) in payload {
+                if let opResultValue = value as? OpResult,
+                    let tableName = opResultValue.tableName,
+                    let operationType = opResultValue.operationType,
+                    let opResultId = opResultValue.opResultId {
+                    payload[key] = ["tableName": tableName,
+                                    "operationType": OperationType.from(intValue: operationType.rawValue),
+                                    "opResultId": opResultId]
+                }
+            }       
             operationPayload["payload"] = psu.convertFromGeometryType(dictionary: payload)
         }
         return operationPayload

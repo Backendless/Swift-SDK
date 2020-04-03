@@ -42,6 +42,9 @@ class ProcessResponse {
                         if to != String.self, to != Int.self {
                             return Fault(message: responseResult as? String)
                         }
+                        else {
+                            return responseResult
+                        }
                     }              
                     else {
                         do {

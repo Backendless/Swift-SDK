@@ -738,22 +738,6 @@ class UOWAddRelationTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        
-        
-        
-//        let uow = UnitOfWork()
-//        let findParentsResult = uow.find(tableName: "TestClass", queryBuilder: nil)
-//        let parentValueRef = findParentsResult.resolveTo(resultIndex: 1)
-//        let _ = uow.addToRelation(parentValueReference: parentValueRef, columnName: "children", whereClauseForChildren: "foo='foo3'")
-//        uow.execute(responseHandler: { uowResult in
-//            XCTAssertNil(uowResult.error)
-//            XCTAssertTrue(uowResult.success)
-//            XCTAssertNotNil(uowResult.results)
-//            expectation.fulfill()
-//        }, errorHandler: {  fault in
-//            XCTAssertNotNil(fault)
-//            XCTFail("\(fault.code): \(fault.message!)")
-//        })
         waitForExpectations(timeout: timeout, handler: nil)
     }
 }

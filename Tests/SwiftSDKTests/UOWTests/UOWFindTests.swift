@@ -35,8 +35,8 @@ class UOWFindTests: XCTestCase {
         Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
     }
     
-    func test_01_delete() {
-        let expectation = self.expectation(description: "PASSED: uow.delete")
+    func test_01_find() {
+        let expectation = self.expectation(description: "PASSED: uow.find")
         let uow = UnitOfWork()
         let queryBuilder = DataQueryBuilder()
         queryBuilder.setPageSize(pageSize: 1)

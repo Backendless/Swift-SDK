@@ -560,16 +560,18 @@ class UOWDeleteRelation: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    // ⚠️
     func test_16_deleteRelation() {
-        /*let expectation = self.expectation(description: "PASSED: uow.deleteRelation")
+        let expectation = self.expectation(description: "PASSED: uow.deleteRelation")
         let uow = UnitOfWork()
         let parentObject = testObjectsUtils.createTestClassObject()
-        let parentResult = uow.create(objectToSave: parentObject)
-        let childrenObjects = self.testObjectsUtils.createChildTestClassObjects(numberOfObjects: 2)
-        let bulkCreateChildrenResult = uow.bulkCreate(entities: childrenObjects)
-        let _ = uow.setRelation(parentResult: parentResult, columnName: "children", childrenResult: bulkCreateChildrenResult)
-        let _ = uow.deleteRelation(parentResult: parentResult, columnName: "children", childrenResult: bulkCreateChildrenResult)
+        let createParentResult = uow.create(objectToSave: parentObject)
+        
+        /*"message": "Get value for 'objectId' through reference from 'CREATE' operation resolved to 'operation result' not supported. Supported combinations: 'result from FIND operations resolved to opResultId and propName; result from CREATE, UPDATE operations resolved to propName; result from CREATE_BULK operations resolved to resultIndex; '"*/
+        
+        let children = testObjectsUtils.createChildTestClassObjects(numberOfObjects: 2)
+        let bulkCreateChildrenResult = uow.bulkCreate(entities: children)
+        let _ = uow.setRelation(parentResult: createParentResult, columnName: "children", childrenResult: bulkCreateChildrenResult)
+        let _ = uow.deleteRelation(parentResult: createParentResult, columnName: "children", childrenResult: bulkCreateChildrenResult)
         uow.execute(responseHandler: { uowResult in
             XCTAssertNil(uowResult.error)
             XCTAssertTrue(uowResult.success)
@@ -579,7 +581,7 @@ class UOWDeleteRelation: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: timeout, handler: nil)*/
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_17_deleteRelation() {
@@ -600,6 +602,201 @@ class UOWDeleteRelation: XCTestCase {
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test_18_deleteRelation() {
+        let expectation = self.expectation(description: "PASSED: uowdeleteRelation")
+        let uow = UnitOfWork()
+        let findParentsResult = uow.find(tableName: "TestClass", queryBuilder: nil)
+        let parentValueRef = findParentsResult.resolveTo(resultIndex: 1)
+        testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
+            var children = [[String : Any]]()
+            for childObjectId in childrenObjectIds {
+                children.append(["objectId": childObjectId])
+            }
+            let _ = uow.setRelation(parentValueReference: parentValueRef, columnName: "children", childrenObjectIds: childrenObjectIds)
+            let _ = uow.deleteRelation(parentValueReference: parentValueRef, columnName: "children", children: children)
+            uow.execute(responseHandler: { uowResult in
+                XCTAssertNil(uowResult.error)
+                XCTAssertTrue(uowResult.success)
+                XCTAssertNotNil(uowResult.results)
+                expectation.fulfill()
+            }, errorHandler: {  fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test_19_deleteRelation() {
+        let expectation = self.expectation(description: "PASSED: uowdeleteRelation")
+        let uow = UnitOfWork()
+        let findParentsResult = uow.find(tableName: "TestClass", queryBuilder: nil)
+        let parentValueRef = findParentsResult.resolveTo(resultIndex: 1)
+        testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
+            var children = [ChildTestClass]()
+            for childObjectId in childrenObjectIds {
+                let child = ChildTestClass()
+                child.objectId = childObjectId
+                children.append(child)
+            }
+            let _ = uow.setRelation(parentValueReference: parentValueRef, columnName: "children", childrenObjectIds: childrenObjectIds)
+            let _ = uow.deleteRelation(parentValueReference: parentValueRef, columnName: "children", customChildren: children)
+            uow.execute(responseHandler: { uowResult in
+                XCTAssertNil(uowResult.error)
+                XCTAssertTrue(uowResult.success)
+                XCTAssertNotNil(uowResult.results)
+                expectation.fulfill()
+            }, errorHandler: {  fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test_20_deleteRelation() {
+        let expectation = self.expectation(description: "PASSED: uow.deleteRelation")
+        let uow = UnitOfWork()
+        let findParentsResult = uow.find(tableName: "TestClass", queryBuilder: nil)
+        let parentValueRef = findParentsResult.resolveTo(resultIndex: 1)
+        let children = testObjectsUtils.createChildTestClassObjects(numberOfObjects: 2)
+        let bulkCreateChildrenResult = uow.bulkCreate(entities: children)
+        let _ = uow.addToRelation(parentValueReference: parentValueRef, columnName: "children", childrenResult: bulkCreateChildrenResult)
+        let _ = uow.deleteRelation(parentValueReference: parentValueRef, columnName: "children", childrenResult: bulkCreateChildrenResult)
+        uow.execute(responseHandler: { uowResult in
+            XCTAssertNil(uowResult.error)
+            XCTAssertTrue(uowResult.success)
+            XCTAssertNotNil(uowResult.results)
+            expectation.fulfill()
+        }, errorHandler: {  fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test_21_deleteRelation() {
+        let expectation = self.expectation(description: "PASSED: uow.deleteRelation")
+        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+            let parentObjectId = createdObject["objectId"]
+            XCTAssertNotNil(parentObjectId)
+            XCTAssert(parentObjectId is String)
+            let uow = UnitOfWork()
+            let _ = uow.setRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", whereClauseForChildren: "foo='foo1'")
+            let _ = uow.deleteRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", whereClauseForChildren: "foo='foo1'")
+            uow.execute(responseHandler: { uowResult in
+                XCTAssertNil(uowResult.error)
+                XCTAssertTrue(uowResult.success)
+                XCTAssertNotNil(uowResult.results)
+                expectation.fulfill()
+            }, errorHandler: {  fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test_22_deleteRelation() {
+        let expectation = self.expectation(description: "PASSED: uow.deleteRelation")
+        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+            let parentObjectId = createdObject["objectId"]
+            XCTAssertNotNil(parentObjectId)
+            XCTAssert(parentObjectId is String)
+            let parentObject = ["objectId": parentObjectId as! String]
+            let uow = UnitOfWork()
+            let _ = uow.setRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", whereClauseForChildren: "foo='foo1'")
+            let _ = uow.deleteRelation(parentTableName: self.tableName, parentObject: parentObject, columnName: "children", whereClauseForChildren: "foo='foo1'")
+            uow.execute(responseHandler: { uowResult in
+                XCTAssertNil(uowResult.error)
+                XCTAssertTrue(uowResult.success)
+                XCTAssertNotNil(uowResult.results)
+                expectation.fulfill()
+            }, errorHandler: {  fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test_23_deleteRelation() {
+        let expectation = self.expectation(description: "PASSED: uow.deleteRelation")
+        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+            let parentObjectId = createdObject["objectId"]
+            XCTAssertNotNil(parentObjectId)
+            XCTAssert(parentObjectId is String)
+            let parentObject = TestClass()
+            parentObject.objectId = parentObjectId as? String
+            let uow = UnitOfWork()
+            let _ = uow.setRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", whereClauseForChildren: "foo='foo1'")
+            let _ = uow.deleteRelation(parentObject: parentObject, columnName: "children", whereClauseForChildren: "foo='foo1'")
+            uow.execute(responseHandler: { uowResult in
+                XCTAssertNil(uowResult.error)
+                XCTAssertTrue(uowResult.success)
+                XCTAssertNotNil(uowResult.results)
+                expectation.fulfill()
+            }, errorHandler: {  fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test_24_deleteRelation() {
+        let expectation = self.expectation(description: "PASSED: uow.deleteRelation")
+        let uow = UnitOfWork()
+        let parentObject = testObjectsUtils.createTestClassObject()
+        let parentResult = uow.create(objectToSave: parentObject)
+        let _ = uow.setRelation(parentResult: parentResult, columnName: "children", whereClauseForChildren: "foo='foo1'")
+        let _ = uow.deleteRelation(parentResult: parentResult, columnName: "children", whereClauseForChildren: "foo='foo1'")
+        uow.execute(responseHandler: { uowResult in
+            XCTAssertNil(uowResult.error)
+            XCTAssertTrue(uowResult.success)
+            XCTAssertNotNil(uowResult.results)
+            expectation.fulfill()
+        }, errorHandler: {  fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test_25_deleteRelation() {
+        let expectation = self.expectation(description: "PASSED: uow.deleteRelation")
+        let uow = UnitOfWork()
+        let parentResult = uow.find(tableName: "TestClass", queryBuilder: nil)
+        let parentValueRef = parentResult.resolveTo(resultIndex: 1)
+        let _ = uow.setRelation(parentValueReference: parentValueRef, columnName: "children", whereClauseForChildren: "foo='foo1'")
+        let _ = uow.deleteRelation(parentValueReference: parentValueRef, columnName: "children", whereClauseForChildren: "foo='foo1'")
+        uow.execute(responseHandler: { uowResult in
+            XCTAssertNil(uowResult.error)
+            XCTAssertTrue(uowResult.success)
+            XCTAssertNotNil(uowResult.results)
+            expectation.fulfill()
+        }, errorHandler: {  fault in
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })

@@ -68,16 +68,15 @@
         let headers = ["Content-Type": "text/plain"]
         let parameters = base64FileContent
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
+            if let fileUrl = ProcessResponse.shared.adapt(response: response, to: String.self) as? String {
+                let backendlessFile = BackendlessFile()
+                backendlessFile.fileUrl = fileUrl.replacingOccurrences(of: "\"", with: "")
+                responseHandler(backendlessFile)
+            }
+            else if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
-            }
-            else {
-                let fileUrl = String(bytes: response.data!, encoding: .utf8)
-                let backendlessFile = BackendlessFile()
-                backendlessFile.fileUrl = fileUrl?.replacingOccurrences(of: "\"", with: "")
-                responseHandler(backendlessFile)
             }
         })
     }

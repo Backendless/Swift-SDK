@@ -66,6 +66,7 @@ class UnitOfWorkDeleteRelation {
         let parentTableName = parentResult.tableName!
         let opResultId = generateOpResultId(tableName: parentTableName)
         let payload = ["parentObject": [uowProps.ref: true,
+                                        uowProps.propName: "objectId",
                                         uowProps.opResultId: parentResult.makeReference()[uowProps.opResultId]],
                        "relationColumn": columnName,
                        "unconditional": [uowProps.ref: true,
@@ -100,7 +101,6 @@ class UnitOfWorkDeleteRelation {
         let (parentTableName, opResultId) = prepareForDeleteRelation(result: parentResult)
         var payload = ["relationColumn": columnName,
                        "unconditional": [uowProps.ref: true,
-                                          uowProps.propName: "objectId",
                                           uowProps.opResultId: childrenResult.makeReference()[uowProps.opResultId]]] as [String : Any]
         if parentResult.operationType == .CREATE_BULK {
             payload["parentObject"] = [uowProps.ref: true,

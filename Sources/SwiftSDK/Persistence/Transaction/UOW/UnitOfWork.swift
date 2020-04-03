@@ -624,6 +624,13 @@ enum uowProps {
         return opRes
     }
     
+    public func deleteRelation(parentTableName: String, parentObject: [String : Any], columnName: String, whereClauseForChildren: String) -> OpResult {
+        let parentObjectId = TransactionHelper.shared.objectIdFromDictionary(parentObject)
+        let (operation, opRes) = uowDeleteRel!.deleteRelation(parentTableName: parentTableName, parentObjectId: parentObjectId, columnName: columnName, whereClauseForChildren: whereClauseForChildren)
+        operations.append(operation)
+        return opRes
+    }
+    
     public func deleteRelation(parentObject: Any, columnName: String, whereClauseForChildren: String) -> OpResult {
         let (parentTableName, parentObjectId) = TransactionHelper.shared.tableAndObjectIdFromEntity(entity: parentObject)
         let (operation, opRes) = uowDeleteRel!.deleteRelation(parentTableName: parentTableName, parentObjectId: parentObjectId, columnName: columnName, whereClauseForChildren: whereClauseForChildren)
