@@ -291,10 +291,15 @@ class DataStoreFactoryTests: XCTestCase {
             queryBuilder.setRelationsDepth(relationsDepth: 1)
             queryBuilder.setGroupBy(groupBy: ["name"])
             queryBuilder.setHavingClause(havingClause: "age>20")
+            queryBuilder.excludeProperty("age")
             queryBuilder.setPageSize(pageSize: 5)
             self.dataStore.find(queryBuilder: queryBuilder, responseHandler: { foundObjects in
                 XCTAssertNotNil(foundObjects)
                 XCTAssert(foundObjects.count >= 0)
+                XCTAssert(foundObjects is [TestClass])
+                for foundObject in foundObjects as! [TestClass] {
+                    XCTAssertEqual(foundObject.age, 0)
+                }
                 expectation.fulfill()
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)

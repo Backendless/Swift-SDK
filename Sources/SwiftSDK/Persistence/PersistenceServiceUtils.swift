@@ -219,7 +219,7 @@ class PersistenceServiceUtils {
                 }
             }
             if !excludeProps.isEmpty {
-                parameters["excludeProps"] = excludeProps
+                parameters["excludeProps"] = DataTypesUtils.shared.arrayToString(array: excludeProps)
             }
         }
         if let sortBy = queryBuilder?.getSortBy(), sortBy.count > 0 {
