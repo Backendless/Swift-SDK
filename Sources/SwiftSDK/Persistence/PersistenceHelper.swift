@@ -273,7 +273,7 @@ class PersistenceHelper {
             }
             return entity
         }
-        return nil
+        return dictionary
     }
     
     // MARK: - Private functions
