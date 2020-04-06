@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 5.7.8 / April 6, 2020
+* fixed issue with Backendless.shared.customService.invoke callback crash
+
 ### 5.7.7 / March 17, 2020
 * the `properties` of DataQueryBuilder and LoadRelationsQueryBuilder fixed to return all values when user set only one property as empty string
 * the `addAllProperties`, `excludeProperty`, `excludeProperties` methods added to the DataQueryBuilder 
