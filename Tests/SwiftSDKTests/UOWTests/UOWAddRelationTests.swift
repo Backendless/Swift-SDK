@@ -740,4 +740,28 @@ class UOWAddRelationTests: XCTestCase {
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
+
+    func test_26_addRelation() {
+        let expectation = self.expectation(description: "PASSED: uow.addRelation")
+        let children = [["foo": "childFoo"], ["foo": "childFoo"]]
+        Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: children, responseHandler: { createdIds in
+            let uow = UnitOfWork()
+            let findParentsResult = uow.find(tableName: "TestClass", queryBuilder: nil)
+            let parentValueRef = findParentsResult.resolveTo(resultIndex: 1)
+            let _ = uow.addToRelation(parentValueReference: parentValueRef, columnName: "children", whereClauseForChildren: "foo='childFoo'")
+            uow.execute(responseHandler: { uowResult in
+                XCTAssertNil(uowResult.error)
+                XCTAssertTrue(uowResult.success)
+                XCTAssertNotNil(uowResult.results)
+                expectation.fulfill()
+            }, errorHandler: {  fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
 }

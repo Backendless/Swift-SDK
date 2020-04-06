@@ -28,6 +28,7 @@ class UOWCreateTests: XCTestCase {
     private let testObjectsUtils = TestObjectsUtils.shared
     private let timeout: Double = 20.0    
     private let tableName = "TestClass"
+    private let tableName1 = "TestClass1"
 
     // call before all tests
     override class func setUp() {
@@ -82,11 +83,12 @@ class UOWCreateTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_03_bulkCreate() {
-        let expectation = self.expectation(description: "PASSED: uow.bulkCreate")
-        let objectsToSave = testObjectsUtils.createDictionaries(numberOfObjects: 3)
+    func test_03_create() {
+        let expectation = self.expectation(description: "PASSED: uow.create")
         let uow = UnitOfWork()
-        let _ = uow.bulkCreate(tableName: tableName, objectsToSave: objectsToSave)
+        let objectToSave = testObjectsUtils.createDictionary()
+        let createResult = uow.create(tableName: tableName, objectToSave: objectToSave)
+        let _ = uow.create(tableName: tableName, objectToSave: ["name": createResult.resolveTo(propName: "name")])
         uow.execute(responseHandler: { uowResult in
             XCTAssertNil(uowResult.error)
             XCTAssertTrue(uowResult.success)
@@ -99,11 +101,12 @@ class UOWCreateTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_04_bulkCreate() {
-        let expectation = self.expectation(description: "PASSED: uow.bulkCreate")
-        let objectsToSave = testObjectsUtils.createTestClassObjects(numberOfObjects: 3)
+    func test_04_create() {
+        let expectation = self.expectation(description: "PASSED: uow.create")
         let uow = UnitOfWork()
-        let _ = uow.bulkCreate(entities: objectsToSave)
+        let objectsToSave = testObjectsUtils.createTestClassObjects(numberOfObjects: 3)
+        let bulkCreateResult = uow.bulkCreate(entities: objectsToSave)
+        let _ = uow.create(tableName: tableName1, objectToSave: ["objectId": bulkCreateResult.resolveTo(resultIndex: 1)])
         uow.execute(responseHandler: { uowResult in
             XCTAssertNil(uowResult.error)
             XCTAssertTrue(uowResult.success)
@@ -115,5 +118,207 @@ class UOWCreateTests: XCTestCase {
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
+    
+    func test_05_create() {
+        let expectation = self.expectation(description: "PASSED: uow.create")
+        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+            var objectToUpdate = createdObject
+            objectToUpdate["age"] = 30
+            let uow = UnitOfWork()
+            let updateResult = uow.update(tableName: self.tableName, objectToUpdate: objectToUpdate)
+            let _ = uow.create(tableName: self.tableName, objectToSave: ["name": updateResult.resolveTo(propName: "name")])
+            uow.execute(responseHandler: { uowResult in
+                XCTAssertNil(uowResult.error)
+                XCTAssertTrue(uowResult.success)
+                XCTAssertNotNil(uowResult.results)
+                expectation.fulfill()
+            }, errorHandler: {  fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test_06_create() {
+        let expectation = self.expectation(description: "PASSED: uow.create")
+        testObjectsUtils.bulkCreateTestClassObjects(responseHandler: { objectIds in
+            let uow = UnitOfWork()
+            let bulkUpdateResult = uow.bulkUpdate(tableName: self.tableName, objectIds: objectIds, changes: ["age": 30])
+            let _ = uow.create(tableName: self.tableName, objectToSave: ["age": bulkUpdateResult])
+            uow.execute(responseHandler: { uowResult in
+                XCTAssertNil(uowResult.error)
+                XCTAssertTrue(uowResult.success)
+                XCTAssertNotNil(uowResult.results)
+                expectation.fulfill()
+            }, errorHandler: {  fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test_07_create() {
+        let expectation = self.expectation(description: "PASSED: uow.create")
+        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+            let uow = UnitOfWork()
+            let deleteResult = uow.delete(tableName: self.tableName, objectToDelete: createdObject)
+            let _ = uow.create(tableName: self.tableName, objectToSave: ["age": deleteResult])
+            uow.execute(responseHandler: { uowResult in
+                XCTAssertNil(uowResult.error)
+                XCTAssertTrue(uowResult.success)
+                XCTAssertNotNil(uowResult.results)
+                expectation.fulfill()
+            }, errorHandler: {  fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test_08_create() {
+        let expectation = self.expectation(description: "PASSED: uow.create")
+        testObjectsUtils.bulkCreateTestClassObjects(responseHandler: { objectIds in
+            let uow = UnitOfWork()
+            let bulkDeleteResult = uow.bulkDelete(tableName: self.tableName, objectIds: objectIds)
+            let _ = uow.create(tableName: self.tableName, objectToSave: ["age": bulkDeleteResult])
+            uow.execute(responseHandler: { uowResult in
+                XCTAssertNil(uowResult.error)
+                XCTAssertTrue(uowResult.success)
+                XCTAssertNotNil(uowResult.results)
+                expectation.fulfill()
+            }, errorHandler: {  fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test_09_create() {
+        let expectation = self.expectation(description: "PASSED: uow.create")
+        testObjectsUtils.bulkCreateTestClassObjects(responseHandler: { objectIds in
+            let uow = UnitOfWork()
+            let findResult = uow.find(tableName: self.tableName, queryBuilder: nil)
+            let _ = uow.create(tableName: self.tableName, objectToSave: ["name": findResult.resolveTo(resultIndex: 0, propName: "name")])
+            uow.execute(responseHandler: { uowResult in
+                XCTAssertNil(uowResult.error)
+                XCTAssertTrue(uowResult.success)
+                XCTAssertNotNil(uowResult.results)
+                expectation.fulfill()
+            }, errorHandler: {  fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test_10_create() {
+        let expectation = self.expectation(description: "PASSED: uow.create")
+        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+            let parentObjectId = createdObject["objectId"]
+            XCTAssertNotNil(parentObjectId)
+            XCTAssert(parentObjectId is String)
+            self.testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
+                let uow = UnitOfWork()
+                let addRelationResult = uow.addToRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", childrenObjectIds: childrenObjectIds)
+                let _ = uow.create(tableName: self.tableName, objectToSave: ["age": addRelationResult])
+                uow.execute(responseHandler: { uowResult in
+                    XCTAssertNil(uowResult.error)
+                    XCTAssertTrue(uowResult.success)
+                    XCTAssertNotNil(uowResult.results)
+                    expectation.fulfill()
+                }, errorHandler: {  fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test_11_create() {
+        let expectation = self.expectation(description: "PASSED: uow.create")
+        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+            let parentObjectId = createdObject["objectId"]
+            XCTAssertNotNil(parentObjectId)
+            XCTAssert(parentObjectId is String)
+            self.testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
+                let uow = UnitOfWork()
+                let setRelationResult = uow.setRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", childrenObjectIds: childrenObjectIds)
+                let _ = uow.create(tableName: self.tableName, objectToSave: ["age": setRelationResult])
+                uow.execute(responseHandler: { uowResult in
+                    XCTAssertNil(uowResult.error)
+                    XCTAssertTrue(uowResult.success)
+                    XCTAssertNotNil(uowResult.results)
+                    expectation.fulfill()
+                }, errorHandler: {  fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test_12_create() {
+        let expectation = self.expectation(description: "PASSED: uow.create")
+        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+            let parentObjectId = createdObject["objectId"]
+            XCTAssertNotNil(parentObjectId)
+            XCTAssert(parentObjectId is String)
+            self.testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
+                let uow = UnitOfWork()
+                let _ = uow.setRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", childrenObjectIds: childrenObjectIds)
+                let deleteRelationResult = uow.deleteRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", childrenObjectIds: childrenObjectIds)
+                let _ = uow.create(tableName: self.tableName, objectToSave: ["age": deleteRelationResult])
+                uow.execute(responseHandler: { uowResult in
+                    XCTAssertNil(uowResult.error)
+                    XCTAssertTrue(uowResult.success)
+                    XCTAssertNotNil(uowResult.results)
+                    expectation.fulfill()
+                }, errorHandler: {  fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
 }
-

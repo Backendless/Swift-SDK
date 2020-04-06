@@ -149,6 +149,16 @@ class PayloadHelper {
         operationPayload["operationType"] = OperationType.from(intValue: OperationType.UPDATE_BULK.rawValue)
         if let payload = operation.payload as? [String : Any],
             var changes = payload["changes"] as? [String : Any] {
+            for (key, value) in changes {
+                if let opResultValue = value as? OpResult,
+                    let tableName = opResultValue.tableName,
+                    let operationType = opResultValue.operationType,
+                    let opResultId = opResultValue.opResultId {
+                    changes[key] = ["tableName": tableName,
+                                        "operationType": OperationType.from(intValue: operationType.rawValue),
+                                        "opResultId": opResultId]
+                }
+            }       
             changes = psu.convertFromGeometryType(dictionary: changes)
             if let whereClause = payload["conditional"] as? String {
                 operationPayload["payload"] = ["conditional": whereClause, "changes": changes]

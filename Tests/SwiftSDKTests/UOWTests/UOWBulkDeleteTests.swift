@@ -1,5 +1,5 @@
 //
-//  UOWDeleteTests.swift
+//  UOWBulkDeleteTests.swift
 //
 /*
  * *********************************************************************************************************************
@@ -22,11 +22,11 @@
 import XCTest
 @testable import SwiftSDK
 
-class UOWDeleteTests: XCTestCase {
+class UOWBulkDeleteTests: XCTestCase {
 
     private let backendless = Backendless.shared
     private let testObjectsUtils = TestObjectsUtils.shared
-    private let timeout: Double = 20.0    
+    private let timeout: Double = 20.0
     private let tableName = "TestClass"
 
     // call before all tests
@@ -44,11 +44,11 @@ class UOWDeleteTests: XCTestCase {
         Backendless.shared.data.ofTable("TestClass").removeBulk(whereClause: nil, responseHandler: { removedObjects in }, errorHandler: { fault in })
     }
     
-    func test_01_delete() {
-        let expectation = self.expectation(description: "PASSED: uow.delete")
-        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+    func test_01_bulkDelete() {
+        let expectation = self.expectation(description: "PASSED: uow.bulkDelete")
+        testObjectsUtils.bulkCreateTestClassObjects(responseHandler: { objectIds in
             let uow = UnitOfWork()
-            let _ = uow.delete(tableName: self.tableName, objectToDelete: createdObject)
+            let _ = uow.bulkDelete(tableName: self.tableName, objectIds: objectIds)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
                 XCTAssertTrue(uowResult.success)
@@ -65,11 +65,15 @@ class UOWDeleteTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_02_delete() {
-        let expectation = self.expectation(description: "PASSED: uow.delete")
-        testObjectsUtils.saveTestClassObject(responseHandler: { createdObject in
+    func test_02_bulkDelete() {
+        let expectation = self.expectation(description: "PASSED: uow.bulkDelete")
+        testObjectsUtils.bulkCreateTestClassObjects(responseHandler: { objectIds in
+            var objectsToDelete = [[String : Any]]()
+            for objectId in objectIds {
+                objectsToDelete.append(["objectId": objectId])
+            }
             let uow = UnitOfWork()
-            let _ = uow.delete(objectToDelete: createdObject)
+            let _ = uow.bulkDelete(tableName: self.tableName, objectsToDelete: objectsToDelete)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
                 XCTAssertTrue(uowResult.success)
@@ -86,14 +90,17 @@ class UOWDeleteTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_03_delete() {
-        let expectation = self.expectation(description: "PASSED: uow.delete")
-        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+    func test_03_bulkDelete() {
+        let expectation = self.expectation(description: "PASSED: uow.bulkDelete")
+        testObjectsUtils.bulkCreateTestClassObjects(responseHandler: { objectIds in
+            var objectsToDelete = [TestClass]()
+            for objectId in objectIds {
+                let objectToDelete = TestClass()
+                objectToDelete.objectId = objectId
+                objectsToDelete.append(objectToDelete)
+            }
             let uow = UnitOfWork()
-            let objectId = createdObject["objectId"]
-            XCTAssertNotNil(objectId)
-            XCTAssert(objectId is String)
-            let _ = uow.delete(tableName: self.tableName, objectId: objectId as! String)
+            let _ = uow.bulkDelete(objectsToDelete: objectsToDelete)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
                 XCTAssertTrue(uowResult.success)
@@ -104,43 +111,6 @@ class UOWDeleteTests: XCTestCase {
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
-            XCTFail("\(fault.code): \(fault.message!)")
-        })
-        waitForExpectations(timeout: timeout, handler: nil)
-    }
-    
-    func test_04_delete() {
-        let expectation = self.expectation(description: "PASSED: uow.delete")
-        let uow = UnitOfWork()
-        let objectToSave = ["name" : "Bob", "age": 25] as [String : Any]
-        let createResult = uow.create(tableName: tableName, objectToSave: objectToSave)
-        let _ = uow.delete(result: createResult)
-        uow.execute(responseHandler: { uowResult in
-            XCTAssertNil(uowResult.error)
-            XCTAssertTrue(uowResult.success)
-            XCTAssertNotNil(uowResult.results)
-            expectation.fulfill()
-        }, errorHandler: {  fault in
-            XCTAssertNotNil(fault)
-            XCTFail("\(fault.code): \(fault.message!)")
-        })
-        waitForExpectations(timeout: timeout, handler: nil)
-    }
-    
-    func test_05_delete() {
-        let expectation = self.expectation(description: "PASSED: uow.delete")
-        let uow = UnitOfWork()
-        let objectsToSave = testObjectsUtils.createTestClassObjects(numberOfObjects: 3)
-        let createResult = uow.bulkCreate(entities: objectsToSave)
-        let createResultRef = createResult.resolveTo(resultIndex: 1)
-        let _ = uow.delete(valueReference: createResultRef)
-        uow.execute(responseHandler: { uowResult in
-            XCTAssertNil(uowResult.error)
-            XCTAssertTrue(uowResult.success)
-            XCTAssertNotNil(uowResult.results)
-            expectation.fulfill()
-        }, errorHandler: {  fault in
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })

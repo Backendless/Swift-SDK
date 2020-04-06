@@ -35,7 +35,6 @@
 		5E158BC623AE5DC100D29505 /* BLPointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAA20B5239953E600A39A38 /* BLPointTests.swift */; };
 		5E15A06C223B9C9D0090F5A3 /* RTMessagingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E15A06B223B9C9D0090F5A3 /* RTMessagingTests.swift */; };
 		5E17A1AA23954E0400B078B5 /* BLLineString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E17A1A923954E0400B078B5 /* BLLineString.swift */; };
-		5E17A3022437766D004C97E2 /* UOWBulkUpdateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E17A3012437766D004C97E2 /* UOWBulkUpdateTests.swift */; };
 		5E1CC2F72252534F0011D5C8 /* FileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1CC2F62252534F0011D5C8 /* FileService.swift */; };
 		5E1CC2F9225254140011D5C8 /* BackendlessFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1CC2F8225254140011D5C8 /* BackendlessFile.swift */; };
 		5E1DB58F23E19FAA00955319 /* UnitOfWork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1DB58E23E19FAA00955319 /* UnitOfWork.swift */; };
@@ -161,6 +160,8 @@
 		5EE6920121B67791002E72A9 /* FaultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE6920021B67791002E72A9 /* FaultTests.swift */; };
 		5EED4AED23E837D900DB006F /* UnitOfWorkDelete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EED4AEC23E837D900DB006F /* UnitOfWorkDelete.swift */; };
 		5EF0C79D23E43CBE00880F31 /* UnitOfWorkUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF0C79C23E43CBE00880F31 /* UnitOfWorkUpdate.swift */; };
+		5EF98B19243B635D00FF5F13 /* UOWBulkUpdateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF98B18243B635D00FF5F13 /* UOWBulkUpdateTests.swift */; };
+		5EF98B1B243B7AF400FF5F13 /* UOWBulkDeleteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF98B1A243B7AF400FF5F13 /* UOWBulkDeleteTests.swift */; };
 		5EFB60E922422F93004DFA2C /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFB60E822422F93004DFA2C /* UserInfo.swift */; };
 		5EFBA8FE21C1011E007B3BB0 /* BackendlessUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFBA8FD21C1011E007B3BB0 /* BackendlessUser.swift */; };
 		BE36943AF3B828F7AF5D04DA /* Pods_SwiftSDKTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4420AEBAC627AB6BE0C5CA22 /* Pods_SwiftSDKTests.framework */; };
@@ -211,7 +212,6 @@
 		5E13C3A522046F7C00EA3050 /* JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
 		5E15A06B223B9C9D0090F5A3 /* RTMessagingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTMessagingTests.swift; sourceTree = "<group>"; };
 		5E17A1A923954E0400B078B5 /* BLLineString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLLineString.swift; sourceTree = "<group>"; };
-		5E17A3012437766D004C97E2 /* UOWBulkUpdateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UOWBulkUpdateTests.swift; sourceTree = "<group>"; };
 		5E1CC2F62252534F0011D5C8 /* FileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileService.swift; sourceTree = "<group>"; };
 		5E1CC2F8225254140011D5C8 /* BackendlessFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessFile.swift; sourceTree = "<group>"; };
 		5E1DB58E23E19FAA00955319 /* UnitOfWork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfWork.swift; sourceTree = "<group>"; };
@@ -340,6 +340,8 @@
 		5EE6920021B67791002E72A9 /* FaultTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaultTests.swift; sourceTree = "<group>"; };
 		5EED4AEC23E837D900DB006F /* UnitOfWorkDelete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfWorkDelete.swift; sourceTree = "<group>"; };
 		5EF0C79C23E43CBE00880F31 /* UnitOfWorkUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfWorkUpdate.swift; sourceTree = "<group>"; };
+		5EF98B18243B635D00FF5F13 /* UOWBulkUpdateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UOWBulkUpdateTests.swift; sourceTree = "<group>"; };
+		5EF98B1A243B7AF400FF5F13 /* UOWBulkDeleteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UOWBulkDeleteTests.swift; sourceTree = "<group>"; };
 		5EFB60E822422F93004DFA2C /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		5EFBA8FD21C1011E007B3BB0 /* BackendlessUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessUser.swift; sourceTree = "<group>"; };
 		DD49F102D2CD9977AE5BA696 /* Pods-SwiftSDKTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSDKTests.debug.xcconfig"; path = "Target Support Files/Pods-SwiftSDKTests/Pods-SwiftSDKTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -631,8 +633,9 @@
 				5E7435072431D78F00EEA9A8 /* UOWCreateTests.swift */,
 				5EB5D17D243615D500C21662 /* UOWBulkCreateTests.swift */,
 				5E9396C62431EBDF00B2A5F1 /* UOWUpdateTests.swift */,
-				5E17A3012437766D004C97E2 /* UOWBulkUpdateTests.swift */,
+				5EF98B18243B635D00FF5F13 /* UOWBulkUpdateTests.swift */,
 				5E412CDF2431FF0C00640313 /* UOWDeleteTests.swift */,
+				5EF98B1A243B7AF400FF5F13 /* UOWBulkDeleteTests.swift */,
 				5E412CE12432133800640313 /* UOWFindTests.swift */,
 				5E412CE32432168C00640313 /* UOWSetRelationTests.swift */,
 				5E412CE5243235A000640313 /* UOWAddRelationTests.swift */,
@@ -1206,10 +1209,11 @@
 				5E44C0502223EC4A00B391E7 /* RTServiceTests.swift in Sources */,
 				5E545EEC21DFB87A00881ED0 /* GeoServiceTests.swift in Sources */,
 				5E545EEE21DFBA4400881ED0 /* GeoPointTests.swift in Sources */,
-				5E17A3022437766D004C97E2 /* UOWBulkUpdateTests.swift in Sources */,
+				5EF98B19243B635D00FF5F13 /* UOWBulkUpdateTests.swift in Sources */,
 				5E9396C72431EBDF00B2A5F1 /* UOWUpdateTests.swift in Sources */,
 				5E4C2707224B964700CDF967 /* MessagingServiceTests.swift in Sources */,
 				5E11113C21B542BA0044CAED /* UserServiceTests.swift in Sources */,
+				5EF98B1B243B7AF400FF5F13 /* UOWBulkDeleteTests.swift in Sources */,
 				5E7435082431D78F00EEA9A8 /* UOWCreateTests.swift in Sources */,
 				5EE2B40721C25EC600F90723 /* BackendlessUserTests.swift in Sources */,
 				5EDA87DE2434C44B00873403 /* UOWDeleteRelation.swift in Sources */,
