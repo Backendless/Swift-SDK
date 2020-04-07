@@ -47,7 +47,7 @@ class UOWAddRelationTests: XCTestCase {
     
     func test_01_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
-        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -76,7 +76,7 @@ class UOWAddRelationTests: XCTestCase {
     
     func test_02_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
-        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -109,7 +109,7 @@ class UOWAddRelationTests: XCTestCase {
     
     func test_03_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
-        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -144,14 +144,14 @@ class UOWAddRelationTests: XCTestCase {
     
     func test_04_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
-        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
             let uow = UnitOfWork()
             let childrenObjects = self.testObjectsUtils.createChildTestClassObjects(numberOfObjects: 2)
-            let bulkCreateChildrenResult = uow.bulkCreate(entities: childrenObjects)
-            let _ = uow.addToRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", childrenResult: bulkCreateChildrenResult)
+            let childrenResult = uow.bulkCreate(entities: childrenObjects)
+            let _ = uow.addToRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", childrenResult: childrenResult)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
                 XCTAssertTrue(uowResult.success)
@@ -170,7 +170,7 @@ class UOWAddRelationTests: XCTestCase {
     
     func test_05_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
-        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -200,7 +200,7 @@ class UOWAddRelationTests: XCTestCase {
     
     func test_06_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
-        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -234,7 +234,7 @@ class UOWAddRelationTests: XCTestCase {
     
     func test_07_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
-        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -270,15 +270,15 @@ class UOWAddRelationTests: XCTestCase {
     
     func test_08_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
-        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
             let parentObject = ["objectId": parentObjectId as! String]
             let uow = UnitOfWork()
             let childrenObjects = self.testObjectsUtils.createChildTestClassObjects(numberOfObjects: 2)
-            let bulkCreateChildrenResult = uow.bulkCreate(entities: childrenObjects)
-            let _ = uow.addToRelation(parentTableName: self.tableName, parentObject: parentObject, columnName: "children", childrenResult: bulkCreateChildrenResult)
+            let childrenResult = uow.bulkCreate(entities: childrenObjects)
+            let _ = uow.addToRelation(parentTableName: self.tableName, parentObject: parentObject, columnName: "children", childrenResult: childrenResult)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
                 XCTAssertTrue(uowResult.success)
@@ -297,7 +297,7 @@ class UOWAddRelationTests: XCTestCase {
     
     func test_09_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
-        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -328,7 +328,7 @@ class UOWAddRelationTests: XCTestCase {
     
     func test_10_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
-        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -363,7 +363,7 @@ class UOWAddRelationTests: XCTestCase {
     
     func test_11_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
-        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -400,7 +400,7 @@ class UOWAddRelationTests: XCTestCase {
     
     func test_12_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
-        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -408,8 +408,8 @@ class UOWAddRelationTests: XCTestCase {
             parentObject.objectId = parentObjectId as? String
             let uow = UnitOfWork()
             let childrenObjects = self.testObjectsUtils.createChildTestClassObjects(numberOfObjects: 2)
-            let bulkCreateChildrenResult = uow.bulkCreate(entities: childrenObjects)
-            let _ = uow.addToRelation(parentObject: parentObject, columnName: "children", childrenResult: bulkCreateChildrenResult)
+            let childrenResult = uow.bulkCreate(entities: childrenObjects)
+            let _ = uow.addToRelation(parentObject: parentObject, columnName: "children", childrenResult: childrenResult)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
                 XCTAssertTrue(uowResult.success)
@@ -430,9 +430,9 @@ class UOWAddRelationTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let uow = UnitOfWork()
         let parentObject = testObjectsUtils.createTestClassObject()
-        let createParentResult = uow.create(objectToSave: parentObject)
+        let parentResult = uow.create(objectToSave: parentObject)
         self.testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
-            let _ = uow.addToRelation(parentResult: createParentResult, columnName: "children", childrenObjectIds: childrenObjectIds)
+            let _ = uow.addToRelation(parentResult: parentResult, columnName: "children", childrenObjectIds: childrenObjectIds)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
                 XCTAssertTrue(uowResult.success)
@@ -453,13 +453,13 @@ class UOWAddRelationTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let uow = UnitOfWork()
         let parentObject = testObjectsUtils.createTestClassObject()
-        let createParentResult = uow.create(objectToSave: parentObject)
+        let parentResult = uow.create(objectToSave: parentObject)
         self.testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
             var children = [[String : Any]]()
             for childObjectId in childrenObjectIds {
                 children.append(["objectId": childObjectId])
             }
-            let _ = uow.addToRelation(parentResult: createParentResult, columnName: "children", children: children)
+            let _ = uow.addToRelation(parentResult: parentResult, columnName: "children", children: children)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
                 XCTAssertTrue(uowResult.success)
@@ -480,7 +480,7 @@ class UOWAddRelationTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let uow = UnitOfWork()
         let parentObject = testObjectsUtils.createTestClassObject()
-        let createParentResult = uow.create(objectToSave: parentObject)
+        let parentResult = uow.create(objectToSave: parentObject)
         self.testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
             var children = [ChildTestClass]()
             for childObjectId in childrenObjectIds {
@@ -488,7 +488,7 @@ class UOWAddRelationTests: XCTestCase {
                 child.objectId = childObjectId
                 children.append(child)
             }
-            let _ = uow.addToRelation(parentResult: createParentResult, columnName: "children", customChildren: children)
+            let _ = uow.addToRelation(parentResult: parentResult, columnName: "children", customChildren: children)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
                 XCTAssertTrue(uowResult.success)
@@ -509,10 +509,10 @@ class UOWAddRelationTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let uow = UnitOfWork()
         let parentObject = testObjectsUtils.createTestClassObject()
-        let createParentResult = uow.create(objectToSave: parentObject)
+        let parentResult = uow.create(objectToSave: parentObject)
         let children = testObjectsUtils.createChildTestClassObjects(numberOfObjects: 2)
-        let bulkCreateChildrenResult = uow.bulkCreate(entities: children)
-        let _ = uow.addToRelation(parentResult: createParentResult, columnName: "children", childrenResult: bulkCreateChildrenResult)
+        let childrenResult = uow.bulkCreate(entities: children)
+        let _ = uow.addToRelation(parentResult: parentResult, columnName: "children", childrenResult: childrenResult)
         uow.execute(responseHandler: { uowResult in
             XCTAssertNil(uowResult.error)
             XCTAssertTrue(uowResult.success)
@@ -528,8 +528,8 @@ class UOWAddRelationTests: XCTestCase {
     func test_17_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let uow = UnitOfWork()
-        let findParentsResult = uow.find(tableName: "TestClass", queryBuilder: nil)
-        let parentValueRef = findParentsResult.resolveTo(resultIndex: 1)
+        let parentResult = uow.find(tableName: "TestClass", queryBuilder: nil)
+        let parentValueRef = parentResult.resolveTo(resultIndex: 1)
         testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
             let _ = uow.addToRelation(parentValueReference: parentValueRef, columnName: "children", childrenObjectIds: childrenObjectIds)
             uow.execute(responseHandler: { uowResult in
@@ -551,8 +551,8 @@ class UOWAddRelationTests: XCTestCase {
     func test_18_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let uow = UnitOfWork()
-        let findParentsResult = uow.find(tableName: "TestClass", queryBuilder: nil)
-        let parentValueRef = findParentsResult.resolveTo(resultIndex: 1)
+        let parentResult = uow.find(tableName: "TestClass", queryBuilder: nil)
+        let parentValueRef = parentResult.resolveTo(resultIndex: 1)
         testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
             var children = [[String : Any]]()
             for childObjectId in childrenObjectIds {
@@ -578,8 +578,8 @@ class UOWAddRelationTests: XCTestCase {
     func test_19_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let uow = UnitOfWork()
-        let findParentsResult = uow.find(tableName: "TestClass", queryBuilder: nil)
-        let parentValueRef = findParentsResult.resolveTo(resultIndex: 1)
+        let parentResult = uow.find(tableName: "TestClass", queryBuilder: nil)
+        let parentValueRef = parentResult.resolveTo(resultIndex: 1)
         testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
             var children = [ChildTestClass]()
             for childObjectId in childrenObjectIds {
@@ -607,11 +607,11 @@ class UOWAddRelationTests: XCTestCase {
     func test_20_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let uow = UnitOfWork()
-        let findParentsResult = uow.find(tableName: "TestClass", queryBuilder: nil)
-        let parentValueRef = findParentsResult.resolveTo(resultIndex: 1)
+        let parentResult = uow.find(tableName: "TestClass", queryBuilder: nil)
+        let parentValueRef = parentResult.resolveTo(resultIndex: 1)
         let children = testObjectsUtils.createChildTestClassObjects(numberOfObjects: 2)
-        let bulkCreateChildrenResult = uow.bulkCreate(entities: children)
-        let _ = uow.addToRelation(parentValueReference: parentValueRef, columnName: "children", childrenResult: bulkCreateChildrenResult)
+        let childrenResult = uow.bulkCreate(entities: children)
+        let _ = uow.addToRelation(parentValueReference: parentValueRef, columnName: "children", childrenResult: childrenResult)
         uow.execute(responseHandler: { uowResult in
             XCTAssertNil(uowResult.error)
             XCTAssertTrue(uowResult.success)
@@ -626,7 +626,7 @@ class UOWAddRelationTests: XCTestCase {
     
     func test_21_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
-        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -650,7 +650,7 @@ class UOWAddRelationTests: XCTestCase {
     
     func test_22_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
-        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -675,7 +675,7 @@ class UOWAddRelationTests: XCTestCase {
     
     func test_23_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
-        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -703,8 +703,8 @@ class UOWAddRelationTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let uow = UnitOfWork()
         let parentObject = testObjectsUtils.createTestClassObject()
-        let createParentResult = uow.create(objectToSave: parentObject)
-        let _ = uow.addToRelation(parentResult: createParentResult, columnName: "children", whereClauseForChildren: "foo='foo1'")
+        let parentResult = uow.create(objectToSave: parentObject)
+        let _ = uow.addToRelation(parentResult: parentResult, columnName: "children", whereClauseForChildren: "foo='foo1'")
         uow.execute(responseHandler: { uowResult in
             XCTAssertNil(uowResult.error)
             XCTAssertTrue(uowResult.success)
@@ -722,32 +722,9 @@ class UOWAddRelationTests: XCTestCase {
         let children = [["foo": "childFoo"], ["foo": "childFoo"]]
         Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: children, responseHandler: { createdIds in
             let uow = UnitOfWork()
-            let findParentsResult = uow.find(tableName: "TestClass", queryBuilder: nil)
-            let parentValueRef = findParentsResult.resolveTo(resultIndex: 1)
-            let _ = uow.addToRelation(parentValueReference: parentValueRef, columnName: "children", whereClauseForChildren: "foo='childFoo'")
-            uow.execute(responseHandler: { uowResult in
-                XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
-                XCTAssertNotNil(uowResult.results)
-                expectation.fulfill()
-            }, errorHandler: {  fault in
-                XCTAssertNotNil(fault)
-                XCTFail("\(fault.code): \(fault.message!)")
-            })
-        }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
-            XCTFail("\(fault.code): \(fault.message!)")
-        })
-        waitForExpectations(timeout: timeout, handler: nil)
-    }
-
-    func test_26_addRelation() {
-        let expectation = self.expectation(description: "PASSED: uow.addRelation")
-        let children = [["foo": "childFoo"], ["foo": "childFoo"]]
-        Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: children, responseHandler: { createdIds in
-            let uow = UnitOfWork()
-            let findParentsResult = uow.find(tableName: "TestClass", queryBuilder: nil)
-            let parentValueRef = findParentsResult.resolveTo(resultIndex: 1)
+            let parentsObjects = self.testObjectsUtils.createTestClassObjects(numberOfObjects: 3)
+            let parentResult = uow.bulkCreate(entities: parentsObjects)
+            let parentValueRef = parentResult.resolveTo(resultIndex: 1)
             let _ = uow.addToRelation(parentValueReference: parentValueRef, columnName: "children", whereClauseForChildren: "foo='childFoo'")
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)

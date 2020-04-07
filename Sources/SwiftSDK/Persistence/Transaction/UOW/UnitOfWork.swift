@@ -203,6 +203,18 @@ enum uowProps {
         return bulkDelete(tableName: tableName, objectsToDelete: objectsToDeleteDict as! [[String : Any]])
     }
     
+    public func bulkDelete(tableName: String, whereClause: String) -> OpResult {
+        let (operation, opRes) = uowDelete!.bulkDelete(tableName: tableName, whereClause: whereClause)
+        operations.append(operation)
+        return opRes
+    }
+    
+    public func bulkDelete(result: OpResult) -> OpResult {
+        let (operation, opRes) = uowDelete!.bulkDelete(result: result)
+        operations.append(operation)
+        return opRes
+    }
+    
     // find
     
     public func find(tableName: String, queryBuilder: DataQueryBuilder?) -> OpResult {

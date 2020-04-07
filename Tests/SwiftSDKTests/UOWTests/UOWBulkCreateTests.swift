@@ -49,7 +49,7 @@ class UOWBulkCreateTests: XCTestCase {
     
     func test_01_bulkCreate() {
         let expectation = self.expectation(description: "PASSED: uow.bulkCreate")
-        let objectsToSave = testObjectsUtils.createDictionaries(numberOfObjects: 3)
+        let objectsToSave = testObjectsUtils.createTestClassDictionaries(numberOfObjects: 3)
         let uow = UnitOfWork()
         let _ = uow.bulkCreate(tableName: tableName, objectsToSave: objectsToSave)
         uow.execute(responseHandler: { uowResult in
@@ -121,7 +121,7 @@ class UOWBulkCreateTests: XCTestCase {
     
     func test_05_bulkCreate() {
         let expectation = self.expectation(description: "PASSED: uow.bulkCreate")
-        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
             var objectToUpdate = createdObject
             objectToUpdate["age"] = 30
             let uow = UnitOfWork()
@@ -167,7 +167,7 @@ class UOWBulkCreateTests: XCTestCase {
     
     func test_07_bulkCreate() {
         let expectation = self.expectation(description: "PASSED: uow.bulkCreate")
-        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
             let uow = UnitOfWork()
             let deleteResult = uow.delete(tableName: self.tableName, objectToDelete: createdObject)
             let _ = uow.bulkCreate(tableName: self.tableName, objectsToSave: [["age": deleteResult]])
@@ -228,7 +228,7 @@ class UOWBulkCreateTests: XCTestCase {
     
     func test_10_bulkCreate() {
         let expectation = self.expectation(description: "PASSED: uow.bulkCreate")
-        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -258,7 +258,7 @@ class UOWBulkCreateTests: XCTestCase {
     
     func test_11_bulkCreate() {
         let expectation = self.expectation(description: "PASSED: uow.bulkCreate")
-        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -288,7 +288,7 @@ class UOWBulkCreateTests: XCTestCase {
     
     func test_12_bulkCreate() {
         let expectation = self.expectation(description: "PASSED: uow.bulkCreate")
-        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)

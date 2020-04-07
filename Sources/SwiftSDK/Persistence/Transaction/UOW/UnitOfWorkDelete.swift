@@ -100,6 +100,15 @@ class UnitOfWorkDelete {
         return (operation, opResult)
     }
     
+    func bulkDelete(result: OpResult) -> (Operation, OpResult) {
+        let (tableName, opResultId) = prepareForBulkDelete(result: result)
+        let payload = ["unconditional": [uowProps.ref: true,
+                                         uowProps.opResultId: result.makeReference()[uowProps.opResultId]]] as [String : Any]
+        let operation = Operation(operationType: .DELETE_BULK, tableName: tableName, opResultId: opResultId, payload: payload)
+        let opResult = TransactionHelper.shared.makeOpResult(tableName: tableName, operationResultId: opResultId, operationType: .DELETE_BULK, uow: uow)
+        return (operation, opResult)
+    }
+    
     private func generateOpResultId(operationType: OperationType, tableName: String) -> String {
         var opResultId = TransactionHelper.shared.generateOperationTypeString(operationType) + tableName
         if operationType == .DELETE {
@@ -118,6 +127,14 @@ class UnitOfWorkDelete {
         let operationTypeString = TransactionHelper.shared.generateOperationTypeString(.DELETE)
         let operationResultId = "\(operationTypeString)\(tableName)\(countDelete)"
         countDelete += 1
+        return (tableName, operationResultId)
+    }
+    
+    private func prepareForBulkDelete(result: OpResult) -> (String, String) {
+        let tableName = result.tableName!
+        let operationTypeString = TransactionHelper.shared.generateOperationTypeString(.DELETE_BULK)
+        let operationResultId = "\(operationTypeString)\(tableName)\(countBulkDelete)"
+        countBulkDelete += 1
         return (tableName, operationResultId)
     }
 }

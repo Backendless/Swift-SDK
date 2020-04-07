@@ -116,4 +116,60 @@ class UOWBulkDeleteTests: XCTestCase {
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
+    
+    func test_04_bulkDelete() {
+        let expectation = self.expectation(description: "PASSED: uow.bulkDelete")
+        testObjectsUtils.bulkCreateTestClassObjects(responseHandler: { objectIds in
+            let uow = UnitOfWork()
+            let _ = uow.bulkDelete(tableName: self.tableName, whereClause: "age>25")
+            uow.execute(responseHandler: { uowResult in
+                XCTAssertNil(uowResult.error)
+                XCTAssertTrue(uowResult.success)
+                XCTAssertNotNil(uowResult.results)
+                expectation.fulfill()
+            }, errorHandler: {  fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test_05_bulkDelete() {
+        let expectation = self.expectation(description: "PASSED: uow.bulkDelete")
+        let uow = UnitOfWork()
+        let objectsToSave = testObjectsUtils.createTestClassObjects(numberOfObjects: 3)
+        let bulkCreateResult = uow.bulkCreate(entities: objectsToSave)
+        let _ = uow.bulkDelete(result: bulkCreateResult)
+        uow.execute(responseHandler: { uowResult in
+            XCTAssertNil(uowResult.error)
+            XCTAssertTrue(uowResult.success)
+            XCTAssertNotNil(uowResult.results)
+            expectation.fulfill()
+        }, errorHandler: {  fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test_06_bulkDelete() {
+        let expectation = self.expectation(description: "PASSED: uow.bulkDelete")
+        let uow = UnitOfWork()
+        let findResult = uow.find(tableName: self.tableName, queryBuilder: nil)
+        let _ = uow.bulkDelete(result: findResult)
+        uow.execute(responseHandler: { uowResult in
+            XCTAssertNil(uowResult.error)
+            XCTAssertTrue(uowResult.success)
+            XCTAssertNotNil(uowResult.results)
+            expectation.fulfill()
+        }, errorHandler: {  fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
 }

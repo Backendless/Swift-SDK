@@ -86,7 +86,7 @@ class UOWCreateTests: XCTestCase {
     func test_03_create() {
         let expectation = self.expectation(description: "PASSED: uow.create")
         let uow = UnitOfWork()
-        let objectToSave = testObjectsUtils.createDictionary()
+        let objectToSave = testObjectsUtils.createTestClassDictionary()
         let createResult = uow.create(tableName: tableName, objectToSave: objectToSave)
         let _ = uow.create(tableName: tableName, objectToSave: ["name": createResult.resolveTo(propName: "name")])
         uow.execute(responseHandler: { uowResult in
@@ -121,7 +121,7 @@ class UOWCreateTests: XCTestCase {
     
     func test_05_create() {
         let expectation = self.expectation(description: "PASSED: uow.create")
-        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
             var objectToUpdate = createdObject
             objectToUpdate["age"] = 30
             let uow = UnitOfWork()
@@ -167,7 +167,7 @@ class UOWCreateTests: XCTestCase {
     
     func test_07_create() {
         let expectation = self.expectation(description: "PASSED: uow.create")
-        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
             let uow = UnitOfWork()
             let deleteResult = uow.delete(tableName: self.tableName, objectToDelete: createdObject)
             let _ = uow.create(tableName: self.tableName, objectToSave: ["age": deleteResult])
@@ -233,7 +233,7 @@ class UOWCreateTests: XCTestCase {
     
     func test_10_create() {
         let expectation = self.expectation(description: "PASSED: uow.create")
-        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -263,7 +263,7 @@ class UOWCreateTests: XCTestCase {
     
     func test_11_create() {
         let expectation = self.expectation(description: "PASSED: uow.create")
-        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -293,7 +293,7 @@ class UOWCreateTests: XCTestCase {
     
     func test_12_create() {
         let expectation = self.expectation(description: "PASSED: uow.create")
-        testObjectsUtils.saveTestClassMap(responseHandler: { createdObject in
+        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)

@@ -26,11 +26,11 @@ class TestObjectsUtils {
     
     private init () { }
     
-    func createDictionary() -> [String: Any] {
+    func createTestClassDictionary() -> [String: Any] {
         return ["name": "Bob", "age": 25]
     }
     
-    func createDictionaries(numberOfObjects: Int) -> [[String: Any]] {
+    func createTestClassDictionaries(numberOfObjects: Int) -> [[String: Any]] {
         if numberOfObjects == 2 {
             return [["name": "Bob", "age": 25], ["name": "Ann", "age": 45]]
         }
@@ -207,7 +207,7 @@ class TestObjectsUtils {
         return objects
     }
     
-    func saveTestClassMap(responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    func createTestClassDictionary(responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
         Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
             responseHandler(createdObject)
@@ -216,7 +216,7 @@ class TestObjectsUtils {
         })
     }
     
-    func saveTestClassObject(responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    func createTestClassObject(responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let testObject = TestClass()
         testObject.name = "Bob"
         testObject.age = 25
@@ -228,7 +228,7 @@ class TestObjectsUtils {
     }
     
     func bulkCreateTestClassObjects(responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        let testObjects = createDictionaries(numberOfObjects: 3)
+        let testObjects = createTestClassDictionaries(numberOfObjects: 3)
         Backendless.shared.data.ofTable("TestClass").createBulk(entities: testObjects, responseHandler: { objectIds in
             responseHandler(objectIds)
         }, errorHandler: { fault in
