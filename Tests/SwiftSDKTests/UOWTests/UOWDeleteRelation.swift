@@ -28,6 +28,7 @@ class UOWDeleteRelation: XCTestCase {
     private let testObjectsUtils = TestObjectsUtils.shared
     private let timeout: Double = 20.0
     private let tableName = "TestClass"
+    private let childrenTableName = "ChildTestClass"
 
     // call before all tests
     override class func setUp() {
@@ -518,8 +519,9 @@ class UOWDeleteRelation: XCTestCase {
     func test_17_deleteRelation() {
         let expectation = self.expectation(description: "PASSED: uowdeleteRelation")
         let uow = UnitOfWork()
-        let findParentsResult = uow.find(tableName: "TestClass", queryBuilder: nil)
-        let parentValueRef = findParentsResult.resolveTo(resultIndex: 1)
+        let parentObjects = testObjectsUtils.createTestClassObjects(numberOfObjects: 3)
+        let parentResult = uow.bulkCreate(entities: parentObjects)
+        let parentValueRef = parentResult.resolveTo(resultIndex: 1)
         testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
             let _ = uow.setRelation(parentValueReference: parentValueRef, columnName: "children", childrenObjectIds: childrenObjectIds)
             let _ = uow.deleteRelation(parentValueReference: parentValueRef, columnName: "children", childrenObjectIds: childrenObjectIds)
@@ -542,15 +544,16 @@ class UOWDeleteRelation: XCTestCase {
     func test_18_deleteRelation() {
         let expectation = self.expectation(description: "PASSED: uowdeleteRelation")
         let uow = UnitOfWork()
-        let findParentsResult = uow.find(tableName: "TestClass", queryBuilder: nil)
-        let parentValueRef = findParentsResult.resolveTo(resultIndex: 1)
+        let parentObject = testObjectsUtils.createTestClassObject()
+        let parentCreateResult = uow.create(objectToSave: parentObject)
+        let parentUpdateResult = uow.update(result: parentCreateResult, changes: ["age": 30])
         testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
             var children = [[String : Any]]()
             for childObjectId in childrenObjectIds {
                 children.append(["objectId": childObjectId])
             }
-            let _ = uow.setRelation(parentValueReference: parentValueRef, columnName: "children", children: children)
-            let _ = uow.deleteRelation(parentValueReference: parentValueRef, columnName: "children", children: children)
+            let _ = uow.setRelation(parentResult: parentUpdateResult, columnName: "children", children: children)
+            let _ = uow.deleteRelation(parentResult: parentUpdateResult, columnName: "children", children: children)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
                 XCTAssertTrue(uowResult.success)
@@ -570,8 +573,8 @@ class UOWDeleteRelation: XCTestCase {
     func test_19_deleteRelation() {
         let expectation = self.expectation(description: "PASSED: uowdeleteRelation")
         let uow = UnitOfWork()
-        let findParentsResult = uow.find(tableName: "TestClass", queryBuilder: nil)
-        let parentValueRef = findParentsResult.resolveTo(resultIndex: 1)
+        let parentsResult = uow.find(tableName: "TestClass", queryBuilder: nil)
+        let parentValueRef = parentsResult.resolveTo(resultIndex: 1)
         testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
             var children = [ChildTestClass]()
             for childObjectId in childrenObjectIds {
@@ -600,12 +603,12 @@ class UOWDeleteRelation: XCTestCase {
     func test_20_deleteRelation() {
         let expectation = self.expectation(description: "PASSED: uow.deleteRelation")
         let uow = UnitOfWork()
-        let findParentsResult = uow.find(tableName: "TestClass", queryBuilder: nil)
-        let parentValueRef = findParentsResult.resolveTo(resultIndex: 1)
-        let children = testObjectsUtils.createChildTestClassObjects(numberOfObjects: 2)
-        let bulkCreateChildrenResult = uow.bulkCreate(entities: children)
-        let _ = uow.addToRelation(parentValueReference: parentValueRef, columnName: "children", childrenResult: bulkCreateChildrenResult)
-        let _ = uow.deleteRelation(parentValueReference: parentValueRef, columnName: "children", childrenResult: bulkCreateChildrenResult)
+        let parentObjects = testObjectsUtils.createTestClassObjects(numberOfObjects: 3)
+        let parentResult = uow.bulkCreate(entities: parentObjects)
+        let parentValueRef = parentResult.resolveTo(resultIndex: 1)
+        let childrenResult = uow.find(tableName: childrenTableName, queryBuilder: nil)
+        let _ = uow.addToRelation(parentValueReference: parentValueRef, columnName: "children", childrenResult: childrenResult)
+        let _ = uow.deleteRelation(parentValueReference: parentValueRef, columnName: "children", childrenResult:childrenResult)
         uow.execute(responseHandler: { uowResult in
             XCTAssertNil(uowResult.error)
             XCTAssertTrue(uowResult.success)

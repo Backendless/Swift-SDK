@@ -554,14 +554,14 @@ class UOWSetRelationTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: uow.setRelation")
         let uow = UnitOfWork()
         let parentObject = testObjectsUtils.createTestClassObject()
-        let createResult = uow.create(objectToSave: parentObject)
-        let updateResult = uow.update(result: createResult, changes: ["age": 30])
+        let parentCreateResult = uow.create(objectToSave: parentObject)
+        let parentUpdateResult = uow.update(result: parentCreateResult, changes: ["age": 30])
         testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
             var children = [[String : Any]]()
             for childObjectId in childrenObjectIds {
                 children.append(["objectId": childObjectId])
             }
-            let _ = uow.setRelation(parentResult: updateResult, columnName: "children", children: children)
+            let _ = uow.setRelation(parentResult: parentUpdateResult, columnName: "children", children: children)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
                 XCTAssertTrue(uowResult.success)
@@ -610,7 +610,8 @@ class UOWSetRelationTests: XCTestCase {
     func test_20_setRelation() {
         let expectation = self.expectation(description: "PASSED: uow.setRelation")
         let uow = UnitOfWork()
-        let parentResult = uow.find(tableName: "TestClass", queryBuilder: nil)
+        let parentObjects = testObjectsUtils.createTestClassObjects(numberOfObjects: 3)
+        let parentResult = uow.bulkCreate(entities: parentObjects)
         let parentValueRef = parentResult.resolveTo(resultIndex: 1)
         let childrenResult = uow.find(tableName: childrenTableName, queryBuilder: nil)
         let _ = uow.setRelation(parentValueReference: parentValueRef, columnName: "children", childrenResult: childrenResult)
