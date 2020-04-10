@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-import XCTest
+/*import XCTest
 @testable import SwiftSDK
 
 class GeoServiceTests: XCTestCase {
@@ -246,4 +246,4 @@ class GeoServiceTests: XCTestCase {
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
-}
+}*/

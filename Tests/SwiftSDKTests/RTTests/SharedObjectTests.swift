@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-import XCTest
+/*import XCTest
 @testable import SwiftSDK
 
 class SharedObjectTests: XCTestCase {
@@ -278,4 +278,4 @@ class SharedObjectTests: XCTestCase {
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
-}
+}*/
