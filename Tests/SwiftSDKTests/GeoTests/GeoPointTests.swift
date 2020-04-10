@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-import XCTest
+/*import XCTest
 @testable import SwiftSDK
 
 class GeoPointTests: XCTestCase {
@@ -56,4 +56,4 @@ class GeoPointTests: XCTestCase {
         XCTAssert(geoPoint4.metadata?.keys.count ?? 0 > 0)
         XCTAssert(geoPoint4.metadata?.values.count ?? 0 > 0)
     }
-}
+}*/

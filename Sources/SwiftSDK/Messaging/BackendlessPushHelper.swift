@@ -151,8 +151,11 @@ import UserNotifications
             }
             
             userInfo["aps"] = aps
-
-            if let attachmentUrl = iosPushTemplate["attachmentUrl"] as? String {
+            
+            if let attachmentUrl = request.content.userInfo["ios-rich-media-url"] as? String {
+                userInfo["attachment-url"] = attachmentUrl
+            }
+            else if let attachmentUrl = iosPushTemplate["attachmentUrl"] as? String {
                 userInfo["attachment-url"] = attachmentUrl
             }
             
