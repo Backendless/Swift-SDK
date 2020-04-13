@@ -25,7 +25,7 @@ class PayloadHelper {
     
     private let psu = PersistenceServiceUtils(tableName: "")
     
-    func generatePayload(isolation: IsolationLevel?, operations: [Operation]) -> [String : Any] {
+    func generatePayload(isolationLevel: IsolationLevel?, operations: [Operation]) -> [String : Any] {
         var payload = [String : Any]()
         var _operations = [[String : Any]]()
         for operation in operations {
@@ -71,7 +71,7 @@ class PayloadHelper {
             }
         }
         payload["operations"] = _operations
-        payload["isolationLevelEnum"] = isolation?.getName()
+        payload["isolationLevelEnum"] = isolationLevel?.getName()
         return payload
     }
     

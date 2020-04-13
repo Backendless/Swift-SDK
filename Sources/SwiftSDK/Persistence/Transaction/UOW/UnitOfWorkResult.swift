@@ -21,7 +21,7 @@
 
 @objcMembers public class UnitOfWorkResult: NSObject {
     
-    public var success = false
+    public var isSuccess: Bool = false
     public var error: TransactionOperationError?
     public var results: [String : OperationResult]?
 }

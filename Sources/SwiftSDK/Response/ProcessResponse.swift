@@ -380,7 +380,7 @@ class ProcessResponse {
         let uowResult = UnitOfWorkResult()
         if let success = unitOfWorkDictionary["success"] as? Bool {
             if success == true {
-                uowResult.success = true
+                uowResult.isSuccess = true
             }
             else if let errorDictionary = unitOfWorkDictionary["error"] as? [String : Any] {
                 uowResult.error = adaptToTransactionOperationError(errorDictionary: errorDictionary)

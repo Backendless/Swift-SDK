@@ -29,9 +29,9 @@ class UnitOfWorkUpdate {
         self.uow = uow
     }
     
-    func update(tableName: String, objectToUpdate: [String : Any]) -> (Operation, OpResult) {
+    func update(tableName: String, objectToSave: [String : Any]) -> (Operation, OpResult) {
         let opResultId = generateOpResultId(operationType: .UPDATE, tableName: tableName)
-        let payload = TransactionHelper.shared.preparePayloadWithOpResultValueReference(objectToUpdate)
+        let payload = TransactionHelper.shared.preparePayloadWithOpResultValueReference(objectToSave)
         let operation = Operation(operationType: .UPDATE, tableName: tableName, opResultId: opResultId, payload: payload)
         let opResult = TransactionHelper.shared.makeOpResult(tableName: tableName, operationResultId: opResultId, operationType: .UPDATE, uow: uow)
         return (operation, opResult)

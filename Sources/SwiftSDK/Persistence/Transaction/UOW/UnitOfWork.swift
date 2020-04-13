@@ -47,7 +47,7 @@ enum uowProps {
 
 @objcMembers public class UnitOfWork: NSObject {
     
-    public var isolation = IsolationLevel.REPEATABLE_READ
+    public var isolationLevel = IsolationLevel.REPEATABLE_READ
     var operations = [Operation]()
     
     private let psu = PersistenceServiceUtils(tableName: "")
@@ -71,9 +71,9 @@ enum uowProps {
         uowDeleteRel = UnitOfWorkDeleteRelation(uow: self)
     }
     
-    public convenience init(isolation: IsolationLevel) {
+    public convenience init(isolationLevel: IsolationLevel) {
         self.init()
-        self.isolation = isolation
+        self.isolationLevel = isolationLevel
     }
     
     // create
@@ -97,22 +97,22 @@ enum uowProps {
         return opRes
     }
     
-    public func bulkCreate(entities: [Any]) -> OpResult {
-        let (tableName, objectsToSaveDict) = TransactionHelper.shared.tableAndDictionaryFromEntity(entities)
+    public func bulkCreate(objectsToSave: [Any]) -> OpResult {
+        let (tableName, objectsToSaveDict) = TransactionHelper.shared.tableAndDictionaryFromEntity(objectsToSave)
         return bulkCreate(tableName: tableName, objectsToSave: objectsToSaveDict as! [[String : Any]])
     }
     
     // update
     
-    public func update(tableName: String, objectToUpdate: [String : Any]) -> OpResult {
-        let (operation, opRes) = uowUpdate!.update(tableName: tableName, objectToUpdate: objectToUpdate)
+    public func update(tableName: String, objectToSave: [String : Any]) -> OpResult {
+        let (operation, opRes) = uowUpdate!.update(tableName: tableName, objectToSave: objectToSave)
         operations.append(operation)
         return opRes
     }
     
-    public func update(objectToUpdate: Any) -> OpResult {
-        let (tableName, objectToUpdateDict) = TransactionHelper.shared.tableAndDictionaryFromEntity(objectToUpdate)
-        return update(tableName: tableName, objectToUpdate: objectToUpdateDict as! [String : Any])
+    public func update(objectToSave: Any) -> OpResult {
+        let (tableName, objectToSaveDict) = TransactionHelper.shared.tableAndDictionaryFromEntity(objectToSave)
+        return update(tableName: tableName, objectToSave: objectToSaveDict as! [String : Any])
     }
     
     public func update(result: OpResult, changes: [String : Any]) -> OpResult {
@@ -143,33 +143,33 @@ enum uowProps {
         return opRes
     }
     
-    public func bulkUpdate(tableName: String, objectIds: [String], changes: [String : Any]) -> OpResult {
-        let (operation, opRes) = uowUpdate!.bulkUpdate(tableName: tableName, objectIds: objectIds, changes: changes)
+    public func bulkUpdate(tableName: String, objectsToUpdate: [String], changes: [String : Any]) -> OpResult {
+        let (operation, opRes) = uowUpdate!.bulkUpdate(tableName: tableName, objectIds: objectsToUpdate, changes: changes)
         operations.append(operation)
         return opRes
     }
     
-    public func bulkUpdate(result: OpResult, changes: [String : Any]) -> OpResult {
-        let (operation, opRes) = uowUpdate!.bulkUpdate(result: result, changes: changes)
+    public func bulkUpdate(objectIdsForChanges: OpResult, changes: [String : Any]) -> OpResult {
+        let (operation, opRes) = uowUpdate!.bulkUpdate(result: objectIdsForChanges, changes: changes)
         operations.append(operation)
         return opRes
     }
     
     // delete
     
-    public func delete(tableName: String, objectToDelete: [String : Any]) -> OpResult {
-        let (operation, opRes) = uowDelete!.delete(tableName: tableName, objectToDelete: objectToDelete)
+    public func delete(tableName: String, objectDictionary: [String : Any]) -> OpResult {
+        let (operation, opRes) = uowDelete!.delete(tableName: tableName, objectToDelete: objectDictionary)
         operations.append(operation)
         return opRes
     }
     
     public func delete(objectToDelete: Any) -> OpResult {
         let (tableName, objectToDeleteDict) = TransactionHelper.shared.tableAndDictionaryFromEntity(objectToDelete)
-        return delete(tableName: tableName, objectToDelete: objectToDeleteDict as! [String : Any])
+        return delete(tableName: tableName, objectDictionary: objectToDeleteDict as! [String : Any])
     }
     
     public func delete(tableName: String, objectId: String) -> OpResult {
-        return delete(tableName: tableName, objectToDelete: ["objectId": objectId])
+        return delete(tableName: tableName, objectDictionary: ["objectId": objectId])
     }
     
     public func delete(result: OpResult) -> OpResult {
@@ -665,7 +665,7 @@ enum uowProps {
     // execute
     public func execute(responseHandler: ((UnitOfWorkResult) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
-        let parameters = PayloadHelper.shared.generatePayload(isolation: isolation, operations: operations)
+        let parameters = PayloadHelper.shared.generatePayload(isolationLevel: isolationLevel, operations: operations)
         BackendlessRequestManager(restMethod: "transaction/unit-of-work", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
                 if result is Fault {
