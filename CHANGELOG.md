@@ -1,12 +1,15 @@
 # RELEASE HISTORY
 
+### 5.7.9 / April 10, 2020
+* added support for smart-text in rich media url
+
 ### 5.7.8 / April 6, 2020
 * fixed issue with Backendless.shared.customService.invoke callback crash
 
 ### 5.7.7 / March 17, 2020
 * the `properties` of DataQueryBuilder and LoadRelationsQueryBuilder fixed to return all values when user set only one property as empty string
-* the `addAllProperties`, `excludeProperty`, `excludeProperties` methods added to the DataQueryBuilder 
-* fixed issue when DataStore methods didn't process Backendless types in response 
+* the `addAllProperties`, `excludeProperty`, `excludeProperties` methods added to the DataQueryBuilder
+* fixed issue when DataStore methods didn't process Backendless types in response
 
 ### 5.7.6 / February 25, 2020
 * fixed class to table mapping issue
@@ -23,7 +26,7 @@
 
 ### 5.7.3 / January 28, 2020
 * fixed `isValidUserToken` method to return error when Internet connection is not available
-* refactored Fault contructor to handle URLSession errors correctly 
+* refactored Fault contructor to handle URLSession errors correctly
 * fixed tests according to the last server changes
 
 ### 5.7.2 / January 24, 2020
@@ -45,7 +48,7 @@ func loginWithTwitter(authToken: String, authTokenSecret: String, guestUser: Bac
 
 func loginWithGoogle(accessToken: String, guestUser: BackendlessUser, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!)
 ```
-* added function to DataQueryBuilder and LoadRelationsQueryBuilder: 
+* added function to DataQueryBuilder and LoadRelationsQueryBuilder:
 ```
 func addProperties(properties: String...)
 ```
