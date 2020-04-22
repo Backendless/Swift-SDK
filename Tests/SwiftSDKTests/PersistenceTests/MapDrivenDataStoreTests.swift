@@ -258,7 +258,6 @@ class MapDrivenDataStoreTests: XCTestCase {
             let queryBuilder = DataQueryBuilder()
             queryBuilder.setRelationsDepth(relationsDepth: 1)
             queryBuilder.setGroupBy(groupBy: ["name"])
-            queryBuilder.setHavingClause(havingClause: "age>20")
             queryBuilder.setPageSize(pageSize: 5)
             queryBuilder.excludeProperty("age")
             self.dataStore.find(queryBuilder: queryBuilder, responseHandler: { foundObjects in
