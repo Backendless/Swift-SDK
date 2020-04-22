@@ -61,6 +61,7 @@ class ClientCallback: ICallback {
     }
     
     func equalCallbackParameter(object: Any?) -> Bool {
-        return type(of: self.geoFenceCallback) == type(of: object) as! NSObject.Type && (self.geoFenceCallback as! NSObject) == object as! NSObject
+        //return type(of: self.geoFenceCallback) == type(of: object) as! NSObject.Type && (self.geoFenceCallback as! NSObject) == object as! NSObject
+        return (self.geoFenceCallback as! NSObject) == object as! NSObject
     }
 }

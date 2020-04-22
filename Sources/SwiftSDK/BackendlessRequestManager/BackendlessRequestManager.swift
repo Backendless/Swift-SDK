@@ -76,7 +76,7 @@ class BackendlessRequestManager {
                 }
                 else {
                     if var params = parameters as? [String : Any] {
-                        for (key, value) in params {
+                        for (key, value) in params {                            
                             if let dateValue = value as? Date {                                
                                 params[key] = DataTypesUtils.shared.dateToInt(date: dateValue)
                             }

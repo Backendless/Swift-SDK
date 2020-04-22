@@ -246,7 +246,7 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssert(type(of: savedObjects) == [String].self)
             XCTAssert(savedObjects.count == 3)
             let queryBuilder = DataQueryBuilder()
-            queryBuilder.setWhereClause(whereClause: "name = 'Bob' and age> 30")
+            queryBuilder.whereClause = "name = 'Bob' and age> 30"
             self.dataStore.getObjectCount(queryBuilder: queryBuilder, responseHandler: { count in
                 XCTAssertNotNil(count)
                 XCTAssert(Int(exactly: count)! >= 0)
@@ -288,11 +288,11 @@ class DataStoreFactoryTests: XCTestCase {
         dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
             XCTAssertNotNil(savedObjects)
             let queryBuilder = DataQueryBuilder()
-            queryBuilder.setRelationsDepth(relationsDepth: 1)
+            queryBuilder.relationsDepth = 1
+            queryBuilder.pageSize = 5
+            queryBuilder.havingClause = "age>20"
             queryBuilder.setGroupBy(groupBy: ["name"])
-            queryBuilder.setHavingClause(havingClause: "age>20")
             queryBuilder.excludeProperty("age")
-            queryBuilder.setPageSize(pageSize: 5)
             self.dataStore.find(queryBuilder: queryBuilder, responseHandler: { foundObjects in
                 XCTAssertNotNil(foundObjects)
                 XCTAssert(foundObjects.count >= 0)

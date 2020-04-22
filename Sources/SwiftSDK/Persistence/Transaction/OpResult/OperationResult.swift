@@ -21,6 +21,6 @@
 
 @objcMembers public class OperationResult: NSObject {
     
-    public var operationType: OperationType?
+    public var operationType: OperationType = .CREATE
     public var result: Any?
 }

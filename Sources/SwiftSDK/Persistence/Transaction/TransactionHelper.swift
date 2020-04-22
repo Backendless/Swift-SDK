@@ -94,7 +94,7 @@ class TransactionHelper {
     }
     
     func generateOperationTypeString(_ operationType: OperationType) -> String {
-        return OperationType.from(intValue: operationType.rawValue)!.lowercased().replacingOccurrences(of: "_", with: "")
+        return OperationType.from(intValue: operationType.rawValue).lowercased().replacingOccurrences(of: "_", with: "")
     }
     
     func preparePayloadWithOpResultValueReference(_ payload: [String : Any]) -> [String : Any] {

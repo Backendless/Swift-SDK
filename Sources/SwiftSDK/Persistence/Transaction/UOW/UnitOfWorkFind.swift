@@ -34,18 +34,18 @@ class UnitOfWorkFind {
         countFind += 1
         
         var queryOptions = [String : Any]()
-        queryOptions["sortBy"] = queryBuilder.getSortBy()
-        queryOptions["related"] = queryBuilder.getRelated()
-        queryOptions["relationsDepth"] = queryBuilder.getRelationsDepth()
-        queryOptions["relationsPageSize"] = queryBuilder.getRelationsPageSize()
+        queryOptions["sortBy"] = queryBuilder.sortBy
+        queryOptions["related"] = queryBuilder.related
+        queryOptions["relationsDepth"] = queryBuilder.relationsDepth
+        queryOptions["relationsPageSize"] = queryBuilder.relationsPageSize
         
         var payload = [String : Any]()
-        payload["pageSize"] = queryBuilder.getPageSize()
-        payload["offset"] = queryBuilder.getOffset()
-        payload["properties"] = queryBuilder.getProperties()
-        payload["whereClause"] = queryBuilder.getWhereClause()
-        payload["havingClause"] = queryBuilder.getHavingClause()
-        payload["groupBy"] = queryBuilder.getGroupBy()
+        payload["pageSize"] = queryBuilder.pageSize
+        payload["offset"] = queryBuilder.offset
+        payload["properties"] = queryBuilder.properties
+        payload["whereClause"] = queryBuilder.whereClause
+        payload["havingClause"] = queryBuilder.havingClause
+        payload["groupBy"] = queryBuilder.groupBy
         payload["queryOptions"] = queryOptions
         
         let operation = Operation(operationType: .FIND, tableName: tableName, opResultId: operationResultId, payload: payload)

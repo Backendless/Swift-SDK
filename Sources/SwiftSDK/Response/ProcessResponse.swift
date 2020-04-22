@@ -366,10 +366,10 @@ class ProcessResponse {
         if let message = errorDictionary["message"] as? String,
             let operationDictionary = errorDictionary["operation"] as? [String : Any],
             let operationTypeString = operationDictionary["operationType"] as? String,
-            let operationType = OperationType.from(stringValue: operationTypeString),
             let tableName = operationDictionary["table"] as? String,
             let opResultId = operationDictionary["opResultId"] as? String,
             let payload = operationDictionary["payload"] {
+            let operationType = OperationType.from(stringValue: operationTypeString)
             let operation = Operation(operationType: operationType, tableName: tableName, opResultId: opResultId, payload: payload)
             return TransactionOperationError(message: message, operation: operation)
         }
@@ -391,7 +391,7 @@ class ProcessResponse {
             for (opResultId, operationResultDict) in results {
                 if let operationResultDict = operationResultDict as? [String : Any] {
                     let operationResult = OperationResult()
-                    if let type = operationResultDict["type"] as? String {
+                    if let type = operationResultDict["operationType"] as? String {
                         operationResult.operationType = OperationType.from(stringValue: type)
                     }
                     if let result = operationResultDict["result"] as? [String : Any] {

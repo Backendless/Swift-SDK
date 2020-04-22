@@ -51,10 +51,10 @@ class UOWUpdateTests: XCTestCase {
             var objectToUpdate = createdObject
             objectToUpdate["age"] = 30
             let uow = UnitOfWork()
-            let _ = uow.update(tableName: self.tableName, objectToUpdate: objectToUpdate)
+            let _ = uow.update(tableName: self.tableName, objectToSave: objectToUpdate)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -74,10 +74,10 @@ class UOWUpdateTests: XCTestCase {
             XCTAssert(createdObject is TestClass)
             (createdObject as! TestClass).age = 30
             let uow = UnitOfWork()
-            let _ = uow.update(objectToUpdate: createdObject)
+            let _ = uow.update(objectToSave: createdObject)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -99,7 +99,7 @@ class UOWUpdateTests: XCTestCase {
         let _ = uow.update(result: createResult, changes: ["age": 30])
         uow.execute(responseHandler: { uowResult in
             XCTAssertNil(uowResult.error)
-            XCTAssertTrue(uowResult.success)
+            XCTAssertTrue(uowResult.isSuccess)
             XCTAssertNotNil(uowResult.results)
             expectation.fulfill()
         }, errorHandler: {  fault in
@@ -115,11 +115,11 @@ class UOWUpdateTests: XCTestCase {
             var objectToUpdate = createdObject
             objectToUpdate["age"] = 30
             let uow = UnitOfWork()
-            let updateResult = uow.update(tableName: self.tableName, objectToUpdate: objectToUpdate)
+            let updateResult = uow.update(tableName: self.tableName, objectToSave: objectToUpdate)
             let _ = uow.update(result: updateResult, propertyName: "age", propertyValue: 30)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -137,11 +137,11 @@ class UOWUpdateTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: uow.update")
         let uow = UnitOfWork()
         let objectsToSave = testObjectsUtils.createTestClassObjects(numberOfObjects: 3)
-        let createResult = uow.bulkCreate(entities: objectsToSave)
+        let createResult = uow.bulkCreate(objectsToSave: objectsToSave)
         let _ = uow.update(valueReference: createResult.resolveTo(resultIndex: 1), changes: ["age": 30])
         uow.execute(responseHandler: { uowResult in
             XCTAssertNil(uowResult.error)
-            XCTAssertTrue(uowResult.success)
+            XCTAssertTrue(uowResult.isSuccess)
             XCTAssertNotNil(uowResult.results)
             expectation.fulfill()
         }, errorHandler: {  fault in
@@ -156,10 +156,10 @@ class UOWUpdateTests: XCTestCase {
         let uow = UnitOfWork()
         let objectToSave = testObjectsUtils.createTestClassDictionary()
         let createResult = uow.create(tableName: tableName, objectToSave: objectToSave)
-        let _ = uow.update(tableName: tableName, objectToUpdate: ["objectId": createResult.resolveTo(propName: "objectId"), "name": createResult.resolveTo(propName: "name")])
+        let _ = uow.update(tableName: tableName, objectToSave: ["objectId": createResult.resolveTo(propName: "objectId"), "name": createResult.resolveTo(propName: "name")])
         uow.execute(responseHandler: { uowResult in
             XCTAssertNil(uowResult.error)
-            XCTAssertTrue(uowResult.success)
+            XCTAssertTrue(uowResult.isSuccess)
             XCTAssertNotNil(uowResult.results)
             expectation.fulfill()
         }, errorHandler: {  fault in
@@ -174,10 +174,10 @@ class UOWUpdateTests: XCTestCase {
         let uow = UnitOfWork()
         let objectsToSave = testObjectsUtils.createTestClassDictionaries(numberOfObjects: 3)
         let bulkCreateResult = uow.bulkCreate(tableName: tableName, objectsToSave: objectsToSave)
-        let _ = uow.update(tableName: tableName, objectToUpdate: ["objectId": bulkCreateResult.resolveTo(resultIndex: 1), "age": 30])
+        let _ = uow.update(tableName: tableName, objectToSave: ["objectId": bulkCreateResult.resolveTo(resultIndex: 1), "age": 30])
         uow.execute(responseHandler: { uowResult in
             XCTAssertNil(uowResult.error)
-            XCTAssertTrue(uowResult.success)
+            XCTAssertTrue(uowResult.isSuccess)
             XCTAssertNotNil(uowResult.results)
             expectation.fulfill()
         }, errorHandler: {  fault in
@@ -193,10 +193,10 @@ class UOWUpdateTests: XCTestCase {
         let objectToSave = testObjectsUtils.createTestClassObject()
         let createResult = uow.create(objectToSave: objectToSave)
         let updateResult = uow.update(result: createResult, changes: ["age": 30])
-        let _ = uow.update(tableName: tableName, objectToUpdate: ["objectId": updateResult.resolveTo(propName: "objectId"), "name": updateResult.resolveTo(propName: "name")])
+        let _ = uow.update(tableName: tableName, objectToSave: ["objectId": updateResult.resolveTo(propName: "objectId"), "name": updateResult.resolveTo(propName: "name")])
         uow.execute(responseHandler: { uowResult in
             XCTAssertNil(uowResult.error)
-            XCTAssertTrue(uowResult.success)
+            XCTAssertTrue(uowResult.isSuccess)
             XCTAssertNotNil(uowResult.results)
             expectation.fulfill()
         }, errorHandler: {  fault in
@@ -210,11 +210,11 @@ class UOWUpdateTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: uow.update")
         testObjectsUtils.bulkCreateTestClassObjects(responseHandler: { objectIds in
             let uow = UnitOfWork()
-            let bulkUpdateResult = uow.bulkUpdate(tableName: self.tableName, objectIds: objectIds, changes: ["age": 30])
-            let _ = uow.update(tableName: self.tableName, objectToUpdate: ["objectId": objectIds.first!, "age": bulkUpdateResult])
+            let bulkUpdateResult = uow.bulkUpdate(tableName: self.tableName, objectsToUpdate: objectIds, changes: ["age": 30])
+            let _ = uow.update(tableName: self.tableName, objectToSave: ["objectId": objectIds.first!, "age": bulkUpdateResult])
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -233,10 +233,10 @@ class UOWUpdateTests: XCTestCase {
         testObjectsUtils.bulkCreateTestClassObjects(responseHandler: { objectIds in
             let uow = UnitOfWork()
             let deleteResult = uow.delete(tableName: self.tableName, objectId: objectIds.first!)
-            let _ = uow.update(tableName: self.tableName, objectToUpdate: ["objectId": objectIds.last!, "age": deleteResult])
+            let _ = uow.update(tableName: self.tableName, objectToSave: ["objectId": objectIds.last!, "age": deleteResult])
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -254,11 +254,11 @@ class UOWUpdateTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: uow.update")
         testObjectsUtils.bulkCreateTestClassObjects(responseHandler: { objectIds in
             let uow = UnitOfWork()
-            let bulkDeleteResult = uow.bulkDelete(tableName: self.tableName, objectIds: [objectIds.first!])
-            let _ = uow.update(tableName: self.tableName, objectToUpdate: ["objectId": objectIds.last!, "age": bulkDeleteResult])
+            let bulkDeleteResult = uow.bulkDelete(tableName: self.tableName, objectIdValues: [objectIds.first!])
+            let _ = uow.update(tableName: self.tableName, objectToSave: ["objectId": objectIds.last!, "age": bulkDeleteResult])
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -280,7 +280,7 @@ class UOWUpdateTests: XCTestCase {
             let _ = uow.update(valueReference: findResult.resolveTo(resultIndex: 1), changes: ["age": 30])
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -299,10 +299,10 @@ class UOWUpdateTests: XCTestCase {
         testObjectsUtils.bulkCreateTestClassObjects(responseHandler: { objectIds in
             let uow = UnitOfWork()
             let findResult = uow.find(tableName: self.tableName, queryBuilder: nil)
-            let _ = uow.update(tableName: self.tableName, objectToUpdate: ["objectId": findResult.resolveTo(resultIndex: 0, propName: "objectId"), "name": findResult.resolveTo(resultIndex: 0, propName: "name")])
+            let _ = uow.update(tableName: self.tableName, objectToSave: ["objectId": findResult.resolveTo(resultIndex: 0, propName: "objectId"), "name": findResult.resolveTo(resultIndex: 0, propName: "name")])
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -325,10 +325,10 @@ class UOWUpdateTests: XCTestCase {
             self.testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
                 let uow = UnitOfWork()
                 let addRelationResult = uow.addToRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", childrenObjectIds: childrenObjectIds)
-                let _ = uow.update(tableName: self.tableName, objectToUpdate: ["objectId": parentObjectId as! String, "age": addRelationResult])
+                let _ = uow.update(tableName: self.tableName, objectToSave: ["objectId": parentObjectId as! String, "age": addRelationResult])
                 uow.execute(responseHandler: { uowResult in
                     XCTAssertNil(uowResult.error)
-                    XCTAssertTrue(uowResult.success)
+                    XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
                 }, errorHandler: {  fault in
@@ -355,10 +355,10 @@ class UOWUpdateTests: XCTestCase {
             self.testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
                 let uow = UnitOfWork()
                 let setRelationResult = uow.setRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", childrenObjectIds: childrenObjectIds)
-                let _ = uow.update(tableName: self.tableName, objectToUpdate: ["objectId": parentObjectId as! String, "age": setRelationResult])
+                let _ = uow.update(tableName: self.tableName, objectToSave: ["objectId": parentObjectId as! String, "age": setRelationResult])
                 uow.execute(responseHandler: { uowResult in
                     XCTAssertNil(uowResult.error)
-                    XCTAssertTrue(uowResult.success)
+                    XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
                 }, errorHandler: {  fault in
@@ -386,10 +386,10 @@ class UOWUpdateTests: XCTestCase {
                 let uow = UnitOfWork()
                 let _ = uow.setRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", childrenObjectIds: childrenObjectIds)
                 let deleteRelationResult = uow.deleteRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", childrenObjectIds: childrenObjectIds)
-                let _ = uow.update(tableName: self.tableName, objectToUpdate: ["objectId": parentObjectId as! String, "age": deleteRelationResult])
+                let _ = uow.update(tableName: self.tableName, objectToSave: ["objectId": parentObjectId as! String, "age": deleteRelationResult])
                 uow.execute(responseHandler: { uowResult in
                     XCTAssertNil(uowResult.error)
-                    XCTAssertTrue(uowResult.success)
+                    XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
                 }, errorHandler: {  fault in

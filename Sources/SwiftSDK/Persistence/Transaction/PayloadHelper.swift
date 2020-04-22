@@ -90,6 +90,9 @@ class PayloadHelper {
                                     "operationType": OperationType.from(intValue: operationType.rawValue),
                                     "opResultId": opResultId]
                 }
+                else if let dateValue = value as? Date {
+                    payload[key] = DataTypesUtils.shared.dateToInt(date: dateValue)
+                }
             }
             operationPayload["payload"] = psu.convertFromGeometryType(dictionary: payload)
         }
@@ -112,7 +115,10 @@ class PayloadHelper {
                         payloadDict[key] = ["tableName": tableName,
                                             "operationType": OperationType.from(intValue: operationType.rawValue),
                                             "opResultId": opResultId]
-                    }                    
+                    }
+                    else if let dateValue = value as? Date {
+                        payloadDict[key] = DataTypesUtils.shared.dateToInt(date: dateValue)
+                    }
                 }
                 resultPayload.append(psu.convertFromGeometryType(dictionary: payloadDict))
             }
@@ -136,6 +142,9 @@ class PayloadHelper {
                                     "operationType": OperationType.from(intValue: operationType.rawValue),
                                     "opResultId": opResultId]
                 }
+                else if let dateValue = value as? Date {
+                    payload[key] = DataTypesUtils.shared.dateToInt(date: dateValue)
+                }
             }       
             operationPayload["payload"] = psu.convertFromGeometryType(dictionary: payload)
         }
@@ -157,6 +166,9 @@ class PayloadHelper {
                     changes[key] = ["tableName": tableName,
                                         "operationType": OperationType.from(intValue: operationType.rawValue),
                                         "opResultId": opResultId]
+                }
+                else if let dateValue = value as? Date {
+                    changes[key] = DataTypesUtils.shared.dateToInt(date: dateValue)
                 }
             }       
             changes = psu.convertFromGeometryType(dictionary: changes)

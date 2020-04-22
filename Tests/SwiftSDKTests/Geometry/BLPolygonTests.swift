@@ -1208,7 +1208,7 @@ class BLPolygonTests: XCTestCase {
         geometryObject3.polygon = BLPolygon(boundary: boundary1, holes: holes1)
         dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
             let queryBuilder = DataQueryBuilder()
-            queryBuilder.setWhereClause(whereClause: "polygon='POLYGON((1 1, 1 3, 2 1, 1 1), (0 0, 5 1, 1 5, 0 0))'")
+            queryBuilder.whereClause = "polygon='POLYGON((1 1, 1 3, 2 1, 1 1), (0 0, 5 1, 1 5, 0 0))'"
             self.dataStore.find(queryBuilder: queryBuilder, responseHandler: { foundObjects in
                 XCTAssert(foundObjects is [GeometryTestClass])
                 for object in foundObjects as! [GeometryTestClass] {

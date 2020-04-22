@@ -215,7 +215,7 @@ class MapDrivenDataStoreTests: XCTestCase {
             XCTAssert(type(of: savedObjects) == [String].self)
             XCTAssert(savedObjects.count == 3)
             let queryBuilder = DataQueryBuilder()
-            queryBuilder.setWhereClause(whereClause: "name = 'Bob' and age> 30")
+            queryBuilder.whereClause = "name = 'Bob' and age> 30"
             self.dataStore.getObjectCount(queryBuilder: queryBuilder, responseHandler: { count in
                 XCTAssertNotNil(count)
                 XCTAssert(Int(exactly: count)! >= 0)
@@ -257,10 +257,10 @@ class MapDrivenDataStoreTests: XCTestCase {
         dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
             XCTAssertNotNil(savedObjects)
             let queryBuilder = DataQueryBuilder()
-            queryBuilder.setRelationsDepth(relationsDepth: 1)
+            queryBuilder.relationsDepth = 1
+            queryBuilder.pageSize = 5
+            queryBuilder.havingClause = "age>20"
             queryBuilder.setGroupBy(groupBy: ["name"])
-            queryBuilder.setHavingClause(havingClause: "age>20")
-            queryBuilder.setPageSize(pageSize: 5)
             queryBuilder.excludeProperty("age")
             self.dataStore.find(queryBuilder: queryBuilder, responseHandler: { foundObjects in
                 XCTAssertNotNil(foundObjects)
@@ -349,7 +349,7 @@ class MapDrivenDataStoreTests: XCTestCase {
             XCTAssertNotNil(savedObject)
             if let objectId = savedObject["objectId"] as? String {
                 let queryBuilder = DataQueryBuilder()
-                queryBuilder.setRelationsDepth(relationsDepth: 1)
+                queryBuilder.relationsDepth = 1
                 self.dataStore.findById(objectId: objectId, queryBuilder: queryBuilder, responseHandler: { foundObject in
                     XCTAssertNotNil(foundObject)
                     XCTAssert(type(of: foundObject) == [String: Any].self)
@@ -369,7 +369,7 @@ class MapDrivenDataStoreTests: XCTestCase {
     func test_16_findFirstWithCondition() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.findFirstWithCondition")
         let queryBuilder = DataQueryBuilder()
-        queryBuilder.setRelationsDepth(relationsDepth: 1)
+        queryBuilder.relationsDepth = 1
         dataStore.findFirst(queryBuilder: queryBuilder, responseHandler: { first in
             XCTAssertNotNil(first)
             XCTAssert(type(of: first) == [String: Any].self)
@@ -384,7 +384,7 @@ class MapDrivenDataStoreTests: XCTestCase {
     func test_17_findFirstWithCondition() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.findLastWithCondition")
         let queryBuilder = DataQueryBuilder()
-        queryBuilder.setRelationsDepth(relationsDepth: 1)
+        queryBuilder.relationsDepth = 1
         dataStore.findLast(queryBuilder: queryBuilder, responseHandler: { last in
             XCTAssertNotNil(last)
             XCTAssert(type(of: last) == [String: Any].self)

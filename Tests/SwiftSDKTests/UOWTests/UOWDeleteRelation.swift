@@ -59,7 +59,7 @@ class UOWDeleteRelation: XCTestCase {
                 let _ = uow.deleteRelation(parentTableName: self.tableName, parentObjectId: parentObjectId, columnName: "children", childrenObjectIds: childrenObjectIds)
                 uow.execute(responseHandler: { uowResult in
                     XCTAssertNil(uowResult.error)
-                    XCTAssertTrue(uowResult.success)
+                    XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
                 }, errorHandler: {  fault in
@@ -94,7 +94,7 @@ class UOWDeleteRelation: XCTestCase {
                 let _ = uow.deleteRelation(parentTableName: self.tableName, parentObjectId: parentObjectId, columnName: "children", children: children)
                 uow.execute(responseHandler: { uowResult in
                     XCTAssertNil(uowResult.error)
-                    XCTAssertTrue(uowResult.success)
+                    XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
                 }, errorHandler: {  fault in
@@ -131,7 +131,7 @@ class UOWDeleteRelation: XCTestCase {
                 let _ = uow.deleteRelation(parentTableName: self.tableName, parentObjectId: parentObjectId, columnName: "children", customChildren: children)
                 uow.execute(responseHandler: { uowResult in
                     XCTAssertNil(uowResult.error)
-                    XCTAssertTrue(uowResult.success)
+                    XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
                 }, errorHandler: {  fault in
@@ -158,12 +158,12 @@ class UOWDeleteRelation: XCTestCase {
             }
             let uow = UnitOfWork()
             let childrenObjects = self.testObjectsUtils.createChildTestClassObjects(numberOfObjects: 2)
-            let bulkCreateChildrenResult = uow.bulkCreate(entities: childrenObjects)
+            let bulkCreateChildrenResult = uow.bulkCreate(objectsToSave: childrenObjects)
             let _ = uow.setRelation(parentTableName: self.tableName, parentObjectId: parentObjectId, columnName: "children", childrenResult: bulkCreateChildrenResult)
             let _ = uow.deleteRelation(parentTableName: self.tableName, parentObjectId: parentObjectId, columnName: "children", childrenResult: bulkCreateChildrenResult)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -186,7 +186,7 @@ class UOWDeleteRelation: XCTestCase {
                 let _ = uow.deleteRelation(parentTableName: self.tableName, parentObject: parentObject, columnName: "children", childrenObjectIds: childrenObjectIds)
                 uow.execute(responseHandler: { uowResult in
                     XCTAssertNil(uowResult.error)
-                    XCTAssertTrue(uowResult.success)
+                    XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
                 }, errorHandler: {  fault in
@@ -217,7 +217,7 @@ class UOWDeleteRelation: XCTestCase {
                 let _ = uow.deleteRelation(parentTableName: self.tableName, parentObject: parentObject, columnName: "children", children: children)
                 uow.execute(responseHandler: { uowResult in
                     XCTAssertNil(uowResult.error)
-                    XCTAssertTrue(uowResult.success)
+                    XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
                 }, errorHandler: {  fault in
@@ -250,7 +250,7 @@ class UOWDeleteRelation: XCTestCase {
                 let _ = uow.deleteRelation(parentTableName: self.tableName, parentObject: parentObject, columnName: "children", customChildren: children)
                 uow.execute(responseHandler: { uowResult in
                     XCTAssertNil(uowResult.error)
-                    XCTAssertTrue(uowResult.success)
+                    XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
                 }, errorHandler: {  fault in
@@ -273,12 +273,12 @@ class UOWDeleteRelation: XCTestCase {
         testObjectsUtils.createTestClassDictionary(responseHandler: { parentObject in
             let uow = UnitOfWork()
             let childrenObjects = self.testObjectsUtils.createChildTestClassObjects(numberOfObjects: 2)
-            let bulkCreateChildrenResult = uow.bulkCreate(entities: childrenObjects)
+            let bulkCreateChildrenResult = uow.bulkCreate(objectsToSave: childrenObjects)
             let _ = uow.setRelation(parentTableName: self.tableName, parentObject: parentObject, columnName: "children", childrenResult: bulkCreateChildrenResult)
             let _ = uow.deleteRelation(parentTableName: self.tableName, parentObject: parentObject, columnName: "children", childrenResult: bulkCreateChildrenResult)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -299,12 +299,12 @@ class UOWDeleteRelation: XCTestCase {
             self.testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
                 let uow = UnitOfWork()
                 let childrenObjects = self.testObjectsUtils.createChildTestClassObjects(numberOfObjects: 2)
-                let bulkCreateChildrenResult = uow.bulkCreate(entities: childrenObjects)
+                let bulkCreateChildrenResult = uow.bulkCreate(objectsToSave: childrenObjects)
                 let _ = uow.setRelation(parentObject: parentObject, columnName: "children", childrenResult: bulkCreateChildrenResult)
                 let _ = uow.deleteRelation(parentObject: parentObject, columnName: "children", childrenResult: bulkCreateChildrenResult)
                 uow.execute(responseHandler: { uowResult in
                     XCTAssertNil(uowResult.error)
-                    XCTAssertTrue(uowResult.success)
+                    XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
                 }, errorHandler: {  fault in
@@ -336,7 +336,7 @@ class UOWDeleteRelation: XCTestCase {
                 let _ = uow.deleteRelation(parentObject: parentObject, columnName: "children", children: children)
                 uow.execute(responseHandler: { uowResult in
                     XCTAssertNil(uowResult.error)
-                    XCTAssertTrue(uowResult.success)
+                    XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
                 }, errorHandler: {  fault in
@@ -370,7 +370,7 @@ class UOWDeleteRelation: XCTestCase {
                 let _ = uow.deleteRelation(parentObject: parentObject, columnName: "children", customChildren: children)
                 uow.execute(responseHandler: { uowResult in
                     XCTAssertNil(uowResult.error)
-                    XCTAssertTrue(uowResult.success)
+                    XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
                 }, errorHandler: {  fault in
@@ -394,12 +394,12 @@ class UOWDeleteRelation: XCTestCase {
             XCTAssert(parentObject is TestClass)
             let uow = UnitOfWork()
             let childrenObjects = self.testObjectsUtils.createChildTestClassObjects(numberOfObjects: 2)
-            let bulkCreateChildrenResult = uow.bulkCreate(entities: childrenObjects)
+            let bulkCreateChildrenResult = uow.bulkCreate(objectsToSave: childrenObjects)
             let _ = uow.setRelation(parentObject: parentObject, columnName: "children", childrenResult: bulkCreateChildrenResult)
             let _ = uow.deleteRelation(parentObject: parentObject, columnName: "children", childrenResult: bulkCreateChildrenResult)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -423,7 +423,7 @@ class UOWDeleteRelation: XCTestCase {
             let _ = uow.deleteRelation(parentResult: parentResult, columnName: "children", childrenObjectIds: childrenObjectIds)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -451,7 +451,7 @@ class UOWDeleteRelation: XCTestCase {
             let _ = uow.deleteRelation(parentResult: parentResult, columnName: "children", children: children)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -481,7 +481,7 @@ class UOWDeleteRelation: XCTestCase {
             let _ = uow.deleteRelation(parentResult: parentResult, columnName: "children", customChildren: children)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -501,12 +501,12 @@ class UOWDeleteRelation: XCTestCase {
         let parentObject = testObjectsUtils.createTestClassObject()
         let createParentResult = uow.create(objectToSave: parentObject)
         let children = testObjectsUtils.createChildTestClassObjects(numberOfObjects: 2)
-        let bulkCreateChildrenResult = uow.bulkCreate(entities: children)
+        let bulkCreateChildrenResult = uow.bulkCreate(objectsToSave: children)
         let _ = uow.setRelation(parentResult: createParentResult, columnName: "children", childrenResult: bulkCreateChildrenResult)
         let _ = uow.deleteRelation(parentResult: createParentResult, columnName: "children", childrenResult: bulkCreateChildrenResult)
         uow.execute(responseHandler: { uowResult in
             XCTAssertNil(uowResult.error)
-            XCTAssertTrue(uowResult.success)
+            XCTAssertTrue(uowResult.isSuccess)
             XCTAssertNotNil(uowResult.results)
             expectation.fulfill()
         }, errorHandler: {  fault in
@@ -520,14 +520,14 @@ class UOWDeleteRelation: XCTestCase {
         let expectation = self.expectation(description: "PASSED: uowdeleteRelation")
         let uow = UnitOfWork()
         let parentObjects = testObjectsUtils.createTestClassObjects(numberOfObjects: 3)
-        let parentResult = uow.bulkCreate(entities: parentObjects)
+        let parentResult = uow.bulkCreate(objectsToSave: parentObjects)
         let parentValueRef = parentResult.resolveTo(resultIndex: 1)
         testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
             let _ = uow.setRelation(parentValueReference: parentValueRef, columnName: "children", childrenObjectIds: childrenObjectIds)
             let _ = uow.deleteRelation(parentValueReference: parentValueRef, columnName: "children", childrenObjectIds: childrenObjectIds)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -556,7 +556,7 @@ class UOWDeleteRelation: XCTestCase {
             let _ = uow.deleteRelation(parentResult: parentUpdateResult, columnName: "children", children: children)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -586,7 +586,7 @@ class UOWDeleteRelation: XCTestCase {
             let _ = uow.deleteRelation(parentValueReference: parentValueRef, columnName: "children", customChildren: children)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -604,14 +604,14 @@ class UOWDeleteRelation: XCTestCase {
         let expectation = self.expectation(description: "PASSED: uow.deleteRelation")
         let uow = UnitOfWork()
         let parentObjects = testObjectsUtils.createTestClassObjects(numberOfObjects: 3)
-        let parentResult = uow.bulkCreate(entities: parentObjects)
+        let parentResult = uow.bulkCreate(objectsToSave: parentObjects)
         let parentValueRef = parentResult.resolveTo(resultIndex: 1)
         let childrenResult = uow.find(tableName: childrenTableName, queryBuilder: nil)
         let _ = uow.addToRelation(parentValueReference: parentValueRef, columnName: "children", childrenResult: childrenResult)
         let _ = uow.deleteRelation(parentValueReference: parentValueRef, columnName: "children", childrenResult:childrenResult)
         uow.execute(responseHandler: { uowResult in
             XCTAssertNil(uowResult.error)
-            XCTAssertTrue(uowResult.success)
+            XCTAssertTrue(uowResult.isSuccess)
             XCTAssertNotNil(uowResult.results)
             expectation.fulfill()
         }, errorHandler: {  fault in
@@ -632,7 +632,7 @@ class UOWDeleteRelation: XCTestCase {
             let _ = uow.deleteRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", whereClauseForChildren: "foo='foo1'")
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -658,7 +658,7 @@ class UOWDeleteRelation: XCTestCase {
             let _ = uow.deleteRelation(parentTableName: self.tableName, parentObject: parentObject, columnName: "children", whereClauseForChildren: "foo='foo1'")
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -685,7 +685,7 @@ class UOWDeleteRelation: XCTestCase {
             let _ = uow.deleteRelation(parentObject: parentObject, columnName: "children", whereClauseForChildren: "foo='foo1'")
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -708,7 +708,7 @@ class UOWDeleteRelation: XCTestCase {
         let _ = uow.deleteRelation(parentResult: parentResult, columnName: "children", whereClauseForChildren: "foo='foo1'")
         uow.execute(responseHandler: { uowResult in
             XCTAssertNil(uowResult.error)
-            XCTAssertTrue(uowResult.success)
+            XCTAssertTrue(uowResult.isSuccess)
             XCTAssertNotNil(uowResult.results)
             expectation.fulfill()
         }, errorHandler: {  fault in
@@ -727,7 +727,7 @@ class UOWDeleteRelation: XCTestCase {
         let _ = uow.deleteRelation(parentValueReference: parentValueRef, columnName: "children", whereClauseForChildren: "foo='foo1'")
         uow.execute(responseHandler: { uowResult in
             XCTAssertNil(uowResult.error)
-            XCTAssertTrue(uowResult.success)
+            XCTAssertTrue(uowResult.isSuccess)
             XCTAssertNotNil(uowResult.results)
             expectation.fulfill()
         }, errorHandler: {  fault in

@@ -166,9 +166,9 @@
     }
     
     public func unregisterDevice(channels: [String], responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        let dataQueryBuilder = DataQueryBuilder()
-        dataQueryBuilder.setWhereClause(whereClause: String(format: "deviceId='%@'", DeviceHelper.shared.deviceId))
-        Backendless.shared.data.of(DeviceRegistration.self).find(queryBuilder: dataQueryBuilder, responseHandler: { deviceRegs in
+        let queryBuilder = DataQueryBuilder()
+        queryBuilder.whereClause = "deviceId='\(DeviceHelper.shared.deviceId)'"
+        Backendless.shared.data.of(DeviceRegistration.self).find(queryBuilder: queryBuilder, responseHandler: { deviceRegs in
             if let deviceRegs = deviceRegs as? [DeviceRegistration] {
                 let group = DispatchGroup()
                 for deviceReg in deviceRegs {

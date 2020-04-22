@@ -123,16 +123,16 @@ class PersistenceServiceUtils {
         var restMethod = "data/bulk/\(tableName)"
         if whereClause != nil, whereClause?.count ?? 0 > 0 {
             restMethod += "?where=\(whereClause!)"
-        }
+        }        
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
-            }
-            else {
-                responseHandler(DataTypesUtils.shared.dataToInt(data: response.data!))
-            }
+                else {
+                    responseHandler(DataTypesUtils.shared.dataToInt(data: response.data!))
+                }
+            }            
         })
     }
     
@@ -172,7 +172,7 @@ class PersistenceServiceUtils {
     
     func getObjectCount(queryBuilder: DataQueryBuilder?, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         var restMethod = "data/\(tableName)/count"
-        if let whereClause = queryBuilder?.getWhereClause(), whereClause.count > 0 {
+        if let whereClause = queryBuilder?.whereClause, whereClause.count > 0 {
             restMethod += "?where=\(whereClause)"
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
@@ -191,16 +191,16 @@ class PersistenceServiceUtils {
     func find(queryBuilder: DataQueryBuilder?, responseHandler: (([[String : Any]]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         var parameters = [String: Any]()
-        if let whereClause = queryBuilder?.getWhereClause() {
+        if let whereClause = queryBuilder?.whereClause {
             parameters["where"] = whereClause
         }
-        if let relationsDepth = queryBuilder?.getRelationsDepth() {
+        if let relationsDepth = queryBuilder?.relationsDepth {
             parameters["relationsDepth"] = String(relationsDepth)
         }
-        if let relationsPageSize = queryBuilder?.getRelationsPageSize() {
+        if let relationsPageSize = queryBuilder?.relationsPageSize {
             parameters["relationsPageSize"] = relationsPageSize
         }
-        if let properties = queryBuilder?.getProperties() {
+        if let properties = queryBuilder?.properties {
             var props = [String]()
             for property in properties {
                 if !property.isEmpty {
@@ -211,7 +211,7 @@ class PersistenceServiceUtils {
                 parameters["props"] = props
             }
         }
-        if let excludedProperties = queryBuilder?.getExcludedProperties() {
+        if let excludedProperties = queryBuilder?.excludedProperties {
             var excludeProps = [String]()
             for property in excludedProperties {
                 if !property.isEmpty {
@@ -222,22 +222,22 @@ class PersistenceServiceUtils {
                 parameters["excludeProps"] = DataTypesUtils.shared.arrayToString(array: excludeProps)
             }
         }
-        if let sortBy = queryBuilder?.getSortBy(), sortBy.count > 0 {
+        if let sortBy = queryBuilder?.sortBy, sortBy.count > 0 {
             parameters["sortBy"] = DataTypesUtils.shared.arrayToString(array: sortBy)
         }
-        if let related = queryBuilder?.getRelated() {
+        if let related = queryBuilder?.related {
             parameters["loadRelations"] = DataTypesUtils.shared.arrayToString(array: related)
         }
-        if let groupBy = queryBuilder?.getGroupBy() {
+        if let groupBy = queryBuilder?.groupBy {
             parameters["groupBy"] = DataTypesUtils.shared.arrayToString(array: groupBy)
         }
-        if let havingClause = queryBuilder?.getHavingClause() {
+        if let havingClause = queryBuilder?.havingClause {
             parameters["having"] = havingClause
         }
-        if let pageSize = queryBuilder?.getPageSize() {
+        if let pageSize = queryBuilder?.pageSize {
             parameters["pageSize"] = pageSize
         }
-        if let offset = queryBuilder?.getOffset() {
+        if let offset = queryBuilder?.offset {
             parameters["offset"] = offset
         }
         BackendlessRequestManager(restMethod: "data/\(tableName)/find", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
@@ -275,9 +275,9 @@ class PersistenceServiceUtils {
             restMethod += "/\(objectId)"
         }
         
-        let related = queryBuilder?.getRelated()
-        let relationsDepth = queryBuilder?.getRelationsDepth()
-        let relationsPageSize = queryBuilder?.getRelationsPageSize()
+        let related = queryBuilder?.related
+        let relationsDepth = queryBuilder?.relationsDepth
+        let relationsPageSize = queryBuilder?.relationsPageSize
         
         if relationsPageSize != nil {
             restMethod += "?relationsPageSize=\(relationsPageSize!)"
@@ -306,7 +306,7 @@ class PersistenceServiceUtils {
                 restMethod += "?relationsDepth=" + String(relationsDepth!)
             }
         }
-        if let properties = queryBuilder?.getProperties() {
+        if let properties = queryBuilder?.properties {
             var props = [String]()
             for property in properties {
                 if !property.isEmpty {
@@ -317,7 +317,7 @@ class PersistenceServiceUtils {
                 restMethod += "&props=" + DataTypesUtils.shared.arrayToString(array: props)
             }
         }
-        if let excludedProperties = queryBuilder?.getExcludedProperties() {
+        if let excludedProperties = queryBuilder?.excludedProperties {
             var excludeProps = [String]()
             for property in excludedProperties {
                 if !property.isEmpty {

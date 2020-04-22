@@ -39,11 +39,11 @@ class UOWFindTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: uow.find")
         let uow = UnitOfWork()
         let queryBuilder = DataQueryBuilder()
-        queryBuilder.setPageSize(pageSize: 1)
+        queryBuilder.pageSize = 1
         let _ = uow.find(tableName: tableName, queryBuilder: queryBuilder)
         uow.execute(responseHandler: { uowResult in
             XCTAssertNil(uowResult.error)
-            XCTAssertTrue(uowResult.success)
+            XCTAssertTrue(uowResult.isSuccess)
             XCTAssertNotNil(uowResult.results)
             XCTAssert(uowResult.results?.count == 1)
             expectation.fulfill()

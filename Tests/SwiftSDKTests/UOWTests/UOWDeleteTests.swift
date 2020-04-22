@@ -51,7 +51,7 @@ class UOWDeleteTests: XCTestCase {
             let _ = uow.delete(tableName: self.tableName, objectToDelete: createdObject)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -72,7 +72,7 @@ class UOWDeleteTests: XCTestCase {
             let _ = uow.delete(objectToDelete: createdObject)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -96,7 +96,7 @@ class UOWDeleteTests: XCTestCase {
             let _ = uow.delete(tableName: self.tableName, objectId: objectId as! String)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -118,7 +118,7 @@ class UOWDeleteTests: XCTestCase {
         let _ = uow.delete(result: createResult)
         uow.execute(responseHandler: { uowResult in
             XCTAssertNil(uowResult.error)
-            XCTAssertTrue(uowResult.success)
+            XCTAssertTrue(uowResult.isSuccess)
             XCTAssertNotNil(uowResult.results)
             expectation.fulfill()
         }, errorHandler: {  fault in
@@ -132,11 +132,11 @@ class UOWDeleteTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: uow.delete")
         let uow = UnitOfWork()
         let objectsToSave = testObjectsUtils.createTestClassObjects(numberOfObjects: 3)
-        let bulkCreateResult = uow.bulkCreate(entities: objectsToSave)
+        let bulkCreateResult = uow.bulkCreate(objectsToSave: objectsToSave)
         let _ = uow.delete(valueReference: bulkCreateResult.resolveTo(resultIndex: 1))
         uow.execute(responseHandler: { uowResult in
             XCTAssertNil(uowResult.error)
-            XCTAssertTrue(uowResult.success)
+            XCTAssertTrue(uowResult.isSuccess)
             XCTAssertNotNil(uowResult.results)
             expectation.fulfill()
         }, errorHandler: {  fault in
@@ -155,7 +155,7 @@ class UOWDeleteTests: XCTestCase {
         let _ = uow.delete(result: updateResult)
         uow.execute(responseHandler: { uowResult in
             XCTAssertNil(uowResult.error)
-            XCTAssertTrue(uowResult.success)
+            XCTAssertTrue(uowResult.isSuccess)
             XCTAssertNotNil(uowResult.results)
             expectation.fulfill()
         }, errorHandler: {  fault in
@@ -172,7 +172,7 @@ class UOWDeleteTests: XCTestCase {
         let _ = uow.delete(valueReference: findResult.resolveTo(resultIndex: 1))
         uow.execute(responseHandler: { uowResult in
             XCTAssertNil(uowResult.error)
-            XCTAssertTrue(uowResult.success)
+            XCTAssertTrue(uowResult.isSuccess)
             XCTAssertNotNil(uowResult.results)
             expectation.fulfill()
         }, errorHandler: {  fault in

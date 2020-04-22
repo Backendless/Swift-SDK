@@ -157,19 +157,19 @@ enum uowProps {
     
     // delete
     
-    public func delete(tableName: String, objectDictionary: [String : Any]) -> OpResult {
-        let (operation, opRes) = uowDelete!.delete(tableName: tableName, objectToDelete: objectDictionary)
+    public func delete(tableName: String, objectToDelete: [String : Any]) -> OpResult {
+        let (operation, opRes) = uowDelete!.delete(tableName: tableName, objectToDelete: objectToDelete)
         operations.append(operation)
         return opRes
     }
     
     public func delete(objectToDelete: Any) -> OpResult {
         let (tableName, objectToDeleteDict) = TransactionHelper.shared.tableAndDictionaryFromEntity(objectToDelete)
-        return delete(tableName: tableName, objectDictionary: objectToDeleteDict as! [String : Any])
+        return delete(tableName: tableName, objectToDelete: objectToDeleteDict as! [String : Any])
     }
     
     public func delete(tableName: String, objectId: String) -> OpResult {
-        return delete(tableName: tableName, objectDictionary: ["objectId": objectId])
+        return delete(tableName: tableName, objectToDelete: ["objectId": objectId])
     }
     
     public func delete(result: OpResult) -> OpResult {
@@ -186,8 +186,8 @@ enum uowProps {
     
     // bulk delete
     
-    public func bulkDelete(tableName: String, objectIds: [String]) -> OpResult {
-        let (operation, opRes) = uowDelete!.bulkDelete(tableName: tableName, objectIds: objectIds)
+    public func bulkDelete(tableName: String, objectIdValues: [String]) -> OpResult {
+        let (operation, opRes) = uowDelete!.bulkDelete(tableName: tableName, objectIdValues: objectIdValues)
         operations.append(operation)
         return opRes
     }

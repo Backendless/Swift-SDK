@@ -57,7 +57,7 @@ class UOWAddRelationTests: XCTestCase {
                 let _ = uow.addToRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", childrenObjectIds: childrenObjectIds)
                 uow.execute(responseHandler: { uowResult in
                     XCTAssertNil(uowResult.error)
-                    XCTAssertTrue(uowResult.success)
+                    XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
                 }, errorHandler: {  fault in
@@ -90,7 +90,7 @@ class UOWAddRelationTests: XCTestCase {
                 let _ = uow.addToRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", children: children)
                 uow.execute(responseHandler: { uowResult in
                     XCTAssertNil(uowResult.error)
-                    XCTAssertTrue(uowResult.success)
+                    XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
                 }, errorHandler: {  fault in
@@ -125,7 +125,7 @@ class UOWAddRelationTests: XCTestCase {
                 let _ = uow.addToRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", customChildren: children)
                 uow.execute(responseHandler: { uowResult in
                     XCTAssertNil(uowResult.error)
-                    XCTAssertTrue(uowResult.success)
+                    XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
                 }, errorHandler: {  fault in
@@ -151,11 +151,11 @@ class UOWAddRelationTests: XCTestCase {
             XCTAssert(parentObjectId is String)
             let uow = UnitOfWork()
             let childrenObjects = self.testObjectsUtils.createChildTestClassObjects(numberOfObjects: 2)
-            let childrenResult = uow.bulkCreate(entities: childrenObjects)
+            let childrenResult = uow.bulkCreate(objectsToSave: childrenObjects)
             let _ = uow.addToRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", childrenResult: childrenResult)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -181,7 +181,7 @@ class UOWAddRelationTests: XCTestCase {
                 let _ = uow.addToRelation(parentTableName: self.tableName, parentObject: parentObject, columnName: "children", childrenObjectIds: childrenObjectIds)
                 uow.execute(responseHandler: { uowResult in
                     XCTAssertNil(uowResult.error)
-                    XCTAssertTrue(uowResult.success)
+                    XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
                 }, errorHandler: {  fault in
@@ -215,7 +215,7 @@ class UOWAddRelationTests: XCTestCase {
                 let _ = uow.addToRelation(parentTableName: self.tableName, parentObject: parentObject, columnName: "children", children: children)
                 uow.execute(responseHandler: { uowResult in
                     XCTAssertNil(uowResult.error)
-                    XCTAssertTrue(uowResult.success)
+                    XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
                 }, errorHandler: {  fault in
@@ -251,7 +251,7 @@ class UOWAddRelationTests: XCTestCase {
                 let _ = uow.addToRelation(parentTableName: self.tableName, parentObject: parentObject, columnName: "children", customChildren: children)
                 uow.execute(responseHandler: { uowResult in
                     XCTAssertNil(uowResult.error)
-                    XCTAssertTrue(uowResult.success)
+                    XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
                 }, errorHandler: {  fault in
@@ -278,11 +278,11 @@ class UOWAddRelationTests: XCTestCase {
             let parentObject = ["objectId": parentObjectId as! String]
             let uow = UnitOfWork()
             let childrenObjects = self.testObjectsUtils.createChildTestClassObjects(numberOfObjects: 2)
-            let childrenResult = uow.bulkCreate(entities: childrenObjects)
+            let childrenResult = uow.bulkCreate(objectsToSave: childrenObjects)
             let _ = uow.addToRelation(parentTableName: self.tableName, parentObject: parentObject, columnName: "children", childrenResult: childrenResult)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -309,7 +309,7 @@ class UOWAddRelationTests: XCTestCase {
                 let _ = uow.addToRelation(parentObject: parentObject, columnName: "children", childrenObjectIds: childrenObjectIds)
                 uow.execute(responseHandler: { uowResult in
                     XCTAssertNil(uowResult.error)
-                    XCTAssertTrue(uowResult.success)
+                    XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
                 }, errorHandler: {  fault in
@@ -344,7 +344,7 @@ class UOWAddRelationTests: XCTestCase {
                 let _ = uow.addToRelation(parentObject: parentObject, columnName: "children", children: children)
                 uow.execute(responseHandler: { uowResult in
                     XCTAssertNil(uowResult.error)
-                    XCTAssertTrue(uowResult.success)
+                    XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
                 }, errorHandler: {  fault in
@@ -381,7 +381,7 @@ class UOWAddRelationTests: XCTestCase {
                 let _ = uow.addToRelation(parentObject: parentObject, columnName: "children", customChildren: children)
                 uow.execute(responseHandler: { uowResult in
                     XCTAssertNil(uowResult.error)
-                    XCTAssertTrue(uowResult.success)
+                    XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
                 }, errorHandler: {  fault in
@@ -409,11 +409,11 @@ class UOWAddRelationTests: XCTestCase {
             parentObject.objectId = parentObjectId as? String
             let uow = UnitOfWork()
             let childrenObjects = self.testObjectsUtils.createChildTestClassObjects(numberOfObjects: 2)
-            let childrenResult = uow.bulkCreate(entities: childrenObjects)
+            let childrenResult = uow.bulkCreate(objectsToSave: childrenObjects)
             let _ = uow.addToRelation(parentObject: parentObject, columnName: "children", childrenResult: childrenResult)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -436,7 +436,7 @@ class UOWAddRelationTests: XCTestCase {
             let _ = uow.addToRelation(parentResult: parentResult, columnName: "children", childrenObjectIds: childrenObjectIds)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -463,7 +463,7 @@ class UOWAddRelationTests: XCTestCase {
             let _ = uow.addToRelation(parentResult: parentResult, columnName: "children", children: children)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -492,7 +492,7 @@ class UOWAddRelationTests: XCTestCase {
             let _ = uow.addToRelation(parentResult: parentResult, columnName: "children", customChildren: children)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -512,11 +512,11 @@ class UOWAddRelationTests: XCTestCase {
         let parentObject = testObjectsUtils.createTestClassObject()
         let parentResult = uow.create(objectToSave: parentObject)
         let children = testObjectsUtils.createChildTestClassObjects(numberOfObjects: 2)
-        let childrenResult = uow.bulkCreate(entities: children)
+        let childrenResult = uow.bulkCreate(objectsToSave: children)
         let _ = uow.addToRelation(parentResult: parentResult, columnName: "children", childrenResult: childrenResult)
         uow.execute(responseHandler: { uowResult in
             XCTAssertNil(uowResult.error)
-            XCTAssertTrue(uowResult.success)
+            XCTAssertTrue(uowResult.isSuccess)
             XCTAssertNotNil(uowResult.results)
             expectation.fulfill()
         }, errorHandler: {  fault in
@@ -530,13 +530,13 @@ class UOWAddRelationTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let uow = UnitOfWork()
         let parentObjects = testObjectsUtils.createTestClassObjects(numberOfObjects: 3)
-        let parentResult = uow.bulkCreate(entities: parentObjects)
+        let parentResult = uow.bulkCreate(objectsToSave: parentObjects)
         let parentValueRef = parentResult.resolveTo(resultIndex: 1)
         testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
             let _ = uow.addToRelation(parentValueReference: parentValueRef, columnName: "children", childrenObjectIds: childrenObjectIds)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -564,7 +564,7 @@ class UOWAddRelationTests: XCTestCase {
             let _ = uow.addToRelation(parentResult: parentUpdateResult, columnName: "children", children: children)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -593,7 +593,7 @@ class UOWAddRelationTests: XCTestCase {
             let _ = uow.addToRelation(parentValueReference: parentValueRef, columnName: "children", customChildren: children)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -611,13 +611,13 @@ class UOWAddRelationTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let uow = UnitOfWork()
         let parentObjects = testObjectsUtils.createTestClassObjects(numberOfObjects: 3)
-        let parentResult = uow.bulkCreate(entities: parentObjects)
+        let parentResult = uow.bulkCreate(objectsToSave: parentObjects)
         let parentValueRef = parentResult.resolveTo(resultIndex: 1)
         let childrenResult = uow.find(tableName: childrenTableName, queryBuilder: nil)
         let _ = uow.addToRelation(parentValueReference: parentValueRef, columnName: "children", childrenResult: childrenResult)
         uow.execute(responseHandler: { uowResult in
             XCTAssertNil(uowResult.error)
-            XCTAssertTrue(uowResult.success)
+            XCTAssertTrue(uowResult.isSuccess)
             XCTAssertNotNil(uowResult.results)
             expectation.fulfill()
         }, errorHandler: {  fault in
@@ -637,7 +637,7 @@ class UOWAddRelationTests: XCTestCase {
             let _ = uow.addToRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", whereClauseForChildren: "foo='foo1'")
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -662,7 +662,7 @@ class UOWAddRelationTests: XCTestCase {
             let _ = uow.addToRelation(parentTableName: self.tableName, parentObject: parentObject, columnName: "children", whereClauseForChildren: "foo='foo1'")
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -688,7 +688,7 @@ class UOWAddRelationTests: XCTestCase {
             let _ = uow.addToRelation(parentObject: parentObject, columnName: "children", whereClauseForChildren: "foo='foo1'")
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in
@@ -710,7 +710,7 @@ class UOWAddRelationTests: XCTestCase {
         let _ = uow.addToRelation(parentResult: parentResult, columnName: "children", whereClauseForChildren: "foo='foo1'")
         uow.execute(responseHandler: { uowResult in
             XCTAssertNil(uowResult.error)
-            XCTAssertTrue(uowResult.success)
+            XCTAssertTrue(uowResult.isSuccess)
             XCTAssertNotNil(uowResult.results)
             expectation.fulfill()
         }, errorHandler: {  fault in
@@ -726,12 +726,12 @@ class UOWAddRelationTests: XCTestCase {
         Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: children, responseHandler: { createdIds in
             let uow = UnitOfWork()
             let parentsObjects = self.testObjectsUtils.createTestClassObjects(numberOfObjects: 3)
-            let parentResult = uow.bulkCreate(entities: parentsObjects)
+            let parentResult = uow.bulkCreate(objectsToSave: parentsObjects)
             let parentValueRef = parentResult.resolveTo(resultIndex: 1)
             let _ = uow.addToRelation(parentValueReference: parentValueRef, columnName: "children", whereClauseForChildren: "foo='childFoo'")
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.success)
+                XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
             }, errorHandler: {  fault in

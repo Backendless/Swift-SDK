@@ -31,7 +31,7 @@
     case SET_RELATION
     case DELETE_RELATION
     
-    static func from(stringValue: String) -> OperationType? {
+    static func from(stringValue: String) -> OperationType {
         if stringValue == "CREATE" { return .CREATE }
         else if stringValue == "CREATE_BULK" { return .CREATE_BULK }
         else if stringValue == "UPDATE" { return .UPDATE }
@@ -42,10 +42,10 @@
         else if stringValue == "ADD_RELATION" { return .ADD_RELATION }
         else if stringValue == "SET_RELATION" { return .SET_RELATION }
         else if stringValue == "DELETE_RELATION" { return .DELETE_RELATION }
-        return nil
+        return .CREATE
     }
     
-    static func from(intValue: Int) -> String? {
+    static func from(intValue: Int) -> String {
         if intValue == 0 { return "CREATE" }
         else if intValue == 1 { return "CREATE_BULK" }
         else if intValue == 2 { return "UPDATE" }
@@ -56,7 +56,7 @@
         else if intValue == 7 { return "ADD_RELATION" }
         else if intValue == 8 { return "SET_RELATION" }
         else if intValue == 9 { return "DELETE_RELATION" }
-        return nil
+        return "CREATE"
     }
     
     public func getOperationName() -> String? {

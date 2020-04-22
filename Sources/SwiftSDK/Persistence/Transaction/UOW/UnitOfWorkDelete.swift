@@ -70,11 +70,11 @@ class UnitOfWorkDelete {
         return (operation, opResult)
     }
     
-    func bulkDelete(tableName: String, objectIds: [String]) -> (Operation, OpResult) {
+    func bulkDelete(tableName: String, objectIdValues: [String]) -> (Operation, OpResult) {
         let operationTypeString = TransactionHelper.shared.generateOperationTypeString(.DELETE_BULK)
         let operationResultId = "\(operationTypeString)\(tableName)\(countBulkDelete)"
         countBulkDelete += 1
-        let payload = ["unconditional": objectIds]
+        let payload = ["unconditional": objectIdValues]
         let operation = Operation(operationType: .DELETE_BULK, tableName: tableName, opResultId: operationResultId, payload: payload)
         let opResult = TransactionHelper.shared.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .DELETE_BULK, uow: uow)
         return (operation, opResult)
@@ -87,7 +87,7 @@ class UnitOfWorkDelete {
                 objectIds.append(objectId)
             }
         }
-        return bulkDelete(tableName: tableName, objectIds: objectIds)
+        return bulkDelete(tableName: tableName, objectIdValues: objectIds)
     }
     
     func bulkDelete(tableName: String, whereClause: String) -> (Operation, OpResult) {
