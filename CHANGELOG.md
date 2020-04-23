@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 5.7.10 / April 22, 2020
+* DataQueryBuilder `excludedProperties` renamed to `excludeProperties`
+
 ### 5.7.9 / April 10, 2020
 * added support for smart-text in rich media url
 

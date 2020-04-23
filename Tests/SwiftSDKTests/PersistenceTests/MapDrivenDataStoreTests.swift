@@ -261,6 +261,7 @@ class MapDrivenDataStoreTests: XCTestCase {
             queryBuilder.pageSize = 5
             queryBuilder.havingClause = "age>20"
             queryBuilder.setGroupBy(groupBy: ["name"])
+            queryBuilder.setPageSize(pageSize: 5)
             queryBuilder.excludeProperty("age")
             self.dataStore.find(queryBuilder: queryBuilder, responseHandler: { foundObjects in
                 XCTAssertNotNil(foundObjects)

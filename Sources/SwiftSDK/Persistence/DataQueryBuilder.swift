@@ -21,17 +21,17 @@
 
 @objcMembers public class DataQueryBuilder: NSObject, Codable {
     
-    public var whereClause: String?
-    public var relationsDepth: Int = 0
-    public var relationsPageSize: Int = 10
-    public var pageSize: Int = 10
-    public var offset: Int = 0
-    public var properties: [String]?
-    public var excludedProperties: [String]?
-    public var sortBy: [String]?
-    public var related: [String]?
-    public var groupBy: [String]?
-    public var havingClause: String?
+    private var whereClause: String?
+    private var relationsDepth: Int = 0
+    private var relationsPageSize: Int = 10
+    private var pageSize: Int = 10
+    private var offset: Int = 0
+    private var properties: [String]?
+    private var excludeProperties: [String]?
+    private var sortBy: [String]?
+    private var related: [String]?
+    private var groupBy: [String]?
+    private var havingClause: String?
     
     private enum CodingKeys: String, CodingKey {
         case whereClause
@@ -40,6 +40,7 @@
         case pageSize
         case offset
         case properties
+        case excludeProperties
         case sortBy
         case related
         case groupBy
@@ -77,6 +78,7 @@
         }
         
         properties = try container.decodeIfPresent([String].self, forKey: .properties)
+        excludeProperties = try container.decodeIfPresent([String].self, forKey: .excludeProperties)
         sortBy = try container.decodeIfPresent([String].self, forKey: .sortBy)
         related = try container.decodeIfPresent([String].self, forKey: .related)
         groupBy = try container.decodeIfPresent([String].self, forKey: .groupBy)
@@ -91,6 +93,7 @@
         try container.encode(pageSize, forKey: .pageSize)
         try container.encode(offset, forKey: .offset)
         try container.encodeIfPresent(properties, forKey: .properties)
+        try container.encodeIfPresent(excludeProperties, forKey: .excludeProperties)
         try container.encodeIfPresent(sortBy, forKey: .sortBy)
         try container.encodeIfPresent(related, forKey: .related)
         try container.encodeIfPresent(groupBy, forKey: .groupBy)
@@ -199,37 +202,37 @@
     
     @available(*, deprecated, message: "Please use the excludedProperties property directly")
     public func getExcludedProperties() -> [String]? {
-        return self.excludedProperties
+        return self.excludeProperties
     }
     
     public func excludeProperty(_ property: String) {
-        if self.excludedProperties != nil {
-            self.excludedProperties?.append(property)
+        if self.excludeProperties != nil {
+            self.excludeProperties?.append(property)
         }
         else {
-            self.excludedProperties = [property]
+            self.excludeProperties = [property]
         }
     }
     
     public func excludeProperties(_ properties: [String]) {
-        if self.excludedProperties != nil {
+        if self.excludeProperties != nil {
             for property in properties {
-                self.excludedProperties?.append(property)
+                self.excludeProperties?.append(property)
             }
         }
         else {
-            self.excludedProperties = properties
+            self.excludeProperties = properties
         }
     }
     
     public func excludeProperties(_ properties: String...) {
-        if self.excludedProperties != nil {
+        if self.excludeProperties != nil {
             for property in properties {
-                self.excludedProperties?.append(property)
+                self.excludeProperties?.append(property)
             }
         }
         else {
-            self.excludedProperties = properties
+            self.excludeProperties = properties
         }
     }
     
