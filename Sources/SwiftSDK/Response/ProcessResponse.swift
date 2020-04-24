@@ -147,7 +147,7 @@ class ProcessResponse {
         let deviceRegistration = DeviceRegistration(objectId: nil, deviceToken: nil, deviceId: nil, os: nil, osVersion: nil, expiration: nil, channels: nil)
         if let responseResult = responseResult as? [String: Any] {
             if let objectId = responseResult["objectId"] as? String {
-                deviceRegistration.setObjectId(objectId: objectId)
+                deviceRegistration.objectId = objectId
             }
             if let deviceToken = responseResult["deviceToken"] as? String {
                 deviceRegistration.deviceToken = deviceToken

@@ -143,6 +143,7 @@
 		5EC7D161222FB56700FD3FF4 /* PublishOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC7D160222FB56700FD3FF4 /* PublishOptions.swift */; };
 		5EC7D163222FB86100FD3FF4 /* DeliveryOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC7D162222FB86100FD3FF4 /* DeliveryOptions.swift */; };
 		5EC7D16A222FDBCE00FD3FF4 /* SubscriptionAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC7D169222FDBCE00FD3FF4 /* SubscriptionAPITests.swift */; };
+		5EC9C2E32452EB0300845350 /* FindFirstLastTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC9C2E22452EB0300845350 /* FindFirstLastTests.swift */; };
 		5ECAB22F238C417C0051F315 /* BLPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECAB22E238C417C0051F315 /* BLPoint.swift */; };
 		5ECAB231238C41A60051F315 /* BLGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECAB230238C41A60051F315 /* BLGeometry.swift */; };
 		5ECAB233238C42060051F315 /* GeoJSONParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECAB232238C42060051F315 /* GeoJSONParser.swift */; };
@@ -322,6 +323,7 @@
 		5EC7D160222FB56700FD3FF4 /* PublishOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishOptions.swift; sourceTree = "<group>"; };
 		5EC7D162222FB86100FD3FF4 /* DeliveryOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryOptions.swift; sourceTree = "<group>"; };
 		5EC7D169222FDBCE00FD3FF4 /* SubscriptionAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionAPITests.swift; sourceTree = "<group>"; };
+		5EC9C2E22452EB0300845350 /* FindFirstLastTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindFirstLastTests.swift; sourceTree = "<group>"; };
 		5ECAB22E238C417C0051F315 /* BLPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLPoint.swift; sourceTree = "<group>"; };
 		5ECAB230238C41A60051F315 /* BLGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLGeometry.swift; sourceTree = "<group>"; };
 		5ECAB232238C42060051F315 /* GeoJSONParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoJSONParser.swift; sourceTree = "<group>"; };
@@ -407,6 +409,7 @@
 				5AFE8E5D21E8D7410003477B /* PersistenceServiceTests.swift */,
 				5AFE8E6121E8E2620003477B /* MapDrivenDataStoreTests.swift */,
 				5AFE8E6521E8E5C00003477B /* DataStoreFactoryTests.swift */,
+				5EC9C2E22452EB0300845350 /* FindFirstLastTests.swift */,
 			);
 			path = PersistenceTests;
 			sourceTree = "<group>";
@@ -1218,6 +1221,7 @@
 				5EE2B40721C25EC600F90723 /* BackendlessUserTests.swift in Sources */,
 				5EDA87DE2434C44B00873403 /* UOWDeleteRelation.swift in Sources */,
 				5E15A06C223B9C9D0090F5A3 /* RTMessagingTests.swift in Sources */,
+				5EC9C2E32452EB0300845350 /* FindFirstLastTests.swift in Sources */,
 				5E384C9E226F530A00743125 /* CountersTests.swift in Sources */,
 				5E412CE6243235A000640313 /* UOWAddRelationTests.swift in Sources */,
 				5E412CE22432133800640313 /* UOWFindTests.swift in Sources */,

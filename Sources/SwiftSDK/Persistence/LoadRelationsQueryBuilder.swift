@@ -23,11 +23,11 @@
    
     private var entityClass: Any?
     
-    private var relationName: String
-    private var properties: [String]?
-    private var sortBy: [String]?
-    private var pageSize: Int = 10
-    private var offset: Int = 0
+    public var relationName: String
+    public var properties: [String]?
+    public var sortBy: [String]?
+    public var pageSize: Int = 10
+    public var offset: Int = 0
     
     private let persistenceServiceUtils = PersistenceServiceUtils(tableName: nil)
     
@@ -66,26 +66,32 @@
         self.relationName = relationName
     }
     
+    @available(*, deprecated, message: "Please use the relationName property directly")
     public func setRelationName(relationName: String) {
         self.relationName = relationName
     }
 
+    @available(*, deprecated, message: "Please use the relationName property directly")
     public func getRelationName() -> String {
         return self.relationName
     }
     
+    @available(*, deprecated, message: "Please use the pageSize property directly")
     public func getPageSize() -> Int {
         return self.pageSize
     }
     
+    @available(*, deprecated, message: "Please use the pageSize property directly")
     public func setPageSize(pageSize: Int) {
         self.pageSize = pageSize
     }
     
+    @available(*, deprecated, message: "Please use the offset property directly")
     public func getOffset() -> Int {
         return self.offset
     }
     
+    @available(*, deprecated, message: "Please use the offset property directly")
     public func setOffset(offset: Int) {
         self.offset = offset
     }
@@ -105,10 +111,12 @@
         return self.entityClass
     }
     
+    @available(*, deprecated, message: "Please use the properties property directly")
     public func getProperties() -> [String]? {
         return self.properties
     }
     
+    @available(*, deprecated, message: "Please use the properties property directly")
     public func setProperties(properties: [String]) {
         self.properties = properties
     }
@@ -139,10 +147,12 @@
         }
     }
     
+    @available(*, deprecated, message: "Please use the sortBy property directly")
     public func getSortBy() -> [String]? {
         return self.sortBy
     }
     
+    @available(*, deprecated, message: "Please use the sortBy property directly")
     public func setSortBy(sortBy: [String]) {
         self.sortBy = sortBy
     }
@@ -152,6 +162,17 @@
     }
     
     public func addSortBy(listSortBy: [String]) {
+        if self.sortBy != nil {
+            for sortBy in listSortBy {
+                self.sortBy?.append(sortBy)
+            }
+        }
+        else {
+            self.sortBy = listSortBy
+        }
+    }
+    
+    public func addSortBy(listSortBy: String...) {
         if self.sortBy != nil {
             for sortBy in listSortBy {
                 self.sortBy?.append(sortBy)

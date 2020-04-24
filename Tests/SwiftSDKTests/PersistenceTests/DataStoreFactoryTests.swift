@@ -52,9 +52,10 @@ class DataStoreFactoryTests: XCTestCase {
     
     class func clearTables() {
         Backendless.shared.data.of(TestClass.self).removeBulk(whereClause: nil, responseHandler: { removedObjects in }, errorHandler: { fault in })
+        Backendless.shared.data.of(ChildTestClass.self).removeBulk(whereClause: nil, responseHandler: { removedObjects in }, errorHandler: { fault in })
     }
     
-    func test_01_Mappings() {
+    func test_01_mappings() {
         Backendless.shared.data.of(TestClassForMappings.self).removeBulk(whereClause: nil, responseHandler: { removedObjects in }, errorHandler: { fault in })
         
         let expectation = self.expectation(description: "PASSED dataStoreFactory.mapToTable/mapColumnToProperty")

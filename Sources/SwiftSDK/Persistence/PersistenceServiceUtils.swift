@@ -211,7 +211,7 @@ class PersistenceServiceUtils {
                 parameters["props"] = props
             }
         }
-        if let excludedProperties = queryBuilder?.excludedProperties {
+        if let excludedProperties = queryBuilder?.excludeProperties {
             var excludeProps = [String]()
             for property in excludedProperties {
                 if !property.isEmpty {
@@ -317,15 +317,26 @@ class PersistenceServiceUtils {
                 restMethod += "&props=" + DataTypesUtils.shared.arrayToString(array: props)
             }
         }
-        if let excludedProperties = queryBuilder?.excludedProperties {
+        if let excludeProperties = queryBuilder?.excludeProperties {
             var excludeProps = [String]()
-            for property in excludedProperties {
+            for property in excludeProperties {
                 if !property.isEmpty {
                     excludeProps.append(property)
                 }
             }
             if !excludeProps.isEmpty {
                 restMethod += "&excludeProps=" + DataTypesUtils.shared.arrayToString(array: excludeProps)
+            }
+        }
+        if let sortBy = queryBuilder?.sortBy {
+            var sortByProps = [String]()
+            for sortByProp in sortBy {
+                if !sortByProp.isEmpty {
+                    sortByProps.append(sortByProp)
+                }
+            }
+            if !sortByProps.isEmpty {
+                restMethod += "&sortBy=" + DataTypesUtils.shared.arrayToString(array: sortByProps)
             }
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
@@ -419,12 +430,12 @@ class PersistenceServiceUtils {
     func loadRelations(objectId: String, queryBuilder: LoadRelationsQueryBuilder, responseHandler: (([Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         var parameters = [String: Any]()
-        parameters["pageSize"] = queryBuilder.getPageSize()
-        parameters["offset"] = queryBuilder.getOffset()
-        if let sortBy = queryBuilder.getSortBy(), sortBy.count > 0 {
+        parameters["pageSize"] = queryBuilder.pageSize
+        parameters["offset"] = queryBuilder.offset
+        if let sortBy = queryBuilder.sortBy, sortBy.count > 0 {
             parameters["sortBy"] = DataTypesUtils.shared.arrayToString(array: sortBy)
         }
-        if let properties = queryBuilder.getProperties() {
+        if let properties = queryBuilder.properties {
             var props = [String]()
             for property in properties {
                 if !property.isEmpty {
@@ -435,12 +446,12 @@ class PersistenceServiceUtils {
                 parameters["props"] = DataTypesUtils.shared.arrayToString(array: props)
             }
         }
-        if queryBuilder.getRelationName().isEmpty {
+        if queryBuilder.relationName.isEmpty {
             let fault = Fault(message: "Incorrect relationName property")
             errorHandler(fault)
         }
         else {
-            BackendlessRequestManager(restMethod: "data/\(tableName)/\(objectId)/\(queryBuilder.getRelationName())/load", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+            BackendlessRequestManager(restMethod: "data/\(tableName)/\(objectId)/\(queryBuilder.relationName)/load", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
                 if let result = ProcessResponse.shared.adapt(response: response, to: [JSON].self) {
                     if result is Fault {
                         errorHandler(result as! Fault)

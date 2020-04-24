@@ -21,7 +21,7 @@
 
 @objcMembers public class DeviceRegistration: NSObject, Codable {
     
-    public private(set) var objectId: String?
+    public var objectId: String?
     public var deviceToken: String?
     public var deviceId: String?
     public var os: String?
@@ -49,6 +49,7 @@
         self.channels = channels
     }
     
+    @available(*, deprecated, message: "Please use the objectId property directly")
     func setObjectId(objectId: String) {
         self.objectId = objectId
     }
