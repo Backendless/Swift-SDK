@@ -541,7 +541,7 @@ class PersistenceServiceUtils {
     func entityToDictionary(entity: Any) -> [String: Any] {
         var entityDictionary = [String: Any]()
         if let userEntity = entity as? BackendlessUser {
-            let properties = userEntity.getProperties()
+            let properties = userEntity.properties
             for (key, value) in properties {
                 entityDictionary[key] = value
             }

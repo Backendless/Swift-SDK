@@ -179,7 +179,7 @@ class UserServiceTests: XCTestCase {
         backendless.userService.loginAsGuest(responseHandler: { guestUser in
             XCTAssertNotNil(guestUser.objectId)
             XCTAssertNotNil(guestUser.userToken)
-            XCTAssertEqual((guestUser.getProperty(propertyName: "userStatus")) as? String, "GUEST")
+            XCTAssertEqual(guestUser.properties["userStatus"] as? String, "GUEST")
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)

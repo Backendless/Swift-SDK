@@ -56,7 +56,7 @@
     public func registerUser(user: BackendlessUser, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         var parameters = [String : Any]()
-        let userProperties = user.getProperties()
+        let userProperties = user.properties
         for (key, value) in userProperties {
             parameters[key] = value
         }
@@ -214,13 +214,13 @@
     
     public func update(user: BackendlessUser, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
-        var parameters = user.getProperties()
+        var parameters = user.properties
         parameters["password"] = user._password
         var userId = String()        
         if let userObjectId = user.objectId {
             userId = userObjectId
         }
-        else if let userObjectId = user.getProperty(propertyName: "objectId") as? String {
+        else if let userObjectId = user.properties["objectId"] as? String {
             userId = userObjectId
         }
         if !userId.isEmpty {
@@ -316,9 +316,10 @@
     }
     
     private func savePersistentUser(currentUser: BackendlessUser) {
-        var properties = self.currentUser?.getProperties()
-        properties?["user-token"] = self.currentUser?.userToken
-        self.currentUser?.setProperties(properties: properties!)
+        if var properties = self.currentUser?.properties {
+            properties["user-token"] = self.currentUser?.userToken
+            self.currentUser?.properties = properties
+        }
         UserDefaultsHelper.shared.savePersistentUserToken(token: currentUser.userToken!)
         self.currentUser = currentUser
         if self.stayLoggedIn {

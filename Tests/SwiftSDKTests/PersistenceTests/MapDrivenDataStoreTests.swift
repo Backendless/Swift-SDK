@@ -260,8 +260,8 @@ class MapDrivenDataStoreTests: XCTestCase {
             queryBuilder.relationsDepth = 1
             queryBuilder.pageSize = 5
             queryBuilder.havingClause = "age>20"
-            queryBuilder.setGroupBy(groupBy: ["name"])
-            queryBuilder.setPageSize(pageSize: 5)
+            queryBuilder.groupBy = ["name"]
+            queryBuilder.pageSize = 5
             queryBuilder.excludeProperty("age")
             self.dataStore.find(queryBuilder: queryBuilder, responseHandler: { foundObjects in
                 XCTAssertNotNil(foundObjects)
@@ -594,10 +594,10 @@ class MapDrivenDataStoreTests: XCTestCase {
                         XCTAssert(Int(exactly: relations) == 2)
                         // retrieve relation
                         let queryBuilder = LoadRelationsQueryBuilder(relationName: "children")
-                        queryBuilder.setPageSize(pageSize: 2)
-                        queryBuilder.setOffset(offset: 1)
-                        queryBuilder.setProperties(properties: ["foo"])
-                        queryBuilder.setSortBy(sortBy: ["foo"])
+                        queryBuilder.pageSize = 2
+                        queryBuilder.offset = 1
+                        queryBuilder.properties = ["foo"]
+                        queryBuilder.sortBy = ["foo"]
                         self.dataStore.loadRelations(objectId: parentObjectId, queryBuilder: queryBuilder, responseHandler: { foundRelations in
                             XCTAssertNotNil(foundRelations)
                             XCTAssert(Int(exactly: foundRelations.count) == 1)

@@ -292,7 +292,7 @@ class DataStoreFactoryTests: XCTestCase {
             queryBuilder.relationsDepth = 1
             queryBuilder.pageSize = 5
             queryBuilder.havingClause = "age>20"
-            queryBuilder.setGroupBy(groupBy: ["name"])
+            queryBuilder.groupBy = ["name"]
             queryBuilder.excludeProperty("age")
             self.dataStore.find(queryBuilder: queryBuilder, responseHandler: { foundObjects in
                 XCTAssertNotNil(foundObjects)
@@ -402,7 +402,7 @@ class DataStoreFactoryTests: XCTestCase {
                                     // 1:N set
                                     // findById
                                     let queryBuilder = DataQueryBuilder()
-                                    queryBuilder.setRelated(related: ["child", "children"])
+                                    queryBuilder.related = ["child", "children"]
                                     self.dataStore.findById(objectId: parentObjectId, queryBuilder: queryBuilder, responseHandler: { foundObject in
                                         XCTAssertNotNil(foundObject)
                                         XCTAssert(type(of: foundObject) == TestClass.self)
@@ -442,7 +442,7 @@ class DataStoreFactoryTests: XCTestCase {
     func test_17_findFirstWithCondition() {
         let expectation = self.expectation(description: "PASSED: dataStoreFactory.findFirstWithCondition")
         let queryBuilder = DataQueryBuilder()
-        queryBuilder.setRelated(related: ["child", "children"])
+        queryBuilder.related = ["child", "children"]
         self.dataStore.findFirst(queryBuilder: queryBuilder, responseHandler: { first in
             XCTAssertNotNil(first)
             XCTAssert(type(of: first) == TestClass.self)
@@ -457,7 +457,7 @@ class DataStoreFactoryTests: XCTestCase {
     func test_18_findLastWithCondition() {
         let expectation = self.expectation(description: "PASSED: dataStoreFactory.findLastWithCondition")
         let queryBuilder = DataQueryBuilder()
-        queryBuilder.setRelated(related: ["child", "children"])
+        queryBuilder.related = ["child", "children"]
         self.dataStore.findLast(queryBuilder: queryBuilder, responseHandler: { last in
             XCTAssertNotNil(last)
             XCTAssert(type(of: last) == TestClass.self)
@@ -696,9 +696,9 @@ class DataStoreFactoryTests: XCTestCase {
                         XCTAssert(Int(exactly: relations) == 1)
                         // retrieve relation
                         let queryBuilder = LoadRelationsQueryBuilder(entityClass: ChildTestClass.self, relationName: "child")
-                        queryBuilder.setPageSize(pageSize: 1)
-                        queryBuilder.setProperties(properties: ["foo"])
-                        queryBuilder.setSortBy(sortBy: ["foo"])
+                        queryBuilder.pageSize = 1
+                        queryBuilder.properties = ["foo"]
+                        queryBuilder.sortBy = ["foo"]
                         self.dataStore.loadRelations(objectId: parentObjectId, queryBuilder: queryBuilder, responseHandler: { foundRelations in
                             XCTAssertNotNil(foundRelations)
                             XCTAssert(Int(exactly: foundRelations.count) == 1)
