@@ -28,8 +28,8 @@
         get {
             return _headers?.dictionaryObject
         }
-        set(newHeaders) {
-            _headers = JSON(newHeaders ?? [:])
+        set {
+            _headers = JSON(newValue ?? [:])
         }
     }
     

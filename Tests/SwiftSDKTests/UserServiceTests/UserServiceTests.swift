@@ -81,7 +81,7 @@ class UserServiceTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: userService.login")
         backendless.userService.login(identity: USER_EMAIL, password: USER_PASSWORD, responseHandler: { loggedInUser in
             XCTAssertNotNil(loggedInUser)
-            XCTAssertNotNil(self.backendless.userService.getCurrentUser())
+            XCTAssertNotNil(self.backendless.userService.currentUser)
             XCTAssertNotNil(self.backendless.userService.isValidUserToken)
             expectation.fulfill()
         }, errorHandler: { fault in
@@ -106,7 +106,7 @@ class UserServiceTests: XCTestCase {
     func test_05_getUserRoles() {
         let expectation = self.expectation(description: "PASSED: userService.getUserRoles")
         backendless.userService.login(identity: USER_EMAIL, password: USER_PASSWORD, responseHandler: { loggedInUser in
-            XCTAssertNotNil(self.backendless.userService.getCurrentUser())
+            XCTAssertNotNil(self.backendless.userService.currentUser)
             self.backendless.userService.getUserRoles(responseHandler: { roles in
                 XCTAssertNotNil(roles)
                 expectation.fulfill()
@@ -142,7 +142,7 @@ class UserServiceTests: XCTestCase {
     func test_07_logout() {
         let expectation = self.expectation(description: "PASSED: userService.logout")
         backendless.userService.logout(responseHandler: {
-            XCTAssertNil(self.backendless.userService.getCurrentUser())
+            XCTAssertNil(self.backendless.userService.currentUser)
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)

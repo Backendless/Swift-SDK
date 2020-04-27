@@ -34,8 +34,8 @@
             }
             return nil
         }
-        set(newSize) {
-            _size = newSize?.intValue
+        set {
+            _size = newValue?.intValue
         }
     }
 

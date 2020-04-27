@@ -42,9 +42,9 @@
             }
             return nil
         }
-        set(newMessage) {            
-            if let newMesasge = newMessage {
-                _message = JSON(newMesasge)
+        set {
+            if newValue != nil {
+                _message = JSON(newValue!)
             }
             _message = nil
         }
@@ -57,9 +57,9 @@
         get {
             return _headers?.dictionaryObject
         }
-        set(newHeaders) {
-            if let newHeaders = newHeaders {
-                _headers = JSON(newHeaders)
+        set {
+            if newValue != nil {
+                _headers = JSON(newValue!)
             }
             _headers = nil
         }
@@ -73,8 +73,8 @@
             }
             return nil
         }
-        set(newTimestamp) {
-            _timestamp = newTimestamp?.intValue
+        set {
+            _timestamp = newValue?.intValue
         }
     }
     
@@ -105,8 +105,8 @@
             }
             return nil
         }
-        set(newPushBroadcast) {
-            _pushBroadcast = newPushBroadcast
+        set {
+            _pushBroadcast = newValue
         }
     }
     
@@ -118,8 +118,8 @@
             }
             return nil
         }
-        set(newPublishAt) {
-            _publishAt = newPublishAt?.intValue
+        set {
+            _publishAt = newValue?.intValue
         }
     }
     
@@ -131,8 +131,8 @@
             }
             return nil
         }
-        set(newRepeatEvery) {
-            _repeatEvery = newRepeatEvery?.intValue
+        set {
+            _repeatEvery = newValue?.intValue
         }
     }
     
@@ -144,8 +144,8 @@
             }
             return nil
         }
-        set(newRepeatExpiresAt) {
-            _repeatExpiresAt = newRepeatExpiresAt?.intValue
+        set {
+            _repeatExpiresAt = newValue?.intValue
         }
     }
     

@@ -25,19 +25,30 @@
         get {
             return getStayLoggedIn()
         }
-        set(_stayLoggedIn) {
-            setStayLoggedIn(stayLoggedIn: _stayLoggedIn)
+        set {
+            setStayLoggedIn(stayLoggedIn: newValue)
         }
     }
     
-    private var currentUser: BackendlessUser?
+    private var _currentUser: BackendlessUser?
+    public private(set) var currentUser: BackendlessUser? {
+        get {
+            if let user = UserDefaultsHelper.shared.getCurrentUser() {
+                return user
+            }
+            return _currentUser
+        }
+        set {
+            _currentUser = newValue
+        }
+    }
     
     public func setUserToken(value: String) {
-        currentUser?.setUserToken(value: value)
+        _currentUser?.setUserToken(value: value)
     }
     
     public func getUserToken() -> String? {
-        return currentUser?.userToken
+        return _currentUser?.userToken
     }
     
     public func describeUserClass(responseHandler: (([UserProperty]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
@@ -158,6 +169,7 @@
                     errorHandler(result as! Fault)
                 }
                 else {
+                    self.setPersistentUser(currentUser: result as! BackendlessUser)
                     responseHandler(result as! BackendlessUser)
                 }
             }
@@ -232,7 +244,7 @@
                     else {
                         let updatedUser = result as! BackendlessUser
                         if self.stayLoggedIn,
-                            let current = self.getCurrentUser(),
+                            let current = self.currentUser,
                             updatedUser.objectId == current.objectId,
                             let currentToken = current.userToken {
                             updatedUser.setUserToken(value: currentToken)
@@ -245,11 +257,12 @@
         }
     }
     
+    @available(*, deprecated, message: "Please use the currentUser property directly")
     public func getCurrentUser() -> BackendlessUser? {
-        if let currentUser = UserDefaultsHelper.shared.getCurrentUser() {
-            return currentUser
+        if let user = UserDefaultsHelper.shared.getCurrentUser() {
+            return user
         }
-        return self.currentUser
+        return self._currentUser
     }
     
     public func logout(responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {

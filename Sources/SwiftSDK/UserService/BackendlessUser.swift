@@ -37,32 +37,6 @@
     
     public private(set) var userToken: String?
     
-    /*private var properties = JSON()
-    public var userProperties: [String : Any] {
-        get {
-            var _userProperties = [String: Any]()
-            for (propertyName, propertyValue) in properties.dictionaryObject! {
-                _userProperties[propertyName] = propertyValue
-            }
-            if let objectId = self.objectId {
-                _userProperties["objectId"] = objectId
-            }
-            if let email = self.email, !email.isEmpty {
-                _userProperties["email"] = email
-            }
-            if let name = self.name {
-                _userProperties["name"] = name
-            }
-            if let userToken = self.userToken {
-                _userProperties["user-token"] = userToken
-            }
-            return _userProperties
-        }
-        set {
-            self.properties = JSON(newValue)
-        }
-    }*/
-    
     private var userProperties = JSON()
     public var properties: [String : Any] {
         get {

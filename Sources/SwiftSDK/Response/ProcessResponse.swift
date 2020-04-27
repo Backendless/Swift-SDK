@@ -112,7 +112,7 @@ class ProcessResponse {
                     let responseData = try JSONSerialization.data(withJSONObject: properties)
                     do {
                         let responseObject = try JSONDecoder().decode(BackendlessUser.self, from: responseData)                        
-                        responseObject.setProperties(properties: responseResult)
+                        responseObject.properties = responseResult
                         if responseObject.objectId != nil {
                             StoredObjects.shared.rememberObjectId(objectId: responseObject.objectId!, forObject: responseObject)
                         }

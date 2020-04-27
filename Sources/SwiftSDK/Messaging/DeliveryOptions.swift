@@ -58,8 +58,8 @@
             }
             return nil
         }
-        set(newRepeatEvery) {
-            _repeatEvery = newRepeatEvery?.intValue
+        set {
+            _repeatEvery = newValue?.intValue
         }
     }
 

@@ -43,8 +43,8 @@
             }
             return nil
         }
-        set(newRadius) {
-            _radius = newRadius?.doubleValue
+        set {
+            _radius = newValue?.doubleValue
         }
     }
     
@@ -53,9 +53,9 @@
         get {
             return _metadata?.dictionaryObject
         }
-        set(newMetadata) {
-            if let newMetadata = newMetadata {
-                _metadata = JSON(newMetadata)
+        set {
+            if newValue != nil {
+                _metadata = JSON(newValue!)
             }
         }
     }
