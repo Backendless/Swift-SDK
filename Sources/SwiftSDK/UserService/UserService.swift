@@ -158,6 +158,7 @@
                     errorHandler(result as! Fault)
                 }
                 else {
+                    self.setPersistentUser(currentUser: result as! BackendlessUser)
                     responseHandler(result as! BackendlessUser)
                 }
             }

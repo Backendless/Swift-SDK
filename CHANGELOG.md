@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 5.7.11 / April 27, 2020
+* fixed issue with current user after the Twitter login
+
 ### 5.7.10 / April 22, 2020
 * DataQueryBuilder `excludedProperties` renamed to `excludeProperties`
 
