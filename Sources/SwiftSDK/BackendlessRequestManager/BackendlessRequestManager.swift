@@ -58,14 +58,12 @@ class BackendlessRequestManager {
                 request.addValue(value, forHTTPHeaderField: key)
             }
         }
-        if var parameters = parameters {
+        if var parameters = parameters {            
             if headers == ["Content-Type": "application/json"] {
-                
                 if let params = parameters as? [[String : Any]] {
                     parameters = JSONUtils.shared.objectToJson(objectToParse: params)
                     request.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
                 }
-                
                 else if parameters is String {
                     parameters = "\"\(parameters as! String)\""
                     request.httpBody = (parameters as! String).data(using: .utf8)

@@ -311,7 +311,7 @@
         })
     }
     
-    public func sendEmail(subject: String, bodyparts: EmailBodyparts, recipients: [String], attachments: [String]?, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func sendEmail(subject: String, bodyParts: EmailBodyParts, recipients: [String], attachments: [String]?, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         var parameters = [String : Any]()
         parameters["subject"] = subject
@@ -320,10 +320,10 @@
             parameters["attachment"] = attachments
         }
         var bodypartsValue = [String : String]()
-        if let textMessage = bodyparts.textMessage {
+        if let textMessage = bodyParts.textMessage {
             bodypartsValue["textmessage"] = textMessage
         }
-        if let htmlMessage = bodyparts.htmlMessage {
+        if let htmlMessage = bodyParts.htmlMessage {
             bodypartsValue["htmlmessage"] = htmlMessage
         }
         parameters["bodyparts"] = bodypartsValue
