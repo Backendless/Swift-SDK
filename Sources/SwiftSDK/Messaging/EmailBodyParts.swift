@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-@objcMembers public class EmailBodyparts: NSObject {
+@objcMembers public class EmailBodyParts: NSObject {
     
     public var textMessage: String?
     public var htmlMessage: String?

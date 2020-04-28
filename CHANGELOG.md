@@ -1,5 +1,9 @@
 # RELEASE HISTORY
 
+### 5.7.12 / April 28, 2020
+* the `EmailBodyparts` class renamed to the `EmailBodyParts`
+* fixed issue with BLGeometry in BackendlessUser properties
+
 ### 5.7.11 / April 27, 2020
 * fixed issue with current user after the Twitter login
 

@@ -51,6 +51,7 @@
         try container.encodeIfPresent(query, forKey: .query)
     }
     
+    @available(*, deprecated, message: "Please use the to property directly")
     public func addTo(to: [String]) {
         if self.to == nil {
             self.to = [String]()
@@ -58,6 +59,7 @@
         self.to!.append(contentsOf: to)
     }
     
+    @available(*, deprecated, message: "Please use the cc property directly")
     public func addCc(cc: [String]) {
         if self.cc == nil {
             self.cc = [String]()
@@ -65,6 +67,7 @@
         self.cc!.append(contentsOf: cc)
     }
     
+    @available(*, deprecated, message: "Please use the bcc property directly")
     public func addBcc(bcc: [String]) {
         if self.bcc == nil {
             self.bcc = [String]()
