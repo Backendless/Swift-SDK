@@ -158,9 +158,9 @@ class PublishingAPITests: XCTestCase {
     
     func test_07_sendEmail() {
         let expectation: XCTestExpectation = self.expectation(description: "PASSED: messaging.sendEmail")
-        let bodyparts = EmailBodyparts()
+        let bodyparts = EmailBodyParts()
         bodyparts.textMessage = "Test message"
-        backendless.messaging.sendEmail(subject: "TEST EMAIL", bodyparts: bodyparts, recipients: ["bkndlss@mailinator.com"], attachments: nil, responseHandler: { messageStatus in
+        backendless.messaging.sendEmail(subject: "TEST EMAIL", bodyParts: bodyparts, recipients: ["bkndlss@mailinator.com"], attachments: nil, responseHandler: { messageStatus in
             XCTAssertNotNil(messageStatus)
             expectation.fulfill()
         }, errorHandler: { fault in
