@@ -37,8 +37,8 @@ class FileServiceTests: XCTestCase {
     }
     
     class func removeFiles() {
-        Backendless.shared.file.remove(path: "TestsFiles", responseHandler: { }, errorHandler: { fault in })
-        Backendless.shared.file.remove(path: "CopiedTestsFiles", responseHandler: { }, errorHandler: { fault in })
+        Backendless.shared.file.remove(path: "TestsFiles", responseHandler: { _ in }, errorHandler: { fault in })
+        Backendless.shared.file.remove(path: "CopiedTestsFiles", responseHandler: { _ in }, errorHandler: { fault in })
     }
     
     func test_01_uploadFile() {
