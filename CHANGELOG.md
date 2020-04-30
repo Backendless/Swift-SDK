@@ -1,5 +1,9 @@
 # RELEASE HISTORY
 
+### 5.7.13 / April 30, 2020
+* fixed the FileService `remove` method response
+* tests fixed
+
 ### 5.7.12 / April 28, 2020
 * the `EmailBodyparts` class renamed to the `EmailBodyParts`
 * fixed issue with BLGeometry in BackendlessUser properties

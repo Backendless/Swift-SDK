@@ -176,22 +176,26 @@
     }
     
     public func getFileCount(responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        getFileCount(path: "", pattern: "*", recursive: false, countDirectories: true, responseHandler: responseHandler, errorHandler: errorHandler)
+        getFilesCount(path: "", pattern: "*", recursive: false, countDirectories: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     public func getFileCount(path: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        getFileCount(path: path, pattern: "*", recursive: false, countDirectories: true, responseHandler: responseHandler, errorHandler: errorHandler)
+        getFilesCount(path: path, pattern: "*", recursive: false, countDirectories: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     public func getFileCount(path: String, pattern: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        getFileCount(path: path, pattern: pattern, recursive: false, countDirectories: true, responseHandler: responseHandler, errorHandler: errorHandler)
+        getFilesCount(path: path, pattern: pattern, recursive: false, countDirectories: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     public func getFileCount(path: String, pattern: String, recursive: Bool, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        getFileCount(path: path, pattern: pattern, recursive: recursive, countDirectories: true, responseHandler: responseHandler, errorHandler: errorHandler)
+        getFilesCount(path: path, pattern: pattern, recursive: recursive, countDirectories: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     public func getFileCount(path: String, pattern: String, recursive: Bool, countDirectories: Bool, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        getFilesCount(path: path, pattern: pattern, recursive: recursive, countDirectories: countDirectories, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    private func getFilesCount(path: String, pattern: String, recursive: Bool, countDirectories: Bool?, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         var restMethod = "files/\(path)/?action=count&pattern=\(pattern)"
         if recursive {
             restMethod += "&sub=true"
@@ -199,11 +203,13 @@
         else {
             restMethod += "&sub=false"
         }
-        if countDirectories {
-            restMethod += "&countDirectories=true"
-        }
-        else {
-            restMethod += "&countDirectories=false"
+        if countDirectories != nil {
+            if countDirectories! {
+                restMethod += "&countDirectories=true"
+            }
+            else {
+                restMethod += "&countDirectories=false"
+            }
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {
@@ -217,11 +223,11 @@
         })
     }
 
-    public func remove(path: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func remove(path: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         remove(path: path, pattern: "*", recursive: false, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    public func remove(path: String, pattern: String, recursive: Bool, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func remove(path: String, pattern: String, recursive: Bool, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         var restMethod = "files/\(path)?pattern=\(pattern)"
         if recursive {
             restMethod += "&sub=true"
@@ -230,13 +236,13 @@
             restMethod += "&sub=false"
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .delete, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: NoReply.self) {
+            if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
             }
             else {
-                responseHandler()
+                responseHandler(DataTypesUtils.shared.dataToInt(data: response.data!))
             }
         })
     }
