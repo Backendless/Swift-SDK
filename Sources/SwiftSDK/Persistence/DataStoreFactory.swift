@@ -204,7 +204,7 @@
     
     private func wrapResponse(_ responseHandler: @escaping ((Any) -> Void)) -> (([String: Any]) -> ()) {
         let wrappedBlock: ([String: Any]) -> () = { responseDictionary in
-            let className = PersistenceHelper.shared.getClassNameWithoutModule(self.entityClass)
+            let className = PersistenceHelper.shared.getClassNameWithoutModule(self.entityClass)            
             if let resultEntity = PersistenceHelper.shared.dictionaryToEntity(responseDictionary, className: className) {
                 responseHandler(resultEntity)
             }

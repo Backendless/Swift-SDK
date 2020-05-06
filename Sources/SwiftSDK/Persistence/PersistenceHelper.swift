@@ -234,7 +234,7 @@ class PersistenceHelper {
             entityClassNameWithModule = getClassNameWithModule(entityClassNameWithModule)
             resultEntityType = NSClassFromString(entityClassNameWithModule) as? NSObject.Type
         }
-        if resultEntityType == nil {
+        if resultEntityType == nil {            
             entityClassNameWithModule = entityClassNameWithModule.components(separatedBy: ".").last!
             resultEntityType = NSClassFromString(entityClassNameWithModule) as? NSObject.Type
         }
@@ -297,7 +297,7 @@ class PersistenceHelper {
             name = classMappings[name]!
         }
         else {
-            var bundleName = Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String
+            var bundleName = Bundle.main.infoDictionary![kCFBundleExecutableKey as String] as! String
             bundleName = bundleName.replacingOccurrences(of: " ", with: "_")
             bundleName = bundleName.replacingOccurrences(of: "-", with: "_")
             name = bundleName + "." + name

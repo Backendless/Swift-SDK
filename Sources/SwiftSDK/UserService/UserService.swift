@@ -222,6 +222,7 @@
             if value is BLGeometry {
                 parameters[key] = (value as! BLGeometry).asGeoJson()
             }
+            parameters[key] = JSONUtils.shared.objectToJson(objectToParse: value)
         }
         
         var userId = String()        
