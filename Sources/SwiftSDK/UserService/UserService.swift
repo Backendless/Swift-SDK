@@ -228,6 +228,14 @@
         let headers = ["Content-Type": "application/json"]
         var parameters = user.properties
         parameters["password"] = user._password
+        
+        for (key, value) in parameters {
+            if value is BLGeometry {
+                parameters[key] = (value as! BLGeometry).asGeoJson()
+            }
+            parameters[key] = JSONUtils.shared.objectToJson(objectToParse: value)
+        }
+        
         var userId = String()        
         if let userObjectId = user.objectId {
             userId = userObjectId

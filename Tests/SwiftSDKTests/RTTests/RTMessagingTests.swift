@@ -104,7 +104,7 @@ class RTMessagingTests: XCTestCase {
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
             let message = "Test Message"
             self.backendless.messaging.sendCommand(commandType: "TestCommand", channelName: self.CHANNEL_NAME, data: message, responseHandler: {
             }, errorHandler: { fault in

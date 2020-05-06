@@ -60,12 +60,10 @@ class BackendlessRequestManager {
         }
         if var parameters = parameters {
             if headers == ["Content-Type": "application/json"] {
-                
                 if let params = parameters as? [[String : Any]] {
                     parameters = JSONUtils.shared.objectToJson(objectToParse: params)
                     request.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
                 }
-                
                 else if parameters is String {
                     parameters = "\"\(parameters as! String)\""
                     request.httpBody = (parameters as! String).data(using: .utf8)
@@ -76,7 +74,7 @@ class BackendlessRequestManager {
                 }
                 else {
                     if var params = parameters as? [String : Any] {
-                        for (key, value) in params {                            
+                        for (key, value) in params {
                             if let dateValue = value as? Date {                                
                                 params[key] = DataTypesUtils.shared.dateToInt(date: dateValue)
                             }

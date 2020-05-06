@@ -1,5 +1,20 @@
 # RELEASE HISTORY
 
+### 5.7.14 / May 6, 2020
+* fixed issue when user property is object of custom class
+* fixed issue with class casting when Bunlde Name and Bundle Executable Name have different values
+
+### 5.7.13 / April 30, 2020
+* fixed the FileService `remove` method response
+* tests fixed
+
+### 5.7.12 / April 28, 2020
+* the `EmailBodyparts` class renamed to the `EmailBodyParts`
+* fixed issue with BLGeometry in BackendlessUser properties
+
+### 5.7.11 / April 27, 2020
+* fixed issue with current user after the Twitter login
+
 ### 5.7.10 / April 22, 2020
 * DataQueryBuilder `excludedProperties` renamed to `excludeProperties`
 

@@ -297,7 +297,7 @@ class PersistenceHelper {
             name = classMappings[name]!
         }
         else {
-            var bundleName = Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String
+            var bundleName = Bundle.main.infoDictionary![kCFBundleExecutableKey as String] as! String
             bundleName = bundleName.replacingOccurrences(of: " ", with: "_")
             bundleName = bundleName.replacingOccurrences(of: "-", with: "_")
             name = bundleName + "." + name
@@ -372,6 +372,15 @@ class PersistenceHelper {
         if valueType.contains("NSDate"), value is Int {
             return DataTypesUtils.shared.intToDate(intVal: value as! Int)
         }
+        
+            
+        // BKNDLSS-21285
+        /*else if valueType.contains("NSDate"), value is String {
+            let intValue = Int(value as! String)
+            return DataTypesUtils.shared.intToDate(intVal: intValue!)
+        }*/
+            
+            
         else if valueType.contains("BackendlessFile"), value is String {
             let backendlessFile = BackendlessFile()
             backendlessFile.fileUrl = value as? String
