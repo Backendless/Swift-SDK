@@ -91,7 +91,20 @@
     public func getProperties() -> [String: Any] {
         var userProperties = [String: Any]()
         for (propertyName, propertyValue) in properties.dictionaryObject! {
-            userProperties[propertyName] = propertyValue
+            if let dictionaryValue = propertyValue as? [String : Any],
+                let className = dictionaryValue["___class"] as? String {
+                userProperties[propertyName] = PersistenceHelper.shared.dictionaryToEntity(dictionaryValue, className: className)
+            }
+            else if let arrayValue = propertyValue as? [[String : Any]] {
+                for dictionaryValue in arrayValue {
+                    if let className = dictionaryValue["___class"] as? String {
+                        userProperties[propertyName] = PersistenceHelper.shared.dictionaryToEntity(dictionaryValue, className: className)
+                    }
+                }
+            }
+            else {
+                userProperties[propertyName] = propertyValue
+            }            
         }
         if let name = self.name {
             userProperties["name"] = name
