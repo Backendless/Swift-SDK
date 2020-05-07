@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 5.7.15 / May 7, 2020
+* fixed issue when Custom Class attached to User was Null when `stayLoggedIn` in is true
+
 ### 5.7.14 / May 6, 2020
 * fixed issue when user property is object of custom class
 * fixed issue with class casting when Bunlde Name and Bundle Executable Name have different values
