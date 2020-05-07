@@ -76,7 +76,7 @@
             else {
                 let fileUrl = String(bytes: response.data!, encoding: .utf8)
                 let backendlessFile = BackendlessFile()
-                backendlessFile.fileUrl = fileUrl.replacingOccurrences(of: "\"", with: "")
+                backendlessFile.fileUrl = fileUrl?.replacingOccurrences(of: "\"", with: "")
                 responseHandler(backendlessFile)
             }
         })

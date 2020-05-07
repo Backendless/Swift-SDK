@@ -37,12 +37,25 @@
     
     public private(set) var userToken: String?
     
-    private var userProperties = JSON()
+    var userProperties = JSON()
     public var properties: [String : Any] {
         get {
             var _properties = [String: Any]()
             for (propertyName, propertyValue) in userProperties.dictionaryObject! {
-                _properties[propertyName] = propertyValue
+                if let dictionaryValue = propertyValue as? [String : Any],
+                    let className = dictionaryValue["___class"] as? String {
+                    _properties[propertyName] = PersistenceHelper.shared.dictionaryToEntity(dictionaryValue, className: className)
+                }
+                else if let arrayValue = propertyValue as? [[String : Any]] {
+                    for dictionaryValue in arrayValue {
+                        if let className = dictionaryValue["___class"] as? String {
+                            _properties[propertyName] = PersistenceHelper.shared.dictionaryToEntity(dictionaryValue, className: className)
+                        }
+                    }
+                }
+                else {
+                    _properties[propertyName] = propertyValue
+                }
             }
             if let objectId = self.objectId {
                 _properties["objectId"] = objectId
@@ -109,7 +122,7 @@
     
     @available(*, deprecated, message: "Please use the userProperties property directly")
     public func getProperty(propertyName: String) -> Any? {
-        return userProperties[propertyName]
+        return properties[propertyName]
     }
     
     @available(*, deprecated, message: "Please use the userProperties property directly")
