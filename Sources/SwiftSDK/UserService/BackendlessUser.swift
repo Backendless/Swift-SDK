@@ -138,7 +138,11 @@
     
     @available(*, deprecated, message: "Please use the userProperties property directly")
     public func setProperties(properties: [String: Any]) {
-        self.properties = properties
+        for (key, value) in properties {
+            if !(value is NSNull) {
+                setProperty(propertyName: key, propertyValue: value)
+            }
+        }
     }
     
     public func setLocale(languageCode: String) {
