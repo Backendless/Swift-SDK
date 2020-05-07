@@ -37,7 +37,7 @@
     
     var _password: String?
     
-    private var properties = JSON()
+    var properties = JSON()
     
     enum CodingKeys: String, CodingKey {
         case email
@@ -143,9 +143,9 @@
     }
     
     public func setProperties(properties: [String: Any]) {
-        for property in properties {
-            if !(property.value is NSNull) {
-                setProperty(propertyName: property.key, propertyValue: property.value)
+        for (key, value) in properties {
+            if !(value is NSNull) {
+                setProperty(propertyName: key, propertyValue: value)
             }
         }
     }
