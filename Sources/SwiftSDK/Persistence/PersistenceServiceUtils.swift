@@ -97,7 +97,7 @@ class PersistenceServiceUtils {
                     else {
                         if let updatedUser = ProcessResponse.shared.adapt(response: response, to: BackendlessUser.self) as? BackendlessUser,
                             Backendless.shared.userService.stayLoggedIn,
-                            let current = Backendless.shared.userService.getCurrentUser(),
+                            let current = Backendless.shared.userService.currentUser,
                             updatedUser.objectId == current.objectId,
                             let currentToken = current.userToken {
                             updatedUser.setUserToken(value: currentToken)

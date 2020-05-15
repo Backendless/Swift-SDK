@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 5.7.16 / ?, 2020
+* the BackendlessUser and UserService properties became public, get/set methods are marked as deprecated
+
 ### 5.7.15 / May 7, 2020
 * fixed issue when Custom Class attached to User was Null when `stayLoggedIn` in is true
 

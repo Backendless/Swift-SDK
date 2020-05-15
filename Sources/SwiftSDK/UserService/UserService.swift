@@ -25,19 +25,30 @@
         get {
             return getStayLoggedIn()
         }
-        set(_stayLoggedIn) {
-            setStayLoggedIn(stayLoggedIn: _stayLoggedIn)
+        set {
+            setStayLoggedIn(stayLoggedIn: newValue)
         }
     }
     
-    private var currentUser: BackendlessUser?
+    private var _currentUser: BackendlessUser?
+    public private(set) var currentUser: BackendlessUser? {
+        get {
+            if let user = UserDefaultsHelper.shared.getCurrentUser() {
+                return user
+            }
+            return _currentUser
+        }
+        set {
+            _currentUser = newValue
+        }
+    }
     
     public func setUserToken(value: String) {
-        currentUser?.setUserToken(value: value)
+        _currentUser?.setUserToken(value: value)
     }
     
     public func getUserToken() -> String? {
-        return currentUser?.userToken
+        return _currentUser?.userToken
     }
     
     public func describeUserClass(responseHandler: (([UserProperty]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
@@ -56,7 +67,7 @@
     public func registerUser(user: BackendlessUser, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         var parameters = [String : Any]()
-        let userProperties = user.getProperties()
+        let userProperties = user.properties
         for (key, value) in userProperties {
             parameters[key] = value
         }
@@ -138,7 +149,7 @@
         })
     }
     
-    public func loginWithTwitter(authToken: String, authTokenSecret: String, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {        
+    public func loginWithTwitter(authToken: String, authTokenSecret: String, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         twitterLogin(authToken: authToken, authTokenSecret: authTokenSecret, guestUser: nil, fieldsMapping: fieldsMapping, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
@@ -215,7 +226,7 @@
     
     public func update(user: BackendlessUser, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
-        var parameters = user.getProperties()
+        var parameters = user.properties
         parameters["password"] = user._password
         
         for (key, value) in parameters {
@@ -225,11 +236,11 @@
             parameters[key] = JSONUtils.shared.objectToJson(objectToParse: value)
         }
         
-        var userId = String()        
+        var userId = String()
         if let userObjectId = user.objectId {
             userId = userObjectId
         }
-        else if let userObjectId = user.getProperty(propertyName: "objectId") as? String {
+        else if let userObjectId = user.properties["objectId"] as? String {
             userId = userObjectId
         }
         if !userId.isEmpty {
@@ -241,7 +252,7 @@
                     else {
                         let updatedUser = result as! BackendlessUser
                         if self.stayLoggedIn,
-                            let current = self.getCurrentUser(),
+                            let current = self.currentUser,
                             updatedUser.objectId == current.objectId,
                             let currentToken = current.userToken {
                             updatedUser.setUserToken(value: currentToken)
@@ -254,11 +265,12 @@
         }
     }
     
+    @available(*, deprecated, message: "Please use the currentUser property directly")
     public func getCurrentUser() -> BackendlessUser? {
-        if let currentUser = UserDefaultsHelper.shared.getCurrentUser() {
-            return currentUser
+        if let user = UserDefaultsHelper.shared.getCurrentUser() {
+            return user
         }
-        return self.currentUser
+        return self._currentUser
     }
     
     public func logout(responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
@@ -318,16 +330,17 @@
         savePersistentUser(currentUser: self.currentUser!)
     }
     
-    func resetPersistentUser() {
+    private func resetPersistentUser() {
         self.currentUser = nil
         UserDefaultsHelper.shared.removePersistentUser()
         UserDefaultsHelper.shared.removeCurrentUser()
     }
     
-    func savePersistentUser(currentUser: BackendlessUser) {
-        var properties = self.currentUser?.getProperties()
-        properties?["user-token"] = self.currentUser?.userToken
-        self.currentUser?.setProperties(properties: properties!)
+    private func savePersistentUser(currentUser: BackendlessUser) {
+        if var properties = self.currentUser?.properties {
+            properties["user-token"] = self.currentUser?.userToken
+            self.currentUser?.properties = properties
+        }
         UserDefaultsHelper.shared.savePersistentUserToken(token: currentUser.userToken!)
         self.currentUser = currentUser
         if self.stayLoggedIn {
@@ -335,18 +348,18 @@
         }
     }
     
-    func getPersistentUserToken() -> String? {
+    private func getPersistentUserToken() -> String? {
         if let userToken = UserDefaultsHelper.shared.getPersistentUserToken() {
             return userToken
         }
         return nil
     }
     
-    func setStayLoggedIn(stayLoggedIn: Bool) {
+    private func setStayLoggedIn(stayLoggedIn: Bool) {
         UserDefaultsHelper.shared.saveStayLoggedIn(stayLoggedIn: stayLoggedIn)
     }
     
-    func getStayLoggedIn() -> Bool {
+    private func getStayLoggedIn() -> Bool {
         return UserDefaultsHelper.shared.getStayLoggedIn()
     }
 }
