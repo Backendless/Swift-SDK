@@ -40,18 +40,25 @@
     var userProperties = JSON()
     public var properties: [String : Any] {
         get {
-            var _properties = [String: Any]()
-            for (propertyName, propertyValue) in userProperties.dictionaryObject! {
+            var _properties = userProperties.dictionaryObject!
+            for (propertyName, propertyValue) in _properties {
                 if let dictionaryValue = propertyValue as? [String : Any],
                     let className = dictionaryValue["___class"] as? String {
                     _properties[propertyName] = PersistenceHelper.shared.dictionaryToEntity(dictionaryValue, className: className)
                 }
                 else if let arrayValue = propertyValue as? [[String : Any]] {
+                    var arrayOfObjects = [Any]()
                     for dictionaryValue in arrayValue {
                         if let className = dictionaryValue["___class"] as? String {
-                            _properties[propertyName] = PersistenceHelper.shared.dictionaryToEntity(dictionaryValue, className: className)
+                            if let entity = PersistenceHelper.shared.dictionaryToEntity(dictionaryValue, className: className) {
+                                arrayOfObjects.append(entity)
+                            }
+                            else {
+                                arrayOfObjects.append(dictionaryValue)
+                            }
                         }
                     }
+                    _properties[propertyName] = arrayOfObjects
                 }
                 else {
                     _properties[propertyName] = propertyValue
@@ -72,7 +79,37 @@
             return _properties
         }
         set {
-            self.userProperties = JSON(newValue)
+            var _properties = self.userProperties.dictionaryObject
+            for (propertyName, propertyValue) in newValue {
+                if propertyName == "objectId" {
+                    self.objectId = propertyValue as? String
+                }
+                else if propertyName == "email" {
+                    self.email = propertyValue as? String
+                }
+                else if propertyName == "name" {
+                    self.name = propertyValue as? String
+                }
+                else if propertyName == "user-token" {
+                    self.userToken = propertyValue as? String
+                }
+                else {
+                    if !(propertyValue is JSON) {
+                        _properties?[propertyName] = JSONUtils.shared.objectToJson(objectToParse: propertyValue)
+                    }
+                    else {
+                        _properties?[propertyName] = propertyValue
+                    }
+                }                
+            }
+            self.userProperties = JSON(_properties!)
+            if let currentUser = Backendless.shared.userService.currentUser,
+                self.objectId == currentUser.objectId {
+                currentUser.userProperties = self.userProperties
+                let data = try? JSONEncoder().encode(currentUser)
+                let userDefaults = UserDefaults.standard
+                userDefaults.set(data, forKey: UserDefaultsKeys.currentUser)
+            }
         }
     }
     
@@ -146,7 +183,8 @@
                 value = propertyValue
             }
         }
-        properties[propertyName] = value
+        let jsonValue = JSONUtils.shared.objectToJson(objectToParse: value)
+        properties[propertyName] = jsonValue
     }
     
     @available(*, deprecated, message: "Please use the userProperties property directly")

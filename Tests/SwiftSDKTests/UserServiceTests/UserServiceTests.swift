@@ -123,11 +123,16 @@ class UserServiceTests: XCTestCase {
     
     func test_06_update() {
         let expectation = self.expectation(description: "PASSED: userService.update")
-        backendless.userService.login(identity: USER_EMAIL, password: USER_PASSWORD, responseHandler: { loggedInUser in
-            loggedInUser.name = "New name"
-            self.backendless.userService.update(user: loggedInUser, responseHandler: { updatedUser in
-                XCTAssertNotNil(updatedUser)
-                expectation.fulfill()
+        backendless.userService.logout(responseHandler: {
+            self.backendless.userService.login(identity: self.USER_EMAIL, password: self.USER_PASSWORD, responseHandler: { loggedInUser in
+                loggedInUser.name = "New name"
+                self.backendless.userService.update(user: loggedInUser, responseHandler: { updatedUser in
+                    XCTAssertNotNil(updatedUser)
+                    expectation.fulfill()
+                }, errorHandler: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")

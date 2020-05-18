@@ -149,7 +149,7 @@
         })
     }
     
-    public func loginWithTwitter(authToken: String, authTokenSecret: String, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {        
+    public func loginWithTwitter(authToken: String, authTokenSecret: String, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         twitterLogin(authToken: authToken, authTokenSecret: authTokenSecret, guestUser: nil, fieldsMapping: fieldsMapping, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
@@ -236,7 +236,7 @@
             parameters[key] = JSONUtils.shared.objectToJson(objectToParse: value)
         }
         
-        var userId = String()        
+        var userId = String()
         if let userObjectId = user.objectId {
             userId = userObjectId
         }
