@@ -194,7 +194,8 @@ class PersistenceServiceUtils {
         if let whereClause = queryBuilder?.whereClause {
             parameters["where"] = whereClause
         }
-        if let relationsDepth = queryBuilder?.relationsDepth {
+        if queryBuilder?.isRelationsDepthSet ?? false,
+            let relationsDepth = queryBuilder?.relationsDepth {
             parameters["relationsDepth"] = String(relationsDepth)
         }
         if let relationsPageSize = queryBuilder?.relationsPageSize {
@@ -281,29 +282,24 @@ class PersistenceServiceUtils {
         
         if relationsPageSize != nil {
             restMethod += "?relationsPageSize=\(relationsPageSize!)"
-            if related != nil, relationsDepth != nil, relationsDepth! > 0 {
-                let relatedString = DataTypesUtils.shared.arrayToString(array: related!)
-                restMethod += "&loadRelations=" + relatedString + "&relationsDepth=" + String(relationsDepth!)
+            if related != nil {
+                restMethod += "&loadRelations=\(DataTypesUtils.shared.arrayToString(array: related!))"
             }
-            else if related != nil, relationsDepth != nil, relationsDepth == 0 {
-                let relatedString = DataTypesUtils.shared.arrayToString(array: related!)
-                restMethod += "&loadRelations=" + relatedString
-            }
-            else if related == nil, relationsDepth != nil, relationsDepth! > 0 {
-                restMethod += "&relationsDepth=" + String(relationsDepth!)
+            if queryBuilder?.isRelationsDepthSet ?? false {
+                restMethod += "&relationsDepth=\(relationsDepth!)"
             }
         }
+            
+        // relationsPageSize = nil
         else {
-            if related != nil, relationsDepth != nil, relationsDepth! > 0 {
-                let relatedString = DataTypesUtils.shared.arrayToString(array: related!)
-                restMethod += "?loadRelations=" + relatedString + "&relationsDepth=" + String(relationsDepth!)
+            if related != nil {
+                restMethod += "?loadRelations=\(DataTypesUtils.shared.arrayToString(array: related!))"
+                if queryBuilder?.isRelationsDepthSet ?? false {
+                    restMethod += "&relationsDepth=\(relationsDepth!)"
+                }
             }
-            else if related != nil, relationsDepth != nil, relationsDepth == 0 {
-                let relatedString = DataTypesUtils.shared.arrayToString(array: related!)
-                restMethod += "?loadRelations=" + relatedString
-            }
-            else if related == nil, relationsDepth != nil, relationsDepth! > 0 {
-                restMethod += "?relationsDepth=" + String(relationsDepth!)
+            else if queryBuilder?.isRelationsDepthSet ?? false {
+                restMethod += "?relationsDepth=\(relationsDepth!)"
             }
         }
         if let properties = queryBuilder?.properties {

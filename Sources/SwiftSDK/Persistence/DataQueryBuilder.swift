@@ -22,7 +22,11 @@
 @objcMembers public class DataQueryBuilder: NSObject, Codable {
     
     public var whereClause: String?
-    public var relationsDepth: Int = 0
+    public var relationsDepth: Int = 0 {
+        didSet {
+            isRelationsDepthSet = true
+        }
+    }
     public var relationsPageSize: Int = 10
     public var pageSize: Int = 10
     public var offset: Int = 0
@@ -32,6 +36,8 @@
     public var related: [String]?
     public var groupBy: [String]?
     public var havingClause: String?
+    
+    var isRelationsDepthSet = false
     
     private enum CodingKeys: String, CodingKey {
         case whereClause
@@ -56,6 +62,7 @@
             self.relationsDepth = relationsDepth
         } else {
             self.relationsDepth = 0
+            self.isRelationsDepthSet = false
         }
         
         if let relationsPageSize = try container.decodeIfPresent(Int.self, forKey: .relationsPageSize) {

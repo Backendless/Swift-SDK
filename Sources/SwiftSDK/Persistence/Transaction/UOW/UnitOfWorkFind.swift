@@ -36,7 +36,9 @@ class UnitOfWorkFind {
         var queryOptions = [String : Any]()
         queryOptions["sortBy"] = queryBuilder.sortBy
         queryOptions["related"] = queryBuilder.related
-        queryOptions["relationsDepth"] = queryBuilder.relationsDepth
+        if queryBuilder.isRelationsDepthSet {
+            queryOptions["relationsDepth"] = queryBuilder.relationsDepth
+        }  
         queryOptions["relationsPageSize"] = queryBuilder.relationsPageSize
         
         var payload = [String : Any]()
