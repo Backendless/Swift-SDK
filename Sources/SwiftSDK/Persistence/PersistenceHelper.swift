@@ -53,10 +53,12 @@ class PersistenceHelper {
         else if let objectId = StoredObjects.shared.getObjectId(forObject: entity as! AnyHashable) {
             return objectId
         }
-        let entityDict = PersistenceHelper.shared.entityToDictionary(entity: entity)
-        if let objectId = entityDict ["objectId"] as? String {
-            return objectId
-        }
+        let entityProperties = Mirror(reflecting: entity).children
+        for (name, value) in entityProperties {
+            if name == "objectId" {
+                return value as? String
+            }
+        }        
         return nil
     }
     
@@ -127,7 +129,7 @@ class PersistenceHelper {
     func entityToDictionary(entity: Any) -> [String: Any] {
         if let user = entity as? BackendlessUser {
             var userDict = [String : Any]()
-            let userProperties = user.getProperties()
+            let userProperties = user.properties
             for (key, value) in userProperties {
                 userDict[key] = value
             }

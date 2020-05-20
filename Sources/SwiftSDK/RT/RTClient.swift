@@ -73,7 +73,7 @@ class RTClient {
                     #endif
                     
                     var connectParams = ["apiKey": Backendless.shared.getApiKey(), "clientId": clientId]
-                    if let userToken = Backendless.shared.userService.getCurrentUser()?.userToken {
+                    if let userToken = Backendless.shared.userService.currentUser?.userToken {
                         connectParams["userToken"] = userToken
                     }
                     self.socketManager = SocketManager(socketURL: url, config: ["path": path, "connectParams": connectParams])

@@ -50,7 +50,7 @@ class BackendlessRequestManager {
                 request.addValue(value, forHTTPHeaderField: key)
             }
         }
-        if let userToken = Backendless.shared.userService.getCurrentUser()?.userToken {
+        if let userToken = Backendless.shared.userService.currentUser?.userToken {
             request.addValue(userToken, forHTTPHeaderField: "user-token")
         }
         for (key, value) in Backendless.shared.getHeaders() {
@@ -118,7 +118,7 @@ class BackendlessRequestManager {
         request.httpMethod = httpMethod.rawValue
         let boundary = "Boundary-\(UUID().uuidString)"
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        if let userToken = Backendless.shared.userService.getCurrentUser()?.userToken {
+        if let userToken = Backendless.shared.userService.currentUser?.userToken {
             request.addValue(userToken, forHTTPHeaderField: "user-token")
         }
         for (key, value) in Backendless.shared.getHeaders() {
