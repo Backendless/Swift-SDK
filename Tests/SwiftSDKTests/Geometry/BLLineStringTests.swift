@@ -34,6 +34,7 @@ class BLLineStringTests: XCTestCase {
         Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
         Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
         clearTables()
+        logout()
     }
     
     // call before each test
@@ -48,6 +49,10 @@ class BLLineStringTests: XCTestCase {
     
     class func clearTables() {
         Backendless.shared.data.of(GeometryTestClass.self).removeBulk(whereClause: nil, responseHandler: { removedObjects in }, errorHandler: { fault in })
+    }
+    
+    class func logout() {
+        Backendless.shared.userService.logout(responseHandler: { }, errorHandler: { fault in })
     }
     
     func testLS1() {
