@@ -19,13 +19,13 @@
  *  ********************************************************************************************************************
  */
 
-@objc public protocol Identifiable {
+@objc public protocol BLIdentifiable {
     var objectId: String? { get set }
 }
 
 @objcMembers public class BackendlessDataCollection: Collection {
     
-    public typealias BackendlessDataCollectionType = [Identifiable]
+    public typealias BackendlessDataCollectionType = [BLIdentifiable]
     public typealias Index = BackendlessDataCollectionType.Index
     public typealias Element = BackendlessDataCollectionType.Element
     
@@ -35,10 +35,7 @@
     public private(set) var whereClause = ""
     public private(set) var count: Int {
         get {
-            if backendlessCollection.count > 0 {
-                return backendlessCollection.count
-            }
-            return self.totalCount
+            return backendlessCollection.count
         }
         set { }
     }
@@ -62,7 +59,7 @@
         return i + 1
     }
     
-    public subscript (position: Int) -> Identifiable {
+    public subscript (position: Int) -> BLIdentifiable {
         if position >= backendlessCollection.count {
             fatalError("Index out of range")
         }
@@ -115,8 +112,13 @@
     // Adds a new element to the Backendless collection
     public func add(newObject: Any) {
         checkObjectType(object: newObject)
-        backendlessCollection.append(newObject as! Identifiable)
-        queryBuilder.offset = queryBuilder.offset + 1
+        if let identifiableObject = newObject as? BLIdentifiable {
+            if identifiableObject.objectId == nil {
+                identifiableObject.objectId = UUID().uuidString
+            }
+            backendlessCollection.append(identifiableObject)
+            queryBuilder.setOffset(offset: queryBuilder.getOffset() + 1)
+        }
     }
     
     // Adds the elements of a sequence to the Backendless collection
@@ -129,8 +131,13 @@
     // Inserts a new element into the Backendless collection at the specified position
     public func insert(newObject: Any, at: Int) {
         checkObjectType(object: newObject)
-        backendlessCollection.insert(newObject as! Identifiable, at: at)
-        queryBuilder.offset = queryBuilder.offset + 1
+        if let identifiableObject = newObject as? BLIdentifiable {
+            if identifiableObject.objectId == nil {
+                identifiableObject.objectId = UUID().uuidString
+            }
+            backendlessCollection.insert(identifiableObject, at: at)
+            queryBuilder.setOffset(offset: queryBuilder.getOffset() + 1)
+        }
     }
     
     // Inserts the elements of a sequence into the Backendless collection at the specified position
@@ -145,13 +152,15 @@
     // Removes object from the Backendless collection
     public func remove(object: Any) {
         checkObjectTypeAndId(object: object)
-        let objectId = (object as! Identifiable).objectId
-        backendlessCollection.removeAll(where: { $0.objectId == objectId })
-        queryBuilder.offset = queryBuilder.offset - 1
+        if let identifiableObject = object as? BLIdentifiable {
+            let objectId = identifiableObject.objectId
+            backendlessCollection.removeAll(where: { $0.objectId == objectId })
+            queryBuilder.setOffset(offset: queryBuilder.getOffset() - 1)
+        }
     }
     
     // Removes and returns the element at the specified position
-    public func remove(at: Int) -> Identifiable {
+    public func remove(at: Int) -> BLIdentifiable {
         let object = backendlessCollection[at]
         remove(object: object)
         return object
@@ -159,7 +168,7 @@
     
     // Removes all the elements from the Backendless collection that satisfy the given slice
     
-    public func removeAll(where shouldBeRemoved: (Identifiable) throws -> Bool) rethrows {
+    public func removeAll(where shouldBeRemoved: (BLIdentifiable) throws -> Bool) rethrows {
         try backendlessCollection.removeAll(where: shouldBeRemoved)
     }
     
@@ -171,7 +180,7 @@
         return backendlessCollection.makeIterator()
     }
     
-    public func sort(by: (Identifiable, Identifiable) throws -> Bool) {
+    public func sort(by: (BLIdentifiable, BLIdentifiable) throws -> Bool) {
         do {
             backendlessCollection = try backendlessCollection.sorted(by: by)
         }
@@ -205,7 +214,7 @@
     
     private func checkObjectTypeAndId(object: Any) {
         checkObjectType(object: object)
-        if (object as! Identifiable).objectId == nil {
+        if (object as! BLIdentifiable).objectId == nil {
             fatalError(CollectionErrors.nullObjectId)
         }
     }
@@ -221,7 +230,7 @@
                 semaphore.signal()
                 return
             }
-            guard let foundObjects = foundObjects as? [Identifiable] else {
+            guard let foundObjects = foundObjects as? [BLIdentifiable] else {
                 semaphore.signal()
                 return
             }

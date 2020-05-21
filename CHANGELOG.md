@@ -1,7 +1,10 @@
 # RELEASE HISTORY
 
-### 5.7.16 / ?, 2020
+### 5.7.16 / May 20, 2020
 * the BackendlessUser and UserService properties became public, get/set methods are marked as deprecated
+* fixed crash when saving object which doesn't have the `objectId` property
+* fixed the `BackendlessDataCollection` issue when trying to delette the last object from the collection
+* the Backendless `Identifiable` protocol for the `BackendlessDataCollection` renamed to `BLIdentifiable` to avoid the confusion with Swift's `Identifiable` protocol
 
 ### 5.7.15 / May 7, 2020
 * fixed issue when Custom Class attached to User was Null when `stayLoggedIn` in is true
