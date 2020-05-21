@@ -3,7 +3,7 @@
 ### 5.7.16 / May 20, 2020
 * the BackendlessUser and UserService properties became public, get/set methods are marked as deprecated
 * fixed crash when saving object which doesn't have the `objectId` property
-* fixed the `BackendlessDataCollection` issue when trying to delette the last object from the collection
+* fixed the `BackendlessDataCollection` issue when trying to delete the last object from the collection
 * the Backendless `Identifiable` protocol for the `BackendlessDataCollection` renamed to `BLIdentifiable` to avoid the confusion with Swift's `Identifiable` protocol
 
 ### 5.7.15 / May 7, 2020
@@ -53,7 +53,7 @@
 
 ### 5.7.3 / January 28, 2020
 * fixed `isValidUserToken` method to return error when Internet connection is not available
-* refactored Fault contructor to handle URLSession errors correctly
+* refactored Fault constructor to handle URLSession errors correctly
 * fixed tests according to the last server changes
 
 ### 5.7.2 / January 24, 2020
@@ -117,7 +117,7 @@ func addProperties(properties: String...)
 ### 5.5.9 / October 29, 2019
 * fixed the BackendlessUser password is not updating issue
 * fixed the issue caused by spaces and dashes in the project's product name
-* updated the `blUserLocale` bahavior
+* updated the `blUserLocale` behavior
 
 ### 5.5.8 / October 18, 2019
 * the `create` method added into the PersistenceService
@@ -150,7 +150,7 @@ This method is available for Swift projects.
 * fixed error on sending BackendlessGeoQuery with empty metadata
 
 ### 5.5.3 / October 1, 2019
-* the CacheService `get` method returns nil if cache for the key doesn't exsist
+* the CacheService `get` method returns nil if cache for the key doesn't exist
 * the CacheService `get` method fixed to return String values correctly
 
 ### 5.5.2 / September 24, 2019
@@ -224,7 +224,7 @@ func sendEmailFromTemplate(templateName: String, templateValues: [String : Strin
 ### 0.0.13 / June, 21 2019
 * the EmailEnvelope signatures changed
 * code refactoring
-* version 0.0.12 expirienced some cocoapods issues, so they are fixed in 0.0.13 - please use this version instead
+* version 0.0.12 experienced some cocoapods issues, so they are fixed in 0.0.13 - please use this version instead
 
 ### 0.0.12 / June, 19 2019
 * added the SearchMatchesResult class

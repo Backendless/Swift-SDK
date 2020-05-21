@@ -19,11 +19,11 @@
  *  ********************************************************************************************************************
  */
 
-@objc public protocol BLIdentifiable {
+public protocol BLIdentifiable {
     var objectId: String? { get set }
 }
 
-@objcMembers public class BackendlessDataCollection: Collection {
+public class BackendlessDataCollection: Collection {
     
     public typealias BackendlessDataCollectionType = [BLIdentifiable]
     public typealias Index = BackendlessDataCollectionType.Index
@@ -112,12 +112,12 @@
     // Adds a new element to the Backendless collection
     public func add(newObject: Any) {
         checkObjectType(object: newObject)
-        if let identifiableObject = newObject as? BLIdentifiable {
+        if var identifiableObject = newObject as? BLIdentifiable {
             if identifiableObject.objectId == nil {
                 identifiableObject.objectId = UUID().uuidString
             }
             backendlessCollection.append(identifiableObject)
-            queryBuilder.setOffset(offset: queryBuilder.getOffset() + 1)
+            queryBuilder.offset = queryBuilder.offset + 1
         }
     }
     
@@ -131,12 +131,12 @@
     // Inserts a new element into the Backendless collection at the specified position
     public func insert(newObject: Any, at: Int) {
         checkObjectType(object: newObject)
-        if let identifiableObject = newObject as? BLIdentifiable {
+        if var identifiableObject = newObject as? BLIdentifiable {
             if identifiableObject.objectId == nil {
                 identifiableObject.objectId = UUID().uuidString
             }
             backendlessCollection.insert(identifiableObject, at: at)
-            queryBuilder.setOffset(offset: queryBuilder.getOffset() + 1)
+            queryBuilder.offset = queryBuilder.offset + 1
         }
     }
     
@@ -155,7 +155,7 @@
         if let identifiableObject = object as? BLIdentifiable {
             let objectId = identifiableObject.objectId
             backendlessCollection.removeAll(where: { $0.objectId == objectId })
-            queryBuilder.setOffset(offset: queryBuilder.getOffset() - 1)
+            queryBuilder.offset = queryBuilder.offset - 1
         }
     }
     
