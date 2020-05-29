@@ -31,7 +31,7 @@
     }
     
     private var _currentUser: BackendlessUser?
-    public private(set) var currentUser: BackendlessUser? {
+    public var currentUser: BackendlessUser? {
         get {
             if let user = UserDefaultsHelper.shared.getCurrentUser() {
                 return user
@@ -39,7 +39,12 @@
             return _currentUser
         }
         set {
-            _currentUser = newValue
+            if newValue != nil {
+                self.setPersistentUser(currentUser: newValue!)
+            }
+            else {
+                resetPersistentUser()
+            }
         }
     }
     
@@ -326,26 +331,19 @@
     }
     
     func setPersistentUser(currentUser: BackendlessUser) {
-        self.currentUser = currentUser
-        savePersistentUser(currentUser: self.currentUser!)
+        self._currentUser = currentUser
+        if let userToken = self._currentUser?.userToken {
+            UserDefaultsHelper.shared.savePersistentUserToken(token: userToken)
+        }  
+        if self.stayLoggedIn {
+            UserDefaultsHelper.shared.saveCurrentUser(currentUser: self._currentUser!)
+        }
     }
     
     private func resetPersistentUser() {
-        self.currentUser = nil
-        UserDefaultsHelper.shared.removePersistentUser()
+        self._currentUser = nil
+        UserDefaultsHelper.shared.removeUserToken()
         UserDefaultsHelper.shared.removeCurrentUser()
-    }
-    
-    private func savePersistentUser(currentUser: BackendlessUser) {
-        if var properties = self.currentUser?.properties {
-            properties["user-token"] = self.currentUser?.userToken
-            self.currentUser?.properties = properties
-        }
-        UserDefaultsHelper.shared.savePersistentUserToken(token: currentUser.userToken!)
-        self.currentUser = currentUser
-        if self.stayLoggedIn {
-            UserDefaultsHelper.shared.saveCurrentUser(currentUser: self.currentUser!)
-        }
     }
     
     private func getPersistentUserToken() -> String? {
