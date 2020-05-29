@@ -1,7 +1,7 @@
 # RELEASE HISTORY
 
-### 5.7.17 / ?, 2020
-* the `currentUser` property in UserSevice changed to public and can be set manually
+### 5.7.17 / May 29, 2020
+* the `currentUser` property in UserSevice changed to public and can be set manually. Current user is saved after the application restarts only when `stayLoggedIn = true`
 
 ### 5.7.16 / May 20, 2020
 * the BackendlessUser and UserService properties became public, get/set methods are marked as deprecated
