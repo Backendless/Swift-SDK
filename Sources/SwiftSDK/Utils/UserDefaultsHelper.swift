@@ -47,7 +47,7 @@ class UserDefaultsHelper {
         return nil
     }
     
-    func removePersistentUser() {
+    func removeUserToken() {
         UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.persistentUserToken)
     }
     

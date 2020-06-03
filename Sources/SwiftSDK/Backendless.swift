@@ -145,7 +145,7 @@
     
     public func removeHeader(key: String) {
         if key == "user-token" {
-            UserDefaultsHelper.shared.removePersistentUser()
+            UserDefaultsHelper.shared.removeUserToken()
         }
         headers.removeValue(forKey: key)
     }
