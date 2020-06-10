@@ -21,8 +21,8 @@
 
 class UnitOfWorkSetRelation {
     
-    private var countSetRel = 1
     private var uow: UnitOfWork
+    private var countSetRelForTable = [String : Int]()
     
     init(uow: UnitOfWork) {
         self.uow = uow
@@ -162,17 +162,23 @@ class UnitOfWorkSetRelation {
     }
     
     private func generateOpResultId(tableName: String) -> String {
-        var opResultId = TransactionHelper.shared.generateOperationTypeString(.SET_RELATION) + tableName
-        opResultId += String(countSetRel)
-        countSetRel += 1
-        return opResultId
+        return TransactionHelper.shared.generateOperationTypeString(.SET_RELATION) + tableName + String(calculateCount(tableName: tableName))
     }
     
     private func prepareForSetRelation(result: OpResult) -> (String, String) {
         let tableName = result.tableName!
         let operationTypeString = TransactionHelper.shared.generateOperationTypeString(.SET_RELATION)
-        let operationResultId = "\(operationTypeString)\(tableName)\(countSetRel)"
-        countSetRel += 1
-        return (tableName, operationResultId)
+        let opResultId = operationTypeString + tableName + String(calculateCount(tableName: tableName))
+        return (tableName, opResultId)
+    }
+    
+    private func calculateCount(tableName: String) -> Int {
+        if var countSetRel = countSetRelForTable[tableName] {
+            countSetRel += 1
+            countSetRelForTable[tableName] = countSetRel
+            return countSetRel
+        }
+        countSetRelForTable[tableName] = 1
+        return 1
     }
 }

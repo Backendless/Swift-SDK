@@ -41,7 +41,15 @@ extension OpResultErrors: LocalizedError {
     
     public var tableName: String?
     public var operationType: OperationType?
-    public var opResultId: String?
+    public var opResultId: String? {
+        didSet {
+            if let index = self.uow?.operations.firstIndex(where: { $0.opResultId == oldValue }),
+                let operation = self.uow?.operations[index] {
+                operation.opResultId = opResultId
+                self.uow?.operations[index] = operation
+            }
+        }
+    }
     
     private var uow: UnitOfWork?
     

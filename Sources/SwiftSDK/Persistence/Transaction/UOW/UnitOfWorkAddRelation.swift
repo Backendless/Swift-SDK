@@ -21,8 +21,8 @@
 
 class UnitOfWorkAddRelation {
     
-    private var countAddRel = 1
     private var uow: UnitOfWork
+    private var countAddRelForTable = [String : Int]()
     
     init(uow: UnitOfWork) {
         self.uow = uow
@@ -41,9 +41,9 @@ class UnitOfWorkAddRelation {
     func addToRelation(parentTableName: String, parentObjectId: String, columnName: String, childrenResult: OpResult) -> (Operation, OpResult) {
         let opResultId = generateOpResultId(tableName: parentTableName)
         let payload = ["parentObject": parentObjectId,
-                        "relationColumn": columnName,
-                        "unconditional": [uowProps.ref: true,
-                                           uowProps.opResultId: childrenResult.makeReference()[uowProps.opResultId]]] as [String : Any]
+                       "relationColumn": columnName,
+                       "unconditional": [uowProps.ref: true,
+                                         uowProps.opResultId: childrenResult.makeReference()[uowProps.opResultId]]] as [String : Any]
         let operation = Operation(operationType: .ADD_RELATION, tableName: parentTableName, opResultId: opResultId, payload: payload)
         let opResult = TransactionHelper.shared.makeOpResult(tableName: parentTableName, operationResultId: opResultId, operationType: .ADD_RELATION, uow: uow)
         return (operation, opResult)
@@ -70,7 +70,7 @@ class UnitOfWorkAddRelation {
                                         uowProps.opResultId: parentResult.makeReference()[uowProps.opResultId]],
                        "relationColumn": columnName,
                        "unconditional": [uowProps.ref: true,
-                                          uowProps.opResultId: childrenResult.makeReference()[uowProps.opResultId]]] as [String : Any]
+                                         uowProps.opResultId: childrenResult.makeReference()[uowProps.opResultId]]] as [String : Any]
         let operation = Operation(operationType: .ADD_RELATION, tableName: parentTableName, opResultId: opResultId, payload: payload)
         let opResult = TransactionHelper.shared.makeOpResult(tableName: parentTableName, operationResultId: opResultId, operationType: .ADD_RELATION, uow: uow)
         return (operation, opResult)
@@ -101,7 +101,7 @@ class UnitOfWorkAddRelation {
         let (parentTableName, opResultId) = prepareForAddRelation(result: parentResult)
         var payload = ["relationColumn": columnName,
                        "unconditional": [uowProps.ref: true,
-                                          uowProps.opResultId: childrenResult.makeReference()[uowProps.opResultId]]] as [String : Any]
+                                         uowProps.opResultId: childrenResult.makeReference()[uowProps.opResultId]]] as [String : Any]
         if parentResult.operationType == .CREATE_BULK {
             payload["parentObject"] = [uowProps.ref: true,
                                        uowProps.opResultId: parentValueReference.makeReference()?[uowProps.opResultId],
@@ -163,17 +163,23 @@ class UnitOfWorkAddRelation {
     }
     
     private func generateOpResultId(tableName: String) -> String {
-        var opResultId = TransactionHelper.shared.generateOperationTypeString(.ADD_RELATION) + tableName
-        opResultId += String(countAddRel)
-        countAddRel += 1
-        return opResultId
+        return TransactionHelper.shared.generateOperationTypeString(.ADD_RELATION) + tableName + String(calculateCount(tableName: tableName))
     }
     
     private func prepareForAddRelation(result: OpResult) -> (String, String) {
         let tableName = result.tableName!
         let operationTypeString = TransactionHelper.shared.generateOperationTypeString(.ADD_RELATION)
-        let operationResultId = "\(operationTypeString)\(tableName)\(countAddRel)"
-        countAddRel += 1
-        return (tableName, operationResultId)
+        let opResultId = operationTypeString + tableName + String(calculateCount(tableName: tableName))
+        return (tableName, opResultId)
+    }
+    
+    private func calculateCount(tableName: String) -> Int {
+        if var countAddRel = countAddRelForTable[tableName] {
+            countAddRel += 1
+            countAddRelForTable[tableName] = countAddRel
+            return countAddRel
+        }
+        countAddRelForTable[tableName] = 1
+        return 1
     }
 }

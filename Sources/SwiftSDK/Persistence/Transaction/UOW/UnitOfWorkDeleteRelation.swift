@@ -21,8 +21,8 @@
 
 class UnitOfWorkDeleteRelation {
     
-    private var countDelRel = 1
     private var uow: UnitOfWork
+    private var countDelRelForTable = [String : Int]()
     
     init(uow: UnitOfWork) {
         self.uow = uow
@@ -162,17 +162,23 @@ class UnitOfWorkDeleteRelation {
     }
     
     private func generateOpResultId(tableName: String) -> String {
-        var opResultId = TransactionHelper.shared.generateOperationTypeString(.DELETE_RELATION) + tableName
-        opResultId += String(countDelRel)
-        countDelRel += 1
-        return opResultId
+        return TransactionHelper.shared.generateOperationTypeString(.DELETE_RELATION) + tableName + String(calculateCount(tableName: tableName))
     }
     
     private func prepareForDeleteRelation(result: OpResult) -> (String, String) {
         let tableName = result.tableName!
         let operationTypeString = TransactionHelper.shared.generateOperationTypeString(.DELETE_RELATION)
-        let operationResultId = "\(operationTypeString)\(tableName)\(countDelRel)"
-        countDelRel += 1
-        return (tableName, operationResultId)
+        let opResultId = operationTypeString + tableName + String(calculateCount(tableName: tableName))
+        return (tableName, opResultId)
+    }
+    
+    private func calculateCount(tableName: String) -> Int {
+        if var countDelRel = countDelRelForTable[tableName] {
+            countDelRel += 1
+            countDelRelForTable[tableName] = countDelRel
+            return countDelRel
+        }
+        countDelRelForTable[tableName] = 1
+        return 1
     }
 }

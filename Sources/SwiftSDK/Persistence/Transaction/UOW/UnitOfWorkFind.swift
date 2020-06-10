@@ -20,9 +20,9 @@
  */
 
 class UnitOfWorkFind {
-    
-    private var countFind = 1
+
     private var uow: UnitOfWork
+    private var countFindForTable = [String : Int]()
     
     init(uow: UnitOfWork) {
         self.uow = uow
@@ -30,9 +30,16 @@ class UnitOfWorkFind {
     
     func find(tableName: String, queryBuilder: DataQueryBuilder) -> (Operation, OpResult) {
         let operationTypeString = TransactionHelper.shared.generateOperationTypeString(.FIND)
-        let operationResultId = "\(operationTypeString)\(tableName)\(countFind)"
-        countFind += 1
-        
+        var opResultId = operationTypeString + tableName
+        if var countFind = countFindForTable[tableName] {
+            countFind += 1
+            opResultId += String(countFind)
+            countFindForTable[tableName] = countFind
+        }
+        else {
+            opResultId += "1"
+            countFindForTable[tableName] = 1
+        }        
         var queryOptions = [String : Any]()
         queryOptions["sortBy"] = queryBuilder.sortBy
         queryOptions["related"] = queryBuilder.related
@@ -50,8 +57,8 @@ class UnitOfWorkFind {
         payload["groupBy"] = queryBuilder.groupBy
         payload["queryOptions"] = queryOptions
         
-        let operation = Operation(operationType: .FIND, tableName: tableName, opResultId: operationResultId, payload: payload)
-        let opResult = TransactionHelper.shared.makeOpResult(tableName: tableName, operationResultId: operationResultId, operationType: .FIND, uow: uow)
+        let operation = Operation(operationType: .FIND, tableName: tableName, opResultId: opResultId, payload: payload)
+        let opResult = TransactionHelper.shared.makeOpResult(tableName: tableName, operationResultId: opResultId, operationType: .FIND, uow: uow)
         return (operation, opResult)
     }
 }

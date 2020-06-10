@@ -21,9 +21,9 @@
 
 class UnitOfWorkCreate {
     
-    private var countCreate = 1
-    private var countBulkCreate = 1
     private var uow: UnitOfWork
+    private var countCreateForTable = [String : Int]()
+    private var countBulkCreateForTable = [String : Int]()
     
     init(uow: UnitOfWork) {
         self.uow = uow
@@ -52,12 +52,25 @@ class UnitOfWorkCreate {
     private func generateOpResultId(operationType: OperationType, tableName: String) -> String {
         var opResultId = TransactionHelper.shared.generateOperationTypeString(operationType) + tableName
         if operationType == .CREATE {
-            opResultId += String(countCreate)
-            countCreate += 1
+            if var countCreate = countCreateForTable[tableName] {
+                countCreate += 1
+                opResultId += String(countCreate)
+                countCreateForTable[tableName] = countCreate
+            }
+            else {
+                opResultId += "1"
+                countCreateForTable[tableName] = 1                
+            }
         }
         else if operationType == .CREATE_BULK {
-            opResultId += String(countBulkCreate)
-            countBulkCreate += 1
+            if var countBulkCreate = countBulkCreateForTable[tableName] {
+                countBulkCreate += 1
+                opResultId += String(countBulkCreate)
+            }
+            else {
+                countBulkCreateForTable[tableName] = 1
+                opResultId += "1"
+            }
         }
         return opResultId
     }

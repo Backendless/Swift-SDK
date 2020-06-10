@@ -21,9 +21,9 @@
 
 class UnitOfWorkUpdate {
     
-    private var countUpdate = 1
-    private var countBulkUpdate = 1
     private var uow: UnitOfWork
+    private var countUpdateForTable = [String : Int]()
+    private var countBulkUpdateForTable = [String : Int]()
     
     init(uow: UnitOfWork) {
         self.uow = uow
@@ -99,12 +99,10 @@ class UnitOfWorkUpdate {
     private func generateOpResultId(operationType: OperationType, tableName: String) -> String {       
         var opResultId = TransactionHelper.shared.generateOperationTypeString(operationType) + tableName
         if operationType == .UPDATE {
-            opResultId += String(countUpdate)
-            countUpdate += 1
+            opResultId += String(calculateCount(operationType: .UPDATE, tableName: tableName))
         }
         else if operationType == .UPDATE_BULK {
-            opResultId += String(countBulkUpdate)
-            countBulkUpdate += 1
+            opResultId += String(calculateCount(operationType: .UPDATE_BULK, tableName: tableName))
         }
         return opResultId
     }
@@ -112,17 +110,40 @@ class UnitOfWorkUpdate {
     private func prepareForUpdate(result: OpResult) -> (String, String) {
         let tableName = result.tableName!
         let operationTypeString = TransactionHelper.shared.generateOperationTypeString(.UPDATE)
-        let operationResultId = "\(operationTypeString)\(tableName)\(countUpdate)"
-        countUpdate += 1
-        return (tableName, operationResultId)
+        let opResultId = operationTypeString + tableName + String(calculateCount(operationType: .UPDATE, tableName: tableName))
+        return (tableName, opResultId)
     }
     
     private func prepareForBulkUpdate(result: OpResult) -> (String, String) {
         let tableName = result.tableName!
         let operationTypeString = TransactionHelper.shared.generateOperationTypeString(.UPDATE_BULK)
-        let operationResultId = "\(operationTypeString)\(tableName)\(countBulkUpdate)"
-        countBulkUpdate += 1
-        return (tableName, operationResultId)
+        let opResultId = operationTypeString + tableName + String(calculateCount(operationType: .UPDATE_BULK, tableName: tableName))
+        return (tableName, opResultId)
+    }
+    
+    private func calculateCount(operationType: OperationType, tableName: String) -> Int {
+        if operationType == .UPDATE {
+            if var countUpdate = countUpdateForTable[tableName] {
+                countUpdate += 1
+                countUpdateForTable[tableName] = countUpdate
+                return countUpdate
+            }
+            else {
+                countUpdateForTable[tableName] = 1
+                return 1
+            }
+        }
+        else {
+            if var countBulkUpdate = countBulkUpdateForTable[tableName] {
+                countBulkUpdate += 1
+                countBulkUpdateForTable[tableName] = countBulkUpdate
+                return countBulkUpdate
+            }
+            else {
+                countBulkUpdateForTable[tableName] = 1
+                return 1
+            }
+        }
     }
     
     // **************************************************

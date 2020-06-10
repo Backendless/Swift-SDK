@@ -48,6 +48,7 @@ enum uowProps {
 @objcMembers public class UnitOfWork: NSObject {
     
     public var isolationLevel = IsolationLevel.REPEATABLE_READ
+    
     var operations = [Operation]()
     
     private let psu = PersistenceServiceUtils(tableName: "")
