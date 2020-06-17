@@ -19,11 +19,11 @@
  *  ********************************************************************************************************************
  */
 
-@objc public protocol BLIdentifiable {
+public protocol BLIdentifiable {
     var objectId: String? { get set }
 }
 
-@objcMembers public class BackendlessDataCollection: Collection {
+public class BackendlessDataCollection: Collection {
     
     public typealias BackendlessDataCollectionType = [BLIdentifiable]
     public typealias Index = BackendlessDataCollectionType.Index
@@ -63,10 +63,10 @@
         if position >= backendlessCollection.count {
             fatalError("Index out of range")
         }
-        if queryBuilder.getOffset() == backendlessCollection.count {
+        if queryBuilder.offset == backendlessCollection.count {
             return backendlessCollection[position]
         }
-        else if position < queryBuilder.getOffset() - 2 * queryBuilder.getPageSize() {
+        else if position < queryBuilder.offset - 2 * queryBuilder.pageSize {
             return backendlessCollection[position]
         }
         let semaphore = DispatchSemaphore(value: 0)
@@ -82,8 +82,8 @@
     
     public convenience init(entityType: AnyClass) {
         let dataQueryBuilder = DataQueryBuilder()
-        dataQueryBuilder.setPageSize(pageSize: 50)
-        dataQueryBuilder.setOffset(offset: 0)
+        dataQueryBuilder.pageSize = 50
+        dataQueryBuilder.offset = 0
         self.init(entityType: entityType, queryBuilder: dataQueryBuilder)
     }
     
@@ -92,12 +92,12 @@
         self.queryBuilder = queryBuilder
         self.dataStore = Backendless.shared.data.of(entityType.self)
         self.entityType = entityType
-        self.whereClause = self.queryBuilder.getWhereClause() ?? ""
+        self.whereClause = self.queryBuilder.whereClause ?? ""
         getRealCount()
         let semaphore = DispatchSemaphore(value: 0)
         DispatchQueue.global().async {
-            var pagesCount = (self.totalCount / queryBuilder.getPageSize())
-            if (self.totalCount % queryBuilder.getPageSize()) > 0 {
+            var pagesCount = (self.totalCount / queryBuilder.pageSize)
+            if (self.totalCount % queryBuilder.pageSize) > 0 {
                 pagesCount += 1
             }
             for _ in 0 ..< pagesCount {
@@ -109,19 +109,15 @@
         return
     }
     
-    deinit {
-        dataStore.rt.removeAllListeners()
-    }
-    
     // Adds a new element to the Backendless collection
     public func add(newObject: Any) {
         checkObjectType(object: newObject)
-        if let identifiableObject = newObject as? BLIdentifiable {
+        if var identifiableObject = newObject as? BLIdentifiable {
             if identifiableObject.objectId == nil {
                 identifiableObject.objectId = UUID().uuidString
             }
             backendlessCollection.append(identifiableObject)
-            queryBuilder.setOffset(offset: queryBuilder.getOffset() + 1)
+            queryBuilder.offset = queryBuilder.offset + 1
         }
     }
     
@@ -135,12 +131,12 @@
     // Inserts a new element into the Backendless collection at the specified position
     public func insert(newObject: Any, at: Int) {
         checkObjectType(object: newObject)
-        if let identifiableObject = newObject as? BLIdentifiable {
+        if var identifiableObject = newObject as? BLIdentifiable {
             if identifiableObject.objectId == nil {
                 identifiableObject.objectId = UUID().uuidString
             }
             backendlessCollection.insert(identifiableObject, at: at)
-            queryBuilder.setOffset(offset: queryBuilder.getOffset() + 1)
+            queryBuilder.offset = queryBuilder.offset + 1
         }
     }
     
@@ -159,7 +155,7 @@
         if let identifiableObject = object as? BLIdentifiable {
             let objectId = identifiableObject.objectId
             backendlessCollection.removeAll(where: { $0.objectId == objectId })
-            queryBuilder.setOffset(offset: queryBuilder.getOffset() - 1)
+            queryBuilder.offset = queryBuilder.offset - 1
         }
     }
     
@@ -198,7 +194,7 @@
     private func getRealCount() {
         let semaphore = DispatchSemaphore(value: 0)
         DispatchQueue.global().async {
-            self.queryBuilder.setWhereClause(whereClause: self.whereClause)
+            self.queryBuilder.whereClause = self.whereClause
             self.dataStore.getObjectCount(queryBuilder: self.queryBuilder, responseHandler: { totalObjects in
                 self.totalCount = totalObjects
                 semaphore.signal()
@@ -225,9 +221,9 @@
     
     private func loadNextPage() {
         let semaphore = DispatchSemaphore(value: 0)
-        var offset = queryBuilder.getOffset()
+        var offset = queryBuilder.offset
         if !whereClause.isEmpty {
-            queryBuilder.setWhereClause(whereClause: whereClause)
+            queryBuilder.whereClause = whereClause
         }
         dataStore.find(queryBuilder: queryBuilder, responseHandler: { [weak self] foundObjects in
             guard let self = self else {
@@ -241,8 +237,8 @@
             self.backendlessCollection += foundObjects
             offset += foundObjects.count
             
-            if self.queryBuilder.getOffset() < self.count {
-                self.queryBuilder.setOffset(offset: offset)
+            if self.queryBuilder.offset < self.count {
+                self.queryBuilder.offset = offset
             }
             semaphore.signal()
             }, errorHandler: { fault in

@@ -25,6 +25,7 @@ import XCTest
 class MapDrivenDataStoreTests: XCTestCase {
     
     private let backendless = Backendless.shared
+    private let testObjectsUtils = TestObjectsUtils.shared
     private let timeout: Double = 10.0
     
     private var dataStore: MapDrivenDataStore!
@@ -55,7 +56,7 @@ class MapDrivenDataStoreTests: XCTestCase {
     
     func test_01_create() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.create")
-        let objectToSave = createDictionary()
+        let objectToSave = testObjectsUtils.createTestClassDictionary()
         dataStore.create(entity: objectToSave, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
             XCTAssert(type(of: savedObject) == [String: Any].self)
@@ -71,7 +72,7 @@ class MapDrivenDataStoreTests: XCTestCase {
     
     func test_02_createBulk() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.createBulk")
-        let objectsToSave = createDictionaries(numberOfObjects: 2)
+        let objectsToSave = testObjectsUtils.createTestClassDictionaries(numberOfObjects: 2)
         dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
             XCTAssertNotNil(savedObjects)
             XCTAssert(type(of: savedObjects) == [String].self)
@@ -86,7 +87,7 @@ class MapDrivenDataStoreTests: XCTestCase {
     
     func test_03_update() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.update")
-        let objectToSave = createDictionary()
+        let objectToSave = testObjectsUtils.createTestClassDictionary()
         dataStore.save(entity: objectToSave, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
             XCTAssert(type(of: savedObject) == [String: Any].self)
@@ -126,7 +127,7 @@ class MapDrivenDataStoreTests: XCTestCase {
     
     func test_05_removeById() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.removeById")
-        let objectToSave = createDictionary()
+        let objectToSave = testObjectsUtils.createTestClassDictionary()
         dataStore.save(entity: objectToSave, responseHandler: { savedObject in
             self.dataStore.removeById(objectId: savedObject["objectId"] as! String, responseHandler: { removedObjects in
                 XCTAssertNotNil(removedObjects)
@@ -145,7 +146,7 @@ class MapDrivenDataStoreTests: XCTestCase {
     
     func test_06_remove() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.remove")
-        let objectToSave = createDictionary()
+        let objectToSave = testObjectsUtils.createTestClassDictionary()
         dataStore.save(entity: objectToSave, responseHandler: { savedObject in
             self.dataStore.remove(entity: savedObject, responseHandler: { removedObjects in
                 XCTAssertNotNil(removedObjects)
@@ -164,7 +165,7 @@ class MapDrivenDataStoreTests: XCTestCase {
     
     func test_07_removeBulk() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.removeBulk")
-        let objectsToSave = createDictionaries(numberOfObjects: 3)
+        let objectsToSave = testObjectsUtils.createTestClassDictionaries(numberOfObjects: 3)
         dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
             XCTAssertNotNil(savedObjects)
             XCTAssert(type(of: savedObjects) == [String].self)
@@ -186,7 +187,7 @@ class MapDrivenDataStoreTests: XCTestCase {
     
     func test_08_getObjectCount() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.getObjectCount")
-        let objectsToSave = createDictionaries(numberOfObjects: 2)
+        let objectsToSave = testObjectsUtils.createTestClassDictionaries(numberOfObjects: 2)
         dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
             XCTAssertNotNil(savedObjects)
             XCTAssert(type(of: savedObjects) == [String].self)
@@ -208,13 +209,13 @@ class MapDrivenDataStoreTests: XCTestCase {
     
     func test_09_getObjectCountWithCondition() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.getObjectCountWithCondition")
-        let objectsToSave = createDictionaries(numberOfObjects: 3)
+        let objectsToSave = testObjectsUtils.createTestClassDictionaries(numberOfObjects: 3)
         dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
             XCTAssertNotNil(savedObjects)
             XCTAssert(type(of: savedObjects) == [String].self)
             XCTAssert(savedObjects.count == 3)
             let queryBuilder = DataQueryBuilder()
-            queryBuilder.setWhereClause(whereClause: "name = 'Bob' and age> 30")
+            queryBuilder.whereClause = "name = 'Bob' and age> 30"
             self.dataStore.getObjectCount(queryBuilder: queryBuilder, responseHandler: { count in
                 XCTAssertNotNil(count)
                 XCTAssert(Int(exactly: count)! >= 0)
@@ -232,7 +233,7 @@ class MapDrivenDataStoreTests: XCTestCase {
     
     func test_10_find() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.find")
-        let objectsToSave = createDictionaries(numberOfObjects: 2)
+        let objectsToSave = testObjectsUtils.createTestClassDictionaries(numberOfObjects: 2)
         dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
             XCTAssertNotNil(savedObjects)
             self.dataStore.find(responseHandler: { foundObjects in
@@ -252,13 +253,14 @@ class MapDrivenDataStoreTests: XCTestCase {
     
     func test_11_findWithCondition() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.findWithCondition")
-        let objectsToSave = createDictionaries(numberOfObjects: 10)
+        let objectsToSave = testObjectsUtils.createTestClassDictionaries(numberOfObjects: 10)
         dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
             XCTAssertNotNil(savedObjects)
             let queryBuilder = DataQueryBuilder()
-            queryBuilder.setRelationsDepth(relationsDepth: 1)
-            queryBuilder.setGroupBy(groupBy: ["name"])
-            queryBuilder.setPageSize(pageSize: 5)
+            queryBuilder.relationsDepth = 1
+            queryBuilder.pageSize = 5
+            queryBuilder.groupBy = ["name"]
+            queryBuilder.pageSize = 5
             queryBuilder.excludeProperty("age")
             self.dataStore.find(queryBuilder: queryBuilder, responseHandler: { foundObjects in
                 XCTAssertNotNil(foundObjects)
@@ -280,7 +282,7 @@ class MapDrivenDataStoreTests: XCTestCase {
     
     func test_12_findFirst() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.findFirst")
-        let objectToSave = createDictionary()
+        let objectToSave = testObjectsUtils.createTestClassDictionary()
         dataStore.save(entity: objectToSave, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
             self.dataStore.findFirst(responseHandler: { first in
@@ -300,7 +302,7 @@ class MapDrivenDataStoreTests: XCTestCase {
     
     func test_13_findLast() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.findLast")
-        let objectToSave = createDictionary()
+        let objectToSave = testObjectsUtils.createTestClassDictionary()
         dataStore.save(entity: objectToSave, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
             self.dataStore.findLast(responseHandler: { last in
@@ -320,7 +322,7 @@ class MapDrivenDataStoreTests: XCTestCase {
     
     func test_14_findById() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.findById")
-        let objectToSave = createDictionary()
+        let objectToSave = testObjectsUtils.createTestClassDictionary()
         dataStore.save(entity: objectToSave, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
             if let objectId = savedObject["objectId"] as? String {
@@ -342,12 +344,12 @@ class MapDrivenDataStoreTests: XCTestCase {
     
     func test_15_findByIdWithCondition() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.findByIdWithCondition")
-        let objectToSave = createDictionary()
+        let objectToSave = testObjectsUtils.createTestClassDictionary()
         dataStore.save(entity: objectToSave, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
             if let objectId = savedObject["objectId"] as? String {
                 let queryBuilder = DataQueryBuilder()
-                queryBuilder.setRelationsDepth(relationsDepth: 1)
+                queryBuilder.relationsDepth = 1
                 self.dataStore.findById(objectId: objectId, queryBuilder: queryBuilder, responseHandler: { foundObject in
                     XCTAssertNotNil(foundObject)
                     XCTAssert(type(of: foundObject) == [String: Any].self)
@@ -367,7 +369,7 @@ class MapDrivenDataStoreTests: XCTestCase {
     func test_16_findFirstWithCondition() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.findFirstWithCondition")
         let queryBuilder = DataQueryBuilder()
-        queryBuilder.setRelationsDepth(relationsDepth: 1)
+        queryBuilder.relationsDepth = 1
         dataStore.findFirst(queryBuilder: queryBuilder, responseHandler: { first in
             XCTAssertNotNil(first)
             XCTAssert(type(of: first) == [String: Any].self)
@@ -382,7 +384,7 @@ class MapDrivenDataStoreTests: XCTestCase {
     func test_17_findFirstWithCondition() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.findLastWithCondition")
         let queryBuilder = DataQueryBuilder()
-        queryBuilder.setRelationsDepth(relationsDepth: 1)
+        queryBuilder.relationsDepth = 1
         dataStore.findLast(queryBuilder: queryBuilder, responseHandler: { last in
             XCTAssertNotNil(last)
             XCTAssert(type(of: last) == [String: Any].self)
@@ -398,7 +400,7 @@ class MapDrivenDataStoreTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.setRelationWithObjects")
         let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
         childDataStore.createBulk(entities: childObjectsToSave, responseHandler: { savedChildrenIds in
-            let parentObjectToSave = self.createDictionary()
+            let parentObjectToSave = self.testObjectsUtils.createTestClassDictionary()
             self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
                 if let parentObjectId = savedParentObject["objectId"] as? String {
                     // 1:N
@@ -426,7 +428,7 @@ class MapDrivenDataStoreTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.setRelationWithCondition test passed")
         let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
         childDataStore.createBulk(entities: childObjectsToSave, responseHandler: { savedChildrenIds in
-            let parentObjectToSave = self.createDictionary()
+            let parentObjectToSave = self.testObjectsUtils.createTestClassDictionary()
             self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
                 if let parentObjectId = savedParentObject["objectId"] as? String {
                     // 1:N
@@ -454,7 +456,7 @@ class MapDrivenDataStoreTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.addRelationWithObjects")
         let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
         childDataStore.createBulk(entities: childObjectsToSave, responseHandler: { savedChildrenIds in
-            let parentObjectToSave = self.createDictionary()
+            let parentObjectToSave = self.testObjectsUtils.createTestClassDictionary()
             self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
                 if let parentObjectId = savedParentObject["objectId"] as? String {
                     // 1:N
@@ -482,7 +484,7 @@ class MapDrivenDataStoreTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.addRelationWithCondition")
         let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
         childDataStore.createBulk(entities: childObjectsToSave, responseHandler: { savedChildrenIds in
-            let parentObjectToSave = self.createDictionary()
+            let parentObjectToSave = self.testObjectsUtils.createTestClassDictionary()
             self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
                 if let parentObjectId = savedParentObject["objectId"] as? String {
                     // 1:N
@@ -510,7 +512,7 @@ class MapDrivenDataStoreTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.deleteRelationWithObjects")
         let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
         childDataStore.createBulk(entities: childObjectsToSave, responseHandler: { savedChildrenIds in
-            let parentObjectToSave = self.createDictionary()
+            let parentObjectToSave = self.testObjectsUtils.createTestClassDictionary()
             self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
                 if let parentObjectId = savedParentObject["objectId"] as? String {
                     // 1:N
@@ -546,7 +548,7 @@ class MapDrivenDataStoreTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.deleteRelationWithCondition")
         let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
         childDataStore.createBulk(entities: childObjectsToSave, responseHandler: { savedChildrenIds in
-            let parentObjectToSave = self.createDictionary()
+            let parentObjectToSave = self.testObjectsUtils.createTestClassDictionary()
             self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
                 if let parentObjectId = savedParentObject["objectId"] as? String {
                     // 1:N
@@ -582,7 +584,7 @@ class MapDrivenDataStoreTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.loadRelationsTwoStepsWithPaging")
         let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
         childDataStore.createBulk(entities: childObjectsToSave, responseHandler: { savedChildrenIds in
-            let parentObjectToSave = self.createDictionary()
+            let parentObjectToSave = self.testObjectsUtils.createTestClassDictionary()
             self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
                 if let parentObjectId = savedParentObject["objectId"] as? String {
                     // 1:N
@@ -591,10 +593,10 @@ class MapDrivenDataStoreTests: XCTestCase {
                         XCTAssert(Int(exactly: relations) == 2)
                         // retrieve relation
                         let queryBuilder = LoadRelationsQueryBuilder(relationName: "children")
-                        queryBuilder.setPageSize(pageSize: 2)
-                        queryBuilder.setOffset(offset: 1)
-                        queryBuilder.setProperties(properties: ["foo"])
-                        queryBuilder.setSortBy(sortBy: ["foo"])
+                        queryBuilder.pageSize = 2
+                        queryBuilder.offset = 1
+                        queryBuilder.properties = ["foo"]
+                        queryBuilder.sortBy = ["foo"]
                         self.dataStore.loadRelations(objectId: parentObjectId, queryBuilder: queryBuilder, responseHandler: { foundRelations in
                             XCTAssertNotNil(foundRelations)
                             XCTAssert(Int(exactly: foundRelations.count) == 1)
@@ -617,24 +619,5 @@ class MapDrivenDataStoreTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
-    }
-    
-    // ***************************************
-    
-    func createDictionary() -> [String: Any] {
-        return ["name": "Bob", "age": 25]
-    }
-    
-    func createDictionaries(numberOfObjects: Int) -> [[String: Any]] {
-        if numberOfObjects == 2 {
-            return [["name": "Bob", "age": 25], ["name": "Ann", "age": 45]]
-        }
-        else if numberOfObjects == 3 {
-            return [["name": "Bob", "age": 25], ["name": "Ann", "age": 45], ["name": "Jack", "age": 26]]
-        }
-        else if numberOfObjects == 10 {
-            return[["name": "Bob", "age": 25], ["name": "Ann", "age": 45], ["name": "Jack", "age": 26], ["name": "Kate", "age": 70], ["name": "John", "age": 55], ["name": "Alex", "age": 33], ["name": "Peter", "age": 14], ["name": "Linda", "age": 34], ["name": "Mary", "age": 30], ["name": "Bruce", "age": 60]]
-        }
-        return [[String: Any]]()
     }
 }

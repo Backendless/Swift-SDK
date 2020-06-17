@@ -23,6 +23,16 @@
     case PUSH = 0
     case PUBSUB = 1
     case BOTH = 2
+    
+    static func from(intValue: Int) -> String {
+        if intValue == 0 { return "PUSH" }
+        else if intValue == 1 { return "PUBSUB" }
+        return "BOTH"
+    }
+    
+    public func getPublishPolicyName() -> String {
+        return PublishPolicyEnum.from(intValue: self.rawValue)
+    }
 }
 
 @objc public enum PushBroadcastEnum: Int {
@@ -48,14 +58,14 @@
             }
             return nil
         }
-        set(newRepeatEvery) {
-            _repeatEvery = newRepeatEvery?.intValue
+        set {
+            _repeatEvery = newValue?.intValue
         }
     }
 
-    private var pushSinglecast: [String] = []
-    private var publishPolicy: Int = PublishPolicyEnum.BOTH.rawValue
-    private var pushBroadcast: Int = PushBroadcastEnum.FOR_ALL.rawValue
+    public var pushSinglecast: [String] = []
+    public var publishPolicy: Int = PublishPolicyEnum.BOTH.rawValue
+    public var pushBroadcast: Int = PushBroadcastEnum.FOR_ALL.rawValue
     
     enum CodingKeys: String, CodingKey {
         case publishAt
@@ -95,6 +105,7 @@
         try container.encode(pushBroadcast, forKey: .pushBroadcast)
     }
     
+    @available(*, deprecated, message: "Please use the pushSinglecast property directly")
     public func setPushSinglecast(singlecast: [String]) {
         self.pushSinglecast = singlecast
     }
@@ -109,14 +120,17 @@
         }
     }
     
+    @available(*, deprecated, message: "Please use the pushSinglecast property directly")
     public func getPushSinglecast() -> [String] {
         return self.pushSinglecast
     }
     
+    @available(*, deprecated, message: "Please use the publishPolicy property directly")
     public func setPublishPolicy(publishPolicy: Int) {
         self.publishPolicy = publishPolicy
     }
     
+    @available(*, deprecated, message: "Please use the publishPolicy property directly")
     public func getPublishPolicy() -> String {
         if self.publishPolicy == 0 {
             return "PUSH"
@@ -127,10 +141,12 @@
         return "BOTH"
     }
     
+    @available(*, deprecated, message: "Please use the pushBroadcast property directly")
     public func setPushBroadcast(pushBroadcast: Int) {
         self.pushBroadcast = pushBroadcast
     }
     
+    @available(*, deprecated, message: "Please use the pushBroadcast property directly")
     public func getPushBroadcast() -> Int {
         return self.pushBroadcast
     }

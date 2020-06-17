@@ -31,8 +31,8 @@
             }
             return nil
         }
-        set(newCount) {
-            _count = newCount?.intValue
+        set {
+            _count = newValue?.intValue
         }
     }
     

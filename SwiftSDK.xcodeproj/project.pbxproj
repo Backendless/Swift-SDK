@@ -37,10 +37,17 @@
 		5E17A1AA23954E0400B078B5 /* BLLineString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E17A1A923954E0400B078B5 /* BLLineString.swift */; };
 		5E1CC2F72252534F0011D5C8 /* FileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1CC2F62252534F0011D5C8 /* FileService.swift */; };
 		5E1CC2F9225254140011D5C8 /* BackendlessFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1CC2F8225254140011D5C8 /* BackendlessFile.swift */; };
+		5E1DB58F23E19FAA00955319 /* UnitOfWork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1DB58E23E19FAA00955319 /* UnitOfWork.swift */; };
+		5E1DB59123E1A0BA00955319 /* OpResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1DB59023E1A0BA00955319 /* OpResult.swift */; };
+		5E1DB59323E1A27A00955319 /* UnitOfWorkCreate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1DB59223E1A27A00955319 /* UnitOfWorkCreate.swift */; };
 		5E22155522B8D74F00491250 /* SearchMatchesResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E22155422B8D74F00491250 /* SearchMatchesResult.swift */; };
 		5E238A612271BDCF00227859 /* CustomService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E238A602271BDCF00227859 /* CustomService.swift */; };
 		5E238A662271CE8100227859 /* ExecutionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E238A652271CE8100227859 /* ExecutionType.swift */; };
 		5E275CA0224B8142002F89FC /* FileManagerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E275C9F224B8142002F89FC /* FileManagerHelper.swift */; };
+		5E28D58423E2F8A000FA139C /* TransactionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E28D58323E2F8A000FA139C /* TransactionHelper.swift */; };
+		5E28D58723E300AF00FA139C /* UnitOfWorkResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E28D58623E300AF00FA139C /* UnitOfWorkResult.swift */; };
+		5E28D58923E313FF00FA139C /* TransactionOperationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E28D58823E313FF00FA139C /* TransactionOperationError.swift */; };
+		5E28D58D23E32B4E00FA139C /* PayloadHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E28D58C23E32B4E00FA139C /* PayloadHelper.swift */; };
 		5E309B22225FBCF800BE6720 /* ServerCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E309B21225FBCF700BE6720 /* ServerCallback.swift */; };
 		5E309B24225FC2D000BE6720 /* ClientCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E309B23225FC2D000BE6720 /* ClientCallback.swift */; };
 		5E338D90225C97AB00709630 /* LocationTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E338D8F225C97AB00709630 /* LocationTracker.swift */; };
@@ -52,7 +59,14 @@
 		5E384C99226F40E200743125 /* AtomicCountersFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E384C98226F40E200743125 /* AtomicCountersFactory.swift */; };
 		5E384C9B226F45B300743125 /* IAtomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E384C9A226F45B300743125 /* IAtomic.swift */; };
 		5E384C9E226F530A00743125 /* CountersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E384C9D226F530A00743125 /* CountersTests.swift */; };
+		5E39E65B23ED5EFE00A8BD10 /* UnitOfWorkSetRelation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E39E65A23ED5EFE00A8BD10 /* UnitOfWorkSetRelation.swift */; };
+		5E39E65D23ED742500A8BD10 /* UnitOfWorkDeleteRelation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E39E65C23ED742500A8BD10 /* UnitOfWorkDeleteRelation.swift */; };
 		5E3E2EFA23D84A6500C4C3E2 /* BLPolygonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3E2EF923D84A6500C4C3E2 /* BLPolygonTests.swift */; };
+		5E412CDE2431F68800640313 /* TestObjectsUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E412CDD2431F68800640313 /* TestObjectsUtils.swift */; };
+		5E412CE02431FF0C00640313 /* UOWDeleteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E412CDF2431FF0C00640313 /* UOWDeleteTests.swift */; };
+		5E412CE22432133800640313 /* UOWFindTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E412CE12432133800640313 /* UOWFindTests.swift */; };
+		5E412CE42432168C00640313 /* UOWSetRelationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E412CE32432168C00640313 /* UOWSetRelationTests.swift */; };
+		5E412CE6243235A000640313 /* UOWAddRelationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E412CE5243235A000640313 /* UOWAddRelationTests.swift */; };
 		5E44C0502223EC4A00B391E7 /* RTServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E44C04F2223EC4A00B391E7 /* RTServiceTests.swift */; };
 		5E45F669225F52C5001DD7CF /* GeoMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E45F668225F52C5001DD7CF /* GeoMath.swift */; };
 		5E45F66B225F6C3B001DD7CF /* GeoFence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E45F66A225F6C3B001DD7CF /* GeoFence.swift */; };
@@ -72,12 +86,15 @@
 		5E545EEE21DFBA4400881ED0 /* GeoPointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E545EED21DFBA4400881ED0 /* GeoPointTests.swift */; };
 		5E5716E82242803A00C7B048 /* SharedObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5716E72242803A00C7B048 /* SharedObjectTests.swift */; };
 		5E572D4B21B8043E000713B0 /* ProcessResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E572D4A21B8043E000713B0 /* ProcessResponse.swift */; };
+		5E5EA767242B9B8100690818 /* OperationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5EA766242B9B8100690818 /* OperationResult.swift */; };
 		5E60834B21EF721900268B4D /* DictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E60834A21EF721900268B4D /* DictionaryExtension.swift */; };
 		5E642B9E227206DC00E091C4 /* Events.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E642B9D227206DC00E091C4 /* Events.swift */; };
 		5E64F0BF21C50D8E00590B04 /* BackendlessRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E64F0BE21C50D8E00590B04 /* BackendlessRequestManager.swift */; };
+		5E65257D23E860CA00C7E006 /* UnitOfWorkFind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E65257C23E860CA00C7E006 /* UnitOfWorkFind.swift */; };
 		5E6C1E452203362700903B7A /* ReturnedResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6C1E442203362700903B7A /* ReturnedResponse.swift */; };
 		5E722B5E21BE9DE800AA9A8F /* DataTypeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E722B5D21BE9DE800AA9A8F /* DataTypeEnum.swift */; };
 		5E72EABD21F6EB89006C8C5C /* DataQueryBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E72EABC21F6EB89006C8C5C /* DataQueryBuilder.swift */; };
+		5E7435082431D78F00EEA9A8 /* UOWCreateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7435072431D78F00EEA9A8 /* UOWCreateTests.swift */; };
 		5E7534662220578600BC31D4 /* EventHanderForMapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7534652220578600BC31D4 /* EventHanderForMapTests.swift */; };
 		5E7534682220579100BC31D4 /* EventHandlerForClassTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7534672220579100BC31D4 /* EventHandlerForClassTests.swift */; };
 		5E7722DD2236D91E00E7B346 /* RTTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7722DC2236D91E00E7B346 /* RTTypes.swift */; };
@@ -93,8 +110,10 @@
 		5E8A2A24226EFA16007C2BAA /* NoReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8A2A23226EFA16007C2BAA /* NoReply.swift */; };
 		5E8A2A27226F2BF4007C2BAA /* CacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8A2A26226F2BF4007C2BAA /* CacheTests.swift */; };
 		5E90721121B66E9E00619C0D /* Fault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E90721021B66E9E00619C0D /* Fault.swift */; };
+		5E91F493241A811E00E97260 /* OpResultValueReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E91F492241A811E00E97260 /* OpResultValueReference.swift */; };
 		5E922249225B8CCF0001688F /* GeoQueryRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E922248225B8CCF0001688F /* GeoQueryRectangle.swift */; };
 		5E92224B225BAA8C0001688F /* GeoCluster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E92224A225BAA8C0001688F /* GeoCluster.swift */; };
+		5E9396C72431EBDF00B2A5F1 /* UOWUpdateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9396C62431EBDF00B2A5F1 /* UOWUpdateTests.swift */; };
 		5E9718FD221BFE3D00857603 /* RTFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9718FC221BFE3D00857603 /* RTFactory.swift */; };
 		5E97190E221C276600857603 /* IEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E97190D221C276600857603 /* IEventHandler.swift */; };
 		5E971910221C27BB00857603 /* EventHandlerForClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E97190F221C27BB00857603 /* EventHandlerForClass.swift */; };
@@ -117,11 +136,14 @@
 		5EA87B75221D4A3100A8B93F /* ReconnectAttemptObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA87B74221D4A3100A8B93F /* ReconnectAttemptObject.swift */; };
 		5EA87B95221D720100A8B93F /* RTListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA87B94221D720100A8B93F /* RTListener.swift */; };
 		5EAA20B823995B1D00A39A38 /* GeometryTestClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAA20B723995B1D00A39A38 /* GeometryTestClass.swift */; };
+		5EACCB5B23EC5871007AC3C4 /* UnitOfWorkAddRelation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EACCB5A23EC5871007AC3C4 /* UnitOfWorkAddRelation.swift */; };
 		5EB28E1921B1799A0007AC30 /* Backendless.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB28E1821B1799A0007AC30 /* Backendless.swift */; };
 		5EB28E2021B1833A0007AC30 /* BackendlessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB28E1F21B1833A0007AC30 /* BackendlessTests.swift */; };
+		5EB5D17E243615D500C21662 /* UOWBulkCreateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB5D17D243615D500C21662 /* UOWBulkCreateTests.swift */; };
 		5EC7D161222FB56700FD3FF4 /* PublishOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC7D160222FB56700FD3FF4 /* PublishOptions.swift */; };
 		5EC7D163222FB86100FD3FF4 /* DeliveryOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC7D162222FB86100FD3FF4 /* DeliveryOptions.swift */; };
 		5EC7D16A222FDBCE00FD3FF4 /* SubscriptionAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC7D169222FDBCE00FD3FF4 /* SubscriptionAPITests.swift */; };
+		5EC9C2E32452EB0300845350 /* FindFirstLastTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC9C2E22452EB0300845350 /* FindFirstLastTests.swift */; };
 		5ECAB22F238C417C0051F315 /* BLPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECAB22E238C417C0051F315 /* BLPoint.swift */; };
 		5ECAB231238C41A60051F315 /* BLGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECAB230238C41A60051F315 /* BLGeometry.swift */; };
 		5ECAB233238C42060051F315 /* GeoJSONParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECAB232238C42060051F315 /* GeoJSONParser.swift */; };
@@ -131,14 +153,18 @@
 		5ECFEFBB23D9C88F004A5DD0 /* BackendlessDataCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECFEFBA23D9C88F004A5DD0 /* BackendlessDataCollection.swift */; };
 		5ED51D0D22456E8600D22F11 /* BackendlessPushHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED51D0C22456E8600D22F11 /* BackendlessPushHelper.swift */; };
 		5ED765D02224369E009431CD /* BulkEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED765CF2224369E009431CD /* BulkEvent.swift */; };
+		5EDA87DE2434C44B00873403 /* UOWDeleteRelation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EDA87DD2434C44B00873403 /* UOWDeleteRelation.swift */; };
+		5EDB502023E1CE5700E36E62 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EDB501F23E1CE5700E36E62 /* Operation.swift */; };
 		5EE063BF22017EAA00B862EA /* LoadRelationsQueryBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE063BE22017EAA00B862EA /* LoadRelationsQueryBuilder.swift */; };
 		5EE2B40721C25EC600F90723 /* BackendlessUserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE2B40621C25EC600F90723 /* BackendlessUserTests.swift */; };
 		5EE335AB2396679300A245B1 /* BLPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE335AA2396679300A245B1 /* BLPolygon.swift */; };
 		5EE6920121B67791002E72A9 /* FaultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE6920021B67791002E72A9 /* FaultTests.swift */; };
+		5EED4AED23E837D900DB006F /* UnitOfWorkDelete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EED4AEC23E837D900DB006F /* UnitOfWorkDelete.swift */; };
+		5EF0C79D23E43CBE00880F31 /* UnitOfWorkUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF0C79C23E43CBE00880F31 /* UnitOfWorkUpdate.swift */; };
+		5EF98B19243B635D00FF5F13 /* UOWBulkUpdateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF98B18243B635D00FF5F13 /* UOWBulkUpdateTests.swift */; };
+		5EF98B1B243B7AF400FF5F13 /* UOWBulkDeleteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF98B1A243B7AF400FF5F13 /* UOWBulkDeleteTests.swift */; };
 		5EFB60E922422F93004DFA2C /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFB60E822422F93004DFA2C /* UserInfo.swift */; };
 		5EFBA8FE21C1011E007B3BB0 /* BackendlessUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFBA8FD21C1011E007B3BB0 /* BackendlessUser.swift */; };
-		BE36943AF3B828F7AF5D04DA /* Pods_SwiftSDKTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4420AEBAC627AB6BE0C5CA22 /* Pods_SwiftSDKTests.framework */; };
-		C8E82AD0303BAC077DBDD08D /* Pods_SwiftSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F0C35F633EBE28CBAE78E33 /* Pods_SwiftSDK.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -152,11 +178,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		05CFD08C6A18C0EE225C6A90 /* Pods-SwiftSDKTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSDKTests.release.xcconfig"; path = "Target Support Files/Pods-SwiftSDKTests/Pods-SwiftSDKTests.release.xcconfig"; sourceTree = "<group>"; };
-		0A65D4D4B09AB17C58C2CB9B /* Pods-SwiftSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSDK.debug.xcconfig"; path = "Target Support Files/Pods-SwiftSDK/Pods-SwiftSDK.debug.xcconfig"; sourceTree = "<group>"; };
-		2F0C35F633EBE28CBAE78E33 /* Pods_SwiftSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		32E4838F9B94DA7CCC41B970 /* Pods-SwiftSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSDK.release.xcconfig"; path = "Target Support Files/Pods-SwiftSDK/Pods-SwiftSDK.release.xcconfig"; sourceTree = "<group>"; };
-		4420AEBAC627AB6BE0C5CA22 /* Pods_SwiftSDKTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftSDKTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A2A784C21E6104F00EC8007 /* IDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDataStore.swift; sourceTree = "<group>"; };
 		5A2A784E21E610D700EC8007 /* MapDrivenDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDrivenDataStore.swift; sourceTree = "<group>"; };
 		5A2A785021E6114800EC8007 /* PersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceService.swift; sourceTree = "<group>"; };
@@ -187,10 +208,17 @@
 		5E17A1A923954E0400B078B5 /* BLLineString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLLineString.swift; sourceTree = "<group>"; };
 		5E1CC2F62252534F0011D5C8 /* FileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileService.swift; sourceTree = "<group>"; };
 		5E1CC2F8225254140011D5C8 /* BackendlessFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessFile.swift; sourceTree = "<group>"; };
+		5E1DB58E23E19FAA00955319 /* UnitOfWork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfWork.swift; sourceTree = "<group>"; };
+		5E1DB59023E1A0BA00955319 /* OpResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpResult.swift; sourceTree = "<group>"; };
+		5E1DB59223E1A27A00955319 /* UnitOfWorkCreate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfWorkCreate.swift; sourceTree = "<group>"; };
 		5E22155422B8D74F00491250 /* SearchMatchesResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMatchesResult.swift; sourceTree = "<group>"; };
 		5E238A602271BDCF00227859 /* CustomService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomService.swift; sourceTree = "<group>"; };
 		5E238A652271CE8100227859 /* ExecutionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutionType.swift; sourceTree = "<group>"; };
 		5E275C9F224B8142002F89FC /* FileManagerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerHelper.swift; sourceTree = "<group>"; };
+		5E28D58323E2F8A000FA139C /* TransactionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionHelper.swift; sourceTree = "<group>"; };
+		5E28D58623E300AF00FA139C /* UnitOfWorkResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfWorkResult.swift; sourceTree = "<group>"; };
+		5E28D58823E313FF00FA139C /* TransactionOperationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionOperationError.swift; sourceTree = "<group>"; };
+		5E28D58C23E32B4E00FA139C /* PayloadHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayloadHelper.swift; sourceTree = "<group>"; };
 		5E309B21225FBCF700BE6720 /* ServerCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerCallback.swift; sourceTree = "<group>"; };
 		5E309B23225FC2D000BE6720 /* ClientCallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCallback.swift; sourceTree = "<group>"; };
 		5E338D8F225C97AB00709630 /* LocationTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTracker.swift; sourceTree = "<group>"; };
@@ -199,7 +227,14 @@
 		5E384C98226F40E200743125 /* AtomicCountersFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicCountersFactory.swift; sourceTree = "<group>"; };
 		5E384C9A226F45B300743125 /* IAtomic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAtomic.swift; sourceTree = "<group>"; };
 		5E384C9D226F530A00743125 /* CountersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountersTests.swift; sourceTree = "<group>"; };
+		5E39E65A23ED5EFE00A8BD10 /* UnitOfWorkSetRelation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfWorkSetRelation.swift; sourceTree = "<group>"; };
+		5E39E65C23ED742500A8BD10 /* UnitOfWorkDeleteRelation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfWorkDeleteRelation.swift; sourceTree = "<group>"; };
 		5E3E2EF923D84A6500C4C3E2 /* BLPolygonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLPolygonTests.swift; sourceTree = "<group>"; };
+		5E412CDD2431F68800640313 /* TestObjectsUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestObjectsUtils.swift; sourceTree = "<group>"; };
+		5E412CDF2431FF0C00640313 /* UOWDeleteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UOWDeleteTests.swift; sourceTree = "<group>"; };
+		5E412CE12432133800640313 /* UOWFindTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UOWFindTests.swift; sourceTree = "<group>"; };
+		5E412CE32432168C00640313 /* UOWSetRelationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UOWSetRelationTests.swift; sourceTree = "<group>"; };
+		5E412CE5243235A000640313 /* UOWAddRelationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UOWAddRelationTests.swift; sourceTree = "<group>"; };
 		5E44C04F2223EC4A00B391E7 /* RTServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTServiceTests.swift; sourceTree = "<group>"; };
 		5E45F668225F52C5001DD7CF /* GeoMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoMath.swift; sourceTree = "<group>"; };
 		5E45F66A225F6C3B001DD7CF /* GeoFence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoFence.swift; sourceTree = "<group>"; };
@@ -219,13 +254,16 @@
 		5E545EED21DFBA4400881ED0 /* GeoPointTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoPointTests.swift; sourceTree = "<group>"; };
 		5E5716E72242803A00C7B048 /* SharedObjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedObjectTests.swift; sourceTree = "<group>"; };
 		5E572D4A21B8043E000713B0 /* ProcessResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessResponse.swift; sourceTree = "<group>"; wrapsLines = 0; };
+		5E5EA766242B9B8100690818 /* OperationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationResult.swift; sourceTree = "<group>"; };
 		5E5FE02821F7359700387F8B /* ChildTestClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChildTestClass.swift; sourceTree = "<group>"; };
 		5E60834A21EF721900268B4D /* DictionaryExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryExtension.swift; sourceTree = "<group>"; };
 		5E642B9D227206DC00E091C4 /* Events.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Events.swift; sourceTree = "<group>"; };
 		5E64F0BE21C50D8E00590B04 /* BackendlessRequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessRequestManager.swift; sourceTree = "<group>"; };
+		5E65257C23E860CA00C7E006 /* UnitOfWorkFind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfWorkFind.swift; sourceTree = "<group>"; };
 		5E6C1E442203362700903B7A /* ReturnedResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReturnedResponse.swift; sourceTree = "<group>"; };
 		5E722B5D21BE9DE800AA9A8F /* DataTypeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTypeEnum.swift; sourceTree = "<group>"; };
 		5E72EABC21F6EB89006C8C5C /* DataQueryBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataQueryBuilder.swift; sourceTree = "<group>"; };
+		5E7435072431D78F00EEA9A8 /* UOWCreateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UOWCreateTests.swift; sourceTree = "<group>"; };
 		5E7534652220578600BC31D4 /* EventHanderForMapTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHanderForMapTests.swift; sourceTree = "<group>"; };
 		5E7534672220579100BC31D4 /* EventHandlerForClassTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHandlerForClassTests.swift; sourceTree = "<group>"; };
 		5E7722DC2236D91E00E7B346 /* RTTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTTypes.swift; sourceTree = "<group>"; };
@@ -241,8 +279,10 @@
 		5E8A2A23226EFA16007C2BAA /* NoReply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoReply.swift; sourceTree = "<group>"; };
 		5E8A2A26226F2BF4007C2BAA /* CacheTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheTests.swift; sourceTree = "<group>"; };
 		5E90721021B66E9E00619C0D /* Fault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fault.swift; sourceTree = "<group>"; };
+		5E91F492241A811E00E97260 /* OpResultValueReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpResultValueReference.swift; sourceTree = "<group>"; };
 		5E922248225B8CCF0001688F /* GeoQueryRectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoQueryRectangle.swift; sourceTree = "<group>"; };
 		5E92224A225BAA8C0001688F /* GeoCluster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoCluster.swift; sourceTree = "<group>"; };
+		5E9396C62431EBDF00B2A5F1 /* UOWUpdateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UOWUpdateTests.swift; sourceTree = "<group>"; };
 		5E96E1AC21F8408800F34C11 /* TestClassForMappings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestClassForMappings.swift; sourceTree = "<group>"; };
 		5E9718FC221BFE3D00857603 /* RTFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTFactory.swift; sourceTree = "<group>"; };
 		5E97190D221C276600857603 /* IEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEventHandler.swift; sourceTree = "<group>"; };
@@ -269,11 +309,14 @@
 		5EA87B94221D720100A8B93F /* RTListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTListener.swift; sourceTree = "<group>"; };
 		5EAA20B5239953E600A39A38 /* BLPointTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLPointTests.swift; sourceTree = "<group>"; };
 		5EAA20B723995B1D00A39A38 /* GeometryTestClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryTestClass.swift; sourceTree = "<group>"; };
+		5EACCB5A23EC5871007AC3C4 /* UnitOfWorkAddRelation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfWorkAddRelation.swift; sourceTree = "<group>"; };
 		5EB28E1821B1799A0007AC30 /* Backendless.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backendless.swift; sourceTree = "<group>"; };
 		5EB28E1F21B1833A0007AC30 /* BackendlessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessTests.swift; sourceTree = "<group>"; };
+		5EB5D17D243615D500C21662 /* UOWBulkCreateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UOWBulkCreateTests.swift; sourceTree = "<group>"; };
 		5EC7D160222FB56700FD3FF4 /* PublishOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishOptions.swift; sourceTree = "<group>"; };
 		5EC7D162222FB86100FD3FF4 /* DeliveryOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryOptions.swift; sourceTree = "<group>"; };
 		5EC7D169222FDBCE00FD3FF4 /* SubscriptionAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionAPITests.swift; sourceTree = "<group>"; };
+		5EC9C2E22452EB0300845350 /* FindFirstLastTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindFirstLastTests.swift; sourceTree = "<group>"; };
 		5ECAB22E238C417C0051F315 /* BLPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLPoint.swift; sourceTree = "<group>"; };
 		5ECAB230238C41A60051F315 /* BLGeometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLGeometry.swift; sourceTree = "<group>"; };
 		5ECAB232238C42060051F315 /* GeoJSONParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoJSONParser.swift; sourceTree = "<group>"; };
@@ -284,13 +327,18 @@
 		5ECFEFBA23D9C88F004A5DD0 /* BackendlessDataCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessDataCollection.swift; sourceTree = "<group>"; };
 		5ED51D0C22456E8600D22F11 /* BackendlessPushHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessPushHelper.swift; sourceTree = "<group>"; };
 		5ED765CF2224369E009431CD /* BulkEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulkEvent.swift; sourceTree = "<group>"; };
+		5EDA87DD2434C44B00873403 /* UOWDeleteRelation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UOWDeleteRelation.swift; sourceTree = "<group>"; };
+		5EDB501F23E1CE5700E36E62 /* Operation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
 		5EE063BE22017EAA00B862EA /* LoadRelationsQueryBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadRelationsQueryBuilder.swift; sourceTree = "<group>"; };
 		5EE2B40621C25EC600F90723 /* BackendlessUserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessUserTests.swift; sourceTree = "<group>"; };
 		5EE335AA2396679300A245B1 /* BLPolygon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLPolygon.swift; sourceTree = "<group>"; };
 		5EE6920021B67791002E72A9 /* FaultTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaultTests.swift; sourceTree = "<group>"; };
+		5EED4AEC23E837D900DB006F /* UnitOfWorkDelete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfWorkDelete.swift; sourceTree = "<group>"; };
+		5EF0C79C23E43CBE00880F31 /* UnitOfWorkUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfWorkUpdate.swift; sourceTree = "<group>"; };
+		5EF98B18243B635D00FF5F13 /* UOWBulkUpdateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UOWBulkUpdateTests.swift; sourceTree = "<group>"; };
+		5EF98B1A243B7AF400FF5F13 /* UOWBulkDeleteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UOWBulkDeleteTests.swift; sourceTree = "<group>"; };
 		5EFB60E822422F93004DFA2C /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		5EFBA8FD21C1011E007B3BB0 /* BackendlessUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessUser.swift; sourceTree = "<group>"; };
-		DD49F102D2CD9977AE5BA696 /* Pods-SwiftSDKTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSDKTests.debug.xcconfig"; path = "Target Support Files/Pods-SwiftSDKTests/Pods-SwiftSDKTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -298,7 +346,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C8E82AD0303BAC077DBDD08D /* Pods_SwiftSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -307,7 +354,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E9C573221AEEA0400877870 /* SwiftSDK.framework in Frameworks */,
-				BE36943AF3B828F7AF5D04DA /* Pods_SwiftSDKTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -317,10 +363,6 @@
 		0E392E1DBB70E48EDE9602D1 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				0A65D4D4B09AB17C58C2CB9B /* Pods-SwiftSDK.debug.xcconfig */,
-				32E4838F9B94DA7CCC41B970 /* Pods-SwiftSDK.release.xcconfig */,
-				DD49F102D2CD9977AE5BA696 /* Pods-SwiftSDKTests.debug.xcconfig */,
-				05CFD08C6A18C0EE225C6A90 /* Pods-SwiftSDKTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -328,6 +370,7 @@
 		5A2A784B21E6103100EC8007 /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
+				5E1DB58D23E19EFD00955319 /* Transaction */,
 				5ECFEFBA23D9C88F004A5DD0 /* BackendlessDataCollection.swift */,
 				5E467F812201E20700E70772 /* DataPermission.swift */,
 				5E72EABC21F6EB89006C8C5C /* DataQueryBuilder.swift */,
@@ -352,17 +395,9 @@
 				5AFE8E5D21E8D7410003477B /* PersistenceServiceTests.swift */,
 				5AFE8E6121E8E2620003477B /* MapDrivenDataStoreTests.swift */,
 				5AFE8E6521E8E5C00003477B /* DataStoreFactoryTests.swift */,
+				5EC9C2E22452EB0300845350 /* FindFirstLastTests.swift */,
 			);
 			path = PersistenceTests;
-			sourceTree = "<group>";
-		};
-		5D16B6F723D9B397AC72E2CE /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				2F0C35F633EBE28CBAE78E33 /* Pods_SwiftSDK.framework */,
-				4420AEBAC627AB6BE0C5CA22 /* Pods_SwiftSDKTests.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		5E03A3B822291680005A538D /* Messaging */ = {
@@ -423,6 +458,19 @@
 			path = Files;
 			sourceTree = "<group>";
 		};
+		5E1DB58D23E19EFD00955319 /* Transaction */ = {
+			isa = PBXGroup;
+			children = (
+				5EED4AEE23E84B9F00DB006F /* OpResult */,
+				5E28D58A23E3294A00FA139C /* UOW */,
+				5EDB501F23E1CE5700E36E62 /* Operation.swift */,
+				5E28D58823E313FF00FA139C /* TransactionOperationError.swift */,
+				5E28D58323E2F8A000FA139C /* TransactionHelper.swift */,
+				5E28D58C23E32B4E00FA139C /* PayloadHelper.swift */,
+			);
+			path = Transaction;
+			sourceTree = "<group>";
+		};
 		5E238A5F2271BDAD00227859 /* CustomServiceAndEvents */ = {
 			isa = PBXGroup;
 			children = (
@@ -431,6 +479,22 @@
 				5E238A652271CE8100227859 /* ExecutionType.swift */,
 			);
 			path = CustomServiceAndEvents;
+			sourceTree = "<group>";
+		};
+		5E28D58A23E3294A00FA139C /* UOW */ = {
+			isa = PBXGroup;
+			children = (
+				5E1DB58E23E19FAA00955319 /* UnitOfWork.swift */,
+				5E1DB59223E1A27A00955319 /* UnitOfWorkCreate.swift */,
+				5EF0C79C23E43CBE00880F31 /* UnitOfWorkUpdate.swift */,
+				5EED4AEC23E837D900DB006F /* UnitOfWorkDelete.swift */,
+				5E65257C23E860CA00C7E006 /* UnitOfWorkFind.swift */,
+				5EACCB5A23EC5871007AC3C4 /* UnitOfWorkAddRelation.swift */,
+				5E39E65A23ED5EFE00A8BD10 /* UnitOfWorkSetRelation.swift */,
+				5E39E65C23ED742500A8BD10 /* UnitOfWorkDeleteRelation.swift */,
+				5E28D58623E300AF00FA139C /* UnitOfWorkResult.swift */,
+			);
+			path = UOW;
 			sourceTree = "<group>";
 		};
 		5E384C95226F3E6300743125 /* AtomicCounters */ = {
@@ -505,6 +569,7 @@
 				5AFE8E5F21E8E2150003477B /* TestClass.swift */,
 				5E96E1AC21F8408800F34C11 /* TestClassForMappings.swift */,
 				5EAA20B723995B1D00A39A38 /* GeometryTestClass.swift */,
+				5E412CDD2431F68800640313 /* TestObjectsUtils.swift */,
 			);
 			path = TestObjects;
 			sourceTree = "<group>";
@@ -540,6 +605,23 @@
 				5E6C1E442203362700903B7A /* ReturnedResponse.swift */,
 			);
 			path = BackendlessRequestManager;
+			sourceTree = "<group>";
+		};
+		5E7435062431D75400EEA9A8 /* UOWTests */ = {
+			isa = PBXGroup;
+			children = (
+				5E7435072431D78F00EEA9A8 /* UOWCreateTests.swift */,
+				5EB5D17D243615D500C21662 /* UOWBulkCreateTests.swift */,
+				5E9396C62431EBDF00B2A5F1 /* UOWUpdateTests.swift */,
+				5EF98B18243B635D00FF5F13 /* UOWBulkUpdateTests.swift */,
+				5E412CDF2431FF0C00640313 /* UOWDeleteTests.swift */,
+				5EF98B1A243B7AF400FF5F13 /* UOWBulkDeleteTests.swift */,
+				5E412CE12432133800640313 /* UOWFindTests.swift */,
+				5E412CE32432168C00640313 /* UOWSetRelationTests.swift */,
+				5E412CE5243235A000640313 /* UOWAddRelationTests.swift */,
+				5EDA87DD2434C44B00873403 /* UOWDeleteRelation.swift */,
+			);
+			path = UOWTests;
 			sourceTree = "<group>";
 		};
 		5E7E8A5E21ECC92F00AA04E1 /* Utils */ = {
@@ -682,7 +764,6 @@
 				5ECE680C21B0248B00839120 /* SwiftSDKTests */,
 				5E9C572921AEEA0400877870 /* Products */,
 				0E392E1DBB70E48EDE9602D1 /* Pods */,
-				5D16B6F723D9B397AC72E2CE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -726,6 +807,7 @@
 				5E6098FF222040620012F6A0 /* RTTests */,
 				5E5FE02721F7347200387F8B /* TestObjects */,
 				5AFE8E6321E8E3430003477B /* TestsConfig.swift */,
+				5E7435062431D75400EEA9A8 /* UOWTests */,
 				5E90720E21B66DA300619C0D /* UserServiceTests */,
 			);
 			name = SwiftSDKTests;
@@ -772,6 +854,16 @@
 			path = FaultTests;
 			sourceTree = "<group>";
 		};
+		5EED4AEE23E84B9F00DB006F /* OpResult */ = {
+			isa = PBXGroup;
+			children = (
+				5E5EA766242B9B8100690818 /* OperationResult.swift */,
+				5E1DB59023E1A0BA00955319 /* OpResult.swift */,
+				5E91F492241A811E00E97260 /* OpResultValueReference.swift */,
+			);
+			path = OpResult;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -790,7 +882,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5E9C573E21AEEA0400877870 /* Build configuration list for PBXNativeTarget "SwiftSDK" */;
 			buildPhases = (
-				9B930E62E19DB9CD687B33CC /* [CP] Check Pods Manifest.lock */,
 				5E9C572321AEEA0400877870 /* Headers */,
 				5E9C572421AEEA0400877870 /* Sources */,
 				5E9C572521AEEA0400877870 /* Frameworks */,
@@ -809,11 +900,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5E9C573F21AEEA0400877870 /* Build configuration list for PBXNativeTarget "SwiftSDKTests" */;
 			buildPhases = (
-				AFF369D2593E69B801EF5FE7 /* [CP] Check Pods Manifest.lock */,
 				5E9C572D21AEEA0400877870 /* Sources */,
 				5E9C572E21AEEA0400877870 /* Frameworks */,
 				5E9C572F21AEEA0400877870 /* Resources */,
-				E1FFEC09E9A2A1D5915E07E5 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -880,70 +969,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		9B930E62E19DB9CD687B33CC /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-SwiftSDK-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		AFF369D2593E69B801EF5FE7 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-SwiftSDKTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E1FFEC09E9A2A1D5915E07E5 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SwiftSDKTests/Pods-SwiftSDKTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SwiftSDKTests/Pods-SwiftSDKTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SwiftSDKTests/Pods-SwiftSDKTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		5E9C572421AEEA0400877870 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -957,6 +982,8 @@
 				5E7E8A6021ECC94A00AA04E1 /* UserDefaultsHelper.swift in Sources */,
 				5E09B01222645CE60073DA5E /* LogMessage.swift in Sources */,
 				5EC7D161222FB56700FD3FF4 /* PublishOptions.swift in Sources */,
+				5E412CDE2431F68800640313 /* TestObjectsUtils.swift in Sources */,
+				5E5EA767242B9B8100690818 /* OperationResult.swift in Sources */,
 				5E09B00C22645B9A0073DA5E /* Logging.swift in Sources */,
 				5E1CC2F9225254140011D5C8 /* BackendlessFile.swift in Sources */,
 				5EAA20B823995B1D00A39A38 /* GeometryTestClass.swift in Sources */,
@@ -971,13 +998,18 @@
 				5ECAB22F238C417C0051F315 /* BLPoint.swift in Sources */,
 				5E795598225503D900E8ED65 /* FilePermission.swift in Sources */,
 				5E6C1E452203362700903B7A /* ReturnedResponse.swift in Sources */,
+				5E28D58723E300AF00FA139C /* UnitOfWorkResult.swift in Sources */,
 				5E7722DD2236D91E00E7B346 /* RTTypes.swift in Sources */,
+				5E28D58D23E32B4E00FA139C /* PayloadHelper.swift in Sources */,
+				5EF0C79D23E43CBE00880F31 /* UnitOfWorkUpdate.swift in Sources */,
 				5E11113721B532450044CAED /* UserProperty.swift in Sources */,
 				5EE063BF22017EAA00B862EA /* LoadRelationsQueryBuilder.swift in Sources */,
 				5ECAB233238C42060051F315 /* GeoJSONParser.swift in Sources */,
 				5EFBA8FE21C1011E007B3BB0 /* BackendlessUser.swift in Sources */,
 				5ECAB231238C41A60051F315 /* BLGeometry.swift in Sources */,
+				5E28D58423E2F8A000FA139C /* TransactionHelper.swift in Sources */,
 				5E8A2A24226EFA16007C2BAA /* NoReply.swift in Sources */,
+				5E28D58923E313FF00FA139C /* TransactionOperationError.swift in Sources */,
 				5E971912221C27CB00857603 /* EventHandlerForMap.swift in Sources */,
 				5E275CA0224B8142002F89FC /* FileManagerHelper.swift in Sources */,
 				5E4CE08122536196004571DA /* DataExtension.swift in Sources */,
@@ -1007,6 +1039,8 @@
 				5E722B5E21BE9DE800AA9A8F /* DataTypeEnum.swift in Sources */,
 				5EA2B69B21F2324B00CFDC37 /* StoredObjects.swift in Sources */,
 				5E7955962254D9A300E8ED65 /* BackendlessFileInfo.swift in Sources */,
+				5E1DB59323E1A27A00955319 /* UnitOfWorkCreate.swift in Sources */,
+				5EDB502023E1CE5700E36E62 /* Operation.swift in Sources */,
 				5E922249225B8CCF0001688F /* GeoQueryRectangle.swift in Sources */,
 				5E642B9E227206DC00E091C4 /* Events.swift in Sources */,
 				5AC54CA621E7373400EC1F8C /* PersistenceServiceUtils.swift in Sources */,
@@ -1025,30 +1059,38 @@
 				5E06AD4D23F6759700950993 /* PersistenceHelper.swift in Sources */,
 				5ED765D02224369E009431CD /* BulkEvent.swift in Sources */,
 				5E72EABD21F6EB89006C8C5C /* DataQueryBuilder.swift in Sources */,
+				5E1DB59123E1A0BA00955319 /* OpResult.swift in Sources */,
 				5E338D90225C97AB00709630 /* LocationTracker.swift in Sources */,
 				5ED51D0D22456E8600D22F11 /* BackendlessPushHelper.swift in Sources */,
 				5E3706F722037C8E00E08C50 /* TestClass.swift in Sources */,
 				5E309B24225FC2D000BE6720 /* ClientCallback.swift in Sources */,
 				5E09B00E22645BBC0073DA5E /* Logger.swift in Sources */,
+				5EED4AED23E837D900DB006F /* UnitOfWorkDelete.swift in Sources */,
 				5A2A784D21E6104F00EC8007 /* IDataStore.swift in Sources */,
 				5E341B7C21F5E11A00C32598 /* ObjectProperty.swift in Sources */,
 				5E971914221C296A00857603 /* RTService.swift in Sources */,
+				5E39E65B23ED5EFE00A8BD10 /* UnitOfWorkSetRelation.swift in Sources */,
 				5EA31F2722561EC6008DF081 /* BackendlessGeoQuery.swift in Sources */,
 				5E467F822201E20700E70772 /* DataPermission.swift in Sources */,
 				5E971916221C2A8700857603 /* RTClient.swift in Sources */,
+				5E91F493241A811E00E97260 /* OpResultValueReference.swift in Sources */,
 				5E384C97226F3E8000743125 /* AtomicCounters.swift in Sources */,
 				5E13C3A622046F7C00EA3050 /* JSON.swift in Sources */,
 				5E60834B21EF721900268B4D /* DictionaryExtension.swift in Sources */,
 				5ECD9C7E21DE57DA002CBB7D /* GeoPoint.swift in Sources */,
 				5E22155522B8D74F00491250 /* SearchMatchesResult.swift in Sources */,
 				5E03A3BD22291882005A538D /* RTMessaging.swift in Sources */,
+				5E39E65D23ED742500A8BD10 /* UnitOfWorkDeleteRelation.swift in Sources */,
 				5E03A3C122294A4B005A538D /* PublishMessageInfo.swift in Sources */,
 				5EA5D2CA223BE6440027EA49 /* SharedObjectChanges.swift in Sources */,
+				5E65257D23E860CA00C7E006 /* UnitOfWorkFind.swift in Sources */,
 				5E4E31152243C39200B479C8 /* DataTypesUtils.swift in Sources */,
 				5E97191A221C369A00857603 /* RTMethodRequest.swift in Sources */,
 				5E03A3BF22291C74005A538D /* MessagingService.swift in Sources */,
 				5AA2969A2237C19D007104C7 /* JSONUtils.swift in Sources */,
 				5E1CC2F72252534F0011D5C8 /* FileService.swift in Sources */,
+				5E1DB58F23E19FAA00955319 /* UnitOfWork.swift in Sources */,
+				5EACCB5B23EC5871007AC3C4 /* UnitOfWorkAddRelation.swift in Sources */,
 				5E92224B225BAA8C0001688F /* GeoCluster.swift in Sources */,
 				5E572D4B21B8043E000713B0 /* ProcessResponse.swift in Sources */,
 				5EB28E1921B1799A0007AC30 /* Backendless.swift in Sources */,
@@ -1073,14 +1115,25 @@
 				5E84E87A223158EA008B3F05 /* PublishingAPITests.swift in Sources */,
 				5EE6920121B67791002E72A9 /* FaultTests.swift in Sources */,
 				5E7534662220578600BC31D4 /* EventHanderForMapTests.swift in Sources */,
+				5EB5D17E243615D500C21662 /* UOWBulkCreateTests.swift in Sources */,
+				5E412CE42432168C00640313 /* UOWSetRelationTests.swift in Sources */,
+				5E412CE02431FF0C00640313 /* UOWDeleteTests.swift in Sources */,
 				5E44C0502223EC4A00B391E7 /* RTServiceTests.swift in Sources */,
 				5E545EEC21DFB87A00881ED0 /* GeoServiceTests.swift in Sources */,
 				5E545EEE21DFBA4400881ED0 /* GeoPointTests.swift in Sources */,
+				5EF98B19243B635D00FF5F13 /* UOWBulkUpdateTests.swift in Sources */,
+				5E9396C72431EBDF00B2A5F1 /* UOWUpdateTests.swift in Sources */,
 				5E4C2707224B964700CDF967 /* MessagingServiceTests.swift in Sources */,
 				5E11113C21B542BA0044CAED /* UserServiceTests.swift in Sources */,
+				5EF98B1B243B7AF400FF5F13 /* UOWBulkDeleteTests.swift in Sources */,
+				5E7435082431D78F00EEA9A8 /* UOWCreateTests.swift in Sources */,
 				5EE2B40721C25EC600F90723 /* BackendlessUserTests.swift in Sources */,
+				5EDA87DE2434C44B00873403 /* UOWDeleteRelation.swift in Sources */,
 				5E15A06C223B9C9D0090F5A3 /* RTMessagingTests.swift in Sources */,
+				5EC9C2E32452EB0300845350 /* FindFirstLastTests.swift in Sources */,
 				5E384C9E226F530A00743125 /* CountersTests.swift in Sources */,
+				5E412CE6243235A000640313 /* UOWAddRelationTests.swift in Sources */,
+				5E412CE22432133800640313 /* UOWFindTests.swift in Sources */,
 				5EC7D16A222FDBCE00FD3FF4 /* SubscriptionAPITests.swift in Sources */,
 				5AFE8E5E21E8D7410003477B /* PersistenceServiceTests.swift in Sources */,
 				5EB28E2021B1833A0007AC30 /* BackendlessTests.swift in Sources */,
@@ -1100,7 +1153,6 @@
 /* Begin XCBuildConfiguration section */
 		5E9C573A21AEEA0400877870 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0A65D4D4B09AB17C58C2CB9B /* Pods-SwiftSDK.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1185,7 +1237,6 @@
 		};
 		5E9C573B21AEEA0400877870 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 32E4838F9B94DA7CCC41B970 /* Pods-SwiftSDK.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1264,7 +1315,6 @@
 		};
 		5E9C573C21AEEA0400877870 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DD49F102D2CD9977AE5BA696 /* Pods-SwiftSDKTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1339,7 +1389,6 @@
 		};
 		5E9C573D21AEEA0400877870 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 05CFD08C6A18C0EE225C6A90 /* Pods-SwiftSDKTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ALWAYS_SEARCH_USER_PATHS = NO;

@@ -38,17 +38,27 @@ class ProcessResponse {
                     return responseResult as! Fault
                 }
                 else {
-                    do {
-                        if to == BackendlessUser.self {
-                            return adaptToBackendlessUser(responseResult: responseResult)
+                    if responseResult is String {
+                        if to != String.self, to != Int.self {
+                            return Fault(message: responseResult as? String)
                         }
-                        else if let responseData = response.data {
-                            let responseObject = try JSONDecoder().decode(to, from: responseData)
-                            return responseObject
+                        else {
+                            return responseResult
                         }
-                    }
-                    catch {
-                        return Fault(error: error)
+                    }              
+                    else {
+                        do {
+                            if to == BackendlessUser.self {
+                                return adaptToBackendlessUser(responseResult: responseResult)
+                            }
+                            else if let responseData = response.data {
+                                let responseObject = try JSONDecoder().decode(to, from: responseData)
+                                return responseObject
+                            }
+                        }
+                        catch {
+                            return Fault(error: error)
+                        }
                     }
                 }
             }
@@ -70,21 +80,22 @@ class ProcessResponse {
         }
         else if let _response = response.response {
             if let data = response.data {
-                let responseResultDictionary =  try? JSONSerialization.jsonObject(with: data, options: [])
-                if let faultDictionary = responseResultDictionary as? [String: Any],
-                    let faultCode = faultDictionary["code"] as? Int,
-                    let faultMessage = faultDictionary["message"] as? String {
-                    return Fault(message: faultMessage, faultCode: faultCode)
-                }
-                if responseResultDictionary != nil {
+                if let responseResultDictionary =  try? JSONSerialization.jsonObject(with: data, options: []) {
+                    if let faultDictionary = responseResultDictionary as? [String: Any],
+                        let faultCode = faultDictionary["code"] as? Int,
+                        let faultMessage = faultDictionary["message"] as? String {
+                        return Fault(message: faultMessage, faultCode: faultCode)
+                    }
+                    else if _response.statusCode < 200 || _response.statusCode > 400 {
+                        let faultCode = _response.statusCode
+                        let faultMessage = "Backendless server error"
+                        return Fault(message: faultMessage, faultCode: faultCode)
+                    }
                     return responseResultDictionary
                 }
-                else if _response.statusCode < 200 || _response.statusCode > 400 {
-                    let faultCode = _response.statusCode
-                    let faultMessage = "Backendless server error"
-                    return Fault(message: faultMessage, faultCode: faultCode)
+                else if let responseString = String(data: data, encoding: .utf8) {
+                    return responseString
                 }
-                return responseResultDictionary
             }
         }
         return nil
@@ -100,7 +111,7 @@ class ProcessResponse {
                 do {
                     let responseData = try JSONSerialization.data(withJSONObject: properties)
                     do {
-                        let responseObject = try JSONDecoder().decode(BackendlessUser.self, from: responseData)
+                        let responseObject = try JSONDecoder().decode(BackendlessUser.self, from: responseData)                        
                         responseObject.properties = responseResult
                         if responseObject.objectId != nil {
                             StoredObjects.shared.rememberObjectId(objectId: responseObject.objectId!, forObject: responseObject)
@@ -136,7 +147,7 @@ class ProcessResponse {
         let deviceRegistration = DeviceRegistration(objectId: nil, deviceToken: nil, deviceId: nil, os: nil, osVersion: nil, expiration: nil, channels: nil)
         if let responseResult = responseResult as? [String: Any] {
             if let objectId = responseResult["objectId"] as? String {
-                deviceRegistration.setObjectId(objectId: objectId)
+                deviceRegistration.objectId = objectId
             }
             if let deviceToken = responseResult["deviceToken"] as? String {
                 deviceRegistration.deviceToken = deviceToken
@@ -349,5 +360,88 @@ class ProcessResponse {
             resultArray.append(logMessageDict)
         }
         return resultArray
+    }
+    
+    func adaptToTransactionOperationError(errorDictionary: [String : Any]) -> TransactionOperationError? {
+        if let message = errorDictionary["message"] as? String,
+            let operationDictionary = errorDictionary["operation"] as? [String : Any],
+            let operationTypeString = operationDictionary["operationType"] as? String,
+            let tableName = operationDictionary["table"] as? String,
+            let opResultId = operationDictionary["opResultId"] as? String,
+            let payload = operationDictionary["payload"] {
+            let operationType = OperationType.from(stringValue: operationTypeString)
+            let operation = Operation(operationType: operationType, tableName: tableName, opResultId: opResultId, payload: payload)
+            return TransactionOperationError(message: message, operation: operation)
+        }
+        return nil
+    }
+    
+    func adaptToUnitOfWorkResult(unitOfWorkDictionary: [String : Any]) -> UnitOfWorkResult {
+        let uowResult = UnitOfWorkResult()
+        if let success = unitOfWorkDictionary["success"] as? Bool {
+            if success == true {
+                uowResult.isSuccess = true
+            }
+            else if let errorDictionary = unitOfWorkDictionary["error"] as? [String : Any] {
+                uowResult.error = adaptToTransactionOperationError(errorDictionary: errorDictionary)
+            }
+        }
+        if let results = unitOfWorkDictionary["results"] as? [String : Any] {
+            uowResult.results = [String : OperationResult]()
+            for (opResultId, operationResultDict) in results {
+                if let operationResultDict = operationResultDict as? [String : Any] {
+                    let operationResult = OperationResult()
+                    if let type = operationResultDict["operationType"] as? String {
+                        operationResult.operationType = OperationType.from(stringValue: type)
+                    }
+                    if let result = operationResultDict["result"] as? [String : Any] {
+                        operationResult.result = processResultValue(result)
+                    }
+                    else if let result = operationResultDict["result"] as? [[String : Any]] {
+                        var resultArray = [Any]()
+                        for dictionary in result {
+                            resultArray.append(processResultValue(dictionary))
+                        }
+                        operationResult.result = resultArray
+                    }
+                    else {
+                        operationResult.result = operationResultDict["result"]
+                    }
+                    uowResult.results?[opResultId] = operationResult
+                }
+            }
+        }
+        return uowResult
+    }
+    
+    private func processResultValue(_ dictionary: [String : Any]) -> Any {
+        let dictionary = PersistenceHelper.shared.convertToBLType(dictionary)
+        if !(dictionary is [String : Any]) {
+            return dictionary
+        }
+        var resultDictionary = dictionary as! [String : Any]
+        if let className = resultDictionary["___class"] as? String,
+            let customObject = PersistenceHelper.shared.dictionaryToEntity(resultDictionary, className: className) {
+            return customObject
+        }
+        for (key, value) in resultDictionary {
+            if let dictValue = value as? [String : Any] {
+                if let className = dictValue["___class"] as? String,
+                    let customObject = PersistenceHelper.shared.dictionaryToEntity(dictValue, className: className) {
+                    resultDictionary[key] = customObject
+                }
+                else {
+                    resultDictionary[key] = dictValue
+                }
+            }
+            else if let arrayValue = value as? [[String : Any]] {
+                var resultArray = [Any]()
+                for dictValue in arrayValue {
+                    resultArray.append(processResultValue(dictValue))
+                }
+                resultDictionary[key] = resultArray
+            }
+        }
+        return resultDictionary
     }
 }

@@ -553,7 +553,7 @@ class BLPointTests: XCTestCase {
         dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
             XCTAssert(createdIds.count == 2)
             let queryBuilder = DataQueryBuilder()
-            queryBuilder.setWhereClause(whereClause: "point='POINT(180 90)'")
+            queryBuilder.whereClause = "point='POINT(180 90)'"
             self.dataStore.find(queryBuilder: queryBuilder, responseHandler: { foundObjects in
                 XCTAssert(foundObjects is [GeometryTestClass])
                 for object in foundObjects as! [GeometryTestClass] {
@@ -577,7 +577,7 @@ class BLPointTests: XCTestCase {
     func testPT46() {
         let expectation = self.expectation(description: "PASSED: BLPoint.find")
         let queryBuilder = DataQueryBuilder()
-        queryBuilder.setWhereClause(whereClause: "GetLon(point)>1")
+        queryBuilder.whereClause = "GetLon(point)>1"
         dataStore.find(queryBuilder: queryBuilder, responseHandler: { foundObjects in
             XCTAssert(foundObjects is [GeometryTestClass])
             for object in foundObjects as! [GeometryTestClass] {
@@ -595,7 +595,7 @@ class BLPointTests: XCTestCase {
     func testPT47() {
         let expectation = self.expectation(description: "PASSED: BLPoint.find")
         let queryBuilder = DataQueryBuilder()
-        queryBuilder.setWhereClause(whereClause: "GetLat(point)=90")
+        queryBuilder.whereClause = "GetLat(point)=90"
         dataStore.find(queryBuilder: queryBuilder, responseHandler: { foundObjects in
             XCTAssert(foundObjects is [GeometryTestClass])
             for object in foundObjects as! [GeometryTestClass] {
@@ -613,7 +613,7 @@ class BLPointTests: XCTestCase {
     func testPT48() {
         let expectation = self.expectation(description: "PASSED: BLPoint.find")
         let queryBuilder = DataQueryBuilder()
-        queryBuilder.setWhereClause(whereClause: "GetLat(point)=90 AND GetLon(point)>1")
+        queryBuilder.whereClause = "GetLat(point)=90 AND GetLon(point)>1"
         dataStore.find(queryBuilder: queryBuilder, responseHandler: { foundObjects in
             XCTAssert(foundObjects is [GeometryTestClass])
             for object in foundObjects as! [GeometryTestClass] {
@@ -631,7 +631,7 @@ class BLPointTests: XCTestCase {
     func testPT49() {
         let expectation = self.expectation(description: "PASSED: BLPoint.find")
         let queryBuilder = DataQueryBuilder()
-        queryBuilder.setWhereClause(whereClause: "GetLat(point)=90 AND GetLon(point)>1")
+        queryBuilder.whereClause = "GetLat(point)=90 AND GetLon(point)>1"
         dataStore.find(queryBuilder: queryBuilder, responseHandler: { foundObjects in
             XCTAssert(foundObjects is [GeometryTestClass])
             for object in foundObjects as! [GeometryTestClass] {

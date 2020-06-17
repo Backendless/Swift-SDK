@@ -166,9 +166,9 @@
     }
     
     public func unregisterDevice(channels: [String], responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        let dataQueryBuilder = DataQueryBuilder()
-        dataQueryBuilder.setWhereClause(whereClause: String(format: "deviceId='%@'", DeviceHelper.shared.deviceId))
-        Backendless.shared.data.of(DeviceRegistration.self).find(queryBuilder: dataQueryBuilder, responseHandler: { deviceRegs in
+        let queryBuilder = DataQueryBuilder()
+        queryBuilder.whereClause = "deviceId='\(DeviceHelper.shared.deviceId)'"
+        Backendless.shared.data.of(DeviceRegistration.self).find(queryBuilder: queryBuilder, responseHandler: { deviceRegs in
             if let deviceRegs = deviceRegs as? [DeviceRegistration] {
                 let group = DispatchGroup()
                 for deviceReg in deviceRegs {
@@ -242,13 +242,13 @@
         if let repeatExpiresAt = deliveryOptions?.repeatExpiresAt {
             parameters["repeatExpiresAt"] = DataTypesUtils.shared.dateToInt(date: repeatExpiresAt)
         }
-        if let publishPolicy = deliveryOptions?.getPublishPolicy() {
+        if let publishPolicy = deliveryOptions?.publishPolicy {
             parameters["publishPolicy"] = publishPolicy
         }
-        if let pushBroadcast = deliveryOptions?.getPushBroadcast() {
+        if let pushBroadcast = deliveryOptions?.pushBroadcast {
             parameters["pushBroadcast"] = pushBroadcast
         }
-        if let pushSinglecast = deliveryOptions?.getPushSinglecast(), pushSinglecast.count > 0 {
+        if let pushSinglecast = deliveryOptions?.pushSinglecast, pushSinglecast.count > 0 {
             parameters["pushSinglecast"] = pushSinglecast
         }
         if let segmentQuery = deliveryOptions?.segmentQuery {

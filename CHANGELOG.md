@@ -1,12 +1,17 @@
 # RELEASE HISTORY
 
+### 6.0 / June 17, 2020
+* added [transactions API](https://backendless.com/docs/ios/data_transactions_overview.html)
+* most of the get/set methods are marked as deprecated andtheir corresponding properties changed to public. These getters and setters are still available, but will be removed in the future, please use the `.` to access the properties
+* fixed the issue when `relationsDepth = 0` was sent to server even when it wasn't set manually
+
 ### 5.7.17 / May 29, 2020
 * the `currentUser` property in UserSevice changed to public and can be set manually. Current user is saved after the application restarts only when `stayLoggedIn = true`
 
 ### 5.7.16 / May 20, 2020
 * the BackendlessUser and UserService properties became public, get/set methods are marked as deprecated
 * fixed crash when saving object which doesn't have the `objectId` property
-* fixed the `BackendlessDataCollection` issue when trying to delette the last object from the collection
+* fixed the `BackendlessDataCollection` issue when trying to delete the last object from the collection
 * the Backendless `Identifiable` protocol for the `BackendlessDataCollection` renamed to `BLIdentifiable` to avoid the confusion with Swift's `Identifiable` protocol
 
 ### 5.7.15 / May 7, 2020
@@ -56,7 +61,7 @@
 
 ### 5.7.3 / January 28, 2020
 * fixed `isValidUserToken` method to return error when Internet connection is not available
-* refactored Fault contructor to handle URLSession errors correctly
+* refactored Fault constructor to handle URLSession errors correctly
 * fixed tests according to the last server changes
 
 ### 5.7.2 / January 24, 2020
@@ -120,7 +125,7 @@ func addProperties(properties: String...)
 ### 5.5.9 / October 29, 2019
 * fixed the BackendlessUser password is not updating issue
 * fixed the issue caused by spaces and dashes in the project's product name
-* updated the `blUserLocale` bahavior
+* updated the `blUserLocale` behavior
 
 ### 5.5.8 / October 18, 2019
 * the `create` method added into the PersistenceService
@@ -153,7 +158,7 @@ This method is available for Swift projects.
 * fixed error on sending BackendlessGeoQuery with empty metadata
 
 ### 5.5.3 / October 1, 2019
-* the CacheService `get` method returns nil if cache for the key doesn't exsist
+* the CacheService `get` method returns nil if cache for the key doesn't exist
 * the CacheService `get` method fixed to return String values correctly
 
 ### 5.5.2 / September 24, 2019
@@ -227,7 +232,7 @@ func sendEmailFromTemplate(templateName: String, templateValues: [String : Strin
 ### 0.0.13 / June, 21 2019
 * the EmailEnvelope signatures changed
 * code refactoring
-* version 0.0.12 expirienced some cocoapods issues, so they are fixed in 0.0.13 - please use this version instead
+* version 0.0.12 experienced some cocoapods issues, so they are fixed in 0.0.13 - please use this version instead
 
 ### 0.0.12 / June, 19 2019
 * added the SearchMatchesResult class

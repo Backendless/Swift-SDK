@@ -29,8 +29,8 @@
             }
             return nil
         }
-        set(newAttempt) {
-            _attempt = newAttempt?.intValue
+        set {
+            _attempt = newValue?.intValue
         }
     }
 
@@ -42,8 +42,8 @@
             }
             return nil
         }
-        set(newTimeout) {
-            _timeout = newTimeout?.intValue
+        set {
+            _timeout = newValue?.intValue
         }
     }
     

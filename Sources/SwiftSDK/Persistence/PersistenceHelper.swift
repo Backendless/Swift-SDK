@@ -236,7 +236,7 @@ class PersistenceHelper {
             entityClassNameWithModule = getClassNameWithModule(entityClassNameWithModule)
             resultEntityType = NSClassFromString(entityClassNameWithModule) as? NSObject.Type
         }
-        if resultEntityType == nil {            
+        if resultEntityType == nil {
             entityClassNameWithModule = entityClassNameWithModule.components(separatedBy: ".").last!
             resultEntityType = NSClassFromString(entityClassNameWithModule) as? NSObject.Type
         }

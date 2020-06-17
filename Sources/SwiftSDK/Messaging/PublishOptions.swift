@@ -24,12 +24,12 @@
     public var publisherId: String?
     
     private var _headers: JSON?
-    public private(set) var headers: [String : Any]? {
+    public var headers: [String : Any]? {
         get {
             return _headers?.dictionaryObject
         }
-        set(newHeaders) {
-            _headers = JSON(newHeaders ?? [:])
+        set {
+            _headers = JSON(newValue ?? [:])
         }
     }
     
@@ -43,10 +43,10 @@
         self.headers = ["ios-content-available": "1"]
     }
     
+    @available(*, deprecated, message: "Please use the headers property directly")
     public func setHeaders(headers: [String : Any]) {
         self.headers = headers
     }
-    
     
     public func addHeader(name: String, value: Any) {
         if self.headers != nil {

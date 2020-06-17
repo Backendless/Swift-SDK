@@ -80,7 +80,7 @@ class BackendlessUserTests: XCTestCase {
     func test_07_updateProperties() {
         let user = backendlessUser()
         user.properties["name"] = "Bob"
-        user.properties["age"] = 55        
+        user.properties["age"] = 55
         XCTAssertEqual(user.properties["name"] as? String, "Bob")
         XCTAssertEqual(user.properties["age"] as? Int, 55)
     }

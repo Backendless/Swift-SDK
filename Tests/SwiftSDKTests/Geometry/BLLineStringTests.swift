@@ -624,7 +624,7 @@ class BLLineStringTests: XCTestCase {
         geometryObject4.linestring = BLLineString(points: [point4_1, point4_2, point4_3])
         dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3, geometryObject4], responseHandler: { createdIds in
             let queryBuilder = DataQueryBuilder()
-            queryBuilder.setWhereClause(whereClause: "linestring='LINESTRING(54.5465464 65.654, 54.5465464 34.565656, 84.5465464 13.5653656)'")
+            queryBuilder.whereClause = "linestring='LINESTRING(54.5465464 65.654, 54.5465464 34.565656, 84.5465464 13.5653656)'"
             self.dataStore.find(queryBuilder: queryBuilder, responseHandler: { foundObjects in
                 XCTAssert(foundObjects is [GeometryTestClass])
                 for object in foundObjects as! [GeometryTestClass] {

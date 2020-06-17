@@ -55,7 +55,7 @@ class FileServiceTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_02_saveFile() {
+    /*func test_02_saveFile() {
         let expectation = self.expectation(description: "PASSED: fileService.saveFile")
         let data = "The quick brown fox jumps over the lazy dog".data(using: .utf8)!
         let base64 = data.base64EncodedString()
@@ -68,7 +68,7 @@ class FileServiceTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
-    }
+    }*/
     
     /*func test_03_renameFile() {
         let expectation = self.expectation(description: "PASSED: fileService.renameFile")

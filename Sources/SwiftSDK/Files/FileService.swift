@@ -216,6 +216,10 @@
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
+                else if result is String,
+                    let intResult = Int(result as! String) {
+                    responseHandler(intResult)
+                }
             }
             else {
                 responseHandler(DataTypesUtils.shared.dataToInt(data: response.data!))
@@ -239,6 +243,10 @@
             if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
+                }
+                else if result is String,
+                    let intResult = Int(result as! String) {
+                    responseHandler(intResult)
                 }
             }
             else {
