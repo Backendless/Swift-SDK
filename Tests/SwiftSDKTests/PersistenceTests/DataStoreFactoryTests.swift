@@ -291,7 +291,6 @@ class DataStoreFactoryTests: XCTestCase {
             let queryBuilder = DataQueryBuilder()
             queryBuilder.relationsDepth = 1
             queryBuilder.pageSize = 5
-            queryBuilder.havingClause = "age>20"
             queryBuilder.groupBy = ["name"]
             queryBuilder.excludeProperty("age")
             self.dataStore.find(queryBuilder: queryBuilder, responseHandler: { foundObjects in

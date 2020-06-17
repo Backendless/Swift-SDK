@@ -1,5 +1,10 @@
 # RELEASE HISTORY
 
+### 6.0 / June 17, 2020
+* added [transactions API](https://backendless.com/docs/ios/data_transactions_overview.html)
+* most of the get/set methods are marked as deprecated andtheir corresponding properties changed to public. These getters and setters are still available, but will be removed in the future, please use the `.` to access the properties
+* fixed the issue when `relationsDepth = 0` was sent to server even when it wasn't set manually
+
 ### 5.7.17 / May 29, 2020
 * the `currentUser` property in UserSevice changed to public and can be set manually. Current user is saved after the application restarts only when `stayLoggedIn = true`
 

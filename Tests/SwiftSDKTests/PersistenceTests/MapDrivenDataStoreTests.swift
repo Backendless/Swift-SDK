@@ -259,7 +259,6 @@ class MapDrivenDataStoreTests: XCTestCase {
             let queryBuilder = DataQueryBuilder()
             queryBuilder.relationsDepth = 1
             queryBuilder.pageSize = 5
-            queryBuilder.havingClause = "age>20"
             queryBuilder.groupBy = ["name"]
             queryBuilder.pageSize = 5
             queryBuilder.excludeProperty("age")
