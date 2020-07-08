@@ -50,7 +50,7 @@
                 throw error
             }
         }
-        throw Fault(message: geoParserErrors.wrongFormat)
+        throw Fault(message: GeoParserErrors.wrongFormat)
     }
     
     private static func getPoint(geoJson: String) throws -> BLPoint? {
@@ -60,7 +60,7 @@
                 pointDict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
             }
             catch {
-                throw Fault(message: geoParserErrors.wrongFormat)
+                throw Fault(message: GeoParserErrors.wrongFormat)
             }
         }
         if let pointDict = pointDict {
@@ -77,16 +77,16 @@
     static func dictionaryToPoint(_ pointDict: [String : Any]) throws -> BLPoint? {        
         for key in pointDict.keys {
             if key != "type" && key != "coordinates" && key != "srsId" && key != "___class" {
-                throw Fault(message: geoParserErrors.wrongFormat)
+                throw Fault(message: GeoParserErrors.wrongFormat)
             }
         }        
         if let type = pointDict["type"] as? String, type.lowercased() == BLPoint.geoJsonType.lowercased() {
             let point = BLPoint(x: 0, y: 0)
             guard let coordinates = pointDict["coordinates"] as? [Double] else {
                 if let wrongCoord = pointDict["coordinates"] as? [Any], wrongCoord.contains(where: {$0 is NSNull}) {
-                    throw Fault(message: geoParserErrors.nullLatLong)
+                    throw Fault(message: GeoParserErrors.nullLatLong)
                 }
-                throw Fault(message: geoParserErrors.wrongFormat)
+                throw Fault(message: GeoParserErrors.wrongFormat)
             }
             if let x = coordinates.first, let y = coordinates.last {
                 point.x = x
@@ -97,7 +97,7 @@
             }
             return point
         }
-        throw Fault(message: geoParserErrors.wrongFormat)
+        throw Fault(message: GeoParserErrors.wrongFormat)
     }
     
     private static func getLineString(geoJson: String) throws -> BLLineString? {
@@ -107,7 +107,7 @@
                 lineStringDict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
             }
             catch {
-                throw Fault(message: geoParserErrors.wrongFormat)
+                throw Fault(message: GeoParserErrors.wrongFormat)
             }
         }
         if let lineStringDict = lineStringDict {
@@ -124,7 +124,7 @@
     static func dictionaryToLineString(_ lineStringDict: [String : Any]) throws -> BLLineString? {
         for key in lineStringDict.keys {
             if key != "type" && key != "coordinates" && key != "srsId" && key != "___class" {
-                throw Fault(message: geoParserErrors.wrongFormat)
+                throw Fault(message: GeoParserErrors.wrongFormat)
             }
         }
         if let type = lineStringDict["type"] as? String, type.lowercased() == BLLineString.geoJsonType.lowercased() {
@@ -133,14 +133,14 @@
                 if let wrongCoordArray = lineStringDict["coordinates"] as? [[Any]] {
                     for wrongCoord in wrongCoordArray {
                         if wrongCoord.contains(where: {$0 is NSNull}) {
-                            throw Fault(message: geoParserErrors.nullLatLong)
+                            throw Fault(message: GeoParserErrors.nullLatLong)
                         }
                     }
                 }
-                throw Fault(message: geoParserErrors.wrongFormat)
+                throw Fault(message: GeoParserErrors.wrongFormat)
             }
             if coordinates.count < 2 {
-                throw Fault(message: geoParserErrors.lineStringPointsCount)
+                throw Fault(message: GeoParserErrors.lineStringPointsCount)
             }
             for pointCoordinates in coordinates {
                 if let x = pointCoordinates.first, let y = pointCoordinates.last {
@@ -152,7 +152,7 @@
             }
             return lineString
         }
-        throw Fault(message: geoParserErrors.wrongFormat)
+        throw Fault(message: GeoParserErrors.wrongFormat)
     }
     
     private static func getPolygon(geoJson: String) throws -> BLPolygon? {
@@ -179,12 +179,12 @@
                     for wrongCoordArray in wrongCoordinates {
                         for wrongCoord in wrongCoordArray {
                             if wrongCoord.contains(where: {$0 is NSNull}) {
-                                throw Fault(message: geoParserErrors.nullLatLong)
+                                throw Fault(message: GeoParserErrors.nullLatLong)
                             }
                         }
                     }
                 }
-                throw Fault(message: geoParserErrors.wrongFormat)
+                throw Fault(message: GeoParserErrors.wrongFormat)
             }
             
             if let boundaryCoordinates = coordinates.first {
@@ -196,13 +196,13 @@
                 }
                 polygon.boundary = BLLineString(points: lineStringCoordinates)
                 if polygon.boundary!.points.count <= 3 {
-                    throw Fault(message: geoParserErrors.polygonPointsCount)
+                    throw Fault(message: GeoParserErrors.polygonPointsCount)
                 }
                 else {
                     let firstPoint = polygon.boundary?.points.first
                     let lastPoint = polygon.boundary?.points.last
                     if firstPoint?.x != lastPoint?.x || firstPoint?.y != lastPoint?.y {
-                        throw Fault(message: geoParserErrors.polygonPoints)
+                        throw Fault(message: GeoParserErrors.polygonPoints)
                     }
                 }
             }
@@ -216,13 +216,13 @@
                 }
                 polygon.holes = BLLineString(points: lineStringCoordinates)
                 if polygon.holes!.points.count <= 3 {
-                    throw Fault(message: geoParserErrors.polygonPointsCount)
+                    throw Fault(message: GeoParserErrors.polygonPointsCount)
                 }
                 else {
                     let firstPoint = polygon.holes?.points.first
                     let lastPoint = polygon.holes?.points.last
                     if firstPoint?.x != lastPoint?.x || firstPoint?.y != lastPoint?.y {
-                        throw Fault(message: geoParserErrors.polygonPoints)
+                        throw Fault(message: GeoParserErrors.polygonPoints)
                     }
                 }
             }

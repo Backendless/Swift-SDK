@@ -36,7 +36,7 @@ class RTSharedObject: RTListener {
     
     func connect(responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let options = ["name": sharedObjectName] as [String : Any]
-        let subscription = createSubscription(type: rtTypes.rsoConnect, options: options, connectionHandler: responseHandler, responseHandler: nil, errorHandler: errorHandler)
+        let subscription = createSubscription(type: RtTypes.rsoConnect, options: options, connectionHandler: responseHandler, responseHandler: nil, errorHandler: errorHandler)
         self.subscriptionId = subscription.subscriptionId
         subscription.subscribe()
     }
@@ -55,12 +55,12 @@ class RTSharedObject: RTListener {
         subscription.options = ["name": sharedObjectName]
         subscription.onResult = wrappedBlock
         subscription.onError = errorHandler
-        RTClient.shared.addSimpleListener(type: rtTypes.rsoConnect, subscription: subscription)
+        RTClient.shared.addSimpleListener(type: RtTypes.rsoConnect, subscription: subscription)
         return subscription
     }
     
     func removeConnectListeners() {
-        RTClient.shared.removeSimpleListeners(type: rtTypes.rsoConnect)
+        RTClient.shared.removeSimpleListeners(type: RtTypes.rsoConnect)
     }
     
     func addChangesListener(responseHandler: ((SharedObjectChanges) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
@@ -72,17 +72,17 @@ class RTSharedObject: RTListener {
         }
         if self.sharedObject.isConnected {
             let options = ["name": sharedObjectName]
-            let subscription = createSubscription(type: rtTypes.rsoChanges, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            let subscription = createSubscription(type: RtTypes.rsoChanges, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
             subscription.subscribe()
             return subscription
         }
         else {
-            return addWaitingSubscription(event: rtTypes.rsoChanges, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            return addWaitingSubscription(event: RtTypes.rsoChanges, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
     }
     
     func removeChangesListeners() {
-        stopSubscriptionForSharedObject(sharedObject: self.sharedObject, event: rtTypes.rsoChanges)
+        stopSubscriptionForSharedObject(sharedObject: self.sharedObject, event: RtTypes.rsoChanges)
     }
     
     func addClearListener(responseHandler: ((UserInfo) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
@@ -94,17 +94,17 @@ class RTSharedObject: RTListener {
         }
         if self.sharedObject.isConnected {
             let options = ["name": sharedObjectName]
-            let subscription = createSubscription(type: rtTypes.rsoCleared, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            let subscription = createSubscription(type: RtTypes.rsoCleared, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
             subscription.subscribe()
             return subscription
         }
         else {
-            return addWaitingSubscription(event: rtTypes.rsoCleared, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            return addWaitingSubscription(event: RtTypes.rsoCleared, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
     }
     
     func removeClearListeners() {
-        stopSubscriptionForSharedObject(sharedObject: self.sharedObject, event: rtTypes.rsoCleared)
+        stopSubscriptionForSharedObject(sharedObject: self.sharedObject, event: RtTypes.rsoCleared)
     }
     
     func addCommandListener(responseHandler: ((CommandObject) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
@@ -116,17 +116,17 @@ class RTSharedObject: RTListener {
         }
         if self.sharedObject.isConnected {
             let options = ["name": sharedObjectName]
-            let subscription = createSubscription(type: rtTypes.rsoCommands, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            let subscription = createSubscription(type: RtTypes.rsoCommands, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
             subscription.subscribe()
             return subscription
         }
         else {
-            return addWaitingSubscription(event: rtTypes.rsoCommands, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            return addWaitingSubscription(event: RtTypes.rsoCommands, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
     }
     
     func removeCommandListeners() {
-        stopSubscriptionForSharedObject(sharedObject: self.sharedObject, event: rtTypes.rsoCommands)
+        stopSubscriptionForSharedObject(sharedObject: self.sharedObject, event: RtTypes.rsoCommands)
     }
     
     func addUserStatusListener(responseHandler: ((UserStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
@@ -138,17 +138,17 @@ class RTSharedObject: RTListener {
         }
         if self.sharedObject.isConnected {
             let options = ["name": sharedObjectName] as [String : Any]
-            let subscription = createSubscription(type: rtTypes.rsoUsers, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            let subscription = createSubscription(type: RtTypes.rsoUsers, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
             subscription.subscribe()
             return subscription
         }
         else {
-            return addWaitingSubscription(event: rtTypes.rsoUsers, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            return addWaitingSubscription(event: RtTypes.rsoUsers, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
     }
     
     func removeUserStatusListeners() {
-        stopSubscriptionForSharedObject(sharedObject: self.sharedObject, event: rtTypes.rsoUsers)
+        stopSubscriptionForSharedObject(sharedObject: self.sharedObject, event: RtTypes.rsoUsers)
     }
     
     func addInvokeListener(responseHandler: ((InvokeObject) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
@@ -163,17 +163,17 @@ class RTSharedObject: RTListener {
         }
         if self.sharedObject.isConnected {
             let options = ["name": sharedObjectName] as [String : Any]
-            let subscription = createSubscription(type: rtTypes.rsoInvoke, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            let subscription = createSubscription(type: RtTypes.rsoInvoke, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
             subscription.subscribe()
             return subscription
         }
         else {
-            return addWaitingSubscription(event: rtTypes.rsoInvoke, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            return addWaitingSubscription(event: RtTypes.rsoInvoke, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
     }
     
     func removeInvokeListeners() {
-        stopSubscriptionForSharedObject(sharedObject: self.sharedObject, event: rtTypes.rsoInvoke)
+        stopSubscriptionForSharedObject(sharedObject: self.sharedObject, event: RtTypes.rsoInvoke)
     }
     
     // commands
@@ -194,10 +194,10 @@ class RTSharedObject: RTListener {
             if let key = key {
                 options["key"] = key
             }
-            RTMethod.shared.sendCommand(type: rtTypes.rsoGet, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            RTMethod.shared.sendCommand(type: RtTypes.rsoGet, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
         else if self.sharedObject.rememberCommands {
-            let waitingCommand = ["event": rtTypes.rsoGet, "responseHandler": responseHandler as Any, "errorHandler": errorHandler as Any] as [String : Any]
+            let waitingCommand = ["event": RtTypes.rsoGet, "responseHandler": responseHandler as Any, "errorHandler": errorHandler as Any] as [String : Any]
             waitingCommands.append(waitingCommand)
         }
     }
@@ -211,10 +211,10 @@ class RTSharedObject: RTListener {
             if let data = data {
                 options["data"] = JSONUtils.shared.objectToJson(objectToParse: data)
             }
-            RTMethod.shared.sendCommand(type: rtTypes.rsoSet, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            RTMethod.shared.sendCommand(type: RtTypes.rsoSet, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
         else if self.sharedObject.rememberCommands {
-            var waitingCommand = ["event": rtTypes.rsoSet, "responseHandler": responseHandler as Any, "errorHandler": errorHandler as Any] as [String : Any]
+            var waitingCommand = ["event": RtTypes.rsoSet, "responseHandler": responseHandler as Any, "errorHandler": errorHandler as Any] as [String : Any]
             if let data = data {
                 waitingCommand["data"] = JSONUtils.shared.objectToJson(objectToParse: data)
             }
@@ -228,10 +228,10 @@ class RTSharedObject: RTListener {
         }
         if self.sharedObject.isConnected {
             let options = ["name": sharedObjectName] as [String : Any]
-            RTMethod.shared.sendCommand(type: rtTypes.rsoClear, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            RTMethod.shared.sendCommand(type: RtTypes.rsoClear, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
         else if self.sharedObject.rememberCommands {
-            let waitingCommand = ["event": rtTypes.rsoClear, "responseHandler": responseHandler as Any, "errorHandler": errorHandler as Any] as [String : Any]
+            let waitingCommand = ["event": RtTypes.rsoClear, "responseHandler": responseHandler as Any, "errorHandler": errorHandler as Any] as [String : Any]
             waitingCommands.append(waitingCommand)
         }
     }
@@ -245,10 +245,10 @@ class RTSharedObject: RTListener {
             if let data = data {
                 options["data"] = JSONUtils.shared.objectToJson(objectToParse: data)
             }
-            RTMethod.shared.sendCommand(type: rtTypes.rsoCommand, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            RTMethod.shared.sendCommand(type: RtTypes.rsoCommand, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
         else if self.sharedObject.rememberCommands {
-            var waitingCommand = ["event": rtTypes.rsoCommand, "commandName": commandName, "responseHandler": responseHandler as Any, "errorHandler": errorHandler as Any] as [String : Any]
+            var waitingCommand = ["event": RtTypes.rsoCommand, "commandName": commandName, "responseHandler": responseHandler as Any, "errorHandler": errorHandler as Any] as [String : Any]
             if let data = data {
                 waitingCommand["data"] = JSONUtils.shared.objectToJson(objectToParse: data)
             }
@@ -268,10 +268,10 @@ class RTSharedObject: RTListener {
             if args != nil {
                 options["args"] = args!
             }
-            RTMethod.shared.sendCommand(type: rtTypes.rsoInvoke, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            RTMethod.shared.sendCommand(type: RtTypes.rsoInvoke, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
         }
         else if self.sharedObject.rememberCommands {
-            var waitingCommand = ["event": rtTypes.rsoInvoke, "method": method, "responseHandler": responseHandler as Any, "errorHandler": errorHandler as Any] as [String : Any]
+            var waitingCommand = ["event": RtTypes.rsoInvoke, "method": method, "responseHandler": responseHandler as Any, "errorHandler": errorHandler as Any] as [String : Any]
             if args != nil {
                 waitingCommand["args"] = args!
             }
@@ -339,11 +339,11 @@ class RTSharedObject: RTListener {
         for waitingSubscription in RTClient.shared.waitingSubscriptions {
             if let data = waitingSubscription.data,
                 let name = data["name"] as? String,
-                name == rtTypes.rsoChanges,
-                name == rtTypes.rsoCleared ||
-                    name == rtTypes.rsoCommands ||
-                    name == rtTypes.rsoUsers ||
-                    name == rtTypes.rsoInvoke,
+                name == RtTypes.rsoChanges,
+                name == RtTypes.rsoCleared ||
+                    name == RtTypes.rsoCommands ||
+                    name == RtTypes.rsoUsers ||
+                    name == RtTypes.rsoInvoke,
                 let options = waitingSubscription.options,
                 options["name"] as? String == self.sharedObjectName {
                 indexesToRemove.append(RTClient.shared.waitingSubscriptions.firstIndex(of: waitingSubscription)!)
@@ -359,11 +359,11 @@ class RTSharedObject: RTListener {
         for waitingSubscription in RTClient.shared.waitingSubscriptions {
             if let data = waitingSubscription.data,
                 let name = data["name"] as? String,
-                name == rtTypes.rsoChanges ||
-                    name == rtTypes.rsoCleared ||
-                    name == rtTypes.rsoCommands ||
-                    name == rtTypes.rsoUsers ||
-                    name == rtTypes.rsoInvoke,
+                name == RtTypes.rsoChanges ||
+                    name == RtTypes.rsoCleared ||
+                    name == RtTypes.rsoCommands ||
+                    name == RtTypes.rsoUsers ||
+                    name == RtTypes.rsoInvoke,
                 let options = waitingSubscription.options,
                 options["name"] as? String == self.sharedObjectName {
                 waitingSubscription.subscribe()
@@ -376,7 +376,7 @@ class RTSharedObject: RTListener {
     }
     
     func processConnectSubscriptions() {
-        if var connectSubscriptions = RTClient.shared.getSimpleListeners(type: rtTypes.rsoConnect) {
+        if var connectSubscriptions = RTClient.shared.getSimpleListeners(type: RtTypes.rsoConnect) {
             connectSubscriptions = connectSubscriptions.filter({ $0.options?.contains(where: { $0.value as? String == self.sharedObjectName }) ?? false })
             for subscription in connectSubscriptions {
                 subscription.onResult!(nil)
@@ -385,7 +385,7 @@ class RTSharedObject: RTListener {
     }
     
     func processConnectErrors(fault: Fault) {
-        if var connectSubscriptions = RTClient.shared.getSimpleListeners(type: rtTypes.rsoConnect) {
+        if var connectSubscriptions = RTClient.shared.getSimpleListeners(type: RtTypes.rsoConnect) {
             connectSubscriptions = connectSubscriptions.filter({ $0.options?.contains(where: { $0.value as? String == self.sharedObjectName }) ?? false })
             for subscription in connectSubscriptions {
                 subscription.onError!(fault)
@@ -395,23 +395,23 @@ class RTSharedObject: RTListener {
     
     func callWaitingCommands() {        
         for waitingCommand in waitingCommands {
-            if waitingCommand["event"] as? String == rtTypes.rsoGet,
+            if waitingCommand["event"] as? String == RtTypes.rsoGet,
                 let responseHandler = waitingCommand["responseHandler"] as? ((Any?) -> Void),
                 let errorHandler = waitingCommand["errorHandler"] as? ((Fault) -> Void) {
                 get(key: waitingCommand["key"] as? String, responseHandler: responseHandler, errorHandler: errorHandler)
             }
-            else if waitingCommand["event"] as? String == rtTypes.rsoSet,
+            else if waitingCommand["event"] as? String == RtTypes.rsoSet,
                 let key = waitingCommand["key"] as? String,
                 let responseHandler = waitingCommand["responseHandler"] as? (() -> Void),
                 let errorHandler = waitingCommand["errorHandler"] as? ((Fault) -> Void) {
                 set(key: key, data: waitingCommand["data"], responseHandler: responseHandler, errorHandler: errorHandler)
             }
-            else if waitingCommand["event"] as? String == rtTypes.rsoClear,
+            else if waitingCommand["event"] as? String == RtTypes.rsoClear,
                 let responseHandler = waitingCommand["responseHandler"] as? (() -> Void),
                 let errorHandler = waitingCommand["errorHandler"] as? ((Fault) -> Void) {
                 clear(responseHandler: responseHandler, errorHandler: errorHandler)
             }
-            else if waitingCommand["event"] as? String == rtTypes.rsoInvoke,
+            else if waitingCommand["event"] as? String == RtTypes.rsoInvoke,
                 let method = waitingCommand["method"] as? String,
                 let responseHandler = waitingCommand["responseHandler"] as? (() -> Void),
                 let errorHandler = waitingCommand["errorHandler"] as? ((Fault) -> Void) {

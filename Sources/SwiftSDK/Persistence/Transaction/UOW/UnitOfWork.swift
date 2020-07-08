@@ -36,7 +36,7 @@
 
 // **************************************************************
 
-enum uowProps {
+enum UowProps {
     static let ref = "___ref"
     static let opResultId = "opResultId"
     static let resultIndex = "resultIndex"

@@ -183,7 +183,7 @@ class BLLineStringTests: XCTestCase {
         }
         catch {
             XCTAssert(error is Fault)
-            XCTAssert(error.localizedDescription == geoParserErrors.wrongFormat)
+            XCTAssert(error.localizedDescription == GeoParserErrors.wrongFormat)
         }
     }
     
@@ -194,7 +194,7 @@ class BLLineStringTests: XCTestCase {
         }
         catch {
             XCTAssert(error is Fault)
-            XCTAssert(error.localizedDescription == geoParserErrors.nullLatLong)
+            XCTAssert(error.localizedDescription == GeoParserErrors.nullLatLong)
         }
     }
     
@@ -205,7 +205,7 @@ class BLLineStringTests: XCTestCase {
         }
         catch {
             XCTAssert(error is Fault)
-            XCTAssert(error.localizedDescription == geoParserErrors.lineStringPointsCount)
+            XCTAssert(error.localizedDescription == GeoParserErrors.lineStringPointsCount)
         }
     }
     
@@ -216,7 +216,7 @@ class BLLineStringTests: XCTestCase {
         }
         catch {
             XCTAssert(error is Fault)
-            XCTAssert(error.localizedDescription == geoParserErrors.wrongFormat)
+            XCTAssert(error.localizedDescription == GeoParserErrors.wrongFormat)
         }
     }
     
@@ -227,7 +227,7 @@ class BLLineStringTests: XCTestCase {
         }
         catch {
             XCTAssert(error is Fault)
-            XCTAssert(error.localizedDescription == geoParserErrors.wrongFormat)
+            XCTAssert(error.localizedDescription == GeoParserErrors.wrongFormat)
         }
     }
     
@@ -238,7 +238,7 @@ class BLLineStringTests: XCTestCase {
         }
         catch {
             XCTAssert(error is Fault)
-            XCTAssert(error.localizedDescription == geoParserErrors.wrongFormat)
+            XCTAssert(error.localizedDescription == GeoParserErrors.wrongFormat)
         }
     }
     
@@ -249,7 +249,7 @@ class BLLineStringTests: XCTestCase {
         }
         catch {
             XCTAssert(error is Fault)
-            XCTAssert(error.localizedDescription == geoParserErrors.lineStringPointsCount)
+            XCTAssert(error.localizedDescription == GeoParserErrors.lineStringPointsCount)
         }
     }
     
@@ -350,7 +350,7 @@ class BLLineStringTests: XCTestCase {
         }
         catch {
             XCTAssert(error is Fault)
-            XCTAssert(error.localizedDescription == geoParserErrors.wrongFormat)
+            XCTAssert(error.localizedDescription == GeoParserErrors.wrongFormat)
         }
     }
     
@@ -376,7 +376,7 @@ class BLLineStringTests: XCTestCase {
         }
         catch {
             XCTAssert(error is Fault)
-            XCTAssert(error.localizedDescription == geoParserErrors.nullLatLong)
+            XCTAssert(error.localizedDescription == GeoParserErrors.nullLatLong)
         }
     }
     
@@ -387,7 +387,7 @@ class BLLineStringTests: XCTestCase {
         }
         catch {
             XCTAssert(error is Fault)
-            XCTAssert(error.localizedDescription == geoParserErrors.lineStringPointsCount)
+            XCTAssert(error.localizedDescription == GeoParserErrors.lineStringPointsCount)
         }
     }
     

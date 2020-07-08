@@ -347,7 +347,7 @@
         if let data = data {
             options["data"] = JSONUtils.shared.objectToJson(objectToParse: data)
         }
-        RTMethod.shared.sendCommand(type: rtTypes.pubSubCommand, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
+        RTMethod.shared.sendCommand(type: RtTypes.pubSubCommand, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
     }
     
     public func sendEmailFromTemplate(templateName: String, envelope: EmailEnvelope, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {

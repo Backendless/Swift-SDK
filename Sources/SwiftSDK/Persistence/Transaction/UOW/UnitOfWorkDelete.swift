@@ -42,9 +42,9 @@ class UnitOfWorkDelete {
     
     func delete(result: OpResult) -> (Operation, OpResult) {
         let (tableName, opResultId) = prepareForDelete(result: result)
-        let payload = [uowProps.ref: true,
-                       uowProps.propName: "objectId",
-                       uowProps.opResultId: result.makeReference()[uowProps.opResultId]]
+        let payload = [UowProps.ref: true,
+                       UowProps.propName: "objectId",
+                       UowProps.opResultId: result.makeReference()[UowProps.opResultId]]
         let operation = Operation(operationType: .DELETE, tableName: tableName, opResultId: opResultId, payload: payload)
         let opResult = TransactionHelper.shared.makeOpResult(tableName: tableName, operationResultId: opResultId, operationType: .DELETE, uow: uow)
         return (operation, opResult)
@@ -55,15 +55,15 @@ class UnitOfWorkDelete {
         let (tableName, opResultId) = prepareForDelete(result: result)
         var payload = [String : Any]()
         if result.operationType == .CREATE_BULK {
-            payload[uowProps.ref] = true
-            payload[uowProps.opResultId] = valueReference.makeReference()?[uowProps.opResultId]
-            payload[uowProps.resultIndex] = valueReference.makeReference()?[uowProps.resultIndex]
+            payload[UowProps.ref] = true
+            payload[UowProps.opResultId] = valueReference.makeReference()?[UowProps.opResultId]
+            payload[UowProps.resultIndex] = valueReference.makeReference()?[UowProps.resultIndex]
         }
         else if result.operationType == .FIND {
-            payload[uowProps.ref] = true
-            payload[uowProps.propName] = "objectId"
-            payload[uowProps.opResultId] = valueReference.makeReference()?[uowProps.opResultId]
-            payload[uowProps.resultIndex] = valueReference.makeReference()?[uowProps.resultIndex]
+            payload[UowProps.ref] = true
+            payload[UowProps.propName] = "objectId"
+            payload[UowProps.opResultId] = valueReference.makeReference()?[UowProps.opResultId]
+            payload[UowProps.resultIndex] = valueReference.makeReference()?[UowProps.resultIndex]
         }        
         let operation = Operation(operationType: .DELETE, tableName: tableName, opResultId: opResultId, payload: payload)
         let opResult = TransactionHelper.shared.makeOpResult(tableName: tableName, operationResultId: opResultId, operationType: .DELETE, uow: uow)
@@ -100,8 +100,8 @@ class UnitOfWorkDelete {
     
     func bulkDelete(result: OpResult) -> (Operation, OpResult) {
         let (tableName, opResultId) = prepareForBulkDelete(result: result)
-        let payload = ["unconditional": [uowProps.ref: true,
-                                         uowProps.opResultId: result.makeReference()[uowProps.opResultId]]] as [String : Any]
+        let payload = ["unconditional": [UowProps.ref: true,
+                                         UowProps.opResultId: result.makeReference()[UowProps.opResultId]]] as [String : Any]
         let operation = Operation(operationType: .DELETE_BULK, tableName: tableName, opResultId: opResultId, payload: payload)
         let opResult = TransactionHelper.shared.makeOpResult(tableName: tableName, operationResultId: opResultId, operationType: .DELETE_BULK, uow: uow)
         return (operation, opResult)

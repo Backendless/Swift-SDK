@@ -27,8 +27,8 @@ class TransactionHelper {
 
     func makeOpResult(tableName: String, operationResultId: String, operationType: OperationType, uow: UnitOfWork) -> OpResult {
         var reference = [String : Any]()
-        reference[uowProps.ref] = true
-        reference[uowProps.opResultId] = operationResultId
+        reference[UowProps.ref] = true
+        reference[UowProps.opResultId] = operationResultId
         return OpResult(tableName: tableName, operationType: operationType, opResultId: operationResultId, uow: uow)
     }
     

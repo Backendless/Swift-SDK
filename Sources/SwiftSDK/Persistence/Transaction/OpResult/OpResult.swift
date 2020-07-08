@@ -82,8 +82,8 @@ extension OpResultErrors: LocalizedError {
     
     public func makeReference() -> [String : Any] {
         var reference = [String : Any]()
-        reference[uowProps.ref] = true
-        reference[uowProps.opResultId] = opResultId
+        reference[UowProps.ref] = true
+        reference[UowProps.opResultId] = opResultId
         return reference
     }
     

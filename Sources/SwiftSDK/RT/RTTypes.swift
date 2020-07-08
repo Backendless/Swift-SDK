@@ -19,18 +19,20 @@
  *  ********************************************************************************************************************
  */
 
-enum rtEventHandlers {
+enum RtEventHandlers {
     static let created = "created"
     static let updated = "updated"
     static let deleted = "deleted"
     static let bulkCreated = "bulk-created"
     static let bulkUpdated = "bulk-updated"
     static let bulkDeleted = "bulk-deleted"
+    static let relationsSet = "relations-set"
 }
 
-enum rtTypes {
+enum RtTypes {
     static let error = "ERROR"
-    static let objectChanges = "OBJECTS_CHANGES"
+    static let objectsChanges = "OBJECTS_CHANGES"
+    static let relationsChanges = "RELATIONS_CHANGES"
     static let pubSubConnect = "PUB_SUB_CONNECT"
     static let pubSubMessages = "PUB_SUB_MESSAGES"
     static let pubSubCommand = "PUB_SUB_COMMAND"
@@ -48,7 +50,7 @@ enum rtTypes {
     static let rsoInvoke = "RSO_INVOKE"
 }
 
-enum connectEvents {
+enum ConnectEvents {
     static let connect = "CONNECT_EVENT"
     static let connectError = "CONNECT_ERROR_EVENT"
     static let disconnect = "DISCONNECT_EVENT"
