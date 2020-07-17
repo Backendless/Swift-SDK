@@ -332,6 +332,23 @@ class ProcessResponse {
         return invokeObject
     }
     
+    func adaptToRelationStatus(relationStatusDictionary: [String : Any]) -> RelationStatus {
+        let relationStatus = RelationStatus()
+        if let parentObjectId = relationStatusDictionary["parentObjectId"] as? String {
+            relationStatus.parentObjectId = parentObjectId
+        }
+        if let isCondotional = relationStatusDictionary["conditional"] as? NSNumber {
+            relationStatus.isConditional = isCondotional.boolValue
+        }
+        if let whereClause = relationStatusDictionary["whereClause"] as? String {
+            relationStatus.whereClause = whereClause
+        }
+        if let children = relationStatusDictionary["children"] as? [String] {
+            relationStatus.children = children
+        }
+        return relationStatus
+    }
+    
     func adaptToBackendlessFile(backendlessFileDictionary: [String : Any]) -> BackendlessFile {
         let backendlessFile = BackendlessFile()
         if let fileUrl = backendlessFileDictionary["fileURL"] as? String {

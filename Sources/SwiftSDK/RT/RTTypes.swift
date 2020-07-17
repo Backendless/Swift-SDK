@@ -26,7 +26,9 @@ enum RtEventHandlers {
     static let bulkCreated = "bulk-created"
     static let bulkUpdated = "bulk-updated"
     static let bulkDeleted = "bulk-deleted"
-    static let relationsSet = "relations-set"
+    static let relationSet = "set"
+    static let relationAdd = "add"
+    static let relationDelete = "delete"
 }
 
 enum RtTypes {

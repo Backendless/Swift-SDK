@@ -20,7 +20,6 @@
  */
 
 @objcMembers public class RelationStatus: NSObject {
-    
     public var parentObjectId: String?
     public var isConditional = false
     public var whereClause: String?
