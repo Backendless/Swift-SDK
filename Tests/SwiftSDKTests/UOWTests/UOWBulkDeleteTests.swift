@@ -23,12 +23,12 @@ import XCTest
 @testable import SwiftSDK
 
 class UOWBulkDeleteTests: XCTestCase {
-
+    
     private let backendless = Backendless.shared
     private let testObjectsUtils = TestObjectsUtils.shared
     private let timeout: Double = 20.0
     private let tableName = "TestClass"
-
+    
     // call before all tests
     override class func setUp() {
         Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
@@ -47,19 +47,17 @@ class UOWBulkDeleteTests: XCTestCase {
     func test_01_bulkDelete() {
         let expectation = self.expectation(description: "PASSED: uow.bulkDelete")
         testObjectsUtils.bulkCreateTestClassObjects(responseHandler: { objectIds in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
-                let uow = UnitOfWork()
-                let _ = uow.bulkDelete(tableName: self.tableName, objectIdValues: objectIds)
-                uow.execute(responseHandler: { uowResult in
-                    XCTAssertNil(uowResult.error)
-                    XCTAssertTrue(uowResult.isSuccess)
-                    XCTAssertNotNil(uowResult.results)
-                    expectation.fulfill()
-                }, errorHandler: {  fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
-                })
-            })     
+            let uow = UnitOfWork()
+            let _ = uow.bulkDelete(tableName: self.tableName, objectIdValues: objectIds)
+            uow.execute(responseHandler: { uowResult in
+                XCTAssertNil(uowResult.error)
+                XCTAssertTrue(uowResult.isSuccess)
+                XCTAssertNotNil(uowResult.results)
+                expectation.fulfill()
+            }, errorHandler: {  fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })   
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")

@@ -23,12 +23,12 @@ import XCTest
 @testable import SwiftSDK
 
 class UOWDeleteTests: XCTestCase {
-
+    
     private let backendless = Backendless.shared
     private let testObjectsUtils = TestObjectsUtils.shared
     private let timeout: Double = 20.0    
     private let tableName = "TestClass"
-
+    
     // call before all tests
     override class func setUp() {
         Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
@@ -45,26 +45,24 @@ class UOWDeleteTests: XCTestCase {
     }
     
     func test_01_delete() {
-        /*let expectation = self.expectation(description: "PASSED: uow.delete")
+        let expectation = self.expectation(description: "PASSED: uow.delete")
         testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 4, execute: {
-                let uow = UnitOfWork()
-                let _ = uow.delete(tableName: self.tableName, objectToDelete: createdObject)
-                uow.execute(responseHandler: { uowResult in
-                    XCTAssertNil(uowResult.error)
-                    XCTAssertTrue(uowResult.isSuccess)
-                    XCTAssertNotNil(uowResult.results)
-                    expectation.fulfill()
-                }, errorHandler: {  fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
-                })
+            let uow = UnitOfWork()
+            let _ = uow.delete(tableName: self.tableName, objectToDelete: createdObject)
+            uow.execute(responseHandler: { uowResult in
+                XCTAssertNil(uowResult.error)
+                XCTAssertTrue(uowResult.isSuccess)
+                XCTAssertNotNil(uowResult.results)
+                expectation.fulfill()
+            }, errorHandler: {  fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: timeout, handler: nil)*/
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_02_delete() {
