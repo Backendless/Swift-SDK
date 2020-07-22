@@ -29,17 +29,17 @@ class FindFirstLastTests: XCTestCase {
     
     private var dataStore: MapDrivenDataStore!
     
-    // call before all te
+    // call before all tests
     override class func setUp() {
         Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
         Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
-        clearTables()
+        //clearTables()
     }
     
     // call before each test
     override func setUp() {
         dataStore = backendless.data.ofTable("TestClass")
-        dataStore.removeBulk(whereClause: nil, responseHandler: { removedObjects in }, errorHandler: { fault in })
+        //dataStore.removeBulk(whereClause: nil, responseHandler: { removedObjects in }, errorHandler: { fault in })
     }
     
     // call after all tests
@@ -153,7 +153,7 @@ class FindFirstLastTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED data.findFirst")
         let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44]]
         dataStore.createBulk(entities: objects, responseHandler: { createdIds in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 4, execute: {
                 self.dataStore.findFirst(responseHandler: { firstObject in
                     expectation.fulfill()
                 }, errorHandler: { fault in
@@ -244,7 +244,7 @@ class FindFirstLastTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED data.findLast")
         let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44]]
         dataStore.createBulk(entities: objects, responseHandler: { createdIds in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
                 self.dataStore.findLast(responseHandler: { lastObject in
                     expectation.fulfill()
                 }, errorHandler: { fault in

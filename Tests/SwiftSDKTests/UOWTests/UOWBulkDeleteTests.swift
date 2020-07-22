@@ -37,7 +37,7 @@ class UOWBulkDeleteTests: XCTestCase {
     
     // call after all tests
     override class func tearDown() {
-        clearTables()
+        //clearTables()
     }
     
     class func clearTables() {
@@ -47,17 +47,19 @@ class UOWBulkDeleteTests: XCTestCase {
     func test_01_bulkDelete() {
         let expectation = self.expectation(description: "PASSED: uow.bulkDelete")
         testObjectsUtils.bulkCreateTestClassObjects(responseHandler: { objectIds in
-            let uow = UnitOfWork()
-            let _ = uow.bulkDelete(tableName: self.tableName, objectIdValues: objectIds)
-            uow.execute(responseHandler: { uowResult in
-                XCTAssertNil(uowResult.error)
-                XCTAssertTrue(uowResult.isSuccess)
-                XCTAssertNotNil(uowResult.results)
-                expectation.fulfill()
-            }, errorHandler: {  fault in
-                XCTAssertNotNil(fault)
-                XCTFail("\(fault.code): \(fault.message!)")
-            })
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+                let uow = UnitOfWork()
+                let _ = uow.bulkDelete(tableName: self.tableName, objectIdValues: objectIds)
+                uow.execute(responseHandler: { uowResult in
+                    XCTAssertNil(uowResult.error)
+                    XCTAssertTrue(uowResult.isSuccess)
+                    XCTAssertNotNil(uowResult.results)
+                    expectation.fulfill()
+                }, errorHandler: {  fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
+            })     
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
