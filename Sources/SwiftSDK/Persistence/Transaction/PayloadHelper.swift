@@ -81,6 +81,9 @@ class PayloadHelper {
         operationPayload["opResultId"] = operation.opResultId
         operationPayload["operationType"] = OperationType.from(intValue: OperationType.CREATE.rawValue)
         if var payload = operation.payload as? [String : Any] {
+            if payload["___class"] as? String == "Users" {
+                payload["user-token"] = nil
+            }
             for (key,value) in payload {
                 if let opResultValue = value as? OpResult,
                     let tableName = opResultValue.tableName,
@@ -107,6 +110,9 @@ class PayloadHelper {
         if let payload = operation.payload as? [[String : Any]] {
             var resultPayload = [[String : Any]]()
             for var payloadDict in payload {
+                if payloadDict["___class"] as? String == "Users" {
+                    payloadDict["user-token"] = nil
+                }
                 for (key,value) in payloadDict {
                     if let opResultValue = value as? OpResult,
                         let tableName = opResultValue.tableName,
@@ -132,7 +138,10 @@ class PayloadHelper {
         operationPayload["table"] = operation.tableName
         operationPayload["opResultId"] = operation.opResultId
         operationPayload["operationType"] = OperationType.from(intValue: OperationType.UPDATE.rawValue)
-        if var payload = operation.payload as? [String : Any], payload["objectId"] != nil {            
+        if var payload = operation.payload as? [String : Any], payload["objectId"] != nil {
+            if payload["___class"] as? String == "Users" {
+                payload["user-token"] = nil
+            }
             for (key,value) in payload {
                 if let opResultValue = value as? OpResult,
                     let tableName = opResultValue.tableName,
@@ -158,6 +167,9 @@ class PayloadHelper {
         operationPayload["operationType"] = OperationType.from(intValue: OperationType.UPDATE_BULK.rawValue)
         if let payload = operation.payload as? [String : Any],
             var changes = payload["changes"] as? [String : Any] {
+            if changes["___class"] as? String == "Users" {
+                changes["user-token"] = nil
+            }
             for (key, value) in changes {
                 if let opResultValue = value as? OpResult,
                     let tableName = opResultValue.tableName,

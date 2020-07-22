@@ -1,6 +1,8 @@
 # RELEASE HISTORY
 
-### 6.? / ?, 2020
+### 6.0.1 / July 22, 2020
+* added RT Listeners for Relations support
+* fixed transactions fail issue when object is BackendlessUser
 * class approach fixed to handle JSON column type correctly
 
 ### 6.0 / June 17, 2020

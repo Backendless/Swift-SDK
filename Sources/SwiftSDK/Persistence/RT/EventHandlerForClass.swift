@@ -211,6 +211,152 @@
         stopSubscription(event: RtEventHandlers.bulkDeleted, whereClause: nil)
     }
     
+    // ********************************************************************
+    
+    public func addSetRelationListener(relationColumnName: String, responseHandler: ((RelationStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        let wrappedBlock: ([String : Any]) -> () = { response in
+            responseHandler(ProcessResponse.shared.adaptToRelationStatus(relationStatusDictionary: response))
+        }
+        return subscribeForRelationsChanges(event: RtEventHandlers.relationSet, tableName: tableName, relationColumnName: relationColumnName, parentObjectIds: nil, whereClause: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+    }
+    
+    public func addSetRelationListener(relationColumnName: String, parentObjectIds: [String], responseHandler: ((RelationStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        let wrappedBlock: ([String : Any]) -> () = { response in
+            responseHandler(ProcessResponse.shared.adaptToRelationStatus(relationStatusDictionary: response))
+        }
+        return subscribeForRelationsChanges(event: RtEventHandlers.relationSet, tableName: tableName, relationColumnName: relationColumnName, parentObjectIds: parentObjectIds, whereClause: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+    }
+    
+    public func addSetRelationListener(relationColumnName: String, parents: [[String : Any]], responseHandler: ((RelationStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        var parentObjectIds = [String]()
+        for parent in parents {
+            if let parentObjectId = parent["objectId"] as? String {
+                parentObjectIds.append(parentObjectId)
+            }
+        }
+        let wrappedBlock: ([String : Any]) -> () = { response in
+            responseHandler(ProcessResponse.shared.adaptToRelationStatus(relationStatusDictionary: response))
+        }
+        return subscribeForRelationsChanges(event: RtEventHandlers.relationSet, tableName: tableName, relationColumnName: relationColumnName, parentObjectIds: parentObjectIds, whereClause: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+    }
+    
+    public func addSetRelationListener(relationColumnName: String, customParents: [Any], responseHandler: ((RelationStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        var parentObjectIds = [String]()
+        for parent in customParents {
+            let parentDictionary = PersistenceHelper.shared.entityToDictionary(entity: parent)
+            if let parentObjectId = parentDictionary["objectId"] as? String {
+                parentObjectIds.append(parentObjectId)
+            }
+            else if let parentObjectId = PersistenceHelper.shared.getObjectId(entity: parent) {
+                parentObjectIds.append(parentObjectId)
+            }
+        }
+        let wrappedBlock: ([String : Any]) -> () = { response in
+            responseHandler(ProcessResponse.shared.adaptToRelationStatus(relationStatusDictionary: response))
+        }
+        return subscribeForRelationsChanges(event: RtEventHandlers.relationSet, tableName: tableName, relationColumnName: relationColumnName, parentObjectIds: parentObjectIds, whereClause: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+    }
+    
+    public func removeSetRelationListeners() {
+        stopSubscription(event: RtEventHandlers.relationSet, whereClause: nil)
+    }
+    
+    public func addAddRelationListener(relationColumnName: String, responseHandler: ((RelationStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        let wrappedBlock: ([String : Any]) -> () = { response in
+            responseHandler(ProcessResponse.shared.adaptToRelationStatus(relationStatusDictionary: response))
+        }
+        return subscribeForRelationsChanges(event: RtEventHandlers.relationAdd, tableName: tableName, relationColumnName: relationColumnName, parentObjectIds: nil, whereClause: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+    }
+    
+    public func addAddRelationListener(relationColumnName: String, parentObjectIds: [String], responseHandler: ((RelationStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        let wrappedBlock: ([String : Any]) -> () = { response in
+            responseHandler(ProcessResponse.shared.adaptToRelationStatus(relationStatusDictionary: response))
+        }
+        return subscribeForRelationsChanges(event: RtEventHandlers.relationAdd, tableName: tableName, relationColumnName: relationColumnName, parentObjectIds: parentObjectIds, whereClause: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+    }
+    
+    public func addAddRelationListener(relationColumnName: String, parents: [[String : Any]], responseHandler: ((RelationStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        var parentObjectIds = [String]()
+        for parent in parents {
+            if let parentObjectId = parent["objectId"] as? String {
+                parentObjectIds.append(parentObjectId)
+            }
+        }
+        let wrappedBlock: ([String : Any]) -> () = { response in
+            responseHandler(ProcessResponse.shared.adaptToRelationStatus(relationStatusDictionary: response))
+        }
+        return subscribeForRelationsChanges(event: RtEventHandlers.relationAdd, tableName: tableName, relationColumnName: relationColumnName, parentObjectIds: parentObjectIds, whereClause: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+    }
+    
+    public func addAddRelationListener(relationColumnName: String, customParents: [Any], responseHandler: ((RelationStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        var parentObjectIds = [String]()
+        for parent in customParents {
+            let parentDictionary = PersistenceHelper.shared.entityToDictionary(entity: parent)
+            if let parentObjectId = parentDictionary["objectId"] as? String {
+                parentObjectIds.append(parentObjectId)
+            }
+            else if let parentObjectId = PersistenceHelper.shared.getObjectId(entity: parent) {
+                parentObjectIds.append(parentObjectId)
+            }
+        }
+        let wrappedBlock: ([String : Any]) -> () = { response in
+            responseHandler(ProcessResponse.shared.adaptToRelationStatus(relationStatusDictionary: response))
+        }
+        return subscribeForRelationsChanges(event: RtEventHandlers.relationAdd, tableName: tableName, relationColumnName: relationColumnName, parentObjectIds: parentObjectIds, whereClause: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+    }
+    
+    public func removeAddRelationListeners() {
+        stopSubscription(event: RtEventHandlers.relationAdd, whereClause: nil)
+    }
+    
+    public func addDeleteRelationListener(relationColumnName: String, responseHandler: ((RelationStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        let wrappedBlock: ([String : Any]) -> () = { response in
+            responseHandler(ProcessResponse.shared.adaptToRelationStatus(relationStatusDictionary: response))
+        }
+        return subscribeForRelationsChanges(event: RtEventHandlers.relationDelete, tableName: tableName, relationColumnName: relationColumnName, parentObjectIds: nil, whereClause: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+    }
+    
+    public func addDeleteRelationListener(relationColumnName: String, parentObjectIds: [String], responseHandler: ((RelationStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        let wrappedBlock: ([String : Any]) -> () = { response in
+            responseHandler(ProcessResponse.shared.adaptToRelationStatus(relationStatusDictionary: response))
+        }
+        return subscribeForRelationsChanges(event: RtEventHandlers.relationDelete, tableName: tableName, relationColumnName: relationColumnName, parentObjectIds: parentObjectIds, whereClause: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+    }
+    
+    public func addDeleteRelationListener(relationColumnName: String, parents: [[String : Any]], responseHandler: ((RelationStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        var parentObjectIds = [String]()
+        for parent in parents {
+            if let parentObjectId = parent["objectId"] as? String {
+                parentObjectIds.append(parentObjectId)
+            }
+        }
+        let wrappedBlock: ([String : Any]) -> () = { response in
+            responseHandler(ProcessResponse.shared.adaptToRelationStatus(relationStatusDictionary: response))
+        }
+        return subscribeForRelationsChanges(event: RtEventHandlers.relationDelete, tableName: tableName, relationColumnName: relationColumnName, parentObjectIds: parentObjectIds, whereClause: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+    }
+    
+    public func addDeleteRelationListener(relationColumnName: String, customParents: [Any], responseHandler: ((RelationStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        var parentObjectIds = [String]()
+        for parent in customParents {
+            let parentDictionary = PersistenceHelper.shared.entityToDictionary(entity: parent)
+            if let parentObjectId = parentDictionary["objectId"] as? String {
+                parentObjectIds.append(parentObjectId)
+            }
+            else if let parentObjectId = PersistenceHelper.shared.getObjectId(entity: parent) {
+                parentObjectIds.append(parentObjectId)
+            }
+        }
+        let wrappedBlock: ([String : Any]) -> () = { response in
+            responseHandler(ProcessResponse.shared.adaptToRelationStatus(relationStatusDictionary: response))
+        }
+        return subscribeForRelationsChanges(event: RtEventHandlers.relationDelete, tableName: tableName, relationColumnName: relationColumnName, parentObjectIds: parentObjectIds, whereClause: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+    }
+    
+    public func removeDeleteRelationListeners() {
+        stopSubscription(event: RtEventHandlers.relationDelete, whereClause: nil)
+    }
+    
     public func removeAllListeners() {
         removeCreateListeners()
         removeUpdateListeners()
@@ -218,5 +364,8 @@
         removeBulkCreateListeners()
         removeBulkUpdateListeners()
         removeBulkDeleteListeners()
+        removeSetRelationListeners()
+        removeAddRelationListeners()
+        removeDeleteRelationListeners()
     }
 }
