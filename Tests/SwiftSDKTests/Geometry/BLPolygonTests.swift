@@ -264,7 +264,7 @@ class BLPolygonTests: XCTestCase {
         }
         catch {
             XCTAssert(error is Fault)
-            XCTAssert(error.localizedDescription == geoParserErrors.polygonPointsCount)
+            XCTAssert(error.localizedDescription == GeoParserErrors.polygonPointsCount)
         }
     }
     
@@ -275,7 +275,7 @@ class BLPolygonTests: XCTestCase {
         }
         catch {
             XCTAssert(error is Fault)
-            XCTAssert(error.localizedDescription == geoParserErrors.polygonPoints)
+            XCTAssert(error.localizedDescription == GeoParserErrors.polygonPoints)
         }
     }
     
@@ -309,7 +309,7 @@ class BLPolygonTests: XCTestCase {
         }
         catch {
             XCTAssert(error is Fault)
-            XCTAssert(error.localizedDescription == geoParserErrors.wrongFormat)
+            XCTAssert(error.localizedDescription == GeoParserErrors.wrongFormat)
         }
     }
     
@@ -320,7 +320,7 @@ class BLPolygonTests: XCTestCase {
         }
         catch {
             XCTAssert(error is Fault)
-            XCTAssert(error.localizedDescription == geoParserErrors.wrongFormat)
+            XCTAssert(error.localizedDescription == GeoParserErrors.wrongFormat)
         }
     }
     
@@ -331,7 +331,7 @@ class BLPolygonTests: XCTestCase {
         }
         catch {
             XCTAssert(error is Fault)
-            XCTAssert(error.localizedDescription == geoParserErrors.wrongFormat)
+            XCTAssert(error.localizedDescription == GeoParserErrors.wrongFormat)
         }
     }
     
@@ -342,7 +342,7 @@ class BLPolygonTests: XCTestCase {
         }
         catch {
             XCTAssert(error is Fault)
-            XCTAssert(error.localizedDescription == geoParserErrors.polygonPointsCount)
+            XCTAssert(error.localizedDescription == GeoParserErrors.polygonPointsCount)
         }
     }
     
@@ -353,7 +353,7 @@ class BLPolygonTests: XCTestCase {
         }
         catch {
             XCTAssert(error is Fault)
-            XCTAssert(error.localizedDescription == geoParserErrors.wrongFormat)
+            XCTAssert(error.localizedDescription == GeoParserErrors.wrongFormat)
         }
     }
     
@@ -392,7 +392,7 @@ class BLPolygonTests: XCTestCase {
         }
         catch {
             XCTAssert(error is Fault)
-            XCTAssert(error.localizedDescription == geoParserErrors.nullLatLong)
+            XCTAssert(error.localizedDescription == GeoParserErrors.nullLatLong)
         }
     }
     

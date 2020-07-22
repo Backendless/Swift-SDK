@@ -105,11 +105,16 @@ class UserServiceTests: XCTestCase {
     
     func test_05_getUserRoles() {
         let expectation = self.expectation(description: "PASSED: userService.getUserRoles")
-        backendless.userService.login(identity: USER_EMAIL, password: USER_PASSWORD, responseHandler: { loggedInUser in
-            XCTAssertNotNil(self.backendless.userService.currentUser)
-            self.backendless.userService.getUserRoles(responseHandler: { roles in
-                XCTAssertNotNil(roles)
-                expectation.fulfill()
+        backendless.userService.logout(responseHandler: {
+            self.backendless.userService.login(identity: self.USER_EMAIL, password: self.USER_PASSWORD, responseHandler: { loggedInUser in
+                XCTAssertNotNil(self.backendless.userService.currentUser)
+                self.backendless.userService.getUserRoles(responseHandler: { roles in
+                    XCTAssertNotNil(roles)
+                    expectation.fulfill()
+                }, errorHandler: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")

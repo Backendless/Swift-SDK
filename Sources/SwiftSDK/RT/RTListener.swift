@@ -56,12 +56,12 @@
         subscription.onStop = onStop
         subscription.ready = false
         
-        var typeName = rtTypes.rsoConnect
+        var typeName = RtTypes.rsoConnect
         if options["channel"] != nil {
-            typeName = rtTypes.pubSubConnect
+            typeName = RtTypes.pubSubConnect
         }    
         if let name = data["name"] as? String,
-            name != rtTypes.pubSubConnect, name != rtTypes.rsoConnect {
+            name != RtTypes.pubSubConnect, name != RtTypes.rsoConnect {
             if let event = (data["options"] as! [String : Any])["event"] as? String {
                 typeName = event
             }
@@ -80,23 +80,23 @@
     
     // ****************************************************
     
-    func subscribeForObjectChanges(event: String, tableName: String, whereClause: String?, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+    func subscribeForObjectsChanges(event: String, tableName: String, whereClause: String?, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         var options = ["tableName": tableName, "event": event]
         if let whereClause = whereClause {
             options["whereClause"] = whereClause
         }
-        if event == rtEventHandlers.created || event == rtEventHandlers.updated || event == rtEventHandlers.deleted {
+        if event == RtEventHandlers.created || event == RtEventHandlers.updated || event == RtEventHandlers.deleted {
             let wrappedBlock: (Any) -> () = { response in
                 if let response = response as? [String : Any] {
                     responseHandler(response)
                 }
             }
-            let subscription = createSubscription(type: rtTypes.objectChanges, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            let subscription = createSubscription(type: RtTypes.objectsChanges, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
             RTClient.shared.subscribe(data: subscription.data!, subscription: subscription)
             return subscription
         }
-        else if event == rtEventHandlers.bulkCreated {
-            // return value is [String] but wrapped in [String : Any] to make this the subscribeForObjectChanges method universal
+        else if event == RtEventHandlers.bulkCreated {
+            // return value is [String] but wrapped in [String : Any] to make this the subscribeForObjectsChanges method universal
             let wrappedBlock: (Any) -> () = { response in
                 if let response = response as? [String] {
                     var responseDictionary = [String : Any]()
@@ -106,27 +106,27 @@
                     responseHandler(responseDictionary)
                 }
             }
-            let subscription = createSubscription(type: rtTypes.objectChanges, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            let subscription = createSubscription(type: RtTypes.objectsChanges, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
             RTClient.shared.subscribe(data: subscription.data!, subscription: subscription)
             return subscription
         }
-        else if event == rtEventHandlers.bulkUpdated {
+        else if event == RtEventHandlers.bulkUpdated {
             let wrappedBlock: (Any) -> () = { response in
                 if let response = response as? [String : Any] {
                     responseHandler(response)
                 }
             }
-            let subscription = createSubscription(type: rtTypes.objectChanges, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            let subscription = createSubscription(type: RtTypes.objectsChanges, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
             RTClient.shared.subscribe(data: subscription.data!, subscription: subscription)
             return subscription
         }
-        else if event == rtEventHandlers.bulkDeleted {
+        else if event == RtEventHandlers.bulkDeleted {
             let wrappedBlock: (Any) -> () = { response in
                 if let response = response as? [String : Any] {
                     responseHandler(response)
                 }
             }
-            let subscription = createSubscription(type: rtTypes.objectChanges, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            let subscription = createSubscription(type: RtTypes.objectsChanges, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
             RTClient.shared.subscribe(data: subscription.data!, subscription: subscription)
             return subscription
         }
@@ -135,7 +135,27 @@
     
     // ****************************************************
     
-    func stopSubscription(event: String, whereClause: String?) {
+    func subscribeForRelationsChanges(event: String, tableName: String, relationColumnName: String, parentObjectIds: [String]?, whereClause: String?, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        var options = ["tableName": tableName, "event": event, "relationColumnName": relationColumnName] as [String : Any]
+        if parentObjectIds != nil {
+            options["parentObjects"] = parentObjectIds
+        }
+        if whereClause != nil {
+            options["whereClause"] = whereClause
+        }
+        let wrappedBlock: (Any) -> () = { response in
+            if let response = response as? [String : Any] {
+                responseHandler(response)
+            }
+        }
+        let subscription = createSubscription(type: RtTypes.relationsChanges, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+        RTClient.shared.subscribe(data: subscription.data!, subscription: subscription)
+        return subscription
+    }
+    
+    // ****************************************************
+    
+    func stopSubscription(event: String, whereClause: String?) {        
         if let subscriptionStack = self.subscriptions[event] {
             if whereClause != nil {
                 for subscription in subscriptionStack {

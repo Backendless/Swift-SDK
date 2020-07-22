@@ -1,5 +1,5 @@
 //
-//  BLGeometry.swift
+//  RelationStatus.swift
 //
 /*
  * *********************************************************************************************************************
@@ -19,20 +19,9 @@
  *  ********************************************************************************************************************
  */
 
-enum GeoParserErrors {
-    static let wrongFormat = "Provided geo data has wrong format" // Invalid GIS data provided to function st_geometryfromtext
-    static let nullLatLong = "Longitude or latitude can't be null"
-    static let lineStringPointsCount = "LineString must have 2 or more points"
-    static let polygonPointsCount = "Polygon must have 3 or more points"
-    static let polygonPoints = "Some of the 'LineStrings' aren't closed (first and last points must be equal)"
-}
-
-public protocol BLGeometry {
-    
-    var srs: SpatialReferenceSystemEnum? { get set }
-    
-    func jsonCoordinatePairs() -> String?
-    func wktCoordinatePairs() -> String?
-    func asGeoJson() -> [String : Any]?
-    func asWkt() -> String?
+@objcMembers public class RelationStatus: NSObject {
+    public var parentObjectId: String?
+    public var isConditional = false
+    public var whereClause: String?
+    public var children: [String]?
 }

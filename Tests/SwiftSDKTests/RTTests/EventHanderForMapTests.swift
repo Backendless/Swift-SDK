@@ -29,6 +29,7 @@ class EventHanderForMapTests: XCTestCase {
     private let timeout: Double = 20.0
     
     private var dataStore: MapDrivenDataStore!
+    private var childDataStore: MapDrivenDataStore!
     private var eventHandler: EventHandlerForMap!
     
     // call before all tests
@@ -41,6 +42,7 @@ class EventHanderForMapTests: XCTestCase {
     // call before each test
     override func setUp() {
         dataStore = backendless.data.ofTable("TestClass")
+        childDataStore = backendless.data.ofTable("ChildTestClass")
         eventHandler = dataStore.rt
         eventHandler.removeAllListeners()
     }
@@ -753,10 +755,245 @@ class EventHanderForMapTests: XCTestCase {
         self.waitForExpectations(timeout: timeout, handler: nil)
     }
     
+    func test_24_addSetRelationListener() {
+        let expectation = self.expectation(description: "PASSED: eventHandlerForMap.addSetRelationListener")
+        let _ = eventHandler.addSetRelationListener(relationColumnName: "child", responseHandler: { relationStatus in
+            expectation.fulfill()
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+            let objectToSave = self.createDictionary()
+            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+                let childObjectToSave = self.createChildDictionary()
+                self.childDataStore.save(entity: childObjectToSave, responseHandler: { savedChild in
+                    if let parentId = savedObject["objectId"] as? String,
+                        let childId = savedChild["objectId"] as? String {
+                        self.dataStore.setRelation(columnName: "child", parentObjectId: parentId, childrenObjectIds: [childId], responseHandler: { relationsSet in
+                        }, errorHandler: { fault in
+                            XCTAssertNotNil(fault)
+                            XCTFail("\(fault.code): \(fault.message!)")
+                        })
+                    }
+                }, errorHandler: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        })
+        self.waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test_25_removeSetRelationListeners() {
+        let expectation = self.expectation(description: "PASSED: eventHandlerForMap.removeSetRelationListener")
+        let subscriptionToStop = eventHandler.addSetRelationListener(relationColumnName: "child", responseHandler: { relationStatus in
+            XCTFail("This subscription must be removed")
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        let _ = eventHandler.addSetRelationListener(relationColumnName: "child", responseHandler: { relationStatus in
+            expectation.fulfill()
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+            let objectToSave = self.createDictionary()
+            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+                let childObjectToSave = self.createChildDictionary()
+                self.childDataStore.save(entity: childObjectToSave, responseHandler: { savedChild in
+                    if let parentId = savedObject["objectId"] as? String,
+                        let childId = savedChild["objectId"] as? String {
+                        subscriptionToStop?.stop()
+                        self.dataStore.setRelation(columnName: "child", parentObjectId: parentId, childrenObjectIds: [childId], responseHandler: { relationsSet in
+                        }, errorHandler: { fault in
+                            XCTAssertNotNil(fault)
+                            XCTFail("\(fault.code): \(fault.message!)")
+                        })
+                    }
+                }, errorHandler: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        })
+        self.waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test_26_addAddRelationListener() {
+        let expectation = self.expectation(description: "PASSED: eventHandlerForMap.addAddRelationListener")
+        let _ = eventHandler.addAddRelationListener(relationColumnName: "child", responseHandler: { relationStatus in
+            expectation.fulfill()
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+            let objectToSave = self.createDictionary()
+            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+                let childObjectToSave = self.createChildDictionary()
+                self.childDataStore.save(entity: childObjectToSave, responseHandler: { savedChild in
+                    if let parentId = savedObject["objectId"] as? String,
+                        let childId = savedChild["objectId"] as? String {
+                        self.dataStore.addRelation(columnName: "child", parentObjectId: parentId, childrenObjectIds: [childId], responseHandler: { relationsSet in
+                        }, errorHandler: { fault in
+                            XCTAssertNotNil(fault)
+                            XCTFail("\(fault.code): \(fault.message!)")
+                        })
+                    }
+                }, errorHandler: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        })
+        self.waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test_27_removeAddRelationListeners() {
+        let expectation = self.expectation(description: "PASSED: eventHandlerForMap.removeAddRelationListener")
+        let subscriptionToStop = eventHandler.addAddRelationListener(relationColumnName: "child", responseHandler: { relationStatus in
+            XCTFail("This subscription must be removed")
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        let _ = eventHandler.addAddRelationListener(relationColumnName: "child", responseHandler: { relationStatus in
+            expectation.fulfill()
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+            let objectToSave = self.createDictionary()
+            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+                let childObjectToSave = self.createChildDictionary()
+                self.childDataStore.save(entity: childObjectToSave, responseHandler: { savedChild in
+                    if let parentId = savedObject["objectId"] as? String,
+                        let childId = savedChild["objectId"] as? String {
+                        subscriptionToStop?.stop()
+                        self.dataStore.addRelation(columnName: "child", parentObjectId: parentId, childrenObjectIds: [childId], responseHandler: { relationsAdded in
+                        }, errorHandler: { fault in
+                            XCTAssertNotNil(fault)
+                            XCTFail("\(fault.code): \(fault.message!)")
+                        })
+                    }
+                }, errorHandler: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        })
+                
+        self.waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test_28_addDeleteRelationListener() {
+        let expectation = self.expectation(description: "PASSED: eventHandlerForMap.addDeleteRelationListener")
+        let _ = eventHandler.addDeleteRelationListener(relationColumnName: "child", responseHandler: { relationStatus in
+            expectation.fulfill()
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+            let objectToSave = self.createDictionary()
+            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+                let childObjectToSave = self.createChildDictionary()
+                self.childDataStore.save(entity: childObjectToSave, responseHandler: { savedChild in
+                    if let parentId = savedObject["objectId"] as? String,
+                        let childId = savedChild["objectId"] as? String {
+                        self.dataStore.setRelation(columnName: "child", parentObjectId: parentId, childrenObjectIds: [childId], responseHandler: { relationsSet in
+                            self.dataStore.deleteRelation(columnName: "child", parentObjectId: parentId, childrenObjectIds: [childId], responseHandler: { relationsDeleted in
+                            }, errorHandler: { fault in
+                                XCTAssertNotNil(fault)
+                                XCTFail("\(fault.code): \(fault.message!)")
+                            })
+                        }, errorHandler: { fault in
+                            XCTAssertNotNil(fault)
+                            XCTFail("\(fault.code): \(fault.message!)")
+                        })
+                    }
+                }, errorHandler: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        })
+        self.waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test_29_removeDeleteRelationListeners() {
+        let expectation = self.expectation(description: "PASSED: eventHandlerForMap.removeDeleteRelationListener")
+        let subscriptionToStop = eventHandler.addDeleteRelationListener(relationColumnName: "child", responseHandler: { relationStatus in
+            XCTFail("This subscription must be removed")
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        let _ = eventHandler.addDeleteRelationListener(relationColumnName: "child", responseHandler: { relationStatus in
+            expectation.fulfill()
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+            let objectToSave = self.createDictionary()
+            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+                let childObjectToSave = self.createChildDictionary()
+                self.childDataStore.save(entity: childObjectToSave, responseHandler: { savedChild in
+                    if let parentId = savedObject["objectId"] as? String,
+                        let childId = savedChild["objectId"] as? String {
+                        subscriptionToStop?.stop()
+                        self.dataStore.setRelation(columnName: "child", parentObjectId: parentId, childrenObjectIds: [childId], responseHandler: { relationsSet in
+                            self.dataStore.deleteRelation(columnName: "child", parentObjectId: parentId, childrenObjectIds: [childId], responseHandler: { relationsDeleted in
+                            }, errorHandler: { fault in
+                                XCTAssertNotNil(fault)
+                                XCTFail("\(fault.code): \(fault.message!)")
+                            })
+                        }, errorHandler: { fault in
+                            XCTAssertNotNil(fault)
+                            XCTFail("\(fault.code): \(fault.message!)")
+                        })
+                    }
+                }, errorHandler: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        })
+                
+        self.waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
     // ***************************************
     
     func createDictionary() -> [String: Any] {
         return ["name": "Bob", "age": 25]
+    }
+    
+    func createChildDictionary() -> [String : Any] {
+        return ["foo": "bar"]
     }
     
     func createDictionaries(numberOfObjects: Int) -> [[String: Any]] {

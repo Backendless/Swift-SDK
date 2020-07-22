@@ -1,5 +1,10 @@
 # RELEASE HISTORY
 
+### 6.0.1 / July 22, 2020
+* added RT Listeners for Relations support
+* fixed transactions fail issue when object is BackendlessUser
+* class approach fixed to handle JSON column type correctly
+
 ### 6.0 / June 17, 2020
 * added [transactions API](https://backendless.com/docs/ios/data_transactions_overview.html)
 * most of the get/set methods are marked as deprecated andtheir corresponding properties changed to public. These getters and setters are still available, but will be removed in the future, please use the `.` to access the properties

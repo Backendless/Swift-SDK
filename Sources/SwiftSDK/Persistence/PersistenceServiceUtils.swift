@@ -302,7 +302,7 @@ class PersistenceServiceUtils {
             }
         }
             
-        // relationsPageSize = nil
+            // relationsPageSize = nil
         else {
             if related != nil {
                 restMethod += "?loadRelations=\(DataTypesUtils.shared.arrayToString(array: related!))"
@@ -495,11 +495,10 @@ class PersistenceServiceUtils {
     }
     
     func getTableName(entity: Any) -> String {
-        var name = String(describing: entity)
-        if name == "BackendlessUser" {
-            name = "Users"
+        if entity is SwiftSDK.BackendlessUser.Type {
+            return "Users"
         }
-        return name
+        return String(describing: entity)
     }
     
     func getClassName(entity: Any) -> String {
@@ -834,38 +833,6 @@ class PersistenceServiceUtils {
         }
         return nil
     }
-    
-    /*func convertToGeometryType(dictionary: [String : Any]) -> [String : Any] {
-        var resultDictionary = dictionary
-        for (key, value) in dictionary {
-            if let dictValue = value as? [String : Any] {
-                if dictValue["___class"] as? String == BLPoint.geometryClassName || dictValue["type"] as? String == BLPoint.geoJsonType {
-                    resultDictionary[key] = try? GeoJSONParser.dictionaryToPoint(dictValue)
-                }
-                else if dictValue["___class"] as? String == BLLineString.geometryClassName || dictValue["type"] as? String == BLLineString.geoJsonType {
-                    resultDictionary[key] = try? GeoJSONParser.dictionaryToLineString(dictValue)
-                }
-                else if dictValue["___class"] as? String == BLPolygon.geometryClassName || dictValue["type"] as? String == BLPolygon.geoJsonType {
-                    resultDictionary[key] = try? GeoJSONParser.dictionaryToPolygon(dictValue)
-                }
-            }
-            else if let dictValue = value as? String {
-                if dictValue.contains(BLPoint.wktType) {
-                    resultDictionary[key] = try? BLPoint.fromWkt(dictValue)
-                }
-                else if dictValue.contains(BLLineString.wktType) {
-                    resultDictionary[key] = try? BLLineString.fromWkt(dictValue)
-                }
-                else if dictValue.contains(BLPolygon.wktType) {
-                    resultDictionary[key] = try? BLPolygon.fromWkt(dictValue)
-                }
-            }
-            else if var dictValue = value as? [String : Any] {
-                dictValue = convertToGeometryType(dictionary: dictValue)
-            }
-        }
-        return resultDictionary
-    }*/
     
     func convertFromGeometryType(dictionary: [String : Any]) -> [String : Any] {
         var resultDictionary = dictionary

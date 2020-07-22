@@ -40,9 +40,9 @@ class UnitOfWorkUpdate {
     func update(result: OpResult, changes: [String : Any]) -> (Operation, OpResult) {
         let (tableName, opResultId) = prepareForUpdate(result: result)
         var payload = changes
-        payload["objectId"] = [uowProps.ref: true,
-                               uowProps.propName: "objectId",
-                               uowProps.opResultId: result.makeReference()[uowProps.opResultId]]
+        payload["objectId"] = [UowProps.ref: true,
+                               UowProps.propName: "objectId",
+                               UowProps.opResultId: result.makeReference()[UowProps.opResultId]]
         let operation = Operation(operationType: .UPDATE, tableName: tableName, opResultId: opResultId, payload: payload)
         let opResult = TransactionHelper.shared.makeOpResult(tableName: tableName, operationResultId: opResultId, operationType: .UPDATE, uow: uow)
         return (operation, opResult)
@@ -53,15 +53,15 @@ class UnitOfWorkUpdate {
         let (tableName, opResultId) = prepareForUpdate(result: result)
         var payload = changes
         if result.operationType == .CREATE_BULK {
-            payload["objectId"] = [uowProps.ref: true,
-                                   uowProps.opResultId: valueReference.makeReference()?[uowProps.opResultId],
-                                   uowProps.resultIndex: valueReference.makeReference()?[uowProps.resultIndex]]
+            payload["objectId"] = [UowProps.ref: true,
+                                   UowProps.opResultId: valueReference.makeReference()?[UowProps.opResultId],
+                                   UowProps.resultIndex: valueReference.makeReference()?[UowProps.resultIndex]]
         }
         else if result.operationType == .FIND {
-            payload["objectId"] = [uowProps.ref: true,
-                                   uowProps.propName: "objectId",
-                                   uowProps.opResultId: valueReference.makeReference()?[uowProps.opResultId],
-                                   uowProps.resultIndex: valueReference.makeReference()?[uowProps.resultIndex]]
+            payload["objectId"] = [UowProps.ref: true,
+                                   UowProps.propName: "objectId",
+                                   UowProps.opResultId: valueReference.makeReference()?[UowProps.opResultId],
+                                   UowProps.resultIndex: valueReference.makeReference()?[UowProps.resultIndex]]
         }
         let operation = Operation(operationType: .UPDATE, tableName: tableName, opResultId: opResultId, payload: payload)
         let opResult = TransactionHelper.shared.makeOpResult(tableName: tableName, operationResultId: opResultId, operationType: .UPDATE, uow: uow)
@@ -88,8 +88,8 @@ class UnitOfWorkUpdate {
     
     func bulkUpdate(result: OpResult, changes: [String : Any]) -> (Operation, OpResult) {
         let (tableName, opResultId) = prepareForBulkUpdate(result: result)
-        let payload = ["unconditional": [uowProps.ref: true,
-                                         uowProps.opResultId: result.makeReference()[uowProps.opResultId]],
+        let payload = ["unconditional": [UowProps.ref: true,
+                                         UowProps.opResultId: result.makeReference()[UowProps.opResultId]],
                        "changes": TransactionHelper.shared.preparePayloadWithOpResultValueReference(tmpRemoveObjectId(changes))] as [String : Any]
         let operation = Operation(operationType: .UPDATE_BULK, tableName: tableName, opResultId: opResultId, payload: payload)
         let opResult = TransactionHelper.shared.makeOpResult(tableName: tableName, operationResultId: opResultId, operationType: .UPDATE_BULK, uow: uow)

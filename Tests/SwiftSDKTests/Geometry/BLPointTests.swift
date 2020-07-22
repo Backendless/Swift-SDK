@@ -191,7 +191,7 @@ class BLPointTests: XCTestCase {
         }
         catch {
             XCTAssert(error is Fault)
-            XCTAssert(error.localizedDescription == geoParserErrors.wrongFormat)
+            XCTAssert(error.localizedDescription == GeoParserErrors.wrongFormat)
         }
     }
     
@@ -201,7 +201,7 @@ class BLPointTests: XCTestCase {
         }
         catch {
             XCTAssert(error is Fault)
-            XCTAssert(error.localizedDescription == geoParserErrors.wrongFormat)
+            XCTAssert(error.localizedDescription == GeoParserErrors.wrongFormat)
         }
     }
     
@@ -211,7 +211,7 @@ class BLPointTests: XCTestCase {
         }
         catch {
             XCTAssert(error is Fault)
-            XCTAssert(error.localizedDescription == geoParserErrors.wrongFormat)
+            XCTAssert(error.localizedDescription == GeoParserErrors.wrongFormat)
         }
     }
     
@@ -221,7 +221,7 @@ class BLPointTests: XCTestCase {
         }
         catch {
             XCTAssert(error is Fault)
-            XCTAssert(error.localizedDescription == geoParserErrors.wrongFormat)
+            XCTAssert(error.localizedDescription == GeoParserErrors.wrongFormat)
         }
     }
     
@@ -231,7 +231,7 @@ class BLPointTests: XCTestCase {
         }
         catch {
             XCTAssert(error is Fault)
-            XCTAssert(error.localizedDescription == geoParserErrors.wrongFormat)
+            XCTAssert(error.localizedDescription == GeoParserErrors.wrongFormat)
         }
     }
     
@@ -254,7 +254,7 @@ class BLPointTests: XCTestCase {
         }
         catch {
             XCTAssert(error is Fault)
-            XCTAssert(error.localizedDescription == geoParserErrors.wrongFormat)
+            XCTAssert(error.localizedDescription == GeoParserErrors.wrongFormat)
         }
     }
     
@@ -264,7 +264,7 @@ class BLPointTests: XCTestCase {
         }
         catch {
             XCTAssert(error is Fault)
-            XCTAssert(error.localizedDescription == geoParserErrors.wrongFormat)
+            XCTAssert(error.localizedDescription == GeoParserErrors.wrongFormat)
         }
     }
     
@@ -274,7 +274,7 @@ class BLPointTests: XCTestCase {
         }
         catch {
             XCTAssert(error is Fault)
-            XCTAssert(error.localizedDescription == geoParserErrors.nullLatLong)
+            XCTAssert(error.localizedDescription == GeoParserErrors.nullLatLong)
         }
     }
     

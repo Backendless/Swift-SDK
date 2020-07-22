@@ -255,6 +255,9 @@ class PersistenceHelper {
                         if let relationEntity = dictionaryToMappedClass(dictValue) {
                             entity.setValue(relationEntity, forKey: entityField)
                         }
+                        else {
+                            entity.setValue(value, forKey: entityField)
+                        }
                     }
                     else if let arrayValue = value as? [[String : Any]] {
                         var resultArray = [Any]()
