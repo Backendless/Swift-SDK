@@ -495,7 +495,7 @@ class PersistenceServiceUtils {
     }
     
     func getTableName(entity: Any) -> String {
-        if entity is SwiftSDK.BackendlessUser.Type {
+        if entity is BackendlessUser.Type {
             return "Users"
         }
         return String(describing: entity)
