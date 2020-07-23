@@ -22,7 +22,7 @@
 import XCTest
 @testable import SwiftSDK
 
-class UOWBulkCreateTests: XCTestCase {
+class DataUOWBulkCreateTests: XCTestCase {
     
     private let backendless = Backendless.shared
     private let testObjectsUtils = TestObjectsUtils.shared
@@ -34,12 +34,6 @@ class UOWBulkCreateTests: XCTestCase {
     override class func setUp() {
         Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
         Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
-        clearTables()
-    }
-    
-    // call after all tests
-    override class func tearDown() {
-        clearTables()
     }
     
     class func clearTables() {
