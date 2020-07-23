@@ -32,7 +32,7 @@ class DataStoreFactoryTests: XCTestCase {
     private var dataStore: DataStoreFactory!
     private var childDataStore: DataStoreFactory!
     
-    // call before all te
+    // call before all tests
     override class func setUp() {
         Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
         Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
@@ -43,11 +43,6 @@ class DataStoreFactoryTests: XCTestCase {
     override func setUp() {
         dataStore = backendless.data.of(TestClass.self)
         childDataStore = backendless.data.of(ChildTestClass.self)
-    }
-    
-    // call after all tests
-    override class func tearDown() {
-        clearTables()
     }
     
     class func clearTables() {

@@ -47,11 +47,6 @@ class EventHanderForMapTests: XCTestCase {
         eventHandler.removeAllListeners()
     }
     
-    // call after all tests
-    override class func tearDown() {
-        clearTables()
-    }
-    
     // call after each tests
     override func tearDown() {
         eventHandler.removeAllListeners()

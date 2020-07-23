@@ -53,7 +53,7 @@ class TransactionHelper {
             return (tableName, dictionaryArray)
         }
         let tableName = psu.getTableName(entity: type(of: entity))
-        let entityDictionary = psu.entityToDictionary(entity: entity)
+        let entityDictionary = psu.entityToDictionary(entity: entity)        
         return (tableName, entityDictionary)
     }
     

@@ -22,7 +22,7 @@
 import XCTest
 @testable import SwiftSDK
 
-class UOWFindTests: XCTestCase {
+class DataUOWFindTests: XCTestCase {
 
     private let backendless = Backendless.shared
     private let testObjectsUtils = TestObjectsUtils.shared

@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 6.0.1.1 / July 23, 2020
+* fixed transactions fail issue when object is BackendlessUser
+
 ### 6.0.1 / July 22, 2020
 * added RT Listeners for Relations support
 * fixed transactions fail issue when object is BackendlessUser
