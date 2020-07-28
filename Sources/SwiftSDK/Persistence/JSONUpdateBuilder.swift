@@ -66,7 +66,7 @@
             else if self == .replace { return "JSON_REPLACE" }
             else if self == .remove { return "JSON_REMOVE" }
             else if self == .arrayAppend { return "JSON_ARRAY_APPEND" }
-            return "JSON_ARRAY_INSERT"
+            return "JSON_   ARRAY_INSERT"
         }
     }
     

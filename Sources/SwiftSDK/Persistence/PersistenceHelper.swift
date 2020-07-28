@@ -255,6 +255,9 @@ class PersistenceHelper {
                         if let relationEntity = dictionaryToMappedClass(dictValue) {
                             entity.setValue(relationEntity, forKey: entityField)
                         }
+                        else if let customEntity = jsonDictionaryToEntity(dictValue, propertyName: key, parentEntity: entity) {
+                            entity.setValue(customEntity, forKey: entityField)
+                        }
                         else {
                             entity.setValue(value, forKey: entityField)
                         }
@@ -264,6 +267,9 @@ class PersistenceHelper {
                         for dictValue in arrayValue {
                             if let relationEntity = dictionaryToMappedClass(dictValue) {
                                 resultArray.append(relationEntity)
+                            }
+                            else if let customEntity = jsonDictionaryToEntity(dictValue, propertyName: key, parentEntity: entity) {
+                                resultArray.append(customEntity)
                             }
                         }
                         entity.setValue(resultArray, forKey: entityField)
@@ -279,6 +285,22 @@ class PersistenceHelper {
             return entity
         }
         return dictionary
+    }
+    
+    private func jsonDictionaryToEntity(_ dictionary: [String : Any], propertyName: String, parentEntity: Any) -> Any? {
+        let parentProperties = Mirror(reflecting: parentEntity).children
+        for property in parentProperties {
+            if property.label == propertyName {
+                let propertyType = type(of: property.value)
+                var propertyTypeName = String(describing: propertyType)
+                propertyTypeName = propertyTypeName.replacingOccurrences(of: "Optional<", with: "")
+                propertyTypeName = propertyTypeName.replacingOccurrences(of: "Array<", with: "")
+                propertyTypeName = propertyTypeName.replacingOccurrences(of: ">", with: "")                
+                return dictionaryToEntity(dictionary, className: propertyTypeName)
+            }
+        }
+        
+        return nil
     }
     
     // MARK: - Private functions
