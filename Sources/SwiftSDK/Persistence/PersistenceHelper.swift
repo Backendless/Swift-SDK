@@ -137,7 +137,16 @@ class PersistenceHelper {
             userDict["password"] = user._password
             userDict["name"] = user.name
             return userDict
-        }  
+        }
+        if var dict = entity as? [String : Any] {
+            for (key, value) in dict {
+                dict[key] = JSONUtils.shared.objectToJson(objectToParse: value)
+            }
+            return dict
+        }
+        
+        // *************************
+        
         var entityDictionary = [String: Any]()
         let resultClass = type(of: entity) as! NSObject.Type
         var outCount : UInt32 = 0
@@ -213,7 +222,12 @@ class PersistenceHelper {
         if className == "BackendlessUser" {
             className = "Users"
         }
-        entityDictionary["___class"] = className
+        if className.contains("Dictionary") || className.contains("Array") {
+            entityDictionary["___class"] = nil
+        }
+        else {
+            entityDictionary["___class"] = className
+        }
         return entityDictionary
     }
     
@@ -244,6 +258,7 @@ class PersistenceHelper {
             let entity = resultEntityType.init()
             let entityClassName = getClassNameWithoutModule(entity.classForCoder)
             let entityFields = getClassPropertiesWithType(entity: entity)
+            
             let columnMappings = Mappings.shared.getColumnToPropertyMappings(className: entityClassName)
             for (key, value) in dictionary {
                 if !(value is NSNull) {
@@ -252,10 +267,15 @@ class PersistenceHelper {
                         entityField = columnMappings[key]!
                     }
                     if let dictValue = value as? [String : Any] {
-                        if let relationEntity = dictionaryToMappedClass(dictValue) {
+                        if let relationEntity = dictionaryToMappedClass(dictValue),
+                            entityFields.keys.contains(entityField) {
                             entity.setValue(relationEntity, forKey: entityField)
                         }
-                        else {
+                        else if let customEntity = jsonDictionaryToEntity(dictValue, propertyName: entityField, parentEntity: entity),
+                            entityFields.keys.contains(entityField) {
+                            entity.setValue(customEntity, forKey: entityField)
+                        }
+                        else if entityFields.keys.contains(entityField) {
                             entity.setValue(value, forKey: entityField)
                         }
                     }
@@ -265,10 +285,16 @@ class PersistenceHelper {
                             if let relationEntity = dictionaryToMappedClass(dictValue) {
                                 resultArray.append(relationEntity)
                             }
+                            else if let customEntity = jsonDictionaryToEntity(dictValue, propertyName: entityField, parentEntity: entity) {
+                                resultArray.append(customEntity)
+                            }
                         }
-                        entity.setValue(resultArray, forKey: entityField)
+                        if entityFields.keys.contains(entityField) {
+                            entity.setValue(resultArray, forKey: entityField)
+                        }
                     }
-                    else if let valueType = entityFields[entityField] {
+                    else if let valueType = entityFields[entityField],
+                        entityFields.keys.contains(entityField) {
                         entity.setValue(valueToSpecificType(value, valueType: valueType), forKey: entityField)
                     }
                 }
@@ -279,6 +305,22 @@ class PersistenceHelper {
             return entity
         }
         return dictionary
+    }
+    
+    private func jsonDictionaryToEntity(_ dictionary: [String : Any], propertyName: String, parentEntity: Any) -> Any? {
+        let parentProperties = Mirror(reflecting: parentEntity).children
+        for property in parentProperties {
+            if property.label == propertyName {
+                let propertyType = type(of: property.value)
+                var propertyTypeName = String(describing: propertyType)
+                propertyTypeName = propertyTypeName.replacingOccurrences(of: "Optional<", with: "")
+                propertyTypeName = propertyTypeName.replacingOccurrences(of: "Array<", with: "")
+                propertyTypeName = propertyTypeName.replacingOccurrences(of: ">", with: "")
+                return dictionaryToEntity(dictionary, className: propertyTypeName)
+            }
+        }
+        
+        return nil
     }
     
     // MARK: - Private functions

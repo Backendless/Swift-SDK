@@ -36,6 +36,7 @@
 		5E158BC623AE5DC100D29505 /* BLPointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAA20B5239953E600A39A38 /* BLPointTests.swift */; };
 		5E15A06C223B9C9D0090F5A3 /* RTMessagingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E15A06B223B9C9D0090F5A3 /* RTMessagingTests.swift */; };
 		5E17A1AA23954E0400B078B5 /* BLLineString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E17A1A923954E0400B078B5 /* BLLineString.swift */; };
+		5E17EE6724CAF8BF00D7321B /* JSONUpdateBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E17EE6624CAF8BF00D7321B /* JSONUpdateBuilder.swift */; };
 		5E1CC2F72252534F0011D5C8 /* FileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1CC2F62252534F0011D5C8 /* FileService.swift */; };
 		5E1CC2F9225254140011D5C8 /* BackendlessFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1CC2F8225254140011D5C8 /* BackendlessFile.swift */; };
 		5E1DB58F23E19FAA00955319 /* UnitOfWork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1DB58E23E19FAA00955319 /* UnitOfWork.swift */; };
@@ -157,6 +158,7 @@
 		5EDA87DE2434C44B00873403 /* DataUOWDeleteRelation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EDA87DD2434C44B00873403 /* DataUOWDeleteRelation.swift */; };
 		5EDB502023E1CE5700E36E62 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EDB501F23E1CE5700E36E62 /* Operation.swift */; };
 		5EE063BF22017EAA00B862EA /* LoadRelationsQueryBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE063BE22017EAA00B862EA /* LoadRelationsQueryBuilder.swift */; };
+		5EE23C0B24CB198B00F2FD67 /* ArgHolders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE23C0A24CB198B00F2FD67 /* ArgHolders.swift */; };
 		5EE2B40721C25EC600F90723 /* BackendlessUserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE2B40621C25EC600F90723 /* BackendlessUserTests.swift */; };
 		5EE335AB2396679300A245B1 /* BLPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE335AA2396679300A245B1 /* BLPolygon.swift */; };
 		5EE509AD24B342B900DDBBD3 /* RelationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE509AC24B342B900DDBBD3 /* RelationStatus.swift */; };
@@ -211,6 +213,7 @@
 		5E13C3A522046F7C00EA3050 /* JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
 		5E15A06B223B9C9D0090F5A3 /* RTMessagingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTMessagingTests.swift; sourceTree = "<group>"; };
 		5E17A1A923954E0400B078B5 /* BLLineString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLLineString.swift; sourceTree = "<group>"; };
+		5E17EE6624CAF8BF00D7321B /* JSONUpdateBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONUpdateBuilder.swift; sourceTree = "<group>"; };
 		5E1CC2F62252534F0011D5C8 /* FileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileService.swift; sourceTree = "<group>"; };
 		5E1CC2F8225254140011D5C8 /* BackendlessFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessFile.swift; sourceTree = "<group>"; };
 		5E1DB58E23E19FAA00955319 /* UnitOfWork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfWork.swift; sourceTree = "<group>"; };
@@ -335,6 +338,7 @@
 		5EDA87DD2434C44B00873403 /* DataUOWDeleteRelation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataUOWDeleteRelation.swift; sourceTree = "<group>"; };
 		5EDB501F23E1CE5700E36E62 /* Operation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
 		5EE063BE22017EAA00B862EA /* LoadRelationsQueryBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadRelationsQueryBuilder.swift; sourceTree = "<group>"; };
+		5EE23C0A24CB198B00F2FD67 /* ArgHolders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgHolders.swift; sourceTree = "<group>"; };
 		5EE2B40621C25EC600F90723 /* BackendlessUserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessUserTests.swift; sourceTree = "<group>"; };
 		5EE335AA2396679300A245B1 /* BLPolygon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLPolygon.swift; sourceTree = "<group>"; };
 		5EE509AC24B342B900DDBBD3 /* RelationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelationStatus.swift; sourceTree = "<group>"; };
@@ -410,6 +414,8 @@
 				5E06AD4C23F6759700950993 /* PersistenceHelper.swift */,
 				5E9718F8221BFD0D00857603 /* RT */,
 				5EA2B69A21F2324B00CFDC37 /* StoredObjects.swift */,
+				5E17EE6624CAF8BF00D7321B /* JSONUpdateBuilder.swift */,
+				5EE23C0A24CB198B00F2FD67 /* ArgHolders.swift */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -1124,6 +1130,7 @@
 				5EA87B75221D4A3100A8B93F /* ReconnectAttemptObject.swift in Sources */,
 				5AFE8E6421E8E3430003477B /* TestsConfig.swift in Sources */,
 				5E971910221C27BB00857603 /* EventHandlerForClass.swift in Sources */,
+				5EE23C0B24CB198B00F2FD67 /* ArgHolders.swift in Sources */,
 				5E535A1222A6752D00AB0738 /* EmailEnvelope.swift in Sources */,
 				5EE509AD24B342B900DDBBD3 /* RelationStatus.swift in Sources */,
 				5E9718FD221BFE3D00857603 /* RTFactory.swift in Sources */,
@@ -1142,6 +1149,7 @@
 				5E17A1AA23954E0400B078B5 /* BLLineString.swift in Sources */,
 				5E64F0BF21C50D8E00590B04 /* BackendlessRequestManager.swift in Sources */,
 				5A2A785321E61D1700EC8007 /* DataStoreFactory.swift in Sources */,
+				5E17EE6724CAF8BF00D7321B /* JSONUpdateBuilder.swift in Sources */,
 				5E90721121B66E9E00619C0D /* Fault.swift in Sources */,
 				5E45F669225F52C5001DD7CF /* GeoMath.swift in Sources */,
 				5EE335AB2396679300A245B1 /* BLPolygon.swift in Sources */,
