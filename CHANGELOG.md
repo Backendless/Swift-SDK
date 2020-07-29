@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### ?, 2020
+* added support for JSON data type, added the JSONUpdateBuilder class
+
 ### 6.0.1.1 / July 23, 2020
 * fixed transactions fail issue when object is BackendlessUser
 

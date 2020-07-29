@@ -1,5 +1,5 @@
 //
-//  StoredObjects.swift
+//  JSONUpdateBuilder.swift
 //
 /*
  * *********************************************************************************************************************
@@ -18,34 +18,6 @@
  *
  *  ********************************************************************************************************************
  */
-
-
-
-/*@objcMembers public class ArgHolder: NSObject {
-    
-    //private override init() { }
-    
-    public func create() -> [String : Any] {
-        return JSONUpdateBuilder().jsonUpdate
-    }
-}
-
-// ***************************************************
-
-@objcMembers public class GeneralArgHolder: ArgHolder {
-    var jsonUpdateArgs = [String : Any]()
-    
-    override init() {
-        JSONUpdateBuilder().jsonUpdate[JSONUpdateBuilder.operationFieldName] = jsonUpdateArgs
-    }
-    
-    public func addArgument(jsonPath: String, value: Any) -> GeneralArgHolder {
-        jsonUpdateArgs[jsonPath] = value
-        return self
-    }
-}*/
-
-// ************************************************
 
 @objcMembers public class JSONUpdateBuilder: NSObject {
     
