@@ -80,7 +80,7 @@ class ProcessResponse {
         }
         else if let _response = response.response {
             if let data = response.data {
-                if let responseResultDictionary =  try? JSONSerialization.jsonObject(with: data, options: []) {
+                if let responseResultDictionary = try? JSONSerialization.jsonObject(with: data, options: []) {
                     if let faultDictionary = responseResultDictionary as? [String: Any],
                         let faultCode = faultDictionary["code"] as? Int,
                         let faultMessage = faultDictionary["message"] as? String {
@@ -94,6 +94,9 @@ class ProcessResponse {
                     return responseResultDictionary
                 }
                 else if let responseString = String(data: data, encoding: .utf8) {
+                    if responseString == "null" {
+                        return nil
+                    }
                     return responseString
                 }
             }

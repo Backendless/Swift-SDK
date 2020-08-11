@@ -1,7 +1,9 @@
 # RELEASE HISTORY
 
-### ?, 2020
+### 6.0.2 / August 11, 2020
 * added support for JSON data type, added the JSONUpdateBuilder class
+* fixed bug when custom service method returns null in response
+* added tests for the RT Relations Listeners
 
 ### 6.0.1.1 / July 23, 2020
 * fixed transactions fail issue when object is BackendlessUser
