@@ -48,7 +48,44 @@
     }
     
     private func processInvokeResponse(response: ReturnedResponse, responseHandler: ((Any?) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
+        let result = ProcessResponse.shared.adapt(response: response, to: JSON.self)        
+        if result == nil {
+            responseHandler(nil)
+        }
+        else {
+            if result is Fault {
+                errorHandler(result as! Fault)
+            }
+            else {
+                if let resultDictionary = (result as! JSON).dictionaryObject {
+                    responseHandler(JSONUtils.shared.jsonToObject(objectToParse: resultDictionary))
+                }
+                else if let resultArray = (result as! JSON).arrayObject {
+                    responseHandler(JSONUtils.shared.jsonToObject(objectToParse: resultArray))
+                }
+                else if let resultString = String(bytes: response.data!, encoding: .utf8) {
+                    if resultString == "\"void\"" || resultString == "\"null\"" {
+                        responseHandler(nil)
+                    }
+                    else {
+                        if let resultInt = Int(resultString) {
+                            responseHandler(resultInt)
+                        }
+                        else if let resultDouble = Double(resultString) {
+                            responseHandler(resultDouble)
+                        }
+                        else {
+                            responseHandler(resultString)
+                        }
+                    }
+                }
+                else {
+                    responseHandler(nil)
+                }
+            }
+        }
+        
+        /*if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
             if result is Fault {
                 errorHandler(result as! Fault)
             }
@@ -84,6 +121,6 @@
             else {
                 responseHandler(nil)
             }
-        }
+        }*/
     }
 }
