@@ -5,7 +5,7 @@ import PackageDescription
 import Foundation
 
 let package = Package(
-    name: "SwiftSDK",
+    name: "Backendless",
     products: [
         .library(name: "SwiftSDK", targets: ["SwiftSDK"]),
     ],
