@@ -37,3 +37,25 @@ pod 'BackendlessSwift'
 
 5. Save Podfile, return to Terminal window and run the `pod install` or `pod update` command. Once all of the pod data is downloaded/updated, the Xcode project workspace file will be created
 6. Open the .xcworkspace file to launch your project
+
+
+### GETTING STARTED WITH SWIFT PACKAGE MANAGER
+Please follow the [Apple guide](https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_your_app) or add the project as a dependency to your Package.swift:
+```
+// swift-tools-version:5.2
+
+import PackageDescription
+
+let package = Package(
+    name: "SwiftSDK-test",
+    products: [
+        .executable(name: "SwiftSDK-test", targets: ["YourTargetName"])
+    ],
+    dependencies: [
+        .package(name: "SwiftSDK", url: "https://github.com/Backendless/Swift-SDK", from: "6.0.2")
+    ],
+    targets: [
+        .target(name: "YourTargetName", dependencies: ["SwiftSDK"], path: "./Path/To/Your/Sources")
+    ]
+)
+```
