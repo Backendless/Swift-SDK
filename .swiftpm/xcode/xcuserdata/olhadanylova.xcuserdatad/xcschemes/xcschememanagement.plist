@@ -9,11 +9,6 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
-		<key>BackendlessPackage.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>2</integer>
-		</dict>
 		<key>SwiftSDK.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
@@ -22,6 +17,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>Backendless</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>SwiftSDK</key>
 		<dict>
 			<key>primary</key>
