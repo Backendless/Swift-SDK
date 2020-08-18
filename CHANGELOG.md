@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 6.0.3 / ?
+* added SPM support
+
 ### 6.0.2 / August 11, 2020
 * added support for JSON data type, added the JSONUpdateBuilder class
 * fixed bug when custom service method returns null in response
