@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class DataStoreFactory: NSObject, IDataStore {
     
     typealias CustomType = Any

@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class PublishOptions: NSObject, Codable {
     
     public var publisherId: String?

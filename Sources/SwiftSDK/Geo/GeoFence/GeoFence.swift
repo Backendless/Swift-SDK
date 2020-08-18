@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @available(*, deprecated, message: "The FenceType enum is deprecated and will be removed from SDK in the nearest future")
 public enum FenceType: Int, Codable {
     case CIRCLE

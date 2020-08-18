@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class UserInfo: NSObject, Codable {
     
     public var connectionId: String?

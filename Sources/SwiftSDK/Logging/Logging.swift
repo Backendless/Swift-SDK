@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class Logging: NSObject {
     
     private var loggers = [String : Logger]()

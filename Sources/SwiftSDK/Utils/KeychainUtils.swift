@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 class KeychainUtils {
     
     static let shared = KeychainUtils()

@@ -20,6 +20,8 @@
  *  ********************************************************************************************************************
  */
 
+import SwiftSDK
+
 class TestObjectsUtils {
     
     static let shared = TestObjectsUtils()

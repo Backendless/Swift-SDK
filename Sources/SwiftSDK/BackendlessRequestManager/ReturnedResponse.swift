@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 class ReturnedResponse {
     var data: Data?
     var response: HTTPURLResponse?

@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @available(*, deprecated, message: "The GeoPoint class is deprecated and will be removed from SDK in the nearest future")
 @objcMembers public class GeoPoint: NSObject, Codable {
     

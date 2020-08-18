@@ -21,6 +21,7 @@
  */
 
 import Foundation
+import SwiftSDK
 
 @objcMembers class GeometryTestClass: NSObject {
     var objectId: String?

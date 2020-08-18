@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 extension NSMutableData {
     
     func appendString(_ string: String) {

@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class GeoJSONParser: NSObject {
     
     public static let shared = GeoJSONParser()

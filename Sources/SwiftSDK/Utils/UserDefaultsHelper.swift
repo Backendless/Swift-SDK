@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 enum UserDefaultsKeys {
     static let persistentUserToken = "userTokenKey"
     static let stayLoggedIn = "stayLoggedInKey"

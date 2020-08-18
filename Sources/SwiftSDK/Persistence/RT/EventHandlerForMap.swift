@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class EventHandlerForMap: RTListener, IEventHandler {
     
     typealias CustomType = [String : Any]

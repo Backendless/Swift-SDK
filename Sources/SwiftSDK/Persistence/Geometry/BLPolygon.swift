@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class BLPolygon: NSObject, BLGeometry {
     
     public static let geoJsonType = "Polygon"

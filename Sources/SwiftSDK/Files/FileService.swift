@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class FileService: NSObject {
     
     public lazy var permissions: FilePermission = {

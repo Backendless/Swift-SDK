@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 protocol ArgHolder {
     init(jsonUpdateBuiler: JSONUpdateBuilder)
     func create() -> [String : Any]

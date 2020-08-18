@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objc public enum SpatialReferenceSystemEnum: Int {
     
     case cartesian

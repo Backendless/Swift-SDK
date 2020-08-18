@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @available(*, deprecated, message: "The GeoRectangle struct is deprecated and will be removed from SDK in the nearest future")
 @available(iOS 8.0, watchOS 3.0, *)
 @available(OSX, unavailable)

@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class SharedObjectChanges: NSObject {
     
     public var key: String?

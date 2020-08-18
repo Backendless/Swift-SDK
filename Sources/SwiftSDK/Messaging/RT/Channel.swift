@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class Channel: NSObject {
     
     public private(set) var channelName: String!

@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class PublishMessageInfo: NSObject, Codable {
     
     public var messageId: String?

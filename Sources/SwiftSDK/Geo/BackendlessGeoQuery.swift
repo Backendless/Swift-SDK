@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @available(*, deprecated, message: "The Units enum is deprecated and will be removed from SDK in the nearest future")
 @objc public enum Units: Int {
     case METERS = 0

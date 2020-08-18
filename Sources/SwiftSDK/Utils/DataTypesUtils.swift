@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 class DataTypesUtils {
     
     static let shared = DataTypesUtils()

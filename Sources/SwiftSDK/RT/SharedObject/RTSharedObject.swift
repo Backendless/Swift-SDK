@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 class RTSharedObject: RTListener {
     
     var invocationTarget: Any?
