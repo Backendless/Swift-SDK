@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objc public enum FilePermissionOperation: Int, Codable {
     case FILE_READ
     case FILE_WRITE

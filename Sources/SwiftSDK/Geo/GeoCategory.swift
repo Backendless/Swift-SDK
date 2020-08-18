@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @available(*, deprecated, message: "The GeoCategory class is deprecated and will be removed from SDK in the nearest future")
 @objcMembers public class GeoCategory: NSObject, Codable {
     

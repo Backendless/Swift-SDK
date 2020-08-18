@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class Events: NSObject {
     
     public func dispatch(name: String, parameters: Any?, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {

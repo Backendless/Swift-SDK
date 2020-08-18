@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class Backendless: NSObject {    
 
     public static let shared = Backendless()

@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class PersistenceService: NSObject {
 
     public func ofTable(_ tableName: String) -> MapDrivenDataStore {

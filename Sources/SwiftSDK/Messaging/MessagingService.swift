@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class MessagingService: NSObject {
     
     private let defaultChannelName = "default"

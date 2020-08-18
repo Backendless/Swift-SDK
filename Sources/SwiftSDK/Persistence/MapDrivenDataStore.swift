@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class MapDrivenDataStore: NSObject, IDataStore {
     
     typealias CustomType = [String : Any]

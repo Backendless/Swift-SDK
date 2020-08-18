@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 public protocol BLIdentifiable {
     var objectId: String? { get set }
 }

@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objc public enum OperationType: Int {
     case CREATE = 0
     case CREATE_BULK

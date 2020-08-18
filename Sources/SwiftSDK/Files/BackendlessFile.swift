@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class BackendlessFile: NSObject {
     
     public var fileUrl: String?

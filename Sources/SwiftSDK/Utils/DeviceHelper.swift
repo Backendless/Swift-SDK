@@ -19,7 +19,11 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
 import SocketIO
+#if os(iOS) || os(tvOS)
+import UIKit
+#endif
 
 class DeviceHelper {
     

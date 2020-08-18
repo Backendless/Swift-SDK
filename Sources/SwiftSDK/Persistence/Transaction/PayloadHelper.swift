@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 class PayloadHelper {
     
     static let shared = PayloadHelper()

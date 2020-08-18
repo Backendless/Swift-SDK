@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class RelationStatus: NSObject {
     public var parentObjectId: String?
     public var isConditional = false

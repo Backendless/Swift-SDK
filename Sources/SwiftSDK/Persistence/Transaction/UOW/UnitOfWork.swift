@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objc public enum IsolationLevel: Int {
     case REPEATABLE_READ
     case READ_COMMITTED

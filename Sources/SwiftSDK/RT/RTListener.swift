@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class RTListener: NSObject {
     
     private var subscriptions: [String : [RTSubscription]]!

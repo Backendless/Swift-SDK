@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 class ProcessResponse {
     
     static let shared = ProcessResponse()

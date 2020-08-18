@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 class PersistenceServiceUtils {
     
     private var tableName: String = ""

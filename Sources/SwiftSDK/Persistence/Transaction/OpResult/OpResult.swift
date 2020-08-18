@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 enum OpResultErrors: Error {
     case noUOW
     case resultIdExists

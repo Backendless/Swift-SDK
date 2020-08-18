@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 class RTMethodRequest: NSObject {
     
     var methodId: String?

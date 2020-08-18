@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objc public enum PublishPolicyEnum: Int {
     case PUSH = 0
     case PUBSUB = 1

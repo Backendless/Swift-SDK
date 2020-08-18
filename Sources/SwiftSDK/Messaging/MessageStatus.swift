@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class MessageStatus: NSObject, Codable {
     
     public var messageId: String?

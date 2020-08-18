@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class BLLineString: NSObject, BLGeometry {
     
     public static let geoJsonType = "LineString"

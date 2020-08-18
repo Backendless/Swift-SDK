@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class BackendlessFileInfo: NSObject, Codable {
     
     public var name: String?

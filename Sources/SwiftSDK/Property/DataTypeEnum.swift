@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objc public enum DataTypeEnum: Int, Codable, CaseIterable {
     
     case UNKNOWN

@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class JSONUpdateBuilder: NSObject {
     
     let operationFieldName = "___operation";

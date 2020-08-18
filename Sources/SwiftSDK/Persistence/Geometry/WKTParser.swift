@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 class WKTParser: NSObject {
     
     static let shared = WKTParser()

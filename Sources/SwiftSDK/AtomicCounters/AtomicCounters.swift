@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class AtomicCounters: NSObject {
     
     public func of(counterName: String) -> IAtomic {

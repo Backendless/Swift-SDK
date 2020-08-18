@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class UserService: NSObject {
     
     public var stayLoggedIn: Bool {

@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class ReconnectAttemptObject: NSObject, Codable {
 
     private var _attempt: Int?

@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objc public enum PermissionOperation: Int, Codable {
     case DATA_UPDATE
     case DATA_FIND

@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class EventHandlerForClass: RTListener, IEventHandler {
     
     typealias CustomType = Any

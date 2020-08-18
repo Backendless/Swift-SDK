@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 class RTMessaging: RTListener {
     
     private var channel: Channel

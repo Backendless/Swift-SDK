@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class TransactionOperationError: NSObject {
     
     public var message: String?

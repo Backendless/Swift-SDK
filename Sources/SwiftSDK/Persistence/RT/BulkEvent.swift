@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class BulkEvent: NSObject, Codable {
     
     public var whereClause: String?

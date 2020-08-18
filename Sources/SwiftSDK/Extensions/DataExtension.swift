@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 extension Data {
     
     private static let mimeTypeSignatures: [UInt8 : String] = [

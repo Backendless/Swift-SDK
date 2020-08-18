@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class OperationResult: NSObject {
     
     public var operationType: OperationType = .CREATE

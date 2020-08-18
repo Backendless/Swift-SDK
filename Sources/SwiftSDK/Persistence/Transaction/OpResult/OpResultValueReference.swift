@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class OpResultValueReference: NSObject {
     
     public var opResult: OpResult?

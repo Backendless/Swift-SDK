@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class SharedObject: NSObject {
     
     public private(set) var name: String!

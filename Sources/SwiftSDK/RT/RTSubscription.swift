@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class RTSubscription: NSObject {
     
     var subscriptionId: String?

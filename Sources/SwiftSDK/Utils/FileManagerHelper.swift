@@ -21,6 +21,8 @@
 
 #if os(iOS)
 
+import Foundation
+
 class FileManagerHelper {
     
     static let shared = FileManagerHelper()

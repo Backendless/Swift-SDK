@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 @objcMembers public class LoadRelationsQueryBuilder: NSObject, Codable {
    
     private var entityClass: Any?
