@@ -1,6 +1,0 @@
-framework module Pods_SwiftSDKTests {
-  umbrella header "Pods-SwiftSDKTests-umbrella.h"
-
-  export *
-  module * { export * }
-}
