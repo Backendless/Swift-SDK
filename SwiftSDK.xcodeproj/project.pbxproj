@@ -54,7 +54,6 @@
 		5E309B24225FC2D000BE6720 /* ClientCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E309B23225FC2D000BE6720 /* ClientCallback.swift */; };
 		5E338D90225C97AB00709630 /* LocationTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E338D8F225C97AB00709630 /* LocationTracker.swift */; };
 		5E341B7C21F5E11A00C32598 /* ObjectProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E341B7B21F5E11A00C32598 /* ObjectProperty.swift */; };
-		5E3706F922037C9100E08C50 /* TestClassForMappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E96E1AC21F8408800F34C11 /* TestClassForMappings.swift */; };
 		5E384C97226F3E8000743125 /* AtomicCounters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E384C96226F3E8000743125 /* AtomicCounters.swift */; };
 		5E384C99226F40E200743125 /* AtomicCountersFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E384C98226F40E200743125 /* AtomicCountersFactory.swift */; };
 		5E384C9B226F45B300743125 /* IAtomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E384C9A226F45B300743125 /* IAtomic.swift */; };
@@ -62,7 +61,6 @@
 		5E39E65B23ED5EFE00A8BD10 /* UnitOfWorkSetRelation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E39E65A23ED5EFE00A8BD10 /* UnitOfWorkSetRelation.swift */; };
 		5E39E65D23ED742500A8BD10 /* UnitOfWorkDeleteRelation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E39E65C23ED742500A8BD10 /* UnitOfWorkDeleteRelation.swift */; };
 		5E3E2EFA23D84A6500C4C3E2 /* BLPolygonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3E2EF923D84A6500C4C3E2 /* BLPolygonTests.swift */; };
-		5E412CDE2431F68800640313 /* TestObjectsUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E412CDD2431F68800640313 /* TestObjectsUtils.swift */; };
 		5E412CE02431FF0C00640313 /* DataUOWDeleteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E412CDF2431FF0C00640313 /* DataUOWDeleteTests.swift */; };
 		5E412CE22432133800640313 /* DataUOWFindTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E412CE12432133800640313 /* DataUOWFindTests.swift */; };
 		5E412CE42432168C00640313 /* DataUOWSetRelationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E412CE32432168C00640313 /* DataUOWSetRelationTests.swift */; };
@@ -135,7 +133,6 @@
 		5EA5D2CA223BE6440027EA49 /* SharedObjectChanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA5D2C9223BE6440027EA49 /* SharedObjectChanges.swift */; };
 		5EA87B75221D4A3100A8B93F /* ReconnectAttemptObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA87B74221D4A3100A8B93F /* ReconnectAttemptObject.swift */; };
 		5EA87B95221D720100A8B93F /* RTListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA87B94221D720100A8B93F /* RTListener.swift */; };
-		5EAA20B823995B1D00A39A38 /* GeometryTestClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAA20B723995B1D00A39A38 /* GeometryTestClass.swift */; };
 		5EACCB5B23EC5871007AC3C4 /* UnitOfWorkAddRelation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EACCB5A23EC5871007AC3C4 /* UnitOfWorkAddRelation.swift */; };
 		5EB28E1921B1799A0007AC30 /* Backendless.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB28E1821B1799A0007AC30 /* Backendless.swift */; };
 		5EB28E2021B1833A0007AC30 /* BackendlessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB28E1F21B1833A0007AC30 /* BackendlessTests.swift */; };
@@ -158,6 +155,7 @@
 		5EE063BF22017EAA00B862EA /* LoadRelationsQueryBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE063BE22017EAA00B862EA /* LoadRelationsQueryBuilder.swift */; };
 		5EE23C0B24CB198B00F2FD67 /* ArgHolders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE23C0A24CB198B00F2FD67 /* ArgHolders.swift */; };
 		5EE2B40721C25EC600F90723 /* BackendlessUserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE2B40621C25EC600F90723 /* BackendlessUserTests.swift */; };
+		5EE3001824ED79E8006A27D1 /* ClassesForTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE3001724ED79E8006A27D1 /* ClassesForTests.swift */; };
 		5EE335AB2396679300A245B1 /* BLPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE335AA2396679300A245B1 /* BLPolygon.swift */; };
 		5EE509AD24B342B900DDBBD3 /* RelationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE509AC24B342B900DDBBD3 /* RelationStatus.swift */; };
 		5EE6920121B67791002E72A9 /* FaultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EE6920021B67791002E72A9 /* FaultTests.swift */; };
@@ -237,7 +235,6 @@
 		5E39E65A23ED5EFE00A8BD10 /* UnitOfWorkSetRelation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfWorkSetRelation.swift; sourceTree = "<group>"; };
 		5E39E65C23ED742500A8BD10 /* UnitOfWorkDeleteRelation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfWorkDeleteRelation.swift; sourceTree = "<group>"; };
 		5E3E2EF923D84A6500C4C3E2 /* BLPolygonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLPolygonTests.swift; sourceTree = "<group>"; };
-		5E412CDD2431F68800640313 /* TestObjectsUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestObjectsUtils.swift; sourceTree = "<group>"; };
 		5E412CDF2431FF0C00640313 /* DataUOWDeleteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataUOWDeleteTests.swift; sourceTree = "<group>"; };
 		5E412CE12432133800640313 /* DataUOWFindTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataUOWFindTests.swift; sourceTree = "<group>"; };
 		5E412CE32432168C00640313 /* DataUOWSetRelationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataUOWSetRelationTests.swift; sourceTree = "<group>"; };
@@ -289,7 +286,6 @@
 		5E922248225B8CCF0001688F /* GeoQueryRectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoQueryRectangle.swift; sourceTree = "<group>"; };
 		5E92224A225BAA8C0001688F /* GeoCluster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoCluster.swift; sourceTree = "<group>"; };
 		5E9396C62431EBDF00B2A5F1 /* DataUOWUpdateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataUOWUpdateTests.swift; sourceTree = "<group>"; };
-		5E96E1AC21F8408800F34C11 /* TestClassForMappings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestClassForMappings.swift; sourceTree = "<group>"; };
 		5E9718FC221BFE3D00857603 /* RTFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTFactory.swift; sourceTree = "<group>"; };
 		5E97190D221C276600857603 /* IEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEventHandler.swift; sourceTree = "<group>"; };
 		5E97190F221C27BB00857603 /* EventHandlerForClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHandlerForClass.swift; sourceTree = "<group>"; };
@@ -314,7 +310,6 @@
 		5EA87B74221D4A3100A8B93F /* ReconnectAttemptObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReconnectAttemptObject.swift; sourceTree = "<group>"; };
 		5EA87B94221D720100A8B93F /* RTListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTListener.swift; sourceTree = "<group>"; };
 		5EAA20B5239953E600A39A38 /* BLPointTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLPointTests.swift; sourceTree = "<group>"; };
-		5EAA20B723995B1D00A39A38 /* GeometryTestClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryTestClass.swift; sourceTree = "<group>"; };
 		5EACCB5A23EC5871007AC3C4 /* UnitOfWorkAddRelation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfWorkAddRelation.swift; sourceTree = "<group>"; };
 		5EB28E1821B1799A0007AC30 /* Backendless.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backendless.swift; sourceTree = "<group>"; };
 		5EB28E1F21B1833A0007AC30 /* BackendlessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessTests.swift; sourceTree = "<group>"; };
@@ -338,6 +333,7 @@
 		5EE063BE22017EAA00B862EA /* LoadRelationsQueryBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadRelationsQueryBuilder.swift; sourceTree = "<group>"; };
 		5EE23C0A24CB198B00F2FD67 /* ArgHolders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgHolders.swift; sourceTree = "<group>"; };
 		5EE2B40621C25EC600F90723 /* BackendlessUserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessUserTests.swift; sourceTree = "<group>"; };
+		5EE3001724ED79E8006A27D1 /* ClassesForTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassesForTests.swift; sourceTree = "<group>"; };
 		5EE335AA2396679300A245B1 /* BLPolygon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLPolygon.swift; sourceTree = "<group>"; };
 		5EE509AC24B342B900DDBBD3 /* RelationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelationStatus.swift; sourceTree = "<group>"; };
 		5EE6920021B67791002E72A9 /* FaultTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaultTests.swift; sourceTree = "<group>"; };
@@ -405,6 +401,7 @@
 				5EA2B69A21F2324B00CFDC37 /* StoredObjects.swift */,
 				5E17EE6624CAF8BF00D7321B /* JSONUpdateBuilder.swift */,
 				5EE23C0A24CB198B00F2FD67 /* ArgHolders.swift */,
+				5EE3001724ED79E8006A27D1 /* ClassesForTests.swift */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -580,16 +577,6 @@
 				5E572D4A21B8043E000713B0 /* ProcessResponse.swift */,
 			);
 			path = Response;
-			sourceTree = "<group>";
-		};
-		5E5FE02721F7347200387F8B /* TestObjects */ = {
-			isa = PBXGroup;
-			children = (
-				5E96E1AC21F8408800F34C11 /* TestClassForMappings.swift */,
-				5EAA20B723995B1D00A39A38 /* GeometryTestClass.swift */,
-				5E412CDD2431F68800640313 /* TestObjectsUtils.swift */,
-			);
-			path = TestObjects;
 			sourceTree = "<group>";
 		};
 		5E60834921EF720600268B4D /* Extensions */ = {
@@ -826,7 +813,6 @@
 				5E4C2705224B963000CDF967 /* MessagingTests */,
 				5AFE8E5C21E8D7010003477B /* PersistenceTests */,
 				5E6098FF222040620012F6A0 /* RTTests */,
-				5E5FE02721F7347200387F8B /* TestObjects */,
 				5AFE8E6321E8E3430003477B /* TestsConfig.swift */,
 				5E7435062431D75400EEA9A8 /* UOWTests */,
 				5E90720E21B66DA300619C0D /* UserServiceTests */,
@@ -1079,11 +1065,9 @@
 				5E7E8A6021ECC94A00AA04E1 /* UserDefaultsHelper.swift in Sources */,
 				5E09B01222645CE60073DA5E /* LogMessage.swift in Sources */,
 				5EC7D161222FB56700FD3FF4 /* PublishOptions.swift in Sources */,
-				5E412CDE2431F68800640313 /* TestObjectsUtils.swift in Sources */,
 				5E5EA767242B9B8100690818 /* OperationResult.swift in Sources */,
 				5E09B00C22645B9A0073DA5E /* Logging.swift in Sources */,
 				5E1CC2F9225254140011D5C8 /* BackendlessFile.swift in Sources */,
-				5EAA20B823995B1D00A39A38 /* GeometryTestClass.swift in Sources */,
 				5EA31F25225608B1008DF081 /* GeoCategory.swift in Sources */,
 				5E4CE07D22535CAF004571DA /* NSMutableDataExtension.swift in Sources */,
 				5E971918221C2CC400857603 /* RTSubscription.swift in Sources */,
@@ -1114,7 +1098,6 @@
 				5EA5D2C4223BCE8F0027EA49 /* SharedObject.swift in Sources */,
 				5AB44C62222E88C600ED9D36 /* MessageStatus.swift in Sources */,
 				5ECD9C8021DE57E7002CBB7D /* GeoService.swift in Sources */,
-				5E3706F922037C9100E08C50 /* TestClassForMappings.swift in Sources */,
 				5A2A784F21E610D700EC8007 /* MapDrivenDataStore.swift in Sources */,
 				5E03A3BA222916A2005A538D /* Channel.swift in Sources */,
 				5E97190E221C276600857603 /* IEventHandler.swift in Sources */,
@@ -1135,6 +1118,7 @@
 				5A2A785121E6114800EC8007 /* PersistenceService.swift in Sources */,
 				5E03A3C322296D03005A538D /* CommandObject.swift in Sources */,
 				5E722B5E21BE9DE800AA9A8F /* DataTypeEnum.swift in Sources */,
+				5EE3001824ED79E8006A27D1 /* ClassesForTests.swift in Sources */,
 				5EA2B69B21F2324B00CFDC37 /* StoredObjects.swift in Sources */,
 				5E7955962254D9A300E8ED65 /* BackendlessFileInfo.swift in Sources */,
 				5E1DB59323E1A27A00955319 /* UnitOfWorkCreate.swift in Sources */,

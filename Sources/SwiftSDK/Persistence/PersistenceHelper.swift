@@ -438,18 +438,3 @@ class PersistenceHelper {
         return value
     }
 }
-
-// ****************************************************************************
-
-@objcMembers class TestClass: NSObject {
-    var objectId: String?
-    var name: String?
-    var age: Int = 0
-    var child: ChildTestClass?
-    var children: [ChildTestClass]?
-}
-
-@objcMembers class ChildTestClass: NSObject {
-    var objectId: String?
-    var foo: String?
-}
