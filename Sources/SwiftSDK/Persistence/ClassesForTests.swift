@@ -1,6 +1,5 @@
 //
-//
-//  TestObjectsUtils.swift
+//  ClassesForTests.swift
 //
 /*
  * *********************************************************************************************************************
@@ -20,7 +19,34 @@
  *  ********************************************************************************************************************
  */
 
-import SwiftSDK
+import Foundation
+
+@objcMembers class TestClass: NSObject {
+    var objectId: String?
+    var name: String?
+    var age: Int = 0
+    var child: ChildTestClass?
+    var children: [ChildTestClass]?
+}
+
+@objcMembers class ChildTestClass: NSObject {
+    var objectId: String?
+    var foo: String?
+}
+
+@objcMembers class TestClassForMappings: NSObject {
+    var objectId: String?
+    var nameProperty: String?
+    var ageProperty: Int = 0
+}
+
+@objcMembers class GeometryTestClass: NSObject {
+    var objectId: String?
+    var name: String?
+    var point: BLPoint?
+    var linestring: BLLineString?
+    var polygon: BLPolygon?
+}
 
 class TestObjectsUtils {
     
@@ -250,3 +276,4 @@ class TestObjectsUtils {
         })
     }
 }
+
