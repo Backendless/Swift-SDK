@@ -50,79 +50,39 @@ import Foundation
     }
     
     private func processInvokeResponse(response: ReturnedResponse, responseHandler: ((Any?) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        let result = ProcessResponse.shared.adapt(response: response, to: JSON.self)        
+        let result = ProcessResponse.shared.getResponseResult(response: response)
         if result == nil {
             responseHandler(nil)
         }
-        else {
-            if result is Fault {
-                errorHandler(result as! Fault)
-            }
-            else {
-                if let resultDictionary = (result as! JSON).dictionaryObject {
-                    responseHandler(JSONUtils.shared.jsonToObject(objectToParse: resultDictionary))
-                }
-                else if let resultArray = (result as! JSON).arrayObject {
-                    responseHandler(JSONUtils.shared.jsonToObject(objectToParse: resultArray))
-                }
-                else if let resultString = String(bytes: response.data!, encoding: .utf8) {
-                    if resultString == "\"void\"" || resultString == "\"null\"" {
-                        responseHandler(nil)
-                    }
-                    else {
-                        if let resultInt = Int(resultString) {
-                            responseHandler(resultInt)
-                        }
-                        else if let resultDouble = Double(resultString) {
-                            responseHandler(resultDouble)
-                        }
-                        else {
-                            responseHandler(resultString)
-                        }
-                    }
-                }
-                else {
-                    responseHandler(nil)
-                }
-            }
-        }
-        
-        /*if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
-            if result is Fault {
-                errorHandler(result as! Fault)
-            }
-            else {
-                if let resultDictionary = (result as! JSON).dictionaryObject {
-                    responseHandler(JSONUtils.shared.jsonToObject(objectToParse: resultDictionary))
-                }
-                else if let resultArray = (result as! JSON).arrayObject {
-                    responseHandler(JSONUtils.shared.jsonToObject(objectToParse: resultArray))
-                }
-                else {
-                    responseHandler(nil)
-                }
-            }
+        else if result is Fault {
+            errorHandler(result as! Fault)
         }
         else {
-            if let resultString = String(bytes: response.data!, encoding: .utf8) {
-                if resultString == "\"void\"" {
-                    responseHandler(nil)
+            if let data = response.data {
+                if let resultDictionary = result as? [String : Any] {
+                    responseHandler(JSONUtils.shared.jsonToObject(objectToParse: resultDictionary))
                 }
-                else {
-                    if let resultInt = Int(resultString) {
+                else if let resultArray = result as? [Any] {
+                    responseHandler(JSONUtils.shared.jsonToObject(objectToParse: resultArray))
+                }
+                else if let boolResult = String(data: data, encoding: .utf8).flatMap(Bool.init) {
+                    responseHandler(boolResult)
+                }
+                else if let stringResult = String(bytes: response.data!, encoding: .utf8) {
+                    if let resultInt = Int(stringResult) {
                         responseHandler(resultInt)
                     }
-                    else if let resultDouble = Double(resultString) {
+                    else if let resultDouble = Double(stringResult) {
                         responseHandler(resultDouble)
                     }
                     else {
-                        responseHandler(resultString)
+                        responseHandler(stringResult)
                     }
                 }
+                else {
+                    responseHandler(result)
+                }
             }
-            else {
-                responseHandler(nil)
-            }
-        }*/
+        }
     }
 }
