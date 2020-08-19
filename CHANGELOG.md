@@ -1,7 +1,8 @@
 # RELEASE HISTORY
 
-### 6.0.3 / ?
+### 6.0.3 / August 19, 2020
 * added SPM support
+* fixed the JSONSerialization issue in custom services
 
 ### 6.0.2 / August 11, 2020
 * added support for JSON data type, added the JSONUpdateBuilder class
