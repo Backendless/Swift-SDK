@@ -1,5 +1,9 @@
 # RELEASE HISTORY
 
+### 6.0.4 / August 27, 2020
+* fixed bug with FileService `rename()`, `move()`, `copy()` methods response
+* fixed FileService tests
+
 ### 6.0.3 / August 19, 2020
 * added SPM support
 * fixed the JSONSerialization issue in custom services

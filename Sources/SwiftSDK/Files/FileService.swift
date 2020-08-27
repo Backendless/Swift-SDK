@@ -70,16 +70,15 @@ import Foundation
         let headers = ["Content-Type": "text/plain"]
         let parameters = base64FileContent
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
+            if let result = ProcessResponse.shared.adapt(response: response, to: String.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
-            }
-            else {
-                let fileUrl = String(bytes: response.data!, encoding: .utf8)
-                let backendlessFile = BackendlessFile()
-                backendlessFile.fileUrl = fileUrl?.replacingOccurrences(of: "\"", with: "")
-                responseHandler(backendlessFile)
+                else if let fileUrl = result as? String {
+                    let backendlessFile = BackendlessFile()
+                    backendlessFile.fileUrl = fileUrl.replacingOccurrences(of: "\"", with: "")
+                    responseHandler(backendlessFile)
+                }
             }
         })
     }
@@ -88,14 +87,12 @@ import Foundation
         let headers = ["Content-Type": "application/json"]
         let parameters = ["oldPathName": path, "newName": DataTypesUtils.shared.stringToUrlString(originalString: newName)]
         BackendlessRequestManager(restMethod: "files/rename", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
+            if let result = ProcessResponse.shared.adapt(response: response, to: String.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
-            }
-            else {
-                if let fileUrl = String(bytes: response.data!, encoding: .utf8) {
-                    responseHandler(fileUrl)
+                else {
+                    responseHandler(result as! String)
                 }
             }
         })
@@ -105,14 +102,12 @@ import Foundation
         let headers = ["Content-Type": "application/json"]
         let parameters = ["sourcePath": sourcePath, "targetPath": targetPath]
         BackendlessRequestManager(restMethod: "files/copy", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
+            if let result = ProcessResponse.shared.adapt(response: response, to: String.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
-            }
-            else {
-                if let fileUrl = String(bytes: response.data!, encoding: .utf8) {
-                    responseHandler(fileUrl)
+                else {
+                    responseHandler(result as! String)
                 }
             }
         })
@@ -122,14 +117,12 @@ import Foundation
         let headers = ["Content-Type": "application/json"]
         let parameters = ["sourcePath": sourcePath, "targetPath": targetPath]
         BackendlessRequestManager(restMethod: "files/move", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
+            if let result = ProcessResponse.shared.adapt(response: response, to: String.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
-            }
-            else {
-                if let fileUrl = String(bytes: response.data!, encoding: .utf8) {
-                    responseHandler(fileUrl)
+                else {
+                    responseHandler(result as! String)
                 }
             }
         })
@@ -228,7 +221,7 @@ import Foundation
             }
         })
     }
-
+    
     public func remove(path: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         remove(path: path, pattern: "*", recursive: false, responseHandler: responseHandler, errorHandler: errorHandler)
     }

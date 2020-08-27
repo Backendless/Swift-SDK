@@ -55,7 +55,7 @@ class FileServiceTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    /*func test_02_saveFile() {
+    func test_02_saveFile() {
         let expectation = self.expectation(description: "PASSED: fileService.saveFile")
         let data = "The quick brown fox jumps over the lazy dog".data(using: .utf8)!
         let base64 = data.base64EncodedString()
@@ -68,9 +68,9 @@ class FileServiceTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
-    }*/
+    }
     
-    /*func test_03_renameFile() {
+    func test_03_renameFile() {
         let expectation = self.expectation(description: "PASSED: fileService.renameFile")
         DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             self.backendless.file.rename(path: "\(self.directory)/Binary/fox.txt", newName: "newFox.txt", responseHandler: { renamedPath in
@@ -143,7 +143,8 @@ class FileServiceTests: XCTestCase {
     func test_08_remove() {
         let expectation = self.expectation(description: "PASSED: fileService.remove")
         DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-            self.backendless.file.remove(path: self.copiedDirectory, responseHandler: {
+            self.backendless.file.remove(path: self.copiedDirectory, responseHandler: { removed in
+                XCTAssert(removed > 0)
                 expectation.fulfill()
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
@@ -151,5 +152,5 @@ class FileServiceTests: XCTestCase {
             })
         })
         waitForExpectations(timeout: timeout, handler: nil)
-    }*/
+    }
 }
