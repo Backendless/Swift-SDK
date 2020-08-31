@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 6.0.4.1 / August 31, 2020
+* fixed issue when FileService `rename()`, `move()`, `copy()` methods responses URLs were encased in quotation marks
+
 ### 6.0.4 / August 27, 2020
 * fixed bug with FileService `rename()`, `move()`, `copy()` methods response
 * fixed FileService tests
