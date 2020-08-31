@@ -92,7 +92,7 @@ import Foundation
                     errorHandler(result as! Fault)
                 }
                 else {
-                    responseHandler(result as! String)
+                    responseHandler((result as! String).replacingOccurrences(of: "\"", with: ""))
                 }
             }
         })
@@ -107,7 +107,7 @@ import Foundation
                     errorHandler(result as! Fault)
                 }
                 else {
-                    responseHandler(result as! String)
+                    responseHandler((result as! String).replacingOccurrences(of: "\"", with: ""))
                 }
             }
         })
@@ -122,7 +122,7 @@ import Foundation
                     errorHandler(result as! Fault)
                 }
                 else {
-                    responseHandler(result as! String)
+                    responseHandler((result as! String).replacingOccurrences(of: "\"", with: ""))
                 }
             }
         })
