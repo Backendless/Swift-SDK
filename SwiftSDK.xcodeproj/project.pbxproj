@@ -99,6 +99,7 @@
 		5E7955962254D9A300E8ED65 /* BackendlessFileInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7955952254D9A300E8ED65 /* BackendlessFileInfo.swift */; };
 		5E795598225503D900E8ED65 /* FilePermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E795597225503D900E8ED65 /* FilePermission.swift */; };
 		5E7E8A6021ECC94A00AA04E1 /* UserDefaultsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7E8A5F21ECC94A00AA04E1 /* UserDefaultsHelper.swift */; };
+		5E813663250780B3007B94EB /* JSONTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E813662250780B3007B94EB /* JSONTests.swift */; };
 		5E81B28D2236A8300015AEDC /* RTMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E81B28C2236A8300015AEDC /* RTMethod.swift */; };
 		5E84136321B5265200869794 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E84136221B5265200869794 /* UserService.swift */; };
 		5E843AB523ACC61B0044CE17 /* BLLineStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E843AB423ACC61B0044CE17 /* BLLineStringTests.swift */; };
@@ -273,6 +274,7 @@
 		5E7955952254D9A300E8ED65 /* BackendlessFileInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessFileInfo.swift; sourceTree = "<group>"; };
 		5E795597225503D900E8ED65 /* FilePermission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePermission.swift; sourceTree = "<group>"; };
 		5E7E8A5F21ECC94A00AA04E1 /* UserDefaultsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsHelper.swift; sourceTree = "<group>"; };
+		5E813662250780B3007B94EB /* JSONTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONTests.swift; sourceTree = "<group>"; };
 		5E81B28C2236A8300015AEDC /* RTMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTMethod.swift; sourceTree = "<group>"; };
 		5E84136221B5265200869794 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		5E843AB423ACC61B0044CE17 /* BLLineStringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLLineStringTests.swift; sourceTree = "<group>"; };
@@ -413,6 +415,7 @@
 				5AFE8E6121E8E2620003477B /* MapDrivenDataStoreTests.swift */,
 				5AFE8E6521E8E5C00003477B /* DataStoreFactoryTests.swift */,
 				5EC9C2E22452EB0300845350 /* FindFirstLastTests.swift */,
+				5E813662250780B3007B94EB /* JSONTests.swift */,
 			);
 			path = PersistenceTests;
 			sourceTree = "<group>";
@@ -1216,6 +1219,7 @@
 				5EC9C2E32452EB0300845350 /* FindFirstLastTests.swift in Sources */,
 				5E384C9E226F530A00743125 /* CountersTests.swift in Sources */,
 				5E412CE6243235A000640313 /* DataUOWAddRelationTests.swift in Sources */,
+				5E813663250780B3007B94EB /* JSONTests.swift in Sources */,
 				5E412CE22432133800640313 /* DataUOWFindTests.swift in Sources */,
 				5EC7D16A222FDBCE00FD3FF4 /* SubscriptionAPITests.swift in Sources */,
 				5AFE8E5E21E8D7410003477B /* PersistenceServiceTests.swift in Sources */,
