@@ -128,7 +128,7 @@ class PersistenceHelper {
         return resultDictionary
     }
     
-    func entityToDictionary(entity: Any) -> [String: Any] {
+    func entityToSimpleType(entity: Any) -> Any {
         if let user = entity as? BackendlessUser {
             var userDict = [String : Any]()
             let userProperties = user.properties
@@ -146,10 +146,14 @@ class PersistenceHelper {
             }
             return dict
         }
+        if entity is Array<Any> || entity is Dictionary<String, Any> || entity is String || entity is NSNumber {
+            return entity
+        }
         
         // *************************
         
         var entityDictionary = [String: Any]()
+
         let resultClass = type(of: entity) as! NSObject.Type
         var outCount : UInt32 = 0
         if let properties = class_copyPropertyList(resultClass.self, &outCount) {
@@ -219,27 +223,27 @@ class PersistenceHelper {
     }
     
     func entityToDictionaryWithClassProperty(entity: Any) -> [String: Any] {
-        var entityDictionary = entityToDictionary(entity: entity)
-        var className = getClassNameWithoutModule(type(of: entity))
-        if className == "BackendlessUser" {
-            className = "Users"
+        if var entityDictionary = entityToSimpleType(entity: entity) as? [String : Any] {
+            var className = getClassNameWithoutModule(type(of: entity))
+            if className == "BackendlessUser" {
+                className = "Users"
+            }
+            if className.contains("Dictionary") || className.contains("Array") {
+                entityDictionary["___class"] = nil
+            }
+            else {
+                entityDictionary["___class"] = className
+            }
+            return entityDictionary
         }
-        if className.contains("Dictionary") || className.contains("Array") {
-            entityDictionary["___class"] = nil
-        }
-        else {
-            entityDictionary["___class"] = className
-        }
-        return entityDictionary
+        return [String : Any]()
     }
     
     func dictionaryToEntity(_ dictionary: [String: Any], className: String) -> Any? {
-        
         let convertedEntity = convertToBLType(dictionary)
         if !(convertedEntity is [String : Any]) {
             return convertedEntity
         }
-        
         var entityClassNameWithModule = className
         let classMappings = Mappings.shared.getTableToClassMappings()
         if classMappings.keys.contains(className) {
@@ -256,6 +260,7 @@ class PersistenceHelper {
             entityClassNameWithModule = entityClassNameWithModule.components(separatedBy: ".").last!
             resultEntityType = NSClassFromString(entityClassNameWithModule) as? NSObject.Type
         }
+        
         if let resultEntityType = resultEntityType {
             let entity = resultEntityType.init()
             let entityClassName = getClassNameWithoutModule(entity.classForCoder)
@@ -311,14 +316,27 @@ class PersistenceHelper {
     
     private func jsonDictionaryToEntity(_ dictionary: [String : Any], propertyName: String, parentEntity: Any) -> Any? {
         let parentProperties = Mirror(reflecting: parentEntity).children
-        for property in parentProperties {
-            if property.label == propertyName {
-                let propertyType = type(of: property.value)
-                var propertyTypeName = String(describing: propertyType)
-                propertyTypeName = propertyTypeName.replacingOccurrences(of: "Optional<", with: "")
-                propertyTypeName = propertyTypeName.replacingOccurrences(of: "Array<", with: "")
-                propertyTypeName = propertyTypeName.replacingOccurrences(of: ">", with: "")
-                return dictionaryToEntity(dictionary, className: propertyTypeName)
+        if parentProperties.count > 0 {
+            for property in parentProperties {
+                if property.label == propertyName {
+                    let propertyType = type(of: property.value)
+                    var propertyTypeName = String(describing: propertyType)
+                    propertyTypeName = propertyTypeName.replacingOccurrences(of: "Optional<", with: "")
+                    propertyTypeName = propertyTypeName.replacingOccurrences(of: "Array<", with: "")
+                    propertyTypeName = propertyTypeName.replacingOccurrences(of: ">", with: "")
+                    return dictionaryToEntity(dictionary, className: propertyTypeName)
+                }
+            }
+        }
+        else {
+            let parentPropertiesObjC = getClassPropertiesWithType(entity: parentEntity)
+            for property in parentPropertiesObjC {
+                if property.key == propertyName {
+                    var propertyTypeName = property.value
+                    propertyTypeName = propertyTypeName.replacingOccurrences(of: "@", with: "")
+                    propertyTypeName = propertyTypeName.replacingOccurrences(of: "\"", with: "")
+                    return dictionaryToEntity(dictionary, className: propertyTypeName)
+                }
             }
         }
         

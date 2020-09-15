@@ -40,8 +40,32 @@ class UserServiceTests: XCTestCase {
     }
     
     // call after all tests
-    override class func tearDown() {
-        Backendless.shared.userService.logout(responseHandler: { clearTables() }, errorHandler: { fault in })
+    override class func tearDown() {        
+        let semaphore = DispatchSemaphore(value: 0)
+        DispatchQueue.global().async {
+            Backendless.shared.userService.logout(responseHandler: {
+                Backendless.shared.data.ofTable("A").removeBulk(whereClause: nil, responseHandler: { _ in
+                    Backendless.shared.data.ofTable("B").removeBulk(whereClause: nil, responseHandler: { _ in
+                        Backendless.shared.data.ofTable("ChildTestClass").removeBulk(whereClause: nil, responseHandler: { _ in
+                            Backendless.shared.data.ofTable("GeometryTestClass").removeBulk(whereClause: nil, responseHandler: { _ in
+                                Backendless.shared.data.ofTable("JSONTestTable").removeBulk(whereClause: nil, responseHandler: { _ in
+                                    Backendless.shared.data.ofTable("TestClass").removeBulk(whereClause: nil, responseHandler: { _ in
+                                        Backendless.shared.data.ofTable("TestClass1").removeBulk(whereClause: nil, responseHandler: { _ in
+                                            Backendless.shared.data.ofTable("TestClassForMappings").removeBulk(whereClause: nil, responseHandler: { _ in
+                                                Backendless.shared.data.ofTable("Users").removeBulk(whereClause: nil, responseHandler: { _ in
+                                                    semaphore.signal()
+                                                }, errorHandler: { _ in })
+                                            }, errorHandler: { _ in })
+                                        }, errorHandler: { _ in })
+                                    }, errorHandler: { _ in })
+                                }, errorHandler: { _ in })
+                            }, errorHandler: { _ in })
+                        }, errorHandler: { _ in })
+                    }, errorHandler: { _ in })
+                }, errorHandler: { _ in })
+            }, errorHandler: { fault in })
+        }
+        semaphore.wait()
     }
     
     class func clearTables() {

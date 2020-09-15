@@ -1,5 +1,17 @@
 # RELEASE HISTORY
 
+### 6.0.5 / September 15, 2020
+* added OAuth login methods:
+```
+func loginWithOauth2(providerName: String, token: String, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!)
+
+func loginWithOauth2(providerName: String, token: String, guestUser: BackendlessUser, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!)
+
+func loginWithOauth1(providerName: String, token: String, tokenSecret: String, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!)
+
+func loginWithOauth1(providerName: String, token: String, tokenSecret: String, guestUser: BackendlessUser, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!)
+```
+
 ### 6.0.4.1 / August 31, 2020
 * fixed issue when FileService `rename()`, `move()`, `copy()` methods responses URLs were encased in quotation marks
 

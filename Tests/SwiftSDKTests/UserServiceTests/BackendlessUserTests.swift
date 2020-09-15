@@ -29,7 +29,7 @@ class BackendlessUserTests: XCTestCase {
         user.email = "testUser@test.com"
         user.password = "111"
         user.name = "Test User"
-        user.properties = ["name": "Test User", "age":50, "city": "London"]
+        user.properties = ["name": "Test User", "age": 50, "city": "London"]
         return user
     }
     

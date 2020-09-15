@@ -65,21 +65,25 @@ import Foundation
     }
     
     public func create(entity: Any, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        let entityDictionary = PersistenceHelper.shared.entityToDictionary(entity: entity)
-        persistenceServiceUtils.create(entity: entityDictionary, responseHandler: wrapResponse(responseHandler), errorHandler: errorHandler)
+        if let entityDictionary = PersistenceHelper.shared.entityToSimpleType(entity: entity) as? [String : Any] {
+            persistenceServiceUtils.create(entity: entityDictionary, responseHandler: wrapResponse(responseHandler), errorHandler: errorHandler)
+        }
     }
     
     public func createBulk(entities: [Any], responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         var entitiesDictionaries = [[String: Any]]()
         for entity in entities {
-            entitiesDictionaries.append(PersistenceHelper.shared.entityToDictionary(entity: entity))
+            if let entityDict = PersistenceHelper.shared.entityToSimpleType(entity: entity) as? [String : Any] {
+                entitiesDictionaries.append(entityDict)
+            }
         }
         persistenceServiceUtils.createBulk(entities: entitiesDictionaries, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     public func update(entity: Any, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        let entityDictionary = PersistenceHelper.shared.entityToDictionary(entity: entity)
-        persistenceServiceUtils.update(entity: entityDictionary, responseHandler: wrapResponse(responseHandler), errorHandler: errorHandler)
+        if let entityDictionary = PersistenceHelper.shared.entityToSimpleType(entity: entity) as? [String : Any] {
+            persistenceServiceUtils.update(entity: entityDictionary, responseHandler: wrapResponse(responseHandler), errorHandler: errorHandler)
+        }        
     }
     
     public func updateBulk(whereClause: String?, changes: [String : Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
