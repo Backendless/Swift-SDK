@@ -65,8 +65,8 @@ class TransactionHelper {
     }
     
     func objectIdFromCustomEntity(_ entity: Any) -> String {
-        let entityDict = PersistenceHelper.shared.entityToDictionary(entity: entity)
-        if let objectId = entityDict["objectId"] as? String {
+        if let entityDict = PersistenceHelper.shared.entityToSimpleType(entity: entity) as? [String : Any],
+            let objectId = entityDict["objectId"] as? String {
             return objectId
         }
         return ""

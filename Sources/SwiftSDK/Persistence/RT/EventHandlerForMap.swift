@@ -196,8 +196,8 @@ import Foundation
     public func addSetRelationListener(relationColumnName: String, customParents: [Any], responseHandler: ((RelationStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         var parentObjectIds = [String]()
         for parent in customParents {
-            let parentDictionary = PersistenceHelper.shared.entityToDictionary(entity: parent)
-            if let parentObjectId = parentDictionary["objectId"] as? String {
+            if let parentDictionary = PersistenceHelper.shared.entityToSimpleType(entity: parent) as? [String : Any],
+                let parentObjectId = parentDictionary["objectId"] as? String {
                 parentObjectIds.append(parentObjectId)
             }
             else if let parentObjectId = PersistenceHelper.shared.getObjectId(entity: parent) {
@@ -244,8 +244,8 @@ import Foundation
     public func addAddRelationListener(relationColumnName: String, customParents: [Any], responseHandler: ((RelationStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         var parentObjectIds = [String]()
         for parent in customParents {
-            let parentDictionary = PersistenceHelper.shared.entityToDictionary(entity: parent)
-            if let parentObjectId = parentDictionary["objectId"] as? String {
+            if let parentDictionary = PersistenceHelper.shared.entityToSimpleType(entity: parent) as? [String : Any],
+                let parentObjectId = parentDictionary["objectId"] as? String {
                 parentObjectIds.append(parentObjectId)
             }
             else if let parentObjectId = PersistenceHelper.shared.getObjectId(entity: parent) {
@@ -292,8 +292,8 @@ import Foundation
     public func addDeleteRelationListener(relationColumnName: String, customParents: [Any], responseHandler: ((RelationStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         var parentObjectIds = [String]()
         for parent in customParents {
-            let parentDictionary = PersistenceHelper.shared.entityToDictionary(entity: parent)
-            if let parentObjectId = parentDictionary["objectId"] as? String {
+            if let parentDictionary = PersistenceHelper.shared.entityToSimpleType(entity: parent) as? [String : Any],
+                let parentObjectId = parentDictionary["objectId"] as? String {
                 parentObjectIds.append(parentObjectId)
             }
             else if let parentObjectId = PersistenceHelper.shared.getObjectId(entity: parent) {

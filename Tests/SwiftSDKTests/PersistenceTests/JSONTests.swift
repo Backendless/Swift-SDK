@@ -37,6 +37,10 @@ class JSONTests: XCTestCase {
         Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
     }
     
+    override class func tearDown() {
+        Backendless.shared.data.ofTable("JSONTestTable").removeBulk(whereClause: nil, responseHandler: { removed in }, errorHandler: { fault in })
+    }
+    
     // call before each test
     override func setUp() {
         dataStore = backendless.data.ofTable("JSONTestTable")
@@ -201,6 +205,7 @@ class JSONTests: XCTestCase {
     func test_JN10() {
         let expectation = self.expectation(description: "PASSED: JN10")
         let objectId = createdObjectWithId()
+        
         let jsonValue = JSONUpdateBuilder.set()
             .addArgument(jsonPath: "$.letter", value: "b")
             .addArgument(jsonPath: "$.number", value: 36)
@@ -210,6 +215,7 @@ class JSONTests: XCTestCase {
             .addArgument(jsonPath: "$.innerArray", value: [1, 2, 3])
             .create()
         dataStore.save(entity: ["objectId": objectId, "json": jsonValue], responseHandler: { saved in
+            
             XCTAssertTrue(saved["json"] is [String : Any])
             let json = saved["json"] as! [String : Any]
             
@@ -557,8 +563,6 @@ class JSONTests: XCTestCase {
             XCTAssertTrue(decimals.first as? NSNumber == 12.3)
             XCTAssertTrue(decimals[1] as? NSNumber == 43.28)
             XCTAssertTrue(decimals[2] as? [NSNumber] == [20, 70])
-            XCTAssertTrue(decimals[3] as? NSNumber == 25)
-            XCTAssertTrue(decimals[4] as? NSNumber == 56.89)
             
             XCTAssertTrue(json["timeMarks"] as? [String : String] == ["date": "2015-07-29",
                                                                       "date_time": "2015-07-29 12:18:29.000000",

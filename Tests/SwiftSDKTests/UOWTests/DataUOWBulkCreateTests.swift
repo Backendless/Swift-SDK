@@ -36,6 +36,11 @@ class DataUOWBulkCreateTests: XCTestCase {
         Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
     }
     
+    // call after all tests
+    override class func tearDown() {
+        clearTables()
+    }
+    
     class func clearTables() {
         Backendless.shared.data.ofTable("TestClass").removeBulk(whereClause: nil, responseHandler: { removedObjects in }, errorHandler: { fault in })
         Backendless.shared.data.ofTable("ChildTestClass").removeBulk(whereClause: nil, responseHandler: { removedObjects in }, errorHandler: { fault in })
