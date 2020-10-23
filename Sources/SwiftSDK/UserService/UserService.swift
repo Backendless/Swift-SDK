@@ -210,22 +210,22 @@ import Foundation
         })
     }
     
-    public func loginWithOauth2(providerName: String, token: String, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        oauth2Login(providerName: providerName, token: token, guestUser: nil, fieldsMapping: fieldsMapping, stayLoggedIn: stayLoggedIn, responseHandler: responseHandler, errorHandler: errorHandler)
+    public func loginWithOauth2(providerCode: String, token: String, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        oauth2Login(providerCode: providerCode, token: token, guestUser: nil, fieldsMapping: fieldsMapping, stayLoggedIn: stayLoggedIn, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    public func loginWithOauth2(providerName: String, token: String, guestUser: BackendlessUser, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        oauth2Login(providerName: providerName, token: token, guestUser: guestUser, fieldsMapping: fieldsMapping, stayLoggedIn: stayLoggedIn, responseHandler: responseHandler, errorHandler: errorHandler)
+    public func loginWithOauth2(providerCode: String, token: String, guestUser: BackendlessUser, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        oauth2Login(providerCode: providerCode, token: token, guestUser: guestUser, fieldsMapping: fieldsMapping, stayLoggedIn: stayLoggedIn, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    private func oauth2Login(providerName: String, token: String, guestUser: BackendlessUser?, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    private func oauth2Login(providerCode: String, token: String, guestUser: BackendlessUser?, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         self.stayLoggedIn = stayLoggedIn
         let headers = ["Content-Type": "application/json"]
         var parameters = ["accessToken": token, "fieldsMapping": fieldsMapping] as [String : Any]
         if guestUser != nil {
             parameters["guestUser"] = JSONUtils.shared.objectToJson(objectToParse: guestUser!)
         }
-        BackendlessRequestManager(restMethod: "users/social/\(providerName)/login", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+        BackendlessRequestManager(restMethod: "users/social/\(providerCode)/login", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = ProcessResponse.shared.adapt(response: response, to: BackendlessUser.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
@@ -238,15 +238,15 @@ import Foundation
         })
     }
     
-    public func loginWithOauth1(providerName: String, token: String, tokenSecret: String, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        oauth1Login(providerName: providerName, token: token, tokenSecret: tokenSecret, guestUser: nil, fieldsMapping: fieldsMapping, stayLoggedIn: stayLoggedIn, responseHandler: responseHandler, errorHandler: errorHandler)
+    public func loginWithOauth1(providerCode: String, token: String, tokenSecret: String, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        oauth1Login(providerCode: providerCode, token: token, tokenSecret: tokenSecret, guestUser: nil, fieldsMapping: fieldsMapping, stayLoggedIn: stayLoggedIn, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    public func loginWithOauth1(providerName: String, token: String, tokenSecret: String, guestUser: BackendlessUser, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        oauth1Login(providerName: providerName, token: token, tokenSecret: tokenSecret, guestUser: guestUser, fieldsMapping: fieldsMapping, stayLoggedIn: stayLoggedIn, responseHandler: responseHandler, errorHandler: errorHandler)
+    public func loginWithOauth1(providerCode: String, token: String, tokenSecret: String, guestUser: BackendlessUser, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        oauth1Login(providerCode: providerCode, token: token, tokenSecret: tokenSecret, guestUser: guestUser, fieldsMapping: fieldsMapping, stayLoggedIn: stayLoggedIn, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    private func oauth1Login(providerName: String, token: String, tokenSecret: String, guestUser: BackendlessUser?, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    private func oauth1Login(providerCode: String, token: String, tokenSecret: String, guestUser: BackendlessUser?, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         self.stayLoggedIn = stayLoggedIn
         let headers = ["Content-Type": "application/json"]
         var parameters = ["accessToken": token, "accessTokenSecret": tokenSecret, "fieldsMapping": fieldsMapping] as [String : Any]
