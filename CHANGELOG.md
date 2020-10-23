@@ -27,7 +27,7 @@ func loginWithOauth1(providerCode: String...)
 ```
 * the GeoService functionality removed from SDK
 * the minimum deployment target is changed to iOS 9.0
-* travis.yml changed to work with Xcode 12.2, iPhone 12 Pro Max
+* travis.yml changed to work with Xcode 12.2
 
 ### 6.0.4.1 / August 31, 2020
 * fixed issue when FileService `rename()`, `move()`, `copy()` methods responses URLs were encased in quotation marks
