@@ -12,6 +12,23 @@ func loginWithOauth1(providerName: String, token: String, tokenSecret: String, f
 func loginWithOauth1(providerName: String, token: String, tokenSecret: String, guestUser: BackendlessUser, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!)
 ```
 
+### xxx / ?
+* the signatures of
+```
+func loginWithOauth2(providerName: String...)
+
+func loginWithOauth1(providerName: String...)
+```
+changed to
+```
+func loginWithOauth2(providerCode: String...)
+
+func loginWithOauth1(providerCode: String...)
+```
+* the GeoService functionality removed from SDK
+* the minimum deployment target is changed to iOS 9.0
+* travis.yml changed to work with Xcode 12.2, iPhone 12 Pro Max
+
 ### 6.0.4.1 / August 31, 2020
 * fixed issue when FileService `rename()`, `move()`, `copy()` methods responses URLs were encased in quotation marks
 

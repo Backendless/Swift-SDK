@@ -660,10 +660,6 @@ class PersistenceServiceUtils {
             }
             return backendlessUser
         }
-        else if tableName == "GeoPoint" || className == "GeoPoint",
-            let geoPoint = ProcessResponse.shared.adaptToGeoPoint(geoDictionary: dictionary) {
-            return geoPoint
-        }
         else if tableName == "DeviceRegistration" || className == "DeviceRegistration" {
             let deviceRegistration = ProcessResponse.shared.adaptToDeviceRegistration(responseResult: dictionary)
             if let objectId = deviceRegistration.objectId {
@@ -750,10 +746,6 @@ class PersistenceServiceUtils {
                                     let userObject = ProcessResponse.shared.adaptToBackendlessUser(responseResult: relationDictionary) {
                                     entity.setValue(userObject as! BackendlessUser, forKey: dictionaryField)
                                 }
-                                else if relationDictionary["___class"] as? String == "GeoPoint",
-                                    let geoPointObject = ProcessResponse.shared.adaptToGeoPoint(geoDictionary: relationDictionary) {
-                                    entity.setValue(geoPointObject, forKey: dictionaryField)
-                                }
                                 else if relationDictionary["___class"] as? String == "DeviceRegistration" {
                                     let deviceRegistrationObject = ProcessResponse.shared.adaptToDeviceRegistration(responseResult: relationDictionary)
                                     entity.setValue(deviceRegistrationObject, forKey: dictionaryField)
@@ -779,10 +771,6 @@ class PersistenceServiceUtils {
                                 if relationDictionary["___class"] as? String == "Users",
                                     let userObject = ProcessResponse.shared.adaptToBackendlessUser(responseResult: relationDictionary) {
                                     relationsArray.append(userObject as! BackendlessUser)
-                                }
-                                else if relationDictionary["___class"] as? String == "GeoPoint",
-                                    let geoPointObject = ProcessResponse.shared.adaptToGeoPoint(geoDictionary: relationDictionary) {
-                                    relationsArray.append(geoPointObject)
                                 }
                                 else if relationDictionary["___class"] as? String == "DeviceRegistration" {
                                     let deviceRegistrationObject = ProcessResponse.shared.adaptToDeviceRegistration(responseResult: relationDictionary)

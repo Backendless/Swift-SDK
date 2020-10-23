@@ -91,15 +91,6 @@ import Foundation
         return _fileSevice
     }()
     
-    public lazy var geo: GeoService = {
-        return self.geoService
-    }()
-    
-    public lazy var geoService: GeoService = {
-        let _geoSevice = GeoService()
-        return _geoSevice
-    }()
-    
     public lazy var logging: Logging = {
         let _logging = Logging()
         return _logging
