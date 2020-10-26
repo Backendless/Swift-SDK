@@ -37,24 +37,31 @@ class DataUOWBulkDeleteTests: XCTestCase {
     
     func test_01_bulkDelete() {
         let expectation = self.expectation(description: "PASSED: uow.bulkDelete")
-        testObjectsUtils.bulkCreateTestClassObjects(responseHandler: { objectIds in
-            let uow = UnitOfWork()
-            let _ = uow.bulkDelete(tableName: self.tableName, objectIdValues: objectIds)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
-                uow.execute(responseHandler: { uowResult in
-                    XCTAssertNil(uowResult.error)
-                    XCTAssertTrue(uowResult.isSuccess)
-                    XCTAssertNotNil(uowResult.results)
-                    expectation.fulfill()
-                }, errorHandler: {  fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+            
+            self.testObjectsUtils.bulkCreateTestClassObjects(responseHandler: { objectIds in
+                let uow = UnitOfWork()
+                let _ = uow.bulkDelete(tableName: self.tableName, objectIdValues: objectIds)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+                    uow.execute(responseHandler: { uowResult in
+                        XCTAssertNil(uowResult.error)
+                        XCTAssertTrue(uowResult.isSuccess)
+                        XCTAssertNotNil(uowResult.results)
+                        expectation.fulfill()
+                    }, errorHandler: {  fault in
+                        XCTAssertNotNil(fault)
+                        XCTFail("\(fault.code): \(fault.message!)")
+                    })
                 })
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
             })
-        }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
-            XCTFail("\(fault.code): \(fault.message!)")
+            
+            
         })
+        
+        
         waitForExpectations(timeout: timeout, handler: nil)
     }
     

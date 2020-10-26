@@ -316,9 +316,9 @@ import Foundation
                     else {
                         let updatedUser = result as! BackendlessUser
                         if self.stayLoggedIn,
-                            let current = self.currentUser,
-                            updatedUser.objectId == current.objectId,
-                            let currentToken = current.userToken {
+                           let current = self.currentUser,
+                           updatedUser.objectId == current.objectId,
+                           let currentToken = current.userToken {
                             updatedUser.setUserToken(value: currentToken)
                             self.setPersistentUser(currentUser: updatedUser)
                         }
@@ -376,8 +376,8 @@ import Foundation
         })
     }
     
-    public func resendEmailConfirmation(email: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        BackendlessRequestManager(restMethod: "users/resendconfirmation/\(email)", httpMethod: .post, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+    public func resendEmailConfirmation(identity: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        BackendlessRequestManager(restMethod: "users/resendconfirmation/\(identity)", httpMethod: .post, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = ProcessResponse.shared.adapt(response: response, to: NoReply.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
@@ -385,6 +385,19 @@ import Foundation
             }
             else {
                 responseHandler()
+            }
+        })
+    }
+    
+    public func createEmailConfirmation(identity: String, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        BackendlessRequestManager(restMethod: "users/createEmailConfirmationURL/\(identity)", httpMethod: .post, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else if let resultDictionary = (result as! JSON).dictionaryObject {
+                    responseHandler(resultDictionary)
+                }
             }
         })
     }

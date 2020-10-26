@@ -1,18 +1,6 @@
 # RELEASE HISTORY
 
-### 6.0.5 / September 15, 2020
-* added OAuth login methods:
-```
-func loginWithOauth2(providerName: String, token: String, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!)
-
-func loginWithOauth2(providerName: String, token: String, guestUser: BackendlessUser, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!)
-
-func loginWithOauth1(providerName: String, token: String, tokenSecret: String, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!)
-
-func loginWithOauth1(providerName: String, token: String, tokenSecret: String, guestUser: BackendlessUser, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!)
-```
-
-### xxx / ?
+### 6.1.0 / October 26, 2020
 * the signatures of
 ```
 func loginWithOauth2(providerName: String...)
@@ -25,9 +13,33 @@ func loginWithOauth2(providerCode: String...)
 
 func loginWithOauth1(providerCode: String...)
 ```
+* the signature of
+```
+func resendEmailConfirmation(email: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!)
+```
+changed to
+```
+func resendEmailConfirmation(identity: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!)
+```
+* added function to the UserService:
+```
+func createEmailConfirmation(identity: String, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!)
+```
 * the GeoService functionality removed from SDK
 * the minimum deployment target is changed to iOS 9.0
 * travis.yml changed to work with Xcode 12.2
+
+### 6.0.5 / September 15, 2020
+* added OAuth login methods:
+```
+func loginWithOauth2(providerName: String, token: String, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!)
+
+func loginWithOauth2(providerName: String, token: String, guestUser: BackendlessUser, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!)
+
+func loginWithOauth1(providerName: String, token: String, tokenSecret: String, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!)
+
+func loginWithOauth1(providerName: String, token: String, tokenSecret: String, guestUser: BackendlessUser, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!)
+```
 
 ### 6.0.4.1 / August 31, 2020
 * fixed issue when FileService `rename()`, `move()`, `copy()` methods responses URLs were encased in quotation marks
