@@ -80,10 +80,6 @@ class PersistenceHelper {
                 else if className == "DeviceRegistration" {
                     return ProcessResponse.shared.adaptToDeviceRegistration(responseResult: dictionary)
                 }
-                else if className == "GeoPoint",
-                    let geoPoint = ProcessResponse.shared.adaptToGeoPoint(geoDictionary: dictionary) {
-                    return geoPoint
-                }
                 else if className == BLPoint.geometryClassName, dictionary["type"] as? String == BLPoint.geoJsonType,
                     let blPoint = try? GeoJSONParser.dictionaryToPoint(dictionary) {
                     return blPoint
