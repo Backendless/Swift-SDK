@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 6.1.1 / October 27, 2020
+*  the iOS deployment target is set to 9.0 in the .podspec file
+
 ### 6.1.0 / October 26, 2020
 * the signatures of
 ```

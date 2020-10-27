@@ -1,3 +1,4 @@
-.DS_Store
 .swiftpm/
 Pods/
+.Podfile.lock
+.DS_Store
