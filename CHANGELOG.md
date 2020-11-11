@@ -1,5 +1,13 @@
 # RELEASE HISTORY
 
+### ?
+* methods marked as depreated:
+```
+logingWithFacebook(...)
+loginWithTwitter(...)
+loginWithGoogle(...)
+```
+
 ### 6.1.1 / October 27, 2020
 *  the iOS deployment target is set to 9.0 in the .podspec file
 
