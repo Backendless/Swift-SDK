@@ -129,14 +129,17 @@ import Foundation
         })
     }
     
+    @available(*, deprecated, message: "Please use the loginWithOauth2 and loginWithOauth1 methods instead")
     public func logingWithFacebook(accessToken: String, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         facebookLogin(accessToken: accessToken, guestUser: nil, fieldsMapping: fieldsMapping, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
+    @available(*, deprecated, message: "Please use the loginWithOauth2 and loginWithOauth1 methods instead")
     public func loginWithFacebook(accessToken: String, guestUser: BackendlessUser, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         facebookLogin(accessToken: accessToken, guestUser: guestUser, fieldsMapping: fieldsMapping, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
+    @available(*, deprecated, message: "Please use the loginWithOauth2 and loginWithOauth1 methods instead")
     private func facebookLogin(accessToken: String, guestUser: BackendlessUser?, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         var parameters = ["accessToken": accessToken, "fieldsMapping": fieldsMapping] as [String : Any]
@@ -156,14 +159,17 @@ import Foundation
         })
     }
     
+    @available(*, deprecated, message: "Please use the loginWithOauth2 and loginWithOauth1 methods instead")
     public func loginWithTwitter(authToken: String, authTokenSecret: String, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         twitterLogin(authToken: authToken, authTokenSecret: authTokenSecret, guestUser: nil, fieldsMapping: fieldsMapping, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
+    @available(*, deprecated, message: "Please use the loginWithOauth2 and loginWithOauth1 methods instead")
     public func loginWithTwitter(authToken: String, authTokenSecret: String, guestUser: BackendlessUser, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         twitterLogin(authToken: authToken, authTokenSecret: authTokenSecret, guestUser: guestUser, fieldsMapping: fieldsMapping, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
+    @available(*, deprecated, message: "Please use the loginWithOauth2 and loginWithOauth1 methods instead")
     private func twitterLogin(authToken: String, authTokenSecret: String, guestUser: BackendlessUser?, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         var parameters = ["accessToken": authToken, "accessTokenSecret": authTokenSecret, "fieldsMapping": fieldsMapping] as [String : Any]
@@ -183,14 +189,17 @@ import Foundation
         })
     }
     
+    @available(*, deprecated, message: "Please use the loginWithOauth2 and loginWithOauth1 methods instead")
     public func loginWithGoogle(accessToken: String, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         googleLogin(accessToken: accessToken, guestUser: nil, fieldsMapping: fieldsMapping, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
+    @available(*, deprecated, message: "Please use the loginWithOauth2 and loginWithOauth1 methods instead")
     public func loginWithGoogle(accessToken: String, guestUser: BackendlessUser, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         googleLogin(accessToken: accessToken, guestUser: guestUser, fieldsMapping: fieldsMapping, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
+    @available(*, deprecated, message: "Please use the loginWithOauth2 and loginWithOauth1 methods instead")
     private func googleLogin(accessToken: String, guestUser: BackendlessUser?, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         var parameters = ["accessToken": accessToken, "fieldsMapping": fieldsMapping] as [String : Any]
