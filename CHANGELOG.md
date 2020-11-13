@@ -1,6 +1,7 @@
 # RELEASE HISTORY
 
 ### ?
+* added the `distinct` property to DataQueryBuilder
 * methods marked as depreated:
 ```
 logingWithFacebook(...)

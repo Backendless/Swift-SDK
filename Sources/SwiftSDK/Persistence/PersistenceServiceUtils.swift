@@ -255,6 +255,7 @@ class PersistenceServiceUtils {
         if let offset = queryBuilder?.offset {
             parameters["offset"] = offset
         }
+        parameters["distinct"] = queryBuilder?.distinct
         BackendlessRequestManager(restMethod: "data/\(tableName)/find", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = ProcessResponse.shared.adapt(response: response, to: [JSON].self) {
                 if result is Fault {
