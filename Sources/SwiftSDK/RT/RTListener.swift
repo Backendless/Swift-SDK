@@ -157,22 +157,29 @@ import Foundation
     
     // ****************************************************
     
-    func stopSubscription(event: String, whereClause: String?) {        
-        if let subscriptionStack = self.subscriptions[event] {
+    func stopSubscription(event: String, whereClause: String?) {
+        if var subscriptionStack = self.subscriptions[event] {
+            var subscriptionIdsToRemove = [String]()
             if whereClause != nil {
                 for subscription in subscriptionStack {
                     if let options = subscription.options,
                         let subscriptionWhereClause = options["whereClause"] as? String,
                         subscriptionWhereClause == whereClause {
                         subscription.stop()
+                        subscriptionIdsToRemove.append(subscription.subscriptionId!)
                     }
                 }
             }
             else {
                 for subscription in subscriptionStack {
                     subscription.stop()
+                    subscriptionIdsToRemove.append(subscription.subscriptionId!)
                 }
             }
+            for subscriptionId in subscriptionIdsToRemove {
+                subscriptionStack.removeAll(where: { $0.subscriptionId == subscriptionId })
+            }            
+            subscriptions[event] = subscriptionStack
         }
     }
     

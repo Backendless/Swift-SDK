@@ -1,6 +1,8 @@
 # RELEASE HISTORY
 
-### ?
+### 6.1.2 / November 25, 2020
+* added the `distinct` property to DataQueryBuilder
+* fixed the listeners count in the RTListener.swift class
 * methods marked as depreated:
 ```
 logingWithFacebook(...)
