@@ -109,7 +109,7 @@ class RTClient {
         })
     }
     
-    func subscribe(data: [String : Any], subscription: RTSubscription) {        
+    func subscribe(data: [String : Any], subscription: RTSubscription) {
         DispatchQueue.global(qos: .default).async {            
             self._lock.lock()
             if self.socketConnected {
@@ -144,7 +144,7 @@ class RTClient {
         }
         if self.subscriptions.count == 0, self.socket != nil, self.socketManager != nil {
             self.removeSocket()
-        } 
+        }
     }
     
     func sendCommand(data: Any, method: RTMethodRequest?) {

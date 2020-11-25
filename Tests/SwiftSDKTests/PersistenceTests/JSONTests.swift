@@ -110,7 +110,7 @@ class JSONTests: XCTestCase {
         let queryBuilder = DataQueryBuilder()
         queryBuilder.properties = ["json->'$.timeMarks.time' as time"]
         dataStore.findFirst(queryBuilder: queryBuilder, responseHandler: { object in
-            XCTAssertTrue(object.keys.count == 2)
+            XCTAssertTrue(object.keys.count == 3)
             XCTAssertTrue(object.keys.contains("___class"))
             XCTAssertTrue(object.keys.contains("time"))
             XCTAssertTrue(object["time"] as! String == "12:18:29.000000")
@@ -128,7 +128,7 @@ class JSONTests: XCTestCase {
         let queryBuilder = DataQueryBuilder()
         queryBuilder.properties = ["json->'$.timeMarks.*' as allTimeMarks"]
         dataStore.findFirst(queryBuilder: queryBuilder, responseHandler: { object in
-            XCTAssertTrue(object.keys.count == 2)
+            XCTAssertTrue(object.keys.count == 3)
             XCTAssertTrue(object.keys.contains("___class"))
             XCTAssertTrue(object.keys.contains("allTimeMarks"))
             XCTAssertTrue(object["allTimeMarks"] is [String])
@@ -147,7 +147,7 @@ class JSONTests: XCTestCase {
         let queryBuilder = DataQueryBuilder()
         queryBuilder.properties = ["json->'$.*[1]' as allSecondvaulesFromArray"]
         dataStore.findFirst(queryBuilder: queryBuilder, responseHandler: { object in
-            XCTAssertTrue(object.keys.count == 2)
+            XCTAssertTrue(object.keys.count == 3)
             XCTAssertTrue(object.keys.contains("___class"))
             XCTAssertTrue(object.keys.contains("allSecondvaulesFromArray"))
             XCTAssertTrue(object["allSecondvaulesFromArray"] is [Any])
@@ -167,7 +167,7 @@ class JSONTests: XCTestCase {
         let queryBuilder = DataQueryBuilder()
         queryBuilder.properties = ["json->'$.letter' as jsonLetter"]
         dataStore.findFirst(queryBuilder: queryBuilder, responseHandler: { object in
-            XCTAssertTrue(object.keys.count == 2)
+            XCTAssertTrue(object.keys.count == 3)
             XCTAssertTrue(object.keys.contains("___class"))
             XCTAssertTrue(object.keys.contains("jsonLetter"))
             XCTAssertTrue(object["jsonLetter"] as? String == "a")
@@ -185,7 +185,7 @@ class JSONTests: XCTestCase {
         let queryBuilder = DataQueryBuilder()
         queryBuilder.properties = ["json->'$.status' as jsonStatus"]
         dataStore.findFirst(queryBuilder: queryBuilder, responseHandler: { object in
-            XCTAssertTrue(object.keys.count == 2)
+            XCTAssertTrue(object.keys.count == 3)
             XCTAssertTrue(object.keys.contains("___class"))
             XCTAssertTrue(object.keys.contains("jsonStatus"))
             XCTAssertTrue(object["jsonStatus"] as? Bool == true)

@@ -53,7 +53,7 @@ class DistinctTests: XCTestCase {
                 }
             }
             resultsArray = resultsArray.sorted { ($0["name"] as! String) < ($1["name"] as! String) }
-            XCTAssertTrue(resultsArray.count == 2)
+            XCTAssertTrue(resultsArray.count == 3)
             XCTAssertTrue(resultsArray.first!["name"] as? String == "name1")
             XCTAssertTrue(resultsArray.last!["name"] as? String == "name2")
             expectation.fulfill()
@@ -129,7 +129,7 @@ class DistinctTests: XCTestCase {
                 }
             }
             resultsArray = resultsArray.sorted { ($0["name"] as! String) < ($1["name"] as! String) }
-            XCTAssertTrue(resultsArray.count == 2)
+            XCTAssertTrue(resultsArray.count == 3)
             XCTAssertTrue(resultsArray.first!["name"] as? String == "name1")
             XCTAssertTrue(resultsArray.last!["name"] as? String == "name2")
             expectation.fulfill()
