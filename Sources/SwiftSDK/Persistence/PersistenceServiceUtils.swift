@@ -497,6 +497,26 @@ class PersistenceServiceUtils {
         }
     }
     
+    func deepSave(entity: [String : Any], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        let headers = ["Content-Type": "application/json"]
+        let parameters = PersistenceHelper.shared.convertDictionaryValuesFromGeometryType(entity)
+        BackendlessRequestManager(restMethod: "data/\(tableName)/deep-save", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else if let resultDictionary = (result as! JSON).dictionaryObject {
+                    if let responseDictionary = PersistenceHelper.shared.convertToBLType(resultDictionary) as? [String : Any] {
+                        responseHandler(responseDictionary)
+                    }
+                    else {
+                        responseHandler(resultDictionary)
+                    }
+                }
+            }
+        })
+    }
+    
     func getTableName(entity: Any) -> String {
         if entity is BackendlessUser.Type {
             return "Users"

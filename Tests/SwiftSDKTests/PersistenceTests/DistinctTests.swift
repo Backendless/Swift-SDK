@@ -33,6 +33,15 @@ class DistinctTests: XCTestCase {
     override class func setUp() {
         Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
         Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
+        
+        let semaphore = DispatchSemaphore(value: 0)
+        DispatchQueue.global().async {
+            Backendless.shared.data.ofTable("Person").removeBulk(whereClause: nil, responseHandler: { removed in
+                semaphore.signal()
+            }, errorHandler: { fault in })
+        }
+        semaphore.wait()
+        return
     }
     
     // call before each test
@@ -42,6 +51,7 @@ class DistinctTests: XCTestCase {
     
     func test_DT01() {
         let expectation = self.expectation(description: "PASSED: DT1")
+        fillTable()
         let queryBuilder = DataQueryBuilder()
         queryBuilder.distinct = true
         queryBuilder.addProperty(property: "name")
@@ -138,5 +148,21 @@ class DistinctTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    // ************************************
+    
+    private func fillTable() {
+        let people = [["name": "name1"], ["name": "name2"], ["name": "name2"]]
+        let semaphore = DispatchSemaphore(value: 0)
+        DispatchQueue.global().async {
+            self.dataStore.createBulk(entities: people, responseHandler: { createdIds in
+                semaphore.signal()
+            }, errorHandler: { fault in
+                semaphore.signal()
+            })
+        }
+        semaphore.wait()
+        return
     }
 }
