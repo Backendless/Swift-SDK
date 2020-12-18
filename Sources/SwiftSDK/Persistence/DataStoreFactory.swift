@@ -208,6 +208,12 @@ import Foundation
         persistenceServiceUtils.loadRelations(objectId: objectId, queryBuilder: queryBuilder, responseHandler: wrappedBlock, errorHandler: errorHandler)
     }
     
+    public func deepSave(entity: Any, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        if let entityDictionary = PersistenceHelper.shared.entityToSimpleType(entity: entity) as? [String : Any] {
+            persistenceServiceUtils.deepSave(entity: entityDictionary, responseHandler: wrapResponse(responseHandler), errorHandler: errorHandler)
+        }
+    }
+    
     private func wrapResponse(_ responseHandler: @escaping ((Any) -> Void)) -> (([String: Any]) -> ()) {
         let wrappedBlock: ([String: Any]) -> () = { responseDictionary in
             let className = PersistenceHelper.shared.getClassNameWithoutModule(self.entityClass)

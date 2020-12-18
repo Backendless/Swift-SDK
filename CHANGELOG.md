@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 6.1.3 / December 18, 2020
+* added the `deepSave` methods to DataStoreFactory and MapDrivenDataStore
+
 ### 6.1.2 / November 25, 2020
 * added the `distinct` property to DataQueryBuilder
 * fixed the listeners count in the RTListener.swift class

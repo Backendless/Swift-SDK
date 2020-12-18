@@ -143,4 +143,14 @@ import Foundation
     public func loadRelations(objectId: String, queryBuilder: LoadRelationsQueryBuilder, responseHandler: (([Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         persistenceServiceUtils.loadRelations(objectId: objectId, queryBuilder: queryBuilder, responseHandler: responseHandler, errorHandler: errorHandler)
     }
+
+    public func deepSave(entity: [String : Any], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {        
+        var entityToSave = [String : Any]()
+        for (key, value) in entity {
+            entityToSave[key] = JSONUtils.shared.objectToJson(objectToParse: value)
+        }
+        persistenceServiceUtils.deepSave(entity: entityToSave, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
 }
+
+

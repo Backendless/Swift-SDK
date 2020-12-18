@@ -100,7 +100,7 @@ class FileServiceTests: XCTestCase {
     
     func test_05_moveFile() {
         let expectation = self.expectation(description: "PASSED: fileService.moveFile")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5, execute: {
             self.backendless.file.move(sourcePath: "\(self.directory)/fox.txt", targetPath: self.copiedDirectory, responseHandler: { movedPath in
                 XCTAssertNotNil(movedPath)
                 expectation.fulfill()
