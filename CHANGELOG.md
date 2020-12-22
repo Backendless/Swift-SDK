@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 6.1.3.1 / December 22, 2020
+* fixed issue when RT stopepd working after logout, relogin or when Internet disappeared
+
 ### 6.1.3 / December 18, 2020
 * added the `deepSave` methods to DataStoreFactory and MapDrivenDataStore
 
