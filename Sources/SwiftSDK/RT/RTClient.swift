@@ -27,9 +27,10 @@ class RTClient {
     static let shared = RTClient()
     
     var waitingSubscriptions: [RTSubscription]
+    var socketOnceCreated = false
     
-    private var socketManager: SocketManager?
     private var socket: SocketIOClient?
+    private var socketManager: SocketManager?
     private var subscriptions: [String : RTSubscription]
     private var eventSubscriptions: [String : [RTSubscription]]
     private var methods: [String : RTMethodRequest]
@@ -81,13 +82,14 @@ class RTClient {
                     self.socketManager?.reconnects = false
                     self.socket = self.socketManager?.socket(forNamespace: path)
                     
-                    if self.socket != nil {                        
+                    if self.socket != nil {
+                        self.socketOnceCreated = true
                         self.socketCreated = true
                         self.onDisconnectCalledOnce = false
                         self.onConnectionHandlers(connected: connected)
                     }
                 }
-                else {                    
+                else {
                     if let connectErrorSubscriptions = self.eventSubscriptions[ConnectEvents.connectError] {
                         for subscription in connectErrorSubscriptions {
                             subscription.onResult!("Cannot connect to Backendless")
@@ -110,7 +112,7 @@ class RTClient {
     }
     
     func subscribe(data: [String : Any], subscription: RTSubscription) {
-        DispatchQueue.global(qos: .default).async {            
+        DispatchQueue.global(qos: .default).async {
             self._lock.lock()
             if self.socketConnected {
                 self.socket?.emit("SUB_ON", with: [data])
@@ -174,7 +176,7 @@ class RTClient {
                     for subscriptionId in self.subscriptions.keys {
                         if let subscription = self.subscriptions[subscriptionId],
                             let type = subscription.type,
-                            let options = subscription.options {
+                            let options = subscription.options {                            
                             let data = ["id": subscriptionId, "name": type, "options": options] as [String : Any]
                             self.subscribe(data: data, subscription: subscription)
                         }
@@ -267,7 +269,7 @@ class RTClient {
     
     func onResult() {
         if !self.onResultReady {
-            self.socket?.on("SUB_RES", callback: { data, ack in                
+            self.socket?.on("SUB_RES", callback: { data, ack in
                 self.onResultReady = true                
                 if let resultData = data.first as? [String : Any],
                     let subscriptionId = resultData["id"] as? String,
@@ -402,5 +404,18 @@ class RTClient {
         self.onConnectionHandlersReady = false
         self.onResultReady = false
         self.onMethodResultReady = false
+    }
+    
+    func reconnectSocketAfterLoginAndLogout() {
+        self.socketManager?.removeSocket(self.socket!)
+        self.socket = nil
+        self.socketManager = nil
+        self.socketCreated = false
+        self.socketConnected = false
+        self.needResubscribe = true
+        self.onConnectionHandlersReady = false
+        self.onResultReady = false
+        self.onMethodResultReady = false
+        self.connectSocket(connected: { })
     }
 }

@@ -354,6 +354,9 @@ import Foundation
             }
             else {
                 self.resetPersistentUser()
+                if RTClient.shared.socketOnceCreated {
+                    RTClient.shared.reconnectSocketAfterLoginAndLogout()
+                }
                 responseHandler()
             }
         })
@@ -418,6 +421,9 @@ import Foundation
         }  
         if self.stayLoggedIn {
             UserDefaultsHelper.shared.saveCurrentUser(currentUser: self._currentUser!)
+        }
+        if RTClient.shared.socketOnceCreated {
+            RTClient.shared.reconnectSocketAfterLoginAndLogout()
         }
     }
     
