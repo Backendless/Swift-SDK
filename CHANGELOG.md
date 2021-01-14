@@ -1,7 +1,10 @@
 # RELEASE HISTORY
 
+### 6.2.0 / January 14, 2021
+* fixed issue when Business Logic returned a date as a string
+
 ### 6.1.3.1 / December 22, 2020
-* fixed issue when RT stopepd working after logout, relogin or when Internet disappeared
+* fixed issue when RT stopped working after logout, relogin or when Internet disappeared
 
 ### 6.1.3 / December 18, 2020
 * added the `deepSave` methods to DataStoreFactory and MapDrivenDataStore
