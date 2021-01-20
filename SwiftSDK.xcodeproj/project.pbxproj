@@ -135,6 +135,7 @@
 		5ECFEFBB23D9C88F004A5DD0 /* BackendlessDataCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECFEFBA23D9C88F004A5DD0 /* BackendlessDataCollection.swift */; };
 		5ED51D0D22456E8600D22F11 /* BackendlessPushHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED51D0C22456E8600D22F11 /* BackendlessPushHelper.swift */; };
 		5ED765D02224369E009431CD /* BulkEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED765CF2224369E009431CD /* BulkEvent.swift */; };
+		5ED9B85B25B71396000B2C11 /* BLUrlSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED9B85A25B71396000B2C11 /* BLUrlSession.swift */; };
 		5EDA87DE2434C44B00873403 /* DataUOWDeleteRelation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EDA87DD2434C44B00873403 /* DataUOWDeleteRelation.swift */; };
 		5EDB502023E1CE5700E36E62 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EDB501F23E1CE5700E36E62 /* Operation.swift */; };
 		5EDB79E7258A4855000CE403 /* DeepSaveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EDB79E6258A4855000CE403 /* DeepSaveTests.swift */; };
@@ -301,6 +302,7 @@
 		5ECFEFBA23D9C88F004A5DD0 /* BackendlessDataCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessDataCollection.swift; sourceTree = "<group>"; };
 		5ED51D0C22456E8600D22F11 /* BackendlessPushHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessPushHelper.swift; sourceTree = "<group>"; };
 		5ED765CF2224369E009431CD /* BulkEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulkEvent.swift; sourceTree = "<group>"; };
+		5ED9B85A25B71396000B2C11 /* BLUrlSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLUrlSession.swift; sourceTree = "<group>"; };
 		5EDA87DD2434C44B00873403 /* DataUOWDeleteRelation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataUOWDeleteRelation.swift; sourceTree = "<group>"; };
 		5EDB501F23E1CE5700E36E62 /* Operation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
 		5EDB79E6258A4855000CE403 /* DeepSaveTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepSaveTests.swift; sourceTree = "<group>"; };
@@ -561,6 +563,7 @@
 		5E64F0BD21C50D7D00590B04 /* BackendlessRequestManager */ = {
 			isa = PBXGroup;
 			children = (
+				5ED9B85A25B71396000B2C11 /* BLUrlSession.swift */,
 				5E64F0BE21C50D8E00590B04 /* BackendlessRequestManager.swift */,
 				5E6C1E442203362700903B7A /* ReturnedResponse.swift */,
 			);
@@ -1008,6 +1011,7 @@
 				5E971918221C2CC400857603 /* RTSubscription.swift in Sources */,
 				5E238A662271CE8100227859 /* ExecutionType.swift in Sources */,
 				5E238A612271BDCF00227859 /* CustomService.swift in Sources */,
+				5ED9B85B25B71396000B2C11 /* BLUrlSession.swift in Sources */,
 				5E384C99226F40E200743125 /* AtomicCountersFactory.swift in Sources */,
 				5E84136321B5265200869794 /* UserService.swift in Sources */,
 				5ECAB22F238C417C0051F315 /* BLPoint.swift in Sources */,

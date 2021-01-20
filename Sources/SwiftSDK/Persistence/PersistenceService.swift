@@ -22,13 +22,17 @@
 import Foundation
 
 @objcMembers public class PersistenceService: NSObject {
-
+    
+    public func of(_ entityClass: AnyClass) -> DataStoreFactory {
+        return DataStoreFactory(entityClass: entityClass)
+    }
+    
     public func ofTable(_ tableName: String) -> MapDrivenDataStore {
         return MapDrivenDataStore(tableName: tableName)
     }
     
-    public func of(_ entityClass: AnyClass) -> DataStoreFactory {
-        return DataStoreFactory(entityClass: entityClass)
+    public func ofView(_ viewName: String) -> MapDrivenDataStore {
+        return MapDrivenDataStore(tableName: viewName)
     }
     
     public func describe(tableName: String, responseHandler: (([ObjectProperty]) -> Void)!, errorHandler: ((Fault) -> Void)!) {

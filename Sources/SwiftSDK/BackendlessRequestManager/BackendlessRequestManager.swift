@@ -35,6 +35,7 @@ class BackendlessRequestManager {
     private var httpMethod: HTTPMethod
     private var headers: [String: String]?
     private var parameters: Any?
+    private var session: URLSession!
     
     init(restMethod: String, httpMethod: HTTPMethod, headers: [String: String]?, parameters: Any?) {
         self.restMethod = restMethod
@@ -96,9 +97,16 @@ class BackendlessRequestManager {
             }
         }
         
-        let sessionConfig = URLSessionConfiguration.default
-        let session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: OperationQueue.current)
-        let dataTask = session.dataTask(with: request) { data, response, error in            
+        //let sessionConfig = URLSessionConfiguration.default
+        //let session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: OperationQueue.current)
+        
+        if Backendless.shared.useSharedUrlSession {
+            session = BLUrlSessionShared.shared.session
+        }
+        else {
+            session = BLUrlSession().session
+        }
+        let dataTask = session.dataTask(with: request) { data, response, error in
             let returnedResponse = ReturnedResponse()
             if let response = response as? HTTPURLResponse {
                 returnedResponse.response = response
@@ -173,7 +181,7 @@ class BackendlessRequestManager {
         for (originTableName, mappedClassName) in Mappings.shared.tableToClassMappings {
             guard let mappedName = mappedClassName.split(separator: ".").last else { return }
             if restMethodComponents.contains(mappedName),
-                let index = restMethodComponents.firstIndex(of: mappedName) {
+               let index = restMethodComponents.firstIndex(of: mappedName) {
                 restMethodComponents[index] = Substring(originTableName)
             }
         }

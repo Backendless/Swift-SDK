@@ -1,5 +1,20 @@
 # RELEASE HISTORY
 
+### 6.2.1 / January 20, 2021
+* added the `ofView()` method to the PersistenceService class
+* added methods to configure the URLSession for requests manually:
+```
+public var useSharedUrlSession = false
+// true: URLSession is created only once for all requests
+// false: URLSession is created for every request
+
+// to setup URLSessionConfiguration manually for all you URLSession requests
+public func setupURLSessionConfig(_ config: URLSessionConfiguration)
+
+// to setup URLSessionC manually for all you requests
+public func setupURLSessionConfig(_ config: URLSessionConfiguration)
+```
+
 ### 6.2.0 / January 14, 2021
 * fixed issue when Business Logic returned a date as a string
 
@@ -7,7 +22,7 @@
 * fixed issue when RT stopped working after logout, relogin or when Internet disappeared
 
 ### 6.1.3 / December 18, 2020
-* added the `deepSave` methods to DataStoreFactory and MapDrivenDataStore
+* added the `deepSave()` methods to DataStoreFactory and MapDrivenDataStore
 
 ### 6.1.2 / November 25, 2020
 * added the `distinct` property to DataQueryBuilder

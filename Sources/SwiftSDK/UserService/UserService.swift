@@ -336,6 +336,9 @@ import Foundation
                 }
             })
         }
+        else {
+            errorHandler(Fault(message: "Please provide objectId of the user you want to update"))
+        }
     }
     
     @available(*, deprecated, message: "Please use the currentUser property directly")
