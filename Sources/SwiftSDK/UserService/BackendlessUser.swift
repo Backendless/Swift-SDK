@@ -136,9 +136,6 @@ import Foundation
         objectId = try container.decodeIfPresent(String.self, forKey: .objectId)
         userToken = try container.decodeIfPresent(String.self, forKey: .userToken)
         _password = try container.decodeIfPresent(String.self, forKey: ._password)
-        /*if let properties = try container.decodeIfPresent(JSON.self, forKey: .properties) {
-            self.properties = properties
-        }*/
         if let userProperties = try container.decodeIfPresent(JSON.self, forKey: .userProperties) {
             self.userProperties = userProperties
         }
