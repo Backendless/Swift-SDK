@@ -80,15 +80,32 @@ class PersistenceHelper {
                 else if className == "DeviceRegistration" {
                     return ProcessResponse.shared.adaptToDeviceRegistration(responseResult: dictionary)
                 }
-                else if className == BLPoint.geometryClassName, dictionary["type"] as? String == BLPoint.geoJsonType,
-                    let blPoint = try? GeoJSONParser.dictionaryToPoint(dictionary) {
-                    return blPoint
+                else if className == BLPoint.geometryClassName, dictionary["type"] as? String == BLPoint.geoJsonType {
+                    if let blPoint = try? GeoJSONParser.dictionaryToPoint(dictionary) {
+                        return blPoint
+                    }
                 }
                 else if className == BLLineString.geometryClassName, dictionary["type"] as? String == BLLineString.geoJsonType,
                     let lineString = try? GeoJSONParser.dictionaryToLineString(dictionary) {
                     return lineString
                 }
                 else if className == BLPolygon.geometryClassName, dictionary["type"] as? String == BLPolygon.geoJsonType,
+                    let polygon = try? GeoJSONParser.dictionaryToPolygon(dictionary) {
+                    return polygon
+                }
+            }
+            else {
+                // for CustomService
+                if dictionary["type"] as? String == BLPoint.geoJsonType {
+                    if let blPoint = try? GeoJSONParser.dictionaryToPoint(dictionary) {
+                        return blPoint
+                    }
+                }
+                else if dictionary["type"] as? String == BLLineString.geoJsonType,
+                    let lineString = try? GeoJSONParser.dictionaryToLineString(dictionary) {
+                    return lineString
+                }
+                else if dictionary["type"] as? String == BLPolygon.geoJsonType,
                     let polygon = try? GeoJSONParser.dictionaryToPolygon(dictionary) {
                     return polygon
                 }

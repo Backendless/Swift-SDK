@@ -111,7 +111,7 @@ class ProcessResponse {
             if let userStatus = responseResult["userStatus"] as? String, userStatus == "GUSET" {
                 return adaptGuestToBackendlessUser(responseResult: responseResult)
             }
-            else {                
+            else {
                 let properties = ["email": responseResult["email"], "name": responseResult["name"], "objectId": responseResult["objectId"], "userToken": responseResult["user-token"]]
                 do {
                     let responseData = try JSONSerialization.data(withJSONObject: properties)

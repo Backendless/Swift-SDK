@@ -45,6 +45,9 @@ class BackendlessRequestManager {
     }
     
     func makeRequest(getResponse: @escaping (ReturnedResponse) -> ()) {
+        
+        
+        
         prepareRestMethodWithMappings()
         var request = URLRequest(url: URL(string: urlString + DataTypesUtils.shared.stringToUrlString(originalString: restMethod))!)
         request.httpMethod = httpMethod.rawValue
