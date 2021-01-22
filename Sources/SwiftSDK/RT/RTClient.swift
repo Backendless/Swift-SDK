@@ -77,10 +77,18 @@ class RTClient {
                     var connectParams = ["apiKey": Backendless.shared.getApiKey(), "clientId": clientId]
                     if let userToken = Backendless.shared.userService.currentUser?.userToken {
                         connectParams["userToken"] = userToken
-                    }
+                    }                    
                     self.socketManager = SocketManager(socketURL: url, config: ["path": path, "connectParams": connectParams])
                     self.socketManager?.reconnects = false
                     self.socket = self.socketManager?.socket(forNamespace: path)
+                    
+                    // ****************************************
+                    // add disconnect listener here !!!
+                    // ****************************************
+                    
+                    let _ = Backendless.shared.rt.addDisсonnectEventListener(responseHandler: { _ in
+                        self.tryToReconnectSocket()
+                    })
                     
                     if self.socket != nil {
                         self.socketOnceCreated = true

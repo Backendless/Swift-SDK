@@ -1,5 +1,9 @@
 # RELEASE HISTORY
 
+### 6.2.1.1 / January 22, 2021
+* fixed issue when RT socket didn't reconnect automatically after disconnect
+* fixed issue when Geometry fields failed to parse in Custom Services
+
 ### 6.2.1 / January 20, 2021
 * added the `ofView()` method to the PersistenceService class
 * added methods to configure the URLSession for requests manually:
@@ -11,8 +15,8 @@ public var useSharedUrlSession = false
 // to setup URLSessionConfiguration manually for all you URLSession requests
 public func setupURLSessionConfig(_ config: URLSessionConfiguration)
 
-// to setup URLSessionC manually for all you requests
-public func setupURLSessionConfig(_ config: URLSessionConfiguration)
+// to setup URLSession manually for all you requests
+public func setupURLSession(_ session: URLSession)
 ```
 
 ### 6.2.0 / January 14, 2021

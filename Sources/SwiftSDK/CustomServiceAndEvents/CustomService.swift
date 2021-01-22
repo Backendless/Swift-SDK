@@ -60,8 +60,8 @@ import Foundation
         else {
             if let data = response.data {
                 if let resultDictionary = result as? [String : Any] {
-                    responseHandler(JSONUtils.shared.jsonToObject(objectToParse: resultDictionary))
-                }
+                 responseHandler(JSONUtils.shared.jsonToObject(objectToParse: resultDictionary))
+                 }
                 else if let resultArray = result as? [Any] {
                     responseHandler(JSONUtils.shared.jsonToObject(objectToParse: resultArray))
                 }

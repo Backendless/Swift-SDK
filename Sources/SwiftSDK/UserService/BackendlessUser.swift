@@ -108,9 +108,9 @@ import Foundation
             if let currentUser = Backendless.shared.userService.currentUser,
                 self.objectId == currentUser.objectId {
                 currentUser.userProperties = self.userProperties
-                let data = try? JSONEncoder().encode(currentUser)
-                let userDefaults = UserDefaults.standard
-                userDefaults.set(data, forKey: UserDefaultsKeys.currentUser)
+                if Backendless.shared.userService.stayLoggedIn {
+                    UserDefaultsHelper.shared.saveCurrentUser(currentUser: currentUser)
+                }
             }
         }
     }
@@ -134,7 +134,7 @@ import Foundation
         email = try container.decodeIfPresent(String.self, forKey: .email) ?? ""
         name = try container.decodeIfPresent(String.self, forKey: .name)
         objectId = try container.decodeIfPresent(String.self, forKey: .objectId)
-        userToken = try container.decodeIfPresent(String.self, forKey: .userToken)
+        userToken = try container.decodeIfPresent(String.self, forKey: .userToken)        
         _password = try container.decodeIfPresent(String.self, forKey: ._password)
         if let userProperties = try container.decodeIfPresent(JSON.self, forKey: .userProperties) {
             self.userProperties = userProperties

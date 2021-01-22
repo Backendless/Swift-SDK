@@ -42,7 +42,7 @@ import Foundation
         }
         set {
             if newValue != nil {
-                self.setPersistentUser(currentUser: newValue!)
+                self.setPersistentUser(currUser: newValue!)
             }
             else {
                 resetPersistentUser()
@@ -103,7 +103,7 @@ import Foundation
                     errorHandler(result as! Fault)
                 }
                 else {
-                    self.setPersistentUser(currentUser: result as! BackendlessUser)
+                    self.setPersistentUser(currUser: result as! BackendlessUser)
                     responseHandler(result as! BackendlessUser)
                 }
             }
@@ -122,7 +122,7 @@ import Foundation
                     errorHandler(result as! Fault)
                 }
                 else {
-                    self.setPersistentUser(currentUser: result as! BackendlessUser)
+                    self.setPersistentUser(currUser: result as! BackendlessUser)
                     responseHandler(result as! BackendlessUser)
                 }
             }
@@ -152,7 +152,7 @@ import Foundation
                     errorHandler(result as! Fault)
                 }
                 else {
-                    self.setPersistentUser(currentUser: result as! BackendlessUser)
+                    self.setPersistentUser(currUser: result as! BackendlessUser)
                     responseHandler(result as! BackendlessUser)
                 }
             }
@@ -182,7 +182,7 @@ import Foundation
                     errorHandler(result as! Fault)
                 }
                 else {
-                    self.setPersistentUser(currentUser: result as! BackendlessUser)
+                    self.setPersistentUser(currUser: result as! BackendlessUser)
                     responseHandler(result as! BackendlessUser)
                 }
             }
@@ -212,7 +212,7 @@ import Foundation
                     errorHandler(result as! Fault)
                 }
                 else {
-                    self.setPersistentUser(currentUser: result as! BackendlessUser)
+                    self.setPersistentUser(currUser: result as! BackendlessUser)
                     responseHandler(result as! BackendlessUser)
                 }
             }
@@ -240,7 +240,7 @@ import Foundation
                     errorHandler(result as! Fault)
                 }
                 else {
-                    self.setPersistentUser(currentUser: result as! BackendlessUser)
+                    self.setPersistentUser(currUser: result as! BackendlessUser)
                     responseHandler(result as! BackendlessUser)
                 }
             }
@@ -269,7 +269,7 @@ import Foundation
                     errorHandler(result as! Fault)
                 }
                 else {
-                    self.setPersistentUser(currentUser: result as! BackendlessUser)
+                    self.setPersistentUser(currUser: result as! BackendlessUser)
                     responseHandler(result as! BackendlessUser)
                 }
             }
@@ -308,7 +308,6 @@ import Foundation
             }
             parameters[key] = JSONUtils.shared.objectToJson(objectToParse: value)
         }
-        
         var userId = String()
         if let userObjectId = user.objectId {
             userId = userObjectId
@@ -329,7 +328,7 @@ import Foundation
                            updatedUser.objectId == current.objectId,
                            let currentToken = current.userToken {
                             updatedUser.setUserToken(value: currentToken)
-                            self.setPersistentUser(currentUser: updatedUser)
+                            self.setPersistentUser(currUser: updatedUser)
                         }
                         responseHandler(updatedUser)
                     }
@@ -417,11 +416,11 @@ import Foundation
         })
     }
     
-    func setPersistentUser(currentUser: BackendlessUser) {
-        self._currentUser = currentUser
+    func setPersistentUser(currUser: BackendlessUser) {
+        self._currentUser = currUser
         if let userToken = self._currentUser?.userToken {
-            UserDefaultsHelper.shared.savePersistentUserToken(token: userToken)
-        }  
+            setUserToken(value: userToken)
+        }
         if self.stayLoggedIn {
             UserDefaultsHelper.shared.saveCurrentUser(currentUser: self._currentUser!)
         }
