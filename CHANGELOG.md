@@ -1,6 +1,6 @@
 # RELEASE HISTORY
 
-### 6.2.1.2, January 25, 2021
+### 6.2.3, January 25, 2021
 * Fixed issue with SPM after adding the BLUrlSession, BLUrlSessionShared and BLUrlSessionSetup classes
 
 ### 6.2.1.1 / January 22, 2021
