@@ -87,28 +87,30 @@ class JSONUtils {
                 dictionaryToParse["___dates___"] = nil
                 dictionaryToParse["___jsonclass"] = nil
                 
-                if let className = dictionaryToParse["___class"] as? String {
-                    resultObject = PersistenceHelper.shared.convertToBLType(dictionaryToParse)
-                    resultObject = PersistenceHelper.shared.dictionaryToEntity(dictionaryToParse, className: className)!
-                }
-                else {
-                    for (key, value) in dictionaryToParse {
-                        if let value = value as? [String : Any] {
-                            resultDictionary[key] = jsonToObject(objectToParse: value)
-                        }
-                        else if let value = value as? [Any] {
-                            var valueArray = [Any]()
-                            for valueElement in value {
-                                valueArray.append(jsonToObject(objectToParse: valueElement))
-                            }
-                            resultDictionary[key] = valueArray
-                        }
-                        else {                          
-                            resultDictionary[key] = value
-                        }
+                resultObject = PersistenceHelper.shared.convertToBLType(dictionaryToParse)
+                if resultObject is [String : Any] {
+                    if let className = dictionaryToParse["___class"] as? String {
+                        resultObject = PersistenceHelper.shared.dictionaryToEntity(resultObject as! [String : Any], className: className)!
                     }
-                    resultObject = resultDictionary
-                }                
+                    else {
+                        for (key, value) in resultObject as! [String : Any] {
+                            if let value = value as? [String : Any] {
+                                resultDictionary[key] = jsonToObject(objectToParse: value)
+                            }
+                            else if let value = value as? [Any] {
+                                var valueArray = [Any]()
+                                for valueElement in value {
+                                    valueArray.append(jsonToObject(objectToParse: valueElement))
+                                }
+                                resultDictionary[key] = valueArray
+                            }
+                            else {
+                                resultDictionary[key] = value
+                            }
+                        }
+                        resultObject = resultDictionary
+                    }
+                }       
             }
             else {
                 if let dictionaryToParse = objectToParse as? [String : Any],

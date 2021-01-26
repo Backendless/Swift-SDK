@@ -66,7 +66,8 @@ class PersistenceHelper {
     
     func convertToBLType(_ entityToConvert: Any) -> Any {
         if let string = entityToConvert as? String {
-            return tryConvertStringToGeometryType(string)
+            let geom = tryConvertStringToGeometryType(string)
+            return geom
         }
         else if let dictionary = entityToConvert as? [String : Any] {
             var resultDictionary = [String : Any]()
@@ -95,7 +96,7 @@ class PersistenceHelper {
                 }
             }
             else {
-                // for CustomService
+                // for CustomService (Codeless)
                 if dictionary["type"] as? String == BLPoint.geoJsonType {
                     if let blPoint = try? GeoJSONParser.dictionaryToPoint(dictionary) {
                         return blPoint
