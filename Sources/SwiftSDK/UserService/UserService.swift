@@ -42,7 +42,7 @@ import Foundation
         }
         set {
             if newValue != nil {
-                self.setPersistentUser(currUser: newValue!)
+                self.setPersistentUser(currUser: newValue!, reconnectSocket: false)
             }
             else {
                 resetPersistentUser()
@@ -103,7 +103,7 @@ import Foundation
                     errorHandler(result as! Fault)
                 }
                 else {
-                    self.setPersistentUser(currUser: result as! BackendlessUser)
+                    self.setPersistentUser(currUser: result as! BackendlessUser, reconnectSocket: true)
                     responseHandler(result as! BackendlessUser)
                 }
             }
@@ -122,7 +122,7 @@ import Foundation
                     errorHandler(result as! Fault)
                 }
                 else {
-                    self.setPersistentUser(currUser: result as! BackendlessUser)
+                    self.setPersistentUser(currUser: result as! BackendlessUser, reconnectSocket: true)
                     responseHandler(result as! BackendlessUser)
                 }
             }
@@ -152,7 +152,7 @@ import Foundation
                     errorHandler(result as! Fault)
                 }
                 else {
-                    self.setPersistentUser(currUser: result as! BackendlessUser)
+                    self.setPersistentUser(currUser: result as! BackendlessUser, reconnectSocket: true)
                     responseHandler(result as! BackendlessUser)
                 }
             }
@@ -182,7 +182,7 @@ import Foundation
                     errorHandler(result as! Fault)
                 }
                 else {
-                    self.setPersistentUser(currUser: result as! BackendlessUser)
+                    self.setPersistentUser(currUser: result as! BackendlessUser, reconnectSocket: true)
                     responseHandler(result as! BackendlessUser)
                 }
             }
@@ -212,7 +212,7 @@ import Foundation
                     errorHandler(result as! Fault)
                 }
                 else {
-                    self.setPersistentUser(currUser: result as! BackendlessUser)
+                    self.setPersistentUser(currUser: result as! BackendlessUser, reconnectSocket: true)
                     responseHandler(result as! BackendlessUser)
                 }
             }
@@ -240,7 +240,7 @@ import Foundation
                     errorHandler(result as! Fault)
                 }
                 else {
-                    self.setPersistentUser(currUser: result as! BackendlessUser)
+                    self.setPersistentUser(currUser: result as! BackendlessUser, reconnectSocket: true)
                     responseHandler(result as! BackendlessUser)
                 }
             }
@@ -269,7 +269,7 @@ import Foundation
                     errorHandler(result as! Fault)
                 }
                 else {
-                    self.setPersistentUser(currUser: result as! BackendlessUser)
+                    self.setPersistentUser(currUser: result as! BackendlessUser, reconnectSocket: true)
                     responseHandler(result as! BackendlessUser)
                 }
             }
@@ -328,7 +328,7 @@ import Foundation
                            updatedUser.objectId == current.objectId,
                            let currentToken = current.userToken {
                             updatedUser.setUserToken(value: currentToken)
-                            self.setPersistentUser(currUser: updatedUser)
+                            self.setPersistentUser(currUser: updatedUser, reconnectSocket: false)
                         }
                         responseHandler(updatedUser)
                     }
@@ -416,7 +416,7 @@ import Foundation
         })
     }
     
-    func setPersistentUser(currUser: BackendlessUser) {
+    func setPersistentUser(currUser: BackendlessUser, reconnectSocket: Bool) {
         self._currentUser = currUser
         if let userToken = self._currentUser?.userToken {
             setUserToken(value: userToken)
@@ -424,7 +424,7 @@ import Foundation
         if self.stayLoggedIn {
             UserDefaultsHelper.shared.saveCurrentUser(currentUser: self._currentUser!)
         }
-        if RTClient.shared.socketOnceCreated {
+        if RTClient.shared.socketOnceCreated, reconnectSocket {
             RTClient.shared.reconnectSocketAfterLoginAndLogout()
         }
     }

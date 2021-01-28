@@ -103,7 +103,7 @@ class PersistenceServiceUtils {
                            updatedUser.objectId == current.objectId,
                            let currentToken = current.userToken {
                             updatedUser.setUserToken(value: currentToken)
-                            Backendless.shared.userService.setPersistentUser(currUser: updatedUser)
+                            Backendless.shared.userService.setPersistentUser(currUser: updatedUser, reconnectSocket: false)
                         }
                         if let resultDictionary = (result as! JSON).dictionaryObject {
                             if let responseDictionary = PersistenceHelper.shared.convertToBLType(resultDictionary) as? [String : Any] {
