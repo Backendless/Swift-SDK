@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 6.2.5, January 28, 2021
+* fixed issue when RT socket reconnected after currentUser is updated
+
 ### 6.2.4, January 26, 2021
 * fixed issue when Geometry fields failed to parse in Java Custom Services
 
@@ -8,7 +11,6 @@
 
 ### 6.2.1.1 / January 22, 2021
 * fixed issue when RT socket didn't reconnect automatically after disconnect
-
 
 ### 6.2.1 / January 20, 2021
 * added the `ofView()` method to the PersistenceService class
