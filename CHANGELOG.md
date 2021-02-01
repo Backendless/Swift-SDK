@@ -1,6 +1,6 @@
 # RELEASE HISTORY
 
-### 6.2.6, February 1, 2021
+### 6.2.6 / 6.2.7 February 1, 2021
 * fixed issue when SDK crashed with several find methods for class approaches in parallel threads
 * fixed issue when Date fields failed to parse in Java Custom Services
 

@@ -19,6 +19,8 @@
  *  ********************************************************************************************************************
  */
 
+import Foundation
+
 class StoredObjects {
     
     static let shared = StoredObjects()
