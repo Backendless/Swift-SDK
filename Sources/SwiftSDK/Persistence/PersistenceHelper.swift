@@ -353,7 +353,6 @@ class PersistenceHelper {
                 }
             }
         }
-        
         return nil
     }
     

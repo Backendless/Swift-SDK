@@ -74,12 +74,15 @@ class JSONUtils {
             }
             else if var dictionaryToParse = objectToParse as? [String : Any] {
                 var resultDictionary = [String : Any]()
-        
+                
                 if let dates = dictionaryToParse["___dates___"] as? [String] {
                     for dateString in dates {
                         for (key, value) in dictionaryToParse {
                             if value is String, value as! String == dateString {
                                 dictionaryToParse[key] = NumberFormatter().number(from: value as! String)!
+                            }
+                            else {
+                                dictionaryToParse[key] = jsonToObject(objectToParse: value)
                             }
                         }
                     }
@@ -93,7 +96,7 @@ class JSONUtils {
                         resultObject = PersistenceHelper.shared.dictionaryToEntity(resultObject as! [String : Any], className: className)!
                     }
                     else {
-                        for (key, value) in resultObject as! [String : Any] {
+                        for (key, value) in resultObject as! [String : Any] {                            
                             if let value = value as? [String : Any] {
                                 resultDictionary[key] = jsonToObject(objectToParse: value)
                             }

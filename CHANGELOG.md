@@ -1,5 +1,9 @@
 # RELEASE HISTORY
 
+### 6.2.6, February 1, 2021
+* fixed issue when SDK crashed with several find methods for class approaches in parallel threads
+* fixed issue when Date fields failed to parse in Java Custom Services
+
 ### 6.2.5, January 28, 2021
 * fixed issue when RT socket reconnected after currentUser is updated
 
