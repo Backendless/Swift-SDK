@@ -24,11 +24,16 @@ class StoredObjects {
     static let shared = StoredObjects()
     
     var storedObjects = [AnyHashable: String]()
+    private var lock: NSLock
     
-    private init() { }
+    private init() {
+        lock = NSLock()
+    }
     
     func rememberObjectId(objectId: String, forObject: AnyHashable) {
+        lock.lock()
         storedObjects[forObject] = objectId
+        lock.unlock()
     }
     
     func getObjectId(forObject: AnyHashable) -> String? {
