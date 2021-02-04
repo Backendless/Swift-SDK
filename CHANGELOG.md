@@ -1,6 +1,6 @@
 # RELEASE HISTORY
 
-### 6.2.8 February ?, 2021
+### 6.2.8 February 4, 2021
 * added the ability to add/set the relation using the OpResult from the `uow.create` and `uow.update` as children parameter
 
 ### 6.2.6 / 6.2.7 February 1, 2021
