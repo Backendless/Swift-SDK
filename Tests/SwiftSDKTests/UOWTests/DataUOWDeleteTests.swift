@@ -173,5 +173,5 @@ class DataUOWDeleteTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
-    }    
+    }
 }
