@@ -33,7 +33,6 @@ class BLPointTests: XCTestCase {
     override class func setUp() {
         Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
         Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
-        clearTables()
     }
     
     // call before each test
@@ -50,7 +49,7 @@ class BLPointTests: XCTestCase {
         Backendless.shared.data.of(GeometryTestClass.self).removeBulk(whereClause: nil, responseHandler: { removedObjects in }, errorHandler: { fault in })
     }
     
-    func testPT1() {
+    /*func testPT1() {
         let expectation = self.expectation(description: "PASSED: BLPoint.create")
         let geometryObject = GeometryTestClass()
         geometryObject.point = BLPoint(x: -87.52683788, y: 41.85716752)

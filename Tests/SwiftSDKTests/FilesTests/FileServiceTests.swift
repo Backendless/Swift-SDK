@@ -33,7 +33,6 @@ class FileServiceTests: XCTestCase {
     override class func setUp() {
         Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
         Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
-        removeFiles()
     }
     
     class func removeFiles() {
@@ -41,8 +40,8 @@ class FileServiceTests: XCTestCase {
         Backendless.shared.file.remove(path: "CopiedTestsFiles", responseHandler: { _ in }, errorHandler: { fault in })
     }
     
-    func test_01_uploadFile() {
-        let expectation = self.expectation(description: "PASSED: fileService.uploadFile")        
+    func testUploadFile() {
+        let expectation = self.expectation(description: "PASSED: fileService.uploadFile")
         let data = "The quick brown fox jumps over the lazy dog".data(using: .utf8)!
         backendless.file.uploadFile(fileName: "fox.txt", filePath: directory, content: data, overwrite: true, responseHandler: { backendlessFile in
             XCTAssertNotNil(backendlessFile)
@@ -55,7 +54,7 @@ class FileServiceTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_02_saveFile() {
+    func testSaveFile() {
         let expectation = self.expectation(description: "PASSED: fileService.saveFile")
         let data = "The quick brown fox jumps over the lazy dog".data(using: .utf8)!
         let base64 = data.base64EncodedString()
@@ -70,37 +69,46 @@ class FileServiceTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_03_renameFile() {
+    func testRenameFile() {
         let expectation = self.expectation(description: "PASSED: fileService.renameFile")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-            self.backendless.file.rename(path: "\(self.directory)/Binary/fox.txt", newName: "newFox.txt", responseHandler: { renamedPath in
+        let data = "The quick brown fox jumps over the lazy dog".data(using: .utf8)!
+        backendless.file.uploadFile(fileName: "fox.txt", filePath: directory, content: data, overwrite: true, responseHandler: { backendlessFile in
+            self.backendless.file.rename(path: "\(self.directory)/fox.txt", newName: "newFox.txt", responseHandler: { renamedPath in
                 XCTAssertNotNil(renamedPath)
                 expectation.fulfill()
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
             })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_04_copyFile() {
+    func testCopyFile() {
         let expectation = self.expectation(description: "PASSED: fileService.copyFile")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-            self.backendless.file.copy(sourcePath: "\(self.directory)/Binary/newFox.txt", targetPath: "\(self.copiedDirectory)/Binary/newFox.txt", responseHandler: { copiedPath in
+        let data = "The quick brown fox jumps over the lazy dog".data(using: .utf8)!
+        backendless.file.uploadFile(fileName: "fox.txt", filePath: directory, content: data, overwrite: true, responseHandler: { backendlessFile in
+            self.backendless.file.copy(sourcePath: "\(self.directory)/fox.txt", targetPath: "\(self.copiedDirectory)/newFox.txt", responseHandler: { copiedPath in
                 XCTAssertNotNil(copiedPath)
                 expectation.fulfill()
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
             })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_05_moveFile() {
+    func testMoveFile() {
         let expectation = self.expectation(description: "PASSED: fileService.moveFile")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5, execute: {
+        let data = "The quick brown fox jumps over the lazy dog".data(using: .utf8)!
+        backendless.file.uploadFile(fileName: "fox.txt", filePath: directory, content: data, overwrite: true, responseHandler: { backendlessFile in
             self.backendless.file.move(sourcePath: "\(self.directory)/fox.txt", targetPath: self.copiedDirectory, responseHandler: { movedPath in
                 XCTAssertNotNil(movedPath)
                 expectation.fulfill()
@@ -108,27 +116,35 @@ class FileServiceTests: XCTestCase {
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
             })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_06_listing() {
+    func testListing() {
         let expectation = self.expectation(description: "PASSED: fileService.listing")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-            self.backendless.file.listing(path: self.copiedDirectory, pattern: "*", recursive: false, responseHandler: { fileInfo in
+        let data = "The quick brown fox jumps over the lazy dog".data(using: .utf8)!
+        backendless.file.uploadFile(fileName: "fox.txt", filePath: directory, content: data, overwrite: true, responseHandler: { backendlessFile in
+            self.backendless.file.listing(path: self.directory, pattern: "*", recursive: false, responseHandler: { fileInfo in
                 XCTAssert(fileInfo.count > 0)
                 expectation.fulfill()
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
             })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_07_getFileCount() {
+    func testGetFileCount() {
         let expectation = self.expectation(description: "PASSED: fileService.getFileCount")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+        let data = "The quick brown fox jumps over the lazy dog".data(using: .utf8)!
+        backendless.file.uploadFile(fileName: "fox.txt", filePath: directory, content: data, overwrite: true, responseHandler: { backendlessFile in
             self.backendless.file.getFileCount(path: self.copiedDirectory, responseHandler: { count in
                 XCTAssert(count > 0)
                 expectation.fulfill()
@@ -136,20 +152,25 @@ class FileServiceTests: XCTestCase {
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
             })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_08_remove() {
+    func testRemove() {
         let expectation = self.expectation(description: "PASSED: fileService.remove")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-            self.backendless.file.remove(path: self.copiedDirectory, responseHandler: { removed in
-                XCTAssert(removed > 0)
+        backendless.file.remove(path: directory, responseHandler: { removed in
+            self.backendless.file.remove(path: self.copiedDirectory, responseHandler: { removedCopy in
                 expectation.fulfill()
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
             })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
