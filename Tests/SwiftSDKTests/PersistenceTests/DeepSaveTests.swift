@@ -24,7 +24,7 @@ import XCTest
 
 class DeepSaveTests: XCTestCase {
     
-    private let backendless = Backendless.shared
+    /*private let backendless = Backendless.shared
     private let timeout: Double = 10.0
     
     private var personStore: MapDrivenDataStore!
@@ -329,5 +329,5 @@ class DeepSaveTests: XCTestCase {
         }
         semaphore.wait()
         return
-    }
+    }*/
 }

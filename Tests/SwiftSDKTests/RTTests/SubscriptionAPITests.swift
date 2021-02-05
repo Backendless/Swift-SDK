@@ -24,7 +24,7 @@ import XCTest
 
 class SubscriptionAPITests: XCTestCase {
     
-    private let backendless = Backendless.shared
+    /*private let backendless = Backendless.shared
     private let timeout: Double = 20.0
     private let CHANNEL_NAME = "TestsChannel"
     
@@ -332,5 +332,5 @@ class SubscriptionAPITests: XCTestCase {
             })
         })
         self.waitForExpectations(timeout: timeout, handler: nil)
-    }
+    }*/
 }

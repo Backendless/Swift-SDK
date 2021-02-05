@@ -24,7 +24,7 @@ import XCTest
 
 class RTServiceTests: XCTestCase {
     
-    private let backendless = Backendless.shared
+    /*private let backendless = Backendless.shared
     private let timeout: Double = 20.0
     
     // call before all tests
@@ -66,5 +66,5 @@ class RTServiceTests: XCTestCase {
             })
         })
         self.waitForExpectations(timeout: timeout, handler: nil)
-    }
+    }*/
 }

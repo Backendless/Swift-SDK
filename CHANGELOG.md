@@ -1,5 +1,9 @@
 # RELEASE HISTORY
 
+### 6.2.9 February 5, 2021
+* fixed the DataQueryBuilder `distinct` property for Flutter-SDK
+* tests refactoring in progress
+
 ### 6.2.8 February 4, 2021
 * added the ability to add/set the relation using the OpResult from the `uow.create` and `uow.update` as children parameter
 

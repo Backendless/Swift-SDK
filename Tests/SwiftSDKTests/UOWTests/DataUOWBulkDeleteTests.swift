@@ -24,7 +24,7 @@ import XCTest
 
 class DataUOWBulkDeleteTests: XCTestCase {
     
-    private let backendless = Backendless.shared
+    /*private let backendless = Backendless.shared
     private let testObjectsUtils = TestObjectsUtils.shared
     private let timeout: Double = 20.0
     private let tableName = "TestClass"
@@ -171,5 +171,5 @@ class DataUOWBulkDeleteTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
-    }
+    }*/
 }

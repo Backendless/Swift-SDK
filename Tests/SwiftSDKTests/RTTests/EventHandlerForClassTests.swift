@@ -24,7 +24,7 @@ import XCTest
 
 class EventHandlerForClassTests: XCTestCase {
     
-    private let backendless = Backendless.shared
+    /*private let backendless = Backendless.shared
     private let timeout: Double = 20.0
     
     private var dataStore: DataStoreFactory!
@@ -841,5 +841,5 @@ class EventHandlerForClassTests: XCTestCase {
             objects.append(objectToSave10)
         }
         return objects
-    }
+    }*/
 }

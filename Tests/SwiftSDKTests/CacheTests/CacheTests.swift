@@ -23,18 +23,17 @@ import XCTest
 @testable import SwiftSDK
 
 class CacheTests: XCTestCase {
-
+    
     private let backendless = Backendless.shared
     private let timeout: Double = 10.0
     private let key = "TestCache"
-
-    // call before all tests
+    
     override class func setUp() {
         Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
         Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
     }
     
-    func testPutCache() {
+    func test01PutCache() {
         let expectation = self.expectation(description: "PASSED: cacheService.put")
         backendless.cache.remove(key: key, responseHandler: {
             self.backendless.cache.put(key: self.key, object: ["foo": "bar"], responseHandler: {
@@ -47,27 +46,20 @@ class CacheTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func testGetCache() {
+    func test02GetCache() {
         let expectation = self.expectation(description: "PASSED: cacheService.get")
-        backendless.cache.remove(key: key, responseHandler: {
-            self.backendless.cache.put(key: self.key, object: ["foo": "bar"], responseHandler: {
-                self.backendless.cache.get(key: self.key, responseHandler: { cacheObject in
-                    XCTAssertNotNil(cacheObject)
-                    XCTAssert(cacheObject is [String : Any])
-                    expectation.fulfill()
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
-                })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
-                XCTFail("\(fault.code): \(fault.message!)")
-            })
-        }, errorHandler: { fault in })
+        backendless.cache.get(key: key, responseHandler: { cacheObject in
+            XCTAssertNotNil(cacheObject)
+            XCTAssert(cacheObject is [String : Any])
+            expectation.fulfill()
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func testGetCacheOfType() {
+    func test03GetCacheOfType() {
         let expectation = self.expectation(description: "PASSED: cacheService.getOfType")
         backendless.cache.remove(key: key, responseHandler: {
             let cacheObject = TestClass()
@@ -91,7 +83,7 @@ class CacheTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func testContains() {
+    func test04Contains() {
         let expectation = self.expectation(description: "PASSED: cacheService.contains")
         backendless.cache.remove(key: key, responseHandler: {
             self.backendless.cache.put(key: self.key, object: ["foo": "bar"], responseHandler: {
@@ -110,45 +102,33 @@ class CacheTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func testExpireIn() {
+    func test05ExpireIn() {
         let expectation = self.expectation(description: "PASSED: cacheService.expireIn")
-        backendless.cache.remove(key: key, responseHandler: {
-            self.backendless.cache.put(key: self.key, object: ["foo": "bar"], responseHandler: {
-                self.backendless.cache.expireIn(key: self.key, seconds: 1, responseHandler: {
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
-                })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
-                XCTFail("\(fault.code): \(fault.message!)")
-            })
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-                self.backendless.cache.contains(key: self.key, responseHandler: { contains in
-                    XCTAssertFalse(contains)
-                    expectation.fulfill()
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
-                })
-            })
-        }, errorHandler: { fault in })
-        waitForExpectations(timeout: timeout, handler: nil)
-    }
-    
-    func testRemove() {
-        let expectation = self.expectation(description: "PASSED: cacheService.remove")
-        backendless.cache.put(key: key, object: ["foo": "bar"], responseHandler: {
-            self.backendless.cache.remove(key: self.key, responseHandler: {
+        backendless.cache.expireIn(key: key, seconds: 1, responseHandler: {
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+            self.backendless.cache.contains(key: self.key, responseHandler: { contains in
+                XCTAssertFalse(contains)
                 expectation.fulfill()
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
-
             })
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test06Remove() {
+        let expectation = self.expectation(description: "PASSED: cacheService.remove")
+        backendless.cache.remove(key: key, responseHandler: {
+            expectation.fulfill()
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
+            
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }

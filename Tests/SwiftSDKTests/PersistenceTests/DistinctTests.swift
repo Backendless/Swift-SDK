@@ -24,7 +24,7 @@ import XCTest
 
 class DistinctTests: XCTestCase {
     
-    private let backendless = Backendless.shared
+    /*private let backendless = Backendless.shared
     private let timeout: Double = 10.0
     
     private var dataStore: MapDrivenDataStore!
@@ -164,5 +164,5 @@ class DistinctTests: XCTestCase {
         }
         semaphore.wait()
         return
-    }
+    }*/
 }

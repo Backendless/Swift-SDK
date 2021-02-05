@@ -25,7 +25,7 @@ import XCTest
 
 class JSONTests: XCTestCase {
     
-    private let backendless = Backendless.shared
+    /*private let backendless = Backendless.shared
     private let timeout: Double = 10.0
     
     private var dataStore: MapDrivenDataStore!
@@ -601,5 +601,5 @@ class JSONTests: XCTestCase {
         }
         semaphore.wait()
         return createdObjectId
-    }
+    }*/
 }

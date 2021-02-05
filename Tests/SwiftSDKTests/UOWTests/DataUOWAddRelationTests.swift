@@ -24,7 +24,9 @@ import XCTest
 
 class DataUOWAddRelationTests: XCTestCase {
     
-    private let backendless = Backendless.shared
+    // !!!!!!! add tests where child result = the result of create/update
+    
+    /*private let backendless = Backendless.shared
     private let testObjectsUtils = TestObjectsUtils.shared
     private let timeout: Double = 20.0
     private let tableName = "TestClass"
@@ -733,5 +735,5 @@ class DataUOWAddRelationTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
-    }
+    }*/
 }
