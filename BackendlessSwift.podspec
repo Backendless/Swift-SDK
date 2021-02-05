@@ -1,8 +1,8 @@
 Pod::Spec.new do |s|
   s.name         = "BackendlessSwift"
   s.module_name  = "Backendless"
-  s.version      = "6.2.8"
-  s.source = { :git => 'https://github.com/Backendless/Swift-SDK.git', :tag => '6.2.8' }
+  s.version      = "6.2.9"
+  s.source = { :git => 'https://github.com/Backendless/Swift-SDK.git', :tag => '6.2.9' }
   s.license      = { :type => 'MIT', :text => 'Copyright (c) 2013-2021 by Backendless Corp' }
   s.homepage     = "http://backendless.com"
   s.authors      = { 'Mark Piller' => 'mark@backendless.com', 'Olha Danylova' => 'olha.danylova@backendlessmail.com' }

@@ -24,7 +24,7 @@ import XCTest
 
 class BLLineStringTests: XCTestCase {
     
-    private let backendless = Backendless.shared
+    /*private let backendless = Backendless.shared
     private let timeout: Double = 10.0
     
     private var dataStore: DataStoreFactory!
@@ -689,5 +689,5 @@ class BLLineStringTests: XCTestCase {
         catch {
             XCTFail(error.localizedDescription)
         }
-    }
+    }*/
 }

@@ -53,6 +53,7 @@ import Foundation
         case related
         case groupBy
         case havingClause
+        case distinct
     }
     
     public override init() { }
@@ -86,6 +87,12 @@ import Foundation
             self.offset = 0
         }
         
+        if let distinct = try container.decodeIfPresent(Bool.self, forKey: .distinct) {
+            self.distinct = distinct
+        } else {
+            self.distinct = false
+        }
+        
         properties = try container.decodeIfPresent([String].self, forKey: .properties)
         sortBy = try container.decodeIfPresent([String].self, forKey: .sortBy)
         related = try container.decodeIfPresent([String].self, forKey: .related)
@@ -105,6 +112,7 @@ import Foundation
         try container.encodeIfPresent(related, forKey: .related)
         try container.encodeIfPresent(groupBy, forKey: .groupBy)
         try container.encodeIfPresent(havingClause, forKey: .havingClause)
+        try container.encode(distinct, forKey: .distinct)
     }
     
     @available(*, deprecated, message: "Please use the whereClause property directly")

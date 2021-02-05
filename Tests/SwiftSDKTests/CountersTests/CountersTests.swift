@@ -28,13 +28,12 @@ class CountersTests: XCTestCase {
     private let timeout: Double = 10.0
     private let counterName = "TestCounter"
 
-    // call before all tests
     override class func setUp() {
         Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
         Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
     }
     
-    func testGetAndIncrement() {
+    func test01GetAndIncrement() {
         let expectation = self.expectation(description: "PASSED: counters.getAndIncrement")
         backendless.counters.reset(counterName: counterName, responseHandler: {
             self.backendless.counters.getAndIncrement(counterName: self.counterName, responseHandler: { counterValue in
@@ -48,95 +47,79 @@ class CountersTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func testIncrementAndGet() {
+    func test02IncrementAndGet() {
         let expectation = self.expectation(description: "PASSED: counters.incrementAndGet")
-        backendless.counters.reset(counterName: counterName, responseHandler: {
-            let counter = self.backendless.counters.of(counterName: self.counterName)
-            counter.incrementAndGet(responseHandler: { counterValue in
-                XCTAssertEqual(counterValue, 1)
-                expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
-                XCTFail("\(fault.code): \(fault.message!)")
-            })
-        }, errorHandler: { fault in })
+        backendless.counters.incrementAndGet(counterName: counterName, responseHandler: { counterValue in
+            XCTAssertEqual(counterValue, 2)
+            expectation.fulfill()
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func testGetAndDecrement() {
+    func test03GetAndDecrement() {
         let expectation = self.expectation(description: "PASSED: counters.getAndDecrement")
-        backendless.counters.reset(counterName: counterName, responseHandler: {
-            self.backendless.counters.getAndDecrement(counterName: self.counterName, responseHandler: { counterValue in
-                XCTAssertEqual(counterValue, 0)
-                expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
-                XCTFail("\(fault.code): \(fault.message!)")
-            })
-
-        }, errorHandler: { fault in })
+        backendless.counters.getAndDecrement(counterName: counterName, responseHandler: { counterValue in
+            XCTAssertEqual(counterValue, 2)
+            expectation.fulfill()
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func testDecrementAndGet() {
+    func test04DecrementAndGet() {
         let expectation = self.expectation(description: "PASSED: counters.decrementAndGet")
-        backendless.counters.reset(counterName: counterName, responseHandler: {
-            let counter = self.backendless.counters.of(counterName: self.counterName)
-            counter.decrementAndGet(responseHandler: { counterValue in
-                XCTAssertEqual(counterValue, -1)
-                expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
-                XCTFail("\(fault.code): \(fault.message!)")
-            })
-        }, errorHandler: { fault in })
+        backendless.counters.decrementAndGet(counterName: counterName, responseHandler: { counterValue in
+            XCTAssertEqual(counterValue, 0)
+            expectation.fulfill()
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func testGetAndAdd() {
+    func test05GetAndAdd() {
         let expectation = self.expectation(description: "PASSED: counters.getAndAdd")
-        backendless.counters.reset(counterName: counterName, responseHandler: {
-            self.backendless.counters.getAndAdd(counterName: self.counterName, value: 5, responseHandler: { counterValue in
-                XCTAssertEqual(counterValue, 0)
-                expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
-                XCTFail("\(fault.code): \(fault.message!)")
-            })
-        }, errorHandler: { fault in })
+        backendless.counters.getAndAdd(counterName: counterName, value: 5, responseHandler: { counterValue in
+            XCTAssertEqual(counterValue, 0)
+            expectation.fulfill()
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func testAddAndGet() {
+    func test06AddAndGet() {
         let expectation = self.expectation(description: "PASSED: counters.addAndGet")
-        backendless.counters.reset(counterName: counterName, responseHandler: {
-            let counter = self.backendless.counters.of(counterName: self.counterName)
-            counter.addAndGet(value: 5, responseHandler: { counterValue in
-                XCTAssertEqual(counterValue, 5)
-                expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
-                XCTFail("\(fault.code): \(fault.message!)")
-            })
-        }, errorHandler: { fault in })
+        backendless.counters.addAndGet(counterName: counterName, value: 5, responseHandler: { counterValue in
+            XCTAssertEqual(counterValue, 10)
+            expectation.fulfill()
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func testGetCurrentValue() {
+    func test07GetCurrentValue() {
         let expectation = self.expectation(description: "PASSED: counters.getCurrentValue")
-        backendless.counters.reset(counterName: counterName, responseHandler: {
-            self.backendless.counters.get(counterName: self.counterName, responseHandler: { counterValue in
-                XCTAssertEqual(counterValue, 0)
-                expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
-                XCTFail("\(fault.code): \(fault.message!)")
-            })
-        }, errorHandler: { fault in })
+        backendless.counters.get(counterName: counterName, responseHandler: { counterValue in
+            XCTAssertEqual(counterValue, 10)
+            expectation.fulfill()
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func testReset() {
+    func test08Reset() {
         let expectation = self.expectation(description: "PASSED: counters.reset")
         backendless.counters.reset(counterName: counterName, responseHandler: {
             expectation.fulfill()
@@ -144,7 +127,7 @@ class CountersTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func testConditionalUpdate() {
+    func test09ConditionalUpdate() {
         let expectation = self.expectation(description: "PASSED: counters.conditionalUpdate")
         backendless.counters.reset(counterName: counterName, responseHandler: {
             self.backendless.counters.compareAndSet(counterName: self.counterName, expected: 0, updated: 20, responseHandler: { compared in

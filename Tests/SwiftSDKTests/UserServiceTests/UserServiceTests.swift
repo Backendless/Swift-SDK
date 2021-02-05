@@ -30,13 +30,12 @@ class UserServiceTests: XCTestCase {
     private let USER_NAME = "Test User"
     private let timeout: Double = 10.0
     
-    // call before all tests
     override class func setUp() {
         Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
         Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
     }
     
-    func testDescribeUserClass() {
+    func test01DescribeUserClass() {
         let expectation = self.expectation(description: "PASSED: userService.describeUserClass")
         backendless.userService.describeUserClass(responseHandler: { properties in
             XCTAssertNotNil(properties)
@@ -49,7 +48,7 @@ class UserServiceTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func testRegisterUser() {
+    func test02RegisterUser() {
         let expectation = self.expectation(description: "PASSED: userService.registerUser")
         backendless.data.ofTable("Users").removeBulk(whereClause: nil, responseHandler: { removedObjects in
             let user = BackendlessUser()
@@ -70,154 +69,13 @@ class UserServiceTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func testLogin() {
+    func test03Login() {
         let expectation = self.expectation(description: "PASSED: userService.login")
-        backendless.data.ofTable("Users").removeBulk(whereClause: nil, responseHandler: { removedObjects in
-            let user = BackendlessUser()
-            user.email = self.USER_EMAIL
-            user.password = self.USER_PASSWORD
-            user.name = self.USER_NAME
-            self.backendless.userService.registerUser(user: user, responseHandler: { registredUser in
-                self.backendless.userService.logout(responseHandler: {
-                    self.backendless.userService.login(identity: self.USER_EMAIL, password: self.USER_PASSWORD, responseHandler: { loggedInUser in
-                        XCTAssertNotNil(loggedInUser)
-                        XCTAssertNotNil(self.backendless.userService.currentUser)
-                        XCTAssertNotNil(self.backendless.userService.isValidUserToken)
-                        expectation.fulfill()
-                    }, errorHandler: { fault in
-                        XCTAssertNotNil(fault)
-                        XCTFail("\(fault.code): \(fault.message!)")
-                    })
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
-                })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
-                XCTFail("\(fault.code): \(fault.message!)")
-            })
-        }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
-            XCTFail("\(fault.code): \(fault.message!)")
-        })
-        waitForExpectations(timeout: timeout, handler: nil)
-    }
-    
-    func testIsValidUserTokenTrue() {
-        let expectation = self.expectation(description: "PASSED: userService.isValidUserToken")
-        backendless.data.ofTable("Users").removeBulk(whereClause: nil, responseHandler: { removedObjects in
-            let user = BackendlessUser()
-            user.email = self.USER_EMAIL
-            user.password = self.USER_PASSWORD
-            user.name = self.USER_NAME
-            self.backendless.userService.registerUser(user: user, responseHandler: { registredUser in
-                self.backendless.userService.logout(responseHandler: {
-                    self.backendless.userService.login(identity: self.USER_EMAIL, password: self.USER_PASSWORD, responseHandler: { loggedInUser in
-                        self.backendless.userService.isValidUserToken(responseHandler: { isValidUserToken in
-                            XCTAssert(isValidUserToken == true)
-                            expectation.fulfill()
-                        }, errorHandler: { fault in
-                            XCTAssertNotNil(fault)
-                            XCTFail("\(fault.code): \(fault.message!)")
-                        })
-                    }, errorHandler: { fault in
-                        XCTAssertNotNil(fault)
-                        XCTFail("\(fault.code): \(fault.message!)")
-                    })
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
-                })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
-                XCTFail("\(fault.code): \(fault.message!)")
-            })
-        }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
-            XCTFail("\(fault.code): \(fault.message!)")
-        })
-        waitForExpectations(timeout: timeout, handler: nil)
-    }
-    
-    func testGetUserRoles() {
-        let expectation = self.expectation(description: "PASSED: userService.getUserRoles")
-        backendless.data.ofTable("Users").removeBulk(whereClause: nil, responseHandler: { removedObjects in
-            let user = BackendlessUser()
-            user.email = self.USER_EMAIL
-            user.password = self.USER_PASSWORD
-            user.name = self.USER_NAME
-            self.backendless.userService.registerUser(user: user, responseHandler: { registredUser in
-                self.backendless.userService.logout(responseHandler: {
-                    self.backendless.userService.login(identity: self.USER_EMAIL, password: self.USER_PASSWORD, responseHandler: { loggedInUser in
-                        self.backendless.userService.getUserRoles(responseHandler: { roles in
-                            XCTAssertNotNil(roles)
-                            expectation.fulfill()
-                        }, errorHandler: { fault in
-                            XCTAssertNotNil(fault)
-                            XCTFail("\(fault.code): \(fault.message!)")
-                        })
-                    }, errorHandler: { fault in
-                        XCTAssertNotNil(fault)
-                        XCTFail("\(fault.code): \(fault.message!)")
-                    })
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
-                })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
-                XCTFail("\(fault.code): \(fault.message!)")
-            })
-        }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
-            XCTFail("\(fault.code): \(fault.message!)")
-        })
-        waitForExpectations(timeout: timeout, handler: nil)
-    }
-    
-    func testUpdate() {
-        let expectation = self.expectation(description: "PASSED: userService.update")
-        backendless.data.ofTable("Users").removeBulk(whereClause: nil, responseHandler: { removedObjects in
-            let user = BackendlessUser()
-            user.email = self.USER_EMAIL
-            user.password = self.USER_PASSWORD
-            user.name = self.USER_NAME
-            self.backendless.userService.registerUser(user: user, responseHandler: { registredUser in
-                self.backendless.userService.logout(responseHandler: {
-                    self.backendless.userService.login(identity: self.USER_EMAIL, password: self.USER_PASSWORD, responseHandler: { loggedInUser in
-                        loggedInUser.name = "New name"
-                        self.backendless.userService.update(user: loggedInUser, responseHandler: { updatedUser in
-                            XCTAssertEqual(updatedUser.name, "New name")
-                            XCTAssertNotNil(updatedUser)
-                            expectation.fulfill()
-                        }, errorHandler: { fault in
-                            XCTAssertNotNil(fault)
-                            XCTFail("\(fault.code): \(fault.message!)")
-                        })
-                    }, errorHandler: { fault in
-                        XCTAssertNotNil(fault)
-                        XCTFail("\(fault.code): \(fault.message!)")
-                    })
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
-                })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
-                XCTFail("\(fault.code): \(fault.message!)")
-            })
-        }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
-            XCTFail("\(fault.code): \(fault.message!)")
-        })
-        waitForExpectations(timeout: timeout, handler: nil)
-    }
-    
-    func testLogout() {
-        let expectation = self.expectation(description: "PASSED: userService.logout")
-        backendless.data.ofTable("Users").removeBulk(whereClause: nil, responseHandler: { removedObjects in
-            self.backendless.userService.logout(responseHandler: {
-                XCTAssertNil(self.backendless.userService.currentUser)
+        backendless.userService.logout(responseHandler: {
+            self.backendless.userService.login(identity: self.USER_EMAIL, password: self.USER_PASSWORD, responseHandler: { loggedInUser in
+                XCTAssertNotNil(loggedInUser)
+                XCTAssertNotNil(self.backendless.userService.currentUser)
+                XCTAssertNotNil(self.backendless.userService.getUserToken())
                 expectation.fulfill()
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
@@ -230,21 +88,11 @@ class UserServiceTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func testIsValidUserTokenFalse() {
+    func test04IsValidUserTokenTrue() {
         let expectation = self.expectation(description: "PASSED: userService.isValidUserToken")
-        backendless.data.ofTable("Users").removeBulk(whereClause: nil, responseHandler: { removedObjects in
-            self.backendless.userService.logout(responseHandler: {
-                self.backendless.userService.isValidUserToken(responseHandler: { isValidUserToken in
-                    XCTAssert(isValidUserToken == false)
-                    expectation.fulfill()
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
-                })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
-                XCTFail("\(fault.code): \(fault.message!)")
-            })
+        backendless.userService.isValidUserToken(responseHandler: { isValidUserToken in
+            XCTAssertTrue(isValidUserToken)
+            expectation.fulfill()
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
@@ -252,24 +100,63 @@ class UserServiceTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func testRestoreUserPassword() {
+    func test05GetUserRoles() {
+        let expectation = self.expectation(description: "PASSED: userService.getUserRoles")
+        backendless.userService.getUserRoles(responseHandler: { roles in
+            XCTAssertNotNil(roles)
+            expectation.fulfill()
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test06Update() {
+        let expectation = self.expectation(description: "PASSED: userService.update")
+        let newName = "New name"
+        let currentUser = backendless.userService.currentUser
+        XCTAssertNotNil(currentUser)
+        currentUser!.name = newName
+        self.backendless.userService.update(user: currentUser!, responseHandler: { updatedUser in
+            XCTAssertEqual(updatedUser.name, newName)
+            XCTAssertEqual(self.backendless.userService.currentUser?.name, newName)
+            expectation.fulfill()
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test07Logout() {
+        let expectation = self.expectation(description: "PASSED: userService.logout")
+        backendless.userService.logout(responseHandler: {
+            XCTAssertNil(self.backendless.userService.currentUser)
+            expectation.fulfill()
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test08IsValidUserTokenFalse() {
+        let expectation = self.expectation(description: "PASSED: userService.isValidUserToken")
+        backendless.userService.isValidUserToken(responseHandler: { isValidUserToken in
+            XCTAssertFalse(isValidUserToken)
+            expectation.fulfill()
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test09RestoreUserPassword() {
         let expectation = self.expectation(description: "PASSED: userService.restoreUserPassword")
-        backendless.data.ofTable("Users").removeBulk(whereClause: nil, responseHandler: { removedObjects in
-            let user = BackendlessUser()
-            user.email = self.USER_EMAIL
-            user.password = self.USER_PASSWORD
-            user.name = self.USER_NAME
-            self.backendless.userService.registerUser(user: user, responseHandler: { registredUser in
-                self.backendless.userService.restorePassword(identity: self.USER_EMAIL, responseHandler: {
-                    expectation.fulfill()
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
-                })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
-                XCTFail("\(fault.code): \(fault.message!)")
-            })
+        backendless.userService.restorePassword(identity: USER_EMAIL, responseHandler: {
+            expectation.fulfill()
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
@@ -277,7 +164,7 @@ class UserServiceTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_10_loginAsGuest() {
+    func test10LoginAsGuest() {
         let expectation = self.expectation(description: "PASSED: userService.loginAsGuest")
         backendless.userService.loginAsGuest(responseHandler: { guestUser in
             XCTAssertNotNil(guestUser.objectId)

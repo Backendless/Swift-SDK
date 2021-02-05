@@ -25,7 +25,7 @@ import XCTest
 
 class EventHanderForMapTests: XCTestCase {
     
-    private let backendless = Backendless.shared
+    /*private let backendless = Backendless.shared
     private let timeout: Double = 20.0
     
     private var dataStore: MapDrivenDataStore!
@@ -771,5 +771,5 @@ class EventHanderForMapTests: XCTestCase {
             return[["name": "Bob", "age": 25], ["name": "Ann", "age": 45], ["name": "Jack", "age": 26], ["name": "Kate", "age": 70], ["name": "John", "age": 55], ["name": "Alex", "age": 33], ["name": "Peter", "age": 14], ["name": "Linda", "age": 34], ["name": "Mary", "age": 30], ["name": "Bruce", "age": 60]]
         }
         return [[String: Any]]()
-    }
+    }*/
 }

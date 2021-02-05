@@ -24,7 +24,7 @@ import XCTest
 
 class BLPolygonTests: XCTestCase {
     
-    private let backendless = Backendless.shared
+    /*private let backendless = Backendless.shared
     private let timeout: Double = 10.0
     
     private var dataStore: DataStoreFactory!
@@ -1276,5 +1276,5 @@ class BLPolygonTests: XCTestCase {
         catch {
             XCTFail(error.localizedDescription)
         }
-    }
+    }*/
 }

@@ -24,7 +24,7 @@ import XCTest
 
 class BLPointTests: XCTestCase {
     
-    private let backendless = Backendless.shared
+    /*private let backendless = Backendless.shared
     private let timeout: Double = 10.0
     
     private var dataStore: DataStoreFactory!
@@ -49,7 +49,7 @@ class BLPointTests: XCTestCase {
         Backendless.shared.data.of(GeometryTestClass.self).removeBulk(whereClause: nil, responseHandler: { removedObjects in }, errorHandler: { fault in })
     }
     
-    /*func testPT1() {
+    func testPT1() {
         let expectation = self.expectation(description: "PASSED: BLPoint.create")
         let geometryObject = GeometryTestClass()
         geometryObject.point = BLPoint(x: -87.52683788, y: 41.85716752)
@@ -696,5 +696,5 @@ class BLPointTests: XCTestCase {
         catch {
             XCTFail(error.localizedDescription)
         }
-    }
+    }*/
 }

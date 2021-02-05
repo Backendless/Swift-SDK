@@ -24,7 +24,7 @@ import XCTest
 
 class PublishingAPITests: XCTestCase {
     
-    private let backendless = Backendless.shared
+    /*private let backendless = Backendless.shared
     private let timeout: Double = 10.0
     private let CHANNEL_NAME = "TestsChannel"
     
@@ -168,5 +168,5 @@ class PublishingAPITests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
-    }
+    }*/
 }

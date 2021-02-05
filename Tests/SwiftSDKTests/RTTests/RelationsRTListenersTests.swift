@@ -24,7 +24,7 @@ import XCTest
 
 class RelationsRTListenersTests: XCTestCase {
     
-    private let backendless = Backendless.shared
+    /*private let backendless = Backendless.shared
     private let timeout: Double = 20.0
     
     private var dataStoreA: MapDrivenDataStore!
@@ -673,5 +673,5 @@ class RelationsRTListenersTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         self.waitForExpectations(timeout: timeout, handler: nil)
-    }
+    }*/
 }

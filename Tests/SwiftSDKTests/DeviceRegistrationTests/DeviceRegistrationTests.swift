@@ -26,8 +26,7 @@ class DeviceRegistrationTests: XCTestCase {
     
     private let backendless = Backendless.shared
     private let timeout: Double = 10.0
-    
-    // call before all tests
+
     override class func setUp() {
         Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
         Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
@@ -39,7 +38,7 @@ class DeviceRegistrationTests: XCTestCase {
         return Data(tokenString.utf8)
     }
     
-    func testRegisterDeviceWithToken() {
+    func test01RegisterDeviceWithToken() {
         let expectation = self.expectation(description: "PASSED: messagingService.registerDeviceWithToken")
         let token = self.generateDeviceToken()
         self.backendless.messaging.registerDevice(deviceToken: token, responseHandler: { registrationId in
@@ -52,7 +51,7 @@ class DeviceRegistrationTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func testRegisterDeviceWithTokenAndChannels() {
+    func test02RegisterDeviceWithTokenAndChannels() {
         let expectation = self.expectation(description: "PASSED: messagingService.registerDeviceWithTokenAndChannels")
         let token = generateDeviceToken()
         backendless.messaging.registerDevice(deviceToken: token, channels: ["default", "TestsChannel"], responseHandler: { registrationId in
@@ -65,20 +64,11 @@ class DeviceRegistrationTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func testGetDeviceRegistrations() {
+    func test03GetDeviceRegistrations() {
         let expectation = self.expectation(description: "PASSED: messagingService.getDeviceRegistrations")
-        let token = generateDeviceToken()
-        backendless.messaging.registerDevice(deviceToken: token, responseHandler: { registrationId in
-            XCTAssertNotNil(registrationId)
-            if let deviceId = self.backendless.messaging.currentDevice().deviceId {
-                self.backendless.messaging.getDeviceRegistrations(deviceId: deviceId, responseHandler: { deviceRegistrations in
-                    XCTAssertNotNil(deviceRegistrations)
-                    expectation.fulfill()
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
-                })
-            }
+        backendless.messaging.getDeviceRegistrations(responseHandler: { deviceRegistrations in
+            XCTAssertTrue(deviceRegistrations.count > 0)
+            expectation.fulfill()
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
@@ -86,39 +76,25 @@ class DeviceRegistrationTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func testUnregisterDeviceWithId() {
+    func test04UnregisterDeviceWithId() {
         let expectation = self.expectation(description: "PASSED: messagingService.unregisterDeviceWithId")
-        let token = generateDeviceToken()
-        backendless.messaging.registerDevice(deviceToken: token, responseHandler: { registrationId in
-            XCTAssertNotNil(registrationId)
-            if let deviceId = self.backendless.messaging.currentDevice().deviceId {
-                self.backendless.messaging.unregisterDevice(deviceId: deviceId, responseHandler: { isUnregistered in
-                    XCTAssertTrue(isUnregistered)
-                    expectation.fulfill()
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
-                })
-            }
-        }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
-            XCTFail("\(fault.code): \(fault.message!)")
-        })
-        waitForExpectations(timeout: timeout, handler: nil)
-    }
-    
-    func testUnregisterDevice() {
-        let expectation = self.expectation(description: "PASSED: messagingService.unregisterDevice")
-        let token = generateDeviceToken()
-        backendless.messaging.registerDevice(deviceToken: token, responseHandler: { registrationId in
-            XCTAssertNotNil(registrationId)
-            self.backendless.messaging.unregisterDevice(responseHandler: { isUnregistered in
+        if let deviceId = backendless.messaging.currentDevice().deviceId {
+            self.backendless.messaging.unregisterDevice(deviceId: deviceId, responseHandler: { isUnregistered in
                 XCTAssertTrue(isUnregistered)
                 expectation.fulfill()
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
             })
+        }
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test05UnregisterDevice() {
+        let expectation = self.expectation(description: "PASSED: messagingService.unregisterDevice")
+        backendless.messaging.unregisterDevice(responseHandler: { isUnregistered in
+            XCTAssertTrue(isUnregistered)
+            expectation.fulfill()
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")

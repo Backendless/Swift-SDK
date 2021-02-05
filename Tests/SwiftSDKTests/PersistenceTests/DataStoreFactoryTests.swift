@@ -24,7 +24,7 @@ import XCTest
 
 class DataStoreFactoryTests: XCTestCase {
     
-    private let backendless = Backendless.shared
+    /*private let backendless = Backendless.shared
     private let testObjectsUtils = TestObjectsUtils.shared
     private let timeout: Double = 10.0
     private let storedObjects = StoredObjects.shared
@@ -715,5 +715,5 @@ class DataStoreFactoryTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
-    }
+    }*/
 }

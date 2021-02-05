@@ -24,7 +24,7 @@ import XCTest
 
 class PersistenceServiceTests: XCTestCase {
     
-    private let backendless = Backendless.shared
+    /*private let backendless = Backendless.shared
     private let USER_EMAIL = "testUser@test.com"
     private let USER_PASSWORD = "111"
     private let USER_NAME = "Test User"
@@ -108,5 +108,5 @@ class PersistenceServiceTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
-    }
+    }*/
 }
