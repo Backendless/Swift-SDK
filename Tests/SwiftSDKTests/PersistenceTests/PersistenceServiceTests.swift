@@ -24,44 +24,30 @@ import XCTest
 
 class PersistenceServiceTests: XCTestCase {
     
-    /*private let backendless = Backendless.shared
+    private let backendless = Backendless.shared
     private let USER_EMAIL = "testUser@test.com"
     private let USER_PASSWORD = "111"
     private let USER_NAME = "Test User"
     private let timeout: Double = 10.0
     
-    // call before all tests
     override class func setUp() {
         Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
         Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
-        Backendless.shared.userService.logout(responseHandler: {
-            clearTables()
-        }, errorHandler: { fault in }) 
     }
     
-    // call after all tests
-    override class func tearDown() {
-        Backendless.shared.userService.logout(responseHandler: { clearTables() }, errorHandler: { fault in })
-    }
-    
-    class func clearTables() {
-        Backendless.shared.data.ofTable("TestClass").removeBulk(whereClause: nil, responseHandler: { removedObjects in }, errorHandler: { fault in })
-        Backendless.shared.data.ofTable("Users").removeBulk(whereClause: nil, responseHandler: { removedObjects in }, errorHandler: { fault in })
-    }
-    
-    func test_01_createMapDrivenDataStore() {
+    func test01CreateMapDrivenDataStore() {
         let dataStore = backendless.data.ofTable("TestClass")
         XCTAssertNotNil(dataStore)
         XCTAssert(type(of: dataStore) == MapDrivenDataStore.self)
     }
     
-    func test_02_createDataStoreFactory() {
+    func test02CreateDataStoreFactory() {
         let dataStore = backendless.data.of(TestClass.self)
         XCTAssertNotNil(dataStore)
         XCTAssert(type(of: dataStore) == DataStoreFactory.self)
     }
     
-    func test_03_describe() {
+    func test03Describe() {
         let expectation = self.expectation(description: "PASSED: persistenceService.describe")
         backendless.data.ofTable("TestClass").save(entity: ["name": "Bob", "age": 25], responseHandler: { savedObject in
             self.backendless.data.describe(tableName: "TestClass", responseHandler: { properties in
@@ -79,7 +65,7 @@ class PersistenceServiceTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_04_grantForAllRoles() {
+    func test04GrantForAllRoles() {
         let expectation = self.expectation(description: "PASSED: persistenceService.grantForAllRoles")
         
         let testObject = TestClass()
@@ -108,5 +94,5 @@ class PersistenceServiceTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
-    }*/
+    }
 }
