@@ -448,7 +448,7 @@ class MapDrivenDataStoreTests: XCTestCase {
     }
     
     func test19SetRelationWithCondition() {
-        let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.setRelationWithCondition test passed")
+        let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.setRelationWithCondition")
         dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
             self.childDataStore.removeBulk(whereClause: nil, responseHandler: { removedChildren in
                 let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
