@@ -24,142 +24,144 @@ import XCTest
 
 class FindFirstLastTests: XCTestCase {
     
-    /*private let backendless = Backendless.shared
+    private let backendless = Backendless.shared
     private let timeout: Double = 10.0
     
     private var dataStore: MapDrivenDataStore!
     
-    // call before all tests
     override class func setUp() {
         Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
         Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
-        //clearTables()
     }
     
-    // call before each test
     override func setUp() {
         dataStore = backendless.data.ofTable("TestClass")
-        //dataStore.removeBulk(whereClause: nil, responseHandler: { removedObjects in }, errorHandler: { fault in })
     }
     
-    // call after all tests
-    override class func tearDown() {
-        clearTables()
-    }
-    
-    class func clearTables() {
-        Backendless.shared.data.of(TestClass.self).removeBulk(whereClause: nil, responseHandler: { removedObjects in }, errorHandler: { fault in })
-    }
-    
-    // ⚠️ TODO when sortBy is fixed on server
-    func test_01_findFirst() {
+    // ⚠️ TODO when BKNDLSS-21164 is fixed
+    func testFF01() {
         /*let expectation = self.expectation(description: "PASSED data.findFirst")
-         let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44]]
-         dataStore.createBulk(entities: objects, responseHandler: { createdIds in
-         DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-         let queryBuilder = DataQueryBuilder()
-         queryBuilder.sortBy = ["age DESC"]
-         self.dataStore.findFirst(queryBuilder: queryBuilder, responseHandler: { firstObject in
-         XCTAssert(firstObject["name"] as? String == "ccc")
-         XCTAssert(firstObject["age"] as? NSNumber == 44)
-         expectation.fulfill()
-         }, errorHandler: { fault in
-         XCTAssertNotNil(fault)
-         XCTFail("\(fault.code): \(fault.message!)")
-         })
-         })
-         }, errorHandler: { fault in
-         XCTAssertNotNil(fault)
-         XCTFail("\(fault.code): \(fault.message!)")
-         })
-         waitForExpectations(timeout: timeout, handler: nil)*/
-    }
-    
-    // ⚠️ TODO when sortBy is fixed on server
-    func test_02_FindFirst() {
-        /*let expectation = self.expectation(description: "PASSED data.findFirst")
-         let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44]]
-         dataStore.createBulk(entities: objects, responseHandler: { createdIds in
-         DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-         let queryBuilder = DataQueryBuilder()
-         queryBuilder.sortBy = ["age ASC"]
-         self.dataStore.findFirst(queryBuilder: queryBuilder, responseHandler: { firstObject in
-         XCTAssert(firstObject["name"] as? String == "zzz")
-         XCTAssert(firstObject["age"] as? NSNumber == 1)
-         expectation.fulfill()
-         }, errorHandler: { fault in
-         XCTAssertNotNil(fault)
-         XCTFail("\(fault.code): \(fault.message!)")
-         })
-         })
-         }, errorHandler: { fault in
-         XCTAssertNotNil(fault)
-         XCTFail("\(fault.code): \(fault.message!)")
-         })
-        waitForExpectations(timeout: timeout, handler: nil)*/
-    }
-    
-    // ⚠️ TODO when sortBy is fixed on server
-    func test_03_FindFirst() {
-        /*let expectation = self.expectation(description: "PASSED data.findFirst")
-         let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1],
-         ["name": "ccc", "age": 44], ["name": "zzz", "age": 44]]
-         dataStore.createBulk(entities: objects, responseHandler: { createdIds in
-         DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-         let queryBuilder = DataQueryBuilder()
-         queryBuilder.sortBy = ["age DESC", "name ASC"]
-         self.dataStore.findFirst(queryBuilder: queryBuilder, responseHandler: { firstObject in
-         XCTAssert(firstObject["name"] as? String == "ccc")
-         XCTAssert(firstObject["age"] as? NSNumber == 44)
-         expectation.fulfill()
-         }, errorHandler: { fault in
-         XCTAssertNotNil(fault)
-         XCTFail("\(fault.code): \(fault.message!)")
-         })
-         })
-         }, errorHandler: { fault in
-         XCTAssertNotNil(fault)
-         XCTFail("\(fault.code): \(fault.message!)")
-         })
-         waitForExpectations(timeout: timeout, handler: nil)*/
-    }
-    
-    // ⚠️ TODO when sortBy is fixed on server
-    func test_04_FindFirst() {
-        /*let expectation = self.expectation(description: "PASSED data.findFirst")
-         let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1],
-         ["name": "ccc", "age": 44], ["name": "zzz", "age": 44]]
-         dataStore.createBulk(entities: objects, responseHandler: { createdIds in
-         DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-         let queryBuilder = DataQueryBuilder()
-         queryBuilder.sortBy = ["age DESC", "name DESC"]
-         self.dataStore.findFirst(queryBuilder: queryBuilder, responseHandler: { firstObject in
-         XCTAssert(firstObject["name"] as? String == "zzz")
-         XCTAssert(firstObject["age"] as? NSNumber == 44)
-         expectation.fulfill()
-         }, errorHandler: { fault in
-         XCTAssertNotNil(fault)
-         XCTFail("\(fault.code): \(fault.message!)")
-         })
-         })
-         }, errorHandler: { fault in
-         XCTAssertNotNil(fault)
-         XCTFail("\(fault.code): \(fault.message!)")
-         })
-         waitForExpectations(timeout: timeout, handler: nil)*/
-    }
-    
-    func test_05_FindFirst() {
-        let expectation = self.expectation(description: "PASSED data.findFirst")
-        let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44]]
-        dataStore.createBulk(entities: objects, responseHandler: { createdIds in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 4, execute: {
-                self.dataStore.findFirst(responseHandler: { firstObject in
+        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+            let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44]]
+            self.dataStore.createBulk(entities: objects, responseHandler: { createdIds in
+                let queryBuilder = DataQueryBuilder()
+                queryBuilder.sortBy = ["age DESC"]
+                self.dataStore.findFirst(queryBuilder: queryBuilder, responseHandler: { first in
+                    XCTAssertEqual(first["name"] as? String, "ccc")
+                    XCTAssertEqual(first["age"] as? NSNumber, 44)
                     expectation.fulfill()
                 }, errorHandler: { fault in
                     XCTAssertNotNil(fault)
                     XCTFail("\(fault.code): \(fault.message!)")
                 })
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)*/
+    }
+    
+    // ⚠️ TODO when BKNDLSS-21164 is fixed
+    func testFF02() {
+        /*let expectation = self.expectation(description: "PASSED data.findFirst")
+        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+            let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44]]
+            self.dataStore.createBulk(entities: objects, responseHandler: { createdIds in
+                let queryBuilder = DataQueryBuilder()
+                queryBuilder.sortBy = ["age ASC"]
+                self.dataStore.findFirst(queryBuilder: queryBuilder, responseHandler: { first in
+                    XCTAssertEqual(first["name"] as? String, "zzz")
+                    XCTAssertEqual(first["age"] as? NSNumber, 1)
+                    expectation.fulfill()
+                }, errorHandler: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)*/
+    }
+    
+    // ⚠️ TODO when BKNDLSS-21164 is fixed
+    func testFF03() {
+        /*let expectation = self.expectation(description: "PASSED data.findFirst")
+        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+            let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44], ["name": "zzz", "age": 44]]
+            self.dataStore.createBulk(entities: objects, responseHandler: { createdIds in
+                let queryBuilder = DataQueryBuilder()
+                queryBuilder.sortBy = ["age DESC", "name ASC"]
+                self.dataStore.findFirst(queryBuilder: queryBuilder, responseHandler: { first in
+                    XCTAssertEqual(first["name"] as? String, "ccc")
+                    XCTAssertEqual(first["age"] as? NSNumber, 44)
+                    expectation.fulfill()
+                }, errorHandler: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)*/
+    }
+    
+    // ⚠️ TODO when BKNDLSS-21164 is fixed
+    func testFF04() {
+        /*let expectation = self.expectation(description: "PASSED data.findFirst")
+        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+            let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44], ["name": "zzz", "age": 44]]
+            self.dataStore.createBulk(entities: objects, responseHandler: { createdIds in
+                let queryBuilder = DataQueryBuilder()
+                queryBuilder.sortBy = ["age DESC", "name DESC"]
+                self.dataStore.findFirst(queryBuilder: queryBuilder, responseHandler: { first in
+                    XCTAssertEqual(first["name"] as? String, "zzz")
+                    XCTAssertEqual(first["age"] as? NSNumber, 44)
+                    expectation.fulfill()
+                }, errorHandler: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)*/
+    }
+    
+    func testFF05() {
+        let expectation = self.expectation(description: "PASSED data.findFirst")
+        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+            let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44]]
+            self.dataStore.createBulk(entities: objects, responseHandler: { createdIds in
+                let queryBuilder = DataQueryBuilder()
+                queryBuilder.sortBy = ["age DESC", "name DESC"]
+                self.dataStore.findFirst(queryBuilder: queryBuilder, responseHandler: { first in
+                    expectation.fulfill()
+                }, errorHandler: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
@@ -168,32 +170,35 @@ class FindFirstLastTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    // ⚠️ TODO when sortBy is fixed on server
-    func test_06_FindLast() {
+    // ⚠️ TODO when BKNDLSS-21164 is fixed
+    func testFF06() {
         /*let expectation = self.expectation(description: "PASSED data.findLast")
-         let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44]]
-         dataStore.createBulk(entities: objects, responseHandler: { createdIds in
-         DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-         let queryBuilder = DataQueryBuilder()
-         queryBuilder.sortBy = ["age DESC"]
-         self.dataStore.findLast(queryBuilder: queryBuilder, responseHandler: { lastObject in
-         XCTAssert(lastObject["name"] as? String == "zzz")
-         XCTAssert(lastObject["age"] as? NSNumber == 1)
-         expectation.fulfill()
-         }, errorHandler: { fault in
-         XCTAssertNotNil(fault)
-         XCTFail("\(fault.code): \(fault.message!)")
-         })
-         })
-         }, errorHandler: { fault in
-         XCTAssertNotNil(fault)
-         XCTFail("\(fault.code): \(fault.message!)")
-         })
-         waitForExpectations(timeout: timeout, handler: nil)*/
+        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+            let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44]]
+            self.dataStore.createBulk(entities: objects, responseHandler: { createdIds in
+                let queryBuilder = DataQueryBuilder()
+                queryBuilder.sortBy = ["age DESC"]
+                self.dataStore.findLast(queryBuilder: queryBuilder, responseHandler: { last in
+                    XCTAssertEqual(last["name"] as? String, "zzz")
+                    XCTAssertEqual(last["age"] as? NSNumber, 1)
+                    expectation.fulfill()
+                }, errorHandler: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)*/
     }
     
-    // ⚠️ TODO when sortBy is fixed on server
-    func test_07_FindLast() {
+    // ⚠️ TODO when BKNDLSS-21164 is fixed
+    func testFF07() {
         /*let expectation = self.expectation(description: "PASSED data.findLast")
          let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44]]
          dataStore.createBulk(entities: objects, responseHandler: { createdIds in
@@ -216,46 +221,49 @@ class FindFirstLastTests: XCTestCase {
          waitForExpectations(timeout: timeout, handler: nil)*/
     }
     
-    // ⚠️ TODO when sortBy is fixed on server
-    func test_08_FindLast() {
+    // ⚠️ TODO when BKNDLSS-21164 is fixed
+    func testFF08() {
         /*let expectation = self.expectation(description: "PASSED data.findLast")
-         let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44]]
-         dataStore.createBulk(entities: objects, responseHandler: { createdIds in
-         DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-         let queryBuilder = DataQueryBuilder()
-         queryBuilder.sortBy = ["name DESC"]
-         self.dataStore.findLast(queryBuilder: queryBuilder, responseHandler: { lastObject in
-         XCTAssert(lastObject["name"] as? String == "aaa")
-         XCTAssert(lastObject["age"] as? NSNumber == 20)
-         expectation.fulfill()
-         }, errorHandler: { fault in
-         XCTAssertNotNil(fault)
-         XCTFail("\(fault.code): \(fault.message!)")
-         })
-         })
-         }, errorHandler: { fault in
-         XCTAssertNotNil(fault)
-         XCTFail("\(fault.code): \(fault.message!)")
-         })
-         waitForExpectations(timeout: timeout, handler: nil)*/
-    }
-    
-    func test_09_FindLast() {
-        let expectation = self.expectation(description: "PASSED data.findLast")
-        let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44]]
-        dataStore.createBulk(entities: objects, responseHandler: { createdIds in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
-                self.dataStore.findLast(responseHandler: { lastObject in
+        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+            let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44]]
+            self.dataStore.createBulk(entities: objects, responseHandler: { createdIds in
+                let queryBuilder = DataQueryBuilder()
+                queryBuilder.sortBy = ["name DESC"]
+                self.dataStore.findLast(queryBuilder: queryBuilder, responseHandler: { last in
+                    XCTAssertEqual(last["name"] as? String, "aaa")
+                    XCTAssertEqual(last["age"] as? NSNumber, 20)
                     expectation.fulfill()
                 }, errorHandler: { fault in
                     XCTAssertNotNil(fault)
                     XCTFail("\(fault.code): \(fault.message!)")
                 })
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)*/
+    }
+    
+    func testFF09() {
+        let expectation = self.expectation(description: "PASSED data.findLast")
+        let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44]]
+        dataStore.createBulk(entities: objects, responseHandler: { createdIds in
+            self.dataStore.findLast(responseHandler: { last in
+                expectation.fulfill()
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
-    }*/
+    }
+    
+    // FF10, FF11: Swift-SDK doesn't allow to pass null to the sortBy property
 }
