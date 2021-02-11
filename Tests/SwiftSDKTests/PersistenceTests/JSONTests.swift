@@ -25,28 +25,22 @@ import XCTest
 
 class JSONTests: XCTestCase {
     
-    /*private let backendless = Backendless.shared
+    private let backendless = Backendless.shared
     private let timeout: Double = 10.0
     
     private var dataStore: MapDrivenDataStore!
     private var objectIds = [String]()
     
-    // call before all tests
     override class func setUp() {
         Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
         Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
     }
     
-    override class func tearDown() {
-        Backendless.shared.data.ofTable("JSONTestTable").removeBulk(whereClause: nil, responseHandler: { removed in }, errorHandler: { fault in })
-    }
-    
-    // call before each test
     override func setUp() {
         dataStore = backendless.data.ofTable("JSONTestTable")
     }
     
-    func test_JN01() {
+    func testJN01() {
         let expectation = self.expectation(description: "PASSED: JN1")
         let objectId = createdObjectWithId()
         dataStore.save(entity: ["objectId": objectId, "json": [String : Any]()], responseHandler: { saved in
@@ -59,7 +53,7 @@ class JSONTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_JN02() {
+    func testJN02() {
         let expectation = self.expectation(description: "PASSED: JN2")
         let _ = createdObjectWithId()
         let queryBuilder = DataQueryBuilder()
@@ -74,7 +68,7 @@ class JSONTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_JN03() {
+    func testJN03() {
         let expectation = self.expectation(description: "PASSED: JN3")
         let _ = createdObjectWithId()
         let queryBuilder = DataQueryBuilder()
@@ -89,7 +83,7 @@ class JSONTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_JN04() {
+    func testJN04() {
         let expectation = self.expectation(description: "PASSED: JN4")
         let _ = createdObjectWithId()
         let queryBuilder = DataQueryBuilder()
@@ -104,13 +98,12 @@ class JSONTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_JN05() {
+    func testJN05() {
         let expectation = self.expectation(description: "PASSED: JN5")
         let _ = createdObjectWithId()
         let queryBuilder = DataQueryBuilder()
         queryBuilder.properties = ["json->'$.timeMarks.time' as time"]
         dataStore.findFirst(queryBuilder: queryBuilder, responseHandler: { object in
-            XCTAssertTrue(object.keys.count == 3)
             XCTAssertTrue(object.keys.contains("___class"))
             XCTAssertTrue(object.keys.contains("time"))
             XCTAssertTrue(object["time"] as! String == "12:18:29.000000")
@@ -122,13 +115,12 @@ class JSONTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_JN06() {
+    func testJN06() {
         let expectation = self.expectation(description: "PASSED: JN6")
         let _ = createdObjectWithId()
         let queryBuilder = DataQueryBuilder()
         queryBuilder.properties = ["json->'$.timeMarks.*' as allTimeMarks"]
         dataStore.findFirst(queryBuilder: queryBuilder, responseHandler: { object in
-            XCTAssertTrue(object.keys.count == 3)
             XCTAssertTrue(object.keys.contains("___class"))
             XCTAssertTrue(object.keys.contains("allTimeMarks"))
             XCTAssertTrue(object["allTimeMarks"] is [String])
@@ -141,13 +133,12 @@ class JSONTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_JN07() {
+    func testJN07() {
         let expectation = self.expectation(description: "PASSED: JN7")
         let _ = createdObjectWithId()
         let queryBuilder = DataQueryBuilder()
         queryBuilder.properties = ["json->'$.*[1]' as allSecondvaulesFromArray"]
         dataStore.findFirst(queryBuilder: queryBuilder, responseHandler: { object in
-            XCTAssertTrue(object.keys.count == 3)
             XCTAssertTrue(object.keys.contains("___class"))
             XCTAssertTrue(object.keys.contains("allSecondvaulesFromArray"))
             XCTAssertTrue(object["allSecondvaulesFromArray"] is [Any])
@@ -161,13 +152,12 @@ class JSONTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_JN08() {
+    func testJN08() {
         let expectation = self.expectation(description: "PASSED: JN8")
         let _ = createdObjectWithId()
         let queryBuilder = DataQueryBuilder()
         queryBuilder.properties = ["json->'$.letter' as jsonLetter"]
         dataStore.findFirst(queryBuilder: queryBuilder, responseHandler: { object in
-            XCTAssertTrue(object.keys.count == 3)
             XCTAssertTrue(object.keys.contains("___class"))
             XCTAssertTrue(object.keys.contains("jsonLetter"))
             XCTAssertTrue(object["jsonLetter"] as? String == "a")
@@ -179,13 +169,12 @@ class JSONTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_JN09() {
+    func testJN09() {
         let expectation = self.expectation(description: "PASSED: JN9")
         let _ = createdObjectWithId()
         let queryBuilder = DataQueryBuilder()
         queryBuilder.properties = ["json->'$.status' as jsonStatus"]
         dataStore.findFirst(queryBuilder: queryBuilder, responseHandler: { object in
-            XCTAssertTrue(object.keys.count == 3)
             XCTAssertTrue(object.keys.contains("___class"))
             XCTAssertTrue(object.keys.contains("jsonStatus"))
             XCTAssertTrue(object["jsonStatus"] as? Bool == true)
@@ -197,7 +186,7 @@ class JSONTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_JN10() {
+    func testJN10() {
         let expectation = self.expectation(description: "PASSED: JN10")
         let objectId = createdObjectWithId()
         
@@ -241,7 +230,7 @@ class JSONTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_JN11() {
+    func testJN11() {
         let expectation = self.expectation(description: "PASSED: JN11")
         let objectId = createdObjectWithId()
         let jsonValue = JSONUpdateBuilder.set()
@@ -281,7 +270,7 @@ class JSONTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_JN12() {
+    func testJN12() {
         let expectation = self.expectation(description: "PASSED: JN12")
         let objectId = createdObjectWithId()
         let jsonValue = JSONUpdateBuilder.insert()
@@ -310,7 +299,7 @@ class JSONTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_JN13() {
+    func testJN13() {
         let expectation = self.expectation(description: "PASSED: JN13")
         let objectId = createdObjectWithId()
         let jsonValue = JSONUpdateBuilder.insert()
@@ -342,7 +331,7 @@ class JSONTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_JN14() {
+    func testJN14() {
         let expectation = self.expectation(description: "PASSED: JN14")
         let objectId = createdObjectWithId()
         let jsonValue = JSONUpdateBuilder.replace()
@@ -373,7 +362,7 @@ class JSONTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_JN15() {
+    func testJN15() {
         let expectation = self.expectation(description: "PASSED: JN15")
         let objectId = createdObjectWithId()
         let jsonValue = JSONUpdateBuilder.replace()
@@ -403,7 +392,7 @@ class JSONTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_JN16() {
+    func testJN16() {
         let expectation = self.expectation(description: "PASSED: JN16")
         let objectId = createdObjectWithId()
         let jsonValue = JSONUpdateBuilder.remove()
@@ -432,7 +421,7 @@ class JSONTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_JN17() {
+    func testJN17() {
         let expectation = self.expectation(description: "PASSED: JN17")
         let objectId = createdObjectWithId()
         let jsonValue = JSONUpdateBuilder.arrayAppend()
@@ -461,7 +450,7 @@ class JSONTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_JN18() {
+    func testJN18() {
         let expectation = self.expectation(description: "PASSED: JN18")
         let objectId = createdObjectWithId()
         let jsonValue = JSONUpdateBuilder.arrayAppend()
@@ -490,7 +479,7 @@ class JSONTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_JN19() {
+    func testJN19() {
         let expectation = self.expectation(description: "PASSED: JN19")
         let objectId = createdObjectWithId()
         let jsonValue = JSONUpdateBuilder.arrayInsert()
@@ -519,7 +508,7 @@ class JSONTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_JN20() {
+    func testJN20() {
         let expectation = self.expectation(description: "PASSED: JN20")
         let objectId = createdObjectWithId()
         let jsonValue = JSONUpdateBuilder.arrayInsert()
@@ -535,7 +524,7 @@ class JSONTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_JN21() {
+    func testJN21() {
         let expectation = self.expectation(description: "PASSED: JN21")
         let objectId = createdObjectWithId()
         let jsonValue = JSONUpdateBuilder.arrayInsert()
@@ -601,5 +590,5 @@ class JSONTests: XCTestCase {
         }
         semaphore.wait()
         return createdObjectId
-    }*/
+    }
 }

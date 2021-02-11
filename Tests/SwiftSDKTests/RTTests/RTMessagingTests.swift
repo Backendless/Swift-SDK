@@ -24,24 +24,22 @@ import XCTest
 
 class RTMessagingTests: XCTestCase {
     
-    /*private let backendless = Backendless.shared
+    private let backendless = Backendless.shared
     private let timeout: Double = 10.0
     private let CHANNEL_NAME = "TestsChannel"
     
     private var channel: Channel!
-    
-    // call before all tests
+
     override class func setUp() {
         Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
         Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
     }
     
-    // call before each test
     override func setUp() {
         channel = backendless.messaging.subscribe(channelName: CHANNEL_NAME)
     }
     
-    func test_01_addConnectListener() {
+    func test01AddConnectListener() {
         let expectation: XCTestExpectation = self.expectation(description: "PASSED: channel.addConnectListener")
         let _ = self.channel.addConnectListener(responseHandler: {
             expectation.fulfill()
@@ -53,7 +51,7 @@ class RTMessagingTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_02_removeConnectListeners() {
+    func test02RemoveConnectListeners() {
         let expectation: XCTestExpectation = self.expectation(description: "PASSED: channel.removeConnectListeners")
         let _ = self.channel.addConnectListener(responseHandler: {
             XCTFail("This subscription must be removed")
@@ -94,7 +92,7 @@ class RTMessagingTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_04_addCommandListener() {
+    func test04AddCommandListener() {
         let expectation: XCTestExpectation = self.expectation(description: "PASSED: channel.addCommandListener")
         let _ = self.channel.addCommandListener(responseHandler: { commandObject in
             XCTAssertNotNil(commandObject)
@@ -115,7 +113,7 @@ class RTMessagingTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_05_removeCommandListeners() {
+    func test05RemoveCommandListeners() {
         let expectation: XCTestExpectation = self.expectation(description: "PASSED: channel.removeCommandListeners")
         let _ = self.channel.addCommandListener(responseHandler: { commandObject in
             XCTFail("This subscription must be removed")
@@ -145,7 +143,7 @@ class RTMessagingTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_06_stopCommandSubscription() {
+    func test06StopCommandSubscription() {
         let expectation: XCTestExpectation = self.expectation(description: "PASSED: channel.stopCommandSubscription")
         let subscriptionToStop = self.channel.addCommandListener(responseHandler: { commandObject in
             XCTFail("This subscription must be removed")
@@ -171,5 +169,5 @@ class RTMessagingTests: XCTestCase {
             })
         })
         waitForExpectations(timeout: timeout, handler: nil)
-    }*/
+    }
 }

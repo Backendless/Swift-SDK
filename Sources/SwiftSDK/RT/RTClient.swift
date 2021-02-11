@@ -119,12 +119,14 @@ class RTClient {
         DispatchQueue.global(qos: .default).async {
             self._lock.lock()
             if self.socketConnected {
-                self.socket?.emit("SUB_ON", with: [data])
+                //self.socket?.emit("SUB_ON", with: [data])
+                self.socket?.emit("SUB_ON", data)
                 self._lock.unlock()
             }
             else {
                 self.connectSocket(connected: {
-                    self.socket?.emit("SUB_ON", with: [data])
+                    //self.socket?.emit("SUB_ON", with: [data])
+                    self.socket?.emit("SUB_ON", data)
                     self._lock.unlock()
                 })
             }
@@ -136,7 +138,8 @@ class RTClient {
     
     func unsubscribe(subscriptionId: String) {
         if self.subscriptions.keys.contains(subscriptionId) {
-            self.socket?.emit("SUB_OFF", with: [["id": subscriptionId]])
+            //self.socket?.emit("SUB_OFF", with: [["id": subscriptionId]])
+            self.socket?.emit("SUB_OFF", ["id": subscriptionId])
             subscriptions.removeValue(forKey: subscriptionId)
         }
         else {
@@ -153,13 +156,15 @@ class RTClient {
         }
     }
     
-    func sendCommand(data: Any, method: RTMethodRequest?) {
+    func sendCommand(data: SocketData, method: RTMethodRequest?) {
         if self.socketConnected {
-            self.socket?.emit("MET_REQ", with: [data])
+            //self.socket?.emit("MET_REQ", with: [data])
+            self.socket?.emit("MET_REQ", data)
         }
         else {
             self.connectSocket(connected: {
-                self.socket?.emit("MET_REQ", with: [data])
+                //self.socket?.emit("MET_REQ", with: [data])
+                self.socket?.emit("MET_REQ", data)
             })
         }
         if let method = method {

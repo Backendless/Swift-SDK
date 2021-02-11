@@ -24,51 +24,48 @@ import XCTest
 
 class DeepSaveTests: XCTestCase {
     
-    /*private let backendless = Backendless.shared
+    private let backendless = Backendless.shared
     private let timeout: Double = 10.0
     
     private var personStore: MapDrivenDataStore!
     private var peopleStore: MapDrivenDataStore!
     
-    // call before all tests
     override class func setUp() {
         Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
         Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
-        
-        let semaphore = DispatchSemaphore(value: 0)
-        DispatchQueue.global().async {
-            Backendless.shared.data.ofTable("Person").removeBulk(whereClause: nil, responseHandler: { removed in
-                Backendless.shared.data.ofTable("People").removeBulk(whereClause: nil, responseHandler: { removed in
-                    semaphore.signal()
-                }, errorHandler: { fault in })
-            }, errorHandler: { fault in })
-        }
-        semaphore.wait()
-        return
     }
     
-    // call before each test
     override func setUp() {
         personStore = backendless.data.ofTable("Person")
         peopleStore = backendless.data.ofTable("People")
     }
     
-    func test_DS01() {
-        createFriendForDS1()
+    func testDS01() {
         let expectation = self.expectation(description: "PASSED: DS1")
-        let person = ["name": "Joe", "age": 30, "friend": ["objectId": "1"]] as [String : Any]
-        personStore.deepSave(entity: person, responseHandler: { savedPerson in
-            XCTAssertEqual(savedPerson["___class"] as? String, "Person")
-            XCTAssertEqual(savedPerson["name"] as? String, "Joe")
-            XCTAssertEqual(savedPerson["age"] as? NSNumber, 30)
-            XCTAssertNotNil(savedPerson["friend"])
-            let personFriend = savedPerson["friend"] as! [String : Any]
-            XCTAssertEqual(personFriend["___class"] as? String, "People")
-            XCTAssertEqual(personFriend["objectId"] as? String, "1")
-            XCTAssertEqual(personFriend["name"] as? String, "Bob")
-            XCTAssertEqual(personFriend["age"] as? NSNumber, 20)
-            XCTAssertNotNil(personFriend["updated"])
-            expectation.fulfill()
+        Backendless.shared.data.ofTable("Person").removeBulk(whereClause: nil, responseHandler: { removed in
+            Backendless.shared.data.ofTable("People").removeBulk(whereClause: nil, responseHandler: { removed in
+                self.createFriendForDS1()
+                let person = ["name": "Joe", "age": 30, "friend": ["objectId": "1"]] as [String : Any]
+                self.personStore.deepSave(entity: person, responseHandler: { savedPerson in
+                    XCTAssertEqual(savedPerson["___class"] as? String, "Person")
+                    XCTAssertEqual(savedPerson["name"] as? String, "Joe")
+                    XCTAssertEqual(savedPerson["age"] as? NSNumber, 30)
+                    XCTAssertNotNil(savedPerson["friend"])
+                    let personFriend = savedPerson["friend"] as! [String : Any]
+                    XCTAssertEqual(personFriend["___class"] as? String, "People")
+                    XCTAssertEqual(personFriend["objectId"] as? String, "1")
+                    XCTAssertEqual(personFriend["name"] as? String, "Bob")
+                    XCTAssertEqual(personFriend["age"] as? NSNumber, 20)
+                    XCTAssertNotNil(personFriend["updated"])
+                    expectation.fulfill()
+                }, errorHandler: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
@@ -76,7 +73,7 @@ class DeepSaveTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_DS02() {
+    func testDS02() {
         let expectation = self.expectation(description: "PASSED: DS2")
         personStore.findFirst(responseHandler: { firstPerson in
             XCTAssertNotNil(firstPerson["objectId"])
@@ -102,7 +99,7 @@ class DeepSaveTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_DS03() {
+    func testDS03() {
         let expectation = self.expectation(description: "PASSED: DS3")
         personStore.findFirst(responseHandler: { firstPerson in
             XCTAssertNotNil(firstPerson["objectId"])
@@ -124,7 +121,7 @@ class DeepSaveTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_DS04() {
+    func testDS04() {
         let expectation = self.expectation(description: "PASSED: DS4")
         let person = ["name": "Bob", "age": NSNull(), "family": [["objectId": "1", "age": 15], ["name": "Jack", "age": 20]]] as [String : Any]
         self.personStore.deepSave(entity: person, responseHandler: { savedPerson in
@@ -152,7 +149,7 @@ class DeepSaveTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_DS05() {
+    func testDS05() {
         let expectation = self.expectation(description: "PASSED: DS5")
         let queryBuilder = DataQueryBuilder()
         queryBuilder.whereClause = "name='Bob'"
@@ -185,7 +182,7 @@ class DeepSaveTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_DS06() {
+    func testDS06() {
         let expectation = self.expectation(description: "PASSED: DS6")
         let queryBuilder = DataQueryBuilder()
         queryBuilder.whereClause = "name='Bob'"
@@ -211,7 +208,7 @@ class DeepSaveTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_DS07() {
+    func testDS07() {
         let expectation = self.expectation(description: "PASSED: DS7")
         let person = ["name": "Liza", "age": 10, "friend": ["name": "Brother", "age": 20], "family": [["objectId": "1", "name": "Anna"], ["name": "Dad", "age": 20]]] as [String : Any]
         personStore.deepSave(entity: person, responseHandler: { savedPerson in
@@ -244,7 +241,7 @@ class DeepSaveTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_DS08() {
+    func testDS08() {
         let expectation = self.expectation(description: "PASSED: DS8")
         let queryBuilder = DataQueryBuilder()
         queryBuilder.whereClause = "name='Liza'"
@@ -277,7 +274,7 @@ class DeepSaveTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_DS09() {
+    func testDS09() {
         let expectation = self.expectation(description: "PASSED: DS9")
         let queryBuilder = DataQueryBuilder()
         queryBuilder.whereClause = "name='Liza'"
@@ -329,5 +326,5 @@ class DeepSaveTests: XCTestCase {
         }
         semaphore.wait()
         return
-    }*/
+    }
 }
