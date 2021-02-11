@@ -1,8 +1,8 @@
 Pod::Spec.new do |s|
   s.name         = "BackendlessSwift"
   s.module_name  = "Backendless"
-  s.version      = "6.2.9"
-  s.source = { :git => 'https://github.com/Backendless/Swift-SDK.git', :tag => '6.2.9' }
+  s.version      = "6.2.10"
+  s.source = { :git => 'https://github.com/Backendless/Swift-SDK.git', :tag => '6.2.10' }
   s.license      = { :type => 'MIT', :text => 'Copyright (c) 2013-2021 by Backendless Corp' }
   s.homepage     = "http://backendless.com"
   s.authors      = { 'Mark Piller' => 'mark@backendless.com', 'Olha Danylova' => 'olha.danylova@backendlessmail.com' }
@@ -19,6 +19,6 @@ Pod::Spec.new do |s|
   s.watchos.deployment_target = '2.0'
   s.requires_arc = true
   s.source_files = "Sources/SwiftSDK/**/*.swift", "Sources/SwiftSDK/*.swift", "Tests/SwiftSDKTests/TestObjects/*.swift"
-  s.dependency "Socket.IO-Client-Swift"
+  s.dependency "Socket.IO-Client-Swift", "~> 15.2"
   
 end

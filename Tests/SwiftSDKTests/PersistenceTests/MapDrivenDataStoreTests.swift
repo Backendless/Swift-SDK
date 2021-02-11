@@ -24,29 +24,20 @@ import XCTest
 
 class MapDrivenDataStoreTests: XCTestCase {
     
-    /*private let backendless = Backendless.shared
-    private let testObjectsUtils = TestObjectsUtils.shared
+    private let backendless = Backendless.shared
     private let timeout: Double = 10.0
     
     private var dataStore: MapDrivenDataStore!
     private var childDataStore: MapDrivenDataStore!
     
-    // call before all tests
     override class func setUp() {
         Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
         Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
-        clearTables()
     }
     
-    // call before each test
     override func setUp() {
         dataStore = backendless.data.ofTable("TestClass")
         childDataStore = backendless.data.ofTable("ChildTestClass")
-    }
-    
-    // call after all tests
-    override class func tearDown() {
-        clearTables()
     }
     
     class func clearTables() {
@@ -54,15 +45,24 @@ class MapDrivenDataStoreTests: XCTestCase {
         Backendless.shared.data.ofTable("ChildTestClass").removeBulk(whereClause: nil, responseHandler: { removedObjects in }, errorHandler: { fault in })
     }
     
-    func test_01_create() {
+    func test01Create() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.create")
-        let objectToSave = testObjectsUtils.createTestClassDictionary()
-        dataStore.create(entity: objectToSave, responseHandler: { savedObject in
-            XCTAssertNotNil(savedObject)
-            XCTAssert(type(of: savedObject) == [String: Any].self)
-            XCTAssertEqual(savedObject["name"] as? String, "Bob")
-            XCTAssertEqual(savedObject["age"] as? Int, 25)
-            expectation.fulfill()
+        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+            self.childDataStore.removeBulk(whereClause: nil, responseHandler: { removedChildren in
+                let objectToSave = ["name": "Bob", "age": 30] as [String : Any]
+                self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+                    XCTAssert(type(of: savedObject) == [String: Any].self)
+                    XCTAssertEqual(savedObject["name"] as? String, "Bob")
+                    XCTAssertEqual(savedObject["age"] as? Int, 30)
+                    expectation.fulfill()
+                }, errorHandler: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
@@ -70,11 +70,10 @@ class MapDrivenDataStoreTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_02_createBulk() {
+    func test02CreateBulk() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.createBulk")
-        let objectsToSave = testObjectsUtils.createTestClassDictionaries(numberOfObjects: 2)
+        let objectsToSave = [["name": "Bob", "age": 30], ["name": "Jack", "age": 40]]
         dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
-            XCTAssertNotNil(savedObjects)
             XCTAssert(type(of: savedObjects) == [String].self)
             XCTAssert(savedObjects.count == 2)
             expectation.fulfill()
@@ -85,21 +84,19 @@ class MapDrivenDataStoreTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_03_update() {
+    func test03Update() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.update")
-        let objectToSave = testObjectsUtils.createTestClassDictionary()
+        let objectToSave = ["name": "Bob", "age": 30] as [String : Any]
         dataStore.save(entity: objectToSave, responseHandler: { savedObject in
-            XCTAssertNotNil(savedObject)
             XCTAssert(type(of: savedObject) == [String: Any].self)
             XCTAssertEqual(savedObject["name"] as? String, "Bob")
-            XCTAssertEqual(savedObject["age"] as? Int, 25)
+            XCTAssertEqual(savedObject["age"] as? NSNumber, 30)
             var savedObject = savedObject
             savedObject["age"] = 55
-            self.dataStore.update(entity: savedObject, responseHandler: { resavedObject in
-                XCTAssertNotNil(resavedObject)
-                XCTAssert(type(of: resavedObject) == [String: Any].self)
-                XCTAssertEqual(resavedObject["name"] as? String, "Bob")
-                XCTAssertEqual(resavedObject["age"] as? Int, 55)
+            self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
+                XCTAssert(type(of: updatedObject) == [String: Any].self)
+                XCTAssertEqual(updatedObject["name"] as? String, "Bob")
+                XCTAssertEqual(updatedObject["age"] as? NSNumber, 55)
                 expectation.fulfill()
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
@@ -112,12 +109,23 @@ class MapDrivenDataStoreTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_04_updateBulk() {
+    func test04UpdateBulk() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.updateBulk")
-        dataStore.updateBulk(whereClause: "age>20", changes: ["name": "NewName"], responseHandler: { updatedObjects in
-            XCTAssertNotNil(updatedObjects)
-            XCTAssert(Int(exactly: updatedObjects)! >= 0)
-            expectation.fulfill()
+        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+            let objectsToSave = [["name": "Bob", "age": 102], ["name": "Jack", "age": 40], ["name": "Hanna", "age": 110]]
+            self.dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
+                XCTAssertTrue(savedObjects.count == 3)
+                self.dataStore.updateBulk(whereClause: "age>100", changes: ["name": "New Name"], responseHandler: { updatedObjects in
+                    XCTAssertEqual(updatedObjects, 2)
+                    expectation.fulfill()
+                }, errorHandler: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
@@ -125,13 +133,13 @@ class MapDrivenDataStoreTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_05_removeById() {
+    func test05RemoveById() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.removeById")
-        let objectToSave = testObjectsUtils.createTestClassDictionary()
+        let objectToSave = ["name": "Bob", "age": 30] as [String : Any]
         dataStore.save(entity: objectToSave, responseHandler: { savedObject in
-            self.dataStore.removeById(objectId: savedObject["objectId"] as! String, responseHandler: { removedObjects in
-                XCTAssertNotNil(removedObjects)
-                XCTAssert(Int(exactly: removedObjects)! >= 0)
+            XCTAssertNotNil(savedObject["objectId"] as? String)
+            self.dataStore.removeById(objectId: savedObject["objectId"] as! String, responseHandler: { removedTimestamp in
+                XCTAssertNotNil(Date(timeIntervalSince1970: TimeInterval(removedTimestamp)))
                 expectation.fulfill()
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
@@ -144,13 +152,12 @@ class MapDrivenDataStoreTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_06_remove() {
+    func test06Remove() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.remove")
-        let objectToSave = testObjectsUtils.createTestClassDictionary()
+        let objectToSave = ["name": "Bob", "age": 30] as [String : Any]
         dataStore.save(entity: objectToSave, responseHandler: { savedObject in
-            self.dataStore.remove(entity: savedObject, responseHandler: { removedObjects in
-                XCTAssertNotNil(removedObjects)
-                XCTAssert(Int(exactly: removedObjects)! >= 0)
+            self.dataStore.remove(entity: savedObject, responseHandler: { removedTimestamp in
+                XCTAssertNotNil(Date(timeIntervalSince1970: TimeInterval(removedTimestamp)))
                 expectation.fulfill()
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
@@ -163,17 +170,19 @@ class MapDrivenDataStoreTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_07_removeBulk() {
+    func test07RemoveBulk() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.removeBulk")
-        let objectsToSave = testObjectsUtils.createTestClassDictionaries(numberOfObjects: 3)
-        dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
-            XCTAssertNotNil(savedObjects)
-            XCTAssert(type(of: savedObjects) == [String].self)
-            XCTAssert(savedObjects.count == 3)
-            self.dataStore.removeBulk(whereClause: "age>25", responseHandler: { removedObjects in
-                XCTAssertNotNil(removedObjects)
-                XCTAssert(Int(exactly: removedObjects)! >= 0)
-                expectation.fulfill()
+        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+            let objectsToSave = [["name": "Bob", "age": 102], ["name": "Jack", "age": 40], ["name": "Hanna", "age": 110]]
+            self.dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
+                XCTAssertTrue(savedObjects.count == 3)
+                self.dataStore.removeBulk(whereClause: "age>100", responseHandler: { removedObjects in
+                    XCTAssertEqual(removedObjects, 2)
+                    expectation.fulfill()
+                }, errorHandler: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
@@ -185,17 +194,18 @@ class MapDrivenDataStoreTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_08_getObjectCount() {
+    func test08GetObjectCount() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.getObjectCount")
-        let objectsToSave = testObjectsUtils.createTestClassDictionaries(numberOfObjects: 2)
-        dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
-            XCTAssertNotNil(savedObjects)
-            XCTAssert(type(of: savedObjects) == [String].self)
-            XCTAssert(savedObjects.count == 2)
-            self.dataStore.getObjectCount(responseHandler: { count in
-                XCTAssertNotNil(count)
-                XCTAssert(Int(exactly: count)! >= 0)
-                expectation.fulfill()
+        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+            let objectsToSave = [["name": "Bob", "age": 102], ["name": "Jack", "age": 40], ["name": "Hanna", "age": 110]]
+            self.dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
+                self.dataStore.getObjectCount(responseHandler: { count in
+                    XCTAssertEqual(count, 3)
+                    expectation.fulfill()
+                }, errorHandler: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
@@ -207,19 +217,25 @@ class MapDrivenDataStoreTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_09_getObjectCountWithCondition() {
+    func test09GetObjectCountWithCondition() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.getObjectCountWithCondition")
-        let objectsToSave = testObjectsUtils.createTestClassDictionaries(numberOfObjects: 3)
-        dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
-            XCTAssertNotNil(savedObjects)
-            XCTAssert(type(of: savedObjects) == [String].self)
-            XCTAssert(savedObjects.count == 3)
-            let queryBuilder = DataQueryBuilder()
-            queryBuilder.whereClause = "name = 'Bob' and age> 30"
-            self.dataStore.getObjectCount(queryBuilder: queryBuilder, responseHandler: { count in
-                XCTAssertNotNil(count)
-                XCTAssert(Int(exactly: count)! >= 0)
-                expectation.fulfill()
+        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+            let objectsToSave = [["name": "Bob", "age": 102], ["name": "Jack", "age": 40], ["name": "Hanna", "age": 110]]
+            self.dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
+                self.dataStore.getObjectCount(responseHandler: { count in
+                    let queryBuilder = DataQueryBuilder()
+                    queryBuilder.whereClause = "age>100"
+                    self.dataStore.getObjectCount(queryBuilder: queryBuilder, responseHandler: { count in
+                        XCTAssertEqual(count, 2)
+                        expectation.fulfill()
+                    }, errorHandler: { fault in
+                        XCTAssertNotNil(fault)
+                        XCTFail("\(fault.code): \(fault.message!)")
+                    })
+                }, errorHandler: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
@@ -231,15 +247,18 @@ class MapDrivenDataStoreTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_10_find() {
+    func test10Find() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.find")
-        let objectsToSave = testObjectsUtils.createTestClassDictionaries(numberOfObjects: 2)
-        dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
-            XCTAssertNotNil(savedObjects)
-            self.dataStore.find(responseHandler: { foundObjects in
-                XCTAssertNotNil(foundObjects)
-                XCTAssert(foundObjects.count >= 0)
-                expectation.fulfill()
+        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+            let objectsToSave = [["name": "Bob", "age": 102], ["name": "Jack", "age": 40], ["name": "Hanna", "age": 110]]
+            self.dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
+                self.dataStore.find(responseHandler: { foundObjects in
+                    XCTAssertEqual(foundObjects.count, 3)
+                    expectation.fulfill()
+                }, errorHandler: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
@@ -251,24 +270,26 @@ class MapDrivenDataStoreTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_11_findWithCondition() {
+    func test11FindWithCondition() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.findWithCondition")
-        let objectsToSave = testObjectsUtils.createTestClassDictionaries(numberOfObjects: 10)
-        dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
-            XCTAssertNotNil(savedObjects)
-            let queryBuilder = DataQueryBuilder()
-            queryBuilder.relationsDepth = 1
-            queryBuilder.pageSize = 5
-            queryBuilder.groupBy = ["name"]
-            queryBuilder.pageSize = 5
-            queryBuilder.excludeProperty("age")
-            self.dataStore.find(queryBuilder: queryBuilder, responseHandler: { foundObjects in
-                XCTAssertNotNil(foundObjects)
-                XCTAssert(foundObjects.count >= 0)
-                for foundObject in foundObjects {
-                    XCTAssertNil(foundObject["age"])
-                }                
-                expectation.fulfill()
+        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+            let objectsToSave = [["name": "Bob", "age": 102], ["name": "Jack", "age": 40], ["name": "Hanna", "age": 110]]
+            self.dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
+                let queryBuilder = DataQueryBuilder()
+                queryBuilder.whereClause = "age>100"
+                queryBuilder.groupBy = ["name"]
+                queryBuilder.excludeProperty("age")
+                self.dataStore.find(queryBuilder:queryBuilder, responseHandler: { foundObjects in
+                    XCTAssertEqual(foundObjects.count, 2)
+                    for foundObject in foundObjects {
+                        XCTAssertNotNil(foundObject["name"])
+                        XCTAssertNil(foundObject["age"])
+                    }
+                    expectation.fulfill()
+                }, errorHandler: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
@@ -280,13 +301,11 @@ class MapDrivenDataStoreTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_12_findFirst() {
+    func test12FindFirst() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.findFirst")
-        let objectToSave = testObjectsUtils.createTestClassDictionary()
+        let objectToSave = ["name": "Bob", "age": 30] as [String : Any]
         dataStore.save(entity: objectToSave, responseHandler: { savedObject in
-            XCTAssertNotNil(savedObject)
             self.dataStore.findFirst(responseHandler: { first in
-                XCTAssertNotNil(first)
                 XCTAssert(type(of: first) == [String: Any].self)
                 expectation.fulfill()
             }, errorHandler: { fault in
@@ -300,13 +319,11 @@ class MapDrivenDataStoreTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_13_findLast() {
+    func test13FindLast() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.findLast")
-        let objectToSave = testObjectsUtils.createTestClassDictionary()
+        let objectToSave = ["name": "Bob", "age": 30] as [String : Any]
         dataStore.save(entity: objectToSave, responseHandler: { savedObject in
-            XCTAssertNotNil(savedObject)
             self.dataStore.findLast(responseHandler: { last in
-                XCTAssertNotNil(last)
                 XCTAssert(type(of: last) == [String: Any].self)
                 expectation.fulfill()
             }, errorHandler: { fault in
@@ -320,21 +337,18 @@ class MapDrivenDataStoreTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_14_findById() {
+    func test14FindById() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.findById")
-        let objectToSave = testObjectsUtils.createTestClassDictionary()
+        let objectToSave = ["name": "Bob", "age": 30] as [String : Any]
         dataStore.save(entity: objectToSave, responseHandler: { savedObject in
-            XCTAssertNotNil(savedObject)
-            if let objectId = savedObject["objectId"] as? String {
-                self.dataStore.findById(objectId: objectId, responseHandler: { foundObject in
-                    XCTAssertNotNil(foundObject)
-                    XCTAssert(type(of: foundObject) == [String: Any].self)
-                    expectation.fulfill()
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
-                })
-            }
+            XCTAssertTrue(savedObject["objectId"] is String)
+            self.dataStore.findById(objectId: savedObject["objectId"] as! String, responseHandler: { foundObject in
+                XCTAssert(type(of: foundObject) == [String: Any].self)
+                expectation.fulfill()
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
@@ -342,23 +356,21 @@ class MapDrivenDataStoreTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_15_findByIdWithCondition() {
+    func test15FindByIdWithCondition() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.findByIdWithCondition")
-        let objectToSave = testObjectsUtils.createTestClassDictionary()
+        let objectToSave = ["name": "Bob", "age": 30] as [String : Any]
         dataStore.save(entity: objectToSave, responseHandler: { savedObject in
-            XCTAssertNotNil(savedObject)
-            if let objectId = savedObject["objectId"] as? String {
-                let queryBuilder = DataQueryBuilder()
-                queryBuilder.relationsDepth = 1
-                self.dataStore.findById(objectId: objectId, queryBuilder: queryBuilder, responseHandler: { foundObject in
-                    XCTAssertNotNil(foundObject)
-                    XCTAssert(type(of: foundObject) == [String: Any].self)
-                    expectation.fulfill()
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
-                })
-            }
+            XCTAssertTrue(savedObject["objectId"] is String)
+            let queryBuilder = DataQueryBuilder()
+            queryBuilder.excludeProperty("age")
+            self.dataStore.findById(objectId: savedObject["objectId"] as! String, queryBuilder: queryBuilder, responseHandler: { foundObject in
+                XCTAssert(type(of: foundObject) == [String: Any].self)
+                XCTAssertNil(foundObject["age"])
+                expectation.fulfill()
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
@@ -366,13 +378,14 @@ class MapDrivenDataStoreTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_16_findFirstWithCondition() {
+    func test16FindFirstWithCondition() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.findFirstWithCondition")
         let queryBuilder = DataQueryBuilder()
         queryBuilder.relationsDepth = 1
+        queryBuilder.excludeProperty("age")
         dataStore.findFirst(queryBuilder: queryBuilder, responseHandler: { first in
-            XCTAssertNotNil(first)
             XCTAssert(type(of: first) == [String: Any].self)
+            XCTAssertNil(first["age"])
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
@@ -381,14 +394,26 @@ class MapDrivenDataStoreTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_17_findFirstWithCondition() {
+    func test17FindLastWithCondition() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.findLastWithCondition")
-        let queryBuilder = DataQueryBuilder()
-        queryBuilder.relationsDepth = 1
-        dataStore.findLast(queryBuilder: queryBuilder, responseHandler: { last in
-            XCTAssertNotNil(last)
-            XCTAssert(type(of: last) == [String: Any].self)
-            expectation.fulfill()
+        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+            let objectToSave = ["name": "Bob", "age": 30] as [String : Any]
+            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+                let queryBuilder = DataQueryBuilder()
+                queryBuilder.relationsDepth = 1
+                queryBuilder.excludeProperty("age")
+                self.dataStore.findLast(queryBuilder: queryBuilder, responseHandler: { last in
+                    XCTAssert(type(of: last) == [String: Any].self)
+                    XCTAssertNil(last["age"])
+                    expectation.fulfill()
+                }, errorHandler: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
@@ -396,23 +421,21 @@ class MapDrivenDataStoreTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_18_setRelationWithObjects() {
+    func test18SetRelationWithObjects() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.setRelationWithObjects")
         let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
         childDataStore.createBulk(entities: childObjectsToSave, responseHandler: { savedChildrenIds in
-            let parentObjectToSave = self.testObjectsUtils.createTestClassDictionary()
+            let parentObjectToSave = ["name": "Bob", "age": 30] as [String : Any]
             self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
-                if let parentObjectId = savedParentObject["objectId"] as? String {
-                    // 1:N
-                    self.dataStore.setRelation(columnName: "children:ChildTestClass:n", parentObjectId: parentObjectId, childrenObjectIds: savedChildrenIds, responseHandler: { relations in
-                        XCTAssertNotNil(relations)
-                        XCTAssert(Int(exactly: relations) == 2)
-                        expectation.fulfill()
-                    }, errorHandler: { fault in
-                        XCTAssertNotNil(fault)
-                        XCTFail("\(fault.code): \(fault.message!)")
-                    })
-                }
+                XCTAssertNotNil(savedParentObject["objectId"])
+                // 1:N
+                self.dataStore.setRelation(columnName: "children:ChildTestClass:n", parentObjectId: savedParentObject["objectId"] as! String, childrenObjectIds: savedChildrenIds, responseHandler: { relations in
+                    XCTAssertEqual(relations, 2)
+                    expectation.fulfill()
+                }, errorHandler: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
@@ -424,23 +447,31 @@ class MapDrivenDataStoreTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_19_setRelationWithCondition() {
-        let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.setRelationWithCondition test passed")
-        let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
-        childDataStore.createBulk(entities: childObjectsToSave, responseHandler: { savedChildrenIds in
-            let parentObjectToSave = self.testObjectsUtils.createTestClassDictionary()
-            self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
-                if let parentObjectId = savedParentObject["objectId"] as? String {
-                    // 1:N
-                    self.dataStore.setRelation(columnName: "children:ChildTestClass:n", parentObjectId: parentObjectId, whereClause: "foo = 'bar' or foo = 'bar1'", responseHandler: { relations in
-                        XCTAssertNotNil(relations)
-                        XCTAssert(Int(exactly: relations)! >= 0)
-                        expectation.fulfill()
+    func test19SetRelationWithCondition() {
+        let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.setRelationWithCondition")
+        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+            self.childDataStore.removeBulk(whereClause: nil, responseHandler: { removedChildren in
+                let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
+                self.childDataStore.createBulk(entities: childObjectsToSave, responseHandler: { savedChildrenIds in
+                    let parentObjectToSave = ["name": "Bob", "age": 30] as [String : Any]
+                    self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
+                        XCTAssertNotNil(savedParentObject["objectId"])
+                        // 1:N
+                        self.dataStore.setRelation(columnName: "children:ChildTestClass:n", parentObjectId: savedParentObject["objectId"] as! String, whereClause: "foo = 'bar' or foo = 'bar1'", responseHandler: { relations in
+                            XCTAssertEqual(relations, 2)
+                            expectation.fulfill()
+                        }, errorHandler: { fault in
+                            XCTAssertNotNil(fault)
+                            XCTFail("\(fault.code): \(fault.message!)")
+                        })
                     }, errorHandler: { fault in
                         XCTAssertNotNil(fault)
                         XCTFail("\(fault.code): \(fault.message!)")
                     })
-                }
+                }, errorHandler: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
@@ -452,23 +483,21 @@ class MapDrivenDataStoreTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_20_addRelationWithObjects() {
+    func test20AddRelationWithObjects() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.addRelationWithObjects")
         let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
         childDataStore.createBulk(entities: childObjectsToSave, responseHandler: { savedChildrenIds in
-            let parentObjectToSave = self.testObjectsUtils.createTestClassDictionary()
+            let parentObjectToSave = ["name": "Bob", "age": 30] as [String : Any]
             self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
-                if let parentObjectId = savedParentObject["objectId"] as? String {
-                    // 1:N
-                    self.dataStore.addRelation(columnName: "children:ChildTestClass:n", parentObjectId: parentObjectId, childrenObjectIds: savedChildrenIds, responseHandler: { relations in
-                        XCTAssertNotNil(relations)
-                        XCTAssert(Int(exactly: relations)! == 2)
-                        expectation.fulfill()
-                    }, errorHandler: { fault in
-                        XCTAssertNotNil(fault)
-                        XCTFail("\(fault.code): \(fault.message!)")
-                    })
-                }
+                XCTAssertNotNil(savedParentObject["objectId"])
+                // 1:N
+                self.dataStore.addRelation(columnName: "children:ChildTestClass:n", parentObjectId: savedParentObject["objectId"] as! String, childrenObjectIds: savedChildrenIds, responseHandler: { relations in
+                    XCTAssertEqual(relations, 2)
+                    expectation.fulfill()
+                }, errorHandler: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
@@ -480,23 +509,31 @@ class MapDrivenDataStoreTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_21_addRelationWithCondition() {
+    func test21AddRelationWithCondition() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.addRelationWithCondition")
-        let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
-        childDataStore.createBulk(entities: childObjectsToSave, responseHandler: { savedChildrenIds in
-            let parentObjectToSave = self.testObjectsUtils.createTestClassDictionary()
-            self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
-                if let parentObjectId = savedParentObject["objectId"] as? String {
-                    // 1:N
-                    self.dataStore.addRelation(columnName: "children:ChildTestClass:n", parentObjectId: parentObjectId, whereClause: "foo = 'bar' or foo = 'bar1'", responseHandler: { relations in
-                        XCTAssertNotNil(relations)
-                        XCTAssert(Int(exactly: relations)! >= 0)
-                        expectation.fulfill()
+        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+            self.childDataStore.removeBulk(whereClause: nil, responseHandler: { removedChildren in
+                let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
+                self.childDataStore.createBulk(entities: childObjectsToSave, responseHandler: { savedChildrenIds in
+                    let parentObjectToSave = ["name": "Bob", "age": 30] as [String : Any]
+                    self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
+                        XCTAssertNotNil(savedParentObject["objectId"])
+                        // 1:N
+                        self.dataStore.addRelation(columnName: "children:ChildTestClass:n", parentObjectId: savedParentObject["objectId"] as! String, whereClause: "foo = 'bar' or foo = 'bar1'", responseHandler: { relations in
+                            XCTAssertEqual(relations, 2)
+                            expectation.fulfill()
+                        }, errorHandler: { fault in
+                            XCTAssertNotNil(fault)
+                            XCTFail("\(fault.code): \(fault.message!)")
+                        })
                     }, errorHandler: { fault in
                         XCTAssertNotNil(fault)
                         XCTFail("\(fault.code): \(fault.message!)")
                     })
-                }
+                }, errorHandler: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
@@ -508,31 +545,28 @@ class MapDrivenDataStoreTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_22_deleteRelationWithObjects() {
+    func test22DeleteRelationWithObjects() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.deleteRelationWithObjects")
         let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
         childDataStore.createBulk(entities: childObjectsToSave, responseHandler: { savedChildrenIds in
-            let parentObjectToSave = self.testObjectsUtils.createTestClassDictionary()
+            let parentObjectToSave = ["name": "Bob", "age": 30] as [String : Any]
             self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
-                if let parentObjectId = savedParentObject["objectId"] as? String {
-                    // 1:N
-                    self.dataStore.setRelation(columnName: "children:ChildTestClass:n", parentObjectId: parentObjectId, childrenObjectIds: savedChildrenIds, responseHandler: { relations in
-                        XCTAssertNotNil(relations)
-                        XCTAssert(Int(exactly: relations) == 2)
-                        // remove relation
-                        self.dataStore.deleteRelation(columnName: "children", parentObjectId: parentObjectId, childrenObjectIds: savedChildrenIds, responseHandler: { removed in
-                            XCTAssertNotNil(removed)
-                            XCTAssert(Int(exactly: removed) == 2)
-                            expectation.fulfill()
-                        }, errorHandler: { fault in
-                            XCTAssertNotNil(fault)
-                            XCTFail("\(fault.code): \(fault.message!)")
-                        })
+                XCTAssertNotNil(savedParentObject["objectId"])
+                // 1:N
+                self.dataStore.setRelation(columnName: "children:ChildTestClass:n", parentObjectId: savedParentObject["objectId"] as! String, childrenObjectIds: savedChildrenIds, responseHandler: { relations in
+                    XCTAssertEqual(relations, 2)
+                    // remove relation
+                    self.dataStore.deleteRelation(columnName: "children", parentObjectId: savedParentObject["objectId"] as! String, childrenObjectIds: savedChildrenIds, responseHandler: { removed in
+                        XCTAssertEqual(removed, 2)
+                        expectation.fulfill()
                     }, errorHandler: { fault in
                         XCTAssertNotNil(fault)
                         XCTFail("\(fault.code): \(fault.message!)")
                     })
-                }
+                }, errorHandler: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
@@ -544,31 +578,28 @@ class MapDrivenDataStoreTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_23_deleteRelationWithCondition() {
+    func test23DeleteRelationWithCondition() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.deleteRelationWithCondition")
         let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
         childDataStore.createBulk(entities: childObjectsToSave, responseHandler: { savedChildrenIds in
-            let parentObjectToSave = self.testObjectsUtils.createTestClassDictionary()
+            let parentObjectToSave = ["name": "Bob", "age": 30] as [String : Any]
             self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
-                if let parentObjectId = savedParentObject["objectId"] as? String {
-                    // 1:N
-                    self.dataStore.setRelation(columnName: "children:ChildTestClass:n", parentObjectId: parentObjectId, childrenObjectIds: savedChildrenIds, responseHandler: { relations in
-                        XCTAssertNotNil(relations)
-                        XCTAssert(Int(exactly: relations) == 2)
-                        // remove relation
-                        self.dataStore.deleteRelation(columnName: "children", parentObjectId: parentObjectId, whereClause: "foo='bar1'", responseHandler: { removed in
-                            XCTAssertNotNil(removed)
-                            XCTAssert(Int(exactly: removed) == 1)
-                            expectation.fulfill()
-                        }, errorHandler: { fault in
-                            XCTAssertNotNil(fault)
-                            XCTFail("\(fault.code): \(fault.message!)")
-                        })
+                XCTAssertNotNil(savedParentObject["objectId"])
+                // 1:N
+                self.dataStore.setRelation(columnName: "children:ChildTestClass:n", parentObjectId: savedParentObject["objectId"] as! String, childrenObjectIds: savedChildrenIds, responseHandler: { relations in
+                    XCTAssertEqual(relations, 2)
+                    // remove relation
+                    self.dataStore.deleteRelation(columnName: "children", parentObjectId: savedParentObject["objectId"] as! String, whereClause: "foo='bar1'", responseHandler: { removed in
+                        XCTAssertEqual(removed, 1)
+                        expectation.fulfill()
                     }, errorHandler: { fault in
                         XCTAssertNotNil(fault)
                         XCTFail("\(fault.code): \(fault.message!)")
                     })
-                }
+                }, errorHandler: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
@@ -580,36 +611,33 @@ class MapDrivenDataStoreTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_24_loadRelationsTwoStepsWithPaging() {
+    func test24LoadRelationsTwoStepsWithPaging() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.loadRelationsTwoStepsWithPaging")
         let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
         childDataStore.createBulk(entities: childObjectsToSave, responseHandler: { savedChildrenIds in
-            let parentObjectToSave = self.testObjectsUtils.createTestClassDictionary()
+            let parentObjectToSave = ["name": "Bob", "age": 30] as [String : Any]
             self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
-                if let parentObjectId = savedParentObject["objectId"] as? String {
-                    // 1:N
-                    self.dataStore.setRelation(columnName: "children:ChildTestClass:n", parentObjectId: parentObjectId, childrenObjectIds: savedChildrenIds, responseHandler: { relations in
-                        XCTAssertNotNil(relations)
-                        XCTAssert(Int(exactly: relations) == 2)
-                        // retrieve relation
-                        let queryBuilder = LoadRelationsQueryBuilder(relationName: "children")
-                        queryBuilder.pageSize = 2
-                        queryBuilder.offset = 1
-                        queryBuilder.properties = ["foo"]
-                        queryBuilder.sortBy = ["foo"]
-                        self.dataStore.loadRelations(objectId: parentObjectId, queryBuilder: queryBuilder, responseHandler: { foundRelations in
-                            XCTAssertNotNil(foundRelations)
-                            XCTAssert(Int(exactly: foundRelations.count) == 1)
-                            expectation.fulfill()
-                        }, errorHandler: { fault in
-                            XCTAssertNotNil(fault)
-                            XCTFail("\(fault.code): \(fault.message!)")
-                        })
+                XCTAssertNotNil(savedParentObject["objectId"])
+                // 1:N
+                self.dataStore.setRelation(columnName: "children:ChildTestClass:n", parentObjectId: savedParentObject["objectId"] as! String, childrenObjectIds: savedChildrenIds, responseHandler: { relations in
+                    XCTAssertEqual(relations, 2)
+                    // retrieve relation
+                    let queryBuilder = LoadRelationsQueryBuilder(relationName: "children")
+                    queryBuilder.pageSize = 2
+                    queryBuilder.offset = 1
+                    queryBuilder.properties = ["foo"]
+                    queryBuilder.sortBy = ["foo"]
+                    self.dataStore.loadRelations(objectId: savedParentObject["objectId"] as! String, queryBuilder: queryBuilder, responseHandler: { foundRelations in
+                        XCTAssertEqual(foundRelations.count, 1)
+                        expectation.fulfill()
                     }, errorHandler: { fault in
                         XCTAssertNotNil(fault)
                         XCTFail("\(fault.code): \(fault.message!)")
                     })
-                }
+                }, errorHandler: { fault in
+                    XCTAssertNotNil(fault)
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
             }, errorHandler: { fault in
                 XCTAssertNotNil(fault)
                 XCTFail("\(fault.code): \(fault.message!)")
@@ -619,5 +647,5 @@ class MapDrivenDataStoreTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
-    }*/
+    }
 }

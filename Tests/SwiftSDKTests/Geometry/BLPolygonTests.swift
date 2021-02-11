@@ -24,46 +24,39 @@ import XCTest
 
 class BLPolygonTests: XCTestCase {
     
-    /*private let backendless = Backendless.shared
+    private let backendless = Backendless.shared
     private let timeout: Double = 10.0
     
     private var dataStore: DataStoreFactory!
     
-    // call before all te
     override class func setUp() {
         Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
         Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
-        clearTables()
     }
     
-    // call before each test
     override func setUp() {
         dataStore = backendless.data.of(GeometryTestClass.self)
     }
     
-    // call after all tests
-    override class func tearDown() {
-        clearTables()
-    }
-    
-    class func clearTables() {
-        Backendless.shared.data.of(GeometryTestClass.self).removeBulk(whereClause: nil, responseHandler: { removedObjects in }, errorHandler: { fault in })
-    }
-    
-    func testPG1() {
+    func testPG01() {
         let expectation = self.expectation(description: "PASSED: BLPolygon.create")
-        let geometryObject = GeometryTestClass()
-        let point1 = BLPoint(x: -44.55, y: 34.55)
-        let point2 = BLPoint(x: 12.34, y: 34.45)
-        let point3 = BLPoint(x: 34.5653, y: -12.3445531)
-        let point4 = BLPoint(x: -44.55, y: 34.55)
-        let boundary = BLLineString(points: [point1, point2, point3, point4])
-        geometryObject.polygon = BLPolygon(boundary: boundary, holes: nil)
-        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
-            XCTAssert(savedObject is GeometryTestClass)
-            let polygon = (savedObject as! GeometryTestClass).polygon
-            XCTAssertNotNil(polygon)
-            expectation.fulfill()
+        dataStore.removeBulk(whereClause: nil, responseHandler: { removedObjects in
+            let geometryObject = GeometryTestClass()
+            let point1 = BLPoint(x: -44.55, y: 34.55)
+            let point2 = BLPoint(x: 12.34, y: 34.45)
+            let point3 = BLPoint(x: 34.5653, y: -12.3445531)
+            let point4 = BLPoint(x: -44.55, y: 34.55)
+            let boundary = BLLineString(points: [point1, point2, point3, point4])
+            geometryObject.polygon = BLPolygon(boundary: boundary, holes: nil)
+            self.dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+                XCTAssert(savedObject is GeometryTestClass)
+                let polygon = (savedObject as! GeometryTestClass).polygon
+                XCTAssertNotNil(polygon)
+                expectation.fulfill()
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
         }, errorHandler: { fault in
             XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
@@ -71,7 +64,7 @@ class BLPolygonTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func testPG2() {
+    func testPG02() {
         let expectation = self.expectation(description: "PASSED: BLPolygon.create")
         let geometryObject = GeometryTestClass()
         let point1 = BLPoint(x: -44.55, y: 34.55)
@@ -86,7 +79,7 @@ class BLPolygonTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func testPG3() {
+    func testPG03() {
         let expectation = self.expectation(description: "PASSED: BLPolygon.create")
         let geometryObject = GeometryTestClass()
         let point1 = BLPoint(x: -44.55, y: 34.55)
@@ -102,7 +95,7 @@ class BLPolygonTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func testPG4() {
+    func testPG04() {
         let expectation = self.expectation(description: "PASSED: BLPolygon.create")
         let geometryObject = GeometryTestClass()
         let point1 = BLPoint(x: 180, y: 90)
@@ -122,16 +115,33 @@ class BLPolygonTests: XCTestCase {
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
-    
-    // ⚠️ TODO with SQL 8
-    // (180.1 90), (-180 -180),(180 -90), (-180 90), (180 90)
-    func testPG5() {
+
+    func testPG05() {
+        let expectation = self.expectation(description: "PASSED: BLPolygon.create")
+        let geometryObject = GeometryTestClass()
+        let point1 = BLPoint(x: 180.1, y: 90)
+        let point2 = BLPoint(x: -180, y: -180)
+        let point3 = BLPoint(x: 180.1, y: -90)
+        let point4 = BLPoint(x: -180, y: 90)
+        let point5 = BLPoint(x: 180.1, y: 90)
+        let boundary = BLLineString(points: [point1, point2, point3, point4, point5])
+        geometryObject.polygon = BLPolygon(boundary: boundary, holes: nil)
+        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+            XCTAssert(savedObject is GeometryTestClass)
+            let polygon = (savedObject as! GeometryTestClass).polygon
+            XCTAssertNotNil(polygon)
+            expectation.fulfill()
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    // PG6-PG7: create polygon with points where longitude and/or latitude is null
+    // PG06-PG07: create polygon with points where longitude and/or latitude is null
     // Swift-SDK doesn't allow to create BLPoint with null values
     
-    func testPG8() {
+    func testPG08() {
         let expectation = self.expectation(description: "PASSED: BLPolygon.create")
         let geometryObject = GeometryTestClass()
         let point1_1 = BLPoint(x: -113.45457225, y: 42.60554422)
@@ -160,7 +170,7 @@ class BLPolygonTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func testPG9() {
+    func testPG09() {
         let expectation = self.expectation(description: "PASSED: BLPolygon.create")
         let geometryObject = GeometryTestClass()
         let point1_1 = BLPoint(x: -114.15769725, y: 37.63585693)
@@ -356,33 +366,15 @@ class BLPolygonTests: XCTestCase {
             XCTAssert(error.localizedDescription == GeoParserErrors.wrongFormat)
         }
     }
-    
-    // ⚠️ TODO with SQL 8
-    // create BLPolygon from GeoJSON
-    /*{
-      "type": "Polygon",
-      "coordinates": [
-        [
-          [
-            -102.731916,
-            38.74110466
-          ],
-          [
-            -181.013166,
-            34.2207533
-          ],
-          [
-            -125.231916,
-            99.42873486
-          ],
-          [
-            -102.731916,
-            38.74110466
-          ]
-        ]
-      ]
-    }*/
+
     func testPG22() {
+        do {
+            let _ = try BLPolygon.fromGeoJson("{\"type\": \"Polygon\", \"coordinates\": [[[-102.731916, 38.74110466], [-181.013166, 34.2207533], [-125.231916, 99.42873486], [-102.731916, 38.74110466]]]}")
+        }
+        catch {
+            XCTAssert(error is Fault)
+            XCTAssert(error.localizedDescription == GeoParserErrors.wrongFormat)
+        }
     }
     
     func testPG23() {
@@ -494,11 +486,31 @@ class BLPolygonTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    // ⚠️ TODO with SQL 8
-    // bulk create polygons
-    // {((180.1 90), (-180 -180),(180 -90), (-180 90), (180 90))}
-    // {((-109.93894725 36.23085088, -102.20457225 48.03758415, -90.075666 36.65506981, -109.93894725 36.23085088))}
     func testPG28() {
+        let expectation = self.expectation(description: "PASSED: BLPolygon.bulkCreate")
+        let geometryObject1 = GeometryTestClass()
+        let point1_1 = BLPoint(x: 180.1, y: 90)
+        let point1_2 = BLPoint(x: -180, y: -180)
+        let point1_3 = BLPoint(x: 180.1, y: -90)
+        let point1_4 = BLPoint(x: -180, y: 90)
+        let point1_5 = BLPoint(x: 180.1, y: 90)
+        let boundary1 = BLLineString(points: [point1_1, point1_2, point1_3, point1_4, point1_5])
+        geometryObject1.polygon = BLPolygon(boundary: boundary1, holes: nil)
+        let geometryObject2 = GeometryTestClass()
+        let point2_1 = BLPoint(x: -109.93894725, y: 36.23085088)
+        let point2_2 = BLPoint(x: -102.20457225, y: 48.03758415)
+        let point2_3 = BLPoint(x: -90.075666, y: 36.65506981)
+        let point2_4 = BLPoint(x: -109.93894725, y: 36.23085088)
+        let boundary2 = BLLineString(points: [point2_1, point2_2, point2_3, point2_4])
+        geometryObject2.polygon = BLPolygon(boundary: boundary2, holes: nil)
+        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+            XCTAssert(createdIds.count == 2)
+            expectation.fulfill()
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     // PG29-PG30: bulk create polygon with points where longitude and/or latitude is null
@@ -680,9 +692,56 @@ class BLPolygonTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    // ⚠️ TODO with SQL 8
-    // update BLPolygon with ((0 0, 180 180, 1 5, 0 0))
     func testPG37() {
+        let expectation = self.expectation(description: "PASSED: BLPolygon.update")
+        let geometryObject = GeometryTestClass()
+        let point1 = BLPoint(x: -113.45457225, y: 42.60554422)
+        let point2 = BLPoint(x: -93.54484867, y: 45.8268307)
+        let point3 = BLPoint(x: -106.20109867, y: 34.15948052)
+        let point4 = BLPoint(x: -113.45457225, y: 42.60554422)
+        let boundary = BLLineString(points: [point1, point2, point3, point4])
+        geometryObject.polygon = BLPolygon(boundary: boundary, holes: nil)
+        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+            let polygon = (savedObject as! GeometryTestClass).polygon
+            XCTAssertNotNil(polygon)
+            XCTAssertNotNil(polygon?.boundary)
+            XCTAssertNil(polygon?.holes)
+            let updPoint1 = BLPoint(x: 0, y: 0)
+            let updPoint2 = BLPoint(x: 180, y: 180)
+            let updPoint3 = BLPoint(x: 1, y: 5)
+            let updPoint4 = BLPoint(x: 0, y: 0)
+            let updBoundary = BLLineString(points: [updPoint1, updPoint2, updPoint3, updPoint4])
+            (savedObject as! GeometryTestClass).polygon = BLPolygon(boundary: updBoundary, holes: nil)
+            self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
+                XCTAssert(updatedObject is GeometryTestClass)
+                let polygon = (updatedObject as! GeometryTestClass).polygon
+                XCTAssertNotNil(polygon)
+                XCTAssertNotNil(polygon?.boundary)
+                XCTAssert(polygon!.boundary!.points.count == 4)
+                for i in 0..<polygon!.boundary!.points.count {
+                    if i == 0 || i == 3 {
+                        XCTAssert(polygon!.boundary!.points[0].x == 0)
+                        XCTAssert(polygon!.boundary!.points[0].y == 0)
+                    }
+                    else if i == 1 {
+                        XCTAssert(polygon!.boundary!.points[1].x == 180)
+                        XCTAssert(polygon!.boundary!.points[1].y == 180)
+                    }
+                    else {
+                        XCTAssert(polygon!.boundary!.points[2].x == 1)
+                        XCTAssert(polygon!.boundary!.points[2].y == 5)
+                    }
+                }
+                expectation.fulfill()
+            }, errorHandler: { fault in
+                XCTAssertNotNil(fault)
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTAssertNotNil(fault)
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     // PG38: update polygon with points where longitude and/or latitude is null
@@ -1276,5 +1335,5 @@ class BLPolygonTests: XCTestCase {
         catch {
             XCTFail(error.localizedDescription)
         }
-    }*/
+    }
 }
