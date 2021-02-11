@@ -82,10 +82,6 @@ class RTClient {
                     self.socketManager?.reconnects = false
                     self.socket = self.socketManager?.socket(forNamespace: path)
                     
-                    // ****************************************
-                    // add disconnect listener here !!!
-                    // ****************************************
-                    
                     let _ = Backendless.shared.rt.addDisсonnectEventListener(responseHandler: { _ in
                         self.tryToReconnectSocket()
                     })

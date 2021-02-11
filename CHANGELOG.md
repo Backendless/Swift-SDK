@@ -1,5 +1,9 @@
 # RELEASE HISTORY
 
+### 6.2.10 February 11, 2021
+* fixed issue with new version of Socket.IO
+* tests refactoring in progress
+
 ### 6.2.9 February 5, 2021
 * fixed the DataQueryBuilder `distinct` property for Flutter-SDK
 * tests refactoring in progress
