@@ -58,16 +58,14 @@ class DeepSaveTests: XCTestCase {
                     XCTAssertEqual(personFriend["age"] as? NSNumber, 20)
                     XCTAssertNotNil(personFriend["updated"])
                     expectation.fulfill()
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in                    
+                    XCTFail("\(fault.code): \(fault.message!)")  
+                XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -88,12 +86,10 @@ class DeepSaveTests: XCTestCase {
                 XCTAssertEqual(personFriend["name"] as? String, "Suzi")
                 XCTAssertEqual(personFriend["age"] as? NSNumber, 20)
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -110,12 +106,10 @@ class DeepSaveTests: XCTestCase {
                 XCTAssertEqual(savedPerson["age"] as? NSNumber, 25)
                 XCTAssertNil(savedPerson["friend"])
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -143,7 +137,6 @@ class DeepSaveTests: XCTestCase {
             }
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -171,12 +164,10 @@ class DeepSaveTests: XCTestCase {
                 XCTAssertEqual(familyMember["name"] as? String, "Bob")
                 XCTAssertEqual(familyMember["age"] as? NSNumber, 15)
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -197,12 +188,10 @@ class DeepSaveTests: XCTestCase {
                 XCTAssertTrue(savedPerson["age"] is NSNull)
                 XCTAssertNil(savedPerson["family"])
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -235,7 +224,6 @@ class DeepSaveTests: XCTestCase {
             }
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -263,12 +251,10 @@ class DeepSaveTests: XCTestCase {
                 XCTAssertEqual(familyMember["name"] as? String, "Anna")
                 XCTAssertEqual(familyMember["age"] as? NSNumber, 10)
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -294,12 +280,10 @@ class DeepSaveTests: XCTestCase {
                 XCTAssertEqual(friend["name"] as? String, "Lolla")
                 XCTAssertTrue(friend["age"] is NSNull)
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)

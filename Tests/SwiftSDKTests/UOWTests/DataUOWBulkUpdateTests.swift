@@ -45,12 +45,10 @@ class DataUOWBulkUpdateTests: XCTestCase {
                 XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
-            }, errorHandler: {  fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: {  fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -66,12 +64,10 @@ class DataUOWBulkUpdateTests: XCTestCase {
                 XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
-            }, errorHandler: {  fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: {  fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -89,7 +85,6 @@ class DataUOWBulkUpdateTests: XCTestCase {
             XCTAssertNotNil(uowResult.results)
             expectation.fulfill()
         }, errorHandler: {  fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -106,7 +101,6 @@ class DataUOWBulkUpdateTests: XCTestCase {
             XCTAssertNotNil(uowResult.results)
             expectation.fulfill()
         }, errorHandler: {  fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: self.timeout, handler: nil)
@@ -124,12 +118,10 @@ class DataUOWBulkUpdateTests: XCTestCase {
                 XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
-            }, errorHandler: {  fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: {  fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -153,12 +145,10 @@ class DataUOWBulkUpdateTests: XCTestCase {
                 XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
-            }, errorHandler: {  fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: {  fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -177,12 +167,10 @@ class DataUOWBulkUpdateTests: XCTestCase {
                 XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
-            }, errorHandler: {  fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: {  fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -199,12 +187,10 @@ class DataUOWBulkUpdateTests: XCTestCase {
                 XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
-            }, errorHandler: {  fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: {  fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -222,16 +208,14 @@ class DataUOWBulkUpdateTests: XCTestCase {
                     XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
-                }, errorHandler: {  fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: {  errorHandler: { fault in                    
+                    XCTFail("\(fault.code): \(fault.message!)")  
+                XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -249,16 +233,14 @@ class DataUOWBulkUpdateTests: XCTestCase {
                     XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
-                }, errorHandler: {  fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: {  errorHandler: { fault in                    
+                    XCTFail("\(fault.code): \(fault.message!)")  
+                XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -275,7 +257,6 @@ class DataUOWBulkUpdateTests: XCTestCase {
             XCTAssertNotNil(uowResult.results)
             expectation.fulfill()
         }, errorHandler: {  fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -296,16 +277,14 @@ class DataUOWBulkUpdateTests: XCTestCase {
                     XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
-                }, errorHandler: {  fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: {  errorHandler: { fault in                    
+                    XCTFail("\(fault.code): \(fault.message!)")  
+                XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -326,16 +305,14 @@ class DataUOWBulkUpdateTests: XCTestCase {
                     XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
-                }, errorHandler: {  fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: {  errorHandler: { fault in                    
+                    XCTFail("\(fault.code): \(fault.message!)")  
+                XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -357,16 +334,14 @@ class DataUOWBulkUpdateTests: XCTestCase {
                     XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
-                }, errorHandler: {  fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: {  errorHandler: { fault in                    
+                    XCTFail("\(fault.code): \(fault.message!)")  
+                XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)

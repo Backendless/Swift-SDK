@@ -47,14 +47,12 @@ class SubscriptionAPITests: XCTestCase {
             expectation.fulfill()
             self.channel.leave()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
             let message = "Test Message"
             self.backendless.messaging.publish(channelName: self.CHANNEL_NAME, message: message, responseHandler: { messageStatus in
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         })
@@ -69,7 +67,6 @@ class SubscriptionAPITests: XCTestCase {
             expectation.fulfill()
             self.channel.leave()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
@@ -77,8 +74,7 @@ class SubscriptionAPITests: XCTestCase {
             let publishOptions = PublishOptions()
             publishOptions.addHeader(name: "foo", value: "bar")
             self.backendless.messaging.publish(channelName: self.CHANNEL_NAME, message: message, publishOptions: publishOptions, responseHandler: { messageStatus in
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         })
@@ -93,14 +89,12 @@ class SubscriptionAPITests: XCTestCase {
             expectation.fulfill()
             self.channel.leave()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
             let message = ["name": "Bob", "age": 25] as [String : Any]
             self.backendless.messaging.publish(channelName: self.CHANNEL_NAME, message: message, responseHandler: { messageStatus in
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         })
@@ -115,7 +109,6 @@ class SubscriptionAPITests: XCTestCase {
             expectation.fulfill()
             self.channel.leave()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
@@ -123,8 +116,7 @@ class SubscriptionAPITests: XCTestCase {
             let publishOptions = PublishOptions()
             publishOptions.addHeader(name: "foo", value: "bar")
             self.backendless.messaging.publish(channelName: self.CHANNEL_NAME, message: message, publishOptions: publishOptions, responseHandler: { messageStatus in
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         })
@@ -139,7 +131,6 @@ class SubscriptionAPITests: XCTestCase {
             expectation.fulfill()
             self.channel.leave()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
@@ -147,8 +138,7 @@ class SubscriptionAPITests: XCTestCase {
             message.name = "Bob"
             message.age = 25
             self.backendless.messaging.publish(channelName: self.CHANNEL_NAME, message: message, responseHandler: { messageStatus in
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         })
@@ -163,7 +153,6 @@ class SubscriptionAPITests: XCTestCase {
             expectation.fulfill()
             self.channel.leave()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
@@ -173,8 +162,7 @@ class SubscriptionAPITests: XCTestCase {
             let publishOptions = PublishOptions()
             publishOptions.addHeader(name: "foo", value: "bar")
             self.backendless.messaging.publish(channelName: self.CHANNEL_NAME, message: message, publishOptions: publishOptions, responseHandler: { messageStatus in
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         })
@@ -189,14 +177,12 @@ class SubscriptionAPITests: XCTestCase {
             expectation.fulfill()
             self.channel.leave()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
             let message = "Test Message"
             self.backendless.messaging.publish(channelName: self.CHANNEL_NAME, message: message, responseHandler: { messageStatus in
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         })
@@ -211,7 +197,6 @@ class SubscriptionAPITests: XCTestCase {
             expectation.fulfill()
             self.channel.leave()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
@@ -219,8 +204,7 @@ class SubscriptionAPITests: XCTestCase {
             let publishOptions = PublishOptions()
             publishOptions.addHeader(name: "foo", value: "bar")
             self.backendless.messaging.publish(channelName: self.CHANNEL_NAME, message: message, publishOptions: publishOptions, responseHandler: { messageStatus in
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         })
@@ -232,21 +216,18 @@ class SubscriptionAPITests: XCTestCase {
         let _ = self.channel.addStringMessageListener(responseHandler: { message in
             XCTFail("This subscription must be removed")
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         let _ = self.channel.addStringMessageListener(responseHandler: { message in
             XCTFail("This subscription must be removed")
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
             self.channel.removeMessageListeners()
             let message = "Test Message"
             self.backendless.messaging.publish(channelName: self.CHANNEL_NAME, message: message, responseHandler: { messageStatus in
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
             DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
@@ -263,13 +244,11 @@ class SubscriptionAPITests: XCTestCase {
             expectation.fulfill()
             self.channel.leave()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         let _ = self.channel.addStringMessageListener(selector: "foo = 'bar'", responseHandler: { message in
             XCTFail("This subscription must be removed")
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
@@ -278,8 +257,7 @@ class SubscriptionAPITests: XCTestCase {
             let publishOptions = PublishOptions()
             publishOptions.addHeader(name: "foo", value: "bar")
             self.backendless.messaging.publish(channelName: self.CHANNEL_NAME, message: message, publishOptions: publishOptions, responseHandler: { messageStatus in
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         })
@@ -291,14 +269,12 @@ class SubscriptionAPITests: XCTestCase {
         let subscriptionToStop = self.channel.addStringMessageListener(selector: "foo = 'bar'", responseHandler: { message in
             XCTFail("This subscription must be removed")
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         let _ = self.channel.addStringMessageListener(responseHandler: { message in
             expectation.fulfill()
             self.channel.leave()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
@@ -307,8 +283,7 @@ class SubscriptionAPITests: XCTestCase {
             let publishOptions = PublishOptions()
             publishOptions.addHeader(name: "foo", value: "bar")
             self.backendless.messaging.publish(channelName: self.CHANNEL_NAME, message: message, publishOptions: publishOptions, responseHandler: { messageStatus in
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         })

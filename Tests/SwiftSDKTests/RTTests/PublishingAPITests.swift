@@ -42,7 +42,6 @@ class PublishingAPITests: XCTestCase {
             XCTAssertNotNil(messageStatus.messageId)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -59,7 +58,6 @@ class PublishingAPITests: XCTestCase {
             XCTAssertNotNil(messageStatus.messageId)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -76,7 +74,6 @@ class PublishingAPITests: XCTestCase {
             XCTAssertNotNil(messageStatus.messageId)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -94,7 +91,6 @@ class PublishingAPITests: XCTestCase {
             XCTAssertNotNil(messageStatus.messageId)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -108,7 +104,6 @@ class PublishingAPITests: XCTestCase {
             XCTAssertNotNil(messageStatus)
             status = messageStatus
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
@@ -118,9 +113,9 @@ class PublishingAPITests: XCTestCase {
                     XCTAssert(type(of: messageStatus) == MessageStatus.self)
                     XCTAssertNotNil(messageStatus.messageId)
                     expectation.fulfill()
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in                    
+                    XCTFail("\(fault.code): \(fault.message!)")  
+                XCTFail("\(fault.code): \(fault.message!)")
                 })
             }
         })
@@ -137,7 +132,6 @@ class PublishingAPITests: XCTestCase {
             XCTAssertNotNil(messageStatus)
             status = messageStatus
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
@@ -146,9 +140,9 @@ class PublishingAPITests: XCTestCase {
                     XCTAssertNotNil(messageStatus)
                     XCTAssertEqual(messageStatus.status, "CANCELLED")
                     expectation.fulfill()
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in                    
+                    XCTFail("\(fault.code): \(fault.message!)")  
+                XCTFail("\(fault.code): \(fault.message!)")
                 })
             }
         })
@@ -163,7 +157,6 @@ class PublishingAPITests: XCTestCase {
             XCTAssertNotNil(messageStatus)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)

@@ -42,7 +42,6 @@ class FileServiceTests: XCTestCase {
             XCTAssertNotNil(backendlessFile.fileUrl)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -57,7 +56,6 @@ class FileServiceTests: XCTestCase {
             XCTAssertNotNil(backendlessFile.fileUrl)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -69,7 +67,6 @@ class FileServiceTests: XCTestCase {
             XCTAssertNotNil(renamedPath)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -81,7 +78,6 @@ class FileServiceTests: XCTestCase {
             XCTAssertNotNil(copiedPath)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -93,7 +89,6 @@ class FileServiceTests: XCTestCase {
             XCTAssertNotNil(movedPath)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -105,7 +100,6 @@ class FileServiceTests: XCTestCase {
             XCTAssert(fileInfo.count > 0)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -117,7 +111,6 @@ class FileServiceTests: XCTestCase {
             XCTAssert(count > 0)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -128,12 +121,10 @@ class FileServiceTests: XCTestCase {
         backendless.file.remove(path: directory, responseHandler: { removed in
             self.backendless.file.remove(path: self.copiedDirectory, responseHandler: { removed in
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)

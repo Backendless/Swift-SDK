@@ -47,7 +47,6 @@ class JSONTests: XCTestCase {
             XCTAssertTrue((saved["json"] as? [String : Any])?.keys.count == 0)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -62,7 +61,6 @@ class JSONTests: XCTestCase {
             XCTAssertTrue(objects.count == 1)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -77,7 +75,6 @@ class JSONTests: XCTestCase {
             XCTAssertTrue(objects.count == 1)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -92,7 +89,6 @@ class JSONTests: XCTestCase {
             XCTAssertTrue(objects.count == 1)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -109,7 +105,6 @@ class JSONTests: XCTestCase {
             XCTAssertTrue(object["time"] as! String == "12:18:29.000000")
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -127,7 +122,6 @@ class JSONTests: XCTestCase {
             XCTAssertTrue(object["allTimeMarks"] as! [String] == ["2015-07-29", "12:18:29.000000", "2015-07-29 12:18:29.000000"])
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -146,7 +140,6 @@ class JSONTests: XCTestCase {
             XCTAssertTrue((object["allSecondvaulesFromArray"] as! [Any]).last as? NSNumber == 43.28)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -163,7 +156,6 @@ class JSONTests: XCTestCase {
             XCTAssertTrue(object["jsonLetter"] as? String == "a")
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -180,7 +172,6 @@ class JSONTests: XCTestCase {
             XCTAssertTrue(object["jsonStatus"] as? Bool == true)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -224,7 +215,6 @@ class JSONTests: XCTestCase {
             
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -264,7 +254,6 @@ class JSONTests: XCTestCase {
             
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -293,7 +282,6 @@ class JSONTests: XCTestCase {
             
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -325,7 +313,6 @@ class JSONTests: XCTestCase {
             
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -356,7 +343,6 @@ class JSONTests: XCTestCase {
             
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -386,7 +372,6 @@ class JSONTests: XCTestCase {
             
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -415,7 +400,6 @@ class JSONTests: XCTestCase {
             
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -444,7 +428,6 @@ class JSONTests: XCTestCase {
             
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -473,7 +456,6 @@ class JSONTests: XCTestCase {
             
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -502,7 +484,6 @@ class JSONTests: XCTestCase {
             
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -518,7 +499,6 @@ class JSONTests: XCTestCase {
         dataStore.save(entity: ["objectId": objectId, "json": jsonValue], responseHandler: { saved in
             XCTFail("A path expression is not a path to a cell in an array")
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             expectation.fulfill()
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -555,7 +535,6 @@ class JSONTests: XCTestCase {
             
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)

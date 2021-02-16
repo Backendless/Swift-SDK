@@ -59,16 +59,14 @@ class DistinctTests: XCTestCase {
                     XCTAssertTrue(resultsArray.first!["name"] as? String == "name1")
                     XCTAssertTrue(resultsArray.last!["name"] as? String == "name2")
                     expectation.fulfill()
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in                    
+                    XCTFail("\(fault.code): \(fault.message!)")  
+                XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -93,7 +91,6 @@ class DistinctTests: XCTestCase {
             XCTAssertTrue(resultsArray.last!["name"] as? String == "name2")
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -119,7 +116,6 @@ class DistinctTests: XCTestCase {
             XCTAssertTrue(resultsArray.last!["name"] as? String == "name2")
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -144,7 +140,6 @@ class DistinctTests: XCTestCase {
             XCTAssertTrue(resultsArray.last!["name"] as? String == "name2")
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)

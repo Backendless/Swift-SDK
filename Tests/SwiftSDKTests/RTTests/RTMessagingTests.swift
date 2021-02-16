@@ -45,7 +45,6 @@ class RTMessagingTests: XCTestCase {
             expectation.fulfill()
             self.channel.leave()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -56,13 +55,11 @@ class RTMessagingTests: XCTestCase {
         let _ = self.channel.addConnectListener(responseHandler: {
             XCTFail("This subscription must be removed")
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         let _ = self.channel.addConnectListener(responseHandler: {
             XCTFail("This subscription must be removed")
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         channel.removeConnectListeners()
@@ -78,14 +75,12 @@ class RTMessagingTests: XCTestCase {
         let subscriptionToStop = self.channel.addConnectListener(responseHandler: {
             XCTFail("This subscription must be removed")
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         let _ = self.channel.addConnectListener(responseHandler: {
             expectation.fulfill()
             self.channel.leave()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         subscriptionToStop?.stop()
@@ -99,14 +94,12 @@ class RTMessagingTests: XCTestCase {
             expectation.fulfill()
             self.channel.leave()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
             let message = "Test Message"
             self.backendless.messaging.sendCommand(commandType: "TestCommand", channelName: self.CHANNEL_NAME, data: message, responseHandler: {
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         })            
@@ -118,21 +111,18 @@ class RTMessagingTests: XCTestCase {
         let _ = self.channel.addCommandListener(responseHandler: { commandObject in
             XCTFail("This subscription must be removed")
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         let _ = self.channel.addCommandListener(responseHandler: { commandObject in
             XCTFail("This subscription must be removed")
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             self.channel.removeCommandListeners()
             let message = "Test Message"
             self.backendless.messaging.sendCommand(commandType: "TestCommand", channelName: self.CHANNEL_NAME, data: message, responseHandler: {
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
             DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
@@ -148,7 +138,6 @@ class RTMessagingTests: XCTestCase {
         let subscriptionToStop = self.channel.addCommandListener(responseHandler: { commandObject in
             XCTFail("This subscription must be removed")
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         let _ = self.channel.addCommandListener(responseHandler: { commandObject in
@@ -156,15 +145,13 @@ class RTMessagingTests: XCTestCase {
             expectation.fulfill()
             self.channel.leave()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
             subscriptionToStop?.stop()
             let message = "Test Message"
             self.backendless.messaging.sendCommand(commandType: "TestCommand", channelName: self.CHANNEL_NAME, data: message, responseHandler: {
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         })

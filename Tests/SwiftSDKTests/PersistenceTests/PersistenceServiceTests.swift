@@ -54,12 +54,10 @@ class PersistenceServiceTests: XCTestCase {
                 XCTAssertNotNil(properties)
                 XCTAssert(properties.count > 0)
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -81,16 +79,14 @@ class PersistenceServiceTests: XCTestCase {
                     XCTAssertEqual((updatedObject as! TestClass).name, "Ann")
                     XCTAssertEqual((updatedObject as! TestClass).age, 50)
                     expectation.fulfill()
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in                    
+                    XCTFail("\(fault.code): \(fault.message!)")  
+                XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)

@@ -42,7 +42,6 @@ class UserServiceTests: XCTestCase {
             XCTAssert(properties.count > 0)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -58,12 +57,10 @@ class UserServiceTests: XCTestCase {
             self.backendless.userService.registerUser(user: user, responseHandler: { registredUser in
                 XCTAssertNotNil(registredUser)
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -77,12 +74,10 @@ class UserServiceTests: XCTestCase {
                 XCTAssertNotNil(self.backendless.userService.currentUser)
                 XCTAssertNotNil(self.backendless.userService.getUserToken())
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -94,7 +89,6 @@ class UserServiceTests: XCTestCase {
             XCTAssertTrue(isValidUserToken)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -106,7 +100,6 @@ class UserServiceTests: XCTestCase {
             XCTAssertNotNil(roles)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -123,7 +116,6 @@ class UserServiceTests: XCTestCase {
             XCTAssertEqual(self.backendless.userService.currentUser?.name, newName)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -135,7 +127,6 @@ class UserServiceTests: XCTestCase {
             XCTAssertNil(self.backendless.userService.currentUser)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -147,7 +138,6 @@ class UserServiceTests: XCTestCase {
             XCTAssertFalse(isValidUserToken)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -158,7 +148,6 @@ class UserServiceTests: XCTestCase {
         backendless.userService.restorePassword(identity: USER_EMAIL, responseHandler: {
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -172,7 +161,6 @@ class UserServiceTests: XCTestCase {
             XCTAssertEqual(guestUser.properties["userStatus"] as? String, "GUEST")
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)

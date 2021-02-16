@@ -32,6 +32,10 @@ class RTServiceTests: XCTestCase {
         Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
     }
     
+    override class func tearDown() {
+        Backendless.shared.rt.removeConnectionListeners()
+    }
+    
     func test01AddConnectEventListener() {
         let expectation = self.expectation(description: "PASSED: rtService.addConnectEventListener")
         RTClient.shared.removeSocket()  
@@ -40,8 +44,7 @@ class RTServiceTests: XCTestCase {
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
             let eventHandler = self.backendless.data.ofTable("TestClass").rt
-            let _ = eventHandler?.addCreateListener(responseHandler: { createdObject in }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            let _ = eventHandler?.addCreateListener(responseHandler: { createdObject in }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         })
@@ -56,8 +59,7 @@ class RTServiceTests: XCTestCase {
         subscription.stop()
         DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
             let eventHandler = self.backendless.data.ofTable("TestClass").rt
-            let _ = eventHandler?.addCreateListener(responseHandler: { createdObject in }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            let _ = eventHandler?.addCreateListener(responseHandler: { createdObject in }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
             DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {

@@ -48,12 +48,10 @@ class BLPointTests: XCTestCase {
                 let point = (savedObject as! GeometryTestClass).point
                 XCTAssertNotNil(point)
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         }) 
         waitForExpectations(timeout: timeout, handler: nil)
@@ -69,7 +67,6 @@ class BLPointTests: XCTestCase {
             XCTAssertNotNil(point)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -85,7 +82,6 @@ class BLPointTests: XCTestCase {
             XCTAssertNotNil(point)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -101,7 +97,6 @@ class BLPointTests: XCTestCase {
             XCTAssertNotNil(point)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -117,7 +112,6 @@ class BLPointTests: XCTestCase {
             XCTAssertNotNil(point)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -133,7 +127,6 @@ class BLPointTests: XCTestCase {
             XCTAssertNotNil(point)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -149,7 +142,6 @@ class BLPointTests: XCTestCase {
             XCTAssertNotNil(point)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -165,7 +157,6 @@ class BLPointTests: XCTestCase {
             XCTAssertNotNil(point)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -181,7 +172,6 @@ class BLPointTests: XCTestCase {
             XCTAssertNotNil(point)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -205,7 +195,6 @@ class BLPointTests: XCTestCase {
             XCTAssertNotNil(point)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -311,7 +300,6 @@ class BLPointTests: XCTestCase {
             XCTAssert(createdIds.count == 2)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -327,7 +315,6 @@ class BLPointTests: XCTestCase {
             XCTAssert(createdIds.count == 2)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -342,7 +329,6 @@ class BLPointTests: XCTestCase {
             XCTAssert(createdIds.count == 2)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -366,7 +352,6 @@ class BLPointTests: XCTestCase {
             XCTAssert(createdIds.count == 2)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -389,7 +374,6 @@ class BLPointTests: XCTestCase {
             XCTAssert(createdIds.count == 2)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -411,12 +395,10 @@ class BLPointTests: XCTestCase {
                 let point = (updatedObject as! GeometryTestClass).point
                 XCTAssertNotNil(point)
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -436,12 +418,10 @@ class BLPointTests: XCTestCase {
                 let point = (updatedObject as! GeometryTestClass).point
                 XCTAssertNotNil(point)
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -459,12 +439,10 @@ class BLPointTests: XCTestCase {
             self.dataStore.updateBulk(whereClause: "name='point'", changes: ["point": "POINT(54.5465464 34.565656)"], responseHandler: { updated in
                 XCTAssert(updated >= 2)
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -481,12 +459,10 @@ class BLPointTests: XCTestCase {
         dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
             self.dataStore.updateBulk(whereClause: "name='point'", changes: ["point": "POINT(54.5465464 null)"], responseHandler: { updated in
                 XCTFail("Longitude or latitude can't be null")
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in    
                 expectation.fulfill()
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -503,11 +479,9 @@ class BLPointTests: XCTestCase {
         dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
             self.dataStore.updateBulk(whereClause: "name='point'", changes: ["point": "POINT(154.5465464 134.565656)"], responseHandler: { updated in
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in    
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -518,7 +492,6 @@ class BLPointTests: XCTestCase {
         dataStore.updateBulk(whereClause: "GetLon(point)>1", changes: ["point": "POINT(154.5465464 134.565656)"], responseHandler: { updated in
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -529,7 +502,6 @@ class BLPointTests: XCTestCase {
         dataStore.updateBulk(whereClause: "GetLat(point)<80", changes: ["point": "POINT(154.5465464 134.565656)"], responseHandler: { updated in
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -540,7 +512,6 @@ class BLPointTests: XCTestCase {
         dataStore.updateBulk(whereClause: "GetLon(point)>1 AND GetLat(point)<50", changes: ["point": "POINT(154.5465464 134.565656)"], responseHandler: { updated in
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -559,12 +530,10 @@ class BLPointTests: XCTestCase {
                 XCTAssertNotNil(updatedObject)
                 XCTAssertNil((updatedObject as? GeometryTestClass)?.point)
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -575,7 +544,6 @@ class BLPointTests: XCTestCase {
         self.dataStore.removeBulk(whereClause: "name='point'", responseHandler: { removed in
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -588,7 +556,6 @@ class BLPointTests: XCTestCase {
         self.dataStore.removeBulk(whereClause: "GetLon(point)>1", responseHandler: { removed in
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -599,7 +566,6 @@ class BLPointTests: XCTestCase {
         self.dataStore.removeBulk(whereClause: "GetLat(point)<80", responseHandler: { removed in
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -610,7 +576,6 @@ class BLPointTests: XCTestCase {
         self.dataStore.removeBulk(whereClause: "GetLon(point)>1 AND GetLat(point)<50", responseHandler: { removed in
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -635,12 +600,10 @@ class BLPointTests: XCTestCase {
                     XCTAssertTrue(point?.latitude == 90)
                 }
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -658,7 +621,6 @@ class BLPointTests: XCTestCase {
             }
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -676,7 +638,6 @@ class BLPointTests: XCTestCase {
             }
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -694,7 +655,6 @@ class BLPointTests: XCTestCase {
             }
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -712,7 +672,6 @@ class BLPointTests: XCTestCase {
             }
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -730,7 +689,6 @@ class BLPointTests: XCTestCase {
             }
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -750,13 +708,12 @@ class BLPointTests: XCTestCase {
                     XCTAssertNotNil(point!.asWkt())
                     XCTAssertNotNil(point!.asGeoJson())
                     expectation.fulfill()
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in                    
+                    XCTFail("\(fault.code): \(fault.message!)")  
+                XCTFail("\(fault.code): \(fault.message!)")
                 })
             }
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
