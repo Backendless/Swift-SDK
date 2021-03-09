@@ -304,8 +304,6 @@ class PersistenceServiceUtils {
                 restMethod += "&relationsDepth=\(relationsDepth!)"
             }
         }
-        
-        // relationsPageSize = nil
         else {
             if related != nil {
                 restMethod += "?loadRelations=\(DataTypesUtils.shared.arrayToString(array: related!))"
