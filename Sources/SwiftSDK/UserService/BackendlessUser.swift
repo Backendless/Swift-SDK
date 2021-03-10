@@ -105,11 +105,14 @@ import Foundation
                 }                
             }
             self.userProperties = JSON(_properties!)
-            if let currentUser = Backendless.shared.userService.currentUser,
+            if let currentUser = Backendless.shared.userService.currentUserForSession,
                 self.objectId == currentUser.objectId {
                 currentUser.userProperties = self.userProperties
-                if Backendless.shared.userService.stayLoggedIn {
-                    UserDefaultsHelper.shared.saveCurrentUser(currentUser: currentUser)
+                if Backendless.shared.userService.stayLoggedIn,
+                   let userToken = currentUser.userToken,
+                   let userId = currentUser.objectId {
+                    UserDefaultsHelper.shared.saveUserToken(userToken)
+                    UserDefaultsHelper.shared.saveUserId(userId)
                 }
             }
         }
@@ -153,7 +156,9 @@ import Foundation
     
     func setUserToken(value: String) {
         self.userToken = value
-        UserDefaultsHelper.shared.savePersistentUserToken(token: value)
+        if Backendless.shared.userService.stayLoggedIn {
+            UserDefaultsHelper.shared.saveUserToken(value)
+        }        
     }
     
     @available(*, deprecated, message: "Please use the userProperties property directly")

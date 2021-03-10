@@ -134,7 +134,7 @@ import Foundation
     
     public func setHeader(key: String, value: String) {
         if key == "user-token" {
-            UserDefaultsHelper.shared.savePersistentUserToken(token: value)
+            UserDefaultsHelper.shared.saveUserToken(value)
             Backendless.shared.userService.setUserToken(value: value)
         }
         headers[key] = value

@@ -38,8 +38,7 @@ class CacheTests: XCTestCase {
         backendless.cache.remove(key: key, responseHandler: {
             self.backendless.cache.put(key: self.key, object: ["foo": "bar"], responseHandler: {
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in })
@@ -53,7 +52,6 @@ class CacheTests: XCTestCase {
             XCTAssert(cacheObject is [String : Any])
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -72,11 +70,9 @@ class CacheTests: XCTestCase {
                     XCTAssertTrue((cacheObject as! TestClass).age == 40)
                     expectation.fulfill()
                 }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
                     XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in })
@@ -91,11 +87,10 @@ class CacheTests: XCTestCase {
                     XCTAssertTrue(contains)
                     expectation.fulfill()
                 }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
+                    XCTFail("\(fault.code): \(fault.message!)")  
+                XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in })
@@ -106,15 +101,13 @@ class CacheTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: cacheService.expireIn")
         backendless.cache.expireIn(key: key, seconds: 1, responseHandler: {
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
             self.backendless.cache.contains(key: self.key, responseHandler: { contains in
                 XCTAssertFalse(contains)
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         })
@@ -126,7 +119,6 @@ class CacheTests: XCTestCase {
         backendless.cache.remove(key: key, responseHandler: {
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
             
         })

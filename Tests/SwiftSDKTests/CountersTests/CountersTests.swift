@@ -39,8 +39,7 @@ class CountersTests: XCTestCase {
             self.backendless.counters.getAndIncrement(counterName: self.counterName, responseHandler: { counterValue in
                 XCTAssertEqual(counterValue, 0)
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in })
@@ -53,7 +52,6 @@ class CountersTests: XCTestCase {
             XCTAssertEqual(counterValue, 2)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -65,7 +63,6 @@ class CountersTests: XCTestCase {
             XCTAssertEqual(counterValue, 2)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -77,7 +74,6 @@ class CountersTests: XCTestCase {
             XCTAssertEqual(counterValue, 0)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -89,7 +85,6 @@ class CountersTests: XCTestCase {
             XCTAssertEqual(counterValue, 0)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -101,7 +96,6 @@ class CountersTests: XCTestCase {
             XCTAssertEqual(counterValue, 10)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -113,7 +107,6 @@ class CountersTests: XCTestCase {
             XCTAssertEqual(counterValue, 10)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -132,8 +125,7 @@ class CountersTests: XCTestCase {
         backendless.counters.reset(counterName: counterName, responseHandler: {
             self.backendless.counters.compareAndSet(counterName: self.counterName, expected: 0, updated: 20, responseHandler: { compared in
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in })

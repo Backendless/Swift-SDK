@@ -1,5 +1,10 @@
 # RELEASE HISTORY
 
+### 6.3.0 March 10, 2021
+* fixed RT issue when socket didn't reconnect automatically after the ConnectErrorEventListener is triggered
+* fixed RT issue when channel didn't reconnect after login/logout and adding/removing listeners very quickly
+* the `currentUser` is fetched from remote when session resumed
+
 ### 6.2.10 February 11, 2021
 * fixed issue with new version of Socket.IO
 * tests refactoring in progress

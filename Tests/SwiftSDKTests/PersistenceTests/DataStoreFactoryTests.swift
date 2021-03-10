@@ -59,16 +59,14 @@ class DataStoreFactoryTests: XCTestCase {
                     Mappings.shared.removeTableToClassMappings()
                     Mappings.shared.removeColumnToPropertyMappings()
                     expectation.fulfill()
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in                    
+                    XCTFail("\(fault.code): \(fault.message!)")  
+                XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -86,16 +84,14 @@ class DataStoreFactoryTests: XCTestCase {
                     XCTAssertEqual((savedObject as! TestClass).name, "Bob")
                     XCTAssertEqual((savedObject as! TestClass).age, 30)
                     expectation.fulfill()
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in                    
+                    XCTFail("\(fault.code): \(fault.message!)")  
+                XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -115,7 +111,6 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssert(savedObjects.count == 2)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -136,12 +131,10 @@ class DataStoreFactoryTests: XCTestCase {
                 XCTAssertEqual((updatedObject as! TestClass).name, "Bob")
                 XCTAssertEqual((updatedObject as! TestClass).age, 55)
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -165,16 +158,14 @@ class DataStoreFactoryTests: XCTestCase {
                 self.dataStore.updateBulk(whereClause: "age>100", changes: ["name": "New Name"], responseHandler: { updatedObjects in
                     XCTAssertEqual(updatedObjects, 2)
                     expectation.fulfill()
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in                    
+                    XCTFail("\(fault.code): \(fault.message!)")  
+                XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -191,12 +182,10 @@ class DataStoreFactoryTests: XCTestCase {
                 XCTAssertNotNil(Date(timeIntervalSince1970: TimeInterval(removedTimestamp)))
                 XCTAssertNil(StoredObjects.shared.getObjectForId(objectId: self.dataStore.getObjectId(entity: savedObject)!))
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -212,12 +201,10 @@ class DataStoreFactoryTests: XCTestCase {
                 XCTAssertNotNil(Date(timeIntervalSince1970: TimeInterval(removedTimestamp)))
                 XCTAssertNil(StoredObjects.shared.getObjectForId(objectId: self.dataStore.getObjectId(entity: savedObject)!))
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -242,16 +229,14 @@ class DataStoreFactoryTests: XCTestCase {
                 self.dataStore.removeBulk(whereClause: "age>100", responseHandler: { removedObjects in
                     XCTAssertEqual(removedObjects, 2)
                     expectation.fulfill()
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in                    
+                    XCTFail("\(fault.code): \(fault.message!)")  
+                XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -274,16 +259,14 @@ class DataStoreFactoryTests: XCTestCase {
                 self.dataStore.getObjectCount(responseHandler: { count in
                     XCTAssertEqual(count, 3)
                     expectation.fulfill()
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in                    
+                    XCTFail("\(fault.code): \(fault.message!)")  
+                XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -308,16 +291,14 @@ class DataStoreFactoryTests: XCTestCase {
                 self.dataStore.getObjectCount(queryBuilder: queryBuilder, responseHandler: { count in
                     XCTAssertEqual(count, 2)
                     expectation.fulfill()
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in                    
+                    XCTFail("\(fault.code): \(fault.message!)")  
+                XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -340,16 +321,14 @@ class DataStoreFactoryTests: XCTestCase {
                 self.dataStore.find(responseHandler: { foundObjects in
                     XCTAssertEqual(foundObjects.count, 3)
                     expectation.fulfill()
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in                    
+                    XCTFail("\(fault.code): \(fault.message!)")  
+                XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -381,16 +360,14 @@ class DataStoreFactoryTests: XCTestCase {
                         XCTAssertEqual((foundObject as! TestClass).age, 0)
                     }
                     expectation.fulfill()
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in                    
+                    XCTFail("\(fault.code): \(fault.message!)")  
+                XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -405,12 +382,10 @@ class DataStoreFactoryTests: XCTestCase {
             self.dataStore.findFirst(responseHandler: { first in
                 XCTAssert(type(of: first) == TestClass.self)
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -425,12 +400,10 @@ class DataStoreFactoryTests: XCTestCase {
             self.dataStore.findLast(responseHandler: { last in
                 XCTAssert(type(of: last) == TestClass.self)
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -447,12 +420,10 @@ class DataStoreFactoryTests: XCTestCase {
             self.dataStore.findById(objectId: (savedObject as! TestClass).objectId!, responseHandler: { foundObject in
                 XCTAssert(type(of: foundObject) == TestClass.self)
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -472,12 +443,10 @@ class DataStoreFactoryTests: XCTestCase {
                 XCTAssert(type(of: foundObject) == TestClass.self)
                 XCTAssertEqual((foundObject as! TestClass).age, 0)
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -493,7 +462,6 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssertEqual((first as! TestClass).age, 0)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -509,7 +477,6 @@ class DataStoreFactoryTests: XCTestCase {
             XCTAssertEqual((last as! TestClass).age, 0)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -532,16 +499,14 @@ class DataStoreFactoryTests: XCTestCase {
                 self.dataStore.setRelation(columnName: "child:ChildTestClass:1", parentObjectId: (savedParentObject as! TestClass).objectId!, childrenObjectIds: [(savedChildObject as! ChildTestClass).objectId!], responseHandler: { relations in
                     XCTAssertEqual(relations, 1)
                     expectation.fulfill()
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in                    
+                    XCTFail("\(fault.code): \(fault.message!)")  
+                XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -564,16 +529,14 @@ class DataStoreFactoryTests: XCTestCase {
                 self.dataStore.setRelation(columnName: "child:ChildTestClass:1", parentObjectId: (savedParentObject as! TestClass).objectId!, whereClause: "objectId = '\((savedChildObject as! ChildTestClass).objectId!)'", responseHandler: { relations in
                     XCTAssertEqual(relations, 1)
                     expectation.fulfill()
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in                    
+                    XCTFail("\(fault.code): \(fault.message!)")  
+                XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -596,16 +559,14 @@ class DataStoreFactoryTests: XCTestCase {
                 self.dataStore.addRelation(columnName: "child:ChildTestClass:1", parentObjectId: (savedParentObject as! TestClass).objectId!, childrenObjectIds: [(savedChildObject as! ChildTestClass).objectId!], responseHandler: { relations in
                     XCTAssertEqual(relations, 1)
                     expectation.fulfill()
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in                    
+                    XCTFail("\(fault.code): \(fault.message!)")  
+                XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -628,16 +589,14 @@ class DataStoreFactoryTests: XCTestCase {
                 self.dataStore.addRelation(columnName: "child:ChildTestClass:1", parentObjectId: (savedParentObject as! TestClass).objectId!, whereClause: "objectId = '\((savedChildObject as! ChildTestClass).objectId!)'", responseHandler: { relations in
                     XCTAssertEqual(relations, 1)
                     expectation.fulfill()
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in                    
+                    XCTFail("\(fault.code): \(fault.message!)")  
+                XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -662,20 +621,17 @@ class DataStoreFactoryTests: XCTestCase {
                      self.dataStore.deleteRelation(columnName: "child", parentObjectId: (savedParentObject as! TestClass).objectId!, childrenObjectIds: [(savedChildObject as! ChildTestClass).objectId!], responseHandler: { removed in
                          XCTAssertEqual(removed, 1)
                          expectation.fulfill()
-                     }, errorHandler: { fault in
-                         XCTAssertNotNil(fault)
+                     }, errorHandler: { fault in             
                          XCTFail("\(fault.code): \(fault.message!)")
                      })
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in                    
+                    XCTFail("\(fault.code): \(fault.message!)")  
+                XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -701,20 +657,17 @@ class DataStoreFactoryTests: XCTestCase {
                         XCTAssertNotNil(removed)
                         XCTAssert(Int(exactly: removed) == 1)
                         expectation.fulfill()
-                    }, errorHandler: { fault in
-                        XCTAssertNotNil(fault)
+                    }, errorHandler: { fault in            
                         XCTFail("\(fault.code): \(fault.message!)")
                     })
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in                    
+                    XCTFail("\(fault.code): \(fault.message!)")  
+                XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -744,20 +697,17 @@ class DataStoreFactoryTests: XCTestCase {
                     self.dataStore.loadRelations(objectId: (savedParentObject as! TestClass).objectId!, queryBuilder: queryBuilder, responseHandler: { foundRelations in
                         XCTAssertEqual(foundRelations.count, 1)
                         expectation.fulfill()
-                    }, errorHandler: { fault in
-                        XCTAssertNotNil(fault)
+                    }, errorHandler: { fault in            
                         XCTFail("\(fault.code): \(fault.message!)")
                     })
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in                    
+                    XCTFail("\(fault.code): \(fault.message!)")  
+                XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)

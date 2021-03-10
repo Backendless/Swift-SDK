@@ -24,17 +24,16 @@ import XCTest
 
 class PublishingAPITests: XCTestCase {
     
-    /*private let backendless = Backendless.shared
+    private let backendless = Backendless.shared
     private let timeout: Double = 10.0
     private let CHANNEL_NAME = "TestsChannel"
-    
-    // call before all tests
+
     override class func setUp() {
         Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
         Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
     }
     
-    func test_01_basicPublish() {
+    func test01BasicPublish() {
         let expectation: XCTestExpectation = self.expectation(description: "PASSED: messaging.basicPublish")
         let message = "Test Message"
         backendless.messaging.publish(channelName: self.CHANNEL_NAME, message: message, responseHandler: { messageStatus in
@@ -43,13 +42,12 @@ class PublishingAPITests: XCTestCase {
             XCTAssertNotNil(messageStatus.messageId)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_02_publishWithHeaders() {
+    func test02PublishWithHeaders() {
         let expectation: XCTestExpectation = self.expectation(description: "PASSED: messaging.publishWithHeaders")
         let message = "Test Message"
         let publishOptions = PublishOptions()
@@ -60,13 +58,12 @@ class PublishingAPITests: XCTestCase {
             XCTAssertNotNil(messageStatus.messageId)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_03_delayedDelivery() {
+    func test03DelayedDelivery() {
         let expectation: XCTestExpectation = self.expectation(description: "PASSED: messaging.delayedDelivery")
         let message = "Test Message"
         let deliveryOptions = DeliveryOptions()
@@ -77,13 +74,12 @@ class PublishingAPITests: XCTestCase {
             XCTAssertNotNil(messageStatus.messageId)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_04_repeatedPublish() {
+    func test04RepeatedPublish() {
         let expectation: XCTestExpectation = self.expectation(description: "PASSED: messaging.repeatedPublish")
         let message = "Test Message"
         let deliveryOptions = DeliveryOptions()
@@ -95,13 +91,12 @@ class PublishingAPITests: XCTestCase {
             XCTAssertNotNil(messageStatus.messageId)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_05_getMessageStatus() {
+    func test05GetMessageStatus() {
         let expectation: XCTestExpectation = self.expectation(description: "PASSED: messaging.getMessageStatus")
         var status: MessageStatus?
         let message = "Test Message"
@@ -109,7 +104,6 @@ class PublishingAPITests: XCTestCase {
             XCTAssertNotNil(messageStatus)
             status = messageStatus
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
@@ -119,16 +113,16 @@ class PublishingAPITests: XCTestCase {
                     XCTAssert(type(of: messageStatus) == MessageStatus.self)
                     XCTAssertNotNil(messageStatus.messageId)
                     expectation.fulfill()
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in                    
+                    XCTFail("\(fault.code): \(fault.message!)")  
+                XCTFail("\(fault.code): \(fault.message!)")
                 })
             }
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_06_cancelScheduledMessage() {
+    func test06CancelScheduledMessage() {
         let expectation: XCTestExpectation = self.expectation(description: "PASSED: messaging.cancelScheduledMessage")
         var status: MessageStatus?
         let message = "Test Message"
@@ -138,7 +132,6 @@ class PublishingAPITests: XCTestCase {
             XCTAssertNotNil(messageStatus)
             status = messageStatus
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
@@ -147,16 +140,16 @@ class PublishingAPITests: XCTestCase {
                     XCTAssertNotNil(messageStatus)
                     XCTAssertEqual(messageStatus.status, "CANCELLED")
                     expectation.fulfill()
-                }, errorHandler: { fault in
-                    XCTAssertNotNil(fault)
-                    XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in                    
+                    XCTFail("\(fault.code): \(fault.message!)")  
+                XCTFail("\(fault.code): \(fault.message!)")
                 })
             }
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_07_sendEmail() {
+    func test07SendEmail() {
         let expectation: XCTestExpectation = self.expectation(description: "PASSED: messaging.sendEmail")
         let bodyparts = EmailBodyParts()
         bodyparts.textMessage = "Test message"
@@ -164,9 +157,8 @@ class PublishingAPITests: XCTestCase {
             XCTAssertNotNil(messageStatus)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
-    }*/
+    }
 }

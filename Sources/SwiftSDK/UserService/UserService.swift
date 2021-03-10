@@ -32,13 +32,13 @@ import Foundation
         }
     }
     
-    private var _currentUser: BackendlessUser?
+    var currentUserForSession: BackendlessUser?
     public var currentUser: BackendlessUser? {
         get {
-            if let user = UserDefaultsHelper.shared.getCurrentUser() {
-                return user
+            if currentUserForSession != nil {
+                return currentUserForSession
             }
-            return _currentUser
+            return getCurrentUser()
         }
         set {
             if newValue != nil {
@@ -51,11 +51,11 @@ import Foundation
     }
     
     public func setUserToken(value: String) {
-        _currentUser?.setUserToken(value: value)
+        currentUserForSession?.setUserToken(value: value)
     }
     
     public func getUserToken() -> String? {
-        return _currentUser?.userToken
+        return currentUserForSession?.userToken
     }
     
     public func describeUserClass(responseHandler: (([UserProperty]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
@@ -340,14 +340,6 @@ import Foundation
         }
     }
     
-    @available(*, deprecated, message: "Please use the currentUser property directly")
-    public func getCurrentUser() -> BackendlessUser? {
-        if let user = UserDefaultsHelper.shared.getCurrentUser() {
-            return user
-        }
-        return self._currentUser
-    }
-    
     public func logout(responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         BackendlessRequestManager(restMethod: "users/logout", httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             let result = ProcessResponse.shared.adapt(response: response, to: NoReply.self)
@@ -417,29 +409,51 @@ import Foundation
     }
     
     func setPersistentUser(currUser: BackendlessUser, reconnectSocket: Bool) {
-        self._currentUser = currUser
-        if let userToken = self._currentUser?.userToken {
+        self.currentUserForSession = currUser
+        if let userToken = self.currentUserForSession?.userToken {
             setUserToken(value: userToken)
         }
-        if self.stayLoggedIn {
-            UserDefaultsHelper.shared.saveCurrentUser(currentUser: self._currentUser!)
+        if self.stayLoggedIn,
+           let userToken = currentUserForSession?.userToken,
+           let userId = currentUserForSession?.objectId {
+            UserDefaultsHelper.shared.saveUserToken(userToken)
+            UserDefaultsHelper.shared.saveUserId(userId)
         }
         if RTClient.shared.socketOnceCreated, reconnectSocket {
             RTClient.shared.reconnectSocketAfterLoginAndLogout()
         }
     }
     
+    private func getCurrentUser() -> BackendlessUser? {
+        var user: BackendlessUser?
+        let semaphore = DispatchSemaphore(value: 0)
+        DispatchQueue.global().async {
+            if let userId = UserDefaultsHelper.shared.getUserId() {
+                Backendless.shared.data.of(BackendlessUser.self).findById(objectId: userId, responseHandler: { curr in
+                    self.currentUserForSession = curr as? BackendlessUser
+                    user = curr as? BackendlessUser
+                    semaphore.signal()
+                }, errorHandler: { fault in
+                    user = nil
+                    semaphore.signal()
+                })
+            }
+            else {
+                semaphore.signal()
+            }
+        }
+        semaphore.wait()
+        return user
+    }
+    
     private func resetPersistentUser() {
-        self._currentUser = nil
+        self.currentUserForSession = nil
         UserDefaultsHelper.shared.removeUserToken()
-        UserDefaultsHelper.shared.removeCurrentUser()
+        UserDefaultsHelper.shared.removeUserId()
     }
     
     private func getPersistentUserToken() -> String? {
-        if let userToken = UserDefaultsHelper.shared.getPersistentUserToken() {
-            return userToken
-        }
-        return nil
+        return UserDefaultsHelper.shared.getUserToken()
     }
     
     private func setStayLoggedIn(stayLoggedIn: Bool) {

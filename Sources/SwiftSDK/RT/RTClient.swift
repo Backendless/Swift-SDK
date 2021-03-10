@@ -34,7 +34,7 @@ class RTClient {
     private var subscriptions: [String : RTSubscription]
     private var eventSubscriptions: [String : [RTSubscription]]
     private var methods: [String : RTMethodRequest]
-    private var socketCreated = false
+    var socketCreated = false
     private var socketConnected = false
     private var needResubscribe = false
     private var onConnectionHandlersReady = false
@@ -63,8 +63,8 @@ class RTClient {
         BackendlessRequestManager(restMethod: "rt/lookup", httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if !self.socketCreated {
                 if let responseData = response.data,
-                    let urlString = String(data: responseData, encoding: .utf8)?.replacingOccurrences(of: "\"", with: ""),
-                    let url = URL(string: urlString) {
+                   let urlString = String(data: responseData, encoding: .utf8)?.replacingOccurrences(of: "\"", with: ""),
+                   let url = URL(string: urlString) {
                     let path = "/" + Backendless.shared.getApplictionId()
                     
                     var clientId = ""
@@ -75,7 +75,7 @@ class RTClient {
                     #endif
                     
                     var connectParams = ["apiKey": Backendless.shared.getApiKey(), "clientId": clientId]
-                    if let userToken = Backendless.shared.userService.currentUser?.userToken {
+                    if let userToken = UserDefaultsHelper.shared.getUserToken() {
                         connectParams["userToken"] = userToken
                     }                    
                     self.socketManager = SocketManager(socketURL: url, config: ["path": path, "connectParams": connectParams])
@@ -83,6 +83,10 @@ class RTClient {
                     self.socket = self.socketManager?.socket(forNamespace: path)
                     
                     let _ = Backendless.shared.rt.addDisсonnectEventListener(responseHandler: { _ in
+                        self.tryToReconnectSocket()
+                    })
+                    
+                    let _ = Backendless.shared.rt.addConnectErrorEventListener(responseHandler: { _ in
                         self.tryToReconnectSocket()
                     })
                     
@@ -116,18 +120,13 @@ class RTClient {
     }
     
     func subscribe(data: [String : Any], subscription: RTSubscription) {
-        DispatchQueue.global(qos: .default).async {
-            self._lock.lock()
-            if self.socketConnected {
-                self.socket?.emit("SUB_ON", with: [data])
-                self._lock.unlock()
-            }
-            else {
-                self.connectSocket(connected: {
-                    self.socket?.emit("SUB_ON", with: [data])
-                    self._lock.unlock()
-                })
-            }
+        if self.socketConnected {
+            self.socket?.emit("SUB_ON", data)
+        }
+        else {
+            self.connectSocket(connected: {
+                self.socket?.emit("SUB_ON", data)
+            })
         }
         if !self.needResubscribe {
             self.subscriptions[subscription.subscriptionId!] = subscription
@@ -136,15 +135,15 @@ class RTClient {
     
     func unsubscribe(subscriptionId: String) {
         if self.subscriptions.keys.contains(subscriptionId) {
-            self.socket?.emit("SUB_OFF", with: [["id": subscriptionId]])
-            subscriptions.removeValue(forKey: subscriptionId)
+            self.socket?.emit("SUB_OFF", ["id": subscriptionId])
+            self.subscriptions.removeValue(forKey: subscriptionId)
         }
         else {
-            for type in eventSubscriptions.keys {
-                if var subscriptions = eventSubscriptions[type],
-                    let index = subscriptions.firstIndex(where: { $0.subscriptionId == subscriptionId }) {
+            for type in self.eventSubscriptions.keys {
+                if var subscriptions = self.eventSubscriptions[type],
+                   let index = subscriptions.firstIndex(where: { $0.subscriptionId == subscriptionId }) {
                     subscriptions.remove(at: index)
-                    eventSubscriptions[type] = subscriptions
+                    self.eventSubscriptions[type] = subscriptions
                 }
             }
         }
@@ -153,13 +152,13 @@ class RTClient {
         }
     }
     
-    func sendCommand(data: Any, method: RTMethodRequest?) {
+    func sendCommand(data: SocketData, method: RTMethodRequest?) {
         if self.socketConnected {
-            self.socket?.emit("MET_REQ", with: [data])
+            self.socket?.emit("MET_REQ", data)
         }
         else {
             self.connectSocket(connected: {
-                self.socket?.emit("MET_REQ", with: [data])
+                self.socket?.emit("MET_REQ", data)
             })
         }
         if let method = method {
@@ -179,8 +178,8 @@ class RTClient {
                 if self.needResubscribe {
                     for subscriptionId in self.subscriptions.keys {
                         if let subscription = self.subscriptions[subscriptionId],
-                            let type = subscription.type,
-                            let options = subscription.options {                            
+                           let type = subscription.type,
+                           let options = subscription.options {
                             let data = ["id": subscriptionId, "name": type, "options": options] as [String : Any]
                             self.subscribe(data: data, subscription: subscription)
                         }
@@ -276,8 +275,8 @@ class RTClient {
             self.socket?.on("SUB_RES", callback: { data, ack in
                 self.onResultReady = true                
                 if let resultData = data.first as? [String : Any],
-                    let subscriptionId = resultData["id"] as? String,
-                    let subscription = self.subscriptions[subscriptionId] {
+                   let subscriptionId = resultData["id"] as? String,
+                   let subscription = self.subscriptions[subscriptionId] {
                     
                     if let result = resultData["data"] {                        
                         subscription.ready = true
@@ -295,8 +294,8 @@ class RTClient {
                         }
                     }
                     else if let error = resultData["error"] as? [String : Any],
-                        let faultMessage = error["message"] as? String,
-                        let faultCode = error["code"] as? NSNumber {
+                            let faultMessage = error["message"] as? String,
+                            let faultCode = error["code"] as? NSNumber {
                         let fault = Fault(message: faultMessage, faultCode: faultCode.intValue)
                         if subscription.onError != nil {
                             subscription.onError!(fault)
@@ -316,12 +315,12 @@ class RTClient {
             self.onMethodResultReady = true
             self.socket?.on("MET_RES", callback: { data, ack in
                 if let resultData = data.first as? [String : Any],
-                    let methodId = resultData["id"] as? String,
-                    let method = self.methods[methodId] {
+                   let methodId = resultData["id"] as? String,
+                   let method = self.methods[methodId] {
                     
                     if let error = resultData["error"] as? [String : Any],
-                        let faultMessage = error["message"] as? String,
-                        let faultCode = error["code"] as? String {
+                       let faultMessage = error["message"] as? String,
+                       let faultCode = error["code"] as? String {
                         let fault = Fault(message: faultMessage, faultCode: Int(faultCode)!)
                         if method.onError != nil {
                             method.onError!(fault)

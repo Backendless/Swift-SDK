@@ -24,57 +24,55 @@ import XCTest
 
 class DistinctTests: XCTestCase {
     
-    /*private let backendless = Backendless.shared
+    private let backendless = Backendless.shared
     private let timeout: Double = 10.0
     
     private var dataStore: MapDrivenDataStore!
 
-    // call before all tests
     override class func setUp() {
         Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
         Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
-        
-        let semaphore = DispatchSemaphore(value: 0)
-        DispatchQueue.global().async {
-            Backendless.shared.data.ofTable("Person").removeBulk(whereClause: nil, responseHandler: { removed in
-                semaphore.signal()
-            }, errorHandler: { fault in })
-        }
-        semaphore.wait()
         return
     }
-    
-    // call before each test
+
     override func setUp() {
         dataStore = backendless.data.ofTable("Person")
     }
     
-    func test_DT01() {
+    func testDT01() {
         let expectation = self.expectation(description: "PASSED: DT1")
-        fillTable()
-        let queryBuilder = DataQueryBuilder()
-        queryBuilder.distinct = true
-        queryBuilder.addProperty(property: "name")
-        dataStore.find(queryBuilder: queryBuilder, responseHandler: { foundObjects in
-            var resultsArray = [[String : Any]]()
-            for object in foundObjects {
-                if let _ = object["name"] as? String {
-                    resultsArray.append(object)
-                }
-            }
-            resultsArray = resultsArray.sorted { ($0["name"] as! String) < ($1["name"] as! String) }
-            XCTAssertTrue(resultsArray.count == 3)
-            XCTAssertTrue(resultsArray.first!["name"] as? String == "name1")
-            XCTAssertTrue(resultsArray.last!["name"] as? String == "name2")
-            expectation.fulfill()
+        Backendless.shared.data.ofTable("Person").removeBulk(whereClause: nil, responseHandler: { removed in
+            let people = [["name": "name1"], ["name": "name2"], ["name": "name2"]]
+            self.dataStore.createBulk(entities: people, responseHandler: { createdIds in
+                let queryBuilder = DataQueryBuilder()
+                queryBuilder.distinct = true
+                queryBuilder.addProperty(property: "name")
+                self.dataStore.find(queryBuilder: queryBuilder, responseHandler: { foundObjects in
+                    var resultsArray = [[String : Any]]()
+                    for object in foundObjects {
+                        if let _ = object["name"] as? String {
+                            resultsArray.append(object)
+                        }
+                    }
+                    resultsArray = resultsArray.sorted { ($0["name"] as! String) < ($1["name"] as! String) }
+                    XCTAssertTrue(resultsArray.count == 2)
+                    XCTAssertTrue(resultsArray.first!["name"] as? String == "name1")
+                    XCTAssertTrue(resultsArray.last!["name"] as? String == "name2")
+                    expectation.fulfill()
+                }, errorHandler: { fault in                    
+                    XCTFail("\(fault.code): \(fault.message!)")  
+                XCTFail("\(fault.code): \(fault.message!)")
+                })
+            }, errorHandler: { fault in                
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_DT02() {
+    func testDT02() {
         let expectation = self.expectation(description: "PASSED: DT2")
         let queryBuilder = DataQueryBuilder()
         queryBuilder.distinct = false
@@ -93,13 +91,12 @@ class DistinctTests: XCTestCase {
             XCTAssertTrue(resultsArray.last!["name"] as? String == "name2")
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_DT03() {
+    func testDT03() {
         let expectation = self.expectation(description: "PASSED: DT3")
         let queryBuilder = DataQueryBuilder()
         queryBuilder.distinct = true
@@ -119,13 +116,12 @@ class DistinctTests: XCTestCase {
             XCTAssertTrue(resultsArray.last!["name"] as? String == "name2")
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_DT04() {
+    func testDT04() {
         let expectation = self.expectation(description: "PASSED: DT4")
         let queryBuilder = DataQueryBuilder()
         queryBuilder.distinct = true
@@ -139,30 +135,13 @@ class DistinctTests: XCTestCase {
                 }
             }
             resultsArray = resultsArray.sorted { ($0["name"] as! String) < ($1["name"] as! String) }
-            XCTAssertTrue(resultsArray.count == 3)
+            XCTAssertTrue(resultsArray.count == 2)
             XCTAssertTrue(resultsArray.first!["name"] as? String == "name1")
             XCTAssertTrue(resultsArray.last!["name"] as? String == "name2")
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
-    
-    // ************************************
-    
-    private func fillTable() {
-        let people = [["name": "name1"], ["name": "name2"], ["name": "name2"]]
-        let semaphore = DispatchSemaphore(value: 0)
-        DispatchQueue.global().async {
-            self.dataStore.createBulk(entities: people, responseHandler: { createdIds in
-                semaphore.signal()
-            }, errorHandler: { fault in
-                semaphore.signal()
-            })
-        }
-        semaphore.wait()
-        return
-    }*/
 }

@@ -45,7 +45,6 @@ class DeviceRegistrationTests: XCTestCase {
             XCTAssertNotNil(registrationId)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -58,7 +57,6 @@ class DeviceRegistrationTests: XCTestCase {
             XCTAssertNotNil(registrationId)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -70,7 +68,6 @@ class DeviceRegistrationTests: XCTestCase {
             XCTAssertTrue(deviceRegistrations.count > 0)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -82,8 +79,7 @@ class DeviceRegistrationTests: XCTestCase {
             self.backendless.messaging.unregisterDevice(deviceId: deviceId, responseHandler: { isUnregistered in
                 XCTAssertTrue(isUnregistered)
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }
@@ -96,7 +92,6 @@ class DeviceRegistrationTests: XCTestCase {
             XCTAssertTrue(isUnregistered)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)

@@ -236,7 +236,7 @@ class RTMessaging: RTListener {
     }
     
     func subscribeForWaiting() {
-        var indexesToRemove = [Int]() // waiting subscriptions will be removed after subscription is done
+        var indexesToRemove = [Int]() // waiting subscriptions will be removed after subscription is done        
         for waitingSubscription in RTClient.shared.waitingSubscriptions {
             if let data = waitingSubscription.data,
                 let name = data["name"] as? String,

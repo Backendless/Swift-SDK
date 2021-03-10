@@ -53,12 +53,10 @@ class BLPolygonTests: XCTestCase {
                 let polygon = (savedObject as! GeometryTestClass).polygon
                 XCTAssertNotNil(polygon)
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -73,7 +71,6 @@ class BLPolygonTests: XCTestCase {
         dataStore.save(entity: geometryObject, responseHandler: { savedObject in
             XCTFail("Invalid number of points in LineString, must be > 3")
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             expectation.fulfill()
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -89,7 +86,6 @@ class BLPolygonTests: XCTestCase {
         dataStore.save(entity: geometryObject, responseHandler: { savedObject in
             XCTFail("Invalid number of points in LineString, must be > 3")
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             expectation.fulfill()
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -110,7 +106,6 @@ class BLPolygonTests: XCTestCase {
             XCTAssertNotNil(polygon)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -132,7 +127,6 @@ class BLPolygonTests: XCTestCase {
             XCTAssertNotNil(polygon)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -164,7 +158,6 @@ class BLPolygonTests: XCTestCase {
             XCTAssertNotNil(polygon?.holes)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -192,7 +185,6 @@ class BLPolygonTests: XCTestCase {
             XCTAssertNotNil(polygon?.holes)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -218,7 +210,6 @@ class BLPolygonTests: XCTestCase {
         dataStore.save(entity: geometryObject, responseHandler: { savedObject in
             XCTFail("Some of the LineStrings aren't closed (first and last points must be equal)")
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             expectation.fulfill()
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -239,7 +230,6 @@ class BLPolygonTests: XCTestCase {
         dataStore.save(entity: geometryObject, responseHandler: { savedObject in
             XCTFail("Invalid number of points in LineString, must be > 3")
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             expectation.fulfill()
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -261,7 +251,6 @@ class BLPolygonTests: XCTestCase {
             XCTAssertNotNil(polygon?.boundary)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -306,7 +295,6 @@ class BLPolygonTests: XCTestCase {
             XCTAssertNotNil(polygon?.holes)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -408,7 +396,6 @@ class BLPolygonTests: XCTestCase {
             XCTAssert(createdIds.count == 2)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -430,7 +417,6 @@ class BLPolygonTests: XCTestCase {
         dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
             XCTFail("Invalid number of points in LineString, must be >3")
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             expectation.fulfill()
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -453,7 +439,6 @@ class BLPolygonTests: XCTestCase {
         dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
             XCTFail("Invalid number of points in LineString, must be >3")
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             expectation.fulfill()
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -480,7 +465,6 @@ class BLPolygonTests: XCTestCase {
             XCTAssert(createdIds.count == 2)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -507,7 +491,6 @@ class BLPolygonTests: XCTestCase {
             XCTAssert(createdIds.count == 2)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -542,7 +525,6 @@ class BLPolygonTests: XCTestCase {
             XCTAssert(createdIds.count == 2)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -573,7 +555,6 @@ class BLPolygonTests: XCTestCase {
             XCTAssert(createdIds.count == 2)
             expectation.fulfill()
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -606,7 +587,6 @@ class BLPolygonTests: XCTestCase {
         dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
             XCTFail("Some of the 'LineStrings' aren't closed (first and last points must be equal)")
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             expectation.fulfill()
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -634,7 +614,6 @@ class BLPolygonTests: XCTestCase {
         dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
             XCTFail("Invalid number of points in LineString, must be > 3")
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             expectation.fulfill()
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -681,12 +660,10 @@ class BLPolygonTests: XCTestCase {
                     }
                 }
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -733,12 +710,10 @@ class BLPolygonTests: XCTestCase {
                     }
                 }
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -774,12 +749,10 @@ class BLPolygonTests: XCTestCase {
             (savedObject as! GeometryTestClass).polygon = BLPolygon(boundary: updBoundary, holes: updHoles)
             self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
                 XCTFail("Some of the 'LineStrings' aren't closed (first and last points must be equal)")
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in    
                 expectation.fulfill()
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -847,12 +820,10 @@ class BLPolygonTests: XCTestCase {
                     }
                 }
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -920,12 +891,10 @@ class BLPolygonTests: XCTestCase {
                     }
                 }
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -993,12 +962,10 @@ class BLPolygonTests: XCTestCase {
                     }
                 }
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -1051,12 +1018,10 @@ class BLPolygonTests: XCTestCase {
                 }
                 XCTAssertNil(polygon?.holes)
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -1109,12 +1074,10 @@ class BLPolygonTests: XCTestCase {
                 }
                 XCTAssertNil(polygon?.holes)
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -1133,12 +1096,10 @@ class BLPolygonTests: XCTestCase {
             self.dataStore.updateBulk(whereClause: "name='polygon'", changes: ["polygon": "POLYGON ((0 0, 5 1, 1 5, 0 0))"], responseHandler: { updated in
                 XCTAssert(updated >= 2)
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -1167,12 +1128,10 @@ class BLPolygonTests: XCTestCase {
             self.dataStore.updateBulk(whereClause: "polygon='POLYGON ((-44.55 34.55, 12.34 34.45, 34.5653 -12.3445531, -44.55 34.55))'", changes: ["polygon": "POLYGON ((0 0, 5 1, 1 5, 0 0))"], responseHandler: { updated in
                 XCTAssert(updated >= 2)
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -1197,12 +1156,10 @@ class BLPolygonTests: XCTestCase {
                 let polygon = (updatedObject as! GeometryTestClass).polygon
                 XCTAssertNil(polygon)
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -1231,12 +1188,10 @@ class BLPolygonTests: XCTestCase {
             self.dataStore.removeBulk(whereClause: "polygon='POLYGON ((-44.55 34.55, 12.34 34.45, 34.5653 -12.3445531, -44.55 34.55))'", responseHandler: { removed in
                 XCTAssert(removed >= 2)
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -1275,12 +1230,10 @@ class BLPolygonTests: XCTestCase {
                     XCTAssertNotNil(polygon)
                 }
                 expectation.fulfill()
-            }, errorHandler: { fault in
-                XCTAssertNotNil(fault)
+            }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
@@ -1305,13 +1258,11 @@ class BLPolygonTests: XCTestCase {
                     XCTAssertNotNil(polygon!.asWkt())
                     XCTAssertNotNil(polygon!.asGeoJson())
                     expectation.fulfill()
-                    }, errorHandler: { fault in
-                        XCTAssertNotNil(fault)
+                    }, errorHandler: { fault in            
                         XCTFail("\(fault.code): \(fault.message!)")
                     })
             }
         }, errorHandler: { fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)

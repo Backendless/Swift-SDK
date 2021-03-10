@@ -22,9 +22,9 @@
 import Foundation
 
 enum UserDefaultsKeys {
-    static let persistentUserToken = "userTokenKey"
     static let stayLoggedIn = "stayLoggedInKey"
-    static let currentUser = "currentUserKey"
+    static let userToken = "userTokenKey"
+    static let userId = "userIdKey"
 }
 
 class UserDefaultsHelper {
@@ -33,23 +33,28 @@ class UserDefaultsHelper {
     
     private init() { }
     
-    func savePersistentUserToken(token: String) {
-        let userDefaults = UserDefaults.standard
-        let userToken: [String: String] = ["user-token": token]
-        userDefaults.setValue(userToken, forKey: UserDefaultsKeys.persistentUserToken)
+    func saveUserToken(_ userToken: String) {
+        UserDefaults.standard.setValue(userToken, forKey: UserDefaultsKeys.userToken)
     }
     
-    func getPersistentUserToken() -> String? {
-        let userDefaults = UserDefaults.standard
-        if let userToken = userDefaults.value(forKey: UserDefaultsKeys.persistentUserToken),
-            let token = (userToken as! [String: String])["user-token"] {
-            return token
-        }
-        return nil
+    func getUserToken() -> String? {
+        return UserDefaults.standard.value(forKey: UserDefaultsKeys.userToken) as? String
     }
     
     func removeUserToken() {
-        UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.persistentUserToken)
+        UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.userToken)
+    }
+    
+    func saveUserId(_ userId: String) {
+        UserDefaults.standard.setValue(userId, forKey: UserDefaultsKeys.userId)
+    }
+    
+    func getUserId() -> String? {
+        return UserDefaults.standard.value(forKey: UserDefaultsKeys.userId) as? String
+    }
+    
+    func removeUserId() {
+        UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.userId)
     }
     
     func saveStayLoggedIn(stayLoggedIn: Bool) {
@@ -65,29 +70,5 @@ class UserDefaultsHelper {
             return stayLoggedIn.boolValue
         }
         return false
-    }
-    
-    func saveCurrentUser(currentUser: BackendlessUser) {
-        for (key, value) in currentUser.properties {
-            let jsonValue = JSONUtils.shared.objectToJson(objectToParse: value)
-            if jsonValue is [String : Any] || jsonValue is [[String : Any]] {
-                currentUser.userProperties[key] = JSON(jsonValue)
-            }
-        }
-        let data = try? JSONEncoder().encode(currentUser)
-        let userDefaults = UserDefaults.standard
-        userDefaults.set(data, forKey: UserDefaultsKeys.currentUser)
-    }
-    
-    func getCurrentUser() -> BackendlessUser? {
-        let userDefaults = UserDefaults.standard
-        if let data = userDefaults.value(forKey: UserDefaultsKeys.currentUser) as? Data {
-            return try? JSONDecoder().decode(BackendlessUser.self, from: data)
-        }
-        return nil
-    }
-    
-    func removeCurrentUser() {
-        UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.currentUser)
     }
 }

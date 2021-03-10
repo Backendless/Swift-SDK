@@ -48,7 +48,6 @@ class DataUOWFindTests: XCTestCase {
             XCTAssert(uowResult.results?.count == 1)
             expectation.fulfill()
         }, errorHandler: {  fault in
-            XCTAssertNotNil(fault)
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
