@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 6.3.1 March 12, 2021
+* fixed RT issue when subscribtion failed for events unless socket is connected
+
 ### 6.3.0 March 10, 2021
 * fixed RT issue when socket didn't reconnect automatically after the ConnectErrorEventListener is triggered
 * fixed RT issue when channel didn't reconnect after login/logout and adding/removing listeners very quickly

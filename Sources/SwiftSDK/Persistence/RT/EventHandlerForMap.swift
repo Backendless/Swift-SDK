@@ -40,11 +40,11 @@ import Foundation
     }
     
     public func removeCreateListeners(whereClause: String) {
-        stopSubscription(event: RtEventHandlers.created, whereClause: whereClause)
+        removeListeners(type: RtTypes.objectsChanges, event: RtEventHandlers.created, whereClause: whereClause)
     }
     
     public func removeCreateListeners() {
-        stopSubscription(event: RtEventHandlers.created, whereClause: nil)
+        removeListeners(type: RtTypes.objectsChanges, event: RtEventHandlers.created, whereClause: nil)
     }
     
     public func addUpdateListener(responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
@@ -56,11 +56,11 @@ import Foundation
     }
     
     public func removeUpdateListeners(whereClause: String) {
-        stopSubscription(event: RtEventHandlers.updated, whereClause: whereClause)
+        removeListeners(type: RtTypes.objectsChanges, event: RtEventHandlers.updated, whereClause: whereClause)
     }
     
     public func removeUpdateListeners() {
-        stopSubscription(event: RtEventHandlers.updated, whereClause: nil)
+        removeListeners(type: RtTypes.objectsChanges, event: RtEventHandlers.updated, whereClause: nil)
     }
     
     public func addDeleteListener(responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
@@ -72,11 +72,11 @@ import Foundation
     }
     
     public func removeDeleteListeners(whereClause: String) {
-        stopSubscription(event: RtEventHandlers.deleted, whereClause: whereClause)
+        removeListeners(type: RtTypes.objectsChanges, event: RtEventHandlers.deleted, whereClause: whereClause)
     }
     
     public func removeDeleteListeners() {
-        stopSubscription(event: RtEventHandlers.deleted, whereClause: nil)
+        removeListeners(type: RtTypes.objectsChanges, event: RtEventHandlers.deleted, whereClause: nil)
     }
     
     public func addBulkCreateListener(responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
@@ -91,7 +91,7 @@ import Foundation
     }
     
     public func removeBulkCreateListeners() {
-        stopSubscription(event: RtEventHandlers.bulkCreated, whereClause: nil)
+        removeListeners(type: RtTypes.objectsChanges, event: RtEventHandlers.bulkCreated, whereClause: nil)
     }
     
     public func addBulkUpdateListener(responseHandler: ((BulkEvent) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
@@ -123,11 +123,11 @@ import Foundation
     }
     
     public func removeBulkUpdateListeners(whereClause: String) {
-        stopSubscription(event: RtEventHandlers.bulkUpdated, whereClause: whereClause)
+        removeListeners(type: RtTypes.objectsChanges, event: RtEventHandlers.bulkUpdated, whereClause: whereClause)
     }
     
     public func removeBulkUpdateListeners() {
-        stopSubscription(event: RtEventHandlers.bulkUpdated, whereClause: nil)
+        removeListeners(type: RtTypes.objectsChanges, event: RtEventHandlers.bulkUpdated, whereClause: nil)
     }
     
     public func addBulkDeleteListener(responseHandler: ((BulkEvent) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
@@ -159,11 +159,11 @@ import Foundation
     }
     
     public func removeBulkDeleteListeners(whereClause: String) {
-        stopSubscription(event: RtEventHandlers.bulkDeleted, whereClause: whereClause)
+        removeListeners(type: RtTypes.objectsChanges, event: RtEventHandlers.bulkDeleted, whereClause: whereClause)
     }
     
     public func removeBulkDeleteListeners() {
-        stopSubscription(event: RtEventHandlers.bulkDeleted, whereClause: nil)
+        removeListeners(type: RtTypes.objectsChanges, event: RtEventHandlers.bulkDeleted, whereClause: nil)
     }
     
     public func addSetRelationListener(relationColumnName: String, responseHandler: ((RelationStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
@@ -211,7 +211,7 @@ import Foundation
     }
     
     public func removeSetRelationListeners() {
-        stopSubscription(event: RtEventHandlers.relationSet, whereClause: nil)
+        removeListeners(type: RtTypes.relationsChanges, event: RtEventHandlers.relationSet, whereClause: nil)
     }
     
     public func addAddRelationListener(relationColumnName: String, responseHandler: ((RelationStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
@@ -259,7 +259,7 @@ import Foundation
     }
     
     public func removeAddRelationListeners() {
-        stopSubscription(event: RtEventHandlers.relationAdd, whereClause: nil)
+        removeListeners(type: RtTypes.relationsChanges, event: RtEventHandlers.relationAdd, whereClause: nil)
     }
     
     public func addDeleteRelationListener(relationColumnName: String, responseHandler: ((RelationStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
@@ -307,7 +307,7 @@ import Foundation
     }
     
     public func removeDeleteRelationListeners() {
-        stopSubscription(event: RtEventHandlers.relationDelete, whereClause: nil)
+        removeListeners(type: RtTypes.relationsChanges, event: RtEventHandlers.relationDelete, whereClause: nil)
     }
     
     public func removeAllListeners() {
@@ -320,5 +320,15 @@ import Foundation
         removeSetRelationListeners()
         removeAddRelationListeners()
         removeDeleteRelationListeners()
+    }
+    
+    private func removeListeners(type: String, event: String, whereClause: String?) {
+        stopSubscription(event: event, whereClause: whereClause)
+        if type == RtTypes.objectsChanges {
+            removeObjectChangesWaitingSubscriptions(event: event, tableName: tableName, whereClause: whereClause)
+        }
+        else if type == RtTypes.relationsChanges {
+            removeRelationsChangesWaitingSubscriptions(event: event, tableName: tableName, whereClause: whereClause)
+        }
     }
 }

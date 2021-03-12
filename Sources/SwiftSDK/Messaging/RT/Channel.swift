@@ -98,10 +98,12 @@ import Foundation
     
     public func removeMessageListeners(selector: String) {
         self.rt?.removeMessageListeners(selector: selector)
+        self.rt?.removeWaitingSubscriptions(subscrName: RtTypes.pubSubMessages, subscrSelector: selector)
     }
     
     public func removeMessageListeners() {
         self.rt?.removeMessageListeners(selector: nil)
+        self.rt?.removeWaitingSubscriptions(subscrName: RtTypes.pubSubMessages, subscrSelector: nil)
     }
     
     public func addCommandListener(responseHandler: ((CommandObject) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
@@ -110,6 +112,7 @@ import Foundation
     
     public func removeCommandListeners() {
         self.rt?.removeCommandListeners()
+        self.rt?.removeWaitingSubscriptions(subscrName: RtTypes.pubSubCommands, subscrSelector: nil)
     }
     
     public func addUserStatusListener(responseHandler: ((UserStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
@@ -118,6 +121,7 @@ import Foundation
     
     public func removeUserStatusListeners() {
         self.rt?.removeUserStatusListeners()
+        self.rt?.removeWaitingSubscriptions(subscrName: RtTypes.pubSubUsers, subscrSelector: nil)
     }
     
     public func removeAllListeners() {
@@ -125,6 +129,7 @@ import Foundation
         removeMessageListeners()
         removeCommandListeners()
         removeUserStatusListeners()
+        self.rt?.removeWaitingSubscriptions(subscrName: nil, subscrSelector: nil)
     }
     
     public func sendCommand(commandType: String, data: Any?, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {

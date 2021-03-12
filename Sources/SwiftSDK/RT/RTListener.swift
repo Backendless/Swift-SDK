@@ -63,7 +63,7 @@ import Foundation
             typeName = RtTypes.pubSubConnect
         }    
         if let name = data["name"] as? String,
-            name != RtTypes.pubSubConnect, name != RtTypes.rsoConnect {
+           name != RtTypes.pubSubConnect, name != RtTypes.rsoConnect {
             if let event = (data["options"] as! [String : Any])["event"] as? String {
                 typeName = event
             }
@@ -83,23 +83,24 @@ import Foundation
     // ****************************************************
     
     func subscribeForObjectsChanges(event: String, tableName: String, whereClause: String?, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        var wrappedBlock: ((Any) -> Void)?
+        if !RTClient.shared.socketConnected {
+            RTClient.shared.connectSocket(connected: { })
+        }
         var options = ["tableName": tableName, "event": event]
         if let whereClause = whereClause {
             options["whereClause"] = whereClause
         }
         if event == RtEventHandlers.created || event == RtEventHandlers.updated || event == RtEventHandlers.deleted {
-            let wrappedBlock: (Any) -> () = { response in
+            wrappedBlock = { response in
                 if let response = response as? [String : Any] {
                     responseHandler(response)
                 }
             }
-            let subscription = createSubscription(type: RtTypes.objectsChanges, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
-            RTClient.shared.subscribe(data: subscription.data!, subscription: subscription)
-            return subscription
         }
         else if event == RtEventHandlers.bulkCreated {
             // return value is [String] but wrapped in [String : Any] to make this the subscribeForObjectsChanges method universal
-            let wrappedBlock: (Any) -> () = { response in
+            wrappedBlock = { response in
                 if let response = response as? [String] {
                     var responseDictionary = [String : Any]()
                     for key in response {
@@ -108,36 +109,35 @@ import Foundation
                     responseHandler(responseDictionary)
                 }
             }
-            let subscription = createSubscription(type: RtTypes.objectsChanges, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
-            RTClient.shared.subscribe(data: subscription.data!, subscription: subscription)
-            return subscription
         }
         else if event == RtEventHandlers.bulkUpdated {
-            let wrappedBlock: (Any) -> () = { response in
+            wrappedBlock = { response in
                 if let response = response as? [String : Any] {
                     responseHandler(response)
                 }
             }
-            let subscription = createSubscription(type: RtTypes.objectsChanges, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
-            RTClient.shared.subscribe(data: subscription.data!, subscription: subscription)
-            return subscription
         }
         else if event == RtEventHandlers.bulkDeleted {
-            let wrappedBlock: (Any) -> () = { response in
+            wrappedBlock = { response in
                 if let response = response as? [String : Any] {
                     responseHandler(response)
                 }
             }
+        }
+        if RTClient.shared.socketConnected {
             let subscription = createSubscription(type: RtTypes.objectsChanges, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
-            RTClient.shared.subscribe(data: subscription.data!, subscription: subscription)
+            subscription.subscribe()
             return subscription
         }
-        return nil
+        return addChangesWaitingSubscription(type: RtTypes.objectsChanges, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
     }
     
     // ****************************************************
     
     func subscribeForRelationsChanges(event: String, tableName: String, relationColumnName: String, parentObjectIds: [String]?, whereClause: String?, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        if !RTClient.shared.socketConnected {
+            RTClient.shared.connectSocket(connected: { })
+        }
         var options = ["tableName": tableName, "event": event, "relationColumnName": relationColumnName] as [String : Any]
         if parentObjectIds != nil {
             options["parentObjects"] = parentObjectIds
@@ -150,9 +150,25 @@ import Foundation
                 responseHandler(response)
             }
         }
-        let subscription = createSubscription(type: RtTypes.relationsChanges, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
-        RTClient.shared.subscribe(data: subscription.data!, subscription: subscription)
-        return subscription
+        if RTClient.shared.socketConnected {
+            let subscription = createSubscription(type: RtTypes.relationsChanges, options: options, connectionHandler: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+            subscription.subscribe()
+            return subscription
+        }
+        return addChangesWaitingSubscription(type: RtTypes.relationsChanges, options: options, responseHandler: wrappedBlock, errorHandler: errorHandler)
+    }
+    
+    // ****************************************************
+    
+    private func addChangesWaitingSubscription(type: String, options: [String : Any], responseHandler: ((Any) -> Void)?, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        var waitingSubscription: RTSubscription?
+        if responseHandler != nil {
+            waitingSubscription = createSubscription(type: type, options: options, connectionHandler: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+        }
+        if let waitingSubscription = waitingSubscription {
+            RTClient.shared.waitingSubscriptions.append(waitingSubscription)
+        }
+        return waitingSubscription
     }
     
     // ****************************************************
@@ -163,8 +179,8 @@ import Foundation
             if whereClause != nil {
                 for subscription in subscriptionStack {
                     if let options = subscription.options,
-                        let subscriptionWhereClause = options["whereClause"] as? String,
-                        subscriptionWhereClause == whereClause {
+                       let subscriptionWhereClause = options["whereClause"] as? String,
+                       subscriptionWhereClause == whereClause {
                         subscription.stop()
                         subscriptionIdsToRemove.append(subscription.subscriptionId!)
                     }
@@ -178,8 +194,48 @@ import Foundation
             }
             for subscriptionId in subscriptionIdsToRemove {
                 subscriptionStack.removeAll(where: { $0.subscriptionId == subscriptionId })
-            }            
+            }
             subscriptions[event] = subscriptionStack
+        }
+    }
+    
+    // ****************************************************
+    
+    func removeObjectChangesWaitingSubscriptions(event: String, tableName: String, whereClause: String?) {
+        var indexesToRemove = [Int]() // waiting subscriptions will be removed
+        for waitingSubscription in RTClient.shared.waitingSubscriptions {
+            if let data = waitingSubscription.data,
+               let name = data["name"] as? String,
+               name == RtTypes.objectsChanges,
+               let options = waitingSubscription.options,
+               options["tableName"] as? String == tableName,
+               options["event"] as? String == event,
+               options["whereClause"] as? String == whereClause {
+                indexesToRemove.append(RTClient.shared.waitingSubscriptions.firstIndex(of: waitingSubscription)!)
+            }
+        }
+        RTClient.shared.waitingSubscriptions = RTClient.shared.waitingSubscriptions.enumerated().compactMap {
+            indexesToRemove.contains($0.0) ? nil : $0.1
+        }
+    }
+    
+    // ****************************************************
+    
+    func removeRelationsChangesWaitingSubscriptions(event: String, tableName: String, whereClause: String?) {
+        var indexesToRemove = [Int]() // waiting subscriptions will be removed
+        for waitingSubscription in RTClient.shared.waitingSubscriptions {
+            if let data = waitingSubscription.data,
+               let name = data["name"] as? String,
+               name == RtTypes.relationsChanges,
+               let options = waitingSubscription.options,
+               options["tableName"] as? String == tableName,
+               options["event"] as? String == event,
+               options["whereClause"] as? String == whereClause {
+                indexesToRemove.append(RTClient.shared.waitingSubscriptions.firstIndex(of: waitingSubscription)!)
+            }
+        }
+        RTClient.shared.waitingSubscriptions = RTClient.shared.waitingSubscriptions.enumerated().compactMap {
+            indexesToRemove.contains($0.0) ? nil : $0.1
         }
     }
     
@@ -190,10 +246,10 @@ import Foundation
             if selector != nil {
                 for subscription in subscriptionStack {
                     if let options = subscription.options,
-                        let channelName = options["channel"] as? String,
-                        channelName == channel.channelName,
-                        let subscriptionSelector = options["selector"] as? String,
-                        subscriptionSelector == selector {
+                       let channelName = options["channel"] as? String,
+                       channelName == channel.channelName,
+                       let subscriptionSelector = options["selector"] as? String,
+                       subscriptionSelector == selector {
                         subscription.stop()
                     }
                 }
@@ -201,8 +257,8 @@ import Foundation
             else {
                 for subscription in subscriptionStack {
                     if let options = subscription.options,
-                        let channelName = options["channel"] as? String,
-                        channelName == channel.channelName {
+                       let channelName = options["channel"] as? String,
+                       channelName == channel.channelName {
                         subscription.stop()
                     }
                 }
@@ -216,8 +272,8 @@ import Foundation
         if let subscriptionStack = self.subscriptions[event] {
             for subscription in subscriptionStack {
                 if let options = subscription.options,
-                    let sharedObjectName = options["name"] as? String,
-                    sharedObjectName == sharedObject.name {
+                   let sharedObjectName = options["name"] as? String,
+                   sharedObjectName == sharedObject.name {
                     subscription.stop()
                 }
             }
