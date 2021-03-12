@@ -25,7 +25,7 @@ import XCTest
 class RTMessagingTests: XCTestCase {
     
     private let backendless = Backendless.shared
-    private let timeout: Double = 10.0
+    private let timeout: Double = 20.0
     private let CHANNEL_NAME = "TestsChannel"
     
     private var channel: Channel!
@@ -70,7 +70,7 @@ class RTMessagingTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test_03_stopConnectSubscription() {
+    func test03stopConnectSubscription() {
         let expectation: XCTestExpectation = self.expectation(description: "PASSED: channel.stopConnectSubscription")
         let subscriptionToStop = self.channel.addConnectListener(responseHandler: {
             XCTFail("This subscription must be removed")
@@ -96,7 +96,7 @@ class RTMessagingTests: XCTestCase {
         }, errorHandler: { fault in
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4, execute: {
             let message = "Test Message"
             self.backendless.messaging.sendCommand(commandType: "TestCommand", channelName: self.CHANNEL_NAME, data: message, responseHandler: {
             }, errorHandler: { fault in                
@@ -147,7 +147,7 @@ class RTMessagingTests: XCTestCase {
         }, errorHandler: { fault in
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4, execute: {
             subscriptionToStop?.stop()
             let message = "Test Message"
             self.backendless.messaging.sendCommand(commandType: "TestCommand", channelName: self.CHANNEL_NAME, data: message, responseHandler: {

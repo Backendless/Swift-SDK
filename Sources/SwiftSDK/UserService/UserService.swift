@@ -277,8 +277,15 @@ import Foundation
     }
     
     public func isValidUserToken(responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        if let userToken = getPersistentUserToken() {
-            BackendlessRequestManager(restMethod: "users/isvalidusertoken/\(userToken)", httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+        var userToken: String?
+        if currentUserForSession?.userToken != nil {
+            userToken = currentUserForSession?.userToken
+        }
+        else {
+            userToken = UserDefaultsHelper.shared.getUserToken()
+        }
+        if userToken != nil {
+            BackendlessRequestManager(restMethod: "users/isvalidusertoken/\(userToken!)", httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
                 if let responseData = response.data {
                     do {
                         responseHandler(try JSONSerialization.jsonObject(with: responseData, options: .allowFragments) as! Bool)
@@ -450,10 +457,6 @@ import Foundation
         self.currentUserForSession = nil
         UserDefaultsHelper.shared.removeUserToken()
         UserDefaultsHelper.shared.removeUserId()
-    }
-    
-    private func getPersistentUserToken() -> String? {
-        return UserDefaultsHelper.shared.getUserToken()
     }
     
     private func setStayLoggedIn(stayLoggedIn: Bool) {

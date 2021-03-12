@@ -60,7 +60,7 @@ import Foundation
     public func disconnect() {
         self.isConnected = false
         self.rememberCommands = false
-        removeAllListeners()        
+        removeAllListeners()
         self.rt.disconnect()
     }
     
@@ -78,6 +78,7 @@ import Foundation
     
     public func removeChangesListeners() {
         self.rt.removeChangesListeners()
+        self.rt.removeWaitingSubscriptions(subscrName: RtTypes.rsoChanges)
     }
     
     public func addClearListener(responseHandler: ((UserInfo) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
@@ -86,6 +87,7 @@ import Foundation
     
     public func removeClearListeners() {
         self.rt.removeClearListeners()
+        self.rt.removeWaitingSubscriptions(subscrName: RtTypes.rsoCleared)
     }
     
     public func addCommandListener(responseHandler: ((CommandObject) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
@@ -94,6 +96,7 @@ import Foundation
     
     public func removeCommandListeners() {
         self.rt.removeCommandListeners()
+        self.rt.removeWaitingSubscriptions(subscrName: RtTypes.rsoCommands)
     }
     
     public func addUserStatusListener(responseHandler: ((UserStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
@@ -102,6 +105,7 @@ import Foundation
 
     public func removeUserStatusListeners() {
         self.rt.removeUserStatusListeners()
+        self.rt.removeWaitingSubscriptions(subscrName: RtTypes.rsoUsers)
     }
 
     public func addInvokeListener(responseHandler: ((InvokeObject) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
@@ -110,6 +114,7 @@ import Foundation
 
     public func removeInvokeListeners() {
         self.rt.removeInvokeListeners()
+        self.rt.removeWaitingSubscriptions(subscrName: RtTypes.rsoInvoke)
     }
     
     public func removeAllListeners() {
@@ -119,6 +124,7 @@ import Foundation
         removeCommandListeners()
         removeUserStatusListeners()
         removeInvokeListeners()
+        self.rt.removeWaitingSubscriptions(subscrName: nil)
     }
     
     // commands

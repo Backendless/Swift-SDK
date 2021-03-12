@@ -35,7 +35,7 @@ class RTClient {
     private var eventSubscriptions: [String : [RTSubscription]]
     private var methods: [String : RTMethodRequest]
     var socketCreated = false
-    private var socketConnected = false
+    var socketConnected = false
     private var needResubscribe = false
     private var onConnectionHandlersReady = false
     private var onResultReady = false
@@ -44,7 +44,7 @@ class RTClient {
     private var _lock: NSLock
     private var reconnectAttempt: Int = 1
     private var timeInterval: Double = 0.2 // seconds
-    private var onSocketConnectCallback: (() -> Void)?
+    var onSocketConnectCallback: (() -> Void)?
     
     private let maxTimeInterval: Double = 60.0 // seconds
     
@@ -85,7 +85,6 @@ class RTClient {
                     let _ = Backendless.shared.rt.addDisсonnectEventListener(responseHandler: { _ in
                         self.tryToReconnectSocket()
                     })
-                    
                     let _ = Backendless.shared.rt.addConnectErrorEventListener(responseHandler: { _ in
                         self.tryToReconnectSocket()
                     })
@@ -189,7 +188,7 @@ class RTClient {
                 else if !self.needResubscribe {
                     connected()
                 }
-                
+        
                 self.onResult()
                 self.onMethodResult()
                 
@@ -198,6 +197,8 @@ class RTClient {
                         connectSubscription.onResult!(nil)
                     }
                 }
+                
+                self.subscribeForObjectChangesWaiting()
             })
             
             self.socket?.on("connect_error", callback: { data, ack in                
@@ -420,5 +421,20 @@ class RTClient {
         self.onResultReady = false
         self.onMethodResultReady = false
         self.connectSocket(connected: { })
+    }
+    
+    func subscribeForObjectChangesWaiting() {
+        var indexesToRemove = [Int]() // waiting subscriptions will be removed after subscription is done
+        for waitingSubscription in waitingSubscriptions {
+            if let data = waitingSubscription.data,
+                let name = data["name"] as? String,
+                    (name == RtTypes.objectsChanges || name == RtTypes.relationsChanges) {
+                waitingSubscription.subscribe()
+                indexesToRemove.append(waitingSubscriptions.firstIndex(of: waitingSubscription)!)
+            }
+        }
+        waitingSubscriptions = waitingSubscriptions.enumerated().compactMap {
+            indexesToRemove.contains($0.0) ? nil : $0.1
+        }
     }
 }
