@@ -33,6 +33,7 @@ import Foundation
     
     private var applicationId = ""
     private var apiKey = ""
+    private var domain = ""
     
     private var headers = [String : String]()
     
@@ -41,6 +42,16 @@ import Foundation
     public func initApp(applicationId: String, apiKey: String) {
         self.applicationId = applicationId
         self.apiKey = apiKey
+        self.domain = ""
+        
+        // mappings for updating objects correctly
+        self.data.of(BackendlessUser.self).mapColumn(columnName: "password", toProperty: "_password")
+    }
+    
+    public func initApp(domain: String) {
+        self.applicationId = ""
+        self.apiKey = ""
+        self.domain = domain
         
         // mappings for updating objects correctly
         self.data.of(BackendlessUser.self).mapColumn(columnName: "password", toProperty: "_password")
@@ -52,6 +63,10 @@ import Foundation
     
     public func getApiKey() -> String {
         return apiKey
+    }
+    
+    public func getDomain() -> String {
+        return domain
     }
     
     public lazy var rt: RTService = {

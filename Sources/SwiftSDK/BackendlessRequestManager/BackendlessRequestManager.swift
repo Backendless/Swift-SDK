@@ -30,7 +30,7 @@ enum HTTPMethod: String {
 
 class BackendlessRequestManager {
     
-    private var urlString = "\(Backendless.shared.hostUrl)/\(Backendless.shared.getApplictionId())/\(Backendless.shared.getApiKey())/"
+    private var urlString: String
     private var restMethod: String
     private var httpMethod: HTTPMethod
     private var headers: [String: String]?
@@ -38,6 +38,10 @@ class BackendlessRequestManager {
     private var session: URLSession!
     
     init(restMethod: String, httpMethod: HTTPMethod, headers: [String: String]?, parameters: Any?) {
+        self.urlString = "\(Backendless.shared.hostUrl)/\(Backendless.shared.getApplictionId())/\(Backendless.shared.getApiKey())/"
+        if !Backendless.shared.getDomain().isEmpty {
+            self.urlString = "https://\(Backendless.shared.getDomain())/api/"
+        }
         self.restMethod = restMethod
         self.httpMethod = httpMethod
         self.headers = headers
