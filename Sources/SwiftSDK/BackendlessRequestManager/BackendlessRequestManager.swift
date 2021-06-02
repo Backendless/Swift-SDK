@@ -39,8 +39,8 @@ class BackendlessRequestManager {
     
     init(restMethod: String, httpMethod: HTTPMethod, headers: [String: String]?, parameters: Any?) {
         self.urlString = "\(Backendless.shared.hostUrl)/\(Backendless.shared.getApplictionId())/\(Backendless.shared.getApiKey())/"
-        if !Backendless.shared.getDomain().isEmpty {
-            self.urlString = "https://\(Backendless.shared.getDomain())/api/"
+        if !Backendless.shared.getCustomDomain().isEmpty {
+            self.urlString = "\(Backendless.shared.getCustomDomain())/api/"
         }
         self.restMethod = restMethod
         self.httpMethod = httpMethod

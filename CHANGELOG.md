@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 6.3.3 June 02, 2021
+* fixed app init with custom domain to accept domens both with protocol or without
+
 ### 6.3.2 June 02, 2021
 * added possibility to init app with custom domain name
 
