@@ -33,7 +33,7 @@ import Foundation
     
     private var applicationId = ""
     private var apiKey = ""
-    private var domain = ""
+    private var customDomain = ""
     
     private var headers = [String : String]()
     
@@ -42,17 +42,21 @@ import Foundation
     public func initApp(applicationId: String, apiKey: String) {
         self.applicationId = applicationId
         self.apiKey = apiKey
-        self.domain = ""
+        self.customDomain = ""
         
         // mappings for updating objects correctly
         self.data.of(BackendlessUser.self).mapColumn(columnName: "password", toProperty: "_password")
     }
     
-    public func initApp(domain: String) {
+    public func initApp(customDomain: String) {
         self.applicationId = ""
         self.apiKey = ""
-        self.domain = domain
-        
+        if customDomain.starts(with: "http") {
+            self.customDomain = customDomain
+        }
+        else {
+            self.customDomain = "http://" + customDomain
+        }
         // mappings for updating objects correctly
         self.data.of(BackendlessUser.self).mapColumn(columnName: "password", toProperty: "_password")
     }
@@ -65,8 +69,8 @@ import Foundation
         return apiKey
     }
     
-    public func getDomain() -> String {
-        return domain
+    public func getCustomDomain() -> String {
+        return customDomain
     }
     
     public lazy var rt: RTService = {
