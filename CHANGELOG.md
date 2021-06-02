@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 6.3.2 June 02, 2021
+* added possibility to init app with custom domain name
+
 ### 6.3.1 March 12, 2021
 * fixed RT issue when subscribtion failed for events unless socket is connected
 
