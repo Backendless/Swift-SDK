@@ -8,6 +8,13 @@ func upload(urlToFile: String, backendlessPath: String, responseHandler: ((Backe
 func upload(urlToFile: String, backendlessPath: String, overwrite: Bool, responseHandler: ((BackendlessFile) -> Void)!, errorHandler: ((Fault) -> Void)!)
 ```
 
+*added methods to send email from template with attachments:
+```
+func sendEmailFromTemplate(templateName: String, envelope: EmailEnvelope, attachments: [String], responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!)
+
+func sendEmailFromTemplate(templateName: String, envelope: EmailEnvelope, templateValues: [String : String], attachments: [String], responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!)
+```
+
 ### 6.3.3 June 02, 2021
 * fixed app init with custom domain to accept domens both with protocol or without
 
