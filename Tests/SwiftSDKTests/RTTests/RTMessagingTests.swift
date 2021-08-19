@@ -96,7 +96,7 @@ class RTMessagingTests: XCTestCase {
         }, errorHandler: { fault in
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        DispatchQueue.main.asyncAfter(deadline: .now() + 4, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4.5, execute: {
             let message = "Test Message"
             self.backendless.messaging.sendCommand(commandType: "TestCommand", channelName: self.CHANNEL_NAME, data: message, responseHandler: {
             }, errorHandler: { fault in                

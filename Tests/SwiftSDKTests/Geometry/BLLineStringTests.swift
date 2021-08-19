@@ -100,15 +100,29 @@ class BLLineStringTests: XCTestCase {
         let point2 = BLPoint(x: 76.4554, y: 34.6565)
         geometryObject.linestring = BLLineString(points: [point1, point2])
         dataStore.save(entity: geometryObject, responseHandler: { savedObject in
-            XCTAssert(savedObject is GeometryTestClass)
-            let linestring = (savedObject as! GeometryTestClass).linestring
-            XCTAssertNotNil(linestring)
-            expectation.fulfill()
+            XCTFail("Longitude must be within (-180.000000, 180.000000]")
         }, errorHandler: { fault in
-            XCTFail("\(fault.code): \(fault.message!)")
+            expectation.fulfill()
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
+    
+    //    func testLS04() {
+    //        let expectation = self.expectation(description: "PASSED: BLLineString.create")
+    //        let geometryObject = GeometryTestClass()
+    //        let point1 = BLPoint(x: -180.1, y: -90.1)
+    //        let point2 = BLPoint(x: 76.4554, y: 34.6565)
+    //        geometryObject.linestring = BLLineString(points: [point1, point2])
+    //        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+    //            XCTAssert(savedObject is GeometryTestClass)
+    //            let linestring = (savedObject as! GeometryTestClass).linestring
+    //            XCTAssertNotNil(linestring)
+    //            expectation.fulfill()
+    //        }, errorHandler: { fault in
+    //            XCTFail("\(fault.code): \(fault.message!)")
+    //        })
+    //        waitForExpectations(timeout: timeout, handler: nil)
+    //    }
     
     func testLS05() {
         let expectation = self.expectation(description: "PASSED: BLLineString.create")
@@ -287,13 +301,35 @@ class BLLineStringTests: XCTestCase {
         let point3_2 = BLPoint(x: 8.523788, y: 67.752)
         geometryObject3.linestring = BLLineString(points: [point3_1, point3_2])
         dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
-            XCTAssert(createdIds.count == 3)
-            expectation.fulfill()
+            XCTFail("Longitude must be within (-180.000000, 180.000000]")
         }, errorHandler: { fault in
-            XCTFail("\(fault.code): \(fault.message!)")
+            expectation.fulfill()
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
+    
+    //    func testLS18() {
+    //        let expectation = self.expectation(description: "PASSED: BLLineString.bulkCreate")
+    //        let geometryObject1 = GeometryTestClass()
+    //        let point1_1 = BLPoint(x: -87.52683788, y: 41.85716752)
+    //        let point1_2 = BLPoint(x: -180.1, y: -90.1)
+    //        geometryObject1.linestring = BLLineString(points: [point1_1, point1_2])
+    //        let geometryObject2 = GeometryTestClass()
+    //        let point2_1 = BLPoint(x: -87.53434788, y: 41.85716752)
+    //        let point2_2 = BLPoint(x: -23.523788, y: 67.752)
+    //        geometryObject2.linestring = BLLineString(points: [point2_1, point2_2])
+    //        let geometryObject3 = GeometryTestClass()
+    //        let point3_1 = BLPoint(x: -87.53434788, y: 41.85716752)
+    //        let point3_2 = BLPoint(x: 8.523788, y: 67.752)
+    //        geometryObject3.linestring = BLLineString(points: [point3_1, point3_2])
+    //        dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
+    //            XCTAssert(createdIds.count == 3)
+    //            expectation.fulfill()
+    //        }, errorHandler: { fault in
+    //            XCTFail("\(fault.code): \(fault.message!)")
+    //        })
+    //        waitForExpectations(timeout: timeout, handler: nil)
+    //    }
     
     func testLS19() {
         let expectation = self.expectation(description: "PASSED: BLLineString.bulkCreate")
@@ -348,7 +384,7 @@ class BLLineStringTests: XCTestCase {
             XCTAssert(error.localizedDescription == GeoParserErrors.wrongFormat)
         }
     }
-
+    
     func testLS23() {
         do {
             let _ = try BLLineString.fromGeoJson("{\"type\": \"linestring\", \"coordinates\": [[198.56, 55.752917], [37.6189, 55.752917]]}")
@@ -415,34 +451,59 @@ class BLLineStringTests: XCTestCase {
             let updPoint3 = BLPoint(x: 23.34234, y: 0)
             (savedObject as! GeometryTestClass).linestring = BLLineString(points: [updPoint1, updPoint2, updPoint3])
             self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
-                XCTAssert(updatedObject is GeometryTestClass)
-                let linestring = (updatedObject as! GeometryTestClass).linestring
-                XCTAssertNotNil(linestring)
-                XCTAssert(linestring!.points.count == 3)
-                for i in 0..<linestring!.points.count {
-                    if i == 0 {
-                        XCTAssert(linestring!.points[0].x == 1.34543)
-                        XCTAssert(linestring!.points[0].y == -120.34534)
-                    }
-                    else if i == 1 {
-                        XCTAssert(linestring!.points[1].x == 12.234234)
-                        XCTAssert(linestring!.points[1].y == 4)
-                    }
-                    else {
-                        XCTAssert(linestring!.points[2].x == 23.34234)
-                        XCTAssert(linestring!.points[2].y == 0)
-                    }
-                }
+                XCTFail("Latitude must be within [-90.000000, 90.000000]")
+            }, errorHandler: { fault in
                 expectation.fulfill()
-            }, errorHandler: { fault in                
-                XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
-
+    
+    //    func testLS27() {
+    //        let expectation = self.expectation(description: "PASSED: BLLineString.update")
+    //        let geometryObject = GeometryTestClass()
+    //        let point1 = BLPoint(x: -87.52683788, y: 41.85716752)
+    //        let point2 = BLPoint(x: 32.45645, y: 87.54654)
+    //        geometryObject.linestring = BLLineString(points: [point1, point2])
+    //        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+    //            XCTAssert(savedObject is GeometryTestClass)
+    //            let linestring = (savedObject as! GeometryTestClass).linestring
+    //            XCTAssertNotNil(linestring)
+    //            let updPoint1 = BLPoint(x: 1.34543, y: -120.34534)
+    //            let updPoint2 = BLPoint(x: 12.234234, y: 4)
+    //            let updPoint3 = BLPoint(x: 23.34234, y: 0)
+    //            (savedObject as! GeometryTestClass).linestring = BLLineString(points: [updPoint1, updPoint2, updPoint3])
+    //            self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
+    //                XCTAssert(updatedObject is GeometryTestClass)
+    //                let linestring = (updatedObject as! GeometryTestClass).linestring
+    //                XCTAssertNotNil(linestring)
+    //                XCTAssert(linestring!.points.count == 3)
+    //                for i in 0..<linestring!.points.count {
+    //                    if i == 0 {
+    //                        XCTAssert(linestring!.points[0].x == 1.34543)
+    //                        XCTAssert(linestring!.points[0].y == -120.34534)
+    //                    }
+    //                    else if i == 1 {
+    //                        XCTAssert(linestring!.points[1].x == 12.234234)
+    //                        XCTAssert(linestring!.points[1].y == 4)
+    //                    }
+    //                    else {
+    //                        XCTAssert(linestring!.points[2].x == 23.34234)
+    //                        XCTAssert(linestring!.points[2].y == 0)
+    //                    }
+    //                }
+    //                expectation.fulfill()
+    //            }, errorHandler: { fault in
+    //                XCTFail("\(fault.code): \(fault.message!)")
+    //            })
+    //        }, errorHandler: { fault in
+    //            XCTFail("\(fault.code): \(fault.message!)")
+    //        })
+    //        waitForExpectations(timeout: timeout, handler: nil)
+    //    }
+    
     func testLS28() {
         let expectation = self.expectation(description: "PASSED: BLLineString.update")
         let geometryObject = GeometryTestClass()
@@ -456,30 +517,54 @@ class BLLineStringTests: XCTestCase {
             let updPoint1 = BLPoint(x: 180, y: 180.1)
             let updPoint2 = BLPoint(x: -90.1, y: -90.1)
             (savedObject as! GeometryTestClass).linestring = BLLineString(points: [updPoint1, updPoint2])
-            self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
-                XCTAssert(updatedObject is GeometryTestClass)
-                let linestring = (updatedObject as! GeometryTestClass).linestring
-                XCTAssertNotNil(linestring)
-                XCTAssert(linestring!.points.count == 2)
-                for i in 0..<linestring!.points.count {
-                    if i == 0 {
-                        XCTAssert(linestring!.points[0].x == 180)
-                        XCTAssert(linestring!.points[0].y == 180.1)
-                    }
-                    else if i == 1 {
-                        XCTAssert(linestring!.points[1].x == -90.1)
-                        XCTAssert(linestring!.points[1].y == -90.1)
-                    }
-                }
+            self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in                
+                XCTFail("Latitude must be within [-90.000000, 90.000000]")
+            }, errorHandler: { fault in
                 expectation.fulfill()
-            }, errorHandler: { fault in                
-                XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
+    
+    //    func testLS28() {
+    //        let expectation = self.expectation(description: "PASSED: BLLineString.update")
+    //        let geometryObject = GeometryTestClass()
+    //        let point1 = BLPoint(x: -87.52683788, y: 41.85716752)
+    //        let point2 = BLPoint(x: 32.45645, y: 87.54654)
+    //        geometryObject.linestring = BLLineString(points: [point1, point2])
+    //        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+    //            XCTAssert(savedObject is GeometryTestClass)
+    //            let linestring = (savedObject as! GeometryTestClass).linestring
+    //            XCTAssertNotNil(linestring)
+    //            let updPoint1 = BLPoint(x: 180, y: 180.1)
+    //            let updPoint2 = BLPoint(x: -90.1, y: -90.1)
+    //            (savedObject as! GeometryTestClass).linestring = BLLineString(points: [updPoint1, updPoint2])
+    //            self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
+    //                XCTAssert(updatedObject is GeometryTestClass)
+    //                let linestring = (updatedObject as! GeometryTestClass).linestring
+    //                XCTAssertNotNil(linestring)
+    //                XCTAssert(linestring!.points.count == 2)
+    //                for i in 0..<linestring!.points.count {
+    //                    if i == 0 {
+    //                        XCTAssert(linestring!.points[0].x == 180)
+    //                        XCTAssert(linestring!.points[0].y == 180.1)
+    //                    }
+    //                    else if i == 1 {
+    //                        XCTAssert(linestring!.points[1].x == -90.1)
+    //                        XCTAssert(linestring!.points[1].y == -90.1)
+    //                    }
+    //                }
+    //                expectation.fulfill()
+    //            }, errorHandler: { fault in
+    //                XCTFail("\(fault.code): \(fault.message!)")
+    //            })
+    //        }, errorHandler: { fault in
+    //            XCTFail("\(fault.code): \(fault.message!)")
+    //        })
+    //        waitForExpectations(timeout: timeout, handler: nil)
+    //    }
     
     func testLS29() {
         let expectation = self.expectation(description: "PASSED: BLLineString.bulkUpdate")
@@ -542,7 +627,7 @@ class BLLineStringTests: XCTestCase {
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
-
+    
     func testLS32() {
         let expectation = self.expectation(description: "PASSED: BLLineString.bulkUpdate")
         let geometryObject1 = GeometryTestClass()
@@ -681,7 +766,7 @@ class BLLineStringTests: XCTestCase {
                     expectation.fulfill()
                 }, errorHandler: { fault in                    
                     XCTFail("\(fault.code): \(fault.message!)")  
-                XCTFail("\(fault.code): \(fault.message!)")
+                    XCTFail("\(fault.code): \(fault.message!)")
                 })
             }
         }, errorHandler: { fault in

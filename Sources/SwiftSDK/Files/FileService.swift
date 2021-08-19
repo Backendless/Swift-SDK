@@ -54,6 +54,39 @@ import Foundation
         })
     }
     
+    // backendlessPath should contain file name
+    public func upload(urlToFile: String, backendlessPath: String, responseHandler: ((BackendlessFile) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        upload(urlToFile: urlToFile, backendlessPath: backendlessPath, needOverwrite: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    // backendlessPath should contain file name
+    public func upload(urlToFile: String, backendlessPath: String, overwrite: Bool, responseHandler: ((BackendlessFile) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        upload(urlToFile: urlToFile, backendlessPath: backendlessPath, needOverwrite: overwrite, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    func upload(urlToFile: String, backendlessPath: String, needOverwrite: Bool?, responseHandler: ((BackendlessFile) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        let headers = ["Content-Type": "application/json"]
+        let parameters = ["url": urlToFile]
+        var restMethod = "files/\(backendlessPath)"
+        if needOverwrite != nil {
+            restMethod += "?overwrite=\(needOverwrite!)"
+        }
+        BackendlessRequestManager(restMethod: restMethod, httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: [String : String].self) {
+                
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else if let fileUrlDict = result as? [String : String],
+                        let fileUrl = fileUrlDict["fileURL"] {
+                    let backendlessFile = BackendlessFile()
+                    backendlessFile.fileUrl = fileUrl.replacingOccurrences(of: "\"", with: "")
+                    responseHandler(backendlessFile)
+                }
+            }
+        })
+    }
+    
     public func saveFile(fileName: String, filePath: String, base64Content: String, responseHandler: ((BackendlessFile) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         saveFile(fileName: fileName, filePath: filePath, base64FileContent: base64Content, overwrite: false, responseHandler: responseHandler, errorHandler: errorHandler)
     }
@@ -212,7 +245,7 @@ import Foundation
                     errorHandler(result as! Fault)
                 }
                 else if result is String,
-                    let intResult = Int(result as! String) {
+                        let intResult = Int(result as! String) {
                     responseHandler(intResult)
                 }
             }
@@ -240,7 +273,7 @@ import Foundation
                     errorHandler(result as! Fault)
                 }
                 else if result is String,
-                    let intResult = Int(result as! String) {
+                        let intResult = Int(result as! String) {
                     responseHandler(intResult)
                 }
             }

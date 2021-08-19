@@ -1,5 +1,13 @@
 # RELEASE HISTORY
 
+### ?, 2021
+* added methods to upload file from url:
+```
+func upload(urlToFile: String, backendlessPath: String, responseHandler: ((BackendlessFile) -> Void)!, errorHandler: ((Fault) -> Void)!)
+
+func upload(urlToFile: String, backendlessPath: String, overwrite: Bool, responseHandler: ((BackendlessFile) -> Void)!, errorHandler: ((Fault) -> Void)!)
+```
+
 ### 6.3.3 June 02, 2021
 * fixed app init with custom domain to accept domens both with protocol or without
 
@@ -45,15 +53,15 @@
 * added the `ofView()` method to the PersistenceService class
 * added methods to configure the URLSession for requests manually:
 ```
-public var useSharedUrlSession = false
+var useSharedUrlSession = false
 // true: URLSession is created only once for all requests
 // false: URLSession is created for every request
 
 // to setup URLSessionConfiguration manually for all you URLSession requests
-public func setupURLSessionConfig(_ config: URLSessionConfiguration)
+func setupURLSessionConfig(_ config: URLSessionConfiguration)
 
 // to setup URLSession manually for all you requests
-public func setupURLSession(_ session: URLSession)
+func setupURLSession(_ session: URLSession)
 ```
 
 ### 6.2.0 / January 14, 2021
@@ -220,7 +228,7 @@ func loginWithOauth1(providerName: String, token: String, tokenSecret: String, g
 * added Spatial Data support
 * added guest login with social account:
 ```
-public func loginWithFacebook(accessToken: String, guestUser: BackendlessUser, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!)
+func loginWithFacebook(accessToken: String, guestUser: BackendlessUser, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!)
 
 func loginWithTwitter(authToken: String, authTokenSecret: String, guestUser: BackendlessUser, fieldsMapping: [String: String], responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!)
 

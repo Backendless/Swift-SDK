@@ -24,10 +24,7 @@ import XCTest
 
 class DataUOWAddRelationTests: XCTestCase {
     
-    // !!!!!!! add tests where child result = the result of create/update
-    
-    /*private let backendless = Backendless.shared
-    private let testObjectsUtils = TestObjectsUtils.shared
+    private let backendless = Backendless.shared
     private let timeout: Double = 20.0
     private let tableName = "TestClass"
     private let childrenTableName = "ChildTestClass"
@@ -40,11 +37,16 @@ class DataUOWAddRelationTests: XCTestCase {
     
     func test_01_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
-        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
+        let testObject = ["name": "Bob", "age": 25] as [String : Any]
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
-            self.testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
+            var childTestObjects = [[String : Any]]()
+            for i in 0..<2 {
+                childTestObjects.append(["foo": "bar\(i)"])
+            }
+            Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
                 let uow = UnitOfWork()
                 let _ = uow.addToRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", childrenObjectIds: childrenObjectIds)
                 uow.execute(responseHandler: { uowResult in
@@ -52,11 +54,10 @@ class DataUOWAddRelationTests: XCTestCase {
                     XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
-                }, errorHandler: {  errorHandler: { fault in                    
-                    XCTFail("\(fault.code): \(fault.message!)")  
-                XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in
+                    XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in                
+            }, errorHandler: { fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
@@ -67,11 +68,16 @@ class DataUOWAddRelationTests: XCTestCase {
     
     func test_02_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
-        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
+        let testObject = ["name": "Bob", "age": 25] as [String : Any]
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
-            self.testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
+            var childTestObjects = [[String : Any]]()
+            for i in 0..<2 {
+                childTestObjects.append(["foo": "bar\(i)"])
+            }
+            Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
                 var children = [[String : Any]]()
                 for childObjectId in childrenObjectIds {
                     children.append(["objectId": childObjectId])
@@ -83,11 +89,10 @@ class DataUOWAddRelationTests: XCTestCase {
                     XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
-                }, errorHandler: {  errorHandler: { fault in                    
-                    XCTFail("\(fault.code): \(fault.message!)")  
-                XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in
+                    XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in                
+            }, errorHandler: { fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
@@ -98,11 +103,16 @@ class DataUOWAddRelationTests: XCTestCase {
     
     func test_03_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
-        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
+        let testObject = ["name": "Bob", "age": 25] as [String : Any]
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
-            self.testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
+            var childTestObjects = [[String : Any]]()
+            for i in 0..<2 {
+                childTestObjects.append(["foo": "bar\(i)"])
+            }
+            Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
                 var children = [ChildTestClass]()
                 for childObjectId in childrenObjectIds {
                     let child = ChildTestClass()
@@ -116,11 +126,10 @@ class DataUOWAddRelationTests: XCTestCase {
                     XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
-                }, errorHandler: {  errorHandler: { fault in                    
-                    XCTFail("\(fault.code): \(fault.message!)")  
-                XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in
+                    XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in                
+            }, errorHandler: { fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
@@ -131,12 +140,20 @@ class DataUOWAddRelationTests: XCTestCase {
     
     func test_04_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
-        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
+        let testObject = ["name": "Bob", "age": 25] as [String : Any]
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
             let uow = UnitOfWork()
-            let childrenObjects = self.testObjectsUtils.createChildTestClassObjects(numberOfObjects: 2)
+            
+            let child1 = ChildTestClass()
+            child1.foo = "foo1"
+            
+            let child2 = ChildTestClass()
+            child2.foo = "foo2"
+            
+            let childrenObjects = [child1, child2]
             let childrenResult = uow.bulkCreate(objectsToSave: childrenObjects)
             let _ = uow.addToRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", childrenResult: childrenResult)
             uow.execute(responseHandler: { uowResult in
@@ -144,7 +161,7 @@ class DataUOWAddRelationTests: XCTestCase {
                 XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
-            }, errorHandler: {  fault in                
+            }, errorHandler: {  fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
@@ -155,12 +172,17 @@ class DataUOWAddRelationTests: XCTestCase {
     
     func test_05_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
-        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
+        let testObject = ["name": "Bob", "age": 25] as [String : Any]
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
             let parentObject = ["objectId": parentObjectId as! String]
-            self.testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
+            var childTestObjects = [[String : Any]]()
+            for i in 0..<2 {
+                childTestObjects.append(["foo": "bar\(i)"])
+            }
+            Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
                 let uow = UnitOfWork()
                 let _ = uow.addToRelation(parentTableName: self.tableName, parentObject: parentObject, columnName: "children", childrenObjectIds: childrenObjectIds)
                 uow.execute(responseHandler: { uowResult in
@@ -168,11 +190,10 @@ class DataUOWAddRelationTests: XCTestCase {
                     XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
-                }, errorHandler: {  errorHandler: { fault in                    
-                    XCTFail("\(fault.code): \(fault.message!)")  
-                XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in
+                    XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in                
+            }, errorHandler: { fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
@@ -183,12 +204,17 @@ class DataUOWAddRelationTests: XCTestCase {
     
     func test_06_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
-        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
+        let testObject = ["name": "Bob", "age": 25] as [String : Any]
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
             let parentObject = ["objectId": parentObjectId as! String]
-            self.testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
+            var childTestObjects = [[String : Any]]()
+            for i in 0..<2 {
+                childTestObjects.append(["foo": "bar\(i)"])
+            }
+            Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
                 var children = [[String : Any]]()
                 for childObjectId in childrenObjectIds {
                     children.append(["objectId": childObjectId])
@@ -200,27 +226,31 @@ class DataUOWAddRelationTests: XCTestCase {
                     XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
-                }, errorHandler: {  errorHandler: { fault in                    
-                    XCTFail("\(fault.code): \(fault.message!)")  
-                XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in
+                    XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in                
+            }, errorHandler: { fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
-        }, errorHandler: { fault in
-            XCTFail("\(fault.code): \(fault.message!)")
-        })
+            }, errorHandler: { fault in
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func test_07_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
-        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
+        let testObject = ["name": "Bob", "age": 25] as [String : Any]
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
             let parentObject = ["objectId": parentObjectId as! String]
-            self.testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
+            var childTestObjects = [[String : Any]]()
+            for i in 0..<2 {
+                childTestObjects.append(["foo": "bar\(i)"])
+            }
+            Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
                 var children = [ChildTestClass]()
                 for childObjectId in childrenObjectIds {
                     let child = ChildTestClass()
@@ -234,11 +264,10 @@ class DataUOWAddRelationTests: XCTestCase {
                     XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
-                }, errorHandler: {  errorHandler: { fault in                    
-                    XCTFail("\(fault.code): \(fault.message!)")  
-                XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in
+                    XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in                
+            }, errorHandler: { fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
@@ -249,13 +278,21 @@ class DataUOWAddRelationTests: XCTestCase {
     
     func test_08_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
-        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
+        let testObject = ["name": "Bob", "age": 25] as [String : Any]
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
             let parentObject = ["objectId": parentObjectId as! String]
             let uow = UnitOfWork()
-            let childrenObjects = self.testObjectsUtils.createChildTestClassObjects(numberOfObjects: 2)
+            
+            let child1 = ChildTestClass()
+            child1.foo = "foo1"
+            
+            let child2 = ChildTestClass()
+            child2.foo = "foo2"
+            
+            let childrenObjects = [child1, child2]
             let childrenResult = uow.bulkCreate(objectsToSave: childrenObjects)
             let _ = uow.addToRelation(parentTableName: self.tableName, parentObject: parentObject, columnName: "children", childrenResult: childrenResult)
             uow.execute(responseHandler: { uowResult in
@@ -263,7 +300,7 @@ class DataUOWAddRelationTests: XCTestCase {
                 XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
-            }, errorHandler: {  fault in                
+            }, errorHandler: {  fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
@@ -274,13 +311,18 @@ class DataUOWAddRelationTests: XCTestCase {
     
     func test_09_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
-        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
+        let testObject = ["name": "Bob", "age": 25] as [String : Any]
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
             let parentObject = TestClass()
             parentObject.objectId = parentObjectId as? String
-            self.testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
+            var childTestObjects = [[String : Any]]()
+            for i in 0..<2 {
+                childTestObjects.append(["foo": "bar\(i)"])
+            }
+            Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
                 let uow = UnitOfWork()
                 let _ = uow.addToRelation(parentObject: parentObject, columnName: "children", childrenObjectIds: childrenObjectIds)
                 uow.execute(responseHandler: { uowResult in
@@ -288,11 +330,10 @@ class DataUOWAddRelationTests: XCTestCase {
                     XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
-                }, errorHandler: {  errorHandler: { fault in                    
-                    XCTFail("\(fault.code): \(fault.message!)")  
-                XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in
+                    XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in                
+            }, errorHandler: { fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
@@ -303,13 +344,18 @@ class DataUOWAddRelationTests: XCTestCase {
     
     func test_10_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
-        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
+        let testObject = ["name": "Bob", "age": 25] as [String : Any]
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
             let parentObject = TestClass()
             parentObject.objectId = parentObjectId as? String
-            self.testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
+            var childTestObjects = [[String : Any]]()
+            for i in 0..<2 {
+                childTestObjects.append(["foo": "bar\(i)"])
+            }
+            Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
                 var children = [[String : Any]]()
                 for childObjectId in childrenObjectIds {
                     children.append(["objectId": childObjectId])
@@ -321,11 +367,10 @@ class DataUOWAddRelationTests: XCTestCase {
                     XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
-                }, errorHandler: {  errorHandler: { fault in                    
-                    XCTFail("\(fault.code): \(fault.message!)")  
-                XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in
+                    XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in                
+            }, errorHandler: { fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
@@ -336,13 +381,18 @@ class DataUOWAddRelationTests: XCTestCase {
     
     func test_11_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
-        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
+        let testObject = ["name": "Bob", "age": 25] as [String : Any]
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
             let parentObject = TestClass()
             parentObject.objectId = parentObjectId as? String
-            self.testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
+            var childTestObjects = [[String : Any]]()
+            for i in 0..<2 {
+                childTestObjects.append(["foo": "bar\(i)"])
+            }
+            Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
                 var children = [ChildTestClass]()
                 for childObjectId in childrenObjectIds {
                     let child = ChildTestClass()
@@ -356,11 +406,10 @@ class DataUOWAddRelationTests: XCTestCase {
                     XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
-                }, errorHandler: {  errorHandler: { fault in                    
-                    XCTFail("\(fault.code): \(fault.message!)")  
-                XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in
+                    XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in                
+            }, errorHandler: { fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
@@ -371,14 +420,22 @@ class DataUOWAddRelationTests: XCTestCase {
     
     func test_12_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
-        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
+        let testObject = ["name": "Bob", "age": 25] as [String : Any]
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
             let parentObject = TestClass()
             parentObject.objectId = parentObjectId as? String
             let uow = UnitOfWork()
-            let childrenObjects = self.testObjectsUtils.createChildTestClassObjects(numberOfObjects: 2)
+            
+            let child1 = ChildTestClass()
+            child1.foo = "foo1"
+            
+            let child2 = ChildTestClass()
+            child2.foo = "foo2"
+            
+            let childrenObjects = [child1, child2]
             let childrenResult = uow.bulkCreate(objectsToSave: childrenObjects)
             let _ = uow.addToRelation(parentObject: parentObject, columnName: "children", childrenResult: childrenResult)
             uow.execute(responseHandler: { uowResult in
@@ -386,7 +443,7 @@ class DataUOWAddRelationTests: XCTestCase {
                 XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
-            }, errorHandler: {  fault in                
+            }, errorHandler: {  fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
@@ -398,16 +455,22 @@ class DataUOWAddRelationTests: XCTestCase {
     func test_13_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let uow = UnitOfWork()
-        let parentObject = testObjectsUtils.createTestClassObject()
+        let parentObject = TestClass()
+        parentObject.name = "Bob"
+        parentObject.age = 25
         let parentResult = uow.create(objectToSave: parentObject)
-        self.testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
+        var childTestObjects = [[String : Any]]()
+        for i in 0..<2 {
+            childTestObjects.append(["foo": "bar\(i)"])
+        }
+        Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
             let _ = uow.addToRelation(parentResult: parentResult, columnName: "children", childrenObjectIds: childrenObjectIds)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
                 XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
-            }, errorHandler: {  fault in                
+            }, errorHandler: {  fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
@@ -419,9 +482,15 @@ class DataUOWAddRelationTests: XCTestCase {
     func test_14_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let uow = UnitOfWork()
-        let parentObject = testObjectsUtils.createTestClassObject()
+        let parentObject = TestClass()
+        parentObject.name = "Bob"
+        parentObject.age = 25
         let parentResult = uow.create(objectToSave: parentObject)
-        self.testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
+        var childTestObjects = [[String : Any]]()
+        for i in 0..<2 {
+            childTestObjects.append(["foo": "bar\(i)"])
+        }
+        Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
             var children = [[String : Any]]()
             for childObjectId in childrenObjectIds {
                 children.append(["objectId": childObjectId])
@@ -432,7 +501,7 @@ class DataUOWAddRelationTests: XCTestCase {
                 XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
-            }, errorHandler: {  fault in                
+            }, errorHandler: {  fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
@@ -444,9 +513,15 @@ class DataUOWAddRelationTests: XCTestCase {
     func test_15_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let uow = UnitOfWork()
-        let parentObject = testObjectsUtils.createTestClassObject()
+        let parentObject = TestClass()
+        parentObject.name = "Bob"
+        parentObject.age = 25
         let parentResult = uow.create(objectToSave: parentObject)
-        self.testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
+        var childTestObjects = [[String : Any]]()
+        for i in 0..<2 {
+            childTestObjects.append(["foo": "bar\(i)"])
+        }
+        Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
             var children = [ChildTestClass]()
             for childObjectId in childrenObjectIds {
                 let child = ChildTestClass()
@@ -459,7 +534,7 @@ class DataUOWAddRelationTests: XCTestCase {
                 XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
-            }, errorHandler: {  fault in                
+            }, errorHandler: {  fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
@@ -471,9 +546,18 @@ class DataUOWAddRelationTests: XCTestCase {
     func test_16_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let uow = UnitOfWork()
-        let parentObject = testObjectsUtils.createTestClassObject()
+        let parentObject = TestClass()
+        parentObject.name = "Bob"
+        parentObject.age = 25
         let parentResult = uow.create(objectToSave: parentObject)
-        let children = testObjectsUtils.createChildTestClassObjects(numberOfObjects: 2)
+        
+        let child1 = ChildTestClass()
+        child1.foo = "foo1"
+        
+        let child2 = ChildTestClass()
+        child2.foo = "foo2"
+        
+        let children = [child1, child2]
         let childrenResult = uow.bulkCreate(objectsToSave: children)
         let _ = uow.addToRelation(parentResult: parentResult, columnName: "children", childrenResult: childrenResult)
         uow.execute(responseHandler: { uowResult in
@@ -490,17 +574,35 @@ class DataUOWAddRelationTests: XCTestCase {
     func test_17_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let uow = UnitOfWork()
-        let parentObjects = testObjectsUtils.createTestClassObjects(numberOfObjects: 3)
+        
+        let objectToSave1 = TestClass()
+        objectToSave1.name = "Bob"
+        objectToSave1.age = 25
+        
+        let objectToSave2 = TestClass()
+        objectToSave2.name = "Ann"
+        objectToSave2.age = 45
+        
+        let objectToSave3 = TestClass()
+        objectToSave3.name = "Jack"
+        objectToSave3.age = 26
+        
+        let parentObjects = [objectToSave1, objectToSave2, objectToSave3]
         let parentResult = uow.bulkCreate(objectsToSave: parentObjects)
         let parentValueRef = parentResult.resolveTo(resultIndex: 1)
-        testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
+        
+        var childTestObjects = [[String : Any]]()
+        for i in 0..<2 {
+            childTestObjects.append(["foo": "bar\(i)"])
+        }
+        Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
             let _ = uow.addToRelation(parentValueReference: parentValueRef, columnName: "children", childrenObjectIds: childrenObjectIds)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
                 XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
-            }, errorHandler: {  fault in                
+            }, errorHandler: {  fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
@@ -512,10 +614,16 @@ class DataUOWAddRelationTests: XCTestCase {
     func test_18_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let uow = UnitOfWork()
-        let parentObject = testObjectsUtils.createTestClassObject()
+        let parentObject = TestClass()
+        parentObject.name = "Bob"
+        parentObject.age = 25
         let parentCreateResult = uow.create(objectToSave: parentObject)
         let parentUpdateResult = uow.update(result: parentCreateResult, changes: ["age": 30])
-        testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
+        var childTestObjects = [[String : Any]]()
+        for i in 0..<2 {
+            childTestObjects.append(["foo": "bar\(i)"])
+        }
+        Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
             var children = [[String : Any]]()
             for childObjectId in childrenObjectIds {
                 children.append(["objectId": childObjectId])
@@ -526,7 +634,7 @@ class DataUOWAddRelationTests: XCTestCase {
                 XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
-            }, errorHandler: {  fault in                
+            }, errorHandler: {  fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
@@ -540,7 +648,11 @@ class DataUOWAddRelationTests: XCTestCase {
         let uow = UnitOfWork()
         let parentResult = uow.find(tableName: "TestClass", queryBuilder: nil)
         let parentValueRef = parentResult.resolveTo(resultIndex: 1)
-        testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
+        var childTestObjects = [[String : Any]]()
+        for i in 0..<2 {
+            childTestObjects.append(["foo": "bar\(i)"])
+        }
+        Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
             var children = [ChildTestClass]()
             for childObjectId in childrenObjectIds {
                 let child = ChildTestClass()
@@ -553,7 +665,7 @@ class DataUOWAddRelationTests: XCTestCase {
                 XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
-            }, errorHandler: {  fault in                
+            }, errorHandler: {  fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
@@ -565,7 +677,19 @@ class DataUOWAddRelationTests: XCTestCase {
     func test_20_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let uow = UnitOfWork()
-        let parentObjects = testObjectsUtils.createTestClassObjects(numberOfObjects: 3)
+        
+        let objectToSave1 = TestClass()
+        objectToSave1.name = "Bob"
+        objectToSave1.age = 25
+        
+        let objectToSave2 = TestClass()
+        objectToSave2.name = "Ann"
+        objectToSave2.age = 45
+        
+        let objectToSave3 = TestClass()
+        objectToSave3.name = "Jack"
+        objectToSave3.age = 26
+        let parentObjects = [objectToSave1, objectToSave2, objectToSave3]
         let parentResult = uow.bulkCreate(objectsToSave: parentObjects)
         let parentValueRef = parentResult.resolveTo(resultIndex: 1)
         let childrenResult = uow.find(tableName: childrenTableName, queryBuilder: nil)
@@ -583,7 +707,8 @@ class DataUOWAddRelationTests: XCTestCase {
     
     func test_21_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
-        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
+        let testObject = ["name": "Bob", "age": 25] as [String : Any]
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -594,7 +719,7 @@ class DataUOWAddRelationTests: XCTestCase {
                 XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
-            }, errorHandler: {  fault in                
+            }, errorHandler: {  fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
@@ -605,7 +730,8 @@ class DataUOWAddRelationTests: XCTestCase {
     
     func test_22_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
-        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
+        let testObject = ["name": "Bob", "age": 25] as [String : Any]
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -617,7 +743,7 @@ class DataUOWAddRelationTests: XCTestCase {
                 XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
-            }, errorHandler: {  fault in                
+            }, errorHandler: {  fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
@@ -628,7 +754,8 @@ class DataUOWAddRelationTests: XCTestCase {
     
     func test_23_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
-        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
+        let testObject = ["name": "Bob", "age": 25] as [String : Any]
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -641,7 +768,7 @@ class DataUOWAddRelationTests: XCTestCase {
                 XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
-            }, errorHandler: {  fault in                
+            }, errorHandler: {  fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
@@ -653,7 +780,9 @@ class DataUOWAddRelationTests: XCTestCase {
     func test_24_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let uow = UnitOfWork()
-        let parentObject = testObjectsUtils.createTestClassObject()
+        let parentObject = TestClass()
+        parentObject.name = "Bob"
+        parentObject.age = 25
         let parentResult = uow.create(objectToSave: parentObject)
         let _ = uow.addToRelation(parentResult: parentResult, columnName: "children", whereClauseForChildren: "foo='foo1'")
         uow.execute(responseHandler: { uowResult in
@@ -672,7 +801,20 @@ class DataUOWAddRelationTests: XCTestCase {
         let children = [["foo": "childFoo"], ["foo": "childFoo"]]
         Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: children, responseHandler: { createdIds in
             let uow = UnitOfWork()
-            let parentsObjects = self.testObjectsUtils.createTestClassObjects(numberOfObjects: 3)
+            
+            let objectToSave1 = TestClass()
+            objectToSave1.name = "Bob"
+            objectToSave1.age = 25
+            
+            let objectToSave2 = TestClass()
+            objectToSave2.name = "Ann"
+            objectToSave2.age = 45
+            
+            let objectToSave3 = TestClass()
+            objectToSave3.name = "Jack"
+            objectToSave3.age = 26
+            
+            let parentsObjects = [objectToSave1, objectToSave2, objectToSave3]
             let parentResult = uow.bulkCreate(objectsToSave: parentsObjects)
             let parentValueRef = parentResult.resolveTo(resultIndex: 1)
             let _ = uow.addToRelation(parentValueReference: parentValueRef, columnName: "children", whereClauseForChildren: "foo='childFoo'")
@@ -688,5 +830,31 @@ class DataUOWAddRelationTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
-    }*/
+    }
+
+    func test_26_addRelation() {
+        let expectation = self.expectation(description: "PASSED: uow.addRelation")
+        let testObject = ["name": "Bob", "age": 25] as [String : Any]
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+            let parentObjectId = createdObject["objectId"]
+            XCTAssertNotNil(parentObjectId)
+            XCTAssert(parentObjectId is String)
+            let uow = UnitOfWork()
+            let child = ChildTestClass()
+            child.foo = "foo1"
+            let childrenResult = uow.create(objectToSave: child)
+            let _ = uow.addToRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", childrenResult: childrenResult)
+            uow.execute(responseHandler: { uowResult in
+                XCTAssertNil(uowResult.error)
+                XCTAssertTrue(uowResult.isSuccess)
+                XCTAssertNotNil(uowResult.results)
+                expectation.fulfill()
+            }, errorHandler: {  fault in
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }        
 }
