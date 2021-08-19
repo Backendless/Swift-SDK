@@ -353,14 +353,22 @@ import Foundation
     }
     
     public func sendEmailFromTemplate(templateName: String, envelope: EmailEnvelope, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        sendEmailsTemplate(templateName: templateName, envelope: envelope, templateValues: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+        sendEmailsTemplate(templateName: templateName, envelope: envelope, templateValues: nil, attachments: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    public func sendEmailFromTemplate(templateName: String, envelope: EmailEnvelope, attachments: [String], responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        sendEmailsTemplate(templateName: templateName, envelope: envelope, templateValues: nil, attachments: attachments, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     public func sendEmailFromTemplate(templateName: String, envelope: EmailEnvelope, templateValues: [String : String], responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        sendEmailsTemplate(templateName: templateName, envelope: envelope, templateValues: templateValues, responseHandler: responseHandler, errorHandler: errorHandler)
+        sendEmailsTemplate(templateName: templateName, envelope: envelope, templateValues: templateValues, attachments: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    private func sendEmailsTemplate(templateName: String, envelope: EmailEnvelope, templateValues: [String : String]?,  responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func sendEmailFromTemplate(templateName: String, envelope: EmailEnvelope, templateValues: [String : String], attachments: [String], responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        sendEmailsTemplate(templateName: templateName, envelope: envelope, templateValues: templateValues, attachments: attachments, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    private func sendEmailsTemplate(templateName: String, envelope: EmailEnvelope, templateValues: [String : String]?, attachments: [String]?, responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         var parameters = [String : Any]()        
         parameters["template-name"] = templateName
@@ -370,6 +378,9 @@ import Foundation
         parameters["criteria"] = envelope.query
         if let templateValues = templateValues {
             parameters["template-values"] = templateValues
+        }
+        if let attachments = attachments {
+            parameters["attachment"] = attachments
         }
         BackendlessRequestManager(restMethod: "emailtemplate/send", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = ProcessResponse.shared.adapt(response: response, to: MessageStatus.self) {
