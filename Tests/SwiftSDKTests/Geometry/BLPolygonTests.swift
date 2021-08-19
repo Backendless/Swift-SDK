@@ -110,7 +110,7 @@ class BLPolygonTests: XCTestCase {
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
-
+    
     func testPG05() {
         let expectation = self.expectation(description: "PASSED: BLPolygon.create")
         let geometryObject = GeometryTestClass()
@@ -122,15 +122,33 @@ class BLPolygonTests: XCTestCase {
         let boundary = BLLineString(points: [point1, point2, point3, point4, point5])
         geometryObject.polygon = BLPolygon(boundary: boundary, holes: nil)
         dataStore.save(entity: geometryObject, responseHandler: { savedObject in
-            XCTAssert(savedObject is GeometryTestClass)
-            let polygon = (savedObject as! GeometryTestClass).polygon
-            XCTAssertNotNil(polygon)
-            expectation.fulfill()
+            XCTFail("Longitude must be within (-180.000000, 180.000000]")
         }, errorHandler: { fault in
-            XCTFail("\(fault.code): \(fault.message!)")
+            expectation.fulfill()
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
+
+//    func testPG05() {
+//        let expectation = self.expectation(description: "PASSED: BLPolygon.create")
+//        let geometryObject = GeometryTestClass()
+//        let point1 = BLPoint(x: 180.1, y: 90)
+//        let point2 = BLPoint(x: -180, y: -180)
+//        let point3 = BLPoint(x: 180.1, y: -90)
+//        let point4 = BLPoint(x: -180, y: 90)
+//        let point5 = BLPoint(x: 180.1, y: 90)
+//        let boundary = BLLineString(points: [point1, point2, point3, point4, point5])
+//        geometryObject.polygon = BLPolygon(boundary: boundary, holes: nil)
+//        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+//            XCTAssert(savedObject is GeometryTestClass)
+//            let polygon = (savedObject as! GeometryTestClass).polygon
+//            XCTAssertNotNil(polygon)
+//            expectation.fulfill()
+//        }, errorHandler: { fault in
+//            XCTFail("\(fault.code): \(fault.message!)")
+//        })
+//        waitForExpectations(timeout: timeout, handler: nil)
+//    }
     
     // PG06-PG07: create polygon with points where longitude and/or latitude is null
     // Swift-SDK doesn't allow to create BLPoint with null values
@@ -488,13 +506,38 @@ class BLPolygonTests: XCTestCase {
         let boundary2 = BLLineString(points: [point2_1, point2_2, point2_3, point2_4])
         geometryObject2.polygon = BLPolygon(boundary: boundary2, holes: nil)
         dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
-            XCTAssert(createdIds.count == 2)
-            expectation.fulfill()
+            XCTFail("Longitude must be within (-180.000000, 180.000000]")
         }, errorHandler: { fault in
-            XCTFail("\(fault.code): \(fault.message!)")
+            expectation.fulfill()
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
+    
+//    func testPG28() {
+//        let expectation = self.expectation(description: "PASSED: BLPolygon.bulkCreate")
+//        let geometryObject1 = GeometryTestClass()
+//        let point1_1 = BLPoint(x: 180.1, y: 90)
+//        let point1_2 = BLPoint(x: -180, y: -180)
+//        let point1_3 = BLPoint(x: 180.1, y: -90)
+//        let point1_4 = BLPoint(x: -180, y: 90)
+//        let point1_5 = BLPoint(x: 180.1, y: 90)
+//        let boundary1 = BLLineString(points: [point1_1, point1_2, point1_3, point1_4, point1_5])
+//        geometryObject1.polygon = BLPolygon(boundary: boundary1, holes: nil)
+//        let geometryObject2 = GeometryTestClass()
+//        let point2_1 = BLPoint(x: -109.93894725, y: 36.23085088)
+//        let point2_2 = BLPoint(x: -102.20457225, y: 48.03758415)
+//        let point2_3 = BLPoint(x: -90.075666, y: 36.65506981)
+//        let point2_4 = BLPoint(x: -109.93894725, y: 36.23085088)
+//        let boundary2 = BLLineString(points: [point2_1, point2_2, point2_3, point2_4])
+//        geometryObject2.polygon = BLPolygon(boundary: boundary2, holes: nil)
+//        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+//            XCTAssert(createdIds.count == 2)
+//            expectation.fulfill()
+//        }, errorHandler: { fault in
+//            XCTFail("\(fault.code): \(fault.message!)")
+//        })
+//        waitForExpectations(timeout: timeout, handler: nil)
+//    }
     
     // PG29-PG30: bulk create polygon with points where longitude and/or latitude is null
     // Swift-SDK doesn't allow to create BLPoint with null values
@@ -690,34 +733,65 @@ class BLPolygonTests: XCTestCase {
             let updBoundary = BLLineString(points: [updPoint1, updPoint2, updPoint3, updPoint4])
             (savedObject as! GeometryTestClass).polygon = BLPolygon(boundary: updBoundary, holes: nil)
             self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
-                XCTAssert(updatedObject is GeometryTestClass)
-                let polygon = (updatedObject as! GeometryTestClass).polygon
-                XCTAssertNotNil(polygon)
-                XCTAssertNotNil(polygon?.boundary)
-                XCTAssert(polygon!.boundary!.points.count == 4)
-                for i in 0..<polygon!.boundary!.points.count {
-                    if i == 0 || i == 3 {
-                        XCTAssert(polygon!.boundary!.points[0].x == 0)
-                        XCTAssert(polygon!.boundary!.points[0].y == 0)
-                    }
-                    else if i == 1 {
-                        XCTAssert(polygon!.boundary!.points[1].x == 180)
-                        XCTAssert(polygon!.boundary!.points[1].y == 180)
-                    }
-                    else {
-                        XCTAssert(polygon!.boundary!.points[2].x == 1)
-                        XCTAssert(polygon!.boundary!.points[2].y == 5)
-                    }
-                }
+                XCTFail("Latitude must be within [-90.000000, 90.000000]")
+            }, errorHandler: { fault in
                 expectation.fulfill()
-            }, errorHandler: { fault in                
-                XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
+    
+//    func testPG37() {
+//        let expectation = self.expectation(description: "PASSED: BLPolygon.update")
+//        let geometryObject = GeometryTestClass()
+//        let point1 = BLPoint(x: -113.45457225, y: 42.60554422)
+//        let point2 = BLPoint(x: -93.54484867, y: 45.8268307)
+//        let point3 = BLPoint(x: -106.20109867, y: 34.15948052)
+//        let point4 = BLPoint(x: -113.45457225, y: 42.60554422)
+//        let boundary = BLLineString(points: [point1, point2, point3, point4])
+//        geometryObject.polygon = BLPolygon(boundary: boundary, holes: nil)
+//        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+//            let polygon = (savedObject as! GeometryTestClass).polygon
+//            XCTAssertNotNil(polygon)
+//            XCTAssertNotNil(polygon?.boundary)
+//            XCTAssertNil(polygon?.holes)
+//            let updPoint1 = BLPoint(x: 0, y: 0)
+//            let updPoint2 = BLPoint(x: 180, y: 180)
+//            let updPoint3 = BLPoint(x: 1, y: 5)
+//            let updPoint4 = BLPoint(x: 0, y: 0)
+//            let updBoundary = BLLineString(points: [updPoint1, updPoint2, updPoint3, updPoint4])
+//            (savedObject as! GeometryTestClass).polygon = BLPolygon(boundary: updBoundary, holes: nil)
+//            self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
+//                XCTAssert(updatedObject is GeometryTestClass)
+//                let polygon = (updatedObject as! GeometryTestClass).polygon
+//                XCTAssertNotNil(polygon)
+//                XCTAssertNotNil(polygon?.boundary)
+//                XCTAssert(polygon!.boundary!.points.count == 4)
+//                for i in 0..<polygon!.boundary!.points.count {
+//                    if i == 0 || i == 3 {
+//                        XCTAssert(polygon!.boundary!.points[0].x == 0)
+//                        XCTAssert(polygon!.boundary!.points[0].y == 0)
+//                    }
+//                    else if i == 1 {
+//                        XCTAssert(polygon!.boundary!.points[1].x == 180)
+//                        XCTAssert(polygon!.boundary!.points[1].y == 180)
+//                    }
+//                    else {
+//                        XCTAssert(polygon!.boundary!.points[2].x == 1)
+//                        XCTAssert(polygon!.boundary!.points[2].y == 5)
+//                    }
+//                }
+//                expectation.fulfill()
+//            }, errorHandler: { fault in
+//                XCTFail("\(fault.code): \(fault.message!)")
+//            })
+//        }, errorHandler: { fault in
+//            XCTFail("\(fault.code): \(fault.message!)")
+//        })
+//        waitForExpectations(timeout: timeout, handler: nil)
+//    }
     
     // PG38: update polygon with points where longitude and/or latitude is null
     // Swift-SDK doesn't allow to create BLPoint with null values

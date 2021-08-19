@@ -24,8 +24,7 @@ import XCTest
 
 class DataUOWBulkCreateTests: XCTestCase {
     
-    /*private let backendless = Backendless.shared
-    private let testObjectsUtils = TestObjectsUtils.shared
+    private let backendless = Backendless.shared
     private let timeout: Double = 20.0
     private let tableName = "TestClass"
     private let tableName1 = "TestClass1"
@@ -48,7 +47,7 @@ class DataUOWBulkCreateTests: XCTestCase {
     
     func test_01_bulkCreate() {
         let expectation = self.expectation(description: "PASSED: uow.bulkCreate")
-        let objectsToSave = testObjectsUtils.createTestClassDictionaries(numberOfObjects: 3)
+        let objectsToSave = [["name": "Bob", "age": 25], ["name": "Ann", "age": 45], ["name": "Jack", "age": 26]]
         let uow = UnitOfWork()
         let _ = uow.bulkCreate(tableName: tableName, objectsToSave: objectsToSave)
         uow.execute(responseHandler: { uowResult in
@@ -64,7 +63,20 @@ class DataUOWBulkCreateTests: XCTestCase {
     
     func test_02_bulkCreate() {
         let expectation = self.expectation(description: "PASSED: uow.bulkCreate")
-        let objectsToSave = testObjectsUtils.createTestClassObjects(numberOfObjects: 3)
+        
+        let objectToSave1 = TestClass()
+        objectToSave1.name = "Bob"
+        objectToSave1.age = 25
+        
+        let objectToSave2 = TestClass()
+        objectToSave2.name = "Ann"
+        objectToSave2.age = 45
+        
+        let objectToSave3 = TestClass()
+        objectToSave3.name = "Jack"
+        objectToSave3.age = 26
+        
+        let objectsToSave = [objectToSave1, objectToSave2, objectToSave3]
         let uow = UnitOfWork()
         let _ = uow.bulkCreate(objectsToSave: objectsToSave)
         uow.execute(responseHandler: { uowResult in
@@ -99,7 +111,20 @@ class DataUOWBulkCreateTests: XCTestCase {
     
     func test_04_bulkCreate() {
         let expectation = self.expectation(description: "PASSED: uow.bulkCreate")
-        let objectsToSave = testObjectsUtils.createTestClassObjects(numberOfObjects: 3)
+        
+        let objectToSave1 = TestClass()
+        objectToSave1.name = "Bob"
+        objectToSave1.age = 25
+        
+        let objectToSave2 = TestClass()
+        objectToSave2.name = "Ann"
+        objectToSave2.age = 45
+        
+        let objectToSave3 = TestClass()
+        objectToSave3.name = "Jack"
+        objectToSave3.age = 26
+        
+        let objectsToSave = [objectToSave1, objectToSave2, objectToSave3]
         let uow = UnitOfWork()
         let bulkCreateResult = uow.bulkCreate(objectsToSave: objectsToSave)
         let _ = uow.bulkCreate(tableName: tableName1, objectsToSave: [["objectId": bulkCreateResult.resolveTo(resultIndex: 1)]])
@@ -116,7 +141,8 @@ class DataUOWBulkCreateTests: XCTestCase {
     
     func test_05_bulkCreate() {
         let expectation = self.expectation(description: "PASSED: uow.bulkCreate")
-        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
+        let testObject = ["name": "Bob", "age": 25] as [String : Any]
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
             var objectToUpdate = createdObject
             objectToUpdate["age"] = 30
             let uow = UnitOfWork()
@@ -127,7 +153,7 @@ class DataUOWBulkCreateTests: XCTestCase {
                 XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
-            }, errorHandler: {  fault in                
+            }, errorHandler: {  fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
@@ -138,7 +164,8 @@ class DataUOWBulkCreateTests: XCTestCase {
     
     func test_06_bulkCreate() {
         let expectation = self.expectation(description: "PASSED: uow.bulkCreate")
-        testObjectsUtils.bulkCreateTestClassObjects(responseHandler: { objectIds in
+        let testObjects = [["name": "Bob", "age": 25], ["name": "Ann", "age": 45], ["name": "Jack", "age": 26]]
+        Backendless.shared.data.ofTable("TestClass").createBulk(entities: testObjects, responseHandler: { objectIds in
             let uow = UnitOfWork()
             let bulkUpdateResult = uow.bulkUpdate(tableName: self.tableName, objectsToUpdate: objectIds, changes: ["age": 30])
             let _ = uow.bulkCreate(tableName: self.tableName, objectsToSave: [["age": bulkUpdateResult]])
@@ -147,7 +174,7 @@ class DataUOWBulkCreateTests: XCTestCase {
                 XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
-            }, errorHandler: {  fault in                
+            }, errorHandler: {  fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
@@ -158,7 +185,8 @@ class DataUOWBulkCreateTests: XCTestCase {
     
     func test_07_bulkCreate() {
         let expectation = self.expectation(description: "PASSED: uow.bulkCreate")
-        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
+        let testObject = ["name": "Bob", "age": 25] as [String : Any]
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
             let uow = UnitOfWork()
             let deleteResult = uow.delete(tableName: self.tableName, objectToDelete: createdObject)
             let _ = uow.bulkCreate(tableName: self.tableName, objectsToSave: [["age": deleteResult]])
@@ -167,7 +195,7 @@ class DataUOWBulkCreateTests: XCTestCase {
                 XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
-            }, errorHandler: {  fault in                
+            }, errorHandler: {  fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
@@ -178,7 +206,8 @@ class DataUOWBulkCreateTests: XCTestCase {
     
     func test_08_bulkCreate() {
         let expectation = self.expectation(description: "PASSED: uow.bulkCreate")
-        testObjectsUtils.bulkCreateTestClassObjects(responseHandler: { objectIds in
+        let testObjects = [["name": "Bob", "age": 25], ["name": "Ann", "age": 45], ["name": "Jack", "age": 26]]
+        Backendless.shared.data.ofTable("TestClass").createBulk(entities: testObjects, responseHandler: { objectIds in
             let uow = UnitOfWork()
             let bulkDeleteResult = uow.bulkDelete(tableName: self.tableName, objectIdValues: objectIds)
             let _ = uow.bulkCreate(tableName: self.tableName, objectsToSave: [["age": bulkDeleteResult]])
@@ -187,7 +216,7 @@ class DataUOWBulkCreateTests: XCTestCase {
                 XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
-            }, errorHandler: {  fault in                
+            }, errorHandler: {  fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
@@ -214,11 +243,16 @@ class DataUOWBulkCreateTests: XCTestCase {
     
     func test_10_bulkCreate() {
         let expectation = self.expectation(description: "PASSED: uow.bulkCreate")
-        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
+        let testObject = ["name": "Bob", "age": 25] as [String : Any]
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
-            self.testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
+            var childTestObjects = [[String : Any]]()
+            for i in 0..<2 {
+                childTestObjects.append(["foo": "bar\(i)"])
+            }
+            Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
                 let uow = UnitOfWork()
                 let addRelationResult = uow.addToRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", childrenObjectIds: childrenObjectIds)
                 let _ = uow.bulkCreate(tableName: self.tableName, objectsToSave: [["age": addRelationResult]])
@@ -227,11 +261,11 @@ class DataUOWBulkCreateTests: XCTestCase {
                     XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
-                }, errorHandler: {  errorHandler: { fault in                    
-                    XCTFail("\(fault.code): \(fault.message!)")  
-                XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in
+                    XCTFail("\(fault.code): \(fault.message!)")
+                    XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in                
+            }, errorHandler: { fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
@@ -242,11 +276,16 @@ class DataUOWBulkCreateTests: XCTestCase {
     
     func test_11_bulkCreate() {
         let expectation = self.expectation(description: "PASSED: uow.bulkCreate")
-        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
+        let testObject = ["name": "Bob", "age": 25] as [String : Any]
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
-            self.testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
+            var childTestObjects = [[String : Any]]()
+            for i in 0..<2 {
+                childTestObjects.append(["foo": "bar\(i)"])
+            }
+            Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
                 let uow = UnitOfWork()
                 let setRelationResult = uow.setRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", childrenObjectIds: childrenObjectIds)
                 let _ = uow.bulkCreate(tableName: self.tableName, objectsToSave: [["age": setRelationResult]])
@@ -255,11 +294,11 @@ class DataUOWBulkCreateTests: XCTestCase {
                     XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
-                }, errorHandler: {  errorHandler: { fault in                    
-                    XCTFail("\(fault.code): \(fault.message!)")  
-                XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in
+                    XCTFail("\(fault.code): \(fault.message!)")
+                    XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in                
+            }, errorHandler: { fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
@@ -270,11 +309,16 @@ class DataUOWBulkCreateTests: XCTestCase {
     
     func test_12_bulkCreate() {
         let expectation = self.expectation(description: "PASSED: uow.bulkCreate")
-        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
+        let testObject = ["name": "Bob", "age": 25] as [String : Any]
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
-            self.testObjectsUtils.bulkCreateChildTestClassObjects(responseHandler: { childrenObjectIds in
+            var childTestObjects = [[String : Any]]()
+            for i in 0..<2 {
+                childTestObjects.append(["foo": "bar\(i)"])
+            }
+            Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
                 let uow = UnitOfWork()
                 let _ = uow.setRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", childrenObjectIds: childrenObjectIds)
                 let deleteRelationResult = uow.deleteRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", childrenObjectIds: childrenObjectIds)
@@ -284,16 +328,15 @@ class DataUOWBulkCreateTests: XCTestCase {
                     XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
-                }, errorHandler: {  errorHandler: { fault in                    
-                    XCTFail("\(fault.code): \(fault.message!)")  
-                XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in
+                    XCTFail("\(fault.code): \(fault.message!)")
                 })
-            }, errorHandler: { fault in                
+            }, errorHandler: { fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
-    }*/
+    }
 }

@@ -129,4 +129,18 @@ class FileServiceTests: XCTestCase {
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
+    
+    func test09UploadFromUrl() {
+        let expectation = self.expectation(description: "PASSED: fileService.upload")
+        backendless.file.upload(urlToFile: "http://www.africau.edu/images/default/sample.pdf",
+                                       backendlessPath: "uploads/sample.pdf",
+                                       overwrite: true,
+                                       responseHandler: { file in
+                                        expectation.fulfill()
+                                       },
+                                       errorHandler: { fault in
+                                        XCTFail("\(fault.code): \(fault.message!)")
+                                       })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
 }

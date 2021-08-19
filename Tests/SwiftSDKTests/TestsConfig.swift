@@ -21,6 +21,6 @@
 
 struct BackendlessAppConfig {    
     static let hostUrl = "http://apitest.backendless.com"
-    static let appId = "B7250A42-45F0-720B-FFA6-0FF2C80B2800"
-    static let apiKey = "CC4A6023-C941-4363-B9E8-91E716AB56F4"
+    static let appId = "97F21450-EE2B-66E1-FFF2-529FB5F4AD00"
+    static let apiKey = "D2968018-EAD2-4286-B138-6FDA0412EFB7"
 }

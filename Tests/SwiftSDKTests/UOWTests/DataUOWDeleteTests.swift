@@ -24,8 +24,7 @@ import XCTest
 
 class DataUOWDeleteTests: XCTestCase {
     
-    /*private let backendless = Backendless.shared
-    private let testObjectsUtils = TestObjectsUtils.shared
+    private let backendless = Backendless.shared
     private let timeout: Double = 20.0    
     private let tableName = "TestClass"
     
@@ -37,7 +36,8 @@ class DataUOWDeleteTests: XCTestCase {
     
     func test_01_delete() {
         let expectation = self.expectation(description: "PASSED: uow.delete")
-        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
+        let testObject = ["name": "Bob", "age": 25] as [String : Any]
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
             let uow = UnitOfWork()
             let _ = uow.delete(tableName: self.tableName, objectToDelete: createdObject)
             DispatchQueue.main.asyncAfter(deadline: .now() + 4, execute: {
@@ -46,9 +46,8 @@ class DataUOWDeleteTests: XCTestCase {
                     XCTAssertTrue(uowResult.isSuccess)
                     XCTAssertNotNil(uowResult.results)
                     expectation.fulfill()
-                }, errorHandler: {  errorHandler: { fault in                    
-                    XCTFail("\(fault.code): \(fault.message!)")  
-                XCTFail("\(fault.code): \(fault.message!)")
+                }, errorHandler: { fault in
+                    XCTFail("\(fault.code): \(fault.message!)")
                 })
             })
         }, errorHandler: { fault in
@@ -59,7 +58,10 @@ class DataUOWDeleteTests: XCTestCase {
     
     func test_02_delete() {
         let expectation = self.expectation(description: "PASSED: uow.delete")
-        testObjectsUtils.createTestClassObject(responseHandler: { createdObject in
+        let testObject = TestClass()
+        testObject.name = "Bob"
+        testObject.age = 25
+        Backendless.shared.data.of(TestClass.self).save(entity: testObject, responseHandler: { createdObject in
             let uow = UnitOfWork()
             let _ = uow.delete(objectToDelete: createdObject)
             uow.execute(responseHandler: { uowResult in
@@ -67,7 +69,7 @@ class DataUOWDeleteTests: XCTestCase {
                 XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
-            }, errorHandler: {  fault in                
+            }, errorHandler: { fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
@@ -78,7 +80,8 @@ class DataUOWDeleteTests: XCTestCase {
     
     func test_03_delete() {
         let expectation = self.expectation(description: "PASSED: uow.delete")
-        testObjectsUtils.createTestClassDictionary(responseHandler: { createdObject in
+        let testObject = ["name": "Bob", "age": 25] as [String : Any]
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
             let uow = UnitOfWork()
             let objectId = createdObject["objectId"]
             XCTAssertNotNil(objectId)
@@ -89,7 +92,7 @@ class DataUOWDeleteTests: XCTestCase {
                 XCTAssertTrue(uowResult.isSuccess)
                 XCTAssertNotNil(uowResult.results)
                 expectation.fulfill()
-            }, errorHandler: {  fault in                
+            }, errorHandler: {  fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
@@ -101,7 +104,7 @@ class DataUOWDeleteTests: XCTestCase {
     func test_04_delete() {
         let expectation = self.expectation(description: "PASSED: uow.delete")
         let uow = UnitOfWork()
-        let objectToSave = testObjectsUtils.createTestClassDictionary()
+        let objectToSave = ["name": "Bob", "age": 25] as [String : Any]
         let createResult = uow.create(tableName: tableName, objectToSave: objectToSave)
         let _ = uow.delete(result: createResult)
         uow.execute(responseHandler: { uowResult in
@@ -118,7 +121,20 @@ class DataUOWDeleteTests: XCTestCase {
     func test_05_delete() {
         let expectation = self.expectation(description: "PASSED: uow.delete")
         let uow = UnitOfWork()
-        let objectsToSave = testObjectsUtils.createTestClassObjects(numberOfObjects: 3)
+        
+        let objectToSave1 = TestClass()
+        objectToSave1.name = "Bob"
+        objectToSave1.age = 25
+        
+        let objectToSave2 = TestClass()
+        objectToSave2.name = "Ann"
+        objectToSave2.age = 45
+        
+        let objectToSave3 = TestClass()
+        objectToSave3.name = "Jack"
+        objectToSave3.age = 26
+        
+        let objectsToSave = [objectToSave1, objectToSave2, objectToSave3]
         let bulkCreateResult = uow.bulkCreate(objectsToSave: objectsToSave)
         let _ = uow.delete(valueReference: bulkCreateResult.resolveTo(resultIndex: 1))
         uow.execute(responseHandler: { uowResult in
@@ -135,7 +151,7 @@ class DataUOWDeleteTests: XCTestCase {
     func test_06_delete() {
         let expectation = self.expectation(description: "PASSED: uow.delete")
         let uow = UnitOfWork()
-        let objectToSave = testObjectsUtils.createTestClassDictionary()
+        let objectToSave = ["name": "Bob", "age": 25] as [String : Any]
         let createResult = uow.create(tableName: tableName, objectToSave: objectToSave)
         let updateResult = uow.update(result: createResult, changes: ["age": 30])
         let _ = uow.delete(result: updateResult)
@@ -164,5 +180,5 @@ class DataUOWDeleteTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
-    }*/
+    }
 }

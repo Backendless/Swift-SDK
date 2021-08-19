@@ -122,45 +122,81 @@ class BLPointTests: XCTestCase {
         let geometryObject = GeometryTestClass()
         geometryObject.point = BLPoint(x: -180.1, y: 90.1)
         dataStore.save(entity: geometryObject, responseHandler: { savedObject in
-            XCTAssert(savedObject is GeometryTestClass)
-            let point = (savedObject as! GeometryTestClass).point
-            XCTAssertNotNil(point)
-            expectation.fulfill()
+            XCTFail("Longitude must be within (-180.000000, 180.000000]")
         }, errorHandler: { fault in
-            XCTFail("\(fault.code): \(fault.message!)")
+            expectation.fulfill()
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
+    
+//    func testPT06() {
+//        let expectation = self.expectation(description: "PASSED: BLPoint.create")
+//        let geometryObject = GeometryTestClass()
+//        geometryObject.point = BLPoint(x: -180.1, y: 90.1)
+//        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+//            XCTAssert(savedObject is GeometryTestClass)
+//            let point = (savedObject as! GeometryTestClass).point
+//            XCTAssertNotNil(point)
+//            expectation.fulfill()
+//        }, errorHandler: { fault in
+//            XCTFail("\(fault.code): \(fault.message!)")
+//        })
+//        waitForExpectations(timeout: timeout, handler: nil)
+//    }
     
     func testPT07() {
         let expectation = self.expectation(description: "PASSED: BLPoint.create")
         let geometryObject = GeometryTestClass()
         geometryObject.point = BLPoint(x: 180.1, y: 90)
         dataStore.save(entity: geometryObject, responseHandler: { savedObject in
-            XCTAssert(savedObject is GeometryTestClass)
-            let point = (savedObject as! GeometryTestClass).point
-            XCTAssertNotNil(point)
-            expectation.fulfill()
+            XCTFail("Longitude must be within (-180.000000, 180.000000]")
         }, errorHandler: { fault in
-            XCTFail("\(fault.code): \(fault.message!)")
+            expectation.fulfill()
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
+    
+//    func testPT07() {
+//        let expectation = self.expectation(description: "PASSED: BLPoint.create")
+//        let geometryObject = GeometryTestClass()
+//        geometryObject.point = BLPoint(x: 180.1, y: 90)
+//        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+//            XCTAssert(savedObject is GeometryTestClass)
+//            let point = (savedObject as! GeometryTestClass).point
+//            XCTAssertNotNil(point)
+//            expectation.fulfill()
+//        }, errorHandler: { fault in
+//            XCTFail("\(fault.code): \(fault.message!)")
+//        })
+//        waitForExpectations(timeout: timeout, handler: nil)
+//    }
     
     func testPT08() {
         let expectation = self.expectation(description: "PASSED: BLPoint.create")
         let geometryObject = GeometryTestClass()
         geometryObject.point = BLPoint(x: 78, y: 90.1)
         dataStore.save(entity: geometryObject, responseHandler: { savedObject in
-            XCTAssert(savedObject is GeometryTestClass)
-            let point = (savedObject as! GeometryTestClass).point
-            XCTAssertNotNil(point)
-            expectation.fulfill()
+            XCTFail("Latitude must be within [-90.000000, 90.000000]")
         }, errorHandler: { fault in
-            XCTFail("\(fault.code): \(fault.message!)")
+            expectation.fulfill()
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
+    
+//    func testPT08() {
+//        let expectation = self.expectation(description: "PASSED: BLPoint.create")
+//        let geometryObject = GeometryTestClass()
+//        geometryObject.point = BLPoint(x: 78, y: 90.1)
+//        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+//            XCTAssert(savedObject is GeometryTestClass)
+//            let point = (savedObject as! GeometryTestClass).point
+//            XCTAssertNotNil(point)
+//            expectation.fulfill()
+//        }, errorHandler: { fault in
+//            XCTFail("\(fault.code): \(fault.message!)")
+//        })
+//        waitForExpectations(timeout: timeout, handler: nil)
+//    }
     
     func testPT09() {
         let expectation = self.expectation(description: "PASSED: BLPoint.create")
@@ -312,13 +348,27 @@ class BLPointTests: XCTestCase {
         let geometryObject2 = GeometryTestClass()
         geometryObject2.point = BLPoint(x: -180.1, y: -90.1)
         dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
-            XCTAssert(createdIds.count == 2)
-            expectation.fulfill()
+            XCTFail("Longitude must be within (-180.000000, 180.000000]")
         }, errorHandler: { fault in
-            XCTFail("\(fault.code): \(fault.message!)")
+            expectation.fulfill()
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
+    
+//    func testPT24() {
+//        let expectation = self.expectation(description: "PASSED: BLPoint.bulkCreate")
+//        let geometryObject1 = GeometryTestClass()
+//        geometryObject1.point = BLPoint(x: -87.52683788, y: 41.85716752)
+//        let geometryObject2 = GeometryTestClass()
+//        geometryObject2.point = BLPoint(x: -180.1, y: -90.1)
+//        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+//            XCTAssert(createdIds.count == 2)
+//            expectation.fulfill()
+//        }, errorHandler: { fault in
+//            XCTFail("\(fault.code): \(fault.message!)")
+//        })
+//        waitForExpectations(timeout: timeout, handler: nil)
+//    }
     
     func testPT25() {
         let expectation = self.expectation(description: "PASSED: BLPoint.bulkCreate")
@@ -371,10 +421,9 @@ class BLPointTests: XCTestCase {
             XCTFail(error.localizedDescription)
         }
         dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
-            XCTAssert(createdIds.count == 2)
-            expectation.fulfill()
+            XCTFail("Longitude must be within (-180.000000, 180.000000]")
         }, errorHandler: { fault in
-            XCTFail("\(fault.code): \(fault.message!)")
+            expectation.fulfill()
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
@@ -414,18 +463,38 @@ class BLPointTests: XCTestCase {
             XCTAssertNotNil(point)
             (savedObject as! GeometryTestClass).point = BLPoint(x: 180, y: 180.1)
             self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
-                XCTAssert(updatedObject is GeometryTestClass)
-                let point = (updatedObject as! GeometryTestClass).point
-                XCTAssertNotNil(point)
+                XCTFail("Latitude must be within [-90.000000, 90.000000]")
+            }, errorHandler: { fault in
                 expectation.fulfill()
-            }, errorHandler: { fault in                
-                XCTFail("\(fault.code): \(fault.message!)")
             })
         }, errorHandler: { fault in
             XCTFail("\(fault.code): \(fault.message!)")
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
+    
+//    func testPT32() {
+//        let expectation = self.expectation(description: "PASSED: BLPoint.update")
+//        let geometryObject = GeometryTestClass()
+//        geometryObject.point = BLPoint(x: -87.52683788, y: 41.85716752)
+//        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+//            XCTAssert(savedObject is GeometryTestClass)
+//            let point = (savedObject as! GeometryTestClass).point
+//            XCTAssertNotNil(point)
+//            (savedObject as! GeometryTestClass).point = BLPoint(x: 180, y: 180.1)
+//            self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
+//                XCTAssert(updatedObject is GeometryTestClass)
+//                let point = (updatedObject as! GeometryTestClass).point
+//                XCTAssertNotNil(point)
+//                expectation.fulfill()
+//            }, errorHandler: { fault in
+//                XCTFail("\(fault.code): \(fault.message!)")
+//            })
+//        }, errorHandler: { fault in
+//            XCTFail("\(fault.code): \(fault.message!)")
+//        })
+//        waitForExpectations(timeout: timeout, handler: nil)
+//    }
     
     func testPT33() {
         let expectation = self.expectation(description: "PASSED: BLPoint.bulkUpdate")
@@ -478,8 +547,9 @@ class BLPointTests: XCTestCase {
         geometryObject3.name = "ppoint"
         dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
             self.dataStore.updateBulk(whereClause: "name='point'", changes: ["point": "POINT(154.5465464 134.565656)"], responseHandler: { updated in
+                XCTFail("Latitude must be within [-90.000000, 90.000000]")
+            }, errorHandler: { fault in
                 expectation.fulfill()
-            }, errorHandler: { fault in    
             })
         }, errorHandler: { fault in
             XCTFail("\(fault.code): \(fault.message!)")
@@ -487,9 +557,28 @@ class BLPointTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
+//    func testPT35() {
+//        let expectation = self.expectation(description: "PASSED: BLPoint.bulkUpdate")
+//        let geometryObject1 = GeometryTestClass()
+//        geometryObject1.name = "point"
+//        let geometryObject2 = GeometryTestClass()
+//        geometryObject2.name = "point"
+//        let geometryObject3 = GeometryTestClass()
+//        geometryObject3.name = "ppoint"
+//        dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
+//            self.dataStore.updateBulk(whereClause: "name='point'", changes: ["point": "POINT(154.5465464 134.565656)"], responseHandler: { updated in
+//                expectation.fulfill()
+//            }, errorHandler: { fault in
+//            })
+//        }, errorHandler: { fault in
+//            XCTFail("\(fault.code): \(fault.message!)")
+//        })
+//        waitForExpectations(timeout: timeout, handler: nil)
+//    }
+    
     func testPT36() {
         let expectation = self.expectation(description: "PASSED: BLPoint.bulkUpdate")
-        dataStore.updateBulk(whereClause: "GetLon(point)>1", changes: ["point": "POINT(154.5465464 134.565656)"], responseHandler: { updated in
+        dataStore.updateBulk(whereClause: "GetLon(point)>1", changes: ["point": "POINT(84.5465464 86.565656)"], responseHandler: { updated in
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTFail("\(fault.code): \(fault.message!)")
@@ -499,7 +588,7 @@ class BLPointTests: XCTestCase {
     
     func testPT37() {
         let expectation = self.expectation(description: "PASSED: BLPoint.bulkUpdate")
-        dataStore.updateBulk(whereClause: "GetLat(point)<80", changes: ["point": "POINT(154.5465464 134.565656)"], responseHandler: { updated in
+        dataStore.updateBulk(whereClause: "GetLat(point)<80", changes: ["point": "POINT(84.5465464 86.565656)"], responseHandler: { updated in
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTFail("\(fault.code): \(fault.message!)")
@@ -509,7 +598,7 @@ class BLPointTests: XCTestCase {
     
     func testPT38() {
         let expectation = self.expectation(description: "PASSED: BLPoint.bulkUpdate")
-        dataStore.updateBulk(whereClause: "GetLon(point)>1 AND GetLat(point)<50", changes: ["point": "POINT(154.5465464 134.565656)"], responseHandler: { updated in
+        dataStore.updateBulk(whereClause: "GetLon(point)>1 AND GetLat(point)<50", changes: ["point": "POINT(84.5465464 86.565656)"], responseHandler: { updated in
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTFail("\(fault.code): \(fault.message!)")
@@ -699,25 +788,37 @@ class BLPointTests: XCTestCase {
         let geometryObject = GeometryTestClass()
         geometryObject.point = BLPoint(x: 41.92, y: -124.27)
         dataStore.save(entity: geometryObject, responseHandler: { savedObject in
-            if let savedObject = savedObject as? GeometryTestClass,
-                let objectId = savedObject.objectId {
-                self.dataStore.findById(objectId: objectId, responseHandler: { foundObject in
-                    XCTAssert(foundObject is GeometryTestClass)
-                    let point = (foundObject as! GeometryTestClass).point
-                    XCTAssertNotNil(point)
-                    XCTAssertNotNil(point!.asWkt())
-                    XCTAssertNotNil(point!.asGeoJson())
-                    expectation.fulfill()
-                }, errorHandler: { fault in                    
-                    XCTFail("\(fault.code): \(fault.message!)")  
-                XCTFail("\(fault.code): \(fault.message!)")
-                })
-            }
+            XCTFail("Latitude must be within [-90.000000, 90.000000]")
         }, errorHandler: { fault in
-            XCTFail("\(fault.code): \(fault.message!)")
+            expectation.fulfill()
         })
         waitForExpectations(timeout: timeout, handler: nil)
     }
+    
+//    func testPT51_52() {
+//        let expectation = self.expectation(description: "PASSED: BLPoint.find")
+//        let geometryObject = GeometryTestClass()
+//        geometryObject.point = BLPoint(x: 41.92, y: -124.27)
+//        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+//            if let savedObject = savedObject as? GeometryTestClass,
+//                let objectId = savedObject.objectId {
+//                self.dataStore.findById(objectId: objectId, responseHandler: { foundObject in
+//                    XCTAssert(foundObject is GeometryTestClass)
+//                    let point = (foundObject as! GeometryTestClass).point
+//                    XCTAssertNotNil(point)
+//                    XCTAssertNotNil(point!.asWkt())
+//                    XCTAssertNotNil(point!.asGeoJson())
+//                    expectation.fulfill()
+//                }, errorHandler: { fault in
+//                    XCTFail("\(fault.code): \(fault.message!)")
+//                XCTFail("\(fault.code): \(fault.message!)")
+//                })
+//            }
+//        }, errorHandler: { fault in
+//            XCTFail("\(fault.code): \(fault.message!)")
+//        })
+//        waitForExpectations(timeout: timeout, handler: nil)
+//    }
     
     // PT53 TBD
     
