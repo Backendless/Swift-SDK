@@ -219,12 +219,12 @@ import Foundation
         })
     }
     
-    public func loginWithOauth2(providerCode: String, token: String, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        oauth2Login(providerCode: providerCode, token: token, guestUser: nil, fieldsMapping: fieldsMapping, stayLoggedIn: stayLoggedIn, responseHandler: responseHandler, errorHandler: errorHandler)
+    public func loginWithOauth2(providerCode: String, accessToken: String, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        oauth2Login(providerCode: providerCode, token: accessToken, guestUser: nil, fieldsMapping: fieldsMapping, stayLoggedIn: stayLoggedIn, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    public func loginWithOauth2(providerCode: String, token: String, guestUser: BackendlessUser, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        oauth2Login(providerCode: providerCode, token: token, guestUser: guestUser, fieldsMapping: fieldsMapping, stayLoggedIn: stayLoggedIn, responseHandler: responseHandler, errorHandler: errorHandler)
+    public func loginWithOauth2(providerCode: String, accessToken: String, guestUser: BackendlessUser, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        oauth2Login(providerCode: providerCode, token: accessToken, guestUser: guestUser, fieldsMapping: fieldsMapping, stayLoggedIn: stayLoggedIn, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     private func oauth2Login(providerCode: String, token: String, guestUser: BackendlessUser?, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
@@ -247,12 +247,12 @@ import Foundation
         })
     }
     
-    public func loginWithOauth1(providerCode: String, token: String, tokenSecret: String, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        oauth1Login(providerCode: providerCode, token: token, tokenSecret: tokenSecret, guestUser: nil, fieldsMapping: fieldsMapping, stayLoggedIn: stayLoggedIn, responseHandler: responseHandler, errorHandler: errorHandler)
+    public func loginWithOauth1(providerCode: String, authToken: String, tokenSecret: String, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        oauth1Login(providerCode: providerCode, token: authToken, tokenSecret: tokenSecret, guestUser: nil, fieldsMapping: fieldsMapping, stayLoggedIn: stayLoggedIn, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    public func loginWithOauth1(providerCode: String, token: String, tokenSecret: String, guestUser: BackendlessUser, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        oauth1Login(providerCode: providerCode, token: token, tokenSecret: tokenSecret, guestUser: guestUser, fieldsMapping: fieldsMapping, stayLoggedIn: stayLoggedIn, responseHandler: responseHandler, errorHandler: errorHandler)
+    public func loginWithOauth1(providerCode: String, authToken: String, authTokenSecret: String, guestUser: BackendlessUser, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        oauth1Login(providerCode: providerCode, token: authToken, tokenSecret: authTokenSecret, guestUser: guestUser, fieldsMapping: fieldsMapping, stayLoggedIn: stayLoggedIn, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     private func oauth1Login(providerCode: String, token: String, tokenSecret: String, guestUser: BackendlessUser?, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
