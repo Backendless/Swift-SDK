@@ -249,6 +249,9 @@ class PersistenceServiceUtils {
         if let havingClause = queryBuilder?.havingClause {
             parameters["having"] = havingClause
         }
+        if let fileReferencePrefix = queryBuilder?.fileReferencePrefix {
+            parameters["fileReferencePrefix"] = fileReferencePrefix
+        }
         if let pageSize = queryBuilder?.pageSize {
             parameters["pageSize"] = pageSize
         }
@@ -347,6 +350,9 @@ class PersistenceServiceUtils {
             if !sortByProps.isEmpty {
                 restMethod += "&sortBy=" + DataTypesUtils.shared.arrayToString(array: sortByProps)
             }
+        }
+        if let fileReferencePrefix = queryBuilder?.fileReferencePrefix {
+            restMethod += "&fileReferencePrefix=" + fileReferencePrefix
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
