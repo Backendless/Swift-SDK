@@ -19,6 +19,16 @@ func sendEmailFromTemplate(templateName: String, envelope: EmailEnvelope, templa
 func list(counterNamePattern: String, responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!)
 ```
 * added `fileReferencePrefix` property to BackendlessDataQuery
+* added the `getAuthorizationUrlLink` methods to User Service:
+```
+func getAuthorizationUrlLink(providerCode: String, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!)
+
+func getAuthorizationUrlLink(providerCode: String, fieldsMappings: [String : String], responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!)
+
+func getAuthorizationUrlLink(providerCode: String, scope: [String], responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!)
+
+func getAuthorizationUrlLink(providerCode: String, fieldsMappings: [String : String], scope: [String], responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!)
+```
 
 ### 6.3.3 June 02, 2021
 * fixed app init with custom domain to accept domens both with protocol or without
