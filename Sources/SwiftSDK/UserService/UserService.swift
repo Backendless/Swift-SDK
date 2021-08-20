@@ -276,6 +276,47 @@ import Foundation
         })
     }
     
+    public func getAuthorizationUrlLink(providerCode: String, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        getAuthorizationUrl(providerCode: providerCode, mappings: nil, scope: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    public func getAuthorizationUrlLink(providerCode: String, fieldsMappings: [String : String], responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        getAuthorizationUrl(providerCode: providerCode, mappings: fieldsMappings, scope: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    public func getAuthorizationUrlLink(providerCode: String, scope: [String], responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        getAuthorizationUrl(providerCode: providerCode, mappings: nil, scope: scope, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    public func getAuthorizationUrlLink(providerCode: String, fieldsMappings: [String : String], scope: [String], responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        getAuthorizationUrl(providerCode: providerCode, mappings: fieldsMappings, scope: scope, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    private func getAuthorizationUrl(providerCode: String, mappings: [String : String]?, scope: [String]?, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        let headers = ["Content-Type": "application/json"]
+        var parameters = [String : Any]()
+        if mappings != nil {
+            parameters["fieldsMappings"] = mappings
+        }
+        if scope != nil {
+            var permissionsString = ""
+            for permission in scope! {
+                permissionsString += permission + ","
+            }
+            parameters["permissions"] = String(permissionsString.dropLast())
+        }
+        BackendlessRequestManager(restMethod: "users/oauth/\(providerCode)/request_url", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: String.self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else {
+                    responseHandler(result as! String)
+                }
+            }
+        })
+    }
+    
     public func isValidUserToken(responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         var userToken: String?
         if currentUserForSession?.userToken != nil {
