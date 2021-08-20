@@ -38,6 +38,7 @@ import Foundation
     public var related: [String]?
     public var groupBy: [String]?
     public var havingClause: String?
+    public var fileReferencePrefix: String?
     public var distinct = false
     
     var isRelationsDepthSet = false
@@ -53,6 +54,7 @@ import Foundation
         case related
         case groupBy
         case havingClause
+        case fileReferencePrefix
         case distinct
     }
     
@@ -98,6 +100,7 @@ import Foundation
         related = try container.decodeIfPresent([String].self, forKey: .related)
         groupBy = try container.decodeIfPresent([String].self, forKey: .groupBy)
         havingClause = try container.decodeIfPresent(String.self, forKey: .havingClause)
+        fileReferencePrefix = try container.decodeIfPresent(String.self, forKey: .fileReferencePrefix)
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -112,6 +115,7 @@ import Foundation
         try container.encodeIfPresent(related, forKey: .related)
         try container.encodeIfPresent(groupBy, forKey: .groupBy)
         try container.encodeIfPresent(havingClause, forKey: .havingClause)
+        try container.encodeIfPresent(fileReferencePrefix, forKey: .fileReferencePrefix)
         try container.encode(distinct, forKey: .distinct)
     }
     
