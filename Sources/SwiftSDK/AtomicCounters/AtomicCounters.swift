@@ -95,6 +95,19 @@ import Foundation
         })
     }
     
+    public func list(counterNamePattern: String, responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        BackendlessRequestManager(restMethod: "counters/\(counterNamePattern)/list", httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: [String].self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else {
+                    responseHandler(result as! [String])
+                }
+            }
+        })
+    }
+    
     private func executeCounterMethod(restMethod: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .put, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {

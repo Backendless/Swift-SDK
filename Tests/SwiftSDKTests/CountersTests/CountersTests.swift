@@ -116,7 +116,9 @@ class CountersTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: counters.reset")
         backendless.counters.reset(counterName: counterName, responseHandler: {
             expectation.fulfill()
-        }, errorHandler: { fault in })
+        }, errorHandler: { fault in
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
@@ -128,7 +130,20 @@ class CountersTests: XCTestCase {
             }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
-        }, errorHandler: { fault in })
+        }, errorHandler: { fault in
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test10List() {
+        let expectation = self.expectation(description: "PASSED: counters.list")
+        backendless.counters.list(counterNamePattern: "*", responseHandler: { counters in
+            XCTAssertNotNil(counters)
+            expectation.fulfill()
+        }, errorHandler: { fault in
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
         waitForExpectations(timeout: timeout, handler: nil)
     }
 }
