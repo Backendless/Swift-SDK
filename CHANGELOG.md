@@ -14,6 +14,10 @@ func sendEmailFromTemplate(templateName: String, envelope: EmailEnvelope, attach
 
 func sendEmailFromTemplate(templateName: String, envelope: EmailEnvelope, templateValues: [String : String], attachments: [String], responseHandler: ((MessageStatus) -> Void)!, errorHandler: ((Fault) -> Void)!)
 ```
+* added support for counter listing:
+```
+func list(counterNamePattern: String, responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!)
+```
 
 ### 6.3.3 June 02, 2021
 * fixed app init with custom domain to accept domens both with protocol or without
