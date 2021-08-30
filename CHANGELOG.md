@@ -29,6 +29,16 @@ func getAuthorizationUrlLink(providerCode: String, scope: [String], responseHand
 
 func getAuthorizationUrlLink(providerCode: String, fieldsMappings: [String : String], scope: [String], responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!)
 ```
+*added methods to the UserService:
+```
+func findByRole(roleName: String, responseHandler: (([BackendlessUser]) -> Void)!, errorHandler: ((Fault) -> Void)!)
+
+func findByRole(roleName: String, loadRoles: Bool, responseHandler: (([BackendlessUser]) -> Void)!, errorHandler: ((Fault) -> Void)!)
+
+func findByRole(roleName: String, queryBuilder: DataQueryBuilder, responseHandler: (([BackendlessUser]) -> Void)!, errorHandler: ((Fault) -> Void)!)
+
+func findByRole(roleName: String, loadRoles: Bool, queryBuilder: DataQueryBuilder, responseHandler: (([BackendlessUser]) -> Void)!, errorHandler: ((Fault) -> Void)!)
+```
 
 ### 6.3.3 June 02, 2021
 * fixed app init with custom domain to accept domens both with protocol or without
