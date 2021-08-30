@@ -430,6 +430,88 @@ import Foundation
         })
     }
     
+    public func findByRole(roleName: String, responseHandler: (([BackendlessUser]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        getUsersListByRole(roleName: roleName, loadRoles: nil, queryBuilder: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    public func findByRole(roleName: String, loadRoles: Bool, responseHandler: (([BackendlessUser]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        getUsersListByRole(roleName: roleName, loadRoles: loadRoles, queryBuilder: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    public func findByRole(roleName: String, queryBuilder: DataQueryBuilder, responseHandler: (([BackendlessUser]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        getUsersListByRole(roleName: roleName, loadRoles: nil, queryBuilder: queryBuilder, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    public func findByRole(roleName: String, loadRoles: Bool, queryBuilder: DataQueryBuilder, responseHandler: (([BackendlessUser]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        getUsersListByRole(roleName: roleName, loadRoles: loadRoles, queryBuilder: queryBuilder, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    private func getUsersListByRole(roleName: String, loadRoles: Bool?, queryBuilder: DataQueryBuilder?, responseHandler: (([BackendlessUser]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        var restMethod = "users/role/\(roleName)"
+        if loadRoles != nil && loadRoles == true {
+            restMethod += "?loadRoles=true"
+        }
+        else {
+            restMethod += "?loadRoles=false"
+        }
+        if let qb = queryBuilder {
+            if let properties = qb.properties {
+                var props = [String]()
+                for prop in properties {
+                    if !prop.isEmpty {
+                        props.append(prop)
+                    }
+                }
+                if !props.isEmpty {
+                    restMethod += "&props=" + DataTypesUtils.shared.arrayToString(array: props)
+                }
+            }
+            if let sortBy = qb.sortBy {
+                var sortByProps = [String]()
+                for sortProp in sortBy {
+                    if !sortProp.isEmpty {
+                        sortByProps.append(sortProp)
+                    }
+                }
+                if !sortByProps.isEmpty {
+                    restMethod += "&sortBy=" + DataTypesUtils.shared.arrayToString(array: sortByProps)
+                }
+            }
+            if let related = qb.related {
+                var relatedProps = [String]()
+                for relatedProp in related {
+                    if !relatedProp.isEmpty {
+                        relatedProps.append(relatedProp)
+                    }
+                }
+                if !relatedProps.isEmpty {
+                    restMethod += "&loadRelations=" + DataTypesUtils.shared.arrayToString(array: relatedProps)
+                }
+            }
+            if qb.relationsDepth != 0 && qb.isRelationsDepthSet {
+                restMethod += "&relationsDepth=\(qb.relationsDepth)"
+            }
+            restMethod += "&pageSize=\(qb.pageSize)&offset=\(qb.offset)"
+        }
+        BackendlessRequestManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: [JSON].self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else {
+                    var resultArray = [BackendlessUser]()
+                    for resultObject in result as! [JSON] {
+                        if let resultDictionary = resultObject.dictionaryObject,
+                           let backendlessUser = ProcessResponse.shared.adaptToBackendlessUser(responseResult: resultDictionary) as? BackendlessUser {
+                            resultArray.append(backendlessUser)
+                        }
+                    }
+                    responseHandler(resultArray)
+                }
+            }
+        })
+    }
+    
     public func resendEmailConfirmation(identity: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         BackendlessRequestManager(restMethod: "users/resendconfirmation/\(identity)", httpMethod: .post, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = ProcessResponse.shared.adapt(response: response, to: NoReply.self) {
