@@ -39,6 +39,7 @@ func findByRole(roleName: String, queryBuilder: DataQueryBuilder, responseHandle
 
 func findByRole(roleName: String, loadRoles: Bool, queryBuilder: DataQueryBuilder, responseHandler: (([BackendlessUser]) -> Void)!, errorHandler: ((Fault) -> Void)!)
 ```
+* added the `reloadCurrentUser` property to the UserService to return the updated currentUser data.
 
 ### 6.3.3 June 02, 2021
 * fixed app init with custom domain to accept domens both with protocol or without
