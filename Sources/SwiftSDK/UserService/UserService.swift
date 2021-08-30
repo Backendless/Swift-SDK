@@ -32,13 +32,20 @@ import Foundation
         }
     }
     
+    public var reloadCurrentUser: Bool = false
+    
     var currentUserForSession: BackendlessUser?
     public var currentUser: BackendlessUser? {
         get {
-            if currentUserForSession != nil {
-                return currentUserForSession
+            if reloadCurrentUser {
+                return getCurrentUser()
             }
-            return getCurrentUser()
+            else {
+                if currentUserForSession != nil {
+                    return currentUserForSession
+                }
+                return getCurrentUser()
+            }
         }
         set {
             if newValue != nil {
