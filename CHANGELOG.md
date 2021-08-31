@@ -1,6 +1,6 @@
 # RELEASE HISTORY
 
-### ?, 2021
+### 6.4.0 / August 31, 2021
 * added methods to upload file from url:
 ```
 func upload(urlToFile: String, backendlessPath: String, responseHandler: ((BackendlessFile) -> Void)!, errorHandler: ((Fault) -> Void)!)
@@ -41,42 +41,42 @@ func findByRole(roleName: String, loadRoles: Bool, queryBuilder: DataQueryBuilde
 ```
 * added the `reloadCurrentUser` property to the UserService to return the updated currentUser data.
 
-### 6.3.3 June 02, 2021
+### 6.3.3 / June 02, 2021
 * fixed app init with custom domain to accept domens both with protocol or without
 
-### 6.3.2 June 02, 2021
+### 6.3.2 / June 02, 2021
 * added possibility to init app with custom domain name
 
-### 6.3.1 March 12, 2021
+### 6.3.1 / March 12, 2021
 * fixed RT issue when subscribtion failed for events unless socket is connected
 
-### 6.3.0 March 10, 2021
+### 6.3.0 / March 10, 2021
 * fixed RT issue when socket didn't reconnect automatically after the ConnectErrorEventListener is triggered
 * fixed RT issue when channel didn't reconnect after login/logout and adding/removing listeners very quickly
 * the `currentUser` is fetched from remote when session resumed
 
-### 6.2.10 February 11, 2021
+### 6.2.10 / February 11, 2021
 * fixed issue with new version of Socket.IO
 * tests refactoring in progress
 
-### 6.2.9 February 5, 2021
+### 6.2.9 / February 5, 2021
 * fixed the DataQueryBuilder `distinct` property for Flutter-SDK
 * tests refactoring in progress
 
-### 6.2.8 February 4, 2021
+### 6.2.8 / February 4, 2021
 * added the ability to add/set the relation using the OpResult from the `uow.create` and `uow.update` as children parameter
 
 ### 6.2.6 / 6.2.7 February 1, 2021
 * fixed issue when SDK crashed with several find methods for class approaches in parallel threads
 * fixed issue when Date fields failed to parse in Java Custom Services
 
-### 6.2.5, January 28, 2021
+### 6.2.5 / January 28, 2021
 * fixed issue when RT socket reconnected after currentUser is updated
 
-### 6.2.4, January 26, 2021
+### 6.2.4 / January 26, 2021
 * fixed issue when Geometry fields failed to parse in Java Custom Services
 
-### 6.2.3, January 25, 2021
+### 6.2.3 / January 25, 2021
 * fixed issue with SPM after adding the BLUrlSession, BLUrlSessionShared and BLUrlSessionSetup classes
 
 ### 6.2.1.1 / January 22, 2021
