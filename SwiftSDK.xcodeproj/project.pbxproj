@@ -131,6 +131,7 @@
 		5ECAB233238C42060051F315 /* GeoJSONParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECAB232238C42060051F315 /* GeoJSONParser.swift */; };
 		5ECAB235238C42360051F315 /* WKTParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECAB234238C42360051F315 /* WKTParser.swift */; };
 		5ECFEFBB23D9C88F004A5DD0 /* BackendlessDataCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECFEFBA23D9C88F004A5DD0 /* BackendlessDataCollection.swift */; };
+		5ED330B826DE2398000363E7 /* GroupClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED330B726DE2398000363E7 /* GroupClasses.swift */; };
 		5ED51D0D22456E8600D22F11 /* BackendlessPushHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED51D0C22456E8600D22F11 /* BackendlessPushHelper.swift */; };
 		5ED765D02224369E009431CD /* BulkEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED765CF2224369E009431CD /* BulkEvent.swift */; };
 		5ED9B85B25B71396000B2C11 /* BLUrlSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED9B85A25B71396000B2C11 /* BLUrlSession.swift */; };
@@ -295,6 +296,7 @@
 		5ECAB234238C42360051F315 /* WKTParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKTParser.swift; sourceTree = "<group>"; };
 		5ECE680E21B0248B00839120 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5ECFEFBA23D9C88F004A5DD0 /* BackendlessDataCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessDataCollection.swift; sourceTree = "<group>"; };
+		5ED330B726DE2398000363E7 /* GroupClasses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupClasses.swift; sourceTree = "<group>"; };
 		5ED51D0C22456E8600D22F11 /* BackendlessPushHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessPushHelper.swift; sourceTree = "<group>"; };
 		5ED765CF2224369E009431CD /* BulkEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulkEvent.swift; sourceTree = "<group>"; };
 		5ED9B85A25B71396000B2C11 /* BLUrlSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLUrlSession.swift; sourceTree = "<group>"; };
@@ -372,6 +374,7 @@
 				5E17EE6624CAF8BF00D7321B /* JSONUpdateBuilder.swift */,
 				5EE23C0A24CB198B00F2FD67 /* ArgHolders.swift */,
 				5EE3001724ED79E8006A27D1 /* ClassesForTests.swift */,
+				5ED330B726DE2398000363E7 /* GroupClasses.swift */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -1081,6 +1084,7 @@
 				5E97191A221C369A00857603 /* RTMethodRequest.swift in Sources */,
 				5E03A3BF22291C74005A538D /* MessagingService.swift in Sources */,
 				5AA2969A2237C19D007104C7 /* JSONUtils.swift in Sources */,
+				5ED330B826DE2398000363E7 /* GroupClasses.swift in Sources */,
 				5E1CC2F72252534F0011D5C8 /* FileService.swift in Sources */,
 				5E1DB58F23E19FAA00955319 /* UnitOfWork.swift in Sources */,
 				5EACCB5B23EC5871007AC3C4 /* UnitOfWorkAddRelation.swift in Sources */,

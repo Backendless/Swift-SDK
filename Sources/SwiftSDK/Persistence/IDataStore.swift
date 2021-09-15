@@ -54,4 +54,7 @@ protocol IDataStore {
     func loadRelations(objectId: String, queryBuilder: LoadRelationsQueryBuilder, responseHandler: (([Any]) -> Void)!, errorHandler: ((Fault) -> Void)!)
     
     func deepSave(entity: CustomType, responseHandler: ((CustomType) -> Void)!, errorHandler: ((Fault) -> Void)!)
+    
+    func group(queryBuilder: GroupDataQueryBuilder, responseHandler: ((GroupResult) -> Void)!, errorHandler: ((Fault) -> Void)!)
+    func getGroupObjectCount(queryBuilder: GroupDataQueryBuilder, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
 }
