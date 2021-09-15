@@ -151,6 +151,12 @@ import Foundation
         }
         persistenceServiceUtils.deepSave(entity: entityToSave, responseHandler: responseHandler, errorHandler: errorHandler)
     }
+    
+    public func group(queryBuilder: GroupDataQueryBuilder, responseHandler: ((GroupResult) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        persistenceServiceUtils.group(customClassEntity: false, queryBuilder: queryBuilder, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    public func getGroupObjectCount(queryBuilder: GroupDataQueryBuilder, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {        
+        persistenceServiceUtils.getGroupObjectCount(queryBuilder: queryBuilder, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
 }
-
-

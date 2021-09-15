@@ -84,8 +84,8 @@ class ProcessResponse {
             if let data = response.data {
                 if let responseResultDictionary = try? JSONSerialization.jsonObject(with: data, options: []) {
                     if let faultDictionary = responseResultDictionary as? [String: Any],
-                        let faultCode = faultDictionary["code"] as? Int,
-                        let faultMessage = faultDictionary["message"] as? String {
+                       let faultCode = faultDictionary["code"] as? Int,
+                       let faultMessage = faultDictionary["message"] as? String {
                         return Fault(message: faultMessage, faultCode: faultCode)
                     }
                     else if _response.statusCode < 200 || _response.statusCode > 400 {
@@ -137,9 +137,9 @@ class ProcessResponse {
     
     private func adaptGuestToBackendlessUser(responseResult: Any?) -> Any? {
         guard let responseResult = responseResult as? [String : Any],
-            let objectId = responseResult["objectId"] as? String,
-            let userToken = responseResult["user-token"] as? String else {
-                return nil
+              let objectId = responseResult["objectId"] as? String,
+              let userToken = responseResult["user-token"] as? String else {
+            return nil
         }
         let responseObject = BackendlessUser()
         responseObject.objectId = objectId
@@ -301,11 +301,11 @@ class ProcessResponse {
     
     func adaptToTransactionOperationError(errorDictionary: [String : Any]) -> TransactionOperationError? {
         if let message = errorDictionary["message"] as? String,
-            let operationDictionary = errorDictionary["operation"] as? [String : Any],
-            let operationTypeString = operationDictionary["operationType"] as? String,
-            let tableName = operationDictionary["table"] as? String,
-            let opResultId = operationDictionary["opResultId"] as? String,
-            let payload = operationDictionary["payload"] {
+           let operationDictionary = errorDictionary["operation"] as? [String : Any],
+           let operationTypeString = operationDictionary["operationType"] as? String,
+           let tableName = operationDictionary["table"] as? String,
+           let opResultId = operationDictionary["opResultId"] as? String,
+           let payload = operationDictionary["payload"] {
             let operationType = OperationType.from(stringValue: operationTypeString)
             let operation = Operation(operationType: operationType, tableName: tableName, opResultId: opResultId, payload: payload)
             return TransactionOperationError(message: message, operation: operation)
@@ -351,6 +351,85 @@ class ProcessResponse {
         return uowResult
     }
     
+    func adaptToGroupResult(groupResultDictionary: [String : Any], customClassEntity: Bool) -> GroupResult {
+        let groupResult = GroupResult()
+        if let hasNextPage = groupResultDictionary["hasNextPage"] as? Bool {
+            groupResult.hasNextPage = hasNextPage
+        }
+        if groupResultDictionary["___class"] == nil {
+            groupResult.isGroups = true
+        }
+        if let itemsJson = groupResultDictionary["items"] as? JSON {
+            let items = adaptJsonToArray(jsonArray: itemsJson)
+            var resultItems = [Any]()
+            for item in items {
+                if let adaptedItem = adaptToGroupDataOrEntity(item: item, customClassEntity: customClassEntity) {
+                    resultItems.append(adaptedItem)
+                }
+            }
+            groupResult.items = resultItems
+        }
+        return groupResult
+    }
+    
+    func adaptJsonToArray(jsonArray: JSON) -> [[String : Any]] {
+        var resultArray = [[String : Any]]()
+        let arrayValue = jsonArray.arrayValue
+        for item in arrayValue {
+            resultArray.append(item.dictionaryValue)
+        }
+        return resultArray
+    }
+    
+    private func adaptToGroupDataOrEntity(item: [String : Any], customClassEntity: Bool) -> Any? {
+        if item["___class"] != nil {
+            var resultItem = [String : Any]()
+            for (key, value) in item {
+                if value is JSON {
+                    resultItem[key] = JSONUtils.shared.jsonToObject(objectToParse: value)
+                }
+                else {
+                    resultItem[key] = value
+                }
+            }
+            if customClassEntity, let className = item["___class"] as? JSON {
+                return PersistenceHelper.shared.dictionaryToEntity(resultItem, className: className.stringValue)
+            }
+            return resultItem
+        }
+        else {
+            let groupedData = GroupedData()
+            groupedData.isGroups = true
+            if let groupingColumnValueDict = item["groupBy"] as? [String : Any] {
+                let groupingColumnValue = GroupingColumnValue()
+                if let column = groupingColumnValueDict["column"] as? String {
+                    groupingColumnValue.column = column
+                }
+                if let value = groupingColumnValueDict["value"] {
+                    groupingColumnValue.value = value
+                }
+                groupedData.groupBy = groupingColumnValue
+            }
+            if let hasNextPage = item["hasNextPage"] as? Bool {
+                groupedData.hasNextPage = hasNextPage
+            }
+            var resultItems = [Any]()
+            if let itemsJson = item["items"] as? JSON {
+                let items = adaptJsonToArray(jsonArray: itemsJson)
+                for childItem in items {
+                    if let adaptedItem = adaptToGroupDataOrEntity(item: childItem, customClassEntity: customClassEntity) {
+                        if childItem["___class"] != nil {
+                            groupedData.isGroups = false
+                        }
+                        resultItems.append(adaptedItem)
+                    }
+                }
+            }
+            groupedData.items = resultItems
+            return groupedData
+        }
+    }
+    
     private func processResultValue(_ dictionary: [String : Any]) -> Any {
         let dictionary = PersistenceHelper.shared.convertToBLType(dictionary)
         if !(dictionary is [String : Any]) {
@@ -358,13 +437,13 @@ class ProcessResponse {
         }
         var resultDictionary = dictionary as! [String : Any]
         if let className = resultDictionary["___class"] as? String,
-            let customObject = PersistenceHelper.shared.dictionaryToEntity(resultDictionary, className: className) {
+           let customObject = PersistenceHelper.shared.dictionaryToEntity(resultDictionary, className: className) {
             return customObject
         }
         for (key, value) in resultDictionary {
             if let dictValue = value as? [String : Any] {
                 if let className = dictValue["___class"] as? String,
-                    let customObject = PersistenceHelper.shared.dictionaryToEntity(dictValue, className: className) {
+                   let customObject = PersistenceHelper.shared.dictionaryToEntity(dictValue, className: className) {
                     resultDictionary[key] = customObject
                 }
                 else {

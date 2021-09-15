@@ -115,6 +115,21 @@ class JSONUtils {
                     }
                 }       
             }
+            else if objectToParse is JSON {
+                let jsonValue = objectToParse as! JSON
+                if jsonValue.string != nil {
+                    resultObject = jsonValue.stringValue
+                }
+                else if jsonValue.number != nil {
+                    resultObject = jsonValue.numberValue
+                }
+                else if jsonValue.null != nil {
+                    resultObject = NSNull()
+                }
+                else if jsonValue.bool != nil {
+                    resultObject = jsonValue.boolValue
+                }
+            }
             else {
                 if let dictionaryToParse = objectToParse as? [String : Any],
                     let className = dictionaryToParse["___class"] as? String {

@@ -521,6 +521,109 @@ class PersistenceServiceUtils {
         })
     }
     
+    func group(customClassEntity: Bool, queryBuilder: GroupDataQueryBuilder, responseHandler: ((GroupResult) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        let headers = ["Content-Type": "application/json"]
+        var parameters = [String: Any]()
+        parameters["pageSize"] = queryBuilder.pageSize
+        parameters["groupPageSize"] = queryBuilder.groupPageSize
+        parameters["recordsPageSize"] = queryBuilder.recordsPageSize
+        parameters["groupDepth"] = queryBuilder.groupDepth
+        parameters["offset"] = queryBuilder.offset
+        parameters["where"] = queryBuilder.whereClause
+        parameters["distinct"] = queryBuilder.distinct
+        if let excludedProperties = queryBuilder.excludeProperties {
+            var excludeProps = [String]()
+            for property in excludedProperties {
+                if !property.isEmpty {
+                    excludeProps.append(property)
+                }
+            }
+            if !excludeProps.isEmpty {
+                parameters["excludeProps"] = DataTypesUtils.shared.arrayToString(array: excludeProps)
+            }
+        }
+        if let properties = queryBuilder.properties {
+            var props = [String]()
+            for property in properties {
+                if !property.isEmpty {
+                    props.append(property)
+                }
+            }
+            if !props.isEmpty {
+                parameters["property"] = props
+            }
+        }
+        if let related = queryBuilder.related {
+            parameters["loadRelations"] = DataTypesUtils.shared.arrayToString(array: related)
+        }
+        parameters["relationsPageSize"] = queryBuilder.relationsPageSize
+        if queryBuilder.isRelationsDepthSet {
+            parameters["relationsDepth"] = queryBuilder.relationsDepth
+        }
+        if let sortBy = queryBuilder.sortBy {
+            parameters["sortBy"] = DataTypesUtils.shared.arrayToString(array: sortBy)
+        }
+        if let groupPaths = queryBuilder.groupPath {
+            var groupPathsDict = [[String : Any]]()
+            for groupPath in groupPaths {
+                if let column = groupPath.column, let value = groupPath.value {
+                    groupPathsDict.append(["column": column, "value": value])
+                }
+            }
+            parameters["groupPath"] = groupPathsDict
+        }
+        if let groupBy = queryBuilder.groupBy {
+            parameters["groupBy"] = DataTypesUtils.shared.arrayToString(array: groupBy)
+        }
+        if let fileReferencePrefix = queryBuilder.fileReferencePrefix {
+            parameters["fileReferencePrefix"] = fileReferencePrefix
+        }
+        BackendlessRequestManager(restMethod: "data/data-grouping/\(tableName)", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else {
+                    let resultDictionary = (result as! JSON).dictionaryValue
+                    responseHandler(ProcessResponse.shared.adaptToGroupResult(groupResultDictionary: resultDictionary, customClassEntity: customClassEntity))
+                }
+            }
+        })
+    }
+    
+    func getGroupObjectCount(queryBuilder: GroupDataQueryBuilder, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {        
+        let headers = ["Content-Type": "application/json"]
+        var parameters = [String: Any]()
+        if let groupBy = queryBuilder.groupBy {
+            parameters["groupBy"] = DataTypesUtils.shared.arrayToString(array: groupBy)
+        }
+        if let groupPaths = queryBuilder.groupPath {
+            var groupPathsDict = [[String : Any]]()
+            for groupPath in groupPaths {
+                if let column = groupPath.column, let value = groupPath.value {
+                    groupPathsDict.append(["column": column, "value": value])
+                }
+            }
+            parameters["groupPath"] = groupPathsDict
+        }
+        parameters["whereClause"] = queryBuilder.whereClause
+        parameters["distinct"] = queryBuilder.distinct
+        BackendlessRequestManager(restMethod: "data/data-grouping/\(tableName)/count", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else if result is String,
+                        let intResult = Int(result as! String) {
+                    responseHandler(intResult)
+                }
+            }
+            else {
+                responseHandler(DataTypesUtils.shared.dataToInt(data: response.data!))
+            }
+        })
+    }
+    
     func getTableName(entity: Any) -> String {
         if entity is BackendlessUser.Type {
             return "Users"

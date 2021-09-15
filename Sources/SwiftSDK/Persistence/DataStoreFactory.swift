@@ -214,6 +214,19 @@ import Foundation
         }
     }
     
+    public func group(queryBuilder: GroupDataQueryBuilder, responseHandler: ((GroupResult) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        persistenceServiceUtils.group(customClassEntity: true, queryBuilder: queryBuilder, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    public func getGroupObjectCount(queryBuilder: GroupDataQueryBuilder , responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        persistenceServiceUtils.getGroupObjectCount(queryBuilder: queryBuilder, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    private func itemToEntity(item: [String : Any]) -> Any? {
+        let className = PersistenceHelper.shared.getClassNameWithoutModule(self.entityClass)
+        return PersistenceHelper.shared.dictionaryToEntity(item, className: className)
+    }
+    
     private func wrapResponse(_ responseHandler: @escaping ((Any) -> Void)) -> (([String: Any]) -> ()) {
         let wrappedBlock: ([String: Any]) -> () = { responseDictionary in
             let className = PersistenceHelper.shared.getClassNameWithoutModule(self.entityClass)
