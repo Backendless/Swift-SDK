@@ -21,9 +21,16 @@
 
 import Foundation
 
-@objcMembers public class RelationStatus: NSObject {
+@objcMembers public class RelationStatus: NSObject, Codable {
     public var parentObjectId: String?
     public var isConditional = false
     public var whereClause: String?
     public var children: [String]?
+    
+    enum CodingKeys: String, CodingKey {
+        case parentObjectId
+        case isConditional
+        case whereClause
+        case children
+    }
 }
