@@ -13,12 +13,12 @@ Pod::Spec.new do |s|
       'SWIFT_VERSION' => '5.0'
   }
 
-  s.ios.deployment_target = '9.0'
-  s.osx.deployment_target = '10.10'
-  s.tvos.deployment_target = '9.0'
-  s.watchos.deployment_target = '2.0'
+  s.ios.deployment_target = '10.0'
+  s.osx.deployment_target = '10.13'
+  s.tvos.deployment_target = '10.0'
+  s.watchos.deployment_target = '5.0'
   s.requires_arc = true
   s.source_files = "Sources/SwiftSDK/**/*.swift", "Sources/SwiftSDK/*.swift", "Tests/SwiftSDKTests/TestObjects/*.swift"
-  s.dependency "Socket.IO-Client-Swift", "~> 15.2"
+  s.dependency "Socket.IO-Client-Swift", "~> 16.0"
   
 end

@@ -52,7 +52,7 @@ let package = Package(
         .executable(name: "SwiftSDK-test", targets: ["YourTargetName"])
     ],
     dependencies: [
-        .package(name: "SwiftSDK", url: "https://github.com/Backendless/Swift-SDK", from: "6.0.2")
+        .package(name: "SwiftSDK", url: "https://github.com/Backendless/Swift-SDK", from: "6.4.1")
     ],
     targets: [
         .target(name: "YourTargetName", dependencies: ["SwiftSDK"], path: "./Path/To/Your/Sources")

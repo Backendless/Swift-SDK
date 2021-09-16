@@ -77,8 +77,8 @@ class RTClient {
                     var connectParams = ["apiKey": Backendless.shared.getApiKey(), "clientId": clientId]
                     if let userToken = UserDefaultsHelper.shared.getUserToken() {
                         connectParams["userToken"] = userToken
-                    }                    
-                    self.socketManager = SocketManager(socketURL: url, config: [.path(path), .connectParams(connectParams), .version(.two)])                    
+                    }
+                    self.socketManager = SocketManager(socketURL: url, config: [.path(path), .connectParams(connectParams), .version(.two)])
                     self.socketManager?.reconnects = false
                     self.socket = self.socketManager?.socket(forNamespace: path)
                     

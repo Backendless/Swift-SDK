@@ -1,0 +1,48 @@
+{
+  "buildCommand" : "prepareForIndexing",
+  "configuredTargets" : [
+    {
+      "guid" : "38fe8268401fb58e7288adc2c60685eca43d75e29ed380864d3886e0268a29f1"
+    },
+    {
+      "guid" : "38fe8268401fb58e7288adc2c60685ecde29bb6b6fb0735ab5d8495f2ee9a2c6"
+    },
+    {
+      "guid" : "38fe8268401fb58e7288adc2c60685ecf0fd34c8715c486a48c05ff91eadf764"
+    },
+    {
+      "guid" : "38fe8268401fb58e7288adc2c60685ec9eef64033d2a36546e801665ce04331a"
+    }
+  ],
+  "continueBuildingAfterErrors" : true,
+  "enableIndexBuildArena" : false,
+  "hideShellScriptEnvironment" : false,
+  "parameters" : {
+    "action" : "build",
+    "arenaInfo" : {
+      "buildIntermediatesPath" : "",
+      "buildProductsPath" : "",
+      "derivedDataPath" : "/Users/olhadanylova/Library/Developer/Xcode/DerivedData",
+      "indexDataStoreFolderPath" : "/Users/olhadanylova/Library/Developer/Xcode/DerivedData/Pods-brayfojobjepbidimoxijfhylnrg/Index/DataStore",
+      "indexEnableDataStore" : true,
+      "indexPCHPath" : "/Users/olhadanylova/Library/Developer/Xcode/DerivedData/Pods-brayfojobjepbidimoxijfhylnrg/Index/PrecompiledHeaders",
+      "pchPath" : ""
+    },
+    "configurationName" : "Release",
+    "overrides" : {
+      "synthesized" : {
+        "table" : {
+          "ENABLE_PREVIEWS" : "NO"
+        }
+      }
+    }
+  },
+  "qos" : "default",
+  "schemeCommand" : "launch",
+  "shouldCollectMetrics" : false,
+  "showNonLoggedProgress" : true,
+  "useDryRun" : true,
+  "useImplicitDependencies" : false,
+  "useLegacyBuildLocations" : false,
+  "useParallelTargets" : false
+}
