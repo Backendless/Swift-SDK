@@ -1,6 +1,7 @@
 # RELEASE HISTORY
 
 ### 6.4.1 / ?, 2021
+* Socket.IO updated to v 16.0.1. The minimal required iOS version is 10 and higher
 * added support for Grouping API:
 ```
 func group(queryBuilder: GroupDataQueryBuilder, responseHandler: ((GroupResult) -> Void)!, errorHandler: ((Fault) -> Void)!)
