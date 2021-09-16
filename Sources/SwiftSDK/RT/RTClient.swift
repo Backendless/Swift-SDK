@@ -78,7 +78,7 @@ class RTClient {
                     if let userToken = UserDefaultsHelper.shared.getUserToken() {
                         connectParams["userToken"] = userToken
                     }                    
-                    self.socketManager = SocketManager(socketURL: url, config: ["path": path, "connectParams": connectParams])
+                    self.socketManager = SocketManager(socketURL: url, config: [.path(path), .connectParams(connectParams), .version(.two)])                    
                     self.socketManager?.reconnects = false
                     self.socket = self.socketManager?.socket(forNamespace: path)
                     
