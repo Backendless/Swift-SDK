@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 6.4.2 / ?
+* Deprecated methods removed from SDK
+
 ### 6.4.1 / September 16, 2021
 * Socket.IO updated to v 16.0.1. Minimal required versions:
     * iOS 10.0

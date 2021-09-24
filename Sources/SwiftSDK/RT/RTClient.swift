@@ -65,7 +65,7 @@ class RTClient {
                 if let responseData = response.data,
                    let urlString = String(data: responseData, encoding: .utf8)?.replacingOccurrences(of: "\"", with: ""),
                    let url = URL(string: urlString) {
-                    let path = "/" + Backendless.shared.getApplictionId()
+                    let path = "/" + Backendless.shared.getApplicationId()
                     
                     var clientId = ""
                     #if os(iOS) || os(tvOS)

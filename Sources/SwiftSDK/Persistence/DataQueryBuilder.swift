@@ -119,56 +119,6 @@ import Foundation
         try container.encode(distinct, forKey: .distinct)
     }
     
-    @available(*, deprecated, message: "Please use the whereClause property directly")
-    public func getWhereClause() -> String? {
-        return self.whereClause
-    }
-    
-    @available(*, deprecated, message: "Please use the whereClause property directly")
-    public func setWhereClause(whereClause: String) {
-        self.whereClause = whereClause
-    }
-    
-    @available(*, deprecated, message: "Please use the relationsDepth property directly")
-    public func getRelationsDepth() -> Int {
-        return self.relationsDepth
-    }
-    
-    @available(*, deprecated, message: "Please use the relationsDepth property directly")
-    public func setRelationsDepth(relationsDepth: Int) {
-        self.relationsDepth = relationsDepth
-    }
-    
-    @available(*, deprecated, message: "Please use the relationsPageSize property directly")
-    public func getRelationsPageSize() -> Int {
-        return self.relationsPageSize
-    }
-    
-    @available(*, deprecated, message: "Please use the relationsPageSize property directly")
-    public func setRelationsPageSize(relationsPageSize: Int) {
-        self.relationsPageSize = relationsPageSize
-    }
-    
-    @available(*, deprecated, message: "Please use the pageSize property directly")
-    public func getPageSize() -> Int {
-        return self.pageSize
-    }
-    
-    @available(*, deprecated, message: "Please use the pageSize property directly")
-    public func setPageSize(pageSize: Int) {
-        self.pageSize = pageSize
-    }
-    
-    @available(*, deprecated, message: "Please use the offset property directly")
-    public func getOffset() -> Int {
-        return self.offset
-    }
-    
-    @available(*, deprecated, message: "Please use the offset property directly")
-    public func setOffset(offset: Int) {
-        self.offset = offset
-    }
-    
     public func prepareNextPage() {
         self.offset += self.pageSize
     }
@@ -178,16 +128,6 @@ import Foundation
         if offset < 0 {
             offset = 0
         }
-    }
-    
-    @available(*, deprecated, message: "Please use the properties property directly")
-    public func getProperties() -> [String]? {
-        return self.properties
-    }
-    
-    @available(*, deprecated, message: "Please use the properties property directly")
-    public func setProperties(properties: [String]) {
-        self.properties = properties
     }
     
     public func addProperty(property: String) {
@@ -218,11 +158,6 @@ import Foundation
     
     public func addAllProperties() {
         self.properties = ["*"]
-    }
-    
-    @available(*, deprecated, message: "Please use the excludedProperties property directly")
-    public func getExcludedProperties() -> [String]? {
-        return self.excludeProperties
     }
     
     public func excludeProperty(_ property: String) {
@@ -256,16 +191,6 @@ import Foundation
         }
     }
     
-    @available(*, deprecated, message: "Please use the sortBy property directly")
-    public func getSortBy() -> [String]? {
-        return self.sortBy
-    }
-    
-    @available(*, deprecated, message: "Please use the sortBy property directly")
-    public func setSortBy(sortBy: [String]) {
-        self.sortBy = sortBy
-    }
-    
     public func addSortBy(sortBy: String) {
         addSortBy(listSortBy: [sortBy])
     }
@@ -279,16 +204,6 @@ import Foundation
         else {
             self.sortBy = listSortBy
         }
-    }
-    
-    @available(*, deprecated, message: "Please use the related property directly")
-    public func getRelated() -> [String]? {
-        return self.related
-    }
-    
-    @available(*, deprecated, message: "Please use the related property directly")
-    public func setRelated(related: [String]) {
-        self.related = related
     }
     
     public func addRelated(related: String) {
@@ -306,16 +221,6 @@ import Foundation
         }
     }
     
-    @available(*, deprecated, message: "Please use the groupBy property directly")
-    public func getGroupBy() -> [String]? {
-        return self.groupBy
-    }
-    
-    @available(*, deprecated, message: "Please use the groupBy property directly")
-    public func setGroupBy(groupBy: [String]) {
-        self.groupBy = groupBy
-    }
-    
     public func addGroupBy(groupBy: String) {
         addGroupBy(listGroupBy: [groupBy])
     }
@@ -329,15 +234,5 @@ import Foundation
         else {
             self.groupBy = listGroupBy
         }
-    }
-    
-    @available(*, deprecated, message: "Please use the havingClause property directly")
-    public func getHavingClause() -> String? {
-        return self.havingClause
-    }
-    
-    @available(*, deprecated, message: "Please use the havingClause property directly")
-    public func setHavingClause(havingClause: String) {
-        self.havingClause = havingClause
     }
 }

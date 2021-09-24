@@ -61,7 +61,7 @@ import Foundation
         self.data.of(BackendlessUser.self).mapColumn(columnName: "password", toProperty: "_password")
     }
     
-    public func getApplictionId() -> String {
+    public func getApplicationId() -> String {
         return applicationId
     }
     

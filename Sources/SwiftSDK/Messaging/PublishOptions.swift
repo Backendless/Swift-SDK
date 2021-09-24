@@ -45,11 +45,6 @@ import Foundation
         self.headers = ["ios-content-available": "1"]
     }
     
-    @available(*, deprecated, message: "Please use the headers property directly")
-    public func setHeaders(headers: [String : Any]) {
-        self.headers = headers
-    }
-    
     public func addHeader(name: String, value: Any) {
         if self.headers != nil {
             self.headers![name] = value
