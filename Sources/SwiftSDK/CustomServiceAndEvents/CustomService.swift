@@ -24,17 +24,26 @@ import Foundation
 @objcMembers public class CustomService: NSObject {
     
     public func invoke(serviceName: String, method: String, parameters: Any?, responseHandler: ((Any?) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        invokeService(serviceName: serviceName, method: method, parameters: parameters, executionType: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+        invokeService(serviceName: serviceName, method: method, httpRequestHeaders: nil, parameters: parameters, executionType: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    public func invoke(serviceName: String, method: String, parameters: Any?, returnType: Any?, executionType: ExecutionType, responseHandler: ((Any?) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        invokeService(serviceName: serviceName, method: method, parameters: parameters, executionType: executionType, responseHandler: responseHandler, errorHandler: errorHandler)
+    public func invoke(serviceName: String, method: String, parameters: Any?, executionType: ExecutionType, responseHandler: ((Any?) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        invokeService(serviceName: serviceName, method: method, httpRequestHeaders: nil, parameters: parameters, executionType: executionType, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    private func invokeService(serviceName: String, method: String, parameters: Any?, executionType: ExecutionType?, responseHandler: ((Any?) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func invoke(serviceName: String, method: String, parameters: Any?, options: InvokeOptions, responseHandler: ((Any?) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        let executionType = options.executionType
+        let httpRequestHeaders = options.httpRequestHeaders
+        invokeService(serviceName: serviceName, method: method, httpRequestHeaders: httpRequestHeaders, parameters: parameters, executionType: executionType, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    private func invokeService(serviceName: String, method: String, httpRequestHeaders: [String: String]?, parameters: Any?, executionType: ExecutionType?, responseHandler: ((Any?) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         var headers = ["Content-Type": "application/json"]
         if let executionType = executionType {
             headers["bl-execution-type"] = ExecutionTypeMethods.shared.getExecutionTypeValue(executionType: executionType.rawValue)
+        }
+        if httpRequestHeaders != nil {
+            headers = headers.merging(httpRequestHeaders!) { $1 }
         }
         if var parameters = parameters {
             parameters = JSONUtils.shared.objectToJson(objectToParse: parameters)
