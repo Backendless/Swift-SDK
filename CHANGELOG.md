@@ -1,7 +1,8 @@
 # RELEASE HISTORY
 
 ### 6.4.2 / ?
-* Deprecated methods removed from SDK
+* deprecated methods removed from SDK
+* added support for `fileReferencePrefix` to GroupDataQueryBuilder
 
 ### 6.4.1 / September 16, 2021
 * Socket.IO updated to v 16.0.1. Minimal required versions:
@@ -35,7 +36,7 @@ func sendEmailFromTemplate(templateName: String, envelope: EmailEnvelope, templa
 ```
 func list(counterNamePattern: String, responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!)
 ```
-* added `fileReferencePrefix` property to BackendlessDataQuery
+* added `fileReferencePrefix` property to DataQueryBuilder
 * added the `getAuthorizationUrlLink` methods to User Service:
 ```
 func getAuthorizationUrlLink(providerCode: String, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!)
