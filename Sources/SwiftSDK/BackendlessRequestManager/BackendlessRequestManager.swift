@@ -53,7 +53,7 @@ class BackendlessRequestManager {
         var request = URLRequest(url: URL(string: urlString + DataTypesUtils.shared.stringToUrlString(originalString: restMethod))!)
         request.httpMethod = httpMethod.rawValue
         if let headers = headers, headers.count > 0 {
-            for (key, value) in headers {
+            for (key, value) in headers {             
                 request.addValue(value, forHTTPHeaderField: key)
             }
         }
