@@ -68,36 +68,6 @@ import Foundation
         self.relationName = relationName
     }
     
-    @available(*, deprecated, message: "Please use the relationName property directly")
-    public func setRelationName(relationName: String) {
-        self.relationName = relationName
-    }
-
-    @available(*, deprecated, message: "Please use the relationName property directly")
-    public func getRelationName() -> String {
-        return self.relationName
-    }
-    
-    @available(*, deprecated, message: "Please use the pageSize property directly")
-    public func getPageSize() -> Int {
-        return self.pageSize
-    }
-    
-    @available(*, deprecated, message: "Please use the pageSize property directly")
-    public func setPageSize(pageSize: Int) {
-        self.pageSize = pageSize
-    }
-    
-    @available(*, deprecated, message: "Please use the offset property directly")
-    public func getOffset() -> Int {
-        return self.offset
-    }
-    
-    @available(*, deprecated, message: "Please use the offset property directly")
-    public func setOffset(offset: Int) {
-        self.offset = offset
-    }
-    
     public func prepareNextPage() {
         self.offset += self.pageSize
     }
@@ -111,16 +81,6 @@ import Foundation
     
     public func getRelationType() -> Any? {
         return self.entityClass
-    }
-    
-    @available(*, deprecated, message: "Please use the properties property directly")
-    public func getProperties() -> [String]? {
-        return self.properties
-    }
-    
-    @available(*, deprecated, message: "Please use the properties property directly")
-    public func setProperties(properties: [String]) {
-        self.properties = properties
     }
     
     public func addProperty(property: String) {
@@ -147,16 +107,6 @@ import Foundation
         else {
             self.properties = properties
         }
-    }
-    
-    @available(*, deprecated, message: "Please use the sortBy property directly")
-    public func getSortBy() -> [String]? {
-        return self.sortBy
-    }
-    
-    @available(*, deprecated, message: "Please use the sortBy property directly")
-    public func setSortBy(sortBy: [String]) {
-        self.sortBy = sortBy
     }
     
     public func addSortBy(sortBy: String) {

@@ -107,11 +107,6 @@ import Foundation
         try container.encode(pushBroadcast, forKey: .pushBroadcast)
     }
     
-    @available(*, deprecated, message: "Please use the pushSinglecast property directly")
-    public func setPushSinglecast(singlecast: [String]) {
-        self.pushSinglecast = singlecast
-    }
-    
     public func addPushSingleCast(singlecast: String) {
         self.pushSinglecast.append(singlecast)
     }
@@ -120,36 +115,5 @@ import Foundation
         if let index = self.pushSinglecast.firstIndex(of: singlecast) {
             self.pushSinglecast.remove(at: index)
         }
-    }
-    
-    @available(*, deprecated, message: "Please use the pushSinglecast property directly")
-    public func getPushSinglecast() -> [String] {
-        return self.pushSinglecast
-    }
-    
-    @available(*, deprecated, message: "Please use the publishPolicy property directly")
-    public func setPublishPolicy(publishPolicy: Int) {
-        self.publishPolicy = publishPolicy
-    }
-    
-    @available(*, deprecated, message: "Please use the publishPolicy property directly")
-    public func getPublishPolicy() -> String {
-        if self.publishPolicy == 0 {
-            return "PUSH"
-        }
-        else if self.publishPolicy == 1 {
-            return "PUBSUB"
-        }
-        return "BOTH"
-    }
-    
-    @available(*, deprecated, message: "Please use the pushBroadcast property directly")
-    public func setPushBroadcast(pushBroadcast: Int) {
-        self.pushBroadcast = pushBroadcast
-    }
-    
-    @available(*, deprecated, message: "Please use the pushBroadcast property directly")
-    public func getPushBroadcast() -> Int {
-        return self.pushBroadcast
     }
 }

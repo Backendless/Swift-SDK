@@ -161,45 +161,6 @@ import Foundation
         }        
     }
     
-    @available(*, deprecated, message: "Please use the userProperties property directly")
-    public func getProperty(propertyName: String) -> Any? {
-        return properties[propertyName]
-    }
-    
-    @available(*, deprecated, message: "Please use the userProperties property directly")
-    public func getProperties() -> [String: Any] {
-        return properties
-    }
-    
-    @available(*, deprecated, message: "Please use the userProperties property directly")
-    public func setProperty(propertyName: String, propertyValue: Any) {
-        var value = propertyValue
-        if propertyName == "name", propertyValue is String {
-            self.name = propertyValue as? String
-            value = propertyValue
-        }
-        else if propertyName == "email", propertyValue is String {
-            self.email = propertyValue as? String
-            value = propertyValue
-        }
-        else if propertyName == "blUserLocale", propertyValue is String {
-            if (propertyValue as! String).count == 2 {
-                value = propertyValue
-            }
-        }
-        let jsonValue = JSONUtils.shared.objectToJson(objectToParse: value)
-        properties[propertyName] = jsonValue
-    }
-    
-    @available(*, deprecated, message: "Please use the userProperties property directly")
-    public func setProperties(properties: [String: Any]) {
-        for (key, value) in properties {
-            if !(value is NSNull) {
-                setProperty(propertyName: key, propertyValue: value)
-            }
-        }
-    }
-    
     public func setLocale(languageCode: String) {
         if languageCode.count == 2 {
             properties["blUserLocale"] = languageCode

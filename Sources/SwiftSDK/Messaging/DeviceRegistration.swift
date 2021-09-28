@@ -50,9 +50,4 @@ import Foundation
         self.expiration = expiration
         self.channels = channels
     }
-    
-    @available(*, deprecated, message: "Please use the objectId property directly")
-    func setObjectId(objectId: String) {
-        self.objectId = objectId
-    }
 }

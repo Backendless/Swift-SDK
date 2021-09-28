@@ -38,7 +38,7 @@ class BackendlessRequestManager {
     private var session: URLSession!
     
     init(restMethod: String, httpMethod: HTTPMethod, headers: [String: String]?, parameters: Any?) {
-        self.urlString = "\(Backendless.shared.hostUrl)/\(Backendless.shared.getApplictionId())/\(Backendless.shared.getApiKey())/"
+        self.urlString = "\(Backendless.shared.hostUrl)/\(Backendless.shared.getApplicationId())/\(Backendless.shared.getApiKey())/"
         if !Backendless.shared.getCustomDomain().isEmpty {
             self.urlString = "\(Backendless.shared.getCustomDomain())/api/"
         }
