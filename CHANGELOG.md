@@ -1,6 +1,6 @@
 # RELEASE HISTORY
 
-### 6.4.2 / ?
+### 6.4.2 / September 29, 2021
 * deprecated methods removed from SDK
 * added support for `fileReferencePrefix` to GroupDataQueryBuilder
 * added ability to set headers to `CustomService.invoke`
