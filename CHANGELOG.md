@@ -4,7 +4,7 @@
 * deprecated methods removed from SDK
 * added support for `fileReferencePrefix` to GroupDataQueryBuilder
 * added ability to set headers to `CustomService.invoke`
-* CustomService `invoke` methods with `returnType` parameter marked as deprecated
+* the `returnType` parameter removed from the CustomService `invoke` methods
 
 ### 6.4.1 / September 16, 2021
 * Socket.IO updated to v 16.0.1. Minimal required versions:
