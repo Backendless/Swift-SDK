@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 6.4.3 / October 26, 2021
+* added `uniqueEmails` parameter to the EmailEnvelope class
+
 ### 6.4.2 / September 29, 2021
 * deprecated methods removed from SDK
 * added support for `fileReferencePrefix` to GroupDataQueryBuilder

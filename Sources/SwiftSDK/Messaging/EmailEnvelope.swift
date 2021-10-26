@@ -27,12 +27,14 @@ import Foundation
     public var cc: [String]?
     public var bcc: [String]?
     public var query: String?
+    public var uniqueEmails = true
     
     enum CodingKeys: String, CodingKey {
         case to
         case cc
         case bcc
         case query
+        case uniqueEmails
     }
     
     public override init() { }
@@ -43,6 +45,7 @@ import Foundation
         cc = try container.decodeIfPresent([String].self, forKey: .cc)
         bcc = try container.decodeIfPresent([String].self, forKey: .bcc)
         query = try container.decodeIfPresent(String.self, forKey: .query)
+        uniqueEmails = try container.decodeIfPresent(Bool.self, forKey: .uniqueEmails) ?? true
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -51,5 +54,6 @@ import Foundation
         try container.encodeIfPresent(cc, forKey: .cc)
         try container.encodeIfPresent(bcc, forKey: .bcc)
         try container.encodeIfPresent(query, forKey: .query)
+        try container.encodeIfPresent(uniqueEmails, forKey: .uniqueEmails)
     }
 }

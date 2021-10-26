@@ -376,6 +376,7 @@ import Foundation
         parameters["cc-addresses"] = envelope.cc
         parameters["bcc-addresses"] = envelope.bcc
         parameters["criteria"] = envelope.query
+        parameters["uniqueEmails"] = envelope.uniqueEmails
         if let templateValues = templateValues {
             parameters["template-values"] = templateValues
         }
