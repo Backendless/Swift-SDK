@@ -295,4 +295,75 @@ import Foundation
             }
         })
     }
+    
+    public func append(fileName: String, filePath: String, content: Data, responseHandler: ((BackendlessFile) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        let restMethod = "files/append/\(filePath)/\(fileName)"
+        BackendlessRequestManager(restMethod: restMethod, httpMethod: .post, headers: nil, parameters: nil).makeMultipartFormRequest(data: content, fileName: fileName, getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else if let result = (result as? JSON)?.dictionaryObject {
+                    let backendlessFile = ProcessResponse.shared.adaptToBackendlessFile(backendlessFileDictionary: result)
+                    responseHandler(backendlessFile)
+                }
+            }
+        })
+    }
+    
+    public func append(urlToFile: String, backendlessPath: String, responseHandler: ((BackendlessFile) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        let headers = ["Content-Type": "application/json"]
+        let parameters = ["url": urlToFile]
+        let restMethod = "files/append/\(backendlessPath)"
+        BackendlessRequestManager(restMethod: restMethod, httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: [String : String].self) {
+                
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else if let fileUrlDict = result as? [String : String],
+                        let fileUrl = fileUrlDict["fileURL"] {
+                    let backendlessFile = BackendlessFile()
+                    backendlessFile.fileUrl = fileUrl.replacingOccurrences(of: "\"", with: "")
+                    responseHandler(backendlessFile)
+                }
+            }
+        })
+    }
+    
+    public func append(fileName: String, filePath: String, base64Content: String, responseHandler: ((BackendlessFile) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        let restMethod = "files/append/binary/\(filePath)/\(fileName)"
+        let headers = ["Content-Type": "text/plain"]
+        let parameters = base64Content
+        BackendlessRequestManager(restMethod: restMethod, httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: String.self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else if let fileUrl = result as? String {
+                    let backendlessFile = BackendlessFile()
+                    backendlessFile.fileUrl = fileUrl.replacingOccurrences(of: "\"", with: "")
+                    responseHandler(backendlessFile)
+                }
+            }
+        })
+    }
+    
+    public func append(fileName: String, filePath: String, data: String, responseHandler: ((BackendlessFile) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        let restMethod = "files/append/\(filePath)/\(fileName)"
+        let headers = ["Content-Type": "text/plain"]
+        let parameters = data
+        BackendlessRequestManager(restMethod: restMethod, httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: String.self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else if let fileUrl = result as? String {
+                    let backendlessFile = BackendlessFile()
+                    backendlessFile.fileUrl = fileUrl.replacingOccurrences(of: "\"", with: "")
+                    responseHandler(backendlessFile)
+                }
+            }
+        })
+    }
 }

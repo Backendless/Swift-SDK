@@ -36,7 +36,9 @@ extension Data {
     
     var mimeType: String {
         var c: UInt8 = 0
-        copyBytes(to: &c, count: 1)
+        if !self.isEmpty {
+            copyBytes(to: &c, count: 1)
+        }
         return Data.mimeTypeSignatures[c] ?? "application/octet-stream"
     }
 }
