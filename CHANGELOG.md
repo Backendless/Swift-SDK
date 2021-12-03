@@ -1,5 +1,17 @@
 # RELEASE HISTORY
 
+### 6.4.4 / December 3, 2021
+* added support for append operations in FileService
+```
+func append(fileName: String, filePath: String, content: Data, responseHandler: ((BackendlessFile) -> Void)!, errorHandler: ((Fault) -> Void)!)
+
+func append(urlToFile: String, backendlessPath: String, responseHandler: ((BackendlessFile) -> Void)!, errorHandler: ((Fault) -> Void)!)
+
+func append(fileName: String, filePath: String, base64Content: String, responseHandler: ((BackendlessFile) -> Void)!, errorHandler: ((Fault) -> Void)!)
+
+func append(fileName: String, filePath: String, data: String, responseHandler: ((BackendlessFile) -> Void)!, errorHandler: ((Fault) -> Void)!)
+```
+
 ### 6.4.3 / October 26, 2021
 * added `uniqueEmails` parameter to the EmailEnvelope class
 
