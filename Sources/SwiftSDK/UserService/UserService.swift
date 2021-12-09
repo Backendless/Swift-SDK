@@ -246,7 +246,12 @@ import Foundation
             BackendlessRequestManager(restMethod: "users/isvalidusertoken/\(userToken!)", httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
                 if let responseData = response.data {
                     do {
-                        responseHandler(try JSONSerialization.jsonObject(with: responseData, options: .allowFragments) as! Bool)
+                        let json = try JSONSerialization.jsonObject(with: responseData, options: .allowFragments)
+                        if let isValid = json as? Bool {
+                            responseHandler(isValid)
+                        } else {
+                            errorHandler(Fault(message: "Invalid JSON format"))
+                        }
                     }
                     catch {
                         errorHandler(Fault(error: error))
