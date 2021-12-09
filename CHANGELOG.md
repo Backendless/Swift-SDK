@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 6.4.5 / December 9, 2021
+* fixed crash on session timeout in the `isValidUserToken()` method
+
 ### 6.4.4 / December 3, 2021
 * added support for append operations in FileService
 ```
