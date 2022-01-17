@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2022 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -41,9 +41,9 @@ class FindFirstLastTests: XCTestCase {
     // ⚠️ TODO when BKNDLSS-21164 is fixed
     func testFF01() {
         /*let expectation = self.expectation(description: "PASSED data.findFirst")
-        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+        dataStore.bulkRemove(whereClause: nil, responseHandler: { removed in
             let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44]]
-            self.dataStore.createBulk(entities: objects, responseHandler: { createdIds in
+            self.dataStore.bulkCreate(entities: objects, responseHandler: { createdIds in
                 let queryBuilder = DataQueryBuilder()
                 queryBuilder.sortBy = ["age DESC"]
                 self.dataStore.findFirst(queryBuilder: queryBuilder, responseHandler: { first in
@@ -66,9 +66,9 @@ class FindFirstLastTests: XCTestCase {
     // ⚠️ TODO when BKNDLSS-21164 is fixed
     func testFF02() {
         /*let expectation = self.expectation(description: "PASSED data.findFirst")
-        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+        dataStore.bulkRemove(whereClause: nil, responseHandler: { removed in
             let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44]]
-            self.dataStore.createBulk(entities: objects, responseHandler: { createdIds in
+            self.dataStore.bulkCreate(entities: objects, responseHandler: { createdIds in
                 let queryBuilder = DataQueryBuilder()
                 queryBuilder.sortBy = ["age ASC"]
                 self.dataStore.findFirst(queryBuilder: queryBuilder, responseHandler: { first in
@@ -91,9 +91,9 @@ class FindFirstLastTests: XCTestCase {
     // ⚠️ TODO when BKNDLSS-21164 is fixed
     func testFF03() {
         /*let expectation = self.expectation(description: "PASSED data.findFirst")
-        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+        dataStore.bulkRemove(whereClause: nil, responseHandler: { removed in
             let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44], ["name": "zzz", "age": 44]]
-            self.dataStore.createBulk(entities: objects, responseHandler: { createdIds in
+            self.dataStore.bulkCreate(entities: objects, responseHandler: { createdIds in
                 let queryBuilder = DataQueryBuilder()
                 queryBuilder.sortBy = ["age DESC", "name ASC"]
                 self.dataStore.findFirst(queryBuilder: queryBuilder, responseHandler: { first in
@@ -116,9 +116,9 @@ class FindFirstLastTests: XCTestCase {
     // ⚠️ TODO when BKNDLSS-21164 is fixed
     func testFF04() {
         /*let expectation = self.expectation(description: "PASSED data.findFirst")
-        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+        dataStore.bulkRemove(whereClause: nil, responseHandler: { removed in
             let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44], ["name": "zzz", "age": 44]]
-            self.dataStore.createBulk(entities: objects, responseHandler: { createdIds in
+            self.dataStore.bulkCreate(entities: objects, responseHandler: { createdIds in
                 let queryBuilder = DataQueryBuilder()
                 queryBuilder.sortBy = ["age DESC", "name DESC"]
                 self.dataStore.findFirst(queryBuilder: queryBuilder, responseHandler: { first in
@@ -140,9 +140,9 @@ class FindFirstLastTests: XCTestCase {
     
     func testFF05() {
         let expectation = self.expectation(description: "PASSED data.findFirst")
-        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+        dataStore.bulkRemove(whereClause: nil, responseHandler: { removed in
             let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44]]
-            self.dataStore.createBulk(entities: objects, responseHandler: { createdIds in
+            self.dataStore.bulkCreate(entities: objects, responseHandler: { createdIds in
                 let queryBuilder = DataQueryBuilder()
                 queryBuilder.sortBy = ["age DESC", "name DESC"]
                 self.dataStore.findFirst(queryBuilder: queryBuilder, responseHandler: { first in
@@ -163,9 +163,9 @@ class FindFirstLastTests: XCTestCase {
     // ⚠️ TODO when BKNDLSS-21164 is fixed
     func testFF06() {
         /*let expectation = self.expectation(description: "PASSED data.findLast")
-        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+        dataStore.bulkRemove(whereClause: nil, responseHandler: { removed in
             let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44]]
-            self.dataStore.createBulk(entities: objects, responseHandler: { createdIds in
+            self.dataStore.bulkCreate(entities: objects, responseHandler: { createdIds in
                 let queryBuilder = DataQueryBuilder()
                 queryBuilder.sortBy = ["age DESC"]
                 self.dataStore.findLast(queryBuilder: queryBuilder, responseHandler: { last in
@@ -189,7 +189,7 @@ class FindFirstLastTests: XCTestCase {
     func testFF07() {
         /*let expectation = self.expectation(description: "PASSED data.findLast")
          let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44]]
-         dataStore.createBulk(entities: objects, responseHandler: { createdIds in
+         dataStore.bulkCreate(entities: objects, responseHandler: { createdIds in
          DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
          let queryBuilder = DataQueryBuilder()
          queryBuilder.sortBy = ["age ASC"]
@@ -212,9 +212,9 @@ class FindFirstLastTests: XCTestCase {
     // ⚠️ TODO when BKNDLSS-21164 is fixed
     func testFF08() {
         /*let expectation = self.expectation(description: "PASSED data.findLast")
-        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+        dataStore.bulkRemove(whereClause: nil, responseHandler: { removed in
             let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44]]
-            self.dataStore.createBulk(entities: objects, responseHandler: { createdIds in
+            self.dataStore.bulkCreate(entities: objects, responseHandler: { createdIds in
                 let queryBuilder = DataQueryBuilder()
                 queryBuilder.sortBy = ["name DESC"]
                 self.dataStore.findLast(queryBuilder: queryBuilder, responseHandler: { last in
@@ -237,7 +237,7 @@ class FindFirstLastTests: XCTestCase {
     func testFF09() {
         let expectation = self.expectation(description: "PASSED data.findLast")
         let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44]]
-        dataStore.createBulk(entities: objects, responseHandler: { createdIds in
+        dataStore.bulkCreate(entities: objects, responseHandler: { createdIds in
             self.dataStore.findLast(responseHandler: { last in
                 expectation.fulfill()
             }, errorHandler: { fault in                

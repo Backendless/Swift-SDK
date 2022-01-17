@@ -1,9 +1,9 @@
 Pod::Spec.new do |s|
   s.name         = 'BackendlessSwift'
   s.module_name  = 'Backendless'
-  s.version      = '6.4.5'
-  s.source = { :git => 'https://github.com/Backendless/Swift-SDK.git', :tag => '6.4.5' }
-  s.license      = { :type => 'MIT', :text => 'Copyright (c) 2013-2021 by Backendless Corp' }
+  s.version      = '6.5.0'
+  s.source = { :git => 'https://github.com/Backendless/Swift-SDK.git', :tag => '6.5.0' }
+  s.license      = { :type => 'MIT', :text => 'Copyright (c) 2013-2022 by Backendless Corp' }
   s.homepage     = 'http://backendless.com'
   s.authors      = { 'Mark Piller' => 'mark@backendless.com', 'Olha Danylova' => 'olha.danylova@backendlessmail.com' }
   s.summary      = 'Backendless is a Mobile Backend and API Services Platform'

@@ -1,5 +1,27 @@
 # RELEASE HISTORY
 
+### 6.5.0 / January 17, 2022
+* the `createBulk()` methods renamed to `bulkCreate()`
+* the `updateBulk()` methods renamed to `bulkUpdate()`
+* the `removeBulk()` methods renamed to `bulkRemove()`
+* added support for upseert to the PersistenceService:
+```
+func save(entity: Any, isUpsert: Bool, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!)
+
+func bulkUpsert(entities: [Any], responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!)
+```
+* added support for upsert/upsertBulk transaction operation
+* added RT support for the upsert methods:
+```
+func addUpsertListener(responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription?
+
+func addUpsertListener(whereClause: String, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription?
+
+func removeUpsertListeners(whereClause: String)
+
+func removeUpsertListeners()
+```
+
 ### 6.4.5 / December 9, 2021
 * fixed crash on session timeout in the `isValidUserToken()` method
 

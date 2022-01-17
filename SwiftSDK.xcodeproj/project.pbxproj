@@ -30,6 +30,7 @@
 		5E09B00E22645BBC0073DA5E /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E09B00D22645BBC0073DA5E /* Logger.swift */; };
 		5E09B01022645BCF0073DA5E /* LogBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E09B00F22645BCF0073DA5E /* LogBuffer.swift */; };
 		5E09B01222645CE60073DA5E /* LogMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E09B01122645CE60073DA5E /* LogMessage.swift */; };
+		5E0B5953278DB9A900BD8224 /* ExecutionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E238A652271CE8100227859 /* ExecutionType.swift */; };
 		5E11113721B532450044CAED /* UserProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E11113621B532450044CAED /* UserProperty.swift */; };
 		5E11113C21B542BA0044CAED /* UserServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E11113B21B542BA0044CAED /* UserServiceTests.swift */; };
 		5E13C3A622046F7C00EA3050 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E13C3A522046F7C00EA3050 /* JSON.swift */; };
@@ -37,6 +38,7 @@
 		5E15A06C223B9C9D0090F5A3 /* RTMessagingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E15A06B223B9C9D0090F5A3 /* RTMessagingTests.swift */; };
 		5E17A1AA23954E0400B078B5 /* BLLineString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E17A1A923954E0400B078B5 /* BLLineString.swift */; };
 		5E17EE6724CAF8BF00D7321B /* JSONUpdateBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E17EE6624CAF8BF00D7321B /* JSONUpdateBuilder.swift */; };
+		5E1AEBC6278EEFB500D49E93 /* DataUOWBulkUpsertTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1AEBC5278EEFB500D49E93 /* DataUOWBulkUpsertTests.swift */; };
 		5E1CC2F72252534F0011D5C8 /* FileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1CC2F62252534F0011D5C8 /* FileService.swift */; };
 		5E1CC2F9225254140011D5C8 /* BackendlessFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1CC2F8225254140011D5C8 /* BackendlessFile.swift */; };
 		5E1DB58F23E19FAA00955319 /* UnitOfWork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1DB58E23E19FAA00955319 /* UnitOfWork.swift */; };
@@ -95,6 +97,7 @@
 		5E843AB523ACC61B0044CE17 /* BLLineStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E843AB423ACC61B0044CE17 /* BLLineStringTests.swift */; };
 		5E84E87A223158EA008B3F05 /* PublishingAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E84E879223158EA008B3F05 /* PublishingAPITests.swift */; };
 		5E84E87C22315E12008B3F05 /* EmailBodyparts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E84E87B22315E12008B3F05 /* EmailBodyparts.swift */; };
+		5E8653F0278ECAF200836A4C /* UnitOfWorkUpsert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8653EF278ECAF200836A4C /* UnitOfWorkUpsert.swift */; };
 		5E894EBA255EB1970086071C /* DistinctTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E894EB9255EB1970086071C /* DistinctTests.swift */; };
 		5E8A2A22226EF7DA007C2BAA /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8A2A21226EF7DA007C2BAA /* CacheService.swift */; };
 		5E8A2A24226EFA16007C2BAA /* NoReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8A2A23226EFA16007C2BAA /* NoReply.swift */; };
@@ -135,6 +138,7 @@
 		5ECAB235238C42360051F315 /* WKTParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECAB234238C42360051F315 /* WKTParser.swift */; };
 		5ECFEFBB23D9C88F004A5DD0 /* BackendlessDataCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECFEFBA23D9C88F004A5DD0 /* BackendlessDataCollection.swift */; };
 		5ED330B826DE2398000363E7 /* GroupClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED330B726DE2398000363E7 /* GroupClasses.swift */; };
+		5ED44A7F278EE349008B9FB1 /* DataUOWUpsertTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED44A7E278EE349008B9FB1 /* DataUOWUpsertTests.swift */; };
 		5ED51D0D22456E8600D22F11 /* BackendlessPushHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED51D0C22456E8600D22F11 /* BackendlessPushHelper.swift */; };
 		5ED765D02224369E009431CD /* BulkEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED765CF2224369E009431CD /* BulkEvent.swift */; };
 		5ED9B85B25B71396000B2C11 /* BLUrlSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED9B85A25B71396000B2C11 /* BLUrlSession.swift */; };
@@ -198,6 +202,7 @@
 		5E15A06B223B9C9D0090F5A3 /* RTMessagingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTMessagingTests.swift; sourceTree = "<group>"; };
 		5E17A1A923954E0400B078B5 /* BLLineString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLLineString.swift; sourceTree = "<group>"; };
 		5E17EE6624CAF8BF00D7321B /* JSONUpdateBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONUpdateBuilder.swift; sourceTree = "<group>"; };
+		5E1AEBC5278EEFB500D49E93 /* DataUOWBulkUpsertTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataUOWBulkUpsertTests.swift; sourceTree = "<group>"; };
 		5E1CC2F62252534F0011D5C8 /* FileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileService.swift; sourceTree = "<group>"; };
 		5E1CC2F8225254140011D5C8 /* BackendlessFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessFile.swift; sourceTree = "<group>"; };
 		5E1DB58E23E19FAA00955319 /* UnitOfWork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfWork.swift; sourceTree = "<group>"; };
@@ -255,6 +260,7 @@
 		5E843AB423ACC61B0044CE17 /* BLLineStringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLLineStringTests.swift; sourceTree = "<group>"; };
 		5E84E879223158EA008B3F05 /* PublishingAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishingAPITests.swift; sourceTree = "<group>"; };
 		5E84E87B22315E12008B3F05 /* EmailBodyparts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailBodyparts.swift; sourceTree = "<group>"; };
+		5E8653EF278ECAF200836A4C /* UnitOfWorkUpsert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfWorkUpsert.swift; sourceTree = "<group>"; };
 		5E894EB9255EB1970086071C /* DistinctTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistinctTests.swift; sourceTree = "<group>"; };
 		5E8A2A21226EF7DA007C2BAA /* CacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheService.swift; sourceTree = "<group>"; };
 		5E8A2A23226EFA16007C2BAA /* NoReply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoReply.swift; sourceTree = "<group>"; };
@@ -299,6 +305,7 @@
 		5ECE680E21B0248B00839120 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5ECFEFBA23D9C88F004A5DD0 /* BackendlessDataCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessDataCollection.swift; sourceTree = "<group>"; };
 		5ED330B726DE2398000363E7 /* GroupClasses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupClasses.swift; sourceTree = "<group>"; };
+		5ED44A7E278EE349008B9FB1 /* DataUOWUpsertTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataUOWUpsertTests.swift; sourceTree = "<group>"; };
 		5ED51D0C22456E8600D22F11 /* BackendlessPushHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessPushHelper.swift; sourceTree = "<group>"; };
 		5ED765CF2224369E009431CD /* BulkEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulkEvent.swift; sourceTree = "<group>"; };
 		5ED9B85A25B71396000B2C11 /* BLUrlSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLUrlSession.swift; sourceTree = "<group>"; };
@@ -484,6 +491,7 @@
 				5E1DB58E23E19FAA00955319 /* UnitOfWork.swift */,
 				5E1DB59223E1A27A00955319 /* UnitOfWorkCreate.swift */,
 				5EF0C79C23E43CBE00880F31 /* UnitOfWorkUpdate.swift */,
+				5E8653EF278ECAF200836A4C /* UnitOfWorkUpsert.swift */,
 				5EED4AEC23E837D900DB006F /* UnitOfWorkDelete.swift */,
 				5E65257C23E860CA00C7E006 /* UnitOfWorkFind.swift */,
 				5EACCB5A23EC5871007AC3C4 /* UnitOfWorkAddRelation.swift */,
@@ -573,10 +581,12 @@
 		5E7435062431D75400EEA9A8 /* UOWTests */ = {
 			isa = PBXGroup;
 			children = (
-				5E7435072431D78F00EEA9A8 /* DataUOWCreateTests.swift */,
 				5EB5D17D243615D500C21662 /* DataUOWBulkCreateTests.swift */,
+				5E7435072431D78F00EEA9A8 /* DataUOWCreateTests.swift */,
 				5E9396C62431EBDF00B2A5F1 /* DataUOWUpdateTests.swift */,
 				5EF98B18243B635D00FF5F13 /* DataUOWBulkUpdateTests.swift */,
+				5ED44A7E278EE349008B9FB1 /* DataUOWUpsertTests.swift */,
+				5E1AEBC5278EEFB500D49E93 /* DataUOWBulkUpsertTests.swift */,
 				5E412CDF2431FF0C00640313 /* DataUOWDeleteTests.swift */,
 				5EF98B1A243B7AF400FF5F13 /* DataUOWBulkDeleteTests.swift */,
 				5E412CE12432133800640313 /* DataUOWFindTests.swift */,
@@ -870,7 +880,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1010;
-				LastUpgradeCheck = 1310;
+				LastUpgradeCheck = 1320;
 				TargetAttributes = {
 					5E9C572721AEEA0400877870 = {
 						CreatedOnToolsVersion = 10.1;
@@ -1069,6 +1079,7 @@
 				5E1DB59123E1A0BA00955319 /* OpResult.swift in Sources */,
 				5ED51D0D22456E8600D22F11 /* BackendlessPushHelper.swift in Sources */,
 				5E09B00E22645BBC0073DA5E /* Logger.swift in Sources */,
+				5E8653F0278ECAF200836A4C /* UnitOfWorkUpsert.swift in Sources */,
 				5EED4AED23E837D900DB006F /* UnitOfWorkDelete.swift in Sources */,
 				5A2A784D21E6104F00EC8007 /* IDataStore.swift in Sources */,
 				5E341B7C21F5E11A00C32598 /* ObjectProperty.swift in Sources */,
@@ -1104,6 +1115,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5ED44A7F278EE349008B9FB1 /* DataUOWUpsertTests.swift in Sources */,
 				5E158BC623AE5DC100D29505 /* BLPointTests.swift in Sources */,
 				5E7534682220579100BC31D4 /* EventHandlerForClassTests.swift in Sources */,
 				5AFE8E6621E8E5C00003477B /* DataStoreFactoryTests.swift in Sources */,
@@ -1123,8 +1135,10 @@
 				5EF98B19243B635D00FF5F13 /* DataUOWBulkUpdateTests.swift in Sources */,
 				5EF3478924E2B80F0017EE18 /* RelationsRTListenersTests.swift in Sources */,
 				5E9396C72431EBDF00B2A5F1 /* DataUOWUpdateTests.swift in Sources */,
+				5E1AEBC6278EEFB500D49E93 /* DataUOWBulkUpsertTests.swift in Sources */,
 				5E11113C21B542BA0044CAED /* UserServiceTests.swift in Sources */,
 				5EF98B1B243B7AF400FF5F13 /* DataUOWBulkDeleteTests.swift in Sources */,
+				5E0B5953278DB9A900BD8224 /* ExecutionType.swift in Sources */,
 				5E7435082431D78F00EEA9A8 /* DataUOWCreateTests.swift in Sources */,
 				5EE2B40721C25EC600F90723 /* BackendlessUserTests.swift in Sources */,
 				5EDA87DE2434C44B00873403 /* DataUOWDeleteRelation.swift in Sources */,

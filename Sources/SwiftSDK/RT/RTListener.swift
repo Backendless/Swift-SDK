@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2022 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -91,14 +91,14 @@ import Foundation
         if let whereClause = whereClause {
             options["whereClause"] = whereClause
         }
-        if event == RtEventHandlers.created || event == RtEventHandlers.updated || event == RtEventHandlers.deleted {
+        if event == RtEventHandlers.created || event == RtEventHandlers.updated || event == RtEventHandlers.deleted || event == RtEventHandlers.upserted {
             wrappedBlock = { response in
                 if let response = response as? [String : Any] {
                     responseHandler(response)
                 }
             }
         }
-        else if event == RtEventHandlers.bulkCreated {
+        else if event == RtEventHandlers.bulkCreated || event == RtEventHandlers.bulkUpserted {
             // return value is [String] but wrapped in [String : Any] to make this the subscribeForObjectsChanges method universal
             wrappedBlock = { response in
                 if let response = response as? [String] {

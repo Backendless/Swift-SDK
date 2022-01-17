@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2022 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -33,6 +33,7 @@ class DataStoreFactoryTests: XCTestCase {
     override class func setUp() {
         Backendless.shared.hostUrl = BackendlessAppConfig.hostUrl
         Backendless.shared.initApp(applicationId: BackendlessAppConfig.appId, apiKey: BackendlessAppConfig.apiKey)
+        //clearTables()
     }
     
     override func setUp() {
@@ -40,10 +41,16 @@ class DataStoreFactoryTests: XCTestCase {
         childDataStore = backendless.data.of(ChildTestClass.self)
     }
     
+    class func clearTables() {
+        Backendless.shared.data.of(TestClass.self).bulkRemove(whereClause: nil, responseHandler: { removedObjects in }, errorHandler: { fault in })
+        Backendless.shared.data.of(ChildTestClass.self).bulkRemove(whereClause: nil, responseHandler: { removedObjects in }, errorHandler: { fault in })
+        Backendless.shared.data.of(BackendlessUser.self).bulkRemove(whereClause: nil, responseHandler: { removedObjects in }, errorHandler: { fault in })
+    }
+    
     func test01Mappings() {
         let expectation = self.expectation(description: "PASSED dataStoreFactory.mapToTable/mapColumnToProperty")
-        backendless.data.of(TestClassForMappings.self).removeBulk(whereClause: nil, responseHandler: { removedObjects in
-            self.backendless.data.of(TestClass.self).removeBulk(whereClause: nil, responseHandler: { removedObjects in
+        backendless.data.of(TestClassForMappings.self).bulkRemove(whereClause: nil, responseHandler: { removedObjects in
+            self.backendless.data.of(TestClass.self).bulkRemove(whereClause: nil, responseHandler: { removedObjects in
                 let mappedDataStore = self.backendless.data.of(TestClassForMappings.self)
                 mappedDataStore.mapToTable(tableName: "TestClass")
                 mappedDataStore.mapColumn(columnName: "name", toProperty: "nameProperty")
@@ -74,8 +81,8 @@ class DataStoreFactoryTests: XCTestCase {
     
     func test02Create() {
         let expectation = self.expectation(description: "PASSED: dataStoreFactory.create")
-        backendless.data.of(TestClass.self).removeBulk(whereClause: nil, responseHandler: { removed in
-            self.childDataStore.removeBulk(whereClause: nil, responseHandler: { removedChildren in
+        backendless.data.of(TestClass.self).bulkRemove(whereClause: nil, responseHandler: { removed in
+            self.childDataStore.bulkRemove(whereClause: nil, responseHandler: { removedChildren in
                 let objectToSave = TestClass()
                 objectToSave.name = "Bob"
                 objectToSave.age = 30
@@ -97,8 +104,8 @@ class DataStoreFactoryTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test03CreateBulk() {
-        let expectation = self.expectation(description: "PASSED: dataStoreFactory.createBulk")
+    func test03BulkCreate() {
+        let expectation = self.expectation(description: "PASSED: dataStoreFactory.bulkCreate")
         let objectToSave1 = TestClass()
         objectToSave1.name = "Bob"
         objectToSave1.age = 30
@@ -106,7 +113,7 @@ class DataStoreFactoryTests: XCTestCase {
         objectToSave2.name = "Jack"
         objectToSave2.age = 40
         let objectsToSave = [objectToSave1, objectToSave2]
-        dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
+        dataStore.bulkCreate(entities: objectsToSave, responseHandler: { savedObjects in
             XCTAssert(type(of: savedObjects) == [String].self)
             XCTAssert(savedObjects.count == 2)
             expectation.fulfill()
@@ -140,9 +147,9 @@ class DataStoreFactoryTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test05UpdateBulk() {
-        let expectation = self.expectation(description: "PASSED: dataStoreFactory.updateBulk")
-        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+    func test05BulkUpdate() {
+        let expectation = self.expectation(description: "PASSED: dataStoreFactory.bulkUpdate")
+        dataStore.bulkRemove(whereClause: nil, responseHandler: { removed in
             let objectToSave1 = TestClass()
             objectToSave1.name = "Bob"
             objectToSave1.age = 102
@@ -153,9 +160,9 @@ class DataStoreFactoryTests: XCTestCase {
             objectToSave3.name = "Hanna"
             objectToSave3.age = 110
             let objectsToSave = [objectToSave1, objectToSave2, objectToSave3]
-            self.dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
+            self.dataStore.bulkCreate(entities: objectsToSave, responseHandler: { savedObjects in
                 XCTAssertTrue(savedObjects.count == 3)
-                self.dataStore.updateBulk(whereClause: "age>100", changes: ["name": "New Name"], responseHandler: { updatedObjects in
+                self.dataStore.bulkUpdate(whereClause: "age>100", changes: ["name": "New Name"], responseHandler: { updatedObjects in
                     XCTAssertEqual(updatedObjects, 2)
                     expectation.fulfill()
                 }, errorHandler: { fault in                    
@@ -210,9 +217,9 @@ class DataStoreFactoryTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    func test08RemoveBulk() {
-        let expectation = self.expectation(description: "PASSED: dataStoreFactory.removeBulk")
-        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+    func test08BulkRemove() {
+        let expectation = self.expectation(description: "PASSED: dataStoreFactory.bulkRemove")
+        dataStore.bulkRemove(whereClause: nil, responseHandler: { removed in
             let objectToSave1 = TestClass()
             objectToSave1.name = "Bob"
             objectToSave1.age = 102
@@ -223,10 +230,10 @@ class DataStoreFactoryTests: XCTestCase {
             objectToSave3.name = "Hanna"
             objectToSave3.age = 110
             let objectsToSave = [objectToSave1, objectToSave2, objectToSave3]
-            self.dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
+            self.dataStore.bulkCreate(entities: objectsToSave, responseHandler: { savedObjects in
                 XCTAssert(type(of: savedObjects) == [String].self)
                 XCTAssert(savedObjects.count == 3)
-                self.dataStore.removeBulk(whereClause: "age>100", responseHandler: { removedObjects in
+                self.dataStore.bulkRemove(whereClause: "age>100", responseHandler: { removedObjects in
                     XCTAssertEqual(removedObjects, 2)
                     expectation.fulfill()
                 }, errorHandler: { fault in                    
@@ -244,7 +251,7 @@ class DataStoreFactoryTests: XCTestCase {
     
     func test09GetObjectCount() {
         let expectation = self.expectation(description: "PASSED: dataStoreFactory.getObjectCount")
-        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+        dataStore.bulkRemove(whereClause: nil, responseHandler: { removed in
             let objectToSave1 = TestClass()
             objectToSave1.name = "Bob"
             objectToSave1.age = 102
@@ -255,7 +262,7 @@ class DataStoreFactoryTests: XCTestCase {
             objectToSave3.name = "Hanna"
             objectToSave3.age = 110
             let objectsToSave = [objectToSave1, objectToSave2, objectToSave3]
-            self.dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
+            self.dataStore.bulkCreate(entities: objectsToSave, responseHandler: { savedObjects in
                 self.dataStore.getObjectCount(responseHandler: { count in
                     XCTAssertEqual(count, 3)
                     expectation.fulfill()
@@ -274,7 +281,7 @@ class DataStoreFactoryTests: XCTestCase {
     
     func test10GetObjectCountWithCondition() {
         let expectation = self.expectation(description: "PASSED: dataStoreFactory.getObjectCountWithCondition")
-        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+        dataStore.bulkRemove(whereClause: nil, responseHandler: { removed in
             let objectToSave1 = TestClass()
             objectToSave1.name = "Bob"
             objectToSave1.age = 102
@@ -285,7 +292,7 @@ class DataStoreFactoryTests: XCTestCase {
             objectToSave3.name = "Hanna"
             objectToSave3.age = 110
             let objectsToSave = [objectToSave1, objectToSave2, objectToSave3]
-            self.dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
+            self.dataStore.bulkCreate(entities: objectsToSave, responseHandler: { savedObjects in
                 let queryBuilder = DataQueryBuilder()
                 queryBuilder.whereClause = "age>100"
                 self.dataStore.getObjectCount(queryBuilder: queryBuilder, responseHandler: { count in
@@ -306,7 +313,7 @@ class DataStoreFactoryTests: XCTestCase {
     
     func test11Find() {
         let expectation = self.expectation(description: "PASSED: dataStoreFactory.find")
-        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+        dataStore.bulkRemove(whereClause: nil, responseHandler: { removed in
             let objectToSave1 = TestClass()
             objectToSave1.name = "Bob"
             objectToSave1.age = 102
@@ -317,7 +324,7 @@ class DataStoreFactoryTests: XCTestCase {
             objectToSave3.name = "Hanna"
             objectToSave3.age = 110
             let objectsToSave = [objectToSave1, objectToSave2, objectToSave3]
-            self.dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
+            self.dataStore.bulkCreate(entities: objectsToSave, responseHandler: { savedObjects in
                 self.dataStore.find(responseHandler: { foundObjects in
                     XCTAssertEqual(foundObjects.count, 3)
                     expectation.fulfill()
@@ -336,7 +343,7 @@ class DataStoreFactoryTests: XCTestCase {
     
     func test12FindWithCondition() {
         let expectation = self.expectation(description: "PASSED: dataStoreFactory.findWithCondition")
-        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+        dataStore.bulkRemove(whereClause: nil, responseHandler: { removed in
             let objectToSave1 = TestClass()
             objectToSave1.name = "Bob"
             objectToSave1.age = 102
@@ -347,7 +354,7 @@ class DataStoreFactoryTests: XCTestCase {
             objectToSave3.name = "Hanna"
             objectToSave3.age = 110
             let objectsToSave = [objectToSave1, objectToSave2, objectToSave3]
-            self.dataStore.createBulk(entities: objectsToSave, responseHandler: { savedObjects in
+            self.dataStore.bulkCreate(entities: objectsToSave, responseHandler: { savedObjects in
                 let queryBuilder = DataQueryBuilder()
                 queryBuilder.whereClause = "age>100"
                 queryBuilder.groupBy = ["name"]
@@ -707,6 +714,118 @@ class DataStoreFactoryTests: XCTestCase {
             }, errorHandler: { fault in                
                 XCTFail("\(fault.code): \(fault.message!)")
             })
+        }, errorHandler: { fault in
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    // *********************************************************
+    
+    func test26Upsert() {
+        let expectation = self.expectation(description: "PASSED: dataStoreFactory.upsert")
+        dataStore.bulkRemove(whereClause: nil, responseHandler: { removed in
+            self.childDataStore.bulkRemove(whereClause: nil, responseHandler: { removedChildren in
+                let objectToSave = TestClass()
+                objectToSave.name = "Joe"
+                self.dataStore.save(entity: objectToSave, isUpsert: true, responseHandler: { savedObject in
+                    XCTAssert(type(of: savedObject) == TestClass.self)
+                    XCTAssertEqual((savedObject as! TestClass).name, "Joe")
+                    expectation.fulfill()
+                }, errorHandler: { fault in
+                    XCTFail("\(fault.code): \(fault.message!)")
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
+            }, errorHandler: { fault in
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+    
+    func test27Upsert() {
+        let expectation = self.expectation(description: "PASSED: dataStoreFactory.upsert")
+        dataStore.bulkRemove(whereClause: nil, responseHandler: { removed in
+            self.childDataStore.bulkRemove(whereClause: nil, responseHandler: { removedChildren in
+                let objectToSave = TestClass()
+                objectToSave.name = "Joe"
+                objectToSave.objectId = "1"
+                self.dataStore.save(entity: objectToSave, isUpsert: true, responseHandler: { savedObject in
+                    XCTAssert(type(of: savedObject) == TestClass.self)
+                    XCTAssertEqual((savedObject as! TestClass).name, "Joe")
+                    XCTAssertEqual((savedObject as! TestClass).objectId, "1")
+                    expectation.fulfill()
+                }, errorHandler: { fault in
+                    XCTFail("\(fault.code): \(fault.message!)")
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
+            }, errorHandler: { fault in
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func test28Upsert() {
+        let expectation = self.expectation(description: "PASSED: dataStoreFactory.upsert")
+        dataStore.bulkRemove(whereClause: nil, responseHandler: { removed in
+            self.childDataStore.bulkRemove(whereClause: nil, responseHandler: { removedChildren in
+                let objectToSave = TestClass()
+                objectToSave.name = "Mary"
+                objectToSave.objectId = "1"
+                self.dataStore.save(entity: objectToSave, isUpsert: true, responseHandler: { savedObject in
+                    XCTAssert(type(of: savedObject) == TestClass.self)
+                    XCTAssertEqual((savedObject as! TestClass).name, "Mary")
+                    XCTAssertEqual((savedObject as! TestClass).objectId, "1")
+                    expectation.fulfill()
+                }, errorHandler: { fault in
+                    XCTFail("\(fault.code): \(fault.message!)")
+                    XCTFail("\(fault.code): \(fault.message!)")
+                })
+            }, errorHandler: { fault in
+                XCTFail("\(fault.code): \(fault.message!)")
+            })
+        }, errorHandler: { fault in
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func test29BulkUpsert() {
+        let expectation = self.expectation(description: "PASSED: dataStoreFactory.bulkUpsert")
+        let objectToSave1 = TestClass()
+        objectToSave1.name = "Nikolas"
+        objectToSave1.objectId = "1"
+        let objectToSave2 = TestClass()
+        objectToSave2.name = "Mary"
+        objectToSave2.objectId = "2"
+        let objectsToSave = [objectToSave1, objectToSave2]
+        dataStore.bulkUpsert(entities: objectsToSave, responseHandler: { savedObjects in
+            XCTAssert(type(of: savedObjects) == [String].self)
+            XCTAssert(savedObjects.count == 2)
+            expectation.fulfill()
+        }, errorHandler: { fault in
+            XCTFail("\(fault.code): \(fault.message!)")
+        })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func test30BulkUpsert() {
+        let expectation = self.expectation(description: "PASSED: dataStoreFactory.bulkUpsert")
+        let objectToSave1 = TestClass()
+        objectToSave1.name = "Jack"
+        let objectToSave2 = TestClass()
+        objectToSave2.age = 12
+        objectToSave2.objectId = "3"
+        let objectsToSave = [objectToSave1, objectToSave2]
+        dataStore.bulkUpsert(entities: objectsToSave, responseHandler: { savedObjects in
+            XCTAssert(type(of: savedObjects) == [String].self)
+            XCTAssert(savedObjects.count == 2)
+            expectation.fulfill()
         }, errorHandler: { fault in
             XCTFail("\(fault.code): \(fault.message!)")
         })

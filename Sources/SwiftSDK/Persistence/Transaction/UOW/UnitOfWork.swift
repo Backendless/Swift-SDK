@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2022 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -57,6 +57,7 @@ enum UowProps {
     
     private var uowCreate: UnitOfWorkCreate?
     private var uowUpdate: UnitOfWorkUpdate?
+    private var uowUpsert: UnitOfWorkUpsert?
     private var uowDelete: UnitOfWorkDelete?
     private var uowFind: UnitOfWorkFind?
     private var uowAddRel: UnitOfWorkAddRelation?
@@ -67,6 +68,7 @@ enum UowProps {
         super.init()
         uowCreate = UnitOfWorkCreate(uow: self)
         uowUpdate = UnitOfWorkUpdate(uow: self)
+        uowUpsert = UnitOfWorkUpsert(uow: self)
         uowDelete = UnitOfWorkDelete(uow: self)
         uowFind = UnitOfWorkFind(uow: self)
         uowAddRel = UnitOfWorkAddRelation(uow: self)
@@ -156,6 +158,32 @@ enum UowProps {
         let (operation, opRes) = uowUpdate!.bulkUpdate(result: objectIdsForChanges, changes: changes)
         operations.append(operation)
         return opRes
+    }
+    
+    // upsert
+    
+    public func upsert(tableName: String, objectToUpsert: [String : Any]) -> OpResult {
+        let (operation, opRes) = uowUpsert!.upsert(tableName: tableName, objectToUpsert: objectToUpsert)
+        operations.append(operation)
+        return opRes
+    }
+    
+    public func upsert(objectToUpsert: Any) -> OpResult {
+        let (tableName, objectToUpsertDict) = TransactionHelper.shared.tableAndDictionaryFromEntity(objectToUpsert)
+        return upsert(tableName: tableName, objectToUpsert: objectToUpsertDict as! [String : Any])
+    }
+    
+    // bulk upsert
+    
+    public func bulkUpsert(tableName: String, objectsToUpsert: [[String : Any]]) -> OpResult {
+        let (operation, opRes) = uowUpsert!.bulkUpsert(tableName: tableName, objectsToUpsert: objectsToUpsert)
+        operations.append(operation)
+        return opRes
+    }
+    
+    public func bulkUpsert(objectsToUpsert: [Any]) -> OpResult {
+        let (tableName, objectsToUpsertDict) = TransactionHelper.shared.tableAndDictionaryFromEntity(objectsToUpsert)
+        return bulkUpsert(tableName: tableName, objectsToUpsert: objectsToUpsertDict as! [[String : Any]])
     }
     
     // delete

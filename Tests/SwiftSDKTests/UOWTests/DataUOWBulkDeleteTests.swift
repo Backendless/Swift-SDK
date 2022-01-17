@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2022 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -38,7 +38,7 @@ class DataUOWBulkDeleteTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: uow.bulkDelete")
         DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
             let testObjects = [["name": "Bob", "age": 25], ["name": "Ann", "age": 45], ["name": "Jack", "age": 26]]
-            Backendless.shared.data.ofTable("TestClass").createBulk(entities: testObjects, responseHandler: { objectIds in
+            Backendless.shared.data.ofTable("TestClass").bulkCreate(entities: testObjects, responseHandler: { objectIds in
                 let uow = UnitOfWork()
                 let _ = uow.bulkDelete(tableName: self.tableName, objectIdValues: objectIds)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
@@ -61,7 +61,7 @@ class DataUOWBulkDeleteTests: XCTestCase {
     func test_02_bulkDelete() {
         let expectation = self.expectation(description: "PASSED: uow.bulkDelete")
         let testObjects = [["name": "Bob", "age": 25], ["name": "Ann", "age": 45], ["name": "Jack", "age": 26]]
-        Backendless.shared.data.ofTable("TestClass").createBulk(entities: testObjects, responseHandler: { objectIds in
+        Backendless.shared.data.ofTable("TestClass").bulkCreate(entities: testObjects, responseHandler: { objectIds in
             var objectsToDelete = [[String : Any]]()
             for objectId in objectIds {
                 objectsToDelete.append(["objectId": objectId])
@@ -85,7 +85,7 @@ class DataUOWBulkDeleteTests: XCTestCase {
     func test_03_bulkDelete() {
         let expectation = self.expectation(description: "PASSED: uow.bulkDelete")
         let testObjects = [["name": "Bob", "age": 25], ["name": "Ann", "age": 45], ["name": "Jack", "age": 26]]
-        Backendless.shared.data.ofTable("TestClass").createBulk(entities: testObjects, responseHandler: { objectIds in
+        Backendless.shared.data.ofTable("TestClass").bulkCreate(entities: testObjects, responseHandler: { objectIds in
             var objectsToDelete = [TestClass]()
             for objectId in objectIds {
                 let objectToDelete = TestClass()
@@ -111,7 +111,7 @@ class DataUOWBulkDeleteTests: XCTestCase {
     func test_04_bulkDelete() {
         let expectation = self.expectation(description: "PASSED: uow.bulkDelete")
         let testObjects = [["name": "Bob", "age": 25], ["name": "Ann", "age": 45], ["name": "Jack", "age": 26]]
-        Backendless.shared.data.ofTable("TestClass").createBulk(entities: testObjects, responseHandler: { objectIds in
+        Backendless.shared.data.ofTable("TestClass").bulkCreate(entities: testObjects, responseHandler: { objectIds in
             let uow = UnitOfWork()
             let _ = uow.bulkDelete(tableName: self.tableName, whereClause: "age>25")
             uow.execute(responseHandler: { uowResult in

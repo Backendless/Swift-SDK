@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2022 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -26,13 +26,15 @@ protocol IDataStore {
     associatedtype CustomType
     
     func save(entity: CustomType, responseHandler: ((CustomType) -> Void)!, errorHandler: ((Fault) -> Void)!)
+    func save(entity: CustomType, isUpsert: Bool, responseHandler: ((CustomType) -> Void)!, errorHandler: ((Fault) -> Void)!)
     func create(entity: CustomType, responseHandler: ((CustomType) -> Void)!, errorHandler: ((Fault) -> Void)!)
-    func createBulk(entities: [CustomType], responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!)
+    func bulkCreate(entities: [CustomType], responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!)
     func update(entity: CustomType, responseHandler: ((CustomType) -> Void)!, errorHandler: ((Fault) -> Void)!)
-    func updateBulk(whereClause: String?, changes: [String: Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
+    func bulkUpdate(whereClause: String?, changes: [String: Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
+    func bulkUpsert(entities: [CustomType], responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!)
     func removeById(objectId: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
     func remove(entity: CustomType, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
-    func removeBulk(whereClause: String?, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
+    func bulkRemove(whereClause: String?, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
     func getObjectCount(responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
     func getObjectCount(queryBuilder: DataQueryBuilder, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
     

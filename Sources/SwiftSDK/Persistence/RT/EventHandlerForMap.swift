@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2022 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -63,6 +63,22 @@ import Foundation
         removeListeners(type: RtTypes.objectsChanges, event: RtEventHandlers.updated, whereClause: nil)
     }
     
+    public func addUpsertListener(responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        return subscribeForObjectsChanges(event: RtEventHandlers.upserted, tableName: tableName, whereClause: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    public func addUpsertListener(whereClause: String, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        return subscribeForObjectsChanges(event: RtEventHandlers.upserted, tableName: tableName, whereClause: whereClause, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    public func removeUpsertListeners(whereClause: String) {
+        removeListeners(type: RtTypes.objectsChanges, event: RtEventHandlers.upserted, whereClause: whereClause)
+    }
+    
+    public func removeUpsertListeners() {
+        removeListeners(type: RtTypes.objectsChanges, event: RtEventHandlers.upserted, whereClause: nil)
+    }
+    
     public func addDeleteListener(responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         return subscribeForObjectsChanges(event: RtEventHandlers.deleted, tableName: tableName, whereClause: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
@@ -95,7 +111,7 @@ import Foundation
     }
     
     public func addBulkUpdateListener(responseHandler: ((BulkEvent) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
-        let wrappedBlock: ([String : Any]) -> () = { response in            
+        let wrappedBlock: ([String : Any]) -> () = { response in
             let bulkEvent = BulkEvent()
             if let whereClause = response["whereClause"] as? String {
                 bulkEvent.whereClause = whereClause
@@ -128,6 +144,21 @@ import Foundation
     
     public func removeBulkUpdateListeners() {
         removeListeners(type: RtTypes.objectsChanges, event: RtEventHandlers.bulkUpdated, whereClause: nil)
+    }
+    
+    public func addBulkUpsertListener(responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        let wrappedBlock: ([String : Any]) -> () = { response in
+            var resultArray = [String]()
+            for key in response.keys {
+                resultArray.append(key)
+            }
+            responseHandler(resultArray)
+        }
+        return subscribeForObjectsChanges(event: RtEventHandlers.bulkUpserted, tableName: tableName, whereClause: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+    }
+    
+    public func removeBulkUpsertListeners() {
+        removeListeners(type: RtTypes.objectsChanges, event: RtEventHandlers.bulkUpserted, whereClause: nil)
     }
     
     public func addBulkDeleteListener(responseHandler: ((BulkEvent) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
@@ -197,7 +228,7 @@ import Foundation
         var parentObjectIds = [String]()
         for parent in customParents {
             if let parentDictionary = PersistenceHelper.shared.entityToSimpleType(entity: parent) as? [String : Any],
-                let parentObjectId = parentDictionary["objectId"] as? String {
+               let parentObjectId = parentDictionary["objectId"] as? String {
                 parentObjectIds.append(parentObjectId)
             }
             else if let parentObjectId = PersistenceHelper.shared.getObjectId(entity: parent) {
@@ -245,7 +276,7 @@ import Foundation
         var parentObjectIds = [String]()
         for parent in customParents {
             if let parentDictionary = PersistenceHelper.shared.entityToSimpleType(entity: parent) as? [String : Any],
-                let parentObjectId = parentDictionary["objectId"] as? String {
+               let parentObjectId = parentDictionary["objectId"] as? String {
                 parentObjectIds.append(parentObjectId)
             }
             else if let parentObjectId = PersistenceHelper.shared.getObjectId(entity: parent) {
@@ -293,7 +324,7 @@ import Foundation
         var parentObjectIds = [String]()
         for parent in customParents {
             if let parentDictionary = PersistenceHelper.shared.entityToSimpleType(entity: parent) as? [String : Any],
-                let parentObjectId = parentDictionary["objectId"] as? String {
+               let parentObjectId = parentDictionary["objectId"] as? String {
                 parentObjectIds.append(parentObjectId)
             }
             else if let parentObjectId = PersistenceHelper.shared.getObjectId(entity: parent) {
@@ -313,9 +344,11 @@ import Foundation
     public func removeAllListeners() {
         removeCreateListeners()
         removeUpdateListeners()
+        removeUpsertListeners()
         removeDeleteListeners()
         removeBulkCreateListeners()
         removeBulkUpdateListeners()
+        removeBulkUpsertListeners()
         removeBulkDeleteListeners()
         removeSetRelationListeners()
         removeAddRelationListeners()

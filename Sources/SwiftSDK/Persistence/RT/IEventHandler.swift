@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2022 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -24,7 +24,7 @@ import Foundation
 protocol IEventHandler {
     
     associatedtype CustomType
-
+    
     func addCreateListener(responseHandler: ((CustomType) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription?
     func addCreateListener(whereClause: String, responseHandler: ((CustomType) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription?
     func removeCreateListeners(whereClause: String)
@@ -35,6 +35,11 @@ protocol IEventHandler {
     func removeUpdateListeners(whereClause: String)
     func removeUpdateListeners()
     
+    func addUpsertListener(responseHandler: ((CustomType) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription?
+    func addUpsertListener(whereClause: String, responseHandler: ((CustomType) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription?
+    func removeUpsertListeners(whereClause: String)
+    func removeUpsertListeners()
+    
     func addDeleteListener(responseHandler: ((CustomType) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription?
     func addDeleteListener(whereClause: String, responseHandler: ((CustomType) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription?
     func removeDeleteListeners(whereClause: String)
@@ -42,11 +47,14 @@ protocol IEventHandler {
     
     func addBulkCreateListener(responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription?
     func removeBulkCreateListeners()
-
+    
     func addBulkUpdateListener(responseHandler: ((BulkEvent) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription?
     func addBulkUpdateListener(whereClause: String, responseHandler: ((BulkEvent) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription?
     func removeBulkUpdateListeners(whereClause: String)
     func removeBulkUpdateListeners()
+    
+    func addBulkUpsertListener(responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription?
+    func removeBulkUpsertListeners()
     
     func addBulkDeleteListener(responseHandler: ((BulkEvent) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription?
     func addBulkDeleteListener(whereClause: String, responseHandler: ((BulkEvent) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription?

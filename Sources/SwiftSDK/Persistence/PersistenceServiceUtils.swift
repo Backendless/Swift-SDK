@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2022 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -69,7 +69,7 @@ class PersistenceServiceUtils {
         })
     }
     
-    func createBulk(entities: [[String: Any]], responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    func bulkCreate(entities: [[String: Any]], responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         var parameters = [[String: Any]]()
         for entity in entities {
@@ -119,7 +119,7 @@ class PersistenceServiceUtils {
         }
     }
     
-    func updateBulk(whereClause: String?, changes: [String : Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    func bulkUpdate(whereClause: String?, changes: [String : Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = PersistenceHelper.shared.convertDictionaryValuesFromGeometryType(changes)
         var restMethod = "data/bulk/\(tableName)"
@@ -142,6 +142,44 @@ class PersistenceServiceUtils {
         })
     }
     
+    func upsert(entity: [String : Any], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        let headers = ["Content-Type": "application/json"]
+        let parameters = PersistenceHelper.shared.convertDictionaryValuesFromGeometryType(entity)
+        BackendlessRequestManager(restMethod: "data/\(tableName)/upsert", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else if let resultDictionary = (result as! JSON).dictionaryObject {
+                    if let responseDictionary = PersistenceHelper.shared.convertToBLType(resultDictionary) as? [String : Any] {
+                        responseHandler(responseDictionary)
+                    }
+                    else {
+                        responseHandler(resultDictionary)
+                    }
+                }
+            }
+        })
+    }
+    
+    func bulkUpsert(entities: [[String: Any]], responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        let headers = ["Content-Type": "application/json"]
+        var parameters = [[String: Any]]()
+        for entity in entities {
+            parameters.append(PersistenceHelper.shared.convertDictionaryValuesFromGeometryType(entity))
+        }
+        BackendlessRequestManager(restMethod: "data/bulkupsert/\(tableName)", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: [String].self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else {
+                    responseHandler(result as! [String])
+                }
+            }
+        })
+    }
+    
     func removeById(objectId: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = [String: String]()
         BackendlessRequestManager(restMethod: "data/\(tableName)/\(objectId)", httpMethod: .delete, headers: headers, parameters: nil).makeRequest(getResponse: { response in
@@ -157,7 +195,7 @@ class PersistenceServiceUtils {
         })
     }
     
-    func removeBulk(whereClause: String?, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    func bulkRemove(whereClause: String?, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         var parameters = ["where": whereClause]
         if whereClause == nil {

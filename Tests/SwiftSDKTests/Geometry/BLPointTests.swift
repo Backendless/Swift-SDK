@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2022 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -40,7 +40,7 @@ class BLPointTests: XCTestCase {
 
     func testPT01() {
         let expectation = self.expectation(description: "PASSED: BLPoint.create")
-        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+        dataStore.bulkRemove(whereClause: nil, responseHandler: { removed in
             let geometryObject = GeometryTestClass()
             geometryObject.point = BLPoint(x: -87.52683788, y: 41.85716752)
             self.dataStore.save(entity: geometryObject, responseHandler: { savedObject in
@@ -332,7 +332,7 @@ class BLPointTests: XCTestCase {
         geometryObject1.point = BLPoint(x: -87.52683788, y: 41.85716752)
         let geometryObject2 = GeometryTestClass()
         geometryObject2.point = BLPoint(x: -23.523788, y: 67.752)
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
             XCTAssert(createdIds.count == 2)
             expectation.fulfill()
         }, errorHandler: { fault in
@@ -347,7 +347,7 @@ class BLPointTests: XCTestCase {
         geometryObject1.point = BLPoint(x: -87.52683788, y: 41.85716752)
         let geometryObject2 = GeometryTestClass()
         geometryObject2.point = BLPoint(x: -180.1, y: -90.1)
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
             XCTFail("Longitude must be within (-180.000000, 180.000000]")
         }, errorHandler: { fault in
             expectation.fulfill()
@@ -361,7 +361,7 @@ class BLPointTests: XCTestCase {
 //        geometryObject1.point = BLPoint(x: -87.52683788, y: 41.85716752)
 //        let geometryObject2 = GeometryTestClass()
 //        geometryObject2.point = BLPoint(x: -180.1, y: -90.1)
-//        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+//        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
 //            XCTAssert(createdIds.count == 2)
 //            expectation.fulfill()
 //        }, errorHandler: { fault in
@@ -375,7 +375,7 @@ class BLPointTests: XCTestCase {
         let geometryObject1 = GeometryTestClass()
         geometryObject1.point = BLPoint(x: -87.52683788, y: 41.85716752)
         let geometryObject2 = GeometryTestClass()
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
             XCTAssert(createdIds.count == 2)
             expectation.fulfill()
         }, errorHandler: { fault in
@@ -398,7 +398,7 @@ class BLPointTests: XCTestCase {
         catch {
             XCTFail(error.localizedDescription)
         }
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
             XCTAssert(createdIds.count == 2)
             expectation.fulfill()
         }, errorHandler: { fault in
@@ -420,7 +420,7 @@ class BLPointTests: XCTestCase {
         catch {
             XCTFail(error.localizedDescription)
         }
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
             XCTFail("Longitude must be within (-180.000000, 180.000000]")
         }, errorHandler: { fault in
             expectation.fulfill()
@@ -504,8 +504,8 @@ class BLPointTests: XCTestCase {
         geometryObject2.name = "point"
         let geometryObject3 = GeometryTestClass()
         geometryObject3.name = "ppoint"
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
-            self.dataStore.updateBulk(whereClause: "name='point'", changes: ["point": "POINT(54.5465464 34.565656)"], responseHandler: { updated in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
+            self.dataStore.bulkUpdate(whereClause: "name='point'", changes: ["point": "POINT(54.5465464 34.565656)"], responseHandler: { updated in
                 XCTAssert(updated >= 2)
                 expectation.fulfill()
             }, errorHandler: { fault in                
@@ -525,8 +525,8 @@ class BLPointTests: XCTestCase {
         geometryObject2.name = "point"
         let geometryObject3 = GeometryTestClass()
         geometryObject3.name = "ppoint"
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
-            self.dataStore.updateBulk(whereClause: "name='point'", changes: ["point": "POINT(54.5465464 null)"], responseHandler: { updated in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
+            self.dataStore.bulkUpdate(whereClause: "name='point'", changes: ["point": "POINT(54.5465464 null)"], responseHandler: { updated in
                 XCTFail("Longitude or latitude can't be null")
             }, errorHandler: { fault in    
                 expectation.fulfill()
@@ -545,8 +545,8 @@ class BLPointTests: XCTestCase {
         geometryObject2.name = "point"
         let geometryObject3 = GeometryTestClass()
         geometryObject3.name = "ppoint"
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
-            self.dataStore.updateBulk(whereClause: "name='point'", changes: ["point": "POINT(154.5465464 134.565656)"], responseHandler: { updated in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
+            self.dataStore.bulkUpdate(whereClause: "name='point'", changes: ["point": "POINT(154.5465464 134.565656)"], responseHandler: { updated in
                 XCTFail("Latitude must be within [-90.000000, 90.000000]")
             }, errorHandler: { fault in
                 expectation.fulfill()
@@ -565,8 +565,8 @@ class BLPointTests: XCTestCase {
 //        geometryObject2.name = "point"
 //        let geometryObject3 = GeometryTestClass()
 //        geometryObject3.name = "ppoint"
-//        dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
-//            self.dataStore.updateBulk(whereClause: "name='point'", changes: ["point": "POINT(154.5465464 134.565656)"], responseHandler: { updated in
+//        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
+//            self.dataStore.bulkUpdate(whereClause: "name='point'", changes: ["point": "POINT(154.5465464 134.565656)"], responseHandler: { updated in
 //                expectation.fulfill()
 //            }, errorHandler: { fault in
 //            })
@@ -578,7 +578,7 @@ class BLPointTests: XCTestCase {
     
     func testPT36() {
         let expectation = self.expectation(description: "PASSED: BLPoint.bulkUpdate")
-        dataStore.updateBulk(whereClause: "GetLon(point)>1", changes: ["point": "POINT(84.5465464 86.565656)"], responseHandler: { updated in
+        dataStore.bulkUpdate(whereClause: "GetLon(point)>1", changes: ["point": "POINT(84.5465464 86.565656)"], responseHandler: { updated in
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTFail("\(fault.code): \(fault.message!)")
@@ -588,7 +588,7 @@ class BLPointTests: XCTestCase {
     
     func testPT37() {
         let expectation = self.expectation(description: "PASSED: BLPoint.bulkUpdate")
-        dataStore.updateBulk(whereClause: "GetLat(point)<80", changes: ["point": "POINT(84.5465464 86.565656)"], responseHandler: { updated in
+        dataStore.bulkUpdate(whereClause: "GetLat(point)<80", changes: ["point": "POINT(84.5465464 86.565656)"], responseHandler: { updated in
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTFail("\(fault.code): \(fault.message!)")
@@ -598,7 +598,7 @@ class BLPointTests: XCTestCase {
     
     func testPT38() {
         let expectation = self.expectation(description: "PASSED: BLPoint.bulkUpdate")
-        dataStore.updateBulk(whereClause: "GetLon(point)>1 AND GetLat(point)<50", changes: ["point": "POINT(84.5465464 86.565656)"], responseHandler: { updated in
+        dataStore.bulkUpdate(whereClause: "GetLon(point)>1 AND GetLat(point)<50", changes: ["point": "POINT(84.5465464 86.565656)"], responseHandler: { updated in
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTFail("\(fault.code): \(fault.message!)")
@@ -630,7 +630,7 @@ class BLPointTests: XCTestCase {
     
     func testPT40() {
         let expectation = self.expectation(description: "PASSED: BLPoint.bulkDelete")
-        self.dataStore.removeBulk(whereClause: "name='point'", responseHandler: { removed in
+        self.dataStore.bulkRemove(whereClause: "name='point'", responseHandler: { removed in
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTFail("\(fault.code): \(fault.message!)")
@@ -642,7 +642,7 @@ class BLPointTests: XCTestCase {
     
     func testPT42() {
         let expectation = self.expectation(description: "PASSED: BLPoint.bulkDelete")
-        self.dataStore.removeBulk(whereClause: "GetLon(point)>1", responseHandler: { removed in
+        self.dataStore.bulkRemove(whereClause: "GetLon(point)>1", responseHandler: { removed in
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTFail("\(fault.code): \(fault.message!)")
@@ -652,7 +652,7 @@ class BLPointTests: XCTestCase {
     
     func testPT43() {
         let expectation = self.expectation(description: "PASSED: BLPoint.bulkDelete")
-        self.dataStore.removeBulk(whereClause: "GetLat(point)<80", responseHandler: { removed in
+        self.dataStore.bulkRemove(whereClause: "GetLat(point)<80", responseHandler: { removed in
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTFail("\(fault.code): \(fault.message!)")
@@ -662,7 +662,7 @@ class BLPointTests: XCTestCase {
     
     func testPT44() {
         let expectation = self.expectation(description: "PASSED: BLPoint.bulkDelete")
-        self.dataStore.removeBulk(whereClause: "GetLon(point)>1 AND GetLat(point)<50", responseHandler: { removed in
+        self.dataStore.bulkRemove(whereClause: "GetLon(point)>1 AND GetLat(point)<50", responseHandler: { removed in
             expectation.fulfill()
         }, errorHandler: { fault in
             XCTFail("\(fault.code): \(fault.message!)")
@@ -676,7 +676,7 @@ class BLPointTests: XCTestCase {
         geometryObject1.point = BLPoint(x: 180, y: 90)
         let geometryObject2 = GeometryTestClass()
         geometryObject2.point = BLPoint(x: 180, y: 90)
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
             XCTAssert(createdIds.count == 2)
             let queryBuilder = DataQueryBuilder()
             queryBuilder.whereClause = "point='POINT(180 90)'"
