@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2022 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -64,30 +64,50 @@ import Foundation
         }
     }
     
+    public func save(entity: Any, isUpsert: Bool, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        if isUpsert,
+           let entityDictionary = PersistenceHelper.shared.entityToSimpleType(entity: entity) as? [String : Any] {
+            persistenceServiceUtils.upsert(entity: entityDictionary, responseHandler: wrapResponse(responseHandler), errorHandler: errorHandler)
+        }
+        else {
+            save(entity: entity, responseHandler: responseHandler, errorHandler: errorHandler)
+        }
+    }
+    
     public func create(entity: Any, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         if let entityDictionary = PersistenceHelper.shared.entityToSimpleType(entity: entity) as? [String : Any] {
             persistenceServiceUtils.create(entity: entityDictionary, responseHandler: wrapResponse(responseHandler), errorHandler: errorHandler)
         }
     }
     
-    public func createBulk(entities: [Any], responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func bulkCreate(entities: [Any], responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         var entitiesDictionaries = [[String: Any]]()
         for entity in entities {
             if let entityDict = PersistenceHelper.shared.entityToSimpleType(entity: entity) as? [String : Any] {
                 entitiesDictionaries.append(entityDict)
             }
         }
-        persistenceServiceUtils.createBulk(entities: entitiesDictionaries, responseHandler: responseHandler, errorHandler: errorHandler)
+        persistenceServiceUtils.bulkCreate(entities: entitiesDictionaries, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     public func update(entity: Any, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         if let entityDictionary = PersistenceHelper.shared.entityToSimpleType(entity: entity) as? [String : Any] {
             persistenceServiceUtils.update(entity: entityDictionary, responseHandler: wrapResponse(responseHandler), errorHandler: errorHandler)
-        }        
+        }
     }
     
-    public func updateBulk(whereClause: String?, changes: [String : Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.updateBulk(whereClause: whereClause, changes: changes, responseHandler: responseHandler, errorHandler: errorHandler)
+    public func bulkUpdate(whereClause: String?, changes: [String : Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        persistenceServiceUtils.bulkUpdate(whereClause: whereClause, changes: changes, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    public func bulkUpsert(entities: [Any], responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        var entitiesDictionaries = [[String: Any]]()
+        for entity in entities {
+            if let entityDict = PersistenceHelper.shared.entityToSimpleType(entity: entity) as? [String : Any] {
+                entitiesDictionaries.append(entityDict)
+            }
+        }
+        persistenceServiceUtils.bulkUpsert(entities: entitiesDictionaries, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     public func removeById(objectId: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
@@ -100,8 +120,8 @@ import Foundation
         }
     }
     
-    public func removeBulk(whereClause: String?, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.removeBulk(whereClause: whereClause, responseHandler: responseHandler, errorHandler: errorHandler)
+    public func bulkRemove(whereClause: String?, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        persistenceServiceUtils.bulkRemove(whereClause: whereClause, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     public func getObjectCount(responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
@@ -193,7 +213,7 @@ import Foundation
             var resultArray = [Any]()
             for responseObject in responseArray {
                 if let dictResponse = responseObject as? [String : Any],
-                    let relationType = queryBuilder.getRelationType() {
+                   let relationType = queryBuilder.getRelationType() {
                     let className = PersistenceHelper.shared.getClassNameWithoutModule(relationType)
                     if let resultObject = PersistenceHelper.shared.dictionaryToEntity(dictResponse, className: className) {
                         resultArray.append(resultObject)

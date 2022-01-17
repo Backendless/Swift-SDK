@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2022 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -46,7 +46,7 @@ class DataUOWAddRelationTests: XCTestCase {
             for i in 0..<2 {
                 childTestObjects.append(["foo": "bar\(i)"])
             }
-            Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
+            Backendless.shared.data.ofTable("ChildTestClass").bulkCreate(entities: childTestObjects, responseHandler: { childrenObjectIds in
                 let uow = UnitOfWork()
                 let _ = uow.addToRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", childrenObjectIds: childrenObjectIds)
                 uow.execute(responseHandler: { uowResult in
@@ -77,7 +77,7 @@ class DataUOWAddRelationTests: XCTestCase {
             for i in 0..<2 {
                 childTestObjects.append(["foo": "bar\(i)"])
             }
-            Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
+            Backendless.shared.data.ofTable("ChildTestClass").bulkCreate(entities: childTestObjects, responseHandler: { childrenObjectIds in
                 var children = [[String : Any]]()
                 for childObjectId in childrenObjectIds {
                     children.append(["objectId": childObjectId])
@@ -112,7 +112,7 @@ class DataUOWAddRelationTests: XCTestCase {
             for i in 0..<2 {
                 childTestObjects.append(["foo": "bar\(i)"])
             }
-            Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
+            Backendless.shared.data.ofTable("ChildTestClass").bulkCreate(entities: childTestObjects, responseHandler: { childrenObjectIds in
                 var children = [ChildTestClass]()
                 for childObjectId in childrenObjectIds {
                     let child = ChildTestClass()
@@ -182,7 +182,7 @@ class DataUOWAddRelationTests: XCTestCase {
             for i in 0..<2 {
                 childTestObjects.append(["foo": "bar\(i)"])
             }
-            Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
+            Backendless.shared.data.ofTable("ChildTestClass").bulkCreate(entities: childTestObjects, responseHandler: { childrenObjectIds in
                 let uow = UnitOfWork()
                 let _ = uow.addToRelation(parentTableName: self.tableName, parentObject: parentObject, columnName: "children", childrenObjectIds: childrenObjectIds)
                 uow.execute(responseHandler: { uowResult in
@@ -214,7 +214,7 @@ class DataUOWAddRelationTests: XCTestCase {
             for i in 0..<2 {
                 childTestObjects.append(["foo": "bar\(i)"])
             }
-            Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
+            Backendless.shared.data.ofTable("ChildTestClass").bulkCreate(entities: childTestObjects, responseHandler: { childrenObjectIds in
                 var children = [[String : Any]]()
                 for childObjectId in childrenObjectIds {
                     children.append(["objectId": childObjectId])
@@ -250,7 +250,7 @@ class DataUOWAddRelationTests: XCTestCase {
             for i in 0..<2 {
                 childTestObjects.append(["foo": "bar\(i)"])
             }
-            Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
+            Backendless.shared.data.ofTable("ChildTestClass").bulkCreate(entities: childTestObjects, responseHandler: { childrenObjectIds in
                 var children = [ChildTestClass]()
                 for childObjectId in childrenObjectIds {
                     let child = ChildTestClass()
@@ -322,7 +322,7 @@ class DataUOWAddRelationTests: XCTestCase {
             for i in 0..<2 {
                 childTestObjects.append(["foo": "bar\(i)"])
             }
-            Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
+            Backendless.shared.data.ofTable("ChildTestClass").bulkCreate(entities: childTestObjects, responseHandler: { childrenObjectIds in
                 let uow = UnitOfWork()
                 let _ = uow.addToRelation(parentObject: parentObject, columnName: "children", childrenObjectIds: childrenObjectIds)
                 uow.execute(responseHandler: { uowResult in
@@ -355,7 +355,7 @@ class DataUOWAddRelationTests: XCTestCase {
             for i in 0..<2 {
                 childTestObjects.append(["foo": "bar\(i)"])
             }
-            Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
+            Backendless.shared.data.ofTable("ChildTestClass").bulkCreate(entities: childTestObjects, responseHandler: { childrenObjectIds in
                 var children = [[String : Any]]()
                 for childObjectId in childrenObjectIds {
                     children.append(["objectId": childObjectId])
@@ -392,7 +392,7 @@ class DataUOWAddRelationTests: XCTestCase {
             for i in 0..<2 {
                 childTestObjects.append(["foo": "bar\(i)"])
             }
-            Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
+            Backendless.shared.data.ofTable("ChildTestClass").bulkCreate(entities: childTestObjects, responseHandler: { childrenObjectIds in
                 var children = [ChildTestClass]()
                 for childObjectId in childrenObjectIds {
                     let child = ChildTestClass()
@@ -463,7 +463,7 @@ class DataUOWAddRelationTests: XCTestCase {
         for i in 0..<2 {
             childTestObjects.append(["foo": "bar\(i)"])
         }
-        Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
+        Backendless.shared.data.ofTable("ChildTestClass").bulkCreate(entities: childTestObjects, responseHandler: { childrenObjectIds in
             let _ = uow.addToRelation(parentResult: parentResult, columnName: "children", childrenObjectIds: childrenObjectIds)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
@@ -490,7 +490,7 @@ class DataUOWAddRelationTests: XCTestCase {
         for i in 0..<2 {
             childTestObjects.append(["foo": "bar\(i)"])
         }
-        Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
+        Backendless.shared.data.ofTable("ChildTestClass").bulkCreate(entities: childTestObjects, responseHandler: { childrenObjectIds in
             var children = [[String : Any]]()
             for childObjectId in childrenObjectIds {
                 children.append(["objectId": childObjectId])
@@ -521,7 +521,7 @@ class DataUOWAddRelationTests: XCTestCase {
         for i in 0..<2 {
             childTestObjects.append(["foo": "bar\(i)"])
         }
-        Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
+        Backendless.shared.data.ofTable("ChildTestClass").bulkCreate(entities: childTestObjects, responseHandler: { childrenObjectIds in
             var children = [ChildTestClass]()
             for childObjectId in childrenObjectIds {
                 let child = ChildTestClass()
@@ -595,7 +595,7 @@ class DataUOWAddRelationTests: XCTestCase {
         for i in 0..<2 {
             childTestObjects.append(["foo": "bar\(i)"])
         }
-        Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
+        Backendless.shared.data.ofTable("ChildTestClass").bulkCreate(entities: childTestObjects, responseHandler: { childrenObjectIds in
             let _ = uow.addToRelation(parentValueReference: parentValueRef, columnName: "children", childrenObjectIds: childrenObjectIds)
             uow.execute(responseHandler: { uowResult in
                 XCTAssertNil(uowResult.error)
@@ -623,7 +623,7 @@ class DataUOWAddRelationTests: XCTestCase {
         for i in 0..<2 {
             childTestObjects.append(["foo": "bar\(i)"])
         }
-        Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
+        Backendless.shared.data.ofTable("ChildTestClass").bulkCreate(entities: childTestObjects, responseHandler: { childrenObjectIds in
             var children = [[String : Any]]()
             for childObjectId in childrenObjectIds {
                 children.append(["objectId": childObjectId])
@@ -652,7 +652,7 @@ class DataUOWAddRelationTests: XCTestCase {
         for i in 0..<2 {
             childTestObjects.append(["foo": "bar\(i)"])
         }
-        Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
+        Backendless.shared.data.ofTable("ChildTestClass").bulkCreate(entities: childTestObjects, responseHandler: { childrenObjectIds in
             var children = [ChildTestClass]()
             for childObjectId in childrenObjectIds {
                 let child = ChildTestClass()
@@ -799,7 +799,7 @@ class DataUOWAddRelationTests: XCTestCase {
     func test_25_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let children = [["foo": "childFoo"], ["foo": "childFoo"]]
-        Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: children, responseHandler: { createdIds in
+        Backendless.shared.data.ofTable("ChildTestClass").bulkCreate(entities: children, responseHandler: { createdIds in
             let uow = UnitOfWork()
             
             let objectToSave1 = TestClass()

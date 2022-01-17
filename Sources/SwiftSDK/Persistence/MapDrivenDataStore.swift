@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2022 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -46,20 +46,33 @@ import Foundation
         }
     }
     
+    public func save(entity: [String : Any], isUpsert: Bool, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        if isUpsert {
+            persistenceServiceUtils.upsert(entity: entity, responseHandler: responseHandler, errorHandler: errorHandler)
+        }
+        else {
+            save(entity: entity, responseHandler: responseHandler, errorHandler: errorHandler)
+        }
+    }
+    
     public func create(entity: [String : Any], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         persistenceServiceUtils.create(entity: entity as [String : AnyObject], responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    public func createBulk(entities: [[String : Any]], responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.createBulk(entities: entities, responseHandler: responseHandler, errorHandler: errorHandler)
+    public func bulkCreate(entities: [[String : Any]], responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        persistenceServiceUtils.bulkCreate(entities: entities, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     public func update(entity: [String : Any], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         persistenceServiceUtils.update(entity: entity, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    public func updateBulk(whereClause: String?, changes: [String : Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.updateBulk(whereClause: whereClause, changes: changes, responseHandler: responseHandler, errorHandler: errorHandler)
+    public func bulkUpdate(whereClause: String?, changes: [String : Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        persistenceServiceUtils.bulkUpdate(whereClause: whereClause, changes: changes, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    public func bulkUpsert(entities: [[String : Any]], responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        persistenceServiceUtils.bulkUpsert(entities: entities, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     public func removeById(objectId: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
@@ -72,8 +85,8 @@ import Foundation
         }
     }
     
-    public func removeBulk(whereClause: String?, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.removeBulk(whereClause: whereClause, responseHandler: responseHandler, errorHandler: errorHandler)
+    public func bulkRemove(whereClause: String?, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        persistenceServiceUtils.bulkRemove(whereClause: whereClause, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     public func getObjectCount(responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
@@ -143,8 +156,8 @@ import Foundation
     public func loadRelations(objectId: String, queryBuilder: LoadRelationsQueryBuilder, responseHandler: (([Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         persistenceServiceUtils.loadRelations(objectId: objectId, queryBuilder: queryBuilder, responseHandler: responseHandler, errorHandler: errorHandler)
     }
-
-    public func deepSave(entity: [String : Any], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {        
+    
+    public func deepSave(entity: [String : Any], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         var entityToSave = [String : Any]()
         for (key, value) in entity {
             entityToSave[key] = JSONUtils.shared.objectToJson(objectToParse: value)
@@ -156,7 +169,7 @@ import Foundation
         persistenceServiceUtils.group(customClassEntity: false, queryBuilder: queryBuilder, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    public func getGroupObjectCount(queryBuilder: GroupDataQueryBuilder, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {        
+    public func getGroupObjectCount(queryBuilder: GroupDataQueryBuilder, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         persistenceServiceUtils.getGroupObjectCount(queryBuilder: queryBuilder, responseHandler: responseHandler, errorHandler: errorHandler)
     }
 }

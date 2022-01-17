@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2022 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -45,6 +45,14 @@ class PayloadHelper {
             }
             else if operation.operationType == .UPDATE_BULK {
                 let _operationPayload = generateBulkUpdatePayload(operation: operation)
+                _operations.append(_operationPayload)
+            }
+            else if operation.operationType == .UPSERT {
+                let _operationPayload = generateUpsertPayload(operation: operation)
+                _operations.append(_operationPayload)
+            }
+            else if operation.operationType == .UPSERT_BULK {
+                let _operationPayload = generateBulkUpsertPayload(operation: operation)
                 _operations.append(_operationPayload)
             }
             else if operation.operationType == .DELETE {
@@ -185,7 +193,7 @@ class PayloadHelper {
                     changes[key] = DataTypesUtils.shared.dateToInt(date: dateValue)
                 }
             }       
-            changes = psu.convertFromGeometryType(dictionary: changes)
+            changes = psu.convertFromGeometryType(dictionary: changes)            
             if let whereClause = payload["conditional"] as? String {
                 operationPayload["payload"] = ["conditional": whereClause, "changes": changes]
             }
@@ -195,6 +203,64 @@ class PayloadHelper {
             else if let ref = payload["unconditional"] as? [String : Any] {
                 operationPayload["payload"] = ["unconditional": ref, "changes": changes]
             }
+        }
+        return operationPayload
+    }
+    
+    private func generateUpsertPayload(operation: Operation) -> [String : Any] {
+        var operationPayload = [String : Any]()
+        operationPayload["table"] = operation.tableName
+        operationPayload["opResultId"] = operation.opResultId
+        operationPayload["operationType"] = OperationType.from(intValue: OperationType.UPSERT.rawValue)
+        if var payload = operation.payload as? [String : Any] {
+            if payload["___class"] as? String == "Users" {
+                payload["user-token"] = nil
+            }
+            for (key,value) in payload {
+                if let opResultValue = value as? OpResult,
+                    let tableName = opResultValue.tableName,
+                    let operationType = opResultValue.operationType,
+                    let opResultId = opResultValue.opResultId {
+                    payload[key] = ["tableName": tableName,
+                                    "operationType": OperationType.from(intValue: operationType.rawValue),
+                                    "opResultId": opResultId]
+                }
+                else if let dateValue = value as? Date {
+                    payload[key] = DataTypesUtils.shared.dateToInt(date: dateValue)
+                }
+            }
+            operationPayload["payload"] = psu.convertFromGeometryType(dictionary: payload)
+        }
+        return operationPayload
+    }
+    
+    private func generateBulkUpsertPayload(operation: Operation) -> [String : Any] {
+        var operationPayload = [String : Any]()
+        operationPayload["table"] = operation.tableName
+        operationPayload["opResultId"] = operation.opResultId
+        operationPayload["operationType"] = OperationType.from(intValue: OperationType.UPSERT_BULK.rawValue)
+        if let payload = operation.payload as? [[String : Any]] {
+            var resultPayload = [[String : Any]]()
+            for var payloadDict in payload {
+                if payloadDict["___class"] as? String == "Users" {
+                    payloadDict["user-token"] = nil
+                }
+                for (key,value) in payloadDict {
+                    if let opResultValue = value as? OpResult,
+                        let tableName = opResultValue.tableName,
+                        let operationType = opResultValue.operationType,
+                        let opResultId = opResultValue.opResultId {
+                        payloadDict[key] = ["tableName": tableName,
+                                            "operationType": OperationType.from(intValue: operationType.rawValue),
+                                            "opResultId": opResultId]
+                    }
+                    else if let dateValue = value as? Date {
+                        payloadDict[key] = DataTypesUtils.shared.dateToInt(date: dateValue)
+                    }
+                }
+                resultPayload.append(psu.convertFromGeometryType(dictionary: payloadDict))
+            }
+            operationPayload["payload"] = resultPayload
         }
         return operationPayload
     }

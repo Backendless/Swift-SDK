@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2022 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -40,7 +40,7 @@ class BLPolygonTests: XCTestCase {
     
     func testPG01() {
         let expectation = self.expectation(description: "PASSED: BLPolygon.create")
-        dataStore.removeBulk(whereClause: nil, responseHandler: { removedObjects in
+        dataStore.bulkRemove(whereClause: nil, responseHandler: { removedObjects in
             let geometryObject = GeometryTestClass()
             let point1 = BLPoint(x: -44.55, y: 34.55)
             let point2 = BLPoint(x: 12.34, y: 34.45)
@@ -410,7 +410,7 @@ class BLPolygonTests: XCTestCase {
         let point2_4 = BLPoint(x: -109.93894725, y: 36.23085088)
         let boundary2 = BLLineString(points: [point2_1, point2_2, point2_3, point2_4])
         geometryObject2.polygon = BLPolygon(boundary: boundary2, holes: nil)
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
             XCTAssert(createdIds.count == 2)
             expectation.fulfill()
         }, errorHandler: { fault in
@@ -432,7 +432,7 @@ class BLPolygonTests: XCTestCase {
         let point2_4 = BLPoint(x: -109.93894725, y: 36.23085088)
         let boundary2 = BLLineString(points: [point2_1, point2_2, point2_3, point2_4])
         geometryObject2.polygon = BLPolygon(boundary: boundary2, holes: nil)
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
             XCTFail("Invalid number of points in LineString, must be >3")
         }, errorHandler: { fault in
             expectation.fulfill()
@@ -454,7 +454,7 @@ class BLPolygonTests: XCTestCase {
         let point2_4 = BLPoint(x: -109.93894725, y: 36.23085088)
         let boundary2 = BLLineString(points: [point2_1, point2_2, point2_3, point2_4])
         geometryObject2.polygon = BLPolygon(boundary: boundary2, holes: nil)
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
             XCTFail("Invalid number of points in LineString, must be >3")
         }, errorHandler: { fault in
             expectation.fulfill()
@@ -479,7 +479,7 @@ class BLPolygonTests: XCTestCase {
         let point2_4 = BLPoint(x: -109.93894725, y: 36.23085088)
         let boundary2 = BLLineString(points: [point2_1, point2_2, point2_3, point2_4])
         geometryObject2.polygon = BLPolygon(boundary: boundary2, holes: nil)
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
             XCTAssert(createdIds.count == 2)
             expectation.fulfill()
         }, errorHandler: { fault in
@@ -505,7 +505,7 @@ class BLPolygonTests: XCTestCase {
         let point2_4 = BLPoint(x: -109.93894725, y: 36.23085088)
         let boundary2 = BLLineString(points: [point2_1, point2_2, point2_3, point2_4])
         geometryObject2.polygon = BLPolygon(boundary: boundary2, holes: nil)
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
             XCTFail("Longitude must be within (-180.000000, 180.000000]")
         }, errorHandler: { fault in
             expectation.fulfill()
@@ -530,7 +530,7 @@ class BLPolygonTests: XCTestCase {
 //        let point2_4 = BLPoint(x: -109.93894725, y: 36.23085088)
 //        let boundary2 = BLLineString(points: [point2_1, point2_2, point2_3, point2_4])
 //        geometryObject2.polygon = BLPolygon(boundary: boundary2, holes: nil)
-//        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+//        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
 //            XCTAssert(createdIds.count == 2)
 //            expectation.fulfill()
 //        }, errorHandler: { fault in
@@ -564,7 +564,7 @@ class BLPolygonTests: XCTestCase {
         let point2_4 = BLPoint(x: -109.93894725, y: 36.23085088)
         let boundary2 = BLLineString(points: [point2_1, point2_2, point2_3, point2_4])
         geometryObject2.polygon = BLPolygon(boundary: boundary2, holes: nil)
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
             XCTAssert(createdIds.count == 2)
             expectation.fulfill()
         }, errorHandler: { fault in
@@ -594,7 +594,7 @@ class BLPolygonTests: XCTestCase {
         let point2_4 = BLPoint(x: -109.93894725, y: 36.23085088)
         let boundary2 = BLLineString(points: [point2_1, point2_2, point2_3, point2_4])
         geometryObject2.polygon = BLPolygon(boundary: boundary2, holes: nil)
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
             XCTAssert(createdIds.count == 2)
             expectation.fulfill()
         }, errorHandler: { fault in
@@ -627,7 +627,7 @@ class BLPolygonTests: XCTestCase {
         let point2_4 = BLPoint(x: -109.93894725, y: 36.23085088)
         let boundary2 = BLLineString(points: [point2_1, point2_2, point2_3, point2_4])
         geometryObject2.polygon = BLPolygon(boundary: boundary2, holes: nil)
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
             XCTFail("Some of the 'LineStrings' aren't closed (first and last points must be equal)")
         }, errorHandler: { fault in
             expectation.fulfill()
@@ -654,7 +654,7 @@ class BLPolygonTests: XCTestCase {
         let point2_4 = BLPoint(x: -109.93894725, y: 36.23085088)
         let boundary2 = BLLineString(points: [point2_1, point2_2, point2_3, point2_4])
         geometryObject2.polygon = BLPolygon(boundary: boundary2, holes: nil)
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
             XCTFail("Invalid number of points in LineString, must be > 3")
         }, errorHandler: { fault in
             expectation.fulfill()
@@ -1165,9 +1165,9 @@ class BLPolygonTests: XCTestCase {
         geometryObject2.name = "polygon"
         let geometryObject3 = GeometryTestClass()
         geometryObject3.name = "ppolygon"
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
             XCTAssert(createdIds.count == 3)
-            self.dataStore.updateBulk(whereClause: "name='polygon'", changes: ["polygon": "POLYGON ((0 0, 5 1, 1 5, 0 0))"], responseHandler: { updated in
+            self.dataStore.bulkUpdate(whereClause: "name='polygon'", changes: ["polygon": "POLYGON ((0 0, 5 1, 1 5, 0 0))"], responseHandler: { updated in
                 XCTAssert(updated >= 2)
                 expectation.fulfill()
             }, errorHandler: { fault in                
@@ -1197,9 +1197,9 @@ class BLPolygonTests: XCTestCase {
         geometryObject2.polygon = BLPolygon(boundary: boundary2, holes: nil)
         let geometryObject3 = GeometryTestClass()
         geometryObject3.polygon = BLPolygon(boundary: boundary1, holes: nil)
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
             XCTAssert(createdIds.count == 3)
-            self.dataStore.updateBulk(whereClause: "polygon='POLYGON ((-44.55 34.55, 12.34 34.45, 34.5653 -12.3445531, -44.55 34.55))'", changes: ["polygon": "POLYGON ((0 0, 5 1, 1 5, 0 0))"], responseHandler: { updated in
+            self.dataStore.bulkUpdate(whereClause: "polygon='POLYGON ((-44.55 34.55, 12.34 34.45, 34.5653 -12.3445531, -44.55 34.55))'", changes: ["polygon": "POLYGON ((0 0, 5 1, 1 5, 0 0))"], responseHandler: { updated in
                 XCTAssert(updated >= 2)
                 expectation.fulfill()
             }, errorHandler: { fault in                
@@ -1257,9 +1257,9 @@ class BLPolygonTests: XCTestCase {
         geometryObject2.polygon = BLPolygon(boundary: boundary2, holes: nil)
         let geometryObject3 = GeometryTestClass()
         geometryObject3.polygon = BLPolygon(boundary: boundary1, holes: nil)
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
             XCTAssert(createdIds.count == 3)
-            self.dataStore.removeBulk(whereClause: "polygon='POLYGON ((-44.55 34.55, 12.34 34.45, 34.5653 -12.3445531, -44.55 34.55))'", responseHandler: { removed in
+            self.dataStore.bulkRemove(whereClause: "polygon='POLYGON ((-44.55 34.55, 12.34 34.45, 34.5653 -12.3445531, -44.55 34.55))'", responseHandler: { removed in
                 XCTAssert(removed >= 2)
                 expectation.fulfill()
             }, errorHandler: { fault in                
@@ -1294,7 +1294,7 @@ class BLPolygonTests: XCTestCase {
         geometryObject2.polygon = BLPolygon(boundary: boundary2, holes: nil)
         let geometryObject3 = GeometryTestClass()
         geometryObject3.polygon = BLPolygon(boundary: boundary1, holes: holes1)
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
             let queryBuilder = DataQueryBuilder()
             queryBuilder.whereClause = "polygon='POLYGON((1 1, 1 3, 2 1, 1 1), (0 0, 5 1, 1 5, 0 0))'"
             self.dataStore.find(queryBuilder: queryBuilder, responseHandler: { foundObjects in

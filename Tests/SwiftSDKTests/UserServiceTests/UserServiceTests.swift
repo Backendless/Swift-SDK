@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2022 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -49,7 +49,7 @@ class UserServiceTests: XCTestCase {
     
     func test02RegisterUser() {
         let expectation = self.expectation(description: "PASSED: userService.registerUser")
-        backendless.data.ofTable("Users").removeBulk(whereClause: nil, responseHandler: { removedObjects in
+        backendless.data.ofTable("Users").bulkRemove(whereClause: nil, responseHandler: { removedObjects in
             let user = BackendlessUser()
             user.email = self.USER_EMAIL
             user.password = self.USER_PASSWORD

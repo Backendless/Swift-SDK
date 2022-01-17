@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2022 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -42,8 +42,8 @@ class DeepSaveTests: XCTestCase {
     
     func testDS01() {
         let expectation = self.expectation(description: "PASSED: DS1")
-        Backendless.shared.data.ofTable("Person").removeBulk(whereClause: nil, responseHandler: { removed in
-            Backendless.shared.data.ofTable("People").removeBulk(whereClause: nil, responseHandler: { removed in
+        Backendless.shared.data.ofTable("Person").bulkRemove(whereClause: nil, responseHandler: { removed in
+            Backendless.shared.data.ofTable("People").bulkRemove(whereClause: nil, responseHandler: { removed in
                 self.createFriendForDS1()
                 let person = ["name": "Joe", "age": 30, "friend": ["objectId": "1"]] as [String : Any]
                 self.personStore.deepSave(entity: person, responseHandler: { savedPerson in

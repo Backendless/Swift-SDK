@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2022 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -26,6 +26,8 @@ import Foundation
     case CREATE_BULK
     case UPDATE
     case UPDATE_BULK
+    case UPSERT
+    case UPSERT_BULK
     case DELETE
     case DELETE_BULK
     case FIND
@@ -38,6 +40,8 @@ import Foundation
         else if stringValue == "CREATE_BULK" { return .CREATE_BULK }
         else if stringValue == "UPDATE" { return .UPDATE }
         else if stringValue == "UPDATE_BULK" { return .UPDATE_BULK }
+        else if stringValue == "UPSERT" { return .UPSERT }
+        else if stringValue == "UPSERT_BULK" { return .UPSERT_BULK }
         else if stringValue == "DELETE" { return .DELETE }
         else if stringValue == "DELETE_BULK" { return .DELETE_BULK }
         else if stringValue == "FIND" { return .FIND }
@@ -52,12 +56,14 @@ import Foundation
         else if intValue == 1 { return "CREATE_BULK" }
         else if intValue == 2 { return "UPDATE" }
         else if intValue == 3 { return "UPDATE_BULK" }
-        else if intValue == 4 { return "DELETE" }
-        else if intValue == 5 { return "DELETE_BULK" }
-        else if intValue == 6 { return "FIND" }
-        else if intValue == 7 { return "ADD_RELATION" }
-        else if intValue == 8 { return "SET_RELATION" }
-        else if intValue == 9 { return "DELETE_RELATION" }
+        else if intValue == 4 { return "UPSERT" }
+        else if intValue == 5 { return "UPSERT_BULK" }
+        else if intValue == 6 { return "DELETE" }
+        else if intValue == 7 { return "DELETE_BULK" }
+        else if intValue == 8 { return "FIND" }
+        else if intValue == 9 { return "ADD_RELATION" }
+        else if intValue == 10 { return "SET_RELATION" }
+        else if intValue == 11 { return "DELETE_RELATION" }
         return "CREATE"
     }
     

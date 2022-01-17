@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2022 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -41,9 +41,9 @@ class DistinctTests: XCTestCase {
     
     func testDT01() {
         let expectation = self.expectation(description: "PASSED: DT1")
-        Backendless.shared.data.ofTable("Person").removeBulk(whereClause: nil, responseHandler: { removed in
+        Backendless.shared.data.ofTable("Person").bulkRemove(whereClause: nil, responseHandler: { removed in
             let people = [["name": "name1"], ["name": "name2"], ["name": "name2"]]
-            self.dataStore.createBulk(entities: people, responseHandler: { createdIds in
+            self.dataStore.bulkCreate(entities: people, responseHandler: { createdIds in
                 let queryBuilder = DataQueryBuilder()
                 queryBuilder.distinct = true
                 queryBuilder.addProperty(property: "name")

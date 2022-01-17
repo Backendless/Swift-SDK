@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2022 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -40,7 +40,7 @@ class BLLineStringTests: XCTestCase {
     
     func testLS01() {
         let expectation = self.expectation(description: "PASSED: BLLineString.create")
-        dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+        dataStore.bulkRemove(whereClause: nil, responseHandler: { removed in
             let geometryObject = GeometryTestClass()
             let point1 = BLPoint(x: -87.52683788, y: 41.85716752)
             let point2 = BLPoint(x: 32.45645, y: 87.54654)
@@ -277,7 +277,7 @@ class BLLineStringTests: XCTestCase {
         let point2_1 = BLPoint(x: -87.53434788, y: 41.85716752)
         let point2_2 = BLPoint(x: 8.523788, y: 67.752)
         geometryObject2.linestring = BLLineString(points: [point2_1, point2_2])
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
             XCTAssert(createdIds.count == 2)
             expectation.fulfill()
         }, errorHandler: { fault in
@@ -300,7 +300,7 @@ class BLLineStringTests: XCTestCase {
         let point3_1 = BLPoint(x: -87.53434788, y: 41.85716752)
         let point3_2 = BLPoint(x: 8.523788, y: 67.752)
         geometryObject3.linestring = BLLineString(points: [point3_1, point3_2])
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
             XCTFail("Longitude must be within (-180.000000, 180.000000]")
         }, errorHandler: { fault in
             expectation.fulfill()
@@ -322,7 +322,7 @@ class BLLineStringTests: XCTestCase {
     //        let point3_1 = BLPoint(x: -87.53434788, y: 41.85716752)
     //        let point3_2 = BLPoint(x: 8.523788, y: 67.752)
     //        geometryObject3.linestring = BLLineString(points: [point3_1, point3_2])
-    //        dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
+    //        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
     //            XCTAssert(createdIds.count == 3)
     //            expectation.fulfill()
     //        }, errorHandler: { fault in
@@ -342,7 +342,7 @@ class BLLineStringTests: XCTestCase {
         let point3_1 = BLPoint(x: -87.53434788, y: 41.85716752)
         let point3_2 = BLPoint(x: 8.523788, y: 67.752)
         geometryObject3.linestring = BLLineString(points: [point3_1, point3_2])
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
             XCTAssert(createdIds.count == 3)
             expectation.fulfill()
         }, errorHandler: { fault in
@@ -365,7 +365,7 @@ class BLLineStringTests: XCTestCase {
         catch {
             XCTFail(error.localizedDescription)
         }
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
             XCTAssert(createdIds.count == 2)
             expectation.fulfill()
         }, errorHandler: { fault in
@@ -427,7 +427,7 @@ class BLLineStringTests: XCTestCase {
         catch {
             XCTFail(error.localizedDescription)
         }
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2], responseHandler: { createdIds in
             XCTAssert(createdIds.count == 2)
             expectation.fulfill()
         }, errorHandler: { fault in
@@ -574,8 +574,8 @@ class BLLineStringTests: XCTestCase {
         geometryObject2.name = "linestring"
         let geometryObject3 = GeometryTestClass()
         geometryObject3.name = "llinestring"
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
-            self.dataStore.updateBulk(whereClause: "name='linestring'", changes: ["linestring": "LINESTRING (54.5465464 34.565656, 84.5465464 13.5653656)"], responseHandler: { updated in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
+            self.dataStore.bulkUpdate(whereClause: "name='linestring'", changes: ["linestring": "LINESTRING (54.5465464 34.565656, 84.5465464 13.5653656)"], responseHandler: { updated in
                 XCTAssert(updated >= 2)
                 expectation.fulfill()
             }, errorHandler: { fault in                
@@ -595,8 +595,8 @@ class BLLineStringTests: XCTestCase {
         geometryObject2.name = "linestring"
         let geometryObject3 = GeometryTestClass()
         geometryObject3.name = "llinestring"
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
-            self.dataStore.updateBulk(whereClause: "name='linestring'", changes: ["linestring": "LINESTRING (54.5465464 34.565656, 54.5465464 34.565656)"], responseHandler: { updated in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
+            self.dataStore.bulkUpdate(whereClause: "name='linestring'", changes: ["linestring": "LINESTRING (54.5465464 34.565656, 54.5465464 34.565656)"], responseHandler: { updated in
                 XCTAssert(updated >= 2)
                 expectation.fulfill()
             }, errorHandler: { fault in                
@@ -616,8 +616,8 @@ class BLLineStringTests: XCTestCase {
         geometryObject2.name = "linestring"
         let geometryObject3 = GeometryTestClass()
         geometryObject3.name = "llinestring"
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
-            self.dataStore.updateBulk(whereClause: "name='linestring'", changes: ["linestring": "LINESTRING (54.5465464 null, 54.5465464 34.565656, 84.5465464 13.5653656)"], responseHandler: { updated in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
+            self.dataStore.bulkUpdate(whereClause: "name='linestring'", changes: ["linestring": "LINESTRING (54.5465464 null, 54.5465464 34.565656, 84.5465464 13.5653656)"], responseHandler: { updated in
                 XCTFail("Longitude or latitude can't be null")
             }, errorHandler: { fault in    
                 expectation.fulfill()
@@ -636,8 +636,8 @@ class BLLineStringTests: XCTestCase {
         geometryObject2.name = "linestring"
         let geometryObject3 = GeometryTestClass()
         geometryObject3.name = "llinestring"
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
-            self.dataStore.updateBulk(whereClause: "name='linestring'", changes: ["linestring": "LINESTRING (54.5465464 190.654),(54.5465464 34.565656),(84.5465464 13.5653656)"], responseHandler: { updated in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
+            self.dataStore.bulkUpdate(whereClause: "name='linestring'", changes: ["linestring": "LINESTRING (54.5465464 190.654),(54.5465464 34.565656),(84.5465464 13.5653656)"], responseHandler: { updated in
                 XCTFail("Longitude or latitude can't be null")
             }, errorHandler: { fault in    
                 expectation.fulfill()
@@ -692,8 +692,8 @@ class BLLineStringTests: XCTestCase {
         let point3_2 = BLPoint(x: 8.523788, y: 67.752)
         geometryObject3.linestring = BLLineString(points: [point3_1, point3_2])
         geometryObject3.name = "llinestring"
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
-            self.dataStore.removeBulk(whereClause: "name='linestring'", responseHandler: { removed in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2, geometryObject3], responseHandler: { createdIds in
+            self.dataStore.bulkRemove(whereClause: "name='linestring'", responseHandler: { removed in
                 XCTAssert(removed >= 2)
                 expectation.fulfill()
             }, errorHandler: { fault in                
@@ -729,7 +729,7 @@ class BLLineStringTests: XCTestCase {
         let point4_2 = BLPoint(x: 54.5465464, y: 34.565656)
         let point4_3 = BLPoint(x: 84.5465464, y: 13.5653656)
         geometryObject4.linestring = BLLineString(points: [point4_1, point4_2, point4_3])
-        dataStore.createBulk(entities: [geometryObject1, geometryObject2, geometryObject3, geometryObject4], responseHandler: { createdIds in
+        dataStore.bulkCreate(entities: [geometryObject1, geometryObject2, geometryObject3, geometryObject4], responseHandler: { createdIds in
             let queryBuilder = DataQueryBuilder()
             queryBuilder.whereClause = "linestring='LINESTRING(54.5465464 65.654, 54.5465464 34.565656, 84.5465464 13.5653656)'"
             self.dataStore.find(queryBuilder: queryBuilder, responseHandler: { foundObjects in

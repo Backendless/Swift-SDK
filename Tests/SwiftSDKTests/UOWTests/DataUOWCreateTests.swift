@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2022 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -142,7 +142,7 @@ class DataUOWCreateTests: XCTestCase {
     func test_06_create() {
         let expectation = self.expectation(description: "PASSED: uow.create")
         let testObjects = [["name": "Bob", "age": 25], ["name": "Ann", "age": 45], ["name": "Jack", "age": 26]]
-        Backendless.shared.data.ofTable("TestClass").createBulk(entities: testObjects, responseHandler: { objectIds in
+        Backendless.shared.data.ofTable("TestClass").bulkCreate(entities: testObjects, responseHandler: { objectIds in
             let uow = UnitOfWork()
             let bulkUpdateResult = uow.bulkUpdate(tableName: self.tableName, objectsToUpdate: objectIds, changes: ["age": 30])
             let _ = uow.create(tableName: self.tableName, objectToSave: ["age": bulkUpdateResult])
@@ -184,7 +184,7 @@ class DataUOWCreateTests: XCTestCase {
     func test_08_create() {
         let expectation = self.expectation(description: "PASSED: uow.create")
         let testObjects = [["name": "Bob", "age": 25], ["name": "Ann", "age": 45], ["name": "Jack", "age": 26]]
-        Backendless.shared.data.ofTable("TestClass").createBulk(entities: testObjects, responseHandler: { objectIds in
+        Backendless.shared.data.ofTable("TestClass").bulkCreate(entities: testObjects, responseHandler: { objectIds in
             let uow = UnitOfWork()
             let bulkDeleteResult = uow.bulkDelete(tableName: self.tableName, objectIdValues: objectIds)
             let _ = uow.create(tableName: self.tableName, objectToSave: ["age": bulkDeleteResult])
@@ -205,7 +205,7 @@ class DataUOWCreateTests: XCTestCase {
     func test_09_create() {
         let expectation = self.expectation(description: "PASSED: uow.create")
         let testObjects = [["name": "Bob", "age": 25], ["name": "Ann", "age": 45], ["name": "Jack", "age": 26]]
-        Backendless.shared.data.ofTable("TestClass").createBulk(entities: testObjects, responseHandler: { objectIds in
+        Backendless.shared.data.ofTable("TestClass").bulkCreate(entities: testObjects, responseHandler: { objectIds in
             let uow = UnitOfWork()
             let findResult = uow.find(tableName: self.tableName, queryBuilder: nil)
             let _ = uow.create(tableName: self.tableName, objectToSave: ["name": findResult.resolveTo(resultIndex: 0, propName: "name")])
@@ -234,7 +234,7 @@ class DataUOWCreateTests: XCTestCase {
             for i in 0..<2 {
                 childTestObjects.append(["foo": "bar\(i)"])
             }
-            Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
+            Backendless.shared.data.ofTable("ChildTestClass").bulkCreate(entities: childTestObjects, responseHandler: { childrenObjectIds in
                 let uow = UnitOfWork()
                 let addRelationResult = uow.addToRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", childrenObjectIds: childrenObjectIds)
                 let _ = uow.create(tableName: self.tableName, objectToSave: ["age": addRelationResult])
@@ -267,7 +267,7 @@ class DataUOWCreateTests: XCTestCase {
             for i in 0..<2 {
                 childTestObjects.append(["foo": "bar\(i)"])
             }
-            Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
+            Backendless.shared.data.ofTable("ChildTestClass").bulkCreate(entities: childTestObjects, responseHandler: { childrenObjectIds in
                 let uow = UnitOfWork()
                 let setRelationResult = uow.setRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", childrenObjectIds: childrenObjectIds)
                 let _ = uow.create(tableName: self.tableName, objectToSave: ["age": setRelationResult])
@@ -299,7 +299,7 @@ class DataUOWCreateTests: XCTestCase {
             for i in 0..<2 {
                 childTestObjects.append(["foo": "bar\(i)"])
             }
-            Backendless.shared.data.ofTable("ChildTestClass").createBulk(entities: childTestObjects, responseHandler: { childrenObjectIds in
+            Backendless.shared.data.ofTable("ChildTestClass").bulkCreate(entities: childTestObjects, responseHandler: { childrenObjectIds in
                 let uow = UnitOfWork()
                 let _ = uow.setRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", childrenObjectIds: childrenObjectIds)
                 let deleteRelationResult = uow.deleteRelation(parentTableName: self.tableName, parentObjectId: parentObjectId as! String, columnName: "children", childrenObjectIds: childrenObjectIds)

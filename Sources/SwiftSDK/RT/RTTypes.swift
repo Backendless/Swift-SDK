@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2022 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -22,9 +22,11 @@
 enum RtEventHandlers {
     static let created = "created"
     static let updated = "updated"
+    static let upserted = "upserted"
     static let deleted = "deleted"
     static let bulkCreated = "bulk-created"
     static let bulkUpdated = "bulk-updated"
+    static let bulkUpserted = "bulk-upserted"
     static let bulkDeleted = "bulk-deleted"
     static let relationSet = "set"
     static let relationAdd = "add"

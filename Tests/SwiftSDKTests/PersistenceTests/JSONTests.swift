@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2022 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -546,7 +546,7 @@ class JSONTests: XCTestCase {
         var createdObjectId = ""
         let semaphore = DispatchSemaphore(value: 0)
         DispatchQueue.global().async {
-            self.dataStore.removeBulk(whereClause: nil, responseHandler: { removed in
+            self.dataStore.bulkRemove(whereClause: nil, responseHandler: { removed in
                 let jsonValue = ["letter": "a",
                                  "number": 10,
                                  "decimals": [12.3, 43.28, 56.89],

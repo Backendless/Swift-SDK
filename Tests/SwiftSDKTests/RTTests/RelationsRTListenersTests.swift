@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2022 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -51,8 +51,8 @@ class RelationsRTListenersTests: XCTestCase {
     
     func testRT01() {
         let expectation = self.expectation(description: "PASSED: RT1")
-        Backendless.shared.data.ofTable("A").removeBulk(whereClause: nil, responseHandler: { removedObjects in
-            Backendless.shared.data.ofTable("B").removeBulk(whereClause: nil, responseHandler: { removedObjects in
+        Backendless.shared.data.ofTable("A").bulkRemove(whereClause: nil, responseHandler: { removedObjects in
+            Backendless.shared.data.ofTable("B").bulkRemove(whereClause: nil, responseHandler: { removedObjects in
                 let _ = self.rtHandlerA.addAddRelationListener(relationColumnName: "relation_AB", responseHandler: { relationStatus in
                     XCTAssertEqual(relationStatus.children?.count, 1)
                     expectation.fulfill()
@@ -353,7 +353,7 @@ class RelationsRTListenersTests: XCTestCase {
         for _ in 0..<5 {
             parents.append([String : Any]())
         }
-        self.dataStoreA.createBulk(entities: parents, responseHandler: { parentsIds in
+        self.dataStoreA.bulkCreate(entities: parents, responseHandler: { parentsIds in
             let _ = self.rtHandlerA.addAddRelationListener(relationColumnName: "relation_AB", parentObjectIds: parentsIds, responseHandler: { relationStatus in
                 XCTAssertEqual(relationStatus.children?.count, 1)
                 expectation.fulfill()
@@ -383,8 +383,8 @@ class RelationsRTListenersTests: XCTestCase {
     
     //https://docs.google.com/spreadsheets/d/1iJoug8UMMfCPdFGCI4dLsDYat6gbNT0e4u8WGdfNSi8/edit?skip_itp2_check=true#gid=0
     
-    /*Backendless.shared.data.ofTable("A").removeBulk(whereClause: nil, responseHandler: { removedObjects in
-     Backendless.shared.data.ofTable("B").removeBulk(whereClause: nil, responseHandler: { removedObjects in
+    /*Backendless.shared.data.ofTable("A").bulkRemove(whereClause: nil, responseHandler: { removedObjects in
+     Backendless.shared.data.ofTable("B").bulkRemove(whereClause: nil, responseHandler: { removedObjects in
      
      }, errorHandler: { fault in
      XCTFail("\(fault.code): \(fault.message!)")
@@ -399,7 +399,7 @@ class RelationsRTListenersTests: XCTestCase {
         for _ in 0..<5 {
             parents.append([String : Any]())
         }
-        self.dataStoreA.createBulk(entities: parents, responseHandler: { parentsIds in
+        self.dataStoreA.bulkCreate(entities: parents, responseHandler: { parentsIds in
             let _ = self.rtHandlerA.addAddRelationListener(relationColumnName: "relation_AB", parentObjectIds: parentsIds, responseHandler: { relationStatus in
                 XCTFail("This listener shouldn't be called")
             }, errorHandler: { fault in
@@ -439,7 +439,7 @@ class RelationsRTListenersTests: XCTestCase {
         for _ in 0..<5 {
             parents.append([String : Any]())
         }
-        self.dataStoreA.createBulk(entities: parents, responseHandler: { parentsIds in
+        self.dataStoreA.bulkCreate(entities: parents, responseHandler: { parentsIds in
             let _ = self.rtHandlerA.addSetRelationListener(relationColumnName: "relation_AB", parentObjectIds: parentsIds, responseHandler: { relationStatus in
                 XCTAssertEqual(relationStatus.children?.count, 1)
                 expectation.fulfill()
@@ -473,7 +473,7 @@ class RelationsRTListenersTests: XCTestCase {
         for _ in 0..<5 {
             parents.append([String : Any]())
         }
-        self.dataStoreA.createBulk(entities: parents, responseHandler: { parentsIds in
+        self.dataStoreA.bulkCreate(entities: parents, responseHandler: { parentsIds in
             let _ = self.rtHandlerA.addSetRelationListener(relationColumnName: "relation_AB", parentObjectIds: parentsIds, responseHandler: { relationStatus in
                 XCTFail("This listener shouldn't be called")
             }, errorHandler: { fault in
@@ -513,7 +513,7 @@ class RelationsRTListenersTests: XCTestCase {
         for _ in 0..<5 {
             parents.append([String : Any]())
         }
-        self.dataStoreA.createBulk(entities: parents, responseHandler: { parentsIds in
+        self.dataStoreA.bulkCreate(entities: parents, responseHandler: { parentsIds in
             let _ = self.rtHandlerA.addDeleteRelationListener(relationColumnName: "relation_AB", parentObjectIds: parentsIds, responseHandler: { relationStatus in
                 XCTAssertEqual(relationStatus.children?.count, 1)
                 expectation.fulfill()
@@ -552,7 +552,7 @@ class RelationsRTListenersTests: XCTestCase {
         for _ in 0..<5 {
             parents.append([String : Any]())
         }
-        self.dataStoreA.createBulk(entities: parents, responseHandler: { parentsIds in
+        self.dataStoreA.bulkCreate(entities: parents, responseHandler: { parentsIds in
             let _ = self.rtHandlerA.addDeleteRelationListener(relationColumnName: "relation_AB", parentObjectIds: parentsIds, responseHandler: { relationStatus in
                 XCTFail("This listener shouldn't be called")
             }, errorHandler: { fault in

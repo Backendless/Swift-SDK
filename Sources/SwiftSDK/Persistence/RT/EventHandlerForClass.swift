@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2020 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2022 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -107,6 +107,36 @@ import Foundation
         return subscribeForObjectsChanges(event: RtEventHandlers.deleted, tableName: tableName, whereClause: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
     }
     
+    public func addUpsertListener(responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        let wrappedBlock: (Any) -> () = { response in
+            let className = PersistenceHelper.shared.getTableNameFor(self.entityClass)
+            if let responseDictionary = response as? [String : Any],
+                let resultEntity = PersistenceHelper.shared.dictionaryToEntity(responseDictionary, className: className) {
+                responseHandler(resultEntity)
+            }
+        }
+        return subscribeForObjectsChanges(event: RtEventHandlers.upserted, tableName: tableName, whereClause: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+    }
+    
+    public func addUpsertListener(whereClause: String, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        let wrappedBlock: (Any) -> () = { response in
+            let className = PersistenceHelper.shared.getTableNameFor(self.entityClass)
+            if let responseDictionary = response as? [String : Any],
+                let resultEntity = PersistenceHelper.shared.dictionaryToEntity(responseDictionary, className: className) {
+                responseHandler(resultEntity)
+            }
+        }
+        return subscribeForObjectsChanges(event: RtEventHandlers.upserted, tableName: tableName, whereClause: whereClause, responseHandler: wrappedBlock, errorHandler: errorHandler)
+    }
+    
+    public func removeUpsertListeners(whereClause: String) {
+        removeListeners(type: RtTypes.objectsChanges, event: RtEventHandlers.upserted, whereClause: whereClause)
+    }
+    
+    public func removeUpsertListeners() {
+        removeListeners(type: RtTypes.objectsChanges, event: RtEventHandlers.upserted, whereClause: nil)
+    }
+    
     public func addDeleteListener(whereClause: String, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         let wrappedBlock: (Any) -> () = { response in
             let className = PersistenceHelper.shared.getTableNameFor(self.entityClass)
@@ -175,6 +205,21 @@ import Foundation
     
     public func removeBulkUpdateListeners() {
         removeListeners(type: RtTypes.objectsChanges, event: RtEventHandlers.bulkUpdated, whereClause: nil)
+    }
+    
+    func addBulkUpsertListener(responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+        let wrappedBlock: ([String : Any]) -> () = { response in
+            var resultArray = [String]()
+            for key in response.keys {
+                resultArray.append(key)
+            }
+            responseHandler(resultArray)
+        }
+        return subscribeForObjectsChanges(event: RtEventHandlers.bulkUpserted, tableName: tableName, whereClause: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
+    }
+    
+    func removeBulkUpsertListeners() {
+        removeListeners(type: RtTypes.objectsChanges, event: RtEventHandlers.bulkUpserted, whereClause: nil)
     }
     
     public func addBulkDeleteListener(responseHandler: ((BulkEvent) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
