@@ -37,7 +37,7 @@ class DataUOWDeleteTests: XCTestCase {
     func test_01_delete() {
         let expectation = self.expectation(description: "PASSED: uow.delete")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             let uow = UnitOfWork()
             let _ = uow.delete(tableName: self.tableName, objectToDelete: createdObject)
             DispatchQueue.main.asyncAfter(deadline: .now() + 4, execute: {
@@ -61,7 +61,7 @@ class DataUOWDeleteTests: XCTestCase {
         let testObject = TestClass()
         testObject.name = "Bob"
         testObject.age = 25
-        Backendless.shared.data.of(TestClass.self).save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.of(TestClass.self).save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             let uow = UnitOfWork()
             let _ = uow.delete(objectToDelete: createdObject)
             uow.execute(responseHandler: { uowResult in
@@ -81,7 +81,7 @@ class DataUOWDeleteTests: XCTestCase {
     func test_03_delete() {
         let expectation = self.expectation(description: "PASSED: uow.delete")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             let uow = UnitOfWork()
             let objectId = createdObject["objectId"]
             XCTAssertNotNil(objectId)

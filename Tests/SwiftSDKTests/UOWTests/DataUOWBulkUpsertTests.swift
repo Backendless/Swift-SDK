@@ -146,7 +146,7 @@ class DataUOWBulkUpsertTests: XCTestCase {
     func test_05_bulkUpsert() {
         let expectation = self.expectation(description: "PASSED: uow.bulkUpsert")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             var objectToUpdate = createdObject
             objectToUpdate["age"] = 30
             let uow = UnitOfWork()

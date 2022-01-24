@@ -64,7 +64,7 @@ class EventHandlerForClassTests: XCTestCase {
                 let objectToSave = TestClass()
                 objectToSave.name = "Bob"
                 objectToSave.age = 25
-                self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+                self.dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
                 }, errorHandler: { fault in
                     XCTFail("\(fault.code): \(fault.message!)")
                 })
@@ -89,7 +89,7 @@ class EventHandlerForClassTests: XCTestCase {
             let objectToSave = TestClass()
             objectToSave.name = "Bob"
             objectToSave.age = 25
-            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+            self.dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
             }, errorHandler: { fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
@@ -117,7 +117,7 @@ class EventHandlerForClassTests: XCTestCase {
             let objectToSave = TestClass()
             objectToSave.name = "Bob"
             objectToSave.age = 25
-            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+            self.dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
             }, errorHandler: { fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
@@ -142,7 +142,7 @@ class EventHandlerForClassTests: XCTestCase {
             let objectToSave = TestClass()
             objectToSave.name = "Bob"
             objectToSave.age = 25
-            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+            self.dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
             }, errorHandler: { fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
@@ -167,9 +167,9 @@ class EventHandlerForClassTests: XCTestCase {
             let objectToSave = TestClass()
             objectToSave.name = "Bob"
             objectToSave.age = 25
-            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+            self.dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
                 (savedObject as! TestClass).age = 35
-                self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
+                self.dataStore.save(entity: savedObject, isUpsert: false, responseHandler: { updatedObject in
                 }, errorHandler: { fault in
                     XCTFail("\(fault.code): \(fault.message!)")
                     XCTFail("\(fault.code): \(fault.message!)")
@@ -195,9 +195,9 @@ class EventHandlerForClassTests: XCTestCase {
             let objectToSave = TestClass()
             objectToSave.name = "Bob"
             objectToSave.age = 25
-            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+            self.dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
                 (savedObject as! TestClass).age = 35
-                self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
+                self.dataStore.save(entity: savedObject, isUpsert: false, responseHandler: { updatedObject in
                 }, errorHandler: { fault in
                     XCTFail("\(fault.code): \(fault.message!)")
                     XCTFail("\(fault.code): \(fault.message!)")
@@ -229,9 +229,9 @@ class EventHandlerForClassTests: XCTestCase {
             let objectToSave = TestClass()
             objectToSave.name = "Bob"
             objectToSave.age = 25
-            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+            self.dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
                 (savedObject as! TestClass).age = 35
-                self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
+                self.dataStore.save(entity: savedObject, isUpsert: false, responseHandler: { updatedObject in
                 }, errorHandler: { fault in
                     XCTFail("\(fault.code): \(fault.message!)")
                     XCTFail("\(fault.code): \(fault.message!)")
@@ -260,9 +260,9 @@ class EventHandlerForClassTests: XCTestCase {
             let objectToSave = TestClass()
             objectToSave.name = "Bob"
             objectToSave.age = 25
-            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+            self.dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
                 (savedObject as! TestClass).age = 35
-                self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
+                self.dataStore.save(entity: savedObject, isUpsert: false, responseHandler: { updatedObject in
                 }, errorHandler: { fault in
                     XCTFail("\(fault.code): \(fault.message!)")
                     XCTFail("\(fault.code): \(fault.message!)")
@@ -290,7 +290,7 @@ class EventHandlerForClassTests: XCTestCase {
             let objectToSave = TestClass()
             objectToSave.name = "Bob"
             objectToSave.age = 25
-            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+            self.dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
                 self.dataStore.remove(entity: savedObject, responseHandler: { removed in
                 }, errorHandler: { fault in
                     XCTFail("\(fault.code): \(fault.message!)")
@@ -316,7 +316,7 @@ class EventHandlerForClassTests: XCTestCase {
             let objectToSave = TestClass()
             objectToSave.name = "Bob"
             objectToSave.age = 25
-            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+            self.dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
                 self.dataStore.remove(entity: savedObject, responseHandler: { removed in
                 }, errorHandler: { fault in
                     XCTFail("\(fault.code): \(fault.message!)")
@@ -348,7 +348,7 @@ class EventHandlerForClassTests: XCTestCase {
             let objectToSave = TestClass()
             objectToSave.name = "Bob"
             objectToSave.age = 25
-            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+            self.dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
                 self.dataStore.remove(entity: savedObject, responseHandler: { removed in
                 }, errorHandler: { fault in
                     XCTFail("\(fault.code): \(fault.message!)")
@@ -378,7 +378,7 @@ class EventHandlerForClassTests: XCTestCase {
             let objectToSave = TestClass()
             objectToSave.name = "Bob"
             objectToSave.age = 25
-            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+            self.dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
                 self.dataStore.remove(entity: savedObject, responseHandler: { removed in
                 }, errorHandler: { fault in
                     XCTFail("\(fault.code): \(fault.message!)")
@@ -967,7 +967,7 @@ class EventHandlerForClassTests: XCTestCase {
             let objectToSave = TestClass()
             objectToSave.name = "Bob"
             objectToSave.age = 25
-            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+            self.dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
             }, errorHandler: { fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })

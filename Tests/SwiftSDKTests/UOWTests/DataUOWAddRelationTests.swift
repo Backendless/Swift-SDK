@@ -38,7 +38,7 @@ class DataUOWAddRelationTests: XCTestCase {
     func test_01_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -69,7 +69,7 @@ class DataUOWAddRelationTests: XCTestCase {
     func test_02_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -104,7 +104,7 @@ class DataUOWAddRelationTests: XCTestCase {
     func test_03_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -141,7 +141,7 @@ class DataUOWAddRelationTests: XCTestCase {
     func test_04_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -173,7 +173,7 @@ class DataUOWAddRelationTests: XCTestCase {
     func test_05_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -205,7 +205,7 @@ class DataUOWAddRelationTests: XCTestCase {
     func test_06_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -241,7 +241,7 @@ class DataUOWAddRelationTests: XCTestCase {
     func test_07_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -279,7 +279,7 @@ class DataUOWAddRelationTests: XCTestCase {
     func test_08_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -312,7 +312,7 @@ class DataUOWAddRelationTests: XCTestCase {
     func test_09_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -345,7 +345,7 @@ class DataUOWAddRelationTests: XCTestCase {
     func test_10_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -382,7 +382,7 @@ class DataUOWAddRelationTests: XCTestCase {
     func test_11_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -421,7 +421,7 @@ class DataUOWAddRelationTests: XCTestCase {
     func test_12_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -708,7 +708,7 @@ class DataUOWAddRelationTests: XCTestCase {
     func test_21_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -731,7 +731,7 @@ class DataUOWAddRelationTests: XCTestCase {
     func test_22_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -755,7 +755,7 @@ class DataUOWAddRelationTests: XCTestCase {
     func test_23_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -835,7 +835,7 @@ class DataUOWAddRelationTests: XCTestCase {
     func test_26_addRelation() {
         let expectation = self.expectation(description: "PASSED: uow.addRelation")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)

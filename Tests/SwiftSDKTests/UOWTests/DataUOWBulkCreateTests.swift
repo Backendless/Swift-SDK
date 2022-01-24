@@ -142,7 +142,7 @@ class DataUOWBulkCreateTests: XCTestCase {
     func test_05_bulkCreate() {
         let expectation = self.expectation(description: "PASSED: uow.bulkCreate")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             var objectToUpdate = createdObject
             objectToUpdate["age"] = 30
             let uow = UnitOfWork()
@@ -186,7 +186,7 @@ class DataUOWBulkCreateTests: XCTestCase {
     func test_07_bulkCreate() {
         let expectation = self.expectation(description: "PASSED: uow.bulkCreate")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             let uow = UnitOfWork()
             let deleteResult = uow.delete(tableName: self.tableName, objectToDelete: createdObject)
             let _ = uow.bulkCreate(tableName: self.tableName, objectsToSave: [["age": deleteResult]])
@@ -244,7 +244,7 @@ class DataUOWBulkCreateTests: XCTestCase {
     func test_10_bulkCreate() {
         let expectation = self.expectation(description: "PASSED: uow.bulkCreate")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -277,7 +277,7 @@ class DataUOWBulkCreateTests: XCTestCase {
     func test_11_bulkCreate() {
         let expectation = self.expectation(description: "PASSED: uow.bulkCreate")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -310,7 +310,7 @@ class DataUOWBulkCreateTests: XCTestCase {
     func test_12_bulkCreate() {
         let expectation = self.expectation(description: "PASSED: uow.bulkCreate")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)

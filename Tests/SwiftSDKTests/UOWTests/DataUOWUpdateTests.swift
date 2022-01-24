@@ -37,7 +37,7 @@ class DataUOWUpdateTests: XCTestCase {
     func test_01_update() {
         let expectation = self.expectation(description: "PASSED: uow.update")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             var objectToUpdate = createdObject
             objectToUpdate["age"] = 30
             let uow = UnitOfWork()
@@ -64,7 +64,7 @@ class DataUOWUpdateTests: XCTestCase {
         let testObject = TestClass()
         testObject.name = "Bob"
         testObject.age = 25
-        Backendless.shared.data.of(TestClass.self).save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.of(TestClass.self).save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             XCTAssert(createdObject is TestClass)
             (createdObject as! TestClass).age = 30
             let uow = UnitOfWork()
@@ -103,7 +103,7 @@ class DataUOWUpdateTests: XCTestCase {
     func test_04_update() {
         let expectation = self.expectation(description: "PASSED: uow.update")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             var objectToUpdate = createdObject
             objectToUpdate["age"] = 30
             let uow = UnitOfWork()
@@ -317,7 +317,7 @@ class DataUOWUpdateTests: XCTestCase {
     func test_14_update() {
         let expectation = self.expectation(description: "PASSED: uow.update")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -349,7 +349,7 @@ class DataUOWUpdateTests: XCTestCase {
     func test_15_update() {
         let expectation = self.expectation(description: "PASSED: uow.update")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -381,7 +381,7 @@ class DataUOWUpdateTests: XCTestCase {
     func test_16_update() {
         let expectation = self.expectation(description: "PASSED: uow.update")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)

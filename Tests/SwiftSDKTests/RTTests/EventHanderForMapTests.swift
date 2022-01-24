@@ -59,7 +59,7 @@ class EventHanderForMapTests: XCTestCase {
             })
             DispatchQueue.main.asyncAfter(deadline: .now() + self.delay, execute: {
                 let objectToSave = ["name": "Bob", "age": 25] as [String : Any]
-                self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+                self.dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
                 }, errorHandler: { fault in
                     XCTFail("\(fault.code): \(fault.message!)")
                     XCTFail("\(fault.code): \(fault.message!)")
@@ -84,7 +84,7 @@ class EventHanderForMapTests: XCTestCase {
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + self.delay, execute: {
             let objectToSave = ["name": "Bob", "age": 25] as [String : Any]
-            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+            self.dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
             }, errorHandler: { fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
@@ -111,7 +111,7 @@ class EventHanderForMapTests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: .now() + self.delay, execute: {
             self.eventHandler.removeCreateListeners(whereClause: "name = 'Bob'")
             let objectToSave = ["name": "Bob", "age": 25] as [String : Any]
-            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+            self.dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
             }, errorHandler: { fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
@@ -134,7 +134,7 @@ class EventHanderForMapTests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: .now() + self.delay, execute: {
             self.eventHandler.removeCreateListeners()
             let objectToSave = ["name": "Bob", "age": 25] as [String : Any]
-            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+            self.dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
             }, errorHandler: { fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })
@@ -157,10 +157,10 @@ class EventHanderForMapTests: XCTestCase {
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + self.delay, execute: {
             let objectToSave = ["name": "Bob", "age": 25] as [String : Any]
-            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+            self.dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
                 var savedObject = savedObject
                 savedObject["age"] = 35
-                self.dataStore.update(entity: savedObject, responseHandler: { updatedObject in
+                self.dataStore.save(entity: savedObject, isUpsert: false, responseHandler: { updatedObject in
                 }, errorHandler: { fault in
                     XCTFail("\(fault.code): \(fault.message!)")
                     XCTFail("\(fault.code): \(fault.message!)")
@@ -186,10 +186,10 @@ class EventHanderForMapTests: XCTestCase {
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + self.delay, execute: {
             let objectToSave = ["name": "Bob", "age": 25] as [String : Any]
-            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+            self.dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
                 var savedObject = savedObject
                 savedObject["age"] = 35
-                self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
+                self.dataStore.save(entity: savedObject, isUpsert: false, responseHandler: { updatedObject in
                 }, errorHandler: { fault in
                     XCTFail("\(fault.code): \(fault.message!)")
                     XCTFail("\(fault.code): \(fault.message!)")
@@ -221,10 +221,10 @@ class EventHanderForMapTests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: .now() + self.delay, execute: {
             self.eventHandler.removeUpdateListeners(whereClause: "name = 'Bob'")
             let objectToSave = ["name": "Bob", "age": 25] as [String : Any]
-            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+            self.dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
                 var savedObject = savedObject
                 savedObject["age"] = 35
-                self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
+                self.dataStore.save(entity: savedObject, isUpsert: false, responseHandler: { updatedObject in
                 }, errorHandler: { fault in
                     XCTFail("\(fault.code): \(fault.message!)")
                     XCTFail("\(fault.code): \(fault.message!)")
@@ -251,10 +251,10 @@ class EventHanderForMapTests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: .now() + self.delay, execute: {
             self.eventHandler.removeUpdateListeners()
             let objectToSave = ["name": "Bob", "age": 25] as [String : Any]
-            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+            self.dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
                 var savedObject = savedObject
                 savedObject["age"] = 35
-                self.dataStore.update(entity: savedObject, responseHandler: { updatedObject in
+                self.dataStore.save(entity: savedObject, isUpsert: false, responseHandler: { updatedObject in
                 }, errorHandler: { fault in
                     XCTFail("\(fault.code): \(fault.message!)")
                     XCTFail("\(fault.code): \(fault.message!)")
@@ -280,7 +280,7 @@ class EventHanderForMapTests: XCTestCase {
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + self.delay, execute: {
             let objectToSave = ["name": "Bob", "age": 25] as [String : Any]
-            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+            self.dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
                 self.dataStore.remove(entity: savedObject, responseHandler: { removed in
                 }, errorHandler: { fault in
                     XCTFail("\(fault.code): \(fault.message!)")
@@ -304,7 +304,7 @@ class EventHanderForMapTests: XCTestCase {
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + self.delay, execute: {
             let objectToSave = ["name": "Bob", "age": 25] as [String : Any]
-            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+            self.dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
                 self.dataStore.remove(entity: savedObject, responseHandler: { removed in
                 }, errorHandler: { fault in
                     XCTFail("\(fault.code): \(fault.message!)")
@@ -334,7 +334,7 @@ class EventHanderForMapTests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: .now() + self.delay, execute: {
             self.eventHandler.removeDeleteListeners(whereClause: "name = 'Bob'")
             let objectToSave = ["name": "Bob", "age": 25] as [String : Any]
-            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+            self.dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
                 self.dataStore.remove(entity: savedObject, responseHandler: { removed in
                 }, errorHandler: { fault in
                     XCTFail("\(fault.code): \(fault.message!)")
@@ -362,7 +362,7 @@ class EventHanderForMapTests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: .now() + self.delay, execute: {
             self.eventHandler.removeDeleteListeners()
             let objectToSave = ["name": "Bob", "age": 25] as [String : Any]
-            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+            self.dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
                 self.dataStore.remove(entity: savedObject, responseHandler: { removed in
                 }, errorHandler: { fault in
                     XCTFail("\(fault.code): \(fault.message!)")
@@ -875,7 +875,7 @@ class EventHanderForMapTests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: .now() + self.delay, execute: {
             subscriptionToStop?.stop()
             let objectToSave = ["name": "Bob", "age": 25] as [String : Any]
-            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+            self.dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
             }, errorHandler: { fault in
                 XCTFail("\(fault.code): \(fault.message!)")
             })

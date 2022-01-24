@@ -45,7 +45,7 @@ class BLLineStringTests: XCTestCase {
             let point1 = BLPoint(x: -87.52683788, y: 41.85716752)
             let point2 = BLPoint(x: 32.45645, y: 87.54654)
             geometryObject.linestring = BLLineString(points: [point1, point2])
-            self.dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+            self.dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
                 XCTAssert(savedObject is GeometryTestClass)
                 let linestring = (savedObject as! GeometryTestClass).linestring
                 XCTAssertNotNil(linestring)
@@ -65,7 +65,7 @@ class BLLineStringTests: XCTestCase {
         let point1 = BLPoint(x: 180, y: 90)
         let point2 = BLPoint(x: -180, y: -90)
         geometryObject.linestring = BLLineString(points: [point1, point2])
-        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+        dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
             XCTAssert(savedObject is GeometryTestClass)
             let linestring = (savedObject as! GeometryTestClass).linestring
             XCTAssertNotNil(linestring)
@@ -82,7 +82,7 @@ class BLLineStringTests: XCTestCase {
         let point1 = BLPoint(x: 180, y: -90)
         let point2 = BLPoint(x: -180, y: 90)
         geometryObject.linestring = BLLineString(points: [point1, point2])
-        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+        dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
             XCTAssert(savedObject is GeometryTestClass)
             let linestring = (savedObject as! GeometryTestClass).linestring
             XCTAssertNotNil(linestring)
@@ -99,7 +99,7 @@ class BLLineStringTests: XCTestCase {
         let point1 = BLPoint(x: -180.1, y: -90.1)
         let point2 = BLPoint(x: 76.4554, y: 34.6565)
         geometryObject.linestring = BLLineString(points: [point1, point2])
-        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+        dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
             XCTFail("Longitude must be within (-180.000000, 180.000000]")
         }, errorHandler: { fault in
             expectation.fulfill()
@@ -130,7 +130,7 @@ class BLLineStringTests: XCTestCase {
         let point1 = BLPoint(x: 122.111111111, y: 78.123456785)
         let point2 = BLPoint(x: 32.323234, y: 67)
         geometryObject.linestring = BLLineString(points: [point1, point2])
-        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+        dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
             XCTAssert(savedObject is GeometryTestClass)
             let linestring = (savedObject as! GeometryTestClass).linestring
             XCTAssertNotNil(linestring)
@@ -150,7 +150,7 @@ class BLLineStringTests: XCTestCase {
         let point1 = BLPoint(x: 1, y: 1)
         let point2 = BLPoint(x: 1, y: 1)
         geometryObject.linestring = BLLineString(points: [point1, point2])
-        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+        dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
             XCTAssert(savedObject is GeometryTestClass)
             let linestring = (savedObject as! GeometryTestClass).linestring
             XCTAssertNotNil(linestring)
@@ -170,7 +170,7 @@ class BLLineStringTests: XCTestCase {
         catch {
             XCTFail(error.localizedDescription)
         }
-        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+        dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
             XCTAssert(savedObject is GeometryTestClass)
             let linestring = (savedObject as! GeometryTestClass).linestring
             XCTAssertNotNil(linestring)
@@ -442,7 +442,7 @@ class BLLineStringTests: XCTestCase {
         let point1 = BLPoint(x: -87.52683788, y: 41.85716752)
         let point2 = BLPoint(x: 32.45645, y: 87.54654)
         geometryObject.linestring = BLLineString(points: [point1, point2])
-        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+        dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
             XCTAssert(savedObject is GeometryTestClass)
             let linestring = (savedObject as! GeometryTestClass).linestring
             XCTAssertNotNil(linestring)
@@ -450,7 +450,7 @@ class BLLineStringTests: XCTestCase {
             let updPoint2 = BLPoint(x: 12.234234, y: 4)
             let updPoint3 = BLPoint(x: 23.34234, y: 0)
             (savedObject as! GeometryTestClass).linestring = BLLineString(points: [updPoint1, updPoint2, updPoint3])
-            self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
+            self.dataStore.save(entity: savedObject, isUpsert: false, responseHandler: { updatedObject in
                 XCTFail("Latitude must be within [-90.000000, 90.000000]")
             }, errorHandler: { fault in
                 expectation.fulfill()
@@ -510,14 +510,14 @@ class BLLineStringTests: XCTestCase {
         let point1 = BLPoint(x: -87.52683788, y: 41.85716752)
         let point2 = BLPoint(x: 32.45645, y: 87.54654)
         geometryObject.linestring = BLLineString(points: [point1, point2])
-        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+        dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
             XCTAssert(savedObject is GeometryTestClass)
             let linestring = (savedObject as! GeometryTestClass).linestring
             XCTAssertNotNil(linestring)
             let updPoint1 = BLPoint(x: 180, y: 180.1)
             let updPoint2 = BLPoint(x: -90.1, y: -90.1)
             (savedObject as! GeometryTestClass).linestring = BLLineString(points: [updPoint1, updPoint2])
-            self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in                
+            self.dataStore.save(entity: savedObject, isUpsert: false, responseHandler: { updatedObject in                
                 XCTFail("Latitude must be within [-90.000000, 90.000000]")
             }, errorHandler: { fault in
                 expectation.fulfill()
@@ -656,12 +656,12 @@ class BLLineStringTests: XCTestCase {
         let point1 = BLPoint(x: -87.52683788, y: 41.85716752)
         let point2 = BLPoint(x: 32.45645, y: 87.54654)
         geometryObject.linestring = BLLineString(points: [point1, point2])
-        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+        dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
             XCTAssert(savedObject is GeometryTestClass)
             let linestring = (savedObject as! GeometryTestClass).linestring
             XCTAssertNotNil(linestring)
             (savedObject as! GeometryTestClass).linestring = nil
-            self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
+            self.dataStore.save(entity: savedObject, isUpsert: false, responseHandler: { updatedObject in
                 XCTAssertNotNil(updatedObject)
                 let linestring = (updatedObject as! GeometryTestClass).linestring
                 XCTAssertNil(linestring)
@@ -754,7 +754,7 @@ class BLLineStringTests: XCTestCase {
         let point1 = BLPoint(x: 10, y: 10)
         let point2 = BLPoint(x: 20, y: 20)
         geometryObject.linestring = BLLineString(points: [point1, point2])
-        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+        dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
             if let savedObject = savedObject as? GeometryTestClass,
                let objectId = savedObject.objectId {
                 self.dataStore.findById(objectId: objectId, responseHandler: { foundObject in

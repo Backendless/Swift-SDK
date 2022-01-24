@@ -58,7 +58,7 @@ class DataStoreFactoryTests: XCTestCase {
                 let objectToSave = TestClassForMappings()
                 objectToSave.nameProperty = "Bob"
                 objectToSave.ageProperty = 30
-                mappedDataStore.save(entity: objectToSave, responseHandler: { savedObject in
+                mappedDataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
                     XCTAssert(type(of: savedObject) == TestClassForMappings.self)
                     XCTAssertEqual((savedObject as! TestClassForMappings).nameProperty, "Bob")
                     XCTAssertEqual((savedObject as! TestClassForMappings).ageProperty, 30)
@@ -86,7 +86,7 @@ class DataStoreFactoryTests: XCTestCase {
                 let objectToSave = TestClass()
                 objectToSave.name = "Bob"
                 objectToSave.age = 30
-                self.dataStore.create(entity: objectToSave, responseHandler: { savedObject in
+                self.dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
                     XCTAssert(type(of: savedObject) == TestClass.self)
                     XCTAssertEqual((savedObject as! TestClass).name, "Bob")
                     XCTAssertEqual((savedObject as! TestClass).age, 30)
@@ -128,12 +128,12 @@ class DataStoreFactoryTests: XCTestCase {
         let objectToSave = TestClass()
         objectToSave.name = "Bob"
         objectToSave.age = 30
-        dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+        dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
             XCTAssert(type(of: savedObject) == TestClass.self)
             XCTAssertEqual((savedObject as! TestClass).name, "Bob")
             XCTAssertEqual((savedObject as! TestClass).age, 30)
             (savedObject as! TestClass).age = 55
-            self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
+            self.dataStore.save(entity: savedObject, isUpsert: false, responseHandler: { updatedObject in
                 XCTAssert(type(of: updatedObject) == TestClass.self)
                 XCTAssertEqual((updatedObject as! TestClass).name, "Bob")
                 XCTAssertEqual((updatedObject as! TestClass).age, 55)
@@ -183,7 +183,7 @@ class DataStoreFactoryTests: XCTestCase {
         let objectToSave = TestClass()
         objectToSave.name = "Bob"
         objectToSave.age = 30
-        dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+        dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
             XCTAssertNotNil(self.dataStore.getObjectId(entity: savedObject))
             self.dataStore.removeById(objectId: self.dataStore.getObjectId(entity: savedObject)!, responseHandler: { removedTimestamp in
                 XCTAssertNotNil(Date(timeIntervalSince1970: TimeInterval(removedTimestamp)))
@@ -203,7 +203,7 @@ class DataStoreFactoryTests: XCTestCase {
         let objectToSave = TestClass()
         objectToSave.name = "Bob"
         objectToSave.age = 30
-        dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+        dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
             self.dataStore.remove(entity: savedObject, responseHandler: { removedTimestamp in
                 XCTAssertNotNil(Date(timeIntervalSince1970: TimeInterval(removedTimestamp)))
                 XCTAssertNil(StoredObjects.shared.getObjectForId(objectId: self.dataStore.getObjectId(entity: savedObject)!))
@@ -385,7 +385,7 @@ class DataStoreFactoryTests: XCTestCase {
         let objectToSave = TestClass()
         objectToSave.name = "Bob"
         objectToSave.age = 30
-        dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+        dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
             self.dataStore.findFirst(responseHandler: { first in
                 XCTAssert(type(of: first) == TestClass.self)
                 expectation.fulfill()
@@ -403,7 +403,7 @@ class DataStoreFactoryTests: XCTestCase {
         let objectToSave = TestClass()
         objectToSave.name = "Bob"
         objectToSave.age = 30
-        dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+        dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
             self.dataStore.findLast(responseHandler: { last in
                 XCTAssert(type(of: last) == TestClass.self)
                 expectation.fulfill()
@@ -421,7 +421,7 @@ class DataStoreFactoryTests: XCTestCase {
         let objectToSave = TestClass()
         objectToSave.name = "Bob"
         objectToSave.age = 30
-        dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+        dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
             XCTAssert(type(of: savedObject) == TestClass.self)
             XCTAssertNotNil((savedObject as! TestClass).objectId)
             self.dataStore.findById(objectId: (savedObject as! TestClass).objectId!, responseHandler: { foundObject in
@@ -441,7 +441,7 @@ class DataStoreFactoryTests: XCTestCase {
         let objectToSave = TestClass()
         objectToSave.name = "Bob"
         objectToSave.age = 30
-        dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+        dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
             XCTAssert(type(of: savedObject) == TestClass.self)
             XCTAssertNotNil((savedObject as! TestClass).objectId)
             let queryBuilder = DataQueryBuilder()
@@ -493,13 +493,13 @@ class DataStoreFactoryTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: dataStoreFactory.setRelationWithObjects")
         let childObjectToSave = ChildTestClass()
         childObjectToSave.foo = "bar"        
-        childDataStore.save(entity: childObjectToSave, responseHandler: { savedChildObject in
+        childDataStore.save(entity: childObjectToSave, isUpsert: false, responseHandler: { savedChildObject in
             XCTAssert(type(of: savedChildObject) == ChildTestClass.self)
             XCTAssertNotNil((savedChildObject as! ChildTestClass).objectId)
             let parentObjectToSave = TestClass()
             parentObjectToSave.name = "Bob"
             parentObjectToSave.age = 30
-            self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
+            self.dataStore.save(entity: parentObjectToSave, isUpsert: false, responseHandler: { savedParentObject in
                 XCTAssert(type(of: savedParentObject) == TestClass.self)
                 XCTAssertNotNil((savedParentObject as! TestClass).objectId)
                 // 1:1
@@ -523,13 +523,13 @@ class DataStoreFactoryTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: dataStoreFactory.setRelationWithCondition")
         let childObjectToSave = ChildTestClass()
         childObjectToSave.foo = "bar"
-        childDataStore.save(entity: childObjectToSave, responseHandler: { savedChildObject in
+        childDataStore.save(entity: childObjectToSave, isUpsert: false, responseHandler: { savedChildObject in
             XCTAssert(type(of: savedChildObject) == ChildTestClass.self)
             XCTAssertNotNil((savedChildObject as! ChildTestClass).objectId)
             let parentObjectToSave = TestClass()
             parentObjectToSave.name = "Bob"
             parentObjectToSave.age = 30
-            self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
+            self.dataStore.save(entity: parentObjectToSave, isUpsert: false, responseHandler: { savedParentObject in
                 XCTAssert(type(of: savedParentObject) == TestClass.self)
                 XCTAssertNotNil((savedParentObject as! TestClass).objectId)
                 // 1:1
@@ -553,13 +553,13 @@ class DataStoreFactoryTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: dataStoreFactory.addRelationWithObjects")
         let childObjectToSave = ChildTestClass()
         childObjectToSave.foo = "bar"
-        childDataStore.save(entity: childObjectToSave, responseHandler: { savedChildObject in
+        childDataStore.save(entity: childObjectToSave, isUpsert: false, responseHandler: { savedChildObject in
             XCTAssert(type(of: savedChildObject) == ChildTestClass.self)
             XCTAssertNotNil((savedChildObject as! ChildTestClass).objectId)
             let parentObjectToSave = TestClass()
             parentObjectToSave.name = "Bob"
             parentObjectToSave.age = 30
-            self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
+            self.dataStore.save(entity: parentObjectToSave, isUpsert: false, responseHandler: { savedParentObject in
                 XCTAssert(type(of: savedParentObject) == TestClass.self)
                 XCTAssertNotNil((savedParentObject as! TestClass).objectId)
                 // 1:1
@@ -583,13 +583,13 @@ class DataStoreFactoryTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: dataStoreFactory.addRelationWithCondition")
         let childObjectToSave = ChildTestClass()
         childObjectToSave.foo = "bar"
-        childDataStore.save(entity: childObjectToSave, responseHandler: { savedChildObject in
+        childDataStore.save(entity: childObjectToSave, isUpsert: false, responseHandler: { savedChildObject in
             XCTAssert(type(of: savedChildObject) == ChildTestClass.self)
             XCTAssertNotNil((savedChildObject as! ChildTestClass).objectId)
             let parentObjectToSave = TestClass()
             parentObjectToSave.name = "Bob"
             parentObjectToSave.age = 30
-            self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
+            self.dataStore.save(entity: parentObjectToSave, isUpsert: false, responseHandler: { savedParentObject in
                 XCTAssert(type(of: savedParentObject) == TestClass.self)
                 XCTAssertNotNil((savedParentObject as! TestClass).objectId)
                 // 1:1
@@ -613,13 +613,13 @@ class DataStoreFactoryTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: dataStoreFactory.deleteRelationWithObjects")
         let childObjectToSave = ChildTestClass()
         childObjectToSave.foo = "bar"
-        childDataStore.save(entity: childObjectToSave, responseHandler: { savedChildObject in
+        childDataStore.save(entity: childObjectToSave, isUpsert: false, responseHandler: { savedChildObject in
             XCTAssert(type(of: savedChildObject) == ChildTestClass.self)
             XCTAssertNotNil((savedChildObject as! ChildTestClass).objectId)
             let parentObjectToSave = TestClass()
             parentObjectToSave.name = "Bob"
             parentObjectToSave.age = 30
-            self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
+            self.dataStore.save(entity: parentObjectToSave, isUpsert: false, responseHandler: { savedParentObject in
                 XCTAssert(type(of: savedParentObject) == TestClass.self)
                 XCTAssertNotNil((savedParentObject as! TestClass).objectId)
                 // 1:1
@@ -648,13 +648,13 @@ class DataStoreFactoryTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: dataStoreFactory.deleteRelationWithCondition")
         let childObjectToSave = ChildTestClass()
         childObjectToSave.foo = "bar"
-        childDataStore.save(entity: childObjectToSave, responseHandler: { savedChildObject in
+        childDataStore.save(entity: childObjectToSave, isUpsert: false, responseHandler: { savedChildObject in
             XCTAssert(type(of: savedChildObject) == ChildTestClass.self)
             XCTAssertNotNil((savedChildObject as! ChildTestClass).objectId)
             let parentObjectToSave = TestClass()
             parentObjectToSave.name = "Bob"
             parentObjectToSave.age = 30
-            self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
+            self.dataStore.save(entity: parentObjectToSave, isUpsert: false, responseHandler: { savedParentObject in
                 XCTAssert(type(of: savedParentObject) == TestClass.self)
                 XCTAssertNotNil((savedParentObject as! TestClass).objectId)
                 // 1:1
@@ -684,13 +684,13 @@ class DataStoreFactoryTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: dataStoreFactory.loadRelationsTwoStepsWithPaging")
         let childObjectToSave = ChildTestClass()
         childObjectToSave.foo = "bar"
-        childDataStore.save(entity: childObjectToSave, responseHandler: { savedChildObject in
+        childDataStore.save(entity: childObjectToSave, isUpsert: false, responseHandler: { savedChildObject in
             XCTAssert(type(of: savedChildObject) == ChildTestClass.self)
             XCTAssertNotNil((savedChildObject as! ChildTestClass).objectId)
             let parentObjectToSave = TestClass()
             parentObjectToSave.name = "Bob"
             parentObjectToSave.age = 30
-            self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
+            self.dataStore.save(entity: parentObjectToSave, isUpsert: false, responseHandler: { savedParentObject in
                 XCTAssert(type(of: savedParentObject) == TestClass.self)
                 XCTAssertNotNil((savedParentObject as! TestClass).objectId)
                 // 1:1

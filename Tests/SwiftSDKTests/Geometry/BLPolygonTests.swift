@@ -48,7 +48,7 @@ class BLPolygonTests: XCTestCase {
             let point4 = BLPoint(x: -44.55, y: 34.55)
             let boundary = BLLineString(points: [point1, point2, point3, point4])
             geometryObject.polygon = BLPolygon(boundary: boundary, holes: nil)
-            self.dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+            self.dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
                 XCTAssert(savedObject is GeometryTestClass)
                 let polygon = (savedObject as! GeometryTestClass).polygon
                 XCTAssertNotNil(polygon)
@@ -68,7 +68,7 @@ class BLPolygonTests: XCTestCase {
         let point1 = BLPoint(x: -44.55, y: 34.55)
         let boundary = BLLineString(points: [point1])
         geometryObject.polygon = BLPolygon(boundary: boundary, holes: nil)
-        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+        dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
             XCTFail("Invalid number of points in LineString, must be > 3")
         }, errorHandler: { fault in
             expectation.fulfill()
@@ -83,7 +83,7 @@ class BLPolygonTests: XCTestCase {
         let point2 = BLPoint(x: -44.55, y: 34.55)
         let boundary = BLLineString(points: [point1, point2])
         geometryObject.polygon = BLPolygon(boundary: boundary, holes: nil)
-        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+        dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
             XCTFail("Invalid number of points in LineString, must be > 3")
         }, errorHandler: { fault in
             expectation.fulfill()
@@ -100,7 +100,7 @@ class BLPolygonTests: XCTestCase {
         let point4 = BLPoint(x: 180, y: 90)
         let boundary = BLLineString(points: [point1, point2, point3, point4])
         geometryObject.polygon = BLPolygon(boundary: boundary, holes: nil)
-        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+        dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
             XCTAssert(savedObject is GeometryTestClass)
             let polygon = (savedObject as! GeometryTestClass).polygon
             XCTAssertNotNil(polygon)
@@ -121,7 +121,7 @@ class BLPolygonTests: XCTestCase {
         let point5 = BLPoint(x: 180.1, y: 90)
         let boundary = BLLineString(points: [point1, point2, point3, point4, point5])
         geometryObject.polygon = BLPolygon(boundary: boundary, holes: nil)
-        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+        dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
             XCTFail("Longitude must be within (-180.000000, 180.000000]")
         }, errorHandler: { fault in
             expectation.fulfill()
@@ -168,7 +168,7 @@ class BLPolygonTests: XCTestCase {
         let point2_5 = BLPoint(x: -106.40010108, y: 39.43401108)
         let holes = BLLineString(points: [point2_1, point2_2, point2_3, point2_4, point2_5])
         geometryObject.polygon = BLPolygon(boundary: boundary, holes: holes)
-        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+        dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
             XCTAssert(savedObject is GeometryTestClass)
             let polygon = (savedObject as! GeometryTestClass).polygon
             XCTAssertNotNil(polygon)
@@ -195,7 +195,7 @@ class BLPolygonTests: XCTestCase {
         let point2_4 = BLPoint(x: -102.55613475, y: 60.5787938)
         let holes = BLLineString(points: [point2_1, point2_2, point2_3, point2_4])
         geometryObject.polygon = BLPolygon(boundary: boundary, holes: holes)
-        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+        dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
             XCTAssert(savedObject is GeometryTestClass)
             let polygon = (savedObject as! GeometryTestClass).polygon
             XCTAssertNotNil(polygon)
@@ -225,7 +225,7 @@ class BLPolygonTests: XCTestCase {
         let point2_4 = BLPoint(x: -104.37861671, y: 40.91137765)
         let holes = BLLineString(points: [point2_1, point2_2, point2_3, point2_4])
         geometryObject.polygon = BLPolygon(boundary: boundary, holes: holes)
-        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+        dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
             XCTFail("Some of the LineStrings aren't closed (first and last points must be equal)")
         }, errorHandler: { fault in
             expectation.fulfill()
@@ -245,7 +245,7 @@ class BLPolygonTests: XCTestCase {
         let point2_4 = BLPoint(x: -104.37861671, y: 40.91137765)
         let holes = BLLineString(points: [point2_1, point2_2, point2_3, point2_4])
         geometryObject.polygon = BLPolygon(boundary: boundary, holes: holes)
-        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+        dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
             XCTFail("Invalid number of points in LineString, must be > 3")
         }, errorHandler: { fault in
             expectation.fulfill()
@@ -262,7 +262,7 @@ class BLPolygonTests: XCTestCase {
         catch {
             XCTFail(error.localizedDescription)
         }
-        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+        dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
             XCTAssert(savedObject is GeometryTestClass)
             let polygon = (savedObject as! GeometryTestClass).polygon
             XCTAssertNotNil(polygon)
@@ -305,7 +305,7 @@ class BLPolygonTests: XCTestCase {
         catch {
             XCTFail(error.localizedDescription)
         }
-        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+        dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
             XCTAssert(savedObject is GeometryTestClass)
             let polygon = (savedObject as! GeometryTestClass).polygon
             XCTAssertNotNil(polygon)
@@ -671,7 +671,7 @@ class BLPolygonTests: XCTestCase {
         let point4 = BLPoint(x: -113.45457225, y: 42.60554422)
         let boundary = BLLineString(points: [point1, point2, point3, point4])
         geometryObject.polygon = BLPolygon(boundary: boundary, holes: nil)
-        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+        dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
             let polygon = (savedObject as! GeometryTestClass).polygon
             XCTAssertNotNil(polygon)
             XCTAssertNotNil(polygon?.boundary)
@@ -682,7 +682,7 @@ class BLPolygonTests: XCTestCase {
             let updPoint4 = BLPoint(x: 0, y: 0)
             let updBoundary = BLLineString(points: [updPoint1, updPoint2, updPoint3, updPoint4])
             (savedObject as! GeometryTestClass).polygon = BLPolygon(boundary: updBoundary, holes: nil)
-            self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
+            self.dataStore.save(entity: savedObject, isUpsert: false, responseHandler: { updatedObject in
                 XCTAssert(updatedObject is GeometryTestClass)
                 let polygon = (updatedObject as! GeometryTestClass).polygon
                 XCTAssertNotNil(polygon)
@@ -721,7 +721,7 @@ class BLPolygonTests: XCTestCase {
         let point4 = BLPoint(x: -113.45457225, y: 42.60554422)
         let boundary = BLLineString(points: [point1, point2, point3, point4])
         geometryObject.polygon = BLPolygon(boundary: boundary, holes: nil)
-        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+        dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
             let polygon = (savedObject as! GeometryTestClass).polygon
             XCTAssertNotNil(polygon)
             XCTAssertNotNil(polygon?.boundary)
@@ -732,7 +732,7 @@ class BLPolygonTests: XCTestCase {
             let updPoint4 = BLPoint(x: 0, y: 0)
             let updBoundary = BLLineString(points: [updPoint1, updPoint2, updPoint3, updPoint4])
             (savedObject as! GeometryTestClass).polygon = BLPolygon(boundary: updBoundary, holes: nil)
-            self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
+            self.dataStore.save(entity: savedObject, isUpsert: false, responseHandler: { updatedObject in
                 XCTFail("Latitude must be within [-90.000000, 90.000000]")
             }, errorHandler: { fault in
                 expectation.fulfill()
@@ -805,7 +805,7 @@ class BLPolygonTests: XCTestCase {
         let point4 = BLPoint(x: -113.45457225, y: 42.60554422)
         let boundary = BLLineString(points: [point1, point2, point3, point4])
         geometryObject.polygon = BLPolygon(boundary: boundary, holes: nil)
-        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+        dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
             let polygon = (savedObject as! GeometryTestClass).polygon
             XCTAssertNotNil(polygon)
             XCTAssertNotNil(polygon?.boundary)
@@ -821,7 +821,7 @@ class BLPolygonTests: XCTestCase {
             let updPoint2_4 = BLPoint(x: 0, y: 0)
             let updHoles = BLLineString(points: [updPoint2_1, updPoint2_2, updPoint2_3, updPoint2_4])
             (savedObject as! GeometryTestClass).polygon = BLPolygon(boundary: updBoundary, holes: updHoles)
-            self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
+            self.dataStore.save(entity: savedObject, isUpsert: false, responseHandler: { updatedObject in
                 XCTFail("Some of the 'LineStrings' aren't closed (first and last points must be equal)")
             }, errorHandler: { fault in    
                 expectation.fulfill()
@@ -841,7 +841,7 @@ class BLPolygonTests: XCTestCase {
         let point4 = BLPoint(x: -113.45457225, y: 42.60554422)
         let boundary = BLLineString(points: [point1, point2, point3, point4])
         geometryObject.polygon = BLPolygon(boundary: boundary, holes: nil)
-        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+        dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
             let polygon = (savedObject as! GeometryTestClass).polygon
             XCTAssertNotNil(polygon)
             XCTAssertNotNil(polygon?.boundary)
@@ -857,7 +857,7 @@ class BLPolygonTests: XCTestCase {
             let updPoint2_4 = BLPoint(x: 0.5, y: 0)
             let updHoles = BLLineString(points: [updPoint2_1, updPoint2_2, updPoint2_3, updPoint2_4])
             (savedObject as! GeometryTestClass).polygon = BLPolygon(boundary: updBoundary, holes: updHoles)
-            self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
+            self.dataStore.save(entity: savedObject, isUpsert: false, responseHandler: { updatedObject in
                 XCTAssert(updatedObject is GeometryTestClass)
                 let polygon = (updatedObject as! GeometryTestClass).polygon
                 XCTAssertNotNil(polygon)
@@ -912,7 +912,7 @@ class BLPolygonTests: XCTestCase {
         let point4 = BLPoint(x: -113.45457225, y: 42.60554422)
         let boundary = BLLineString(points: [point1, point2, point3, point4])
         geometryObject.polygon = BLPolygon(boundary: boundary, holes: nil)
-        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+        dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
             let polygon = (savedObject as! GeometryTestClass).polygon
             XCTAssertNotNil(polygon)
             XCTAssertNotNil(polygon?.boundary)
@@ -928,7 +928,7 @@ class BLPolygonTests: XCTestCase {
             let updPoint2_4 = BLPoint(x: 1, y: 1)
             let updHoles = BLLineString(points: [updPoint2_1, updPoint2_2, updPoint2_3, updPoint2_4])
             (savedObject as! GeometryTestClass).polygon = BLPolygon(boundary: updBoundary, holes: updHoles)
-            self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
+            self.dataStore.save(entity: savedObject, isUpsert: false, responseHandler: { updatedObject in
                 XCTAssert(updatedObject is GeometryTestClass)
                 let polygon = (updatedObject as! GeometryTestClass).polygon
                 XCTAssertNotNil(polygon)
@@ -983,7 +983,7 @@ class BLPolygonTests: XCTestCase {
         let point4 = BLPoint(x: -113.45457225, y: 42.60554422)
         let boundary = BLLineString(points: [point1, point2, point3, point4])
         geometryObject.polygon = BLPolygon(boundary: boundary, holes: nil)
-        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+        dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
             let polygon = (savedObject as! GeometryTestClass).polygon
             XCTAssertNotNil(polygon)
             XCTAssertNotNil(polygon?.boundary)
@@ -999,7 +999,7 @@ class BLPolygonTests: XCTestCase {
             let updPoint2_4 = BLPoint(x: 0, y: 0)
             let updHoles = BLLineString(points: [updPoint2_1, updPoint2_2, updPoint2_3, updPoint2_4])
             (savedObject as! GeometryTestClass).polygon = BLPolygon(boundary: updBoundary, holes: updHoles)
-            self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
+            self.dataStore.save(entity: savedObject, isUpsert: false, responseHandler: { updatedObject in
                 XCTAssert(updatedObject is GeometryTestClass)
                 let polygon = (updatedObject as! GeometryTestClass).polygon
                 XCTAssertNotNil(polygon)
@@ -1059,7 +1059,7 @@ class BLPolygonTests: XCTestCase {
         let point2_4 = BLPoint(x: 0, y: 0)
         let holes = BLLineString(points: [point2_1, point2_2, point2_3, point2_4])
         geometryObject.polygon = BLPolygon(boundary: boundary, holes: holes)
-        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+        dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
             let polygon = (savedObject as! GeometryTestClass).polygon
             XCTAssertNotNil(polygon)
             XCTAssertNotNil(polygon?.boundary)
@@ -1070,7 +1070,7 @@ class BLPolygonTests: XCTestCase {
             let updPoint4 = BLPoint(x: 0, y: 0)
             let updBoundary = BLLineString(points: [updPoint1, updPoint2, updPoint3, updPoint4])
             (savedObject as! GeometryTestClass).polygon = BLPolygon(boundary: updBoundary, holes: nil)
-            self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
+            self.dataStore.save(entity: savedObject, isUpsert: false, responseHandler: { updatedObject in
                 XCTAssert(updatedObject is GeometryTestClass)
                 let polygon = (updatedObject as! GeometryTestClass).polygon
                 XCTAssertNotNil(polygon)
@@ -1115,7 +1115,7 @@ class BLPolygonTests: XCTestCase {
         let point2_4 = BLPoint(x: 0, y: 0)
         let holes = BLLineString(points: [point2_1, point2_2, point2_3, point2_4])
         geometryObject.polygon = BLPolygon(boundary: boundary, holes: holes)
-        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+        dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
             let polygon = (savedObject as! GeometryTestClass).polygon
             XCTAssertNotNil(polygon)
             XCTAssertNotNil(polygon?.boundary)
@@ -1126,7 +1126,7 @@ class BLPolygonTests: XCTestCase {
             let updPoint4 = BLPoint(x: 1, y: 1)
             let updBoundary = BLLineString(points: [updPoint1, updPoint2, updPoint3, updPoint4])
             (savedObject as! GeometryTestClass).polygon = BLPolygon(boundary: updBoundary, holes: nil)
-            self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
+            self.dataStore.save(entity: savedObject, isUpsert: false, responseHandler: { updatedObject in
                 XCTAssert(updatedObject is GeometryTestClass)
                 let polygon = (updatedObject as! GeometryTestClass).polygon
                 XCTAssertNotNil(polygon)
@@ -1220,12 +1220,12 @@ class BLPolygonTests: XCTestCase {
         let point4 = BLPoint(x: -44.55, y: 34.55)
         let boundary = BLLineString(points: [point1, point2, point3, point4])
         geometryObject.polygon = BLPolygon(boundary: boundary, holes: nil)
-        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+        dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
             XCTAssert(savedObject is GeometryTestClass)
             let polygon = (savedObject as! GeometryTestClass).polygon
             XCTAssertNotNil(polygon)
             (savedObject as! GeometryTestClass).polygon = nil
-            self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
+            self.dataStore.save(entity: savedObject, isUpsert: false, responseHandler: { updatedObject in
                 XCTAssert(updatedObject is GeometryTestClass)
                 let polygon = (updatedObject as! GeometryTestClass).polygon
                 XCTAssertNil(polygon)
@@ -1322,7 +1322,7 @@ class BLPolygonTests: XCTestCase {
         let point4 = BLPoint(x: -44.55, y: 34.55)
         let boundary = BLLineString(points: [point1, point2, point3, point4])
         geometryObject.polygon = BLPolygon(boundary: boundary, holes: nil)
-        dataStore.save(entity: geometryObject, responseHandler: { savedObject in
+        dataStore.save(entity: geometryObject, isUpsert: false, responseHandler: { savedObject in
             if let savedObject = savedObject as? GeometryTestClass,
             let objectId = savedObject.objectId {
                 self.dataStore.findById(objectId: objectId, responseHandler: { foundObject in

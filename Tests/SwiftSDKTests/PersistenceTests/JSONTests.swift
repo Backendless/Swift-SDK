@@ -43,7 +43,7 @@ class JSONTests: XCTestCase {
     func testJN01() {
         let expectation = self.expectation(description: "PASSED: JN1")
         let objectId = createdObjectWithId()
-        dataStore.save(entity: ["objectId": objectId, "json": [String : Any]()], responseHandler: { saved in
+        dataStore.save(entity: ["objectId": objectId, "json": [String : Any]()], isUpsert: false, responseHandler: { saved in
             XCTAssertTrue((saved["json"] as? [String : Any])?.keys.count == 0)
             expectation.fulfill()
         }, errorHandler: { fault in
@@ -189,7 +189,7 @@ class JSONTests: XCTestCase {
             .addArgument(jsonPath: "$.innerObject", value: ["a": "b"])
             .addArgument(jsonPath: "$.innerArray", value: [1, 2, 3])
             .create()
-        dataStore.save(entity: ["objectId": objectId, "json": jsonValue], responseHandler: { saved in
+        dataStore.save(entity: ["objectId": objectId, "json": jsonValue], isUpsert: false, responseHandler: { saved in
             
             XCTAssertTrue(saved["json"] is [String : Any])
             let json = saved["json"] as! [String : Any]
@@ -230,7 +230,7 @@ class JSONTests: XCTestCase {
             .addArgument(jsonPath: "$.colours[0]", value: NSNull())
             .addArgument(jsonPath: "$.innerValue", value: ["value": "value"])
             .create()
-        dataStore.save(entity: ["objectId": objectId, "json": jsonValue], responseHandler: { saved in
+        dataStore.save(entity: ["objectId": objectId, "json": jsonValue], isUpsert: false, responseHandler: { saved in
             XCTAssertTrue(saved["json"] is [String : Any])
             let json = saved["json"] as! [String : Any]
             
@@ -266,7 +266,7 @@ class JSONTests: XCTestCase {
             .addArgument(jsonPath: "$.decimals[1]", value: 60)
             .addArgument(jsonPath: "$.colours[2]", value: "cyan")
             .create()
-        dataStore.save(entity: ["objectId": objectId, "json": jsonValue], responseHandler: { saved in
+        dataStore.save(entity: ["objectId": objectId, "json": jsonValue], isUpsert: false, responseHandler: { saved in
             XCTAssertTrue(saved["json"] is [String : Any])
             let json = saved["json"] as! [String : Any]
             
@@ -296,7 +296,7 @@ class JSONTests: XCTestCase {
             .addArgument(jsonPath: "$.state", value: "on")
             .addArgument(jsonPath: "$.number", value: 11)
             .create()
-        dataStore.save(entity: ["objectId": objectId, "json": jsonValue], responseHandler: { saved in
+        dataStore.save(entity: ["objectId": objectId, "json": jsonValue], isUpsert: false, responseHandler: { saved in
             XCTAssertTrue(saved["json"] is [String : Any])
             let json = saved["json"] as! [String : Any]
             
@@ -327,7 +327,7 @@ class JSONTests: XCTestCase {
             .addArgument(jsonPath: "$.state", value: "on")
             .addArgument(jsonPath: "$.number", value: 11)
             .create()
-        dataStore.save(entity: ["objectId": objectId, "json": jsonValue], responseHandler: { saved in
+        dataStore.save(entity: ["objectId": objectId, "json": jsonValue], isUpsert: false, responseHandler: { saved in
             XCTAssertTrue(saved["json"] is [String : Any])
             let json = saved["json"] as! [String : Any]
             
@@ -356,7 +356,7 @@ class JSONTests: XCTestCase {
             .addArgument(jsonPath: "$.colours[1]", value: "red")
             .create()
         
-        dataStore.save(entity: ["objectId": objectId, "json": jsonValue], responseHandler: { saved in
+        dataStore.save(entity: ["objectId": objectId, "json": jsonValue], isUpsert: false, responseHandler: { saved in
             XCTAssertTrue(saved["json"] is [String : Any])
             let json = saved["json"] as! [String : Any]
             
@@ -385,7 +385,7 @@ class JSONTests: XCTestCase {
             .addArgument(jsonPath: "$.number")
             .addArgument(jsonPath: "$.colours[1]")
             .create()        
-        dataStore.save(entity: ["objectId": objectId, "json": jsonValue], responseHandler: { saved in
+        dataStore.save(entity: ["objectId": objectId, "json": jsonValue], isUpsert: false, responseHandler: { saved in
             XCTAssertTrue(saved["json"] is [String : Any])
             let json = saved["json"] as! [String : Any]
             
@@ -412,7 +412,7 @@ class JSONTests: XCTestCase {
             .addArgument(jsonPath: "$.decimals", value: 432.0)
             .addArgument(jsonPath: "$.colours", value: "yellow")
             .create()
-        dataStore.save(entity: ["objectId": objectId, "json": jsonValue], responseHandler: { saved in
+        dataStore.save(entity: ["objectId": objectId, "json": jsonValue], isUpsert: false, responseHandler: { saved in
             XCTAssertTrue(saved["json"] is [String : Any])
             let json = saved["json"] as! [String : Any]
             
@@ -439,7 +439,7 @@ class JSONTests: XCTestCase {
         let jsonValue = JSONUpdateBuilder.arrayAppend()
             .addArgument(jsonPath: "$.timeMarks", value: ["data": "2020-09-01"])
             .create()
-        dataStore.save(entity: ["objectId": objectId, "json": jsonValue], responseHandler: { saved in
+        dataStore.save(entity: ["objectId": objectId, "json": jsonValue], isUpsert: false, responseHandler: { saved in
             XCTAssertTrue(saved["json"] is [String : Any])
             let json = saved["json"] as! [String : Any]
             
@@ -468,7 +468,7 @@ class JSONTests: XCTestCase {
             .addArgument(jsonPath: "$.decimals[2]", value: 20)
             .addArgument(jsonPath: "$.decimals[3]", value: 25)
             .create()
-        dataStore.save(entity: ["objectId": objectId, "json": jsonValue], responseHandler: { saved in
+        dataStore.save(entity: ["objectId": objectId, "json": jsonValue], isUpsert: false, responseHandler: { saved in
             XCTAssertTrue(saved["json"] is [String : Any])
             let json = saved["json"] as! [String : Any]
             
@@ -496,7 +496,7 @@ class JSONTests: XCTestCase {
             .addArgument(jsonPath: "$.state", value: "on")
             .addArgument(jsonPath: "$.number", value: 11)
             .create()
-        dataStore.save(entity: ["objectId": objectId, "json": jsonValue], responseHandler: { saved in
+        dataStore.save(entity: ["objectId": objectId, "json": jsonValue], isUpsert: false, responseHandler: { saved in
             XCTFail("A path expression is not a path to a cell in an array")
         }, errorHandler: { fault in
             expectation.fulfill()
@@ -511,7 +511,7 @@ class JSONTests: XCTestCase {
             .addArgument(jsonPath: "$.decimals[2]", value: [20, 70])
             .addArgument(jsonPath: "$.decimals[3]", value: 25)
             .create()
-        dataStore.save(entity: ["objectId": objectId, "json": jsonValue], responseHandler: { saved in
+        dataStore.save(entity: ["objectId": objectId, "json": jsonValue], isUpsert: false, responseHandler: { saved in
             XCTAssertTrue(saved["json"] is [String : Any])
             let json = saved["json"] as! [String : Any]
             
@@ -557,7 +557,7 @@ class JSONTests: XCTestCase {
                                                "date": "2015-07-29",
                                                "date_time": "2015-07-29 12:18:29.000000"]
                     ] as [String : Any]
-                Backendless.shared.data.ofTable("JSONTestTable").save(entity: ["json": jsonValue], responseHandler: { saved in
+                Backendless.shared.data.ofTable("JSONTestTable").save(entity: ["json": jsonValue], isUpsert: false, responseHandler: { saved in
                     if let objectId = saved["objectId"] as? String {
                         createdObjectId = objectId
                         Backendless.shared.data.ofTable("JSONTestTable").setRelation(columnName: "parent", parentObjectId: objectId, childrenObjectIds: [objectId], responseHandler: { relationSet in

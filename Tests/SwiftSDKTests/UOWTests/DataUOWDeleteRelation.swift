@@ -38,7 +38,7 @@ class DataUOWDeleteRelation: XCTestCase {
     func test_01_deleteRelation() {
         let expectation = self.expectation(description: "PASSED: uow.deleteRelation")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { parentObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { parentObject in
             guard let parentObjectId = parentObject["objectId"] as? String else {
                 XCTFail("No objectId for parent object")
                 return
@@ -73,7 +73,7 @@ class DataUOWDeleteRelation: XCTestCase {
     func test_02_deleteRelation() {
         let expectation = self.expectation(description: "PASSED: uow.deleteRelation")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { parentObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { parentObject in
             guard let parentObjectId = parentObject["objectId"] as? String else {
                 XCTFail("No objectId for parent object")
                 return
@@ -110,7 +110,7 @@ class DataUOWDeleteRelation: XCTestCase {
     func test_03_deleteRelation() {
         let expectation = self.expectation(description: "PASSED: uow.deleteRelation")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { parentObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { parentObject in
             guard let parentObjectId = parentObject["objectId"] as? String else {
                 XCTFail("No objectId for parent object")
                 return
@@ -149,7 +149,7 @@ class DataUOWDeleteRelation: XCTestCase {
     func test_04_deleteRelation() {
         let expectation = self.expectation(description: "PASSED: uow.deleteRelation")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { parentObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { parentObject in
             guard let parentObjectId = parentObject["objectId"] as? String else {
                 XCTFail("No objectId for parent object")
                 return
@@ -183,7 +183,7 @@ class DataUOWDeleteRelation: XCTestCase {
     func test_05_deleteRelation() {
         let expectation = self.expectation(description: "PASSED: uow.deleteRelation")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { parentObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { parentObject in
             var childTestObjects = [[String : Any]]()
             for i in 0..<2 {
                 childTestObjects.append(["foo": "bar\(i)"])
@@ -212,7 +212,7 @@ class DataUOWDeleteRelation: XCTestCase {
     func test_06_deleteRelation() {
         let expectation = self.expectation(description: "PASSED: uow.deleteRelation")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { parentObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { parentObject in
             var childTestObjects = [[String : Any]]()
             for i in 0..<2 {
                 childTestObjects.append(["foo": "bar\(i)"])
@@ -245,7 +245,7 @@ class DataUOWDeleteRelation: XCTestCase {
     func test_07_deleteRelation() {
         let expectation = self.expectation(description: "PASSED: uow.deleteRelation")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { parentObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { parentObject in
             var childTestObjects = [[String : Any]]()
             for i in 0..<2 {
                 childTestObjects.append(["foo": "bar\(i)"])
@@ -280,7 +280,7 @@ class DataUOWDeleteRelation: XCTestCase {
     func test_08_deleteRelation() {
         let expectation = self.expectation(description: "PASSED: uow.deleteRelation")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { parentObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { parentObject in
             let uow = UnitOfWork()
             
             let child1 = ChildTestClass()
@@ -312,7 +312,7 @@ class DataUOWDeleteRelation: XCTestCase {
         let testObject = TestClass()
         testObject.name = "Bob"
         testObject.age = 25
-        Backendless.shared.data.of(TestClass.self).save(entity: testObject, responseHandler: { parentObject in
+        Backendless.shared.data.of(TestClass.self).save(entity: testObject, isUpsert: false, responseHandler: { parentObject in
             XCTAssert(parentObject is TestClass)
             var childTestObjects = [[String : Any]]()
             for i in 0..<2 {
@@ -354,7 +354,7 @@ class DataUOWDeleteRelation: XCTestCase {
         let testObject = TestClass()
         testObject.name = "Bob"
         testObject.age = 25
-        Backendless.shared.data.of(TestClass.self).save(entity: testObject, responseHandler: { parentObject in
+        Backendless.shared.data.of(TestClass.self).save(entity: testObject, isUpsert: false, responseHandler: { parentObject in
             XCTAssert(parentObject is TestClass)
             var childTestObjects = [[String : Any]]()
             for i in 0..<2 {
@@ -390,7 +390,7 @@ class DataUOWDeleteRelation: XCTestCase {
         let testObject = TestClass()
         testObject.name = "Bob"
         testObject.age = 25
-        Backendless.shared.data.of(TestClass.self).save(entity: testObject, responseHandler: { parentObject in
+        Backendless.shared.data.of(TestClass.self).save(entity: testObject, isUpsert: false, responseHandler: { parentObject in
             XCTAssert(parentObject is TestClass)
             var childTestObjects = [[String : Any]]()
             for i in 0..<2 {
@@ -428,7 +428,7 @@ class DataUOWDeleteRelation: XCTestCase {
         let testObject = TestClass()
         testObject.name = "Bob"
         testObject.age = 25
-        Backendless.shared.data.of(TestClass.self).save(entity: testObject, responseHandler: { parentObject in
+        Backendless.shared.data.of(TestClass.self).save(entity: testObject, isUpsert: false, responseHandler: { parentObject in
             XCTAssert(parentObject is TestClass)
             let uow = UnitOfWork()
             
@@ -721,7 +721,7 @@ class DataUOWDeleteRelation: XCTestCase {
     func test_21_deleteRelation() {
         let expectation = self.expectation(description: "PASSED: uow.deleteRelation")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -745,7 +745,7 @@ class DataUOWDeleteRelation: XCTestCase {
     func test_22_deleteRelation() {
         let expectation = self.expectation(description: "PASSED: uow.deleteRelation")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)
@@ -770,7 +770,7 @@ class DataUOWDeleteRelation: XCTestCase {
     func test_23_deleteRelation() {
         let expectation = self.expectation(description: "PASSED: uow.deleteRelation")
         let testObject = ["name": "Bob", "age": 25] as [String : Any]
-        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, responseHandler: { createdObject in
+        Backendless.shared.data.ofTable("TestClass").save(entity: testObject, isUpsert: false, responseHandler: { createdObject in
             let parentObjectId = createdObject["objectId"]
             XCTAssertNotNil(parentObjectId)
             XCTAssert(parentObjectId is String)

@@ -52,7 +52,7 @@ class MapDrivenDataStoreTests: XCTestCase {
         dataStore.bulkRemove(whereClause: nil, responseHandler: { removed in
             self.childDataStore.bulkRemove(whereClause: nil, responseHandler: { removedChildren in
                 let objectToSave = ["name": "Bob", "age": 30] as [String : Any]
-                self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+                self.dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
                     XCTAssert(type(of: savedObject) == [String: Any].self)
                     XCTAssertEqual(savedObject["name"] as? String, "Bob")
                     XCTAssertEqual(savedObject["age"] as? Int, 30)
@@ -86,13 +86,13 @@ class MapDrivenDataStoreTests: XCTestCase {
     func test03Update() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.update")
         let objectToSave = ["name": "Bob", "age": 30] as [String : Any]
-        dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+        dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
             XCTAssert(type(of: savedObject) == [String: Any].self)
             XCTAssertEqual(savedObject["name"] as? String, "Bob")
             XCTAssertEqual(savedObject["age"] as? NSNumber, 30)
             var savedObject = savedObject
             savedObject["age"] = 55
-            self.dataStore.save(entity: savedObject, responseHandler: { updatedObject in
+            self.dataStore.save(entity: savedObject, isUpsert: false, responseHandler: { updatedObject in
                 XCTAssert(type(of: updatedObject) == [String: Any].self)
                 XCTAssertEqual(updatedObject["name"] as? String, "Bob")
                 XCTAssertEqual(updatedObject["age"] as? NSNumber, 55)
@@ -131,7 +131,7 @@ class MapDrivenDataStoreTests: XCTestCase {
     func test05RemoveById() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.removeById")
         let objectToSave = ["name": "Bob", "age": 30] as [String : Any]
-        dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+        dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject["objectId"] as? String)
             self.dataStore.removeById(objectId: savedObject["objectId"] as! String, responseHandler: { removedTimestamp in
                 XCTAssertNotNil(Date(timeIntervalSince1970: TimeInterval(removedTimestamp)))
@@ -148,7 +148,7 @@ class MapDrivenDataStoreTests: XCTestCase {
     func test06Remove() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.remove")
         let objectToSave = ["name": "Bob", "age": 30] as [String : Any]
-        dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+        dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
             self.dataStore.remove(entity: savedObject, responseHandler: { removedTimestamp in
                 XCTAssertNotNil(Date(timeIntervalSince1970: TimeInterval(removedTimestamp)))
                 expectation.fulfill()
@@ -284,7 +284,7 @@ class MapDrivenDataStoreTests: XCTestCase {
     func test12FindFirst() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.findFirst")
         let objectToSave = ["name": "Bob", "age": 30] as [String : Any]
-        dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+        dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
             self.dataStore.findFirst(responseHandler: { first in
                 XCTAssert(type(of: first) == [String: Any].self)
                 expectation.fulfill()
@@ -300,7 +300,7 @@ class MapDrivenDataStoreTests: XCTestCase {
     func test13FindLast() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.findLast")
         let objectToSave = ["name": "Bob", "age": 30] as [String : Any]
-        dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+        dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
             self.dataStore.findLast(responseHandler: { last in
                 XCTAssert(type(of: last) == [String: Any].self)
                 expectation.fulfill()
@@ -316,7 +316,7 @@ class MapDrivenDataStoreTests: XCTestCase {
     func test14FindById() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.findById")
         let objectToSave = ["name": "Bob", "age": 30] as [String : Any]
-        dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+        dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
             XCTAssertTrue(savedObject["objectId"] is String)
             self.dataStore.findById(objectId: savedObject["objectId"] as! String, responseHandler: { foundObject in
                 XCTAssert(type(of: foundObject) == [String: Any].self)
@@ -333,7 +333,7 @@ class MapDrivenDataStoreTests: XCTestCase {
     func test15FindByIdWithCondition() {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.findByIdWithCondition")
         let objectToSave = ["name": "Bob", "age": 30] as [String : Any]
-        dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+        dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
             XCTAssertTrue(savedObject["objectId"] is String)
             let queryBuilder = DataQueryBuilder()
             queryBuilder.excludeProperty("age")
@@ -369,7 +369,7 @@ class MapDrivenDataStoreTests: XCTestCase {
         let expectation = self.expectation(description: "PASSED: mapDrivenDataStore.findLastWithCondition")
         dataStore.bulkRemove(whereClause: nil, responseHandler: { removed in
             let objectToSave = ["name": "Bob", "age": 30] as [String : Any]
-            self.dataStore.save(entity: objectToSave, responseHandler: { savedObject in
+            self.dataStore.save(entity: objectToSave, isUpsert: false, responseHandler: { savedObject in
                 let queryBuilder = DataQueryBuilder()
                 queryBuilder.relationsDepth = 1
                 queryBuilder.excludeProperty("age")
@@ -395,7 +395,7 @@ class MapDrivenDataStoreTests: XCTestCase {
         let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
         childDataStore.bulkCreate(entities: childObjectsToSave, responseHandler: { savedChildrenIds in
             let parentObjectToSave = ["name": "Bob", "age": 30] as [String : Any]
-            self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
+            self.dataStore.save(entity: parentObjectToSave, isUpsert: false, responseHandler: { savedParentObject in
                 XCTAssertNotNil(savedParentObject["objectId"])
                 // 1:N
                 self.dataStore.setRelation(columnName: "children:ChildTestClass:n", parentObjectId: savedParentObject["objectId"] as! String, childrenObjectIds: savedChildrenIds, responseHandler: { relations in
@@ -421,7 +421,7 @@ class MapDrivenDataStoreTests: XCTestCase {
                 let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
                 self.childDataStore.bulkCreate(entities: childObjectsToSave, responseHandler: { savedChildrenIds in
                     let parentObjectToSave = ["name": "Bob", "age": 30] as [String : Any]
-                    self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
+                    self.dataStore.save(entity: parentObjectToSave, isUpsert: false, responseHandler: { savedParentObject in
                         XCTAssertNotNil(savedParentObject["objectId"])
                         // 1:N
                         self.dataStore.setRelation(columnName: "children:ChildTestClass:n", parentObjectId: savedParentObject["objectId"] as! String, whereClause: "foo = 'bar' or foo = 'bar1'", responseHandler: { relations in
@@ -451,7 +451,7 @@ class MapDrivenDataStoreTests: XCTestCase {
         let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
         childDataStore.bulkCreate(entities: childObjectsToSave, responseHandler: { savedChildrenIds in
             let parentObjectToSave = ["name": "Bob", "age": 30] as [String : Any]
-            self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
+            self.dataStore.save(entity: parentObjectToSave, isUpsert: false, responseHandler: { savedParentObject in
                 XCTAssertNotNil(savedParentObject["objectId"])
                 // 1:N
                 self.dataStore.addRelation(columnName: "children:ChildTestClass:n", parentObjectId: savedParentObject["objectId"] as! String, childrenObjectIds: savedChildrenIds, responseHandler: { relations in
@@ -477,7 +477,7 @@ class MapDrivenDataStoreTests: XCTestCase {
                 let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
                 self.childDataStore.bulkCreate(entities: childObjectsToSave, responseHandler: { savedChildrenIds in
                     let parentObjectToSave = ["name": "Bob", "age": 30] as [String : Any]
-                    self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
+                    self.dataStore.save(entity: parentObjectToSave, isUpsert: false, responseHandler: { savedParentObject in
                         XCTAssertNotNil(savedParentObject["objectId"])
                         // 1:N
                         self.dataStore.addRelation(columnName: "children:ChildTestClass:n", parentObjectId: savedParentObject["objectId"] as! String, whereClause: "foo = 'bar' or foo = 'bar1'", responseHandler: { relations in
@@ -507,7 +507,7 @@ class MapDrivenDataStoreTests: XCTestCase {
         let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
         childDataStore.bulkCreate(entities: childObjectsToSave, responseHandler: { savedChildrenIds in
             let parentObjectToSave = ["name": "Bob", "age": 30] as [String : Any]
-            self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
+            self.dataStore.save(entity: parentObjectToSave, isUpsert: false, responseHandler: { savedParentObject in
                 XCTAssertNotNil(savedParentObject["objectId"])
                 // 1:N
                 self.dataStore.setRelation(columnName: "children:ChildTestClass:n", parentObjectId: savedParentObject["objectId"] as! String, childrenObjectIds: savedChildrenIds, responseHandler: { relations in
@@ -537,7 +537,7 @@ class MapDrivenDataStoreTests: XCTestCase {
         let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
         childDataStore.bulkCreate(entities: childObjectsToSave, responseHandler: { savedChildrenIds in
             let parentObjectToSave = ["name": "Bob", "age": 30] as [String : Any]
-            self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
+            self.dataStore.save(entity: parentObjectToSave, isUpsert: false, responseHandler: { savedParentObject in
                 XCTAssertNotNil(savedParentObject["objectId"])
                 // 1:N
                 self.dataStore.setRelation(columnName: "children:ChildTestClass:n", parentObjectId: savedParentObject["objectId"] as! String, childrenObjectIds: savedChildrenIds, responseHandler: { relations in
@@ -567,7 +567,7 @@ class MapDrivenDataStoreTests: XCTestCase {
         let childObjectsToSave = [["foo": "bar"], ["foo": "bar1"]]
         childDataStore.bulkCreate(entities: childObjectsToSave, responseHandler: { savedChildrenIds in
             let parentObjectToSave = ["name": "Bob", "age": 30] as [String : Any]
-            self.dataStore.save(entity: parentObjectToSave, responseHandler: { savedParentObject in
+            self.dataStore.save(entity: parentObjectToSave, isUpsert: false, responseHandler: { savedParentObject in
                 XCTAssertNotNil(savedParentObject["objectId"])
                 // 1:N
                 self.dataStore.setRelation(columnName: "children:ChildTestClass:n", parentObjectId: savedParentObject["objectId"] as! String, childrenObjectIds: savedChildrenIds, responseHandler: { relations in
