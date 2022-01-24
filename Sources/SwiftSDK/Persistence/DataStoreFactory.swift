@@ -55,28 +55,18 @@ import Foundation
         return PersistenceHelper.shared.getObjectId(entity: entity)
     }
     
-    public func save(entity: Any, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        if PersistenceHelper.shared.getObjectId(entity: entity) != nil {
-            update(entity: entity, responseHandler: responseHandler, errorHandler: errorHandler)
-        }
-        else {
-            create(entity: entity, responseHandler: responseHandler, errorHandler: errorHandler)
-        }
-    }
-    
     public func save(entity: Any, isUpsert: Bool, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         if isUpsert,
            let entityDictionary = PersistenceHelper.shared.entityToSimpleType(entity: entity) as? [String : Any] {
             persistenceServiceUtils.upsert(entity: entityDictionary, responseHandler: wrapResponse(responseHandler), errorHandler: errorHandler)
         }
-        else {
-            save(entity: entity, responseHandler: responseHandler, errorHandler: errorHandler)
-        }
-    }
-    
-    public func create(entity: Any, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        if let entityDictionary = PersistenceHelper.shared.entityToSimpleType(entity: entity) as? [String : Any] {
-            persistenceServiceUtils.create(entity: entityDictionary, responseHandler: wrapResponse(responseHandler), errorHandler: errorHandler)
+        else if let entityDictionary = PersistenceHelper.shared.entityToSimpleType(entity: entity) as? [String : Any] {
+            if PersistenceHelper.shared.getObjectId(entity: entity) != nil {
+                persistenceServiceUtils.update(entity: entityDictionary, responseHandler: wrapResponse(responseHandler), errorHandler: errorHandler)
+            }
+            else {
+                persistenceServiceUtils.create(entity: entityDictionary, responseHandler: wrapResponse(responseHandler), errorHandler: errorHandler)
+            }
         }
     }
     
@@ -88,12 +78,6 @@ import Foundation
             }
         }
         persistenceServiceUtils.bulkCreate(entities: entitiesDictionaries, responseHandler: responseHandler, errorHandler: errorHandler)
-    }
-    
-    public func update(entity: Any, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        if let entityDictionary = PersistenceHelper.shared.entityToSimpleType(entity: entity) as? [String : Any] {
-            persistenceServiceUtils.update(entity: entityDictionary, responseHandler: wrapResponse(responseHandler), errorHandler: errorHandler)
-        }
     }
     
     public func bulkUpdate(whereClause: String?, changes: [String : Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {

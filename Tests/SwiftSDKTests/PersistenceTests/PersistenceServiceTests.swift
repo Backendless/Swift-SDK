@@ -49,7 +49,7 @@ class PersistenceServiceTests: XCTestCase {
     
     func test03Describe() {
         let expectation = self.expectation(description: "PASSED: persistenceService.describe")
-        backendless.data.ofTable("TestClass").save(entity: ["name": "Bob", "age": 25], responseHandler: { savedObject in
+        backendless.data.ofTable("TestClass").save(entity: ["name": "Bob", "age": 25], isUpsert: false, responseHandler: { savedObject in
             self.backendless.data.describe(tableName: "TestClass", responseHandler: { properties in
                 XCTAssertNotNil(properties)
                 XCTAssert(properties.count > 0)
@@ -70,12 +70,12 @@ class PersistenceServiceTests: XCTestCase {
         testObject.name = "Bob"
         testObject.age = 25
         
-        self.backendless.data.of(TestClass.self).save(entity: testObject, responseHandler: { savedObject in
+        self.backendless.data.of(TestClass.self).save(entity: testObject, isUpsert: false, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
             self.backendless.data.permissions.grantForAllRoles(entity: savedObject, operation: .DATA_UPDATE, responseHandler: {
                 (savedObject as! TestClass).name = "Ann"
                 (savedObject as! TestClass).age = 50
-                self.backendless.data.of(TestClass.self).update(entity: savedObject, responseHandler: { updatedObject in
+                self.backendless.data.of(TestClass.self).save(entity: savedObject, isUpsert: false, responseHandler: { updatedObject in
                     XCTAssertEqual((updatedObject as! TestClass).name, "Ann")
                     XCTAssertEqual((updatedObject as! TestClass).age, 50)
                     expectation.fulfill()

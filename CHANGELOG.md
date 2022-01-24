@@ -1,5 +1,13 @@
 # RELEASE HISTORY
 
+### 6.5.1 / January 24, 2022
+* the `create()`, `update()` and `save()` methods removed from the PersistenceService, please use instead:
+```
+func save(entity: [String : Any], isUpsert: Bool, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!)
+
+func save(entity: Any, isUpsert: Bool, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!)
+```
+
 ### 6.5.0 / January 17, 2022
 * the `createBulk()` methods renamed to `bulkCreate()`
 * the `updateBulk()` methods renamed to `bulkUpdate()`

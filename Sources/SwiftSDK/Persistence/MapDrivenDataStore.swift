@@ -37,34 +37,20 @@ import Foundation
         persistenceServiceUtils = PersistenceServiceUtils(tableName: self.tableName)
     }
     
-    public func save(entity: [String : Any], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        if entity["objectId"] != nil {
-            update(entity: entity, responseHandler: responseHandler, errorHandler: errorHandler)
-        }
-        else {
-            create(entity: entity, responseHandler: responseHandler, errorHandler: errorHandler)
-        }
-    }
-    
     public func save(entity: [String : Any], isUpsert: Bool, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         if isUpsert {
             persistenceServiceUtils.upsert(entity: entity, responseHandler: responseHandler, errorHandler: errorHandler)
         }
-        else {
-            save(entity: entity, responseHandler: responseHandler, errorHandler: errorHandler)
+        else if entity["objectId"] != nil {
+            persistenceServiceUtils.update(entity: entity, responseHandler: responseHandler, errorHandler: errorHandler)
         }
-    }
-    
-    public func create(entity: [String : Any], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.create(entity: entity as [String : AnyObject], responseHandler: responseHandler, errorHandler: errorHandler)
+        else {
+            persistenceServiceUtils.create(entity: entity as [String : AnyObject], responseHandler: responseHandler, errorHandler: errorHandler)
+        }
     }
     
     public func bulkCreate(entities: [[String : Any]], responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         persistenceServiceUtils.bulkCreate(entities: entities, responseHandler: responseHandler, errorHandler: errorHandler)
-    }
-    
-    public func update(entity: [String : Any], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.update(entity: entity, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     public func bulkUpdate(whereClause: String?, changes: [String : Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {

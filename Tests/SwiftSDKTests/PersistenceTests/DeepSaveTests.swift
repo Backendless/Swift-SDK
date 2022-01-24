@@ -295,11 +295,11 @@ class DeepSaveTests: XCTestCase {
         let friend = ["objectId": "1", "name": "Bob", "age": 20] as [String : Any]
         let semaphore = DispatchSemaphore(value: 0)
         DispatchQueue.global().async {
-            self.peopleStore.create(entity: friend, responseHandler: { savedFriend in
+            self.peopleStore.save(entity: friend, isUpsert: false, responseHandler: { savedFriend in
                 semaphore.signal()
             }, errorHandler: { fault in
                 if fault.code == 1062 {
-                    self.peopleStore.update(entity: friend, responseHandler: { savedFriend in
+                    self.peopleStore.save(entity: friend, isUpsert: false, responseHandler: { savedFriend in
                         semaphore.signal()
                     }, errorHandler: { fault in
                         semaphore.signal()

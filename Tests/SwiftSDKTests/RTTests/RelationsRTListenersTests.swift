@@ -60,8 +60,8 @@ class RelationsRTListenersTests: XCTestCase {
                     XCTFail("\(fault.code): \(fault.message!)")
                 })
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
-                    self.dataStoreA.save(entity: [String : Any](), responseHandler: { savedA in
-                        self.dataStoreB.save(entity: [String : Any](), responseHandler: { savedB in
+                    self.dataStoreA.save(entity: [String : Any](), isUpsert: false, responseHandler: { savedA in
+                        self.dataStoreB.save(entity: [String : Any](), isUpsert: false, responseHandler: { savedB in
                             let objectIdA = savedA["objectId"] as? String
                             let objectIdB = savedB["objectId"] as? String
                             XCTAssertNotNil(objectIdA)
@@ -95,8 +95,8 @@ class RelationsRTListenersTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
-            self.dataStoreA.save(entity: [String : Any](), responseHandler: { savedA in
-                self.dataStoreB.save(entity: [String : Any](), responseHandler: { savedB in
+            self.dataStoreA.save(entity: [String : Any](), isUpsert: false, responseHandler: { savedA in
+                self.dataStoreB.save(entity: [String : Any](), isUpsert: false, responseHandler: { savedB in
                     let objectIdA = savedA["objectId"] as? String
                     let objectIdB = savedB["objectId"] as? String
                     XCTAssertNotNil(objectIdA)
@@ -129,8 +129,8 @@ class RelationsRTListenersTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
-            self.dataStoreB.save(entity: [String : Any](), responseHandler: { savedB1 in
-                self.dataStoreB.save(entity: [String : Any](), responseHandler: { savedB2 in
+            self.dataStoreB.save(entity: [String : Any](), isUpsert: false, responseHandler: { savedB1 in
+                self.dataStoreB.save(entity: [String : Any](), isUpsert: false, responseHandler: { savedB2 in
                     let objectIdB1 = savedB1["objectId"] as? String
                     let objectIdB2 = savedB2["objectId"] as? String
                     XCTAssertNotNil(objectIdB1)
@@ -159,8 +159,8 @@ class RelationsRTListenersTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
-            self.dataStoreA.save(entity: [String : Any](), responseHandler: { savedA in
-                self.dataStoreB.save(entity: [String : Any](), responseHandler: { savedB in
+            self.dataStoreA.save(entity: [String : Any](), isUpsert: false, responseHandler: { savedA in
+                self.dataStoreB.save(entity: [String : Any](), isUpsert: false, responseHandler: { savedB in
                     let objectIdA = savedA["objectId"] as? String
                     let objectIdB = savedB["objectId"] as? String
                     XCTAssertNotNil(objectIdA)
@@ -188,8 +188,8 @@ class RelationsRTListenersTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
-            self.dataStoreA.save(entity: [String : Any](), responseHandler: { savedA in
-                self.dataStoreB.save(entity: [String : Any](), responseHandler: { savedB in
+            self.dataStoreA.save(entity: [String : Any](), isUpsert: false, responseHandler: { savedA in
+                self.dataStoreB.save(entity: [String : Any](), isUpsert: false, responseHandler: { savedB in
                     let objectIdA = savedA["objectId"] as? String
                     let objectIdB = savedB["objectId"] as? String
                     XCTAssertNotNil(objectIdA)
@@ -221,8 +221,8 @@ class RelationsRTListenersTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
-            self.dataStoreB.save(entity: [String : Any](), responseHandler: { savedB1 in
-                self.dataStoreB.save(entity: [String : Any](), responseHandler: { savedB2 in
+            self.dataStoreB.save(entity: [String : Any](), isUpsert: false, responseHandler: { savedB1 in
+                self.dataStoreB.save(entity: [String : Any](), isUpsert: false, responseHandler: { savedB2 in
                     let objectIdB1 = savedB1["objectId"] as? String
                     let objectIdB2 = savedB2["objectId"] as? String
                     XCTAssertNotNil(objectIdB1)
@@ -251,8 +251,8 @@ class RelationsRTListenersTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
-            self.dataStoreA.save(entity: [String : Any](), responseHandler: { savedA in
-                self.dataStoreB.save(entity: [String : Any](), responseHandler: { savedB in
+            self.dataStoreA.save(entity: [String : Any](), isUpsert: false, responseHandler: { savedA in
+                self.dataStoreB.save(entity: [String : Any](), isUpsert: false, responseHandler: { savedB in
                     let objectIdA = savedA["objectId"] as? String
                     let objectIdB = savedB["objectId"] as? String
                     XCTAssertNotNil(objectIdA)
@@ -286,8 +286,8 @@ class RelationsRTListenersTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
-            self.dataStoreA.save(entity: [String : Any](), responseHandler: { savedA in
-                self.dataStoreB.save(entity: [String : Any](), responseHandler: { savedB in
+            self.dataStoreA.save(entity: [String : Any](), isUpsert: false, responseHandler: { savedA in
+                self.dataStoreB.save(entity: [String : Any](), isUpsert: false, responseHandler: { savedB in
                     let objectIdA = savedA["objectId"] as? String
                     let objectIdB = savedB["objectId"] as? String
                     XCTAssertNotNil(objectIdA)
@@ -319,8 +319,8 @@ class RelationsRTListenersTests: XCTestCase {
             XCTFail("\(fault.code): \(fault.message!)")
         })
         DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
-            self.dataStoreB.save(entity: [String : Any](), responseHandler: { savedB1 in
-                self.dataStoreB.save(entity: [String : Any](), responseHandler: { savedB2 in
+            self.dataStoreB.save(entity: [String : Any](), isUpsert: false, responseHandler: { savedB1 in
+                self.dataStoreB.save(entity: [String : Any](), isUpsert: false, responseHandler: { savedB2 in
                     let objectIdB1 = savedB1["objectId"] as? String
                     let objectIdB2 = savedB2["objectId"] as? String
                     XCTAssertNotNil(objectIdB1)
@@ -361,7 +361,7 @@ class RelationsRTListenersTests: XCTestCase {
                 XCTFail("\(fault.code): \(fault.message!)")
             })
             DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
-                self.dataStoreB.save(entity: [String : Any](), responseHandler: { savedB in
+                self.dataStoreB.save(entity: [String : Any](), isUpsert: false, responseHandler: { savedB in
                     let objectIdA = parentsIds.first
                     let objectIdB = savedB["objectId"] as? String
                     XCTAssertNotNil(objectIdA)
@@ -406,8 +406,8 @@ class RelationsRTListenersTests: XCTestCase {
                 XCTFail("\(fault.code): \(fault.message!)")
             })
             DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
-                self.dataStoreA.save(entity: [String : Any](), responseHandler: { savedA in
-                    self.dataStoreB.save(entity: [String : Any](), responseHandler: { savedB in
+                self.dataStoreA.save(entity: [String : Any](), isUpsert: false, responseHandler: { savedA in
+                    self.dataStoreB.save(entity: [String : Any](), isUpsert: false, responseHandler: { savedB in
                         let objectIdA = savedA["objectId"] as? String
                         let objectIdB = savedB["objectId"] as? String
                         XCTAssertNotNil(objectIdA)
@@ -447,7 +447,7 @@ class RelationsRTListenersTests: XCTestCase {
                 XCTFail("\(fault.code): \(fault.message!)")
             })
             DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
-                self.dataStoreB.save(entity: [String : Any](), responseHandler: { savedB in
+                self.dataStoreB.save(entity: [String : Any](), isUpsert: false, responseHandler: { savedB in
                     let objectIdA = parentsIds.first
                     let objectIdB = savedB["objectId"] as? String
                     XCTAssertNotNil(objectIdA)
@@ -480,8 +480,8 @@ class RelationsRTListenersTests: XCTestCase {
                 XCTFail("\(fault.code): \(fault.message!)")
             })
             DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
-                self.dataStoreA.save(entity: [String : Any](), responseHandler: { savedA in
-                    self.dataStoreB.save(entity: [String : Any](), responseHandler: { savedB in
+                self.dataStoreA.save(entity: [String : Any](), isUpsert: false, responseHandler: { savedA in
+                    self.dataStoreB.save(entity: [String : Any](), isUpsert: false, responseHandler: { savedB in
                         let objectIdA = savedA["objectId"] as? String
                         let objectIdB = savedB["objectId"] as? String
                         XCTAssertNotNil(objectIdA)
@@ -521,7 +521,7 @@ class RelationsRTListenersTests: XCTestCase {
                 XCTFail("\(fault.code): \(fault.message!)")
             })
             DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
-                self.dataStoreB.save(entity: [String : Any](), responseHandler: { savedB in
+                self.dataStoreB.save(entity: [String : Any](), isUpsert: false, responseHandler: { savedB in
                     let objectIdA = parentsIds.first
                     let objectIdB = savedB["objectId"] as? String
                     XCTAssertNotNil(objectIdA)
@@ -559,8 +559,8 @@ class RelationsRTListenersTests: XCTestCase {
                 XCTFail("\(fault.code): \(fault.message!)")
             })
             DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
-                self.dataStoreA.save(entity: [String : Any](), responseHandler: { savedA in
-                    self.dataStoreB.save(entity: [String : Any](), responseHandler: { savedB in
+                self.dataStoreA.save(entity: [String : Any](), isUpsert: false, responseHandler: { savedA in
+                    self.dataStoreB.save(entity: [String : Any](), isUpsert: false, responseHandler: { savedB in
                         let objectIdA = savedA["objectId"] as? String
                         let objectIdB = savedB["objectId"] as? String
                         XCTAssertNotNil(objectIdA)
