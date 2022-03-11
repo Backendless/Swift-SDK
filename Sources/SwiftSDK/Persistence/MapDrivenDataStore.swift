@@ -37,6 +37,10 @@ import Foundation
         persistenceServiceUtils = PersistenceServiceUtils(tableName: self.tableName)
     }
     
+    public func save(entity: [String : Any], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        save(entity: entity, isUpsert: false, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
     public func save(entity: [String : Any], isUpsert: Bool, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         if isUpsert {
             persistenceServiceUtils.upsert(entity: entity, responseHandler: responseHandler, errorHandler: errorHandler)

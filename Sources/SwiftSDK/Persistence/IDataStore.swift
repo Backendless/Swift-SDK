@@ -25,6 +25,7 @@ protocol IDataStore {
     
     associatedtype CustomType
     
+    func save(entity: CustomType, responseHandler: ((CustomType) -> Void)!, errorHandler: ((Fault) -> Void)!)
     func save(entity: CustomType, isUpsert: Bool, responseHandler: ((CustomType) -> Void)!, errorHandler: ((Fault) -> Void)!)
     func bulkCreate(entities: [CustomType], responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!)
     func bulkUpdate(whereClause: String?, changes: [String: Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)

@@ -55,6 +55,10 @@ import Foundation
         return PersistenceHelper.shared.getObjectId(entity: entity)
     }
     
+    public func save(entity: Any, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        save(entity: entity, isUpsert: false, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
     public func save(entity: Any, isUpsert: Bool, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         if isUpsert,
            let entityDictionary = PersistenceHelper.shared.entityToSimpleType(entity: entity) as? [String : Any] {
