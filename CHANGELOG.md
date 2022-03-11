@@ -1,4 +1,10 @@
-# RELEASE HISTORY
+#RELEASE HISTORY
+
+### 6.5.2 / March 11, 2022
+* added the function with `isUpsert = false` by default
+```
+func save(entity: Any, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!)
+```
 
 ### 6.5.1 / January 24, 2022
 * the `create()`, `update()` and `save()` methods removed from the PersistenceService, please use instead:
