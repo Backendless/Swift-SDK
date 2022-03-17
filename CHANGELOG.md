@@ -1,5 +1,8 @@
 #RELEASE HISTORY
 
+### 6.5.3 / March 17, 2022
+* Swift is set to v5
+
 ### 6.5.2 / March 11, 2022
 * added the function with `isUpsert = false` by default
 ```
