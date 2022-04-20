@@ -1,5 +1,8 @@
 #RELEASE HISTORY
 
+### 6.5.4 / April 21, 2022
+* Fixed issue with retrieving cached data
+
 ### 6.5.3 / March 17, 2022
 * Swift is set to v5
 
