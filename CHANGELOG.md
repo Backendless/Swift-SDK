@@ -1,4 +1,4 @@
-#RELEASE HISTORY
+# RELEASE HISTORY
 
 ### 6.5.4 / April 21, 2022
 * Fixed issue with retrieving cached data
