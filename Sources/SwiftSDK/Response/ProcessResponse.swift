@@ -68,6 +68,42 @@ class ProcessResponse {
         }
     }
     
+    func adaptCache<T>(response: ReturnedResponse, to: T.Type) -> Any? where T: Decodable {
+        if response.data?.count == 0 {
+            if let responseResult = getResponseResult(response: response), responseResult is Fault {
+                return responseResult as! Fault
+            }
+            return nil
+        }
+        else {
+            if let responseResult = getResponseResult(response: response) {
+                if responseResult is Fault {
+                    return responseResult as! Fault
+                }
+                else {
+                    if responseResult is String {
+                        return responseResult
+                    }
+                    else {
+                        do {
+                            if to == BackendlessUser.self {
+                                return adaptToBackendlessUser(responseResult: responseResult)
+                            }
+                            else if let responseData = response.data {
+                                let responseObject = try JSONDecoder().decode(to, from: responseData)
+                                return responseObject
+                            }
+                        }
+                        catch {
+                            return Fault(error: error)
+                        }
+                    }
+                }
+            }
+            return nil
+        }
+    }
+    
     func adapt<T>(responseDictionary: [String : Any], to: T.Type) -> Any? where T: Decodable {
         if let jsonData = try? JSONSerialization.data(withJSONObject: responseDictionary, options: .prettyPrinted) {
             let responseObject = try? JSONDecoder().decode(to, from: jsonData)
