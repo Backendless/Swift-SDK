@@ -128,6 +128,7 @@
 		5EACCB5B23EC5871007AC3C4 /* UnitOfWorkAddRelation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EACCB5A23EC5871007AC3C4 /* UnitOfWorkAddRelation.swift */; };
 		5EB28E1921B1799A0007AC30 /* Backendless.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB28E1821B1799A0007AC30 /* Backendless.swift */; };
 		5EB5D17E243615D500C21662 /* DataUOWBulkCreateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB5D17D243615D500C21662 /* DataUOWBulkCreateTests.swift */; };
+		5EC790AA283D2C31008E8508 /* CommerceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC790A9283D2C31008E8508 /* CommerceService.swift */; };
 		5EC7D161222FB56700FD3FF4 /* PublishOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC7D160222FB56700FD3FF4 /* PublishOptions.swift */; };
 		5EC7D163222FB86100FD3FF4 /* DeliveryOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC7D162222FB86100FD3FF4 /* DeliveryOptions.swift */; };
 		5EC7D16A222FDBCE00FD3FF4 /* SubscriptionAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC7D169222FDBCE00FD3FF4 /* SubscriptionAPITests.swift */; };
@@ -294,6 +295,7 @@
 		5EACCB5A23EC5871007AC3C4 /* UnitOfWorkAddRelation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfWorkAddRelation.swift; sourceTree = "<group>"; };
 		5EB28E1821B1799A0007AC30 /* Backendless.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backendless.swift; sourceTree = "<group>"; };
 		5EB5D17D243615D500C21662 /* DataUOWBulkCreateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataUOWBulkCreateTests.swift; sourceTree = "<group>"; };
+		5EC790A9283D2C31008E8508 /* CommerceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommerceService.swift; sourceTree = "<group>"; };
 		5EC7D160222FB56700FD3FF4 /* PublishOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishOptions.swift; sourceTree = "<group>"; };
 		5EC7D162222FB86100FD3FF4 /* DeliveryOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryOptions.swift; sourceTree = "<group>"; };
 		5EC7D169222FDBCE00FD3FF4 /* SubscriptionAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionAPITests.swift; sourceTree = "<group>"; };
@@ -751,6 +753,14 @@
 			path = UserService;
 			sourceTree = "<group>";
 		};
+		5EC790A8283D2C02008E8508 /* Commerce */ = {
+			isa = PBXGroup;
+			children = (
+				5EC790A9283D2C31008E8508 /* CommerceService.swift */,
+			);
+			path = Commerce;
+			sourceTree = "<group>";
+		};
 		5ECE680C21B0248B00839120 /* SwiftSDKTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -782,14 +792,15 @@
 			isa = PBXGroup;
 			children = (
 				5EB28E1821B1799A0007AC30 /* Backendless.swift */,
-				5E238A5F2271BDAD00227859 /* CustomServiceAndEvents */,
 				5E384C95226F3E6300743125 /* AtomicCounters */,
-				5E8A2A20226EF7B3007C2BAA /* Cache */,
-				5E09B00A22645B870073DA5E /* Logging */,
-				5E1CC2F5225252D70011D5C8 /* Files */,
 				5E64F0BD21C50D7D00590B04 /* BackendlessRequestManager */,
+				5E8A2A20226EF7B3007C2BAA /* Cache */,
+				5EC790A8283D2C02008E8508 /* Commerce */,
+				5E238A5F2271BDAD00227859 /* CustomServiceAndEvents */,
 				5E60834921EF720600268B4D /* Extensions */,
 				5E90720F21B66E6000619C0D /* Fault */,
+				5E1CC2F5225252D70011D5C8 /* Files */,
+				5E09B00A22645B870073DA5E /* Logging */,
 				5E03A3B822291680005A538D /* Messaging */,
 				5A2A784B21E6103100EC8007 /* Persistence */,
 				5E11113821B532BD0044CAED /* Property */,
@@ -880,7 +891,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1010;
-				LastUpgradeCheck = 1330;
+				LastUpgradeCheck = 1340;
 				TargetAttributes = {
 					5E9C572721AEEA0400877870 = {
 						CreatedOnToolsVersion = 10.1;
@@ -1057,6 +1068,7 @@
 				5EE3001824ED79E8006A27D1 /* ClassesForTests.swift in Sources */,
 				5EA2B69B21F2324B00CFDC37 /* StoredObjects.swift in Sources */,
 				5E7955962254D9A300E8ED65 /* BackendlessFileInfo.swift in Sources */,
+				5EC790AA283D2C31008E8508 /* CommerceService.swift in Sources */,
 				5E1DB59323E1A27A00955319 /* UnitOfWorkCreate.swift in Sources */,
 				5EDB502023E1CE5700E36E62 /* Operation.swift in Sources */,
 				5E642B9E227206DC00E091C4 /* Events.swift in Sources */,

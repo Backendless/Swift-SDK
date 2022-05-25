@@ -1,5 +1,11 @@
 # RELEASE HISTORY
 
+### 6.6.0 / May 25, 2022
+* Added the commerce function for verifying Apple receipts:
+```
+Backendless.shared.commerce.verifyAppleReceipt(...)
+```
+
 ### 6.5.4 / April 21, 2022
 * Fixed issue with retrieving cached data
 

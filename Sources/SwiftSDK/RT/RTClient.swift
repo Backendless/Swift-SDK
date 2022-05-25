@@ -88,7 +88,7 @@ class RTClient {
                     let _ = Backendless.shared.rt.addConnectErrorEventListener(responseHandler: { _ in
                         self.tryToReconnectSocket()
                     })
-                    
+    
                     if self.socket != nil {
                         self.socketOnceCreated = true
                         self.socketCreated = true
