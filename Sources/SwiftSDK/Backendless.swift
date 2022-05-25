@@ -78,13 +78,13 @@ import Foundation
     }()
     
     public lazy var rtService: RTService = {
-        let _rtSevice = RTService()
-        return _rtSevice
+        let _rtService = RTService()
+        return _rtService
     }()
     
     public lazy var userService: UserService = {
-        let _userSevice = UserService()
-        return _userSevice
+        let _userService = UserService()
+        return _userService
     }()
     
     public lazy var data: PersistenceService = {
@@ -92,8 +92,8 @@ import Foundation
     }()
     
     public lazy var persistenceService: PersistenceService = {
-        let _persistenceSevice = PersistenceService()
-        return _persistenceSevice
+        let _persistenceService = PersistenceService()
+        return _persistenceService
     }()
     
     public lazy var messaging: MessagingService = {
@@ -101,8 +101,8 @@ import Foundation
     }()
     
     public lazy var messagingService: MessagingService = {
-        let _messagingSevice = MessagingService()
-        return _messagingSevice
+        let _messagingService = MessagingService()
+        return _messagingService
     }()
     
     public lazy var file: FileService = {
@@ -110,8 +110,8 @@ import Foundation
     }()
     
     public lazy var fileService: FileService = {
-        let _fileSevice = FileService()
-        return _fileSevice
+        let _fileService = FileService()
+        return _fileService
     }()
     
     public lazy var logging: Logging = {
@@ -124,8 +124,8 @@ import Foundation
     }()
     
     public lazy var cacheService: CacheService = {
-        let _cacheSevice = CacheService()
-        return _cacheSevice
+        let _cacheService = CacheService()
+        return _cacheService
     }()
     
     public lazy var counters: AtomicCounters = {
@@ -141,6 +141,15 @@ import Foundation
     public lazy var events: Events = {
         let _events = Events()
         return _events
+    }()
+    
+    public lazy var commerce: CommerceService = {
+        return self.commerceService
+    }()
+    
+    public lazy var commerceService: CommerceService = {
+        let _commerceService = CommerceService()
+        return _commerceService
     }()
     
     public func sharedObject(name: String) -> SharedObject {

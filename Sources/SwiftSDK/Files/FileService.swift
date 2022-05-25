@@ -72,8 +72,7 @@ import Foundation
             restMethod += "?overwrite=\(needOverwrite!)"
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: [String : String].self) {
-                
+            if let result = ProcessResponse.shared.adapt(response: response, to: [String : String].self) {                
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
