@@ -30,6 +30,7 @@
 		5E09B00E22645BBC0073DA5E /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E09B00D22645BBC0073DA5E /* Logger.swift */; };
 		5E09B01022645BCF0073DA5E /* LogBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E09B00F22645BCF0073DA5E /* LogBuffer.swift */; };
 		5E09B01222645CE60073DA5E /* LogMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E09B01122645CE60073DA5E /* LogMessage.swift */; };
+		5E0B4C7928A4F891002516D9 /* HiveObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0B4C7828A4F891002516D9 /* HiveObjects.swift */; };
 		5E0B5953278DB9A900BD8224 /* ExecutionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E238A652271CE8100227859 /* ExecutionType.swift */; };
 		5E11113721B532450044CAED /* UserProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E11113621B532450044CAED /* UserProperty.swift */; };
 		5E11113C21B542BA0044CAED /* UserServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E11113B21B542BA0044CAED /* UserServiceTests.swift */; };
@@ -118,6 +119,9 @@
 		5E9C573221AEEA0400877870 /* SwiftSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9C572821AEEA0400877870 /* SwiftSDK.framework */; };
 		5E9C573921AEEA0400877870 /* SwiftSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E9C572B21AEEA0400877870 /* SwiftSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5E9DFC0E2387FABF0019E750 /* SpatialReferenceSystemEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9DFC0D2387FABF0019E750 /* SpatialReferenceSystemEnum.swift */; };
+		5E9FF04628A3DA8700D4CEB3 /* Hive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9FF04528A3DA8700D4CEB3 /* Hive.swift */; };
+		5E9FF04828A3DB5400D4CEB3 /* KeyValueStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9FF04728A3DB5400D4CEB3 /* KeyValueStore.swift */; };
+		5E9FF04A28A3DCB500D4CEB3 /* HiveStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9FF04928A3DCB500D4CEB3 /* HiveStore.swift */; };
 		5EA2B69B21F2324B00CFDC37 /* StoredObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2B69A21F2324B00CFDC37 /* StoredObjects.swift */; };
 		5EA5D2C4223BCE8F0027EA49 /* SharedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA5D2C3223BCE8F0027EA49 /* SharedObject.swift */; };
 		5EA5D2C6223BE2AC0027EA49 /* RTSharedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA5D2C5223BE2AC0027EA49 /* RTSharedObject.swift */; };
@@ -197,6 +201,7 @@
 		5E09B00D22645BBC0073DA5E /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		5E09B00F22645BCF0073DA5E /* LogBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogBuffer.swift; sourceTree = "<group>"; };
 		5E09B01122645CE60073DA5E /* LogMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogMessage.swift; sourceTree = "<group>"; };
+		5E0B4C7828A4F891002516D9 /* HiveObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveObjects.swift; sourceTree = "<group>"; };
 		5E11113621B532450044CAED /* UserProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProperty.swift; sourceTree = "<group>"; };
 		5E11113B21B542BA0044CAED /* UserServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserServiceTests.swift; sourceTree = "<group>"; };
 		5E13C3A522046F7C00EA3050 /* JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
@@ -284,6 +289,9 @@
 		5E9C572C21AEEA0400877870 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5E9C573121AEEA0400877870 /* SwiftSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E9DFC0D2387FABF0019E750 /* SpatialReferenceSystemEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpatialReferenceSystemEnum.swift; sourceTree = "<group>"; };
+		5E9FF04528A3DA8700D4CEB3 /* Hive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hive.swift; sourceTree = "<group>"; };
+		5E9FF04728A3DB5400D4CEB3 /* KeyValueStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueStore.swift; sourceTree = "<group>"; };
+		5E9FF04928A3DCB500D4CEB3 /* HiveStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveStore.swift; sourceTree = "<group>"; };
 		5EA2B69A21F2324B00CFDC37 /* StoredObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredObjects.swift; sourceTree = "<group>"; };
 		5EA5D2C3223BCE8F0027EA49 /* SharedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedObject.swift; sourceTree = "<group>"; };
 		5EA5D2C5223BE2AC0027EA49 /* RTSharedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTSharedObject.swift; sourceTree = "<group>"; };
@@ -711,6 +719,17 @@
 			path = Geometry;
 			sourceTree = "<group>";
 		};
+		5E9FF04428A3DA6F00D4CEB3 /* Hive */ = {
+			isa = PBXGroup;
+			children = (
+				5E9FF04528A3DA8700D4CEB3 /* Hive.swift */,
+				5E0B4C7828A4F891002516D9 /* HiveObjects.swift */,
+				5E9FF04928A3DCB500D4CEB3 /* HiveStore.swift */,
+				5E9FF04728A3DB5400D4CEB3 /* KeyValueStore.swift */,
+			);
+			path = Hive;
+			sourceTree = "<group>";
+		};
 		5EA5D2CB223BE6580027EA49 /* SharedObject */ = {
 			isa = PBXGroup;
 			children = (
@@ -791,8 +810,8 @@
 		5ED3E2AA21B0267200A223C1 /* SwiftSDK */ = {
 			isa = PBXGroup;
 			children = (
-				5EB28E1821B1799A0007AC30 /* Backendless.swift */,
 				5E384C95226F3E6300743125 /* AtomicCounters */,
+				5EB28E1821B1799A0007AC30 /* Backendless.swift */,
 				5E64F0BD21C50D7D00590B04 /* BackendlessRequestManager */,
 				5E8A2A20226EF7B3007C2BAA /* Cache */,
 				5EC790A8283D2C02008E8508 /* Commerce */,
@@ -800,6 +819,7 @@
 				5E60834921EF720600268B4D /* Extensions */,
 				5E90720F21B66E6000619C0D /* Fault */,
 				5E1CC2F5225252D70011D5C8 /* Files */,
+				5E9FF04428A3DA6F00D4CEB3 /* Hive */,
 				5E09B00A22645B870073DA5E /* Logging */,
 				5E03A3B822291680005A538D /* Messaging */,
 				5A2A784B21E6103100EC8007 /* Persistence */,
@@ -1022,9 +1042,12 @@
 				5E971918221C2CC400857603 /* RTSubscription.swift in Sources */,
 				5E238A662271CE8100227859 /* ExecutionType.swift in Sources */,
 				5E238A612271BDCF00227859 /* CustomService.swift in Sources */,
+				5E0B4C7928A4F891002516D9 /* HiveObjects.swift in Sources */,
 				5ED9B85B25B71396000B2C11 /* BLUrlSession.swift in Sources */,
+				5E9FF04828A3DB5400D4CEB3 /* KeyValueStore.swift in Sources */,
 				5E384C99226F40E200743125 /* AtomicCountersFactory.swift in Sources */,
 				5E84136321B5265200869794 /* UserService.swift in Sources */,
+				5E9FF04A28A3DCB500D4CEB3 /* HiveStore.swift in Sources */,
 				5ECAB22F238C417C0051F315 /* BLPoint.swift in Sources */,
 				5E795598225503D900E8ED65 /* FilePermission.swift in Sources */,
 				5E6C1E452203362700903B7A /* ReturnedResponse.swift in Sources */,
@@ -1078,6 +1101,7 @@
 				5A2A785321E61D1700EC8007 /* DataStoreFactory.swift in Sources */,
 				5E17EE6724CAF8BF00D7321B /* JSONUpdateBuilder.swift in Sources */,
 				5E90721121B66E9E00619C0D /* Fault.swift in Sources */,
+				5E9FF04628A3DA8700D4CEB3 /* Hive.swift in Sources */,
 				5EE335AB2396679300A245B1 /* BLPolygon.swift in Sources */,
 				5E4E309C2243B85C00B479C8 /* DeviceHelper.swift in Sources */,
 				5EFB60E922422F93004DFA2C /* UserInfo.swift in Sources */,

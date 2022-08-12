@@ -88,8 +88,8 @@ class BackendlessRequestManager {
                         }
                         parameters = params
                     }
-                    request.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
                 }
+                request.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
             }                
             else {
                 if parameters is String {
