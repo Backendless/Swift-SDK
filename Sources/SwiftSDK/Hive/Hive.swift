@@ -113,4 +113,14 @@ import Foundation
     public func keyValueStore(_ storeKey: String) -> KeyValueStore {
         return KeyValueStore(hiveName: self.hiveName, storeKey: storeKey)
     }
+    
+    // list store
+    
+    public func listStore() -> ListStore {
+        return ListStore(hiveName: self.hiveName, storeKey: nil)
+    }
+    
+    public func listStore(_ storeKey: String) -> ListStore {
+        return ListStore(hiveName: self.hiveName, storeKey: storeKey)
+    }
 }

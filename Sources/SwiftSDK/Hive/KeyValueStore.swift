@@ -34,7 +34,7 @@ import Foundation
         self.storeKey = storeKey
     }
     
-    // get
+    // get, multi get
     
     public func get(key: String, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         guard let hiveName = self.hiveName else {
@@ -59,7 +59,7 @@ import Foundation
             errorHandler(Fault(message: HiveErrors.hiveStoreShouldNotBePresent.localizedDescription))
         }
     }
-    
+
     public func get(keys: [String], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         guard let hiveName = self.hiveName else {
             return errorHandler(Fault(message: HiveErrors.hiveNameShouldBePresent.localizedDescription))
@@ -86,7 +86,7 @@ import Foundation
         }
     }
     
-    // set
+    // set, multi set
     
     public func set(key: String, value: String, parameters: StoreSetParameters, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         set(key: key, value: value, storeSetParameters: parameters, responseHandler: responseHandler, errorHandler: errorHandler)
