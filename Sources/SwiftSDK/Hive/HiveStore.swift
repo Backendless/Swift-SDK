@@ -283,7 +283,8 @@ public class HiveStore: NSObject {
         guard let store = self.store else {
             return errorHandler(Fault(message: HiveErrors.hiveStoreShouldBePresent.localizedDescription))
         }
-        BackendlessRequestManager(restMethod: "hive/\(hiveName)/\(store)/\(key)/touch", httpMethod: .put, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+        let headers = ["Content-Type": "application/json"]
+        BackendlessRequestManager(restMethod: "hive/\(hiveName)/\(store)/\(key)/touch", httpMethod: .put, headers: headers, parameters: nil).makeRequest(getResponse: { response in
             if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
