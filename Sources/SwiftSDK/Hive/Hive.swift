@@ -123,4 +123,14 @@ import Foundation
     public func listStore(_ storeKey: String) -> ListStore {
         return ListStore(hiveName: self.hiveName, storeKey: storeKey)
     }
+    
+    // map store
+    
+    public func mapStore() -> MapStore {
+        return MapStore(hiveName: self.hiveName, storeKey: nil)
+    }
+    
+    public func mapStore(_ storeKey: String) -> MapStore {
+        return MapStore(hiveName: self.hiveName, storeKey: storeKey)
+    }
 }

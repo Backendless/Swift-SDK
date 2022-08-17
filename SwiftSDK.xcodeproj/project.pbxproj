@@ -45,6 +45,7 @@
 		5E1DB58F23E19FAA00955319 /* UnitOfWork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1DB58E23E19FAA00955319 /* UnitOfWork.swift */; };
 		5E1DB59123E1A0BA00955319 /* OpResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1DB59023E1A0BA00955319 /* OpResult.swift */; };
 		5E1DB59323E1A27A00955319 /* UnitOfWorkCreate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1DB59223E1A27A00955319 /* UnitOfWorkCreate.swift */; };
+		5E22568B28ACFD3400E40680 /* MapStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E22568A28ACFD3400E40680 /* MapStore.swift */; };
 		5E238A612271BDCF00227859 /* CustomService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E238A602271BDCF00227859 /* CustomService.swift */; };
 		5E238A662271CE8100227859 /* ExecutionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E238A652271CE8100227859 /* ExecutionType.swift */; };
 		5E275CA0224B8142002F89FC /* FileManagerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E275C9F224B8142002F89FC /* FileManagerHelper.swift */; };
@@ -215,6 +216,7 @@
 		5E1DB58E23E19FAA00955319 /* UnitOfWork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfWork.swift; sourceTree = "<group>"; };
 		5E1DB59023E1A0BA00955319 /* OpResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpResult.swift; sourceTree = "<group>"; };
 		5E1DB59223E1A27A00955319 /* UnitOfWorkCreate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfWorkCreate.swift; sourceTree = "<group>"; };
+		5E22568A28ACFD3400E40680 /* MapStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapStore.swift; sourceTree = "<group>"; };
 		5E238A602271BDCF00227859 /* CustomService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomService.swift; sourceTree = "<group>"; };
 		5E238A652271CE8100227859 /* ExecutionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutionType.swift; sourceTree = "<group>"; };
 		5E275C9F224B8142002F89FC /* FileManagerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerHelper.swift; sourceTree = "<group>"; };
@@ -729,6 +731,7 @@
 				5E9FF04928A3DCB500D4CEB3 /* HiveStore.swift */,
 				5E9FF04728A3DB5400D4CEB3 /* KeyValueStore.swift */,
 				5E6BF9C628AA6B3F000C34CC /* ListStore.swift */,
+				5E22568A28ACFD3400E40680 /* MapStore.swift */,
 			);
 			path = Hive;
 			sourceTree = "<group>";
@@ -1117,6 +1120,7 @@
 				5ED765D02224369E009431CD /* BulkEvent.swift in Sources */,
 				5E72EABD21F6EB89006C8C5C /* DataQueryBuilder.swift in Sources */,
 				5E1DB59123E1A0BA00955319 /* OpResult.swift in Sources */,
+				5E22568B28ACFD3400E40680 /* MapStore.swift in Sources */,
 				5ED51D0D22456E8600D22F11 /* BackendlessPushHelper.swift in Sources */,
 				5E09B00E22645BBC0073DA5E /* Logger.swift in Sources */,
 				5E8653F0278ECAF200836A4C /* UnitOfWorkUpsert.swift in Sources */,
