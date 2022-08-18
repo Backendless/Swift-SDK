@@ -148,6 +148,7 @@
 		5ED44A7F278EE349008B9FB1 /* DataUOWUpsertTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED44A7E278EE349008B9FB1 /* DataUOWUpsertTests.swift */; };
 		5ED51D0D22456E8600D22F11 /* BackendlessPushHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED51D0C22456E8600D22F11 /* BackendlessPushHelper.swift */; };
 		5ED765D02224369E009431CD /* BulkEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED765CF2224369E009431CD /* BulkEvent.swift */; };
+		5ED7DD9628AE625000FCC922 /* SetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED7DD9528AE625000FCC922 /* SetStore.swift */; };
 		5ED9B85B25B71396000B2C11 /* BLUrlSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ED9B85A25B71396000B2C11 /* BLUrlSession.swift */; };
 		5EDA87DE2434C44B00873403 /* DataUOWDeleteRelation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EDA87DD2434C44B00873403 /* DataUOWDeleteRelation.swift */; };
 		5EDB502023E1CE5700E36E62 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EDB501F23E1CE5700E36E62 /* Operation.swift */; };
@@ -322,6 +323,7 @@
 		5ED44A7E278EE349008B9FB1 /* DataUOWUpsertTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataUOWUpsertTests.swift; sourceTree = "<group>"; };
 		5ED51D0C22456E8600D22F11 /* BackendlessPushHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessPushHelper.swift; sourceTree = "<group>"; };
 		5ED765CF2224369E009431CD /* BulkEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulkEvent.swift; sourceTree = "<group>"; };
+		5ED7DD9528AE625000FCC922 /* SetStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetStore.swift; sourceTree = "<group>"; };
 		5ED9B85A25B71396000B2C11 /* BLUrlSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLUrlSession.swift; sourceTree = "<group>"; };
 		5EDA87DD2434C44B00873403 /* DataUOWDeleteRelation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataUOWDeleteRelation.swift; sourceTree = "<group>"; };
 		5EDB501F23E1CE5700E36E62 /* Operation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
@@ -732,6 +734,7 @@
 				5E9FF04728A3DB5400D4CEB3 /* KeyValueStore.swift */,
 				5E6BF9C628AA6B3F000C34CC /* ListStore.swift */,
 				5E22568A28ACFD3400E40680 /* MapStore.swift */,
+				5ED7DD9528AE625000FCC922 /* SetStore.swift */,
 			);
 			path = Hive;
 			sourceTree = "<group>";
@@ -1144,6 +1147,7 @@
 				5E97191A221C369A00857603 /* RTMethodRequest.swift in Sources */,
 				5E03A3BF22291C74005A538D /* MessagingService.swift in Sources */,
 				5AA2969A2237C19D007104C7 /* JSONUtils.swift in Sources */,
+				5ED7DD9628AE625000FCC922 /* SetStore.swift in Sources */,
 				5ED330B826DE2398000363E7 /* GroupClasses.swift in Sources */,
 				5E1CC2F72252534F0011D5C8 /* FileService.swift in Sources */,
 				5E1DB58F23E19FAA00955319 /* UnitOfWork.swift in Sources */,

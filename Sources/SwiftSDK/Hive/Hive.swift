@@ -133,4 +133,14 @@ import Foundation
     public func mapStore(_ storeKey: String) -> MapStore {
         return MapStore(hiveName: self.hiveName, storeKey: storeKey)
     }
+    
+    // set store
+    
+    public func setStore() -> SetStore {
+        return SetStore(hiveName: self.hiveName, storeKey: nil)
+    }
+    
+    public func setStore(_ storeKey: String) -> SetStore {
+        return SetStore(hiveName: self.hiveName, storeKey: storeKey)
+    }
 }

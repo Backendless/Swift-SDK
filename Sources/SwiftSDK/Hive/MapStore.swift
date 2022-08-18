@@ -20,7 +20,6 @@
  */
 
 import Foundation
-import SocketIO
 
 @objcMembers public class MapStore: HiveStore {
     
@@ -314,13 +313,13 @@ import SocketIO
         })
     }
     
-    // delete keys
+    // remove keys
     
-    public func deleteKey(_ key: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        deleteKeys([key], responseHandler: responseHandler, errorHandler: errorHandler)
+    public func remove(key: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        remove(keys: [key], responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    public func deleteKeys(_ keys: [String], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func remove(keys: [String], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         guard let hiveName = self.hiveName else {
             return errorHandler(Fault(message: HiveErrors.hiveNameShouldBePresent.localizedDescription))
         }
