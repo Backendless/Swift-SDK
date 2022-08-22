@@ -80,6 +80,7 @@
 		5E572D4B21B8043E000713B0 /* ProcessResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E572D4A21B8043E000713B0 /* ProcessResponse.swift */; };
 		5E5EA767242B9B8100690818 /* OperationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5EA766242B9B8100690818 /* OperationResult.swift */; };
 		5E60834B21EF721900268B4D /* DictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E60834A21EF721900268B4D /* DictionaryExtension.swift */; };
+		5E63D79C28B0C62A00C74008 /* SortedSetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E63D79B28B0C62A00C74008 /* SortedSetStore.swift */; };
 		5E642B9E227206DC00E091C4 /* Events.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E642B9D227206DC00E091C4 /* Events.swift */; };
 		5E64F0BF21C50D8E00590B04 /* BackendlessRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E64F0BE21C50D8E00590B04 /* BackendlessRequestManager.swift */; };
 		5E65257D23E860CA00C7E006 /* UnitOfWorkFind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E65257C23E860CA00C7E006 /* UnitOfWorkFind.swift */; };
@@ -251,6 +252,7 @@
 		5E572D4A21B8043E000713B0 /* ProcessResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessResponse.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		5E5EA766242B9B8100690818 /* OperationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationResult.swift; sourceTree = "<group>"; };
 		5E60834A21EF721900268B4D /* DictionaryExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryExtension.swift; sourceTree = "<group>"; };
+		5E63D79B28B0C62A00C74008 /* SortedSetStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortedSetStore.swift; sourceTree = "<group>"; };
 		5E642B9D227206DC00E091C4 /* Events.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Events.swift; sourceTree = "<group>"; };
 		5E64F0BE21C50D8E00590B04 /* BackendlessRequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessRequestManager.swift; sourceTree = "<group>"; };
 		5E65257C23E860CA00C7E006 /* UnitOfWorkFind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitOfWorkFind.swift; sourceTree = "<group>"; };
@@ -735,6 +737,7 @@
 				5E6BF9C628AA6B3F000C34CC /* ListStore.swift */,
 				5E22568A28ACFD3400E40680 /* MapStore.swift */,
 				5ED7DD9528AE625000FCC922 /* SetStore.swift */,
+				5E63D79B28B0C62A00C74008 /* SortedSetStore.swift */,
 			);
 			path = Hive;
 			sourceTree = "<group>";
@@ -1118,6 +1121,7 @@
 				5E81B28D2236A8300015AEDC /* RTMethod.swift in Sources */,
 				5E973115228D33A900F64B49 /* KeychainUtils.swift in Sources */,
 				5ECFEFBB23D9C88F004A5DD0 /* BackendlessDataCollection.swift in Sources */,
+				5E63D79C28B0C62A00C74008 /* SortedSetStore.swift in Sources */,
 				5EA87B95221D720100A8B93F /* RTListener.swift in Sources */,
 				5E06AD4D23F6759700950993 /* PersistenceHelper.swift in Sources */,
 				5ED765D02224369E009431CD /* BulkEvent.swift in Sources */,

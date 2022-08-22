@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-import Foundation
+/*import Foundation
 
 enum HiveErrors: Error {
     case hiveNameShouldBePresent
@@ -27,6 +27,7 @@ enum HiveErrors: Error {
     case hiveStoreShouldBePresent
     case hiveStoreShouldNotBePresent
     case storeKeyShouldBePresent
+    case sortedSetStoreItemsError
 }
 
 extension HiveErrors: LocalizedError {
@@ -42,6 +43,8 @@ extension HiveErrors: LocalizedError {
             return NSLocalizedString("This operation couldn't be done with specified Hive Store", comment: "Hive error")
         case .storeKeyShouldBePresent:
             return NSLocalizedString("This operation couldn't be done with specified Store Key", comment: "Hive error")
+        case .sortedSetStoreItemsError:
+            return NSLocalizedString("Items should have the next structure [[<double_score>, <string_value>], [<double_score>, <string_value>], ...]", comment: "Hive error")
         }
     }
 }
@@ -123,8 +126,146 @@ enum HiveStores {
     }
 }
 
-@objcMembers public class StoreSetParameters: NSObject {
+@objcMembers public class StoreSetOptions: NSObject {
     public var expirationSeconds: NSNumber?
     public var expiration: StoreSetExpiration = .none
     public var condition: StoreSetCondition = .always
 }
+
+// ******************************************************
+
+enum SetAction: String {
+    case difference
+    case intersection
+    case union
+}
+
+// ******************************************************
+
+@objc public enum Bound: Int, Codable {
+    case include
+    case exclude
+    case infinity
+    
+    public typealias RawValue = String
+    
+    public var rawValue: RawValue {
+        switch self {
+        case .include: return "Include"
+        case .exclude: return "Exclude"
+        case .infinity: return "Infinity"
+        }
+    }
+    
+    public init?(rawValue: RawValue) {
+        switch rawValue {
+        case "Include": self = .include
+        case "Exclude": self = .exclude
+        case "Infinity": self = .infinity
+        default: self = .include
+        }
+    }
+}
+
+// ******************************************************
+
+@objc public enum DuplicateBehaviour: Int, Codable {
+    case onlyUpdate
+    case alwaysAdd
+    
+    public typealias RawValue = String
+    
+    public var rawValue: RawValue {
+        switch self {
+        case .onlyUpdate: return "OnlyUpdate"
+        case .alwaysAdd: return "AlwaysAdd"
+        }
+    }
+    
+    public init?(rawValue: RawValue) {
+        switch rawValue {
+        case "OnlyUpdate": self = .onlyUpdate
+        case "AlwaysAdd": self = .alwaysAdd
+        default: self = .alwaysAdd
+        }
+    }
+}
+
+@objc public enum ScoreUpdateMode: Int, Codable {
+    case greater
+    case less
+    
+    public typealias RawValue = String
+    
+    public var rawValue: RawValue {
+        switch self {
+        case .greater: return "Greater"
+        case .less: return "Less"
+        }
+    }
+    
+    public init?(rawValue: RawValue) {
+        switch rawValue {
+        case "Greater": self = .greater
+        case "Less": self = .less
+        default: self = .greater
+        }
+    }
+}
+
+@objc public enum ResultType: Int, Codable {
+    case newAdded
+    case totalChanged
+    
+    public typealias RawValue = String
+    
+    public var rawValue: RawValue {
+        switch self {
+        case .newAdded: return "NewAdded"
+        case .totalChanged: return "TotalChanged"
+        }
+    }
+    
+    public init?(rawValue: RawValue) {
+        switch rawValue {
+        case "NewAdded": self = .newAdded
+        case "TotalChanged": self = .totalChanged
+        default: self = .newAdded
+        }
+    }
+}
+
+@objcMembers public class SortedSetOptions: NSObject {
+    public var duplicateBehaviour: DuplicateBehaviour?
+    public var scoreUpdateMode: ScoreUpdateMode?
+    public var resultType: ResultType?
+}
+
+// ******************************************************
+
+@objcMembers public class RangeByRankOptions: NSObject {
+    public var reverse = false
+    public var withScores = false
+}
+
+// ******************************************************
+
+@objcMembers public class RangeByScoreOptions: NSObject {
+    public var minScore = 0.0
+    public var maxScore = 0.0
+    public var minBound = Bound.include
+    public var maxBound = Bound.include
+    public var offset = 0
+    public var count = 0
+    public var reverse = false
+    public var withScores = false
+}
+
+// ******************************************************
+
+@objcMembers public class ScoreOptions: NSObject {
+    public var minScore = 0.0
+    public var maxScore = 0.0
+    public var minBound = Bound.include
+    public var maxBound = Bound.include
+}*/

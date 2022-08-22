@@ -59,6 +59,15 @@ class DataTypesUtils {
         return 0
     }
     
+    func dataToDouble(data: Data) -> Double {
+        if let stringValue = String(bytes: data, encoding: .utf8) {
+            if let result = Double(stringValue) {
+                return result
+            }
+        }
+        return 0
+    }
+    
     func arrayToString(array: [String]) -> String {
         var resultString = ""
         for i in 0..<array.count {

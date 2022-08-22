@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-import Foundation
+/*import Foundation
 
 public class HiveStore: NSObject {
     
@@ -323,4 +323,4 @@ public class HiveStore: NSObject {
             }
         })
     }
-}
+}*/

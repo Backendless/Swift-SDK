@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-import Foundation
+/*import Foundation
 
 @objcMembers public class KeyValueStore: HiveStore {
     
@@ -88,7 +88,7 @@ import Foundation
     
     // set, multi set
     
-    public func set(key: String, value: String, parameters: StoreSetParameters, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func set(key: String, value: String, parameters: StoreSetOptions, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         set(key: key, value: value, storeSetParameters: parameters, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
@@ -96,7 +96,7 @@ import Foundation
         set(key: key, value: value, storeSetParameters: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    private func set(key: String, value: String, storeSetParameters: StoreSetParameters?, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    private func set(key: String, value: String, storeSetParameters: StoreSetOptions?, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         guard let hiveName = self.hiveName else {
             return errorHandler(Fault(message: HiveErrors.hiveNameShouldBePresent.localizedDescription))
         }
@@ -215,4 +215,4 @@ import Foundation
             }
         })
     }
-}
+}*/

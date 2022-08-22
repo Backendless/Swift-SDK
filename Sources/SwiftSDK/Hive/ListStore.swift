@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-import Foundation
+/*import Foundation
 
 @objcMembers public class ListStore: HiveStore {
     
@@ -368,4 +368,4 @@ import Foundation
             }
         })
     }
-}
+}*/

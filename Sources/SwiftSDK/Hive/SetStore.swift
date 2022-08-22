@@ -19,13 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-import Foundation
-
-private enum action: String {
-    case difference
-    case intersection
-    case union
-}
+/*import Foundation
 
 @objcMembers public class SetStore: HiveStore {
     
@@ -212,7 +206,6 @@ private enum action: String {
         }
         let headers = ["Content-Type": "application/json"]
         let restMethod = "hive/\(hiveName)/\(store)/\(storeKey)/сontains"
-        print(restMethod)
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .post, headers: headers, parameters: value).makeRequest(getResponse: { response in
             if let responseData = response.data {
                 do {
@@ -267,7 +260,7 @@ private enum action: String {
         actions(action: .union, storeKeys: storeKeys, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    private func actions(action: action, storeKeys: [String], responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    private func actions(action: SetAction, storeKeys: [String], responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         guard let hiveName = self.hiveName else {
             return errorHandler(Fault(message: HiveErrors.hiveNameShouldBePresent.localizedDescription))
         }
@@ -291,4 +284,4 @@ private enum action: String {
             errorHandler(Fault(message: HiveErrors.hiveStoreShouldNotBePresent.localizedDescription))
         }
     }
-}
+}*/

@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-import Foundation
+/*import Foundation
 
 @objcMembers public class MapStore: HiveStore {
     
@@ -350,4 +350,4 @@ import Foundation
             }
         })
     }
-}
+}*/

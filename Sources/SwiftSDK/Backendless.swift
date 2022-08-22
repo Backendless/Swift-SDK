@@ -152,13 +152,13 @@ import Foundation
         return _commerceService
     }()
     
-    public func hive() -> Hive {
+    /*public func hive() -> Hive {
         return Hive()
     }
     
     public func hive(_ hiveName: String) -> Hive {
         return Hive(hiveName: hiveName)
-    }
+    }*/
     
     public func sharedObject(name: String) -> SharedObject {
         return SharedObject(name: name)
