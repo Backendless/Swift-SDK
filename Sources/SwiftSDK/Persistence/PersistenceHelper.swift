@@ -195,7 +195,8 @@ class PersistenceHelper {
                             else if let dictionaryValue = value as? [String : Any] {
                                 var resultDictionary = [String : Any]()
                                 for (key, dictionaryVal) in dictionaryValue {
-                                    if !(dictionaryVal is String), !(dictionaryVal is NSNumber), !(dictionaryVal is NSNull) {
+                                    if !(dictionaryVal is String), !(dictionaryVal is NSNumber), !(dictionaryVal is NSNull),
+                                    !(dictionaryVal is [String]), !(dictionaryVal is [NSNumber]) {
                                         resultDictionary[key] = entityToDictionaryWithClassProperty(entity: dictionaryVal)
                                     }
                                     else {

@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 6.6.1 / August 23, 2022
+* Fixed issue when array for the JSON column is not saved
+
 ### 6.6.0 / May 25, 2022
 * Added the commerce function for verifying Apple receipts:
 ```
