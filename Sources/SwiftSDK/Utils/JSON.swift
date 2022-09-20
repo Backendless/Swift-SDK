@@ -243,8 +243,6 @@ public struct JSON {
                 self.rawString = string
             case _ as NSNull:
                 type = .null
-            case nil:
-                type = .null
             case let array as [Any]:
                 type = .array
                 self.rawArray = array

@@ -1,5 +1,12 @@
 # RELEASE HISTORY
 
+### 6.6.2 / September 20, 2022
+* Swift-SDK updated. Minimal required versions:
+    * iOS 11.0
+    * macOS 10.13
+    * tvOS 11.0
+    * watchOS 5.0
+
 ### 6.6.1 / August 23, 2022
 * Fixed issue when array for the JSON column is not saved
 
