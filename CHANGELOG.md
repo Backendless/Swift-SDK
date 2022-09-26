@@ -1,6 +1,6 @@
 # RELEASE HISTORY
 
-### 6.7.0 / -
+### 6.7.0 / September 26, 2022
 * the `PermissionOperation` enum values updated to: UPDATE, FIND, REMOVE, LOAD_RELATIONS, ADD_RELATION, DELETE_RELATION, UPSERT
 * added method for batch ACL update:
 ```
