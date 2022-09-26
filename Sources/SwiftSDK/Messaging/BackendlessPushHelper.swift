@@ -23,7 +23,6 @@
 
 import UserNotifications
 
-@available(iOS 10.0, *)
 @objcMembers public class BackendlessPushHelper: NSObject {
     
     public static let shared = BackendlessPushHelper()

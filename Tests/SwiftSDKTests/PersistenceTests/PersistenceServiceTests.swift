@@ -72,7 +72,7 @@ class PersistenceServiceTests: XCTestCase {
         
         self.backendless.data.of(TestClass.self).save(entity: testObject, isUpsert: false, responseHandler: { savedObject in
             XCTAssertNotNil(savedObject)
-            self.backendless.data.permissions.grantForAllRoles(entity: savedObject, operation: .DATA_UPDATE, responseHandler: {
+            self.backendless.data.permissions.grantForAllRoles(entity: savedObject, operation: .UPDATE, responseHandler: {
                 (savedObject as! TestClass).name = "Ann"
                 (savedObject as! TestClass).age = 50
                 self.backendless.data.of(TestClass.self).save(entity: savedObject, isUpsert: false, responseHandler: { updatedObject in
