@@ -1,5 +1,12 @@
 # RELEASE HISTORY
 
+### 6.7.0 / -
+* the `PermissionOperation` enum values updated to: UPDATE, FIND, REMOVE, LOAD_RELATIONS, ADD_RELATION, DELETE_RELATION, UPSERT
+* added method for batch ACL update:
+```
+func updateUsersPermissions(tableName: String, objectId: String, permissions: [AclPermissionDTO], responseHandler: (([Bool]) -> Void)!, errorHandler: ((Fault) -> Void)!)
+```
+
 ### 6.6.2 / September 20, 2022
 * Swift-SDK updated. Minimal required versions:
     * iOS 11.0
@@ -8,16 +15,16 @@
     * watchOS 5.0
 
 ### 6.6.1 / August 23, 2022
-* Fixed issue when array for the JSON column is not saved
+* fixed issue when array for the JSON column is not saved
 
 ### 6.6.0 / May 25, 2022
-* Added the commerce function for verifying Apple receipts:
+* added the commerce function for verifying Apple receipts:
 ```
 Backendless.shared.commerce.verifyAppleReceipt(...)
 ```
 
 ### 6.5.4 / April 21, 2022
-* Fixed issue with retrieving cached data
+* fixed issue with retrieving cached data
 
 ### 6.5.3 / March 17, 2022
 * Swift is set to v5
