@@ -22,36 +22,85 @@
 import Foundation
 
 @objc public enum PermissionOperation: Int, Codable {
-    case DATA_UPDATE
-    case DATA_FIND
-    case DATA_REMOVE
+    case UPDATE
+    case FIND
+    case REMOVE
+    case LOAD_RELATIONS
+    case ADD_RELATION
+    case DELETE_RELATION
+    case UPSERT
     
     public typealias RawValue = String
     
     public var rawValue: RawValue {
         switch self {
-        case .DATA_UPDATE: return "UPDATE"
-        case .DATA_FIND: return "FIND"
-        case .DATA_REMOVE: return "REMOVE"
+        case .UPDATE: return "UPDATE"
+        case .FIND: return "FIND"
+        case .REMOVE: return "REMOVE"
+        case .LOAD_RELATIONS: return "LOAD_RELATIONS"
+        case .ADD_RELATION: return "ADD_RELATION"
+        case .DELETE_RELATION: return "DELETE_RELATION"
+        case .UPSERT: return "UPSERT"
         }
     }
     
     public init?(rawValue: RawValue) {
         switch rawValue {
-        case "UPDATE": self = .DATA_UPDATE
-        case "FIND": self = .DATA_FIND
-        case "REMOVE": self = .DATA_REMOVE
-        default: self = .DATA_FIND
+        case "UPDATE": self = .UPDATE
+        case "FIND": self = .FIND
+        case "REMOVE": self = .REMOVE
+        case "LOAD_RELATIONS": self = .LOAD_RELATIONS
+        case "ADD_RELATION": self = .ADD_RELATION
+        case "DELETE_RELATION": self = .DELETE_RELATION
+        case "UPSERT": self = .UPSERT
+        default: self = .FIND
         }
     }
 }
 
-@objcMembers public class DataPermission: NSObject {
+// *******************************************************************
+
+@objc public enum PermissionType: Int, Codable {
+    case GRANT
+    case DENY
     
-    private enum PermissionType: String {
-        case GRANT
-        case DENY
+    public typealias RawValue = String
+    
+    public var rawValue: RawValue {
+        switch self {
+        case .GRANT: return "GRANT"
+        case .DENY: return "DENY"
+        }
     }
+    
+    public init?(rawValue: RawValue) {
+        switch rawValue {
+        case "GRANT": self = .GRANT
+        case "DENY": self = .DENY
+        default: self = .GRANT
+        }
+    }
+}
+
+// *******************************************************************
+
+@objcMembers public class AclPermissionDTO: NSObject {
+    public var userId: String?
+    public var permission: PermissionOperation?
+    public var permissionType: PermissionType?
+    
+    private override init() { }
+    
+    public init(userId: String, permission: PermissionOperation, permissionType: PermissionType) {
+        self.userId = userId
+        self.permission = permission
+        self.permissionType = permissionType
+    }
+}
+
+// *******************************************************************
+
+@objcMembers public class DataPermission: NSObject {
     
     public func grantForUser(userId: String, entity: Any, operation: PermissionOperation, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         setPermission(entity: entity, permissionType: .GRANT, operation: operation, userId: userId, roleName: nil, responseHandler: responseHandler, errorHandler: errorHandler)
@@ -85,6 +134,30 @@ import Foundation
         setPermission(entity: entity, permissionType: .DENY, operation: operation, userId: nil, roleName: "*", responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
+    public func updateUsersPermissions(tableName: String, objectId: String, permissions: [AclPermissionDTO], responseHandler: (([Bool]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        let headers = ["Content-Type": "application/json"]
+        var parameters = [[String: String]]()
+        for permission in permissions {
+            if let userId = permission.userId,
+               let permissionOperation = permission.permission,
+               let permissionType = permission.permissionType {
+                parameters.append(["userId": userId,
+                                   "permission": permissionOperation.rawValue,
+                                   "permissionType": permissionType.rawValue])
+            }
+        }
+        BackendlessRequestManager(restMethod: "data/\(tableName)/permissions/\(objectId)/bulk", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: [Bool].self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else {
+                    responseHandler(result as! [Bool])
+                }
+            }
+        })
+    }
+    
     private func setPermission(entity: Any, permissionType: PermissionType, operation: PermissionOperation, userId: String?, roleName: String?, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         var parameters = [String: String]()
@@ -98,7 +171,7 @@ import Foundation
         if let objectId = PersistenceHelper.shared.getObjectId(entity: entity) {
             var tableName = ""
             if let entityDictionary = entity as? [String : Any],
-                let className = entityDictionary["___class"] as? String {
+               let className = entityDictionary["___class"] as? String {
                 tableName = className
             }
             else {
