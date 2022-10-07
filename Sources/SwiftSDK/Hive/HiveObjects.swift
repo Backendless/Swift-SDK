@@ -21,36 +21,6 @@
 
 /*import Foundation
 
-enum HiveErrors: Error {
-    case hiveNameShouldBePresent
-    case hiveNameShouldNotBePresent
-    case hiveStoreShouldBePresent
-    case hiveStoreShouldNotBePresent
-    case storeKeyShouldBePresent
-    case sortedSetStoreItemsError
-}
-
-extension HiveErrors: LocalizedError {
-    public var errorDescription: String? {
-        switch self {
-        case .hiveNameShouldBePresent:
-            return NSLocalizedString("This operation couldn't be done without specified Hive name", comment: "Hive error")
-        case .hiveNameShouldNotBePresent:
-            return NSLocalizedString("This operation couldn't be done with specified Hive name", comment: "Hive error")
-        case .hiveStoreShouldBePresent:
-            return NSLocalizedString("This operation couldn't be done without specified Hive Store", comment: "Hive error")
-        case .hiveStoreShouldNotBePresent:
-            return NSLocalizedString("This operation couldn't be done with specified Hive Store", comment: "Hive error")
-        case .storeKeyShouldBePresent:
-            return NSLocalizedString("This operation couldn't be done with specified Store Key", comment: "Hive error")
-        case .sortedSetStoreItemsError:
-            return NSLocalizedString("Items should have the next structure [[<double_score>, <string_value>], [<double_score>, <string_value>], ...]", comment: "Hive error")
-        }
-    }
-}
-
-// ******************************************************
-
 enum HiveStores {
     static let keyValue = "key-value"
     static let list = "list"
@@ -69,37 +39,12 @@ enum HiveStores {
 
 // ******************************************************
 
-@objcMembers public class StoreKeysObject: NSObject {
+@objcMembers public class StoreKeysResult: NSObject {
     public var keys: [String]?
     public var cursorId: String?
 }
 
 // ******************************************************
-
-@objc public enum StoreSetExpiration: Int, Codable {
-    case ttl
-    case unixTimestamp
-    case none
-    
-    public typealias RawValue = String
-    
-    public var rawValue: RawValue {
-        switch self {
-        case .ttl: return "TTL"
-        case .unixTimestamp: return "UnixTimestamp"
-        case .none: return "None"
-        }
-    }
-    
-    public init?(rawValue: RawValue) {
-        switch rawValue {
-        case "TTL": self = .ttl
-        case "UnixTimestamp": self = .unixTimestamp
-        case "None": self = .none
-        default: self = .none
-        }
-    }
-}
 
 @objc public enum StoreSetCondition: Int, Codable {
     case ifExists
@@ -126,9 +71,9 @@ enum HiveStores {
     }
 }
 
-@objcMembers public class StoreSetOptions: NSObject {
-    public var expirationSeconds: NSNumber?
-    public var expiration: StoreSetExpiration = .none
+@objcMembers public class KeyValueSetKeyOptions: NSObject {
+    public var ttl: NSNumber?
+    public var expireAt: NSNumber?
     public var condition: StoreSetCondition = .always
 }
 

@@ -82,14 +82,14 @@ class BackendlessRequestManager {
                 else {
                     if var params = parameters as? [String : Any] {
                         for (key, value) in params {
-                            if let dateValue = value as? Date {                                
+                            if let dateValue = value as? Date {
                                 params[key] = DataTypesUtils.shared.dateToInt(date: dateValue)
                             }
                         }
                         parameters = params
                     }
-                }                
-                request.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
+                    request.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: [])
+                }
             }
             else {
                 if parameters is String {
@@ -100,9 +100,6 @@ class BackendlessRequestManager {
                 }
             }
         }
-        
-        //let sessionConfig = URLSessionConfiguration.default
-        //let session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: OperationQueue.current)
         
         if Backendless.shared.useSharedUrlSession {
             session = BLUrlSessionShared.shared.session

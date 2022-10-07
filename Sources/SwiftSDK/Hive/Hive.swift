@@ -23,9 +23,9 @@
 
 @objcMembers public class Hive: NSObject {
     
-    private var hiveName: String?
+    private var hiveName: String!
     
-    override init() { }
+    private override init() { }
     
     init(hiveName: String) {
         self.hiveName = hiveName
@@ -33,30 +33,9 @@
     
     // ******************************************************
     
-    public func getNames(responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        if self.hiveName == nil {
-            BackendlessRequestManager(restMethod: "hive", httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-                if let result = ProcessResponse.shared.adapt(response: response, to: [String].self) {
-                    if result is Fault {
-                        errorHandler(result as! Fault)
-                    }
-                    else {
-                        responseHandler(result as! [String])
-                    }
-                }
-            })
-        }
-        else {
-            errorHandler(Fault(message: HiveErrors.hiveNameShouldNotBePresent.localizedDescription))
-        }
-    }
-    
     public func create(responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        guard let hiveName = self.hiveName else {
-            return errorHandler(Fault(message: HiveErrors.hiveNameShouldBePresent.localizedDescription))
-        }
         let headers = ["Content-Type": "application/json"]
-        BackendlessRequestManager(restMethod: "hive/\(hiveName)", httpMethod: .post, headers: headers, parameters: nil).makeRequest(getResponse: { response in
+        BackendlessRequestManager(restMethod: "hive/\(hiveName!)", httpMethod: .post, headers: headers, parameters: nil).makeRequest(getResponse: { response in
             if let result = ProcessResponse.shared.adapt(response: response, to: NoReply.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
@@ -69,10 +48,7 @@
     }
     
     public func rename(newName: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        guard let hiveName = self.hiveName else {
-            return errorHandler(Fault(message: HiveErrors.hiveNameShouldBePresent.localizedDescription))
-        }
-        BackendlessRequestManager(restMethod: "hive/\(hiveName)?newName=\(newName)", httpMethod: .put, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+        BackendlessRequestManager(restMethod: "hive/\(hiveName!)?newName=\(newName)", httpMethod: .put, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = ProcessResponse.shared.adapt(response: response, to: NoReply.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
@@ -84,73 +60,66 @@
         })
     }
     
-    public func delete(responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        guard let hiveName = self.hiveName else {
-            return errorHandler(Fault(message: HiveErrors.hiveNameShouldBePresent.localizedDescription))
-        }
-        BackendlessRequestManager(restMethod: "hive/\(hiveName)", httpMethod: .delete, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {
+    public func delete(responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        BackendlessRequestManager(restMethod: "hive/\(hiveName!)", httpMethod: .delete, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: NoReply.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
-                else if result is String,
-                        let intResult = Int(result as! String) {
-                    responseHandler(intResult)
-                }
             }
             else {
-                responseHandler(DataTypesUtils.shared.dataToInt(data: response.data!))
+                responseHandler()
             }
         })
     }
     
     // key-value store
     
-    public func keyValueStore() -> KeyValueStore {
-        return KeyValueStore(hiveName: self.hiveName, storeKey: nil)
-    }
+    public lazy var keyValueStore: KeyValueStoreManager = {
+        return KeyValueStoreManager(hiveName: self.hiveName)
+    }()
     
-    public func keyValueStore(_ storeKey: String) -> KeyValueStore {
-        return KeyValueStore(hiveName: self.hiveName, storeKey: storeKey)
+    public func keyValueStore(_ keyName: String) -> KeyValueStore {
+        return KeyValueStore(hiveName: self.hiveName, keyName: keyName)
     }
     
     // list store
     
-    public func listStore() -> ListStore {
-        return ListStore(hiveName: self.hiveName, storeKey: nil)
-    }
+    public lazy var listStore: ListStoreManager = {
+        return ListStoreManager(hiveName: self.hiveName)
+    }()
     
-    public func listStore(_ storeKey: String) -> ListStore {
-        return ListStore(hiveName: self.hiveName, storeKey: storeKey)
+    public func listStore(_ keyName: String) -> ListStore {
+        return ListStore(hiveName: self.hiveName, keyName: keyName)
     }
     
     // map store
     
-    public func mapStore() -> MapStore {
-        return MapStore(hiveName: self.hiveName, storeKey: nil)
-    }
+    public lazy var mapStore: MapStoreManager = {
+        return MapStoreManager(hiveName: self.hiveName)
+    }()
     
-    public func mapStore(_ storeKey: String) -> MapStore {
-        return MapStore(hiveName: self.hiveName, storeKey: storeKey)
+    public func mapStore(_ keyName: String) -> MapStore {
+        return MapStore(hiveName: self.hiveName, keyName: keyName)
     }
     
     // set store
     
-    public func setStore() -> SetStore {
-        return SetStore(hiveName: self.hiveName, storeKey: nil)
-    }
+    public lazy var setStore: SetStoreManager = {
+        return SetStoreManager(hiveName: self.hiveName)
+    }()
     
-    public func setStore(_ storeKey: String) -> SetStore {
-        return SetStore(hiveName: self.hiveName, storeKey: storeKey)
+    public func setStore(_ keyName: String) -> SetStore {
+        return SetStore(hiveName: self.hiveName, keyName: keyName)
     }
     
     // sorted set store
     
-    public func sortedSetStore() -> SortedSetStore {
-        return SortedSetStore(hiveName: self.hiveName, storeKey: nil)
-    }
+    public lazy var sortedSetStore: SortedSetStoreManager = {
+        return SortedSetStoreManager(hiveName: self.hiveName)
+    }()
     
-    public func sortedSetStore(_ storeKey: String) -> SortedSetStore {
-        return SortedSetStore(hiveName: self.hiveName, storeKey: storeKey)
+    public func sortedSetStore(_ keyName: String) -> SortedSetStore {
+        return SortedSetStore(hiveName: self.hiveName, keyName: keyName)
     }
 }*/
