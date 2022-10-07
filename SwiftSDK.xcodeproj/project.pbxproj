@@ -25,6 +25,10 @@
 		5E03A3C122294A4B005A538D /* PublishMessageInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E03A3C022294A4B005A538D /* PublishMessageInfo.swift */; };
 		5E03A3C322296D03005A538D /* CommandObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E03A3C222296D03005A538D /* CommandObject.swift */; };
 		5E03A3C52229711F005A538D /* UserStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E03A3C42229711F005A538D /* UserStatus.swift */; };
+		5E05E7E028E1EFA700D58077 /* HiveManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E05E7DF28E1EFA700D58077 /* HiveManager.swift */; };
+		5E05E7E228E1FE4200D58077 /* AnyStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E05E7E128E1FE4200D58077 /* AnyStoreManager.swift */; };
+		5E05E7E428E2063100D58077 /* AnyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E05E7E328E2063100D58077 /* AnyStore.swift */; };
+		5E05E7E628E207C900D58077 /* KeyValueStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E05E7E528E207C900D58077 /* KeyValueStoreManager.swift */; };
 		5E06AD4D23F6759700950993 /* PersistenceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E06AD4C23F6759700950993 /* PersistenceHelper.swift */; };
 		5E09B00C22645B9A0073DA5E /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E09B00B22645B9A0073DA5E /* Logging.swift */; };
 		5E09B00E22645BBC0073DA5E /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E09B00D22645BBC0073DA5E /* Logger.swift */; };
@@ -106,6 +110,10 @@
 		5E8A2A22226EF7DA007C2BAA /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8A2A21226EF7DA007C2BAA /* CacheService.swift */; };
 		5E8A2A24226EFA16007C2BAA /* NoReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8A2A23226EFA16007C2BAA /* NoReply.swift */; };
 		5E8A2A27226F2BF4007C2BAA /* CacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8A2A26226F2BF4007C2BAA /* CacheTests.swift */; };
+		5E8C2DEA28E3214D0013CD33 /* ListStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8C2DE928E3214D0013CD33 /* ListStoreManager.swift */; };
+		5E8C2DEC28E321EA0013CD33 /* MapStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8C2DEB28E321EA0013CD33 /* MapStoreManager.swift */; };
+		5E8C2DEE28E3225A0013CD33 /* SetStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8C2DED28E3225A0013CD33 /* SetStoreManager.swift */; };
+		5E8C2DF028E322B80013CD33 /* SortedSetStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8C2DEF28E322B80013CD33 /* SortedSetStoreManager.swift */; };
 		5E8C78AB25CC365D008BE988 /* DeviceRegistrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8C78AA25CC365D008BE988 /* DeviceRegistrationTests.swift */; };
 		5E90721121B66E9E00619C0D /* Fault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E90721021B66E9E00619C0D /* Fault.swift */; };
 		5E91F493241A811E00E97260 /* OpResultValueReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E91F492241A811E00E97260 /* OpResultValueReference.swift */; };
@@ -124,7 +132,6 @@
 		5E9DFC0E2387FABF0019E750 /* SpatialReferenceSystemEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9DFC0D2387FABF0019E750 /* SpatialReferenceSystemEnum.swift */; };
 		5E9FF04628A3DA8700D4CEB3 /* Hive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9FF04528A3DA8700D4CEB3 /* Hive.swift */; };
 		5E9FF04828A3DB5400D4CEB3 /* KeyValueStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9FF04728A3DB5400D4CEB3 /* KeyValueStore.swift */; };
-		5E9FF04A28A3DCB500D4CEB3 /* HiveStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9FF04928A3DCB500D4CEB3 /* HiveStore.swift */; };
 		5EA2B69B21F2324B00CFDC37 /* StoredObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA2B69A21F2324B00CFDC37 /* StoredObjects.swift */; };
 		5EA5D2C4223BCE8F0027EA49 /* SharedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA5D2C3223BCE8F0027EA49 /* SharedObject.swift */; };
 		5EA5D2C6223BE2AC0027EA49 /* RTSharedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA5D2C5223BE2AC0027EA49 /* RTSharedObject.swift */; };
@@ -200,6 +207,10 @@
 		5E03A3C022294A4B005A538D /* PublishMessageInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishMessageInfo.swift; sourceTree = "<group>"; };
 		5E03A3C222296D03005A538D /* CommandObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandObject.swift; sourceTree = "<group>"; };
 		5E03A3C42229711F005A538D /* UserStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStatus.swift; sourceTree = "<group>"; };
+		5E05E7DF28E1EFA700D58077 /* HiveManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveManager.swift; sourceTree = "<group>"; };
+		5E05E7E128E1FE4200D58077 /* AnyStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyStoreManager.swift; sourceTree = "<group>"; };
+		5E05E7E328E2063100D58077 /* AnyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyStore.swift; sourceTree = "<group>"; };
+		5E05E7E528E207C900D58077 /* KeyValueStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueStoreManager.swift; sourceTree = "<group>"; };
 		5E06AD4C23F6759700950993 /* PersistenceHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceHelper.swift; sourceTree = "<group>"; };
 		5E09B00B22645B9A0073DA5E /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		5E09B00D22645BBC0073DA5E /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -278,6 +289,10 @@
 		5E8A2A21226EF7DA007C2BAA /* CacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheService.swift; sourceTree = "<group>"; };
 		5E8A2A23226EFA16007C2BAA /* NoReply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoReply.swift; sourceTree = "<group>"; };
 		5E8A2A26226F2BF4007C2BAA /* CacheTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheTests.swift; sourceTree = "<group>"; };
+		5E8C2DE928E3214D0013CD33 /* ListStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListStoreManager.swift; sourceTree = "<group>"; };
+		5E8C2DEB28E321EA0013CD33 /* MapStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapStoreManager.swift; sourceTree = "<group>"; };
+		5E8C2DED28E3225A0013CD33 /* SetStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetStoreManager.swift; sourceTree = "<group>"; };
+		5E8C2DEF28E322B80013CD33 /* SortedSetStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortedSetStoreManager.swift; sourceTree = "<group>"; };
 		5E8C78AA25CC365D008BE988 /* DeviceRegistrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceRegistrationTests.swift; sourceTree = "<group>"; };
 		5E90721021B66E9E00619C0D /* Fault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fault.swift; sourceTree = "<group>"; };
 		5E91F492241A811E00E97260 /* OpResultValueReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpResultValueReference.swift; sourceTree = "<group>"; };
@@ -298,7 +313,6 @@
 		5E9DFC0D2387FABF0019E750 /* SpatialReferenceSystemEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpatialReferenceSystemEnum.swift; sourceTree = "<group>"; };
 		5E9FF04528A3DA8700D4CEB3 /* Hive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hive.swift; sourceTree = "<group>"; };
 		5E9FF04728A3DB5400D4CEB3 /* KeyValueStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueStore.swift; sourceTree = "<group>"; };
-		5E9FF04928A3DCB500D4CEB3 /* HiveStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveStore.swift; sourceTree = "<group>"; };
 		5EA2B69A21F2324B00CFDC37 /* StoredObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredObjects.swift; sourceTree = "<group>"; };
 		5EA5D2C3223BCE8F0027EA49 /* SharedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedObject.swift; sourceTree = "<group>"; };
 		5EA5D2C5223BE2AC0027EA49 /* RTSharedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTSharedObject.swift; sourceTree = "<group>"; };
@@ -730,14 +744,21 @@
 		5E9FF04428A3DA6F00D4CEB3 /* Hive */ = {
 			isa = PBXGroup;
 			children = (
-				5E9FF04528A3DA8700D4CEB3 /* Hive.swift */,
 				5E0B4C7828A4F891002516D9 /* HiveObjects.swift */,
-				5E9FF04928A3DCB500D4CEB3 /* HiveStore.swift */,
+				5E9FF04528A3DA8700D4CEB3 /* Hive.swift */,
+				5E05E7DF28E1EFA700D58077 /* HiveManager.swift */,
+				5E05E7E328E2063100D58077 /* AnyStore.swift */,
+				5E05E7E128E1FE4200D58077 /* AnyStoreManager.swift */,
 				5E9FF04728A3DB5400D4CEB3 /* KeyValueStore.swift */,
+				5E05E7E528E207C900D58077 /* KeyValueStoreManager.swift */,
 				5E6BF9C628AA6B3F000C34CC /* ListStore.swift */,
+				5E8C2DE928E3214D0013CD33 /* ListStoreManager.swift */,
 				5E22568A28ACFD3400E40680 /* MapStore.swift */,
+				5E8C2DEB28E321EA0013CD33 /* MapStoreManager.swift */,
 				5ED7DD9528AE625000FCC922 /* SetStore.swift */,
+				5E8C2DED28E3225A0013CD33 /* SetStoreManager.swift */,
 				5E63D79B28B0C62A00C74008 /* SortedSetStore.swift */,
+				5E8C2DEF28E322B80013CD33 /* SortedSetStoreManager.swift */,
 			);
 			path = Hive;
 			sourceTree = "<group>";
@@ -1042,6 +1063,7 @@
 			files = (
 				5EA5D2C8223BE5F90027EA49 /* InvokeObject.swift in Sources */,
 				5E4E305E22439B9700B479C8 /* DeviceRegistration.swift in Sources */,
+				5E8C2DF028E322B80013CD33 /* SortedSetStoreManager.swift in Sources */,
 				5EC7D163222FB86100FD3FF4 /* DeliveryOptions.swift in Sources */,
 				5E4DE64321EF8E92009AE503 /* Mappings.swift in Sources */,
 				5E7E8A6021ECC94A00AA04E1 /* UserDefaultsHelper.swift in Sources */,
@@ -1060,12 +1082,12 @@
 				5E6BF9C728AA6B3F000C34CC /* ListStore.swift in Sources */,
 				5E384C99226F40E200743125 /* AtomicCountersFactory.swift in Sources */,
 				5E84136321B5265200869794 /* UserService.swift in Sources */,
-				5E9FF04A28A3DCB500D4CEB3 /* HiveStore.swift in Sources */,
 				5ECAB22F238C417C0051F315 /* BLPoint.swift in Sources */,
 				5E795598225503D900E8ED65 /* FilePermission.swift in Sources */,
 				5E6C1E452203362700903B7A /* ReturnedResponse.swift in Sources */,
 				5E28D58723E300AF00FA139C /* UnitOfWorkResult.swift in Sources */,
 				5E7722DD2236D91E00E7B346 /* RTTypes.swift in Sources */,
+				5E8C2DEA28E3214D0013CD33 /* ListStoreManager.swift in Sources */,
 				5E4E047D27031E4A0008D286 /* InvokeOptions.swift in Sources */,
 				5E28D58D23E32B4E00FA139C /* PayloadHelper.swift in Sources */,
 				5EF0C79D23E43CBE00880F31 /* UnitOfWorkUpdate.swift in Sources */,
@@ -1074,6 +1096,7 @@
 				5ECAB233238C42060051F315 /* GeoJSONParser.swift in Sources */,
 				5EFBA8FE21C1011E007B3BB0 /* BackendlessUser.swift in Sources */,
 				5ECAB231238C41A60051F315 /* BLGeometry.swift in Sources */,
+				5E05E7E228E1FE4200D58077 /* AnyStoreManager.swift in Sources */,
 				5E28D58423E2F8A000FA139C /* TransactionHelper.swift in Sources */,
 				5E8A2A24226EFA16007C2BAA /* NoReply.swift in Sources */,
 				5E28D58923E313FF00FA139C /* TransactionOperationError.swift in Sources */,
@@ -1101,6 +1124,7 @@
 				5A2A785121E6114800EC8007 /* PersistenceService.swift in Sources */,
 				5E03A3C322296D03005A538D /* CommandObject.swift in Sources */,
 				5E722B5E21BE9DE800AA9A8F /* DataTypeEnum.swift in Sources */,
+				5E05E7E028E1EFA700D58077 /* HiveManager.swift in Sources */,
 				5EE3001824ED79E8006A27D1 /* ClassesForTests.swift in Sources */,
 				5EA2B69B21F2324B00CFDC37 /* StoredObjects.swift in Sources */,
 				5E7955962254D9A300E8ED65 /* BackendlessFileInfo.swift in Sources */,
@@ -1114,6 +1138,7 @@
 				5A2A785321E61D1700EC8007 /* DataStoreFactory.swift in Sources */,
 				5E17EE6724CAF8BF00D7321B /* JSONUpdateBuilder.swift in Sources */,
 				5E90721121B66E9E00619C0D /* Fault.swift in Sources */,
+				5E05E7E428E2063100D58077 /* AnyStore.swift in Sources */,
 				5E9FF04628A3DA8700D4CEB3 /* Hive.swift in Sources */,
 				5EE335AB2396679300A245B1 /* BLPolygon.swift in Sources */,
 				5E4E309C2243B85C00B479C8 /* DeviceHelper.swift in Sources */,
@@ -1151,11 +1176,14 @@
 				5E97191A221C369A00857603 /* RTMethodRequest.swift in Sources */,
 				5E03A3BF22291C74005A538D /* MessagingService.swift in Sources */,
 				5AA2969A2237C19D007104C7 /* JSONUtils.swift in Sources */,
+				5E8C2DEE28E3225A0013CD33 /* SetStoreManager.swift in Sources */,
 				5ED7DD9628AE625000FCC922 /* SetStore.swift in Sources */,
 				5ED330B826DE2398000363E7 /* GroupClasses.swift in Sources */,
 				5E1CC2F72252534F0011D5C8 /* FileService.swift in Sources */,
 				5E1DB58F23E19FAA00955319 /* UnitOfWork.swift in Sources */,
 				5EACCB5B23EC5871007AC3C4 /* UnitOfWorkAddRelation.swift in Sources */,
+				5E8C2DEC28E321EA0013CD33 /* MapStoreManager.swift in Sources */,
+				5E05E7E628E207C900D58077 /* KeyValueStoreManager.swift in Sources */,
 				5E572D4B21B8043E000713B0 /* ProcessResponse.swift in Sources */,
 				5EB28E1921B1799A0007AC30 /* Backendless.swift in Sources */,
 				5E384C9B226F45B300743125 /* IAtomic.swift in Sources */,

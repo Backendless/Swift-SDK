@@ -152,9 +152,9 @@ import Foundation
         return _commerceService
     }()
     
-    /*public func hive() -> Hive {
-        return Hive()
-    }
+    /*public lazy var hive: HiveManager = {
+        return HiveManager()
+    }()
     
     public func hive(_ hiveName: String) -> Hive {
         return Hive(hiveName: hiveName)
