@@ -64,7 +64,7 @@ class JSONUtils {
     
     func jsonToObject(objectToParse: Any) -> Any {
         var resultObject = objectToParse
-        if !(objectToParse is String), !(objectToParse is NSNumber), !(objectToParse is NSNull) {
+        if !(objectToParse is String), !(objectToParse is NSNumber), !(objectToParse is Bool), !(objectToParse is NSNull) {
             if let arrayToParse = objectToParse as? [Any] {
                 var resultArray = [Any]()
                 for object in arrayToParse {
@@ -88,8 +88,7 @@ class JSONUtils {
                     }
                 }
                 dictionaryToParse["___dates___"] = nil
-                dictionaryToParse["___jsonclass"] = nil
-                
+                dictionaryToParse["___jsonclass"] = nil                
                 resultObject = PersistenceHelper.shared.convertToBLType(dictionaryToParse)
                 if resultObject is [String : Any] {
                     if let className = dictionaryToParse["___class"] as? String {
@@ -120,14 +119,20 @@ class JSONUtils {
                 if jsonValue.string != nil {
                     resultObject = jsonValue.stringValue
                 }
+                else if jsonValue.bool != nil {
+                    resultObject = jsonValue.boolValue
+                }
                 else if jsonValue.number != nil {
                     resultObject = jsonValue.numberValue
                 }
                 else if jsonValue.null != nil {
                     resultObject = NSNull()
                 }
-                else if jsonValue.bool != nil {
-                    resultObject = jsonValue.boolValue
+                else if jsonValue.dictionaryObject != nil {
+                    resultObject = jsonToObject(objectToParse: jsonValue.dictionaryObject!)
+                }
+                else if jsonValue.arrayObject != nil {
+                    resultObject = jsonToObject(objectToParse: jsonValue.arrayObject!)
                 }
             }
             else {

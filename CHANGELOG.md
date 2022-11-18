@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 6.7.2 / November 18, 2022
+* fixed bug with missing user token in requests after login
+
 ### 6.7.1 / October 7, 2022
 * fixed bug with the `makeRequest()` method in BackendlessRequestManager class when assigning `request.httpBody`
 

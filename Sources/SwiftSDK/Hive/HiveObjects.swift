@@ -46,7 +46,7 @@ enum HiveStores {
 
 // ******************************************************
 
-@objc public enum StoreSetCondition: Int, Codable {
+@objc public enum KeyValueSetCondition: Int, Codable {
     case ifExists
     case ifNotExists
     case always
@@ -73,8 +73,8 @@ enum HiveStores {
 
 @objcMembers public class KeyValueSetKeyOptions: NSObject {
     public var ttl: NSNumber?
-    public var expireAt: NSNumber?
-    public var condition: StoreSetCondition = .always
+    public var expireAt: Int = 0
+    public var condition: KeyValueSetCondition = .always
 }
 
 // ******************************************************
@@ -87,7 +87,14 @@ enum SetAction: String {
 
 // ******************************************************
 
-@objc public enum Bound: Int, Codable {
+@objcMembers public class SortedSetItem: NSObject {
+    public var score: Double = 0.0
+    public var value: Any?
+}
+
+// ******************************************************
+
+@objc public enum SortedSetBound: Int, Codable {
     case include
     case exclude
     case infinity
@@ -112,6 +119,14 @@ enum SetAction: String {
     }
 }
 
+// ******************************************************
+
+@objcMembers public class SortedSetFilter: NSObject {
+    public var minScore = 0.0
+    public var maxScore = 0.0
+    public var minBound = SortedSetBound.include
+    public var maxBound = SortedSetBound.include
+}
 // ******************************************************
 
 @objc public enum DuplicateBehaviour: Int, Codable {
@@ -180,7 +195,7 @@ enum SetAction: String {
     }
 }
 
-@objcMembers public class SortedSetOptions: NSObject {
+@objcMembers public class SortedSetItemOptions: NSObject {
     public var duplicateBehaviour: DuplicateBehaviour?
     public var scoreUpdateMode: ScoreUpdateMode?
     public var resultType: ResultType?
@@ -198,19 +213,10 @@ enum SetAction: String {
 @objcMembers public class RangeByScoreOptions: NSObject {
     public var minScore = 0.0
     public var maxScore = 0.0
-    public var minBound = Bound.include
-    public var maxBound = Bound.include
+    public var minBound = SortedSetBound.include
+    public var maxBound = SortedSetBound.include
     public var offset = 0
-    public var count = 0
+    public var count = 20
     public var reverse = false
     public var withScores = false
-}
-
-// ******************************************************
-
-@objcMembers public class ScoreOptions: NSObject {
-    public var minScore = 0.0
-    public var maxScore = 0.0
-    public var minBound = Bound.include
-    public var maxBound = Bound.include
 }*/

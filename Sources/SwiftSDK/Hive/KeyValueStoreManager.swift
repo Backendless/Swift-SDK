@@ -30,16 +30,32 @@
     
     // get several values
     
-    public func get(keys: [String], responseHandler: (([String : String]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func get(keys: [String], responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = keys
         BackendlessRequestManager(restMethod: "hive/\(hiveName!)/\(storeName!)", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
-                if result is Fault {
-                    errorHandler(result as! Fault)
+            if let resultString = String(bytes: response.data!, encoding: .utf8) {
+                if let resultInt = Int(resultString) {
+                    responseHandler(resultInt)
                 }
-                else if let resultDictionary = (result as! JSON).dictionaryObject as? [String : String] {
-                    responseHandler(resultDictionary)
+                else if let resultDouble = Double(resultString) {
+                    responseHandler(resultDouble)
+                }
+                else if let result = ProcessResponse.shared.adaptCache(response: response, to: JSON.self) {
+                    if result is Fault {
+                        errorHandler(result as! Fault)
+                    }
+                    else {
+                        if let resultString = result as? String {
+                            responseHandler(resultString.replacingOccurrences(of: "\"", with: ""))
+                        }
+                        else if let resultDictionary = (result as! JSON).dictionaryObject {
+                            responseHandler(JSONUtils.shared.jsonToObject(objectToParse: resultDictionary))
+                        }
+                        else if let resultArray = (result as! JSON).arrayObject {
+                            responseHandler(JSONUtils.shared.jsonToObject(objectToParse: resultArray))
+                        }
+                    }
                 }
             }
         })
@@ -47,9 +63,10 @@
     
     // set many values
     
-    public func set(values: [String : String], responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func set(values: [String : Any], responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
-        BackendlessRequestManager(restMethod: "hive/\(hiveName!)/\(storeName!)/", httpMethod: .put, headers: headers, parameters: values).makeRequest(getResponse: { response in
+        let parameters = JSONUtils.shared.objectToJson(objectToParse: values)
+        BackendlessRequestManager(restMethod: "hive/\(hiveName!)/\(storeName!)/", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = ProcessResponse.shared.adapt(response: response, to: NoReply.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)

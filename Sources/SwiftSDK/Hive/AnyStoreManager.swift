@@ -41,35 +41,6 @@ public class AnyStoreManager: NSObject {
         keys(options: storeKeyOptions, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    private func keys(options: StoreKeysOptions?, responseHandler: ((StoreKeysResult) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        var restMethod = "hive/\(hiveName!)/\(storeName!)/keys?filterPattern="
-        if let filterPattern = options?.filterPattern {
-            restMethod.append(filterPattern)
-        }
-        else {
-            restMethod.append("*")
-        }
-        if let cursor = options?.cursor {
-            restMethod.append("&cursor=\(cursor)")
-        }
-        if let pageSize = options?.pageSize {
-            restMethod.append("&pageSize=\(pageSize)")
-        }
-        BackendlessRequestManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
-                if result is Fault {
-                    errorHandler(result as! Fault)
-                }
-                else if let resultDictionary = (result as! JSON).dictionaryObject {
-                    let storeKeysObject = StoreKeysResult()
-                    storeKeysObject.keys = resultDictionary["keys"] as? [String]
-                    storeKeysObject.cursorId = resultDictionary["cursorId"] as? String
-                    responseHandler(storeKeysObject)
-                }
-            }
-        })
-    }
-    
     // delete one or many stores by name
     
     public func delete(keys: [String], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
@@ -122,6 +93,39 @@ public class AnyStoreManager: NSObject {
             }
             else {
                 responseHandler()
+            }
+        })
+    }
+    
+    // *******************************************************************
+    
+    // private methods
+    
+    private func keys(options: StoreKeysOptions?, responseHandler: ((StoreKeysResult) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        var restMethod = "hive/\(hiveName!)/\(storeName!)/keys?filterPattern="
+        if let filterPattern = options?.filterPattern {
+            restMethod.append(filterPattern)
+        }
+        else {
+            restMethod.append("*")
+        }
+        if let cursor = options?.cursor {
+            restMethod.append("&cursor=\(cursor)")
+        }
+        if let pageSize = options?.pageSize {
+            restMethod.append("&pageSize=\(pageSize)")
+        }
+        BackendlessRequestManager(restMethod: restMethod, httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else if let resultDictionary = (result as! JSON).dictionaryObject {
+                    let storeKeysObject = StoreKeysResult()
+                    storeKeysObject.keys = resultDictionary["keys"] as? [String]
+                    storeKeysObject.cursorId = resultDictionary["cursorId"] as? String
+                    responseHandler(storeKeysObject)
+                }
             }
         })
     }

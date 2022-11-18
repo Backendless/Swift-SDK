@@ -60,6 +60,9 @@ class BackendlessRequestManager {
         if let userToken = UserDefaultsHelper.shared.getUserToken() {
             request.addValue(userToken, forHTTPHeaderField: "user-token")
         }
+        else if let userToken = Backendless.shared.userService.getUserToken() {
+            request.addValue(userToken, forHTTPHeaderField: "user-token")
+        }
         for (key, value) in Backendless.shared.getHeaders() {
             if key != "user-token" {
                 request.addValue(value, forHTTPHeaderField: key)
