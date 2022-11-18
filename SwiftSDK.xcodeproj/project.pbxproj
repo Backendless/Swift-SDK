@@ -110,11 +110,10 @@
 		5E8A2A22226EF7DA007C2BAA /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8A2A21226EF7DA007C2BAA /* CacheService.swift */; };
 		5E8A2A24226EFA16007C2BAA /* NoReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8A2A23226EFA16007C2BAA /* NoReply.swift */; };
 		5E8A2A27226F2BF4007C2BAA /* CacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8A2A26226F2BF4007C2BAA /* CacheTests.swift */; };
-		5E8C2DEA28E3214D0013CD33 /* ListStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8C2DE928E3214D0013CD33 /* ListStoreManager.swift */; };
-		5E8C2DEC28E321EA0013CD33 /* MapStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8C2DEB28E321EA0013CD33 /* MapStoreManager.swift */; };
 		5E8C2DEE28E3225A0013CD33 /* SetStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8C2DED28E3225A0013CD33 /* SetStoreManager.swift */; };
 		5E8C2DF028E322B80013CD33 /* SortedSetStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8C2DEF28E322B80013CD33 /* SortedSetStoreManager.swift */; };
 		5E8C78AB25CC365D008BE988 /* DeviceRegistrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8C78AA25CC365D008BE988 /* DeviceRegistrationTests.swift */; };
+		5E8DC692291E7F0800A742B4 /* ListStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E8DC691291E7F0800A742B4 /* ListStoreManager.swift */; };
 		5E90721121B66E9E00619C0D /* Fault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E90721021B66E9E00619C0D /* Fault.swift */; };
 		5E91F493241A811E00E97260 /* OpResultValueReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E91F492241A811E00E97260 /* OpResultValueReference.swift */; };
 		5E9396C72431EBDF00B2A5F1 /* DataUOWUpdateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9396C62431EBDF00B2A5F1 /* DataUOWUpdateTests.swift */; };
@@ -127,6 +126,7 @@
 		5E971918221C2CC400857603 /* RTSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E971917221C2CC400857603 /* RTSubscription.swift */; };
 		5E97191A221C369A00857603 /* RTMethodRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E971919221C369A00857603 /* RTMethodRequest.swift */; };
 		5E973115228D33A900F64B49 /* KeychainUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E973114228D33A900F64B49 /* KeychainUtils.swift */; };
+		5E980A822922373400F8BE72 /* MapStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E980A812922373400F8BE72 /* MapStoreManager.swift */; };
 		5E9C573221AEEA0400877870 /* SwiftSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9C572821AEEA0400877870 /* SwiftSDK.framework */; };
 		5E9C573921AEEA0400877870 /* SwiftSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E9C572B21AEEA0400877870 /* SwiftSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5E9DFC0E2387FABF0019E750 /* SpatialReferenceSystemEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9DFC0D2387FABF0019E750 /* SpatialReferenceSystemEnum.swift */; };
@@ -289,11 +289,10 @@
 		5E8A2A21226EF7DA007C2BAA /* CacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheService.swift; sourceTree = "<group>"; };
 		5E8A2A23226EFA16007C2BAA /* NoReply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoReply.swift; sourceTree = "<group>"; };
 		5E8A2A26226F2BF4007C2BAA /* CacheTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheTests.swift; sourceTree = "<group>"; };
-		5E8C2DE928E3214D0013CD33 /* ListStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListStoreManager.swift; sourceTree = "<group>"; };
-		5E8C2DEB28E321EA0013CD33 /* MapStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapStoreManager.swift; sourceTree = "<group>"; };
 		5E8C2DED28E3225A0013CD33 /* SetStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetStoreManager.swift; sourceTree = "<group>"; };
 		5E8C2DEF28E322B80013CD33 /* SortedSetStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortedSetStoreManager.swift; sourceTree = "<group>"; };
 		5E8C78AA25CC365D008BE988 /* DeviceRegistrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceRegistrationTests.swift; sourceTree = "<group>"; };
+		5E8DC691291E7F0800A742B4 /* ListStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListStoreManager.swift; sourceTree = "<group>"; };
 		5E90721021B66E9E00619C0D /* Fault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fault.swift; sourceTree = "<group>"; };
 		5E91F492241A811E00E97260 /* OpResultValueReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpResultValueReference.swift; sourceTree = "<group>"; };
 		5E9396C62431EBDF00B2A5F1 /* DataUOWUpdateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataUOWUpdateTests.swift; sourceTree = "<group>"; };
@@ -306,6 +305,7 @@
 		5E971917221C2CC400857603 /* RTSubscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTSubscription.swift; sourceTree = "<group>"; };
 		5E971919221C369A00857603 /* RTMethodRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTMethodRequest.swift; sourceTree = "<group>"; };
 		5E973114228D33A900F64B49 /* KeychainUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainUtils.swift; sourceTree = "<group>"; };
+		5E980A812922373400F8BE72 /* MapStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapStoreManager.swift; sourceTree = "<group>"; };
 		5E9C572821AEEA0400877870 /* SwiftSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E9C572B21AEEA0400877870 /* SwiftSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftSDK.h; sourceTree = "<group>"; };
 		5E9C572C21AEEA0400877870 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -339,7 +339,7 @@
 		5ED44A7E278EE349008B9FB1 /* DataUOWUpsertTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataUOWUpsertTests.swift; sourceTree = "<group>"; };
 		5ED51D0C22456E8600D22F11 /* BackendlessPushHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessPushHelper.swift; sourceTree = "<group>"; };
 		5ED765CF2224369E009431CD /* BulkEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulkEvent.swift; sourceTree = "<group>"; };
-		5ED7DD9528AE625000FCC922 /* SetStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetStore.swift; sourceTree = "<group>"; };
+		5ED7DD9528AE625000FCC922 /* SetStore.swift */ = {isa = PBXFileReference; indentWidth = 5; lastKnownFileType = sourcecode.swift; path = SetStore.swift; sourceTree = "<group>"; };
 		5ED9B85A25B71396000B2C11 /* BLUrlSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLUrlSession.swift; sourceTree = "<group>"; };
 		5EDA87DD2434C44B00873403 /* DataUOWDeleteRelation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataUOWDeleteRelation.swift; sourceTree = "<group>"; };
 		5EDB501F23E1CE5700E36E62 /* Operation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
@@ -752,9 +752,9 @@
 				5E9FF04728A3DB5400D4CEB3 /* KeyValueStore.swift */,
 				5E05E7E528E207C900D58077 /* KeyValueStoreManager.swift */,
 				5E6BF9C628AA6B3F000C34CC /* ListStore.swift */,
-				5E8C2DE928E3214D0013CD33 /* ListStoreManager.swift */,
+				5E8DC691291E7F0800A742B4 /* ListStoreManager.swift */,
 				5E22568A28ACFD3400E40680 /* MapStore.swift */,
-				5E8C2DEB28E321EA0013CD33 /* MapStoreManager.swift */,
+				5E980A812922373400F8BE72 /* MapStoreManager.swift */,
 				5ED7DD9528AE625000FCC922 /* SetStore.swift */,
 				5E8C2DED28E3225A0013CD33 /* SetStoreManager.swift */,
 				5E63D79B28B0C62A00C74008 /* SortedSetStore.swift */,
@@ -1087,7 +1087,6 @@
 				5E6C1E452203362700903B7A /* ReturnedResponse.swift in Sources */,
 				5E28D58723E300AF00FA139C /* UnitOfWorkResult.swift in Sources */,
 				5E7722DD2236D91E00E7B346 /* RTTypes.swift in Sources */,
-				5E8C2DEA28E3214D0013CD33 /* ListStoreManager.swift in Sources */,
 				5E4E047D27031E4A0008D286 /* InvokeOptions.swift in Sources */,
 				5E28D58D23E32B4E00FA139C /* PayloadHelper.swift in Sources */,
 				5EF0C79D23E43CBE00880F31 /* UnitOfWorkUpdate.swift in Sources */,
@@ -1137,6 +1136,7 @@
 				5E64F0BF21C50D8E00590B04 /* BackendlessRequestManager.swift in Sources */,
 				5A2A785321E61D1700EC8007 /* DataStoreFactory.swift in Sources */,
 				5E17EE6724CAF8BF00D7321B /* JSONUpdateBuilder.swift in Sources */,
+				5E8DC692291E7F0800A742B4 /* ListStoreManager.swift in Sources */,
 				5E90721121B66E9E00619C0D /* Fault.swift in Sources */,
 				5E05E7E428E2063100D58077 /* AnyStore.swift in Sources */,
 				5E9FF04628A3DA8700D4CEB3 /* Hive.swift in Sources */,
@@ -1146,6 +1146,7 @@
 				5E81B28D2236A8300015AEDC /* RTMethod.swift in Sources */,
 				5E973115228D33A900F64B49 /* KeychainUtils.swift in Sources */,
 				5ECFEFBB23D9C88F004A5DD0 /* BackendlessDataCollection.swift in Sources */,
+				5E980A822922373400F8BE72 /* MapStoreManager.swift in Sources */,
 				5E63D79C28B0C62A00C74008 /* SortedSetStore.swift in Sources */,
 				5EA87B95221D720100A8B93F /* RTListener.swift in Sources */,
 				5E06AD4D23F6759700950993 /* PersistenceHelper.swift in Sources */,
@@ -1182,7 +1183,6 @@
 				5E1CC2F72252534F0011D5C8 /* FileService.swift in Sources */,
 				5E1DB58F23E19FAA00955319 /* UnitOfWork.swift in Sources */,
 				5EACCB5B23EC5871007AC3C4 /* UnitOfWorkAddRelation.swift in Sources */,
-				5E8C2DEC28E321EA0013CD33 /* MapStoreManager.swift in Sources */,
 				5E05E7E628E207C900D58077 /* KeyValueStoreManager.swift in Sources */,
 				5E572D4B21B8043E000713B0 /* ProcessResponse.swift in Sources */,
 				5EB28E1921B1799A0007AC30 /* Backendless.swift in Sources */,

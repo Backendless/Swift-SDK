@@ -110,7 +110,7 @@ import Foundation
                     errorHandler(result as! Fault)
                 }
                 else {
-                    self.setPersistentUser(currUser: result as! BackendlessUser, reconnectSocket: true)
+                    self.setPersistentUser(currUser: result as! BackendlessUser, reconnectSocket: true)                    
                     responseHandler(result as! BackendlessUser)
                 }
             }
@@ -339,8 +339,8 @@ import Foundation
     }
     
     public func getUserRoles(responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        let headers: [String: String]? = nil
-        BackendlessRequestManager(restMethod: "users/userroles", httpMethod: .get, headers: headers, parameters: nil).makeRequest(getResponse: { response in
+        //var headers: [String: String]? = nil
+        BackendlessRequestManager(restMethod: "users/userroles", httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = ProcessResponse.shared.adapt(response: response, to: [String].self) {
                 if result is Fault {
                     errorHandler(result as! Fault)

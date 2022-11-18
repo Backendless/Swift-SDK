@@ -55,11 +55,14 @@ import Foundation
     public func compareAndSet(counterName: String, expected: Int, updated: Int, responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         BackendlessRequestManager(restMethod: "counters/\(counterName)/get/compareandset?expected=\(expected)&updatedvalue=\(updated)", httpMethod: .put, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let responseData = response.data {
-                do {
-                    responseHandler(try JSONSerialization.jsonObject(with: responseData, options: .allowFragments) as! Bool)
+                let result = try? JSONSerialization.jsonObject(with: responseData, options: .allowFragments)
+                if result is Bool {
+                    responseHandler(result as! Bool)
                 }
-                catch {
-                    errorHandler(Fault(error: error))
+                else if result is [String : Any],
+                        let errorMessage = (result as! [String : Any])["message"] as? String,
+                        let errorCode = (result as! [String : Any])["code"] as? Int {
+                    errorHandler(Fault(message: errorMessage, faultCode: errorCode))
                 }
             }
         })

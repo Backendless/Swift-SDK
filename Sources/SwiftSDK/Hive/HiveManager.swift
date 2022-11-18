@@ -1,5 +1,5 @@
 //
-//  ListStoreManager.swift
+//  HiveManager.swift
 //
 /*
  * *********************************************************************************************************************
@@ -21,9 +21,18 @@
 
 /*import Foundation
 
-@objcMembers public class ListStoreManager: AnyStoreManager {
-
-    init(hiveName: String) {
-        super.init(hiveName: hiveName, storeName: HiveStores.list)
+@objcMembers public class HiveManager: NSObject {
+    
+    public func getNames(responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        BackendlessRequestManager(restMethod: "hive", httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: [String].self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else {
+                    responseHandler(result as! [String])
+                }
+            }
+        })
     }
 }*/
