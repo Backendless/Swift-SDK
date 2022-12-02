@@ -118,10 +118,10 @@
         let headers = ["Content-Type": "application/json"]
         var parameters = ["value": JSONUtils.shared.objectToJson(objectToParse: value)] as [String : Any]
         if keyValueSetKeyOptions != nil {
-            if let ttl = keyValueSetKeyOptions?.ttl {
+            if let ttl = keyValueSetKeyOptions?.ttl, ttl != 0 {
                 parameters["ttl"] = ttl
             }
-            if let expireAt = keyValueSetKeyOptions?.expireAt, expireAt > 0 {
+            if let expireAt = keyValueSetKeyOptions?.expireAt, expireAt != 0 {
                 parameters["expireAt"] = expireAt
             }
             if let condition = keyValueSetKeyOptions?.condition {

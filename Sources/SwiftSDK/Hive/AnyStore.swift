@@ -21,7 +21,7 @@
 
 /*import Foundation
 
-public class AnyStore: NSObject {
+@objcMembers public class AnyStore: NSObject {
     
     var hiveName: String!
     var storeName: String!

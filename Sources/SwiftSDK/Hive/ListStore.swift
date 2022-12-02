@@ -126,7 +126,7 @@
     
     // set items
     
-    public func set(values: [Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    /*public func set(values: [Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = JSONUtils.shared.objectToJson(objectToParse: values)
         BackendlessRequestManager(restMethod: "hive/\(hiveName!)/\(storeName!)/\(keyName!)", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
@@ -143,7 +143,7 @@
                 responseHandler(DataTypesUtils.shared.dataToInt(data: response.data!))
             }
         })
-    }
+    }*/
     
     // set item by index
     

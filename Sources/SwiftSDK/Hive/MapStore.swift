@@ -175,9 +175,9 @@
     
     // set new values (reset the store)
     
-    public func set(data: [String : Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    /*public func set(data: [String : Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         setOrAdd(add: false, data: data, responseHandler: responseHandler, errorHandler: errorHandler)
-    }
+    }*/
     
     // change: set value by objKey
     
