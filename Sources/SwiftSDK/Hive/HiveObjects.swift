@@ -32,9 +32,9 @@ enum HiveStores {
 // ******************************************************
 
 @objcMembers public class StoreKeysOptions: NSObject {
-    var filterPattern: String?
-    var cursor: NSNumber?
-    var pageSize: NSNumber?
+    public var filterPattern: String?
+    public var cursor: NSNumber?
+    public var pageSize: NSNumber?
 }
 
 // ******************************************************
@@ -72,7 +72,7 @@ enum HiveStores {
 }
 
 @objcMembers public class KeyValueSetKeyOptions: NSObject {
-    public var ttl: NSNumber?
+    public var ttl: Int = 0
     public var expireAt: Int = 0
     public var condition: KeyValueSetCondition = .always
 }
@@ -196,9 +196,9 @@ enum SetAction: String {
 }
 
 @objcMembers public class SortedSetItemOptions: NSObject {
-    public var duplicateBehaviour: DuplicateBehaviour?
-    public var scoreUpdateMode: ScoreUpdateMode?
-    public var resultType: ResultType?
+    public var duplicateBehaviour = DuplicateBehaviour.alwaysAdd
+    public var scoreUpdateMode = ScoreUpdateMode.greater
+    public var resultType = ResultType.newAdded
 }
 
 // ******************************************************

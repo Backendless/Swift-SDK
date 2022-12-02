@@ -1,5 +1,11 @@
 # RELEASE HISTORY
 
+### 6.7.3 / December 2, 2022
+* added method to create a directory:
+```
+func createDirectory(path: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!)
+``` 
+
 ### 6.7.2 / November 18, 2022
 * fixed bug with missing user token in requests after login
 

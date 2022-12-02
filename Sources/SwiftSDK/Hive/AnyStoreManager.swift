@@ -21,7 +21,7 @@
 
 /*import Foundation
 
-public class AnyStoreManager: NSObject {
+@objcMembers public class AnyStoreManager: NSObject {
     
     var hiveName: String!
     var storeName: String!
@@ -63,9 +63,16 @@ public class AnyStoreManager: NSObject {
     
     // check if store(s) exists
     
+    public func exists(key: String, responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        let wrappedBlock: (Int) -> () = { response in
+            responseHandler((response as NSNumber).boolValue)
+        }
+        exists(keys: [key], responseHandler: wrappedBlock, errorHandler: errorHandler)
+    }
+    
     public func exists(keys: [String], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
-        BackendlessRequestManager(restMethod: "hive/\(hiveName!)/\(storeName!)/action/exists", httpMethod: .post, headers: headers, parameters: keys).makeRequest(getResponse: { response in
+        BackendlessRequestManager(restMethod: "hive/\(hiveName!)/\(storeName!)/action/exist", httpMethod: .post, headers: headers, parameters: keys).makeRequest(getResponse: { response in
             if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)

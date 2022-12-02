@@ -39,13 +39,13 @@
     
     // set values
     
-    public func set(items: [SortedSetItem], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    /*public func set(items: [SortedSetItem], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         setOrAdd(add: false, items: items, options: nil, responseHandler: responseHandler, errorHandler: errorHandler)
-    }
+    }*/
     
-    public func set(items: [SortedSetItem], options: SortedSetItemOptions, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    /*public func set(items: [SortedSetItem], options: SortedSetItemOptions, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         setOrAdd(add: false, items: items, options: options, responseHandler: responseHandler, errorHandler: errorHandler)
-    }
+    }*/
     
     // increment score
     
@@ -218,10 +218,6 @@
     
     // get range / reverse range of values by score
     
-    public func getRangeByScore(responseHandler: (([Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        getRangeByScore(options: RangeByScoreOptions(), responseHandler: responseHandler, errorHandler: errorHandler)
-    }
-    
     public func getRangeByScore(options: RangeByScoreOptions, responseHandler: (([Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         BackendlessRequestManager(restMethod: "hive/\(hiveName!)/\(storeName!)/\(keyName!)/get-range-by-score?minScore=\(options.minScore)&maxScore=\(options.maxScore)&minBound=\(options.minBound.rawValue)&maxBound=\(options.maxBound.rawValue)&offset=\(options.offset)&count=\(options.count)&withScores=\(options.withScores)&reverse=\(options.reverse)", httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
@@ -333,7 +329,7 @@
         })
     }
     
-    // TODO: count number of values between the scores
+    // count number of values between the scores
     
     public func countBetweenScores(options: SortedSetFilter, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         BackendlessRequestManager(restMethod: "hive/\(hiveName!)/\(storeName!)/\(keyName!)/count?minScore=\(options.minScore)&maxScore=\(options.maxScore)&minBound=\(options.minBound.rawValue)&maxBound=\(options.maxBound.rawValue)", httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
@@ -370,15 +366,9 @@
         }
         var parameters = ["items": JSONUtils.shared.objectToJson(objectToParse: itemsArray)] as [String : Any]
         if let options = options {
-            if let duplicateBehaviour = options.duplicateBehaviour {
-                parameters["duplicateBehaviour"] = duplicateBehaviour.rawValue
-            }
-            if let scoreUpdateMode = options.scoreUpdateMode {
-                parameters["scoreUpdateMode"] = scoreUpdateMode.rawValue
-            }
-            if let resultType = options.resultType {
-                parameters["resultType"] = resultType.rawValue
-            }
+            parameters["duplicateBehaviour"] = options.duplicateBehaviour.rawValue
+            parameters["scoreUpdateMode"] = options.scoreUpdateMode.rawValue
+            parameters["resultType"] = options.resultType.rawValue
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {

@@ -368,4 +368,17 @@ import Foundation
             }
         })
     }
+    
+    public func createDirectory(path: String, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        BackendlessRequestManager(restMethod: "files/\(path)", httpMethod: .post, headers: nil, parameters: nil).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: NoReply.self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+            }
+            else {
+                responseHandler()
+            }
+        })
+    }
 }

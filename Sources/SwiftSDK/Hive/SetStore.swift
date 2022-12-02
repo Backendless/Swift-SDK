@@ -94,26 +94,43 @@
      
      // set new value
      
-     public func set(value: Any, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-          setOrAdd(add: false, values: [value], responseHandler: responseHandler, errorHandler: errorHandler)
-     }
+     /*public func set(value: Any, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+     setOrAdd(add: false, values: [value], responseHandler: responseHandler, errorHandler: errorHandler)
+}*/
      
      // set new values
      
-     public func set(values: [Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+     /*public func set(values: [Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
           setOrAdd(add: false, values: values, responseHandler: responseHandler, errorHandler: errorHandler)
-     }
+     }*/
      
      // add new value
      
      public func add(value: Any, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-          setOrAdd(add: true, values: [value], responseHandler: responseHandler, errorHandler: errorHandler)
+          // setOrAdd(add: true, values: [value], responseHandler: responseHandler, errorHandler: errorHandler)
+          add(values: [value], responseHandler: responseHandler, errorHandler: errorHandler)
      }
      
      // add new values
      
      public func add(values: [Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-          setOrAdd(add: true, values: values, responseHandler: responseHandler, errorHandler: errorHandler)
+          // setOrAdd(add: true, values: values, responseHandler: responseHandler, errorHandler: errorHandler)
+          let headers = ["Content-Type": "application/json"]
+          let parameters = JSONUtils.shared.objectToJson(objectToParse: values)
+          BackendlessRequestManager(restMethod: "hive/\(hiveName!)/\(storeName!)/\(keyName!)/add", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+               if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {
+                    if result is Fault {
+                         errorHandler(result as! Fault)
+                    }
+                    else if result is String,
+                            let intResult = Int(result as! String) {
+                         responseHandler(intResult)
+                    }
+               }
+               else {
+                    responseHandler(DataTypesUtils.shared.dataToInt(data: response.data!))
+               }
+          })
      }
      
      // delete value
@@ -190,7 +207,7 @@
      
      // private methods
      
-     private func setOrAdd(add: Bool, values: [Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+     /*private func setOrAdd(add: Bool, values: [Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
           let headers = ["Content-Type": "application/json"]
           let parameters = JSONUtils.shared.objectToJson(objectToParse: values)
           var restMethod = "hive/\(hiveName!)/\(storeName!)/\(keyName!)"
@@ -211,5 +228,5 @@
                     responseHandler(DataTypesUtils.shared.dataToInt(data: response.data!))
                }
           })
-     }
+     }*/
 }*/

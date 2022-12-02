@@ -27,21 +27,21 @@
         super.init(hiveName: hiveName, storeName: HiveStores.sortedSet)
     }
     
-    public func difference(keyNames: [String], responseHandler: (([Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func difference(keyNames: [String], responseHandler: (([SortedSetItem]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         actions(action: .difference, keyNames: keyNames, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    public func intersection(keyNames: [String], responseHandler: (([Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func intersection(keyNames: [String], responseHandler: (([SortedSetItem]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         actions(action: .intersection, keyNames: keyNames, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    public func union(keyNames: [String], responseHandler: (([Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func union(keyNames: [String], responseHandler: (([SortedSetItem]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         actions(action: .union, keyNames: keyNames, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     // private methods
     
-    private func actions(action: SetAction, keyNames: [String], responseHandler: (([Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    private func actions(action: SetAction, keyNames: [String], responseHandler: (([SortedSetItem]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         BackendlessRequestManager(restMethod: "hive/\(hiveName!)/\(storeName!)/action/\(action.rawValue)", httpMethod: .post, headers: headers, parameters: keyNames).makeRequest(getResponse: { response in
             if let result = ProcessResponse.shared.adapt(response: response, to: [JSON].self) {
@@ -49,9 +49,17 @@
                     errorHandler(result as! Fault)
                 }
                 else if let result = result as? [Any] {
-                    var resultArray = [Any]()
+                    var resultArray = [SortedSetItem]()
                     for item in result {
-                        resultArray.append(JSONUtils.shared.jsonToObject(objectToParse: item))
+                        if let arrayItem = JSONUtils.shared.jsonToObject(objectToParse: item) as? [Any],
+                           arrayItem.count == 2, arrayItem.first != nil, arrayItem.last != nil {
+                            let sortedSetItem = SortedSetItem()
+                            sortedSetItem.score = arrayItem.first! as! Double
+                            sortedSetItem.value = arrayItem.last!
+                            resultArray.append(sortedSetItem)
+                        }
+                        
+                        // resultArray.append(JSONUtils.shared.jsonToObject(objectToParse: item))
                     }
                     responseHandler(resultArray)
                 }
