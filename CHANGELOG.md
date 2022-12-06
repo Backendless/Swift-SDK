@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 6.7.4 / December 6, 2022
+* added support for DataQueryBuilder in the findFirst() and findLast() functions
+
 ### 6.7.3 / December 2, 2022
 * added method to create a directory:
 ```

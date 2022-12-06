@@ -149,27 +149,27 @@ import Foundation
     }
     
     public func findFirst(responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.findFirstOrLastOrById(first: true, last: false, objectId: nil, queryBuilder: nil, responseHandler: wrapResponse(responseHandler), errorHandler: errorHandler)
+        persistenceServiceUtils.findFirstOrLast(first: true, queryBuilder: nil, responseHandler: wrapResponse(responseHandler), errorHandler: errorHandler)
     }
     
     public func findFirst(queryBuilder: DataQueryBuilder, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.findFirstOrLastOrById(first: true, last: false, objectId: nil, queryBuilder: queryBuilder, responseHandler: wrapResponse(responseHandler), errorHandler: errorHandler)
+        persistenceServiceUtils.findFirstOrLast(first: true, queryBuilder: queryBuilder, responseHandler: wrapResponse(responseHandler), errorHandler: errorHandler)
     }
     
     public func findLast(responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.findFirstOrLastOrById(first: false, last: true, objectId: nil, queryBuilder: nil, responseHandler: wrapResponse(responseHandler), errorHandler: errorHandler)
+        persistenceServiceUtils.findFirstOrLast(first: false, queryBuilder: nil, responseHandler: wrapResponse(responseHandler), errorHandler: errorHandler)
     }
     
     public func findLast(queryBuilder: DataQueryBuilder, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.findFirstOrLastOrById(first: false, last: true, objectId: nil, queryBuilder: queryBuilder, responseHandler: wrapResponse(responseHandler), errorHandler: errorHandler)
+        persistenceServiceUtils.findFirstOrLast(first: false, queryBuilder: queryBuilder, responseHandler: wrapResponse(responseHandler), errorHandler: errorHandler)
     }
     
     public func findById(objectId: String, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.findFirstOrLastOrById(first: false, last: false, objectId: objectId, queryBuilder: nil, responseHandler: wrapResponse(responseHandler), errorHandler: errorHandler)
+        persistenceServiceUtils.findById(objectId: objectId, queryBuilder: nil, responseHandler: wrapResponse(responseHandler), errorHandler: errorHandler)
     }
     
     public func findById(objectId: String, queryBuilder: DataQueryBuilder, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.findFirstOrLastOrById(first: false, last: false, objectId: objectId, queryBuilder: queryBuilder, responseHandler: wrapResponse(responseHandler), errorHandler: errorHandler)
+        persistenceServiceUtils.findById(objectId: objectId, queryBuilder: queryBuilder, responseHandler: wrapResponse(responseHandler), errorHandler: errorHandler)
     }
     
     public func setRelation(columnName: String, parentObjectId: String, childrenObjectIds: [String], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {

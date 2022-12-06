@@ -38,9 +38,8 @@ class FindFirstLastTests: XCTestCase {
         dataStore = backendless.data.ofTable("TestClass")
     }
     
-    // ⚠️ TODO when BKNDLSS-21164 is fixed
     func testFF01() {
-        /*let expectation = self.expectation(description: "PASSED data.findFirst")
+        let expectation = self.expectation(description: "PASSED data.findFirst")
         dataStore.bulkRemove(whereClause: nil, responseHandler: { removed in
             let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44]]
             self.dataStore.bulkCreate(entities: objects, responseHandler: { createdIds in
@@ -60,12 +59,11 @@ class FindFirstLastTests: XCTestCase {
         }, errorHandler: { fault in
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: timeout, handler: nil)*/
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    // ⚠️ TODO when BKNDLSS-21164 is fixed
     func testFF02() {
-        /*let expectation = self.expectation(description: "PASSED data.findFirst")
+        let expectation = self.expectation(description: "PASSED data.findFirst")
         dataStore.bulkRemove(whereClause: nil, responseHandler: { removed in
             let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44]]
             self.dataStore.bulkCreate(entities: objects, responseHandler: { createdIds in
@@ -85,12 +83,11 @@ class FindFirstLastTests: XCTestCase {
         }, errorHandler: { fault in
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: timeout, handler: nil)*/
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    // ⚠️ TODO when BKNDLSS-21164 is fixed
     func testFF03() {
-        /*let expectation = self.expectation(description: "PASSED data.findFirst")
+        let expectation = self.expectation(description: "PASSED data.findFirst")
         dataStore.bulkRemove(whereClause: nil, responseHandler: { removed in
             let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44], ["name": "zzz", "age": 44]]
             self.dataStore.bulkCreate(entities: objects, responseHandler: { createdIds in
@@ -110,12 +107,11 @@ class FindFirstLastTests: XCTestCase {
         }, errorHandler: { fault in
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: timeout, handler: nil)*/
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    // ⚠️ TODO when BKNDLSS-21164 is fixed
     func testFF04() {
-        /*let expectation = self.expectation(description: "PASSED data.findFirst")
+        let expectation = self.expectation(description: "PASSED data.findFirst")
         dataStore.bulkRemove(whereClause: nil, responseHandler: { removed in
             let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44], ["name": "zzz", "age": 44]]
             self.dataStore.bulkCreate(entities: objects, responseHandler: { createdIds in
@@ -135,7 +131,7 @@ class FindFirstLastTests: XCTestCase {
         }, errorHandler: { fault in
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: timeout, handler: nil)*/
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func testFF05() {
@@ -160,9 +156,8 @@ class FindFirstLastTests: XCTestCase {
         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    // ⚠️ TODO when BKNDLSS-21164 is fixed
     func testFF06() {
-        /*let expectation = self.expectation(description: "PASSED data.findLast")
+        let expectation = self.expectation(description: "PASSED data.findLast")
         dataStore.bulkRemove(whereClause: nil, responseHandler: { removed in
             let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44]]
             self.dataStore.bulkCreate(entities: objects, responseHandler: { createdIds in
@@ -182,12 +177,11 @@ class FindFirstLastTests: XCTestCase {
         }, errorHandler: { fault in
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: timeout, handler: nil)*/
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    // ⚠️ TODO when BKNDLSS-21164 is fixed
     func testFF07() {
-        /*let expectation = self.expectation(description: "PASSED data.findLast")
+        let expectation = self.expectation(description: "PASSED data.findLast")
          let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44]]
          dataStore.bulkCreate(entities: objects, responseHandler: { createdIds in
          DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
@@ -203,15 +197,13 @@ class FindFirstLastTests: XCTestCase {
          })
          })
          }, errorHandler: { fault in
-         
          XCTFail("\(fault.code): \(fault.message!)")
          })
-         waitForExpectations(timeout: timeout, handler: nil)*/
+         waitForExpectations(timeout: timeout, handler: nil)
     }
     
-    // ⚠️ TODO when BKNDLSS-21164 is fixed
     func testFF08() {
-        /*let expectation = self.expectation(description: "PASSED data.findLast")
+        let expectation = self.expectation(description: "PASSED data.findLast")
         dataStore.bulkRemove(whereClause: nil, responseHandler: { removed in
             let objects = [["name": "aaa", "age": 20], ["name": "zzz", "age": 1], ["name": "ccc", "age": 44]]
             self.dataStore.bulkCreate(entities: objects, responseHandler: { createdIds in
@@ -231,7 +223,7 @@ class FindFirstLastTests: XCTestCase {
         }, errorHandler: { fault in
             XCTFail("\(fault.code): \(fault.message!)")
         })
-        waitForExpectations(timeout: timeout, handler: nil)*/
+        waitForExpectations(timeout: timeout, handler: nil)
     }
     
     func testFF09() {

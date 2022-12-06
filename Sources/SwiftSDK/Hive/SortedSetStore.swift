@@ -49,9 +49,9 @@
     
     // increment score
     
-    public func incrementScore(value: Any, count: Double, responseHandler: ((Double) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func incrementScore(value: Any, scoreValue: Double, responseHandler: ((Double) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
-        let parameters = ["scoreValue": count,
+        let parameters = ["scoreValue": scoreValue,
                           "value": JSONUtils.shared.objectToJson(objectToParse: value)] as [String : Any]
         BackendlessRequestManager(restMethod: "hive/\(hiveName!)/\(storeName!)/\(keyName!)/increment", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = ProcessResponse.shared.adapt(response: response, to: Double.self) {
@@ -71,8 +71,8 @@
     
     // decrement score
     
-    public func decrementScore(value: Any, count: Double, responseHandler: ((Double) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        incrementScore(value: value, count: -count, responseHandler: responseHandler, errorHandler: errorHandler)
+    public func decrementScore(value: Any, scoreValue: Double, responseHandler: ((Double) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        incrementScore(value: value, scoreValue: -scoreValue, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     // get and delete items with max score
