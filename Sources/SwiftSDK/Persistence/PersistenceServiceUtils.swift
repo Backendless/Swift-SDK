@@ -49,7 +49,7 @@ class PersistenceServiceUtils {
         })
     }
     
-    func create(entity: [String : Any], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {        
+    func create(entity: [String : Any], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         let parameters = PersistenceHelper.shared.convertDictionaryValuesFromGeometryType(entity)
         BackendlessRequestManager(restMethod: "data/\(tableName)", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
@@ -125,7 +125,7 @@ class PersistenceServiceUtils {
         var restMethod = "data/bulk/\(tableName)"
         if whereClause != nil, whereClause?.count ?? 0 > 0 {
             restMethod += "?where=\(whereClause!)"
-        }        
+        }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {
                 if result is Fault {
@@ -138,7 +138,7 @@ class PersistenceServiceUtils {
                 else {
                     responseHandler(DataTypesUtils.shared.dataToInt(data: response.data!))
                 }
-            }            
+            }
         })
     }
     
@@ -320,22 +320,78 @@ class PersistenceServiceUtils {
         })
     }
     
-    func findFirstOrLastOrById(first: Bool, last: Bool, objectId: String?, queryBuilder: DataQueryBuilder?, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        var restMethod = "data/\(tableName)"
+    func findFirstOrLast(first: Bool, queryBuilder: DataQueryBuilder?, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        let headers = ["Content-Type": "application/json"]
+        var parameters = ["pageSize": 1, "offset": 0] as [String : Any]
         if first {
-            restMethod += "/first"
+            parameters["sortBy"] = ["created ASC"]
         }
-        else if last {
-            restMethod += "/last"
+        else {
+            parameters["sortBy"] = ["created DESC"]
         }
-        else if let objectId = objectId {
-            restMethod += "/\(objectId)"
+        if let whereClause = queryBuilder?.whereClause {
+            parameters["where"] = whereClause
         }
-        
+        if queryBuilder?.isRelationsDepthSet ?? false,
+           let relationsDepth = queryBuilder?.relationsDepth {
+            parameters["relationsDepth"] = String(relationsDepth)
+        }
+        if let relationsPageSize = queryBuilder?.relationsPageSize {
+            parameters["relationsPageSize"] = relationsPageSize
+        }
+        if let properties = queryBuilder?.properties {
+            var props = [String]()
+            for property in properties {
+                if !property.isEmpty {
+                    props.append(property)
+                }
+            }
+            if !props.isEmpty {
+                parameters["props"] = props
+            }
+        }
+        if let excludedProperties = queryBuilder?.excludeProperties {
+            var excludeProps = [String]()
+            for property in excludedProperties {
+                if !property.isEmpty {
+                    excludeProps.append(property)
+                }
+            }
+            if !excludeProps.isEmpty {
+                parameters["excludeProps"] = DataTypesUtils.shared.arrayToString(array: excludeProps)
+            }
+        }
+        if let related = queryBuilder?.related {
+            parameters["loadRelations"] = DataTypesUtils.shared.arrayToString(array: related)
+        }
+        if let fileReferencePrefix = queryBuilder?.fileReferencePrefix {
+            parameters["fileReferencePrefix"] = fileReferencePrefix
+        }
+        BackendlessRequestManager(restMethod: "data/\(tableName)/find", httpMethod: .post, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: [JSON].self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
+                }
+                else if (result as! [JSON]).count == 1,
+                        let resultObject = (result as! [JSON]).first {
+                    if let resultDictionary = resultObject.dictionaryObject {
+                        if let responseDictionary = PersistenceHelper.shared.convertToBLType(resultDictionary) as? [String : Any] {
+                            responseHandler(responseDictionary)
+                        }
+                        else {
+                            responseHandler(resultDictionary)
+                        }
+                    }
+                }
+            }
+        })
+    }
+    
+    func findById(objectId: String, queryBuilder: DataQueryBuilder?, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        var restMethod = "data/\(tableName)/\(objectId)"
         let related = queryBuilder?.related
         let relationsDepth = queryBuilder?.relationsDepth
         let relationsPageSize = queryBuilder?.relationsPageSize
-        
         if relationsPageSize != nil {
             restMethod += "?relationsPageSize=\(relationsPageSize!)"
             if related != nil {
@@ -629,7 +685,7 @@ class PersistenceServiceUtils {
         })
     }
     
-    func getGroupObjectCount(queryBuilder: GroupDataQueryBuilder, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {        
+    func getGroupObjectCount(queryBuilder: GroupDataQueryBuilder, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         var parameters = [String: Any]()
         if let groupBy = queryBuilder.groupBy {
@@ -858,7 +914,7 @@ class PersistenceServiceUtils {
             let entityClassName = getClassName(entity: entity.classForCoder)
             let columnToPropertyMappings = Mappings.shared.getColumnToPropertyMappings(className: entityClassName)
             
-            for dictionaryField in dictionary.keys {                
+            for dictionaryField in dictionary.keys {
                 if !(dictionary[dictionaryField] is NSNull) {
                     if columnToPropertyMappings.keys.contains(dictionaryField) {
                         let mappedPropertyName = columnToPropertyMappings[dictionaryField]!
@@ -962,7 +1018,7 @@ class PersistenceServiceUtils {
                                     entity.setValue(value, forKey: dictionaryField)
                                 }
                             }
-                            else {                                
+                            else {
                                 entity.setValue(value, forKey: dictionaryField)
                             }
                         }
@@ -990,7 +1046,7 @@ class PersistenceServiceUtils {
     
     func convertFromGeometryType(dictionary: [String : Any]) -> [String : Any] {
         var resultDictionary = dictionary
-        for (key, value) in dictionary {            
+        for (key, value) in dictionary {
             if let point = value as? BLPoint {
                 resultDictionary[key] = point.asGeoJson()
             }
@@ -1000,7 +1056,7 @@ class PersistenceServiceUtils {
             else if let polygon = value as? BLPolygon {
                 resultDictionary[key] = polygon.asGeoJson()
             }
-        }        
+        }
         return resultDictionary
     }
 }
