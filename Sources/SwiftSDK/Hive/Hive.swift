@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-/*import Foundation
+import Foundation
 
 @objcMembers public class Hive: NSObject {
     
@@ -122,4 +122,4 @@
     public func sortedSetStore(_ keyName: String) -> SortedSetStore {
         return SortedSetStore(hiveName: self.hiveName, keyName: keyName)
     }
-}*/
+}

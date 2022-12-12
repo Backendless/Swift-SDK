@@ -20,7 +20,7 @@
  */
 
 
-/*import Foundation
+import Foundation
 
 @objcMembers public class KeyValueStoreManager: AnyStoreManager {
     
@@ -77,4 +77,4 @@
             }
         })
     }
-}*/
+}

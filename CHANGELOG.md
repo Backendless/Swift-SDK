@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 6.7.5 / December 12, 2022
+* added Hive support
+
 ### 6.7.4 / December 6, 2022
 * added support for DataQueryBuilder in the findFirst() and findLast() functions
 

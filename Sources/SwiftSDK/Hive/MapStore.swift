@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-/*import Foundation
+import Foundation
 
 @objcMembers public class MapStore: AnyStore {
     
@@ -173,28 +173,23 @@
         })
     }
     
-    // set new values (reset the store)
+    // set new values / update the existing values
     
-    /*public func set(data: [String : Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        setOrAdd(add: false, data: data, responseHandler: responseHandler, errorHandler: errorHandler)
-    }*/
-    
-    // change: set value by objKey
-    
-    public func set(key: String, value: Any, responseHandler: ((Bool) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func set(data: [String : Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
-        let parameters = ["value": JSONUtils.shared.objectToJson(objectToParse: value)] as [String : Any]
-        BackendlessRequestManager(restMethod: "hive/\(hiveName!)/\(storeName!)/\(keyName!)/set/\(key)", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let responseData = response.data {
-                let result = try? JSONSerialization.jsonObject(with: responseData, options: .allowFragments)
-                if result is Bool {
-                    responseHandler(result as! Bool)
+        let parameters = JSONUtils.shared.objectToJson(objectToParse: data)
+        BackendlessRequestManager(restMethod: "hive/\(hiveName!)/\(storeName!)/\(keyName!)", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+            if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {
+                if result is Fault {
+                    errorHandler(result as! Fault)
                 }
-                else if result is [String : Any],
-                        let errorMessage = (result as! [String : Any])["message"] as? String,
-                        let errorCode = (result as! [String : Any])["code"] as? Int {
-                    errorHandler(Fault(message: errorMessage, faultCode: errorCode))
+                else if result is String,
+                        let intResult = Int(result as! String) {
+                    responseHandler(intResult)
                 }
+            }
+            else {
+                responseHandler(DataTypesUtils.shared.dataToInt(data: response.data!))
             }
         })
     }
@@ -219,12 +214,6 @@
                 }
             }
         })
-    }
-    
-    // add new values
-    
-    public func add(data: [String : Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        setOrAdd(add: true, data: data, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     // increment value
@@ -288,31 +277,4 @@
             }
         })
     }
-    
-    // *******************************************************************
-    
-    // private methods
-    
-    private func setOrAdd(add: Bool, data: [String : Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        let headers = ["Content-Type": "application/json"]
-        var restMethod = "hive/\(hiveName!)/\(storeName!)/\(keyName!)"
-        if add == true {
-            restMethod += "/add"
-        }
-        let parameters = JSONUtils.shared.objectToJson(objectToParse: data)
-        BackendlessRequestManager(restMethod: restMethod, httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {
-                if result is Fault {
-                    errorHandler(result as! Fault)
-                }
-                else if result is String,
-                        let intResult = Int(result as! String) {
-                    responseHandler(intResult)
-                }
-            }
-            else {
-                responseHandler(DataTypesUtils.shared.dataToInt(data: response.data!))
-            }
-        })
-    }
-}*/
+}

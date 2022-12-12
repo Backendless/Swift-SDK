@@ -152,13 +152,13 @@ import Foundation
         return _commerceService
     }()
     
-    /*public lazy var hive: HiveManager = {
+    public lazy var hive: HiveManager = {
         return HiveManager()
     }()
     
     public func hive(_ hiveName: String) -> Hive {
         return Hive(hiveName: hiveName)
-    }*/
+    }
     
     public func sharedObject(name: String) -> SharedObject {
         return SharedObject(name: name)
