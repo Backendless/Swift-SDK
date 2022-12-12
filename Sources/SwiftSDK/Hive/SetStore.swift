@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-/*import Foundation
+import Foundation
 
 @objcMembers public class SetStore: AnyStore {
      
@@ -91,18 +91,6 @@
                }
           })
      }
-     
-     // set new value
-     
-     /*public func set(value: Any, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-     setOrAdd(add: false, values: [value], responseHandler: responseHandler, errorHandler: errorHandler)
-}*/
-     
-     // set new values
-     
-     /*public func set(values: [Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-          setOrAdd(add: false, values: values, responseHandler: responseHandler, errorHandler: errorHandler)
-     }*/
      
      // add new value
      
@@ -229,4 +217,4 @@
                }
           })
      }*/
-}*/
+}

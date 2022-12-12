@@ -19,11 +19,11 @@
  *  ********************************************************************************************************************
  */
 
-/*import Foundation
+import Foundation
 
 @objcMembers public class ListStoreManager: AnyStoreManager {
 
     init(hiveName: String) {
         super.init(hiveName: hiveName, storeName: HiveStores.list)
     }
-}*/
+}

@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-/*import Foundation
+import Foundation
 
 enum HiveStores {
     static let keyValue = "key-value"
@@ -219,4 +219,4 @@ enum SetAction: String {
     public var count = 20
     public var reverse = false
     public var withScores = false
-}*/
+}

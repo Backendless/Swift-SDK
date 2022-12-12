@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-/*import Foundation
+import Foundation
 
 @objcMembers public class SortedSetStore: AnyStore {
     
@@ -417,4 +417,4 @@
             }
         })
     }
-}*/
+}

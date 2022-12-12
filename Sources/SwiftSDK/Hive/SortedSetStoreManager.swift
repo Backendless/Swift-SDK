@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-/*import Foundation
+import Foundation
 
 @objcMembers public class SortedSetStoreManager: AnyStoreManager {
     
@@ -66,4 +66,4 @@
             }
         })
     }
-}*/
+}

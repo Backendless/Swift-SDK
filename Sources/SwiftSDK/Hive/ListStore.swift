@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-/*import Foundation
+import Foundation
 
 @objcMembers public class ListStore: AnyStore {
     
@@ -120,44 +120,6 @@
             }
             else {
                 responseHandler(DataTypesUtils.shared.dataToInt(data: response.data!))
-            }
-        })
-    }
-    
-    // set items
-    
-    /*public func set(values: [Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        let headers = ["Content-Type": "application/json"]
-        let parameters = JSONUtils.shared.objectToJson(objectToParse: values)
-        BackendlessRequestManager(restMethod: "hive/\(hiveName!)/\(storeName!)/\(keyName!)", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {
-                if result is Fault {
-                    errorHandler(result as! Fault)
-                }
-                else if result is String,
-                        let intResult = Int(result as! String) {
-                    responseHandler(intResult)
-                }
-            }
-            else {
-                responseHandler(DataTypesUtils.shared.dataToInt(data: response.data!))
-            }
-        })
-    }*/
-    
-    // set item by index
-    
-    public func set(value: Any, index: Int, responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        let headers = ["Content-Type": "application/json"]
-        let parameters = ["value": JSONUtils.shared.objectToJson(objectToParse: value)]
-        BackendlessRequestManager(restMethod: "hive/\(hiveName!)/\(storeName!)/\(keyName!)/\(index)", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
-            if let result = ProcessResponse.shared.adapt(response: response, to: NoReply.self) {
-                if result is Fault {
-                    errorHandler(result as! Fault)
-                }
-            }
-            else {
-                responseHandler()
             }
         })
     }
@@ -328,4 +290,4 @@
             }
         })
     }
-}*/
+}

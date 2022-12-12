@@ -329,6 +329,11 @@ class PersistenceServiceUtils {
         else {
             parameters["sortBy"] = ["created DESC"]
         }
+        if let sortBy = queryBuilder?.sortBy, sortBy.count > 0 {
+            var sortByParams = parameters["sortBy"] as! [String]
+            sortByParams.append(contentsOf: sortBy)
+            parameters["sortBy"] = sortByParams
+        }
         if let whereClause = queryBuilder?.whereClause {
             parameters["where"] = whereClause
         }

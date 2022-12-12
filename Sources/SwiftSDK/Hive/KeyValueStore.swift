@@ -19,7 +19,7 @@
  *  ********************************************************************************************************************
  */
 
-/*import Foundation
+import Foundation
 
 @objcMembers public class KeyValueStore: AnyStore {
     
@@ -142,4 +142,4 @@
             }
         })
     }
-}*/
+}
