@@ -8,7 +8,7 @@
  *
  *  ********************************************************************************************************************
  *
- *  Copyright 2022 BACKENDLESS.COM. All Rights Reserved.
+ *  Copyright 2023 BACKENDLESS.COM. All Rights Reserved.
  *
  *  NOTICE: All information contained herein is, and remains the property of Backendless.com and its suppliers,
  *  if any. The intellectual and technical concepts contained herein are proprietary to Backendless.com and its
@@ -34,7 +34,6 @@ import Foundation
     
     public var reloadCurrentUser: Bool = false
     
-    var currentUserForSession: BackendlessUser?
     public var currentUser: BackendlessUser? {
         get {
             if reloadCurrentUser {
@@ -56,6 +55,8 @@ import Foundation
             }
         }
     }
+    
+    var currentUserForSession: BackendlessUser?
     
     public func setUserToken(value: String) {
         currentUserForSession?.setUserToken(value: value)
@@ -110,7 +111,7 @@ import Foundation
                     errorHandler(result as! Fault)
                 }
                 else {
-                    self.setPersistentUser(currUser: result as! BackendlessUser, reconnectSocket: true)                    
+                    self.setPersistentUser(currUser: result as! BackendlessUser, reconnectSocket: true)
                     responseHandler(result as! BackendlessUser)
                 }
             }
@@ -339,7 +340,6 @@ import Foundation
     }
     
     public func getUserRoles(responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        //var headers: [String: String]? = nil
         BackendlessRequestManager(restMethod: "users/userroles", httpMethod: .get, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = ProcessResponse.shared.adapt(response: response, to: [String].self) {
                 if result is Fault {
@@ -447,14 +447,15 @@ import Foundation
         })
     }
     
-    public func createEmailConfirmation(identity: String, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func createEmailConfirmation(identity: String, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         BackendlessRequestManager(restMethod: "users/createEmailConfirmationURL/\(identity)", httpMethod: .post, headers: nil, parameters: nil).makeRequest(getResponse: { response in
             if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
                 if result is Fault {
                     errorHandler(result as! Fault)
                 }
-                else if let resultDictionary = (result as! JSON).dictionaryObject {
-                    responseHandler(resultDictionary)
+                else if let resultDictionary = (result as! JSON).dictionaryObject,
+                        let confirmationURL = resultDictionary["confirmationURL"] as? String {
+                    responseHandler(confirmationURL)
                 }
             }
         })

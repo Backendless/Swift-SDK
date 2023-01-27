@@ -1,5 +1,11 @@
 # RELEASE HISTORY
 
+### 6.7.6 / January 27, 2023
+* the response of the `createEmailConfirmation` method changed to String:
+```
+func createEmailConfirmation(identity: String, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!)
+```
+
 ### 6.7.5 / December 12, 2022
 * added Hive support
 
