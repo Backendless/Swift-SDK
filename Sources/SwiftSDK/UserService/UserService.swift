@@ -169,8 +169,8 @@ import Foundation
         oauth1Login(providerCode: providerCode, token: authToken, tokenSecret: tokenSecret, guestUser: nil, fieldsMapping: fieldsMapping, stayLoggedIn: stayLoggedIn, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    public func loginWithOauth1(providerCode: String, authToken: String, authTokenSecret: String, guestUser: BackendlessUser, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        oauth1Login(providerCode: providerCode, token: authToken, tokenSecret: authTokenSecret, guestUser: guestUser, fieldsMapping: fieldsMapping, stayLoggedIn: stayLoggedIn, responseHandler: responseHandler, errorHandler: errorHandler)
+    public func loginWithOauth1(providerCode: String, authToken: String, tokenSecret: String, guestUser: BackendlessUser, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        oauth1Login(providerCode: providerCode, token: authToken, tokenSecret: tokenSecret, guestUser: guestUser, fieldsMapping: fieldsMapping, stayLoggedIn: stayLoggedIn, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     private func oauth1Login(providerCode: String, token: String, tokenSecret: String, guestUser: BackendlessUser?, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!) {

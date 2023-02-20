@@ -1,5 +1,14 @@
 # RELEASE HISTORY
 
+### 6.7.7 / February 20, 2023
+* added a necessary `import Foundation` line of code to the UserProperty class
+* the `loginWithOauth1` method signature changed a little to:
+```
+func loginWithOauth1(providerCode: String, authToken: String, tokenSecret: String, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!)
+
+func loginWithOauth1(providerCode: String, authToken: String, tokenSecret: String, guestUser: BackendlessUser, fieldsMapping: [String : String], stayLoggedIn: Bool, responseHandler: ((BackendlessUser) -> Void)!, errorHandler: ((Fault) -> Void)!)
+```
+
 ### 6.7.6 / January 27, 2023
 * the response of the `createEmailConfirmation` method changed to String:
 ```
@@ -22,7 +31,7 @@ func createDirectory(path: String, responseHandler: (() -> Void)!, errorHandler:
 * fixed bug with missing user token in requests after login
 
 ### 6.7.1 / October 7, 2022
-* fixed bug with the `makeRequest()` method in BackendlessRequestManager class when assigning `request.httpBody`
+* fixed bug with the `makeRequest()` method in the BackendlessRequestManager class when assigning `request.httpBody`
 
 ### 6.7.0 / September 26, 2022
 * the `PermissionOperation` enum values updated to: UPDATE, FIND, REMOVE, LOAD_RELATIONS, ADD_RELATION, DELETE_RELATION, UPSERT
