@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 6.7.8 / April 21, 2023
+* fixed issue when `getUserToken` method returned nil after login with `stayLoggedIn = true` and re-runing app
+
 ### 6.7.7 / February 20, 2023
 * added a necessary `import Foundation` line of code to the UserProperty class
 * the `loginWithOauth1` method signature changed a little to:

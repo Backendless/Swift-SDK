@@ -59,10 +59,16 @@ import Foundation
     var currentUserForSession: BackendlessUser?
     
     public func setUserToken(value: String) {
+        if stayLoggedIn {
+            UserDefaultsHelper.shared.saveUserToken(value)
+        }
         currentUserForSession?.setUserToken(value: value)
     }
     
     public func getUserToken() -> String? {
+        if let userToken = UserDefaultsHelper.shared.getUserToken() {
+            return userToken
+        }
         return currentUserForSession?.userToken
     }
     
