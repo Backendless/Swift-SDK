@@ -195,10 +195,10 @@ class PayloadHelper {
             }       
             changes = psu.convertFromGeometryType(dictionary: changes)            
             if let whereClause = payload["conditional"] as? String {
-                operationPayload["payload"] = ["conditional": whereClause, "changes": changes]
+                operationPayload["payload"] = ["conditional": whereClause, "changes": changes] as [String : Any]
             }
             else if let objectIds = payload["unconditional"] as? [String] {
-                operationPayload["payload"] = ["unconditional": objectIds, "changes": changes]
+                operationPayload["payload"] = ["unconditional": objectIds, "changes": changes] as [String : Any]
             }
             else if let ref = payload["unconditional"] as? [String : Any] {
                 operationPayload["payload"] = ["unconditional": ref, "changes": changes]
