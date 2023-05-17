@@ -1,5 +1,9 @@
 # RELEASE HISTORY
 
+### 6.7.9 / May 17, 2023
+* fixed RT `bulkUpsert` methods access level for class approach
+* fixed issue with `DataPermission`'s `setPermission()` function 
+
 ### 6.7.8 / April 21, 2023
 * fixed issue when `getUserToken` method returned nil after login with `stayLoggedIn = true` and re-runing app
 

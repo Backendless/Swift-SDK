@@ -177,7 +177,7 @@ import Foundation
             else {
                 tableName = PersistenceHelper.shared.getTableNameFor(type(of: entity))
             }
-            BackendlessRequestManager(restMethod: "data/\(tableName)/permissions/\(permissionType)/\(objectId)", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
+            BackendlessRequestManager(restMethod: "data/\(tableName)/permissions/\(permissionType.rawValue)/\(objectId)", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
                 let result = ProcessResponse.shared.adapt(response: response, to: NoReply.self)
                 if result is Fault {
                     errorHandler(result as! Fault)
