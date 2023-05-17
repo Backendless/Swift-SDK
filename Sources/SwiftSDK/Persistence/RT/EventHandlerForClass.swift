@@ -207,7 +207,7 @@ import Foundation
         removeListeners(type: RtTypes.objectsChanges, event: RtEventHandlers.bulkUpdated, whereClause: nil)
     }
     
-    func addBulkUpsertListener(responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
+    public func addBulkUpsertListener(responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) -> RTSubscription? {
         let wrappedBlock: ([String : Any]) -> () = { response in
             var resultArray = [String]()
             for key in response.keys {
@@ -218,7 +218,7 @@ import Foundation
         return subscribeForObjectsChanges(event: RtEventHandlers.bulkUpserted, tableName: tableName, whereClause: nil, responseHandler: wrappedBlock, errorHandler: errorHandler)
     }
     
-    func removeBulkUpsertListeners() {
+    public func removeBulkUpsertListeners() {
         removeListeners(type: RtTypes.objectsChanges, event: RtEventHandlers.bulkUpserted, whereClause: nil)
     }
     
