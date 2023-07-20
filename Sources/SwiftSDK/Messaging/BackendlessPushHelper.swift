@@ -91,7 +91,7 @@ import UserNotifications
         return resultDictionary
     }
     
-    func createRequestFromTemplate(iosPushTemplate: [String : Any], request: UNNotificationRequest) -> UNNotificationRequest {        
+    func createRequestFromTemplate(iosPushTemplate: [String : Any], request: UNNotificationRequest) -> UNNotificationRequest {
         let content = UNMutableNotificationContent()
         var userInfo = [String : Any]()
         var aps = [String : Any]()

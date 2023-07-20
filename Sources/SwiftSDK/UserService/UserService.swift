@@ -201,26 +201,45 @@ import Foundation
     }
     
     public func getAuthorizationUrlLink(providerCode: String, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        getAuthorizationUrl(providerCode: providerCode, mappings: nil, scope: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+        getAuthorizationUrl(providerCode: providerCode, callbackUrlDomain: nil, mappings: nil, scope: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    public func getAuthorizationUrlLink(providerCode: String, callbackUrlDomain: String, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        getAuthorizationUrl(providerCode: providerCode, callbackUrlDomain: callbackUrlDomain, mappings: nil, scope: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     public func getAuthorizationUrlLink(providerCode: String, fieldsMappings: [String : String], responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        getAuthorizationUrl(providerCode: providerCode, mappings: fieldsMappings, scope: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+        getAuthorizationUrl(providerCode: providerCode, callbackUrlDomain: nil, mappings: fieldsMappings, scope: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    public func getAuthorizationUrlLink(providerCode: String, callbackUrlDomain: String, fieldsMappings: [String : String], responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        getAuthorizationUrl(providerCode: providerCode, callbackUrlDomain: callbackUrlDomain, mappings: fieldsMappings, scope: nil, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     public func getAuthorizationUrlLink(providerCode: String, scope: [String], responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        getAuthorizationUrl(providerCode: providerCode, mappings: nil, scope: scope, responseHandler: responseHandler, errorHandler: errorHandler)
+        getAuthorizationUrl(providerCode: providerCode, callbackUrlDomain: nil, mappings: nil, scope: scope, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    public func getAuthorizationUrlLink(providerCode: String, callbackUrlDomain: String, scope: [String], responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        getAuthorizationUrl(providerCode: providerCode, callbackUrlDomain: callbackUrlDomain, mappings: nil, scope: scope, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     public func getAuthorizationUrlLink(providerCode: String, fieldsMappings: [String : String], scope: [String], responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        getAuthorizationUrl(providerCode: providerCode, mappings: fieldsMappings, scope: scope, responseHandler: responseHandler, errorHandler: errorHandler)
+        getAuthorizationUrl(providerCode: providerCode, callbackUrlDomain: nil, mappings: fieldsMappings, scope: scope, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
-    private func getAuthorizationUrl(providerCode: String, mappings: [String : String]?, scope: [String]?, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    public func getAuthorizationUrlLink(providerCode: String, callbackUrlDomain: String, fieldsMappings: [String : String], scope: [String], responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        getAuthorizationUrl(providerCode: providerCode, callbackUrlDomain: callbackUrlDomain, mappings: fieldsMappings, scope: scope, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    private func getAuthorizationUrl(providerCode: String, callbackUrlDomain: String?, mappings: [String : String]?, scope: [String]?, responseHandler: ((String) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
         var parameters = [String : Any]()
         if mappings != nil {
             parameters["fieldsMappings"] = mappings
+        }
+        if callbackUrlDomain != nil {
+            parameters["callbackUrlDomain"] = callbackUrlDomain
         }
         if scope != nil {
             var permissionsString = ""
