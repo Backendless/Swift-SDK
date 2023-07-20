@@ -49,7 +49,11 @@ class PersistenceHelper {
     
     func getObjectId(entity: Any) -> String? {
         if let entity = entity as? [String : Any],
-            let objectId = entity["objectId"] as? String {
+           let objectId = entity["objectId"] as? String {
+            return objectId
+        }
+        else if let entity = entity as? NSObject,
+                let objectId = entity.value(forKey: "objectId") as? String {
             return objectId
         }
         else if let objectId = StoredObjects.shared.getObjectId(forObject: entity as! AnyHashable) {
@@ -60,7 +64,7 @@ class PersistenceHelper {
             if name == "objectId" {
                 return value as? String
             }
-        }        
+        }
         return nil
     }
     
@@ -87,11 +91,11 @@ class PersistenceHelper {
                     }
                 }
                 else if className == BLLineString.geometryClassName, dictionary["type"] as? String == BLLineString.geoJsonType,
-                    let lineString = try? GeoJSONParser.dictionaryToLineString(dictionary) {
+                        let lineString = try? GeoJSONParser.dictionaryToLineString(dictionary) {
                     return lineString
                 }
                 else if className == BLPolygon.geometryClassName, dictionary["type"] as? String == BLPolygon.geoJsonType,
-                    let polygon = try? GeoJSONParser.dictionaryToPolygon(dictionary) {
+                        let polygon = try? GeoJSONParser.dictionaryToPolygon(dictionary) {
                     return polygon
                 }
             }
@@ -103,11 +107,11 @@ class PersistenceHelper {
                     }
                 }
                 else if dictionary["type"] as? String == BLLineString.geoJsonType,
-                    let lineString = try? GeoJSONParser.dictionaryToLineString(dictionary) {
+                        let lineString = try? GeoJSONParser.dictionaryToLineString(dictionary) {
                     return lineString
                 }
                 else if dictionary["type"] as? String == BLPolygon.geoJsonType,
-                    let polygon = try? GeoJSONParser.dictionaryToPolygon(dictionary) {
+                        let polygon = try? GeoJSONParser.dictionaryToPolygon(dictionary) {
                     return polygon
                 }
             }
@@ -167,7 +171,7 @@ class PersistenceHelper {
         // *************************
         
         var entityDictionary = [String: Any]()
-
+        
         let resultClass = type(of: entity) as! NSObject.Type
         var outCount : UInt32 = 0
         if let properties = class_copyPropertyList(resultClass.self, &outCount) {
@@ -196,7 +200,7 @@ class PersistenceHelper {
                                 var resultDictionary = [String : Any]()
                                 for (key, dictionaryVal) in dictionaryValue {
                                     if !(dictionaryVal is String), !(dictionaryVal is NSNumber), !(dictionaryVal is NSNull),
-                                    !(dictionaryVal is [String]), !(dictionaryVal is [NSNumber]) {
+                                       !(dictionaryVal is [String]), !(dictionaryVal is [NSNumber]) {
                                         resultDictionary[key] = entityToDictionaryWithClassProperty(entity: dictionaryVal)
                                     }
                                     else {
@@ -290,11 +294,11 @@ class PersistenceHelper {
                     }
                     if let dictValue = value as? [String : Any] {
                         if let relationEntity = dictionaryToMappedClass(dictValue),
-                            entityFields.keys.contains(entityField) {
+                           entityFields.keys.contains(entityField) {
                             entity.setValue(relationEntity, forKey: entityField)
                         }
                         else if let customEntity = jsonDictionaryToEntity(dictValue, propertyName: entityField, parentEntity: entity),
-                            entityFields.keys.contains(entityField) {
+                                entityFields.keys.contains(entityField) {
                             entity.setValue(customEntity, forKey: entityField)
                         }
                         else if entityFields.keys.contains(entityField) {
@@ -316,7 +320,7 @@ class PersistenceHelper {
                         }
                     }
                     else if let valueType = entityFields[entityField],
-                        entityFields.keys.contains(entityField) {
+                            entityFields.keys.contains(entityField) {
                         entity.setValue(valueToSpecificType(value, valueType: valueType), forKey: entityField)
                     }
                 }
@@ -403,7 +407,7 @@ class PersistenceHelper {
                 for i : UInt32 in 0..<outCount {
                     let property = properties[Int(i)]
                     if let propertyName = String(cString: property_getName(property), encoding: .utf8),
-                        let propertyAttr = property_getAttributes(property) {
+                       let propertyAttr = property_getAttributes(property) {
                         let propertyType = String(cString: propertyAttr).components(separatedBy: ",")[0].replacingOccurrences(of: "T", with: "")
                         entityProperties[propertyName] = propertyType
                     }
@@ -423,15 +427,15 @@ class PersistenceHelper {
     
     private func tryConvertStringToGeometryType(_ stringValue: String) -> Any {
         if stringValue.contains(BLPoint.wktType),
-            let blPoint = try? BLPoint.fromWkt(stringValue) {
+           let blPoint = try? BLPoint.fromWkt(stringValue) {
             return blPoint
         }
         else if stringValue.contains(BLLineString.wktType),
-            let blLineString = try? BLLineString.fromWkt(stringValue) {
+                let blLineString = try? BLLineString.fromWkt(stringValue) {
             return blLineString
         }
         else if stringValue.contains(BLPolygon.wktType),
-            let polygon = try? BLPolygon.fromWkt(stringValue) {
+                let polygon = try? BLPolygon.fromWkt(stringValue) {
             return polygon
         }
         return stringValue
@@ -454,14 +458,14 @@ class PersistenceHelper {
             return DataTypesUtils.shared.intToDate(intVal: value as! Int)
         }
         
-            
+        
         // BKNDLSS-21285
         /*else if valueType.contains("NSDate"), value is String {
-            let intValue = Int(value as! String)
-            return DataTypesUtils.shared.intToDate(intVal: intValue!)
-        }*/
-            
-            
+         let intValue = Int(value as! String)
+         return DataTypesUtils.shared.intToDate(intVal: intValue!)
+         }*/
+        
+        
         else if valueType.contains("BackendlessFile"), value is String {
             let backendlessFile = BackendlessFile()
             backendlessFile.fileUrl = value as? String

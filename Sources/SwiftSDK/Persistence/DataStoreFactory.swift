@@ -138,7 +138,7 @@ import Foundation
         let wrappedBlock: ([[String: Any]]) -> () = { responseArray in
             var resultArray = [Any]()
             for responseObject in responseArray {
-                let className = PersistenceHelper.shared.getClassNameWithoutModule(self.entityClass)
+                let className = PersistenceHelper.shared.getClassNameWithoutModule(self.entityClass)                
                 if let resultObject = PersistenceHelper.shared.dictionaryToEntity(responseObject, className: className) {
                     resultArray.append(resultObject)
                 }

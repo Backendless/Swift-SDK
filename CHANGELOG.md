@@ -1,5 +1,9 @@
 # RELEASE HISTORY
 
+### 6.7.10 / July 20, 2023
+* fixed issue with mirroring class children
+* added the `callbackUrlDomain` argument to the `getAuthorizationUrlLink` methods
+
 ### 6.7.9 / May 17, 2023
 * fixed RT `bulkUpsert` methods access level for class approach
 * fixed issue with `DataPermission`'s `setPermission()` function 

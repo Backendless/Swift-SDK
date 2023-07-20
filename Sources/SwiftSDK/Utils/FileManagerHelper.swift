@@ -56,6 +56,16 @@ class FileManagerHelper {
             let data = NSKeyedArchiver.archivedData(withRootObject: pushTemplatesDictionary)
             try? data.write(to: filePath)
         }
+        
+        // for iOS 12+
+        /*
+         if let url = sharedContainerURL() {
+             let filePath = url.appendingPathComponent(PUSH_TEMPLATES_FILE_NAME)
+             if let data = try? NSKeyedArchiver.archivedData(withRootObject: someObject, requiringSecureCoding: false) {
+                 try? data.write(to: filePath)
+             }
+         }
+         */
     }
     
     func getPushTemplates() -> [String : Any] {
@@ -68,6 +78,18 @@ class FileManagerHelper {
         }
         return [String : Any]()
     }
+    
+    // for iOS 12+
+    /*
+     if let url = sharedContainerURL() {
+         let filePath = url.appendingPathComponent(PUSH_TEMPLATES_FILE_NAME)
+         if let data = try? Data(contentsOf: filePath),
+            let result = try? NSKeyedUnarchiver.unarchivedObject(ofClasses: [NSDictionary.self, NSNumber.self, NSString.self], from: data) {
+             return result as? [String : Any]
+         }
+     }
+     return [String : Any]()
+     */
 }
 
 #endif
