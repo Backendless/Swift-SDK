@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 7.0.0 / July 25, 2023
+* added implementation for BackendlessExpression
+
 ### 6.7.10 / July 20, 2023
 * fixed issue with mirroring class children
 * added the `callbackUrlDomain` argument to the `getAuthorizationUrlLink` methods

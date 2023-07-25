@@ -78,4 +78,12 @@ class DataTypesUtils {
         }
         return resultString
     }
+    
+    func expressionToDictionary(_ expression: [String : BackendlessExpression]) -> [String : [String : String]] {
+        var expressionDict = [String : [String : String]]()
+        for (key, value) in expression {
+            expressionDict[key] = value.toJSON()
+        }
+        return expressionDict
+    }
 }

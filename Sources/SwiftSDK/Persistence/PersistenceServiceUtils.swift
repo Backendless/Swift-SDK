@@ -87,9 +87,12 @@ class PersistenceServiceUtils {
         })
     }
     
-    func update(entity: [String : Any], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    func update(entity: [String : Any], expression: [String : BackendlessExpression]?, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
-        let parameters = PersistenceHelper.shared.convertDictionaryValuesFromGeometryType(entity)
+        var parameters = PersistenceHelper.shared.convertDictionaryValuesFromGeometryType(entity)
+        if expression != nil, !expression!.isEmpty {
+            parameters = parameters.merging(DataTypesUtils.shared.expressionToDictionary(expression!)) { (_, new) in new }
+        }
         if let objectId = entity["objectId"] as? String {
             BackendlessRequestManager(restMethod: "data/\(tableName)/\(objectId)", httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
                 if let result = ProcessResponse.shared.adapt(response: response, to: JSON.self) {
@@ -119,12 +122,18 @@ class PersistenceServiceUtils {
         }
     }
     
-    func bulkUpdate(whereClause: String?, changes: [String : Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+    func bulkUpdate(whereClause: String?, changes: [String : Any]?, expression: [String : BackendlessExpression]?, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let headers = ["Content-Type": "application/json"]
-        let parameters = PersistenceHelper.shared.convertDictionaryValuesFromGeometryType(changes)
+        var parameters = [String : Any]()
+        if changes != nil {
+            parameters = PersistenceHelper.shared.convertDictionaryValuesFromGeometryType(changes!)
+        }
         var restMethod = "data/bulk/\(tableName)"
         if whereClause != nil, whereClause?.count ?? 0 > 0 {
             restMethod += "?where=\(whereClause!)"
+        }
+        if expression != nil, !expression!.isEmpty {
+            parameters = parameters.merging(DataTypesUtils.shared.expressionToDictionary(expression!)) { (_, new) in new }
         }
         BackendlessRequestManager(restMethod: restMethod, httpMethod: .put, headers: headers, parameters: parameters).makeRequest(getResponse: { response in
             if let result = ProcessResponse.shared.adapt(response: response, to: Int.self) {

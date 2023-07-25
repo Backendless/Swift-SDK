@@ -59,6 +59,10 @@ import Foundation
         save(entity: entity, isUpsert: false, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
+    public func save(entity: Any, expression: [String : BackendlessExpression], responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        save(entity: entity, isUpsert: false, expression: expression, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
     public func save(entity: Any, isUpsert: Bool, responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         if isUpsert,
            let entityDictionary = PersistenceHelper.shared.entityToSimpleType(entity: entity) as? [String : Any] {
@@ -66,7 +70,22 @@ import Foundation
         }
         else if let entityDictionary = PersistenceHelper.shared.entityToSimpleType(entity: entity) as? [String : Any] {
             if PersistenceHelper.shared.getObjectId(entity: entity) != nil {
-                persistenceServiceUtils.update(entity: entityDictionary, responseHandler: wrapResponse(responseHandler), errorHandler: errorHandler)
+                persistenceServiceUtils.update(entity: entityDictionary, expression: nil, responseHandler: wrapResponse(responseHandler), errorHandler: errorHandler)
+            }
+            else {
+                persistenceServiceUtils.create(entity: entityDictionary, responseHandler: wrapResponse(responseHandler), errorHandler: errorHandler)
+            }
+        }
+    }
+    
+    public func save(entity: Any, isUpsert: Bool, expression: [String : BackendlessExpression], responseHandler: ((Any) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        if isUpsert,
+           let entityDictionary = PersistenceHelper.shared.entityToSimpleType(entity: entity) as? [String : Any] {
+            persistenceServiceUtils.upsert(entity: entityDictionary, responseHandler: wrapResponse(responseHandler), errorHandler: errorHandler)
+        }
+        else if let entityDictionary = PersistenceHelper.shared.entityToSimpleType(entity: entity) as? [String : Any] {
+            if PersistenceHelper.shared.getObjectId(entity: entity) != nil {
+                persistenceServiceUtils.update(entity: entityDictionary, expression: expression, responseHandler: wrapResponse(responseHandler), errorHandler: errorHandler)
             }
             else {
                 persistenceServiceUtils.create(entity: entityDictionary, responseHandler: wrapResponse(responseHandler), errorHandler: errorHandler)
@@ -85,7 +104,11 @@ import Foundation
     }
     
     public func bulkUpdate(whereClause: String?, changes: [String : Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.bulkUpdate(whereClause: whereClause, changes: changes, responseHandler: responseHandler, errorHandler: errorHandler)
+        persistenceServiceUtils.bulkUpdate(whereClause: whereClause, changes: changes, expression: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    public func bulkUpdate(whereClause: String?, expression: [String : BackendlessExpression], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        persistenceServiceUtils.bulkUpdate(whereClause: whereClause, changes: nil, expression: expression, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     public func bulkUpsert(entities: [Any], responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
