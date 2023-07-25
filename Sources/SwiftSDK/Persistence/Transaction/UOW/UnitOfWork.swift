@@ -126,8 +126,21 @@ enum UowProps {
         return opRes
     }
     
+    public func update(result: OpResult, changes: [String : Any], expression: [String : BackendlessExpression]) -> OpResult {
+        let (operation, opRes) = uowUpdate!.update(result: result,
+                                                   changes: changes.merging(DataTypesUtils.shared.expressionToDictionary(expression)) { (_, new) in new })
+        operations.append(operation)
+        return opRes
+    }
+    
     public func update(result: OpResult, propertyName: String, propertyValue: Any) -> OpResult {
         return update(result: result, changes: [propertyName: propertyValue])
+    }
+    
+    public func update(result: OpResult, propertyName: String, propertyValue: Any, expression: [String : BackendlessExpression]) -> OpResult {
+        let changes = [propertyName: propertyValue]
+        return update(result: result,
+                      changes: changes.merging(DataTypesUtils.shared.expressionToDictionary(expression)) { (_, new) in new })
     }
     
     public func update(valueReference: OpResultValueReference, changes: [String : Any]) -> OpResult {
@@ -136,8 +149,20 @@ enum UowProps {
         return opRes
     }
     
+    public func update(valueReference: OpResultValueReference, changes: [String : Any], expression: [String : BackendlessExpression]) -> OpResult {
+        let (operation, opRes) = uowUpdate!.update(valueReference: valueReference,
+                                                   changes: changes.merging(DataTypesUtils.shared.expressionToDictionary(expression)) { (_, new) in new })
+        operations.append(operation)
+        return opRes
+    }
+    
     public func update(valueReference: OpResultValueReference, propertyName: String, propertyValue: Any) -> OpResult {
         return update(valueReference: valueReference, changes: [propertyName: propertyValue])
+    }
+    
+    public func update(valueReference: OpResultValueReference, propertyName: String, propertyValue: Any, expression: [String : BackendlessExpression]) -> OpResult {
+        let changes = [propertyName: propertyValue]
+        return update(valueReference: valueReference, changes: changes.merging(DataTypesUtils.shared.expressionToDictionary(expression)) { (_, new) in new })
     }
     
     // bulk update
@@ -148,14 +173,37 @@ enum UowProps {
         return opRes
     }
     
+    public func bulkUpdate(tableName: String, whereClause: String, changes: [String : Any], expression: [String : BackendlessExpression]) -> OpResult {
+        let (operation, opRes) = uowUpdate!.bulkUpdate(tableName: tableName,
+                                                       whereClause: whereClause,
+                                                       changes: changes.merging(DataTypesUtils.shared.expressionToDictionary(expression)) { (_, new) in new })
+        operations.append(operation)
+        return opRes
+    }
+    
     public func bulkUpdate(tableName: String, objectsToUpdate: [String], changes: [String : Any]) -> OpResult {
         let (operation, opRes) = uowUpdate!.bulkUpdate(tableName: tableName, objectIds: objectsToUpdate, changes: changes)
         operations.append(operation)
         return opRes
     }
     
+    public func bulkUpdate(tableName: String, objectsToUpdate: [String], changes: [String : Any], expression: [String : BackendlessExpression]) -> OpResult {
+        let (operation, opRes) = uowUpdate!.bulkUpdate(tableName: tableName,
+                                                       objectIds: objectsToUpdate,
+                                                       changes: changes.merging(DataTypesUtils.shared.expressionToDictionary(expression)) { (_, new) in new })
+        operations.append(operation)
+        return opRes
+    }
+    
     public func bulkUpdate(objectIdsForChanges: OpResult, changes: [String : Any]) -> OpResult {
         let (operation, opRes) = uowUpdate!.bulkUpdate(result: objectIdsForChanges, changes: changes)
+        operations.append(operation)
+        return opRes
+    }
+    
+    public func bulkUpdate(objectIdsForChanges: OpResult, changes: [String : Any], expression: [String : BackendlessExpression]) -> OpResult {
+        let (operation, opRes) = uowUpdate!.bulkUpdate(result: objectIdsForChanges,
+                                                       changes: changes.merging(DataTypesUtils.shared.expressionToDictionary(expression)) { (_, new) in new })
         operations.append(operation)
         return opRes
     }

@@ -41,12 +41,28 @@ import Foundation
         save(entity: entity, isUpsert: false, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
+    public func save(entity: [String : Any], expression: [String : BackendlessExpression], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        save(entity: entity, isUpsert: false, expression: expression, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
     public func save(entity: [String : Any], isUpsert: Bool, responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
         if isUpsert {
             persistenceServiceUtils.upsert(entity: entity, responseHandler: responseHandler, errorHandler: errorHandler)
         }
         else if entity["objectId"] != nil {
-            persistenceServiceUtils.update(entity: entity, responseHandler: responseHandler, errorHandler: errorHandler)
+            persistenceServiceUtils.update(entity: entity, expression: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+        }
+        else {
+            persistenceServiceUtils.create(entity: entity as [String : AnyObject], responseHandler: responseHandler, errorHandler: errorHandler)
+        }
+    }
+    
+    public func save(entity: [String : Any], isUpsert: Bool, expression: [String : BackendlessExpression], responseHandler: (([String : Any]) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        if isUpsert {
+            persistenceServiceUtils.upsert(entity: entity, responseHandler: responseHandler, errorHandler: errorHandler)
+        }
+        else if entity["objectId"] != nil {
+            persistenceServiceUtils.update(entity: entity, expression: expression, responseHandler: responseHandler, errorHandler: errorHandler)
         }
         else {
             persistenceServiceUtils.create(entity: entity as [String : AnyObject], responseHandler: responseHandler, errorHandler: errorHandler)
@@ -58,7 +74,11 @@ import Foundation
     }
     
     public func bulkUpdate(whereClause: String?, changes: [String : Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
-        persistenceServiceUtils.bulkUpdate(whereClause: whereClause, changes: changes, responseHandler: responseHandler, errorHandler: errorHandler)
+        persistenceServiceUtils.bulkUpdate(whereClause: whereClause, changes: changes, expression: nil, responseHandler: responseHandler, errorHandler: errorHandler)
+    }
+    
+    public func bulkUpdate(whereClause: String?, expression: [String : BackendlessExpression], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!) {
+        persistenceServiceUtils.bulkUpdate(whereClause: whereClause, changes: nil, expression: expression, responseHandler: responseHandler, errorHandler: errorHandler)
     }
     
     public func bulkUpsert(entities: [[String : Any]], responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!) {

@@ -26,9 +26,12 @@ protocol IDataStore {
     associatedtype CustomType
     
     func save(entity: CustomType, responseHandler: ((CustomType) -> Void)!, errorHandler: ((Fault) -> Void)!)
+    func save(entity: CustomType, expression: [String : BackendlessExpression], responseHandler: ((CustomType) -> Void)!, errorHandler: ((Fault) -> Void)!)
     func save(entity: CustomType, isUpsert: Bool, responseHandler: ((CustomType) -> Void)!, errorHandler: ((Fault) -> Void)!)
+    func save(entity: CustomType, isUpsert: Bool, expression: [String : BackendlessExpression], responseHandler: ((CustomType) -> Void)!, errorHandler: ((Fault) -> Void)!)
     func bulkCreate(entities: [CustomType], responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!)
     func bulkUpdate(whereClause: String?, changes: [String: Any], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
+    func bulkUpdate(whereClause: String?, expression: [String : BackendlessExpression], responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
     func bulkUpsert(entities: [CustomType], responseHandler: (([String]) -> Void)!, errorHandler: ((Fault) -> Void)!)
     func removeById(objectId: String, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)
     func remove(entity: CustomType, responseHandler: ((Int) -> Void)!, errorHandler: ((Fault) -> Void)!)

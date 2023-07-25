@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 53;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -84,6 +84,7 @@
 		5E572D4B21B8043E000713B0 /* ProcessResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E572D4A21B8043E000713B0 /* ProcessResponse.swift */; };
 		5E5EA767242B9B8100690818 /* OperationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5EA766242B9B8100690818 /* OperationResult.swift */; };
 		5E60834B21EF721900268B4D /* DictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E60834A21EF721900268B4D /* DictionaryExtension.swift */; };
+		5E6309092A6AA2AE000B0587 /* BackendlessExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6309082A6AA2AE000B0587 /* BackendlessExpression.swift */; };
 		5E63D79C28B0C62A00C74008 /* SortedSetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E63D79B28B0C62A00C74008 /* SortedSetStore.swift */; };
 		5E642B9E227206DC00E091C4 /* Events.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E642B9D227206DC00E091C4 /* Events.swift */; };
 		5E64F0BF21C50D8E00590B04 /* BackendlessRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E64F0BE21C50D8E00590B04 /* BackendlessRequestManager.swift */; };
@@ -263,6 +264,7 @@
 		5E572D4A21B8043E000713B0 /* ProcessResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessResponse.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		5E5EA766242B9B8100690818 /* OperationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationResult.swift; sourceTree = "<group>"; };
 		5E60834A21EF721900268B4D /* DictionaryExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryExtension.swift; sourceTree = "<group>"; };
+		5E6309082A6AA2AE000B0587 /* BackendlessExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessExpression.swift; sourceTree = "<group>"; };
 		5E63D79B28B0C62A00C74008 /* SortedSetStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortedSetStore.swift; sourceTree = "<group>"; };
 		5E642B9D227206DC00E091C4 /* Events.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Events.swift; sourceTree = "<group>"; };
 		5E64F0BE21C50D8E00590B04 /* BackendlessRequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessRequestManager.swift; sourceTree = "<group>"; };
@@ -398,25 +400,26 @@
 		5A2A784B21E6103100EC8007 /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
-				5E1DB58D23E19EFD00955319 /* Transaction */,
+				5EE23C0A24CB198B00F2FD67 /* ArgHolders.swift */,
 				5ECFEFBA23D9C88F004A5DD0 /* BackendlessDataCollection.swift */,
+				5E6309082A6AA2AE000B0587 /* BackendlessExpression.swift */,
+				5EE3001724ED79E8006A27D1 /* ClassesForTests.swift */,
 				5E467F812201E20700E70772 /* DataPermission.swift */,
 				5E72EABC21F6EB89006C8C5C /* DataQueryBuilder.swift */,
 				5A2A785221E61D1700EC8007 /* DataStoreFactory.swift */,
 				5E9DFC062387F70E0019E750 /* Geometry */,
+				5ED330B726DE2398000363E7 /* GroupClasses.swift */,
 				5A2A784C21E6104F00EC8007 /* IDataStore.swift */,
+				5E17EE6624CAF8BF00D7321B /* JSONUpdateBuilder.swift */,
 				5EE063BE22017EAA00B862EA /* LoadRelationsQueryBuilder.swift */,
 				5A2A784E21E610D700EC8007 /* MapDrivenDataStore.swift */,
 				5E4DE64221EF8E92009AE503 /* Mappings.swift */,
+				5E06AD4C23F6759700950993 /* PersistenceHelper.swift */,
 				5A2A785021E6114800EC8007 /* PersistenceService.swift */,
 				5AC54CA521E7373400EC1F8C /* PersistenceServiceUtils.swift */,
-				5E06AD4C23F6759700950993 /* PersistenceHelper.swift */,
 				5E9718F8221BFD0D00857603 /* RT */,
 				5EA2B69A21F2324B00CFDC37 /* StoredObjects.swift */,
-				5E17EE6624CAF8BF00D7321B /* JSONUpdateBuilder.swift */,
-				5EE23C0A24CB198B00F2FD67 /* ArgHolders.swift */,
-				5EE3001724ED79E8006A27D1 /* ClassesForTests.swift */,
-				5ED330B726DE2398000363E7 /* GroupClasses.swift */,
+				5E1DB58D23E19EFD00955319 /* Transaction */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -943,8 +946,9 @@
 		5EAA649B21AEDBEA006019EF /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1010;
-				LastUpgradeCheck = 1400;
+				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					5E9C572721AEEA0400877870 = {
 						CreatedOnToolsVersion = 10.1;
@@ -1066,6 +1070,7 @@
 				5E8C2DF028E322B80013CD33 /* SortedSetStoreManager.swift in Sources */,
 				5EC7D163222FB86100FD3FF4 /* DeliveryOptions.swift in Sources */,
 				5E4DE64321EF8E92009AE503 /* Mappings.swift in Sources */,
+				5E6309092A6AA2AE000B0587 /* BackendlessExpression.swift in Sources */,
 				5E7E8A6021ECC94A00AA04E1 /* UserDefaultsHelper.swift in Sources */,
 				5E09B01222645CE60073DA5E /* LogMessage.swift in Sources */,
 				5EC7D161222FB56700FD3FF4 /* PublishOptions.swift in Sources */,
