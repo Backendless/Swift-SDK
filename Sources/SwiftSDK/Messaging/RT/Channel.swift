@@ -40,7 +40,7 @@ import Foundation
         }
         if !self.isJoined {
             self.rt?.connect(responseHandler: {
-                self.isJoined = true
+                self.isJoined = true                
                 self.rt?.processConnectSubscriptions()
                 self.rt?.subscribeForWaiting()
             }, errorHandler: { fault in

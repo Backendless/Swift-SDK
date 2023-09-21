@@ -33,10 +33,10 @@ class FileManagerHelper {
     
     private func getAppGroup() -> String? {
         if let projectName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String,
-            let path = Bundle.main.path(forResource: projectName, ofType: "entitlements"),
-            let dictionary = NSDictionary(contentsOfFile: path),
-            let appGroups = dictionary["com.apple.security.application-groups"] as? [String],
-            let appGroup = appGroups.first(where: { $0.contains("BackendlessPushTemplates") }) {
+           let path = Bundle.main.path(forResource: projectName, ofType: "entitlements"),
+           let dictionary = NSDictionary(contentsOfFile: path),
+           let appGroups = dictionary["com.apple.security.application-groups"] as? [String],
+           let appGroup = appGroups.first(where: { $0.contains("BackendlessPushTemplates") }) {
             return appGroup
         }
         return nil
@@ -50,46 +50,25 @@ class FileManagerHelper {
         return nil
     }
     
-    func savePushTemplates(pushTemplatesDictionary: [String : Any]) {
+    func savePushTemplates(pushTemplatesDictionary: [String : Any]) {       
         if let url = sharedContainerURL() {
             let filePath = url.appendingPathComponent(PUSH_TEMPLATES_FILE_NAME)
-            let data = NSKeyedArchiver.archivedData(withRootObject: pushTemplatesDictionary)
-            try? data.write(to: filePath)
+            if let data = try? NSKeyedArchiver.archivedData(withRootObject: pushTemplatesDictionary, requiringSecureCoding: false) {
+                try? data.write(to: filePath)
+            }
         }
-        
-        // for iOS 12+
-        /*
-         if let url = sharedContainerURL() {
-             let filePath = url.appendingPathComponent(PUSH_TEMPLATES_FILE_NAME)
-             if let data = try? NSKeyedArchiver.archivedData(withRootObject: someObject, requiringSecureCoding: false) {
-                 try? data.write(to: filePath)
-             }
-         }
-         */
     }
     
     func getPushTemplates() -> [String : Any] {
         if let url = sharedContainerURL() {
             let filePath = url.appendingPathComponent(PUSH_TEMPLATES_FILE_NAME)
             if let data = try? Data(contentsOf: filePath),
-                let result = NSKeyedUnarchiver.unarchiveObject(with: data) as? [String : Any] {
-                return result
+               let result = try? NSKeyedUnarchiver.unarchivedObject(ofClasses: [NSDictionary.self, NSNumber.self, NSString.self], from: data) {
+                return result as! [String : Any]
             }
         }
         return [String : Any]()
     }
-    
-    // for iOS 12+
-    /*
-     if let url = sharedContainerURL() {
-         let filePath = url.appendingPathComponent(PUSH_TEMPLATES_FILE_NAME)
-         if let data = try? Data(contentsOf: filePath),
-            let result = try? NSKeyedUnarchiver.unarchivedObject(ofClasses: [NSDictionary.self, NSNumber.self, NSString.self], from: data) {
-             return result as? [String : Any]
-         }
-     }
-     return [String : Any]()
-     */
 }
-
+    
 #endif

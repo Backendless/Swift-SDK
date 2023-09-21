@@ -9,7 +9,7 @@ let package = Package(
         .library(name: "Backendless", targets: ["SwiftSDK"]),
     ],
     dependencies: [
-        .package(name: "SocketIO", url: "https://github.com/socketio/socket.io-client-swift", from: "16.0.1")
+        .package(name: "SocketIO", url: "https://github.com/socketio/socket.io-client-swift", from: "16.1.0")
     ],
     targets: [
         .target(name: "SwiftSDK", dependencies: ["SocketIO"]),
