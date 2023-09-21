@@ -35,7 +35,7 @@ class RTMessaging: RTListener {
     func connect(responseHandler: (() -> Void)!, errorHandler: ((Fault) -> Void)!) {
         let options = ["channel": channelName] as [String : Any]
         let subscription = createSubscription(type: RtTypes.pubSubConnect, options: options, connectionHandler: responseHandler, responseHandler: nil, errorHandler: errorHandler)
-        self.subscriptionId = subscription.subscriptionId
+        self.subscriptionId = subscription.subscriptionId        
         subscription.subscribe()
     }
     
@@ -253,7 +253,7 @@ class RTMessaging: RTListener {
     }
     
     func processConnectSubscriptions() {
-        if var connectSubscriptions = RTClient.shared.getSimpleListeners(type: RtTypes.pubSubConnect) {
+        if var connectSubscriptions = RTClient.shared.getSimpleListeners(type: RtTypes.pubSubConnect) {            
             connectSubscriptions = connectSubscriptions.filter({ $0.options?.contains(where: { $0.value as? String == self.channelName }) ?? false })
             for subscription in connectSubscriptions {
                 subscription.onResult!(nil)

@@ -32,6 +32,7 @@ class RTClient {
     private var socket: SocketIOClient?
     private var socketManager: SocketManager?
     private var subscriptions: [String : RTSubscription]
+    private var subscribedOnConnect = [String]()
     private var eventSubscriptions: [String : [RTSubscription]]
     private var methods: [String : RTMethodRequest]
     var socketCreated = false
@@ -41,7 +42,6 @@ class RTClient {
     private var onResultReady = false
     private var onMethodResultReady = false
     private var onDisconnectCalledOnce = false
-    private var _lock: NSLock
     private var reconnectAttempt: Int = 1
     private var timeInterval: Double = 0.2 // seconds
     var onSocketConnectCallback: (() -> Void)?
@@ -51,9 +51,9 @@ class RTClient {
     private init() {
         self.waitingSubscriptions = [RTSubscription]()
         self.subscriptions = [String : RTSubscription]()
+        self.subscribedOnConnect = [String]()
         self.eventSubscriptions = [String : [RTSubscription]]()
         self.methods = [String : RTMethodRequest]()
-        _lock = NSLock()
     }
     
     func connectSocket(connected: (() -> Void)!) {
@@ -68,11 +68,11 @@ class RTClient {
                     let path = "/" + Backendless.shared.getApplicationId()
                     
                     var clientId = ""
-                    #if os(iOS) || os(tvOS)
+#if os(iOS) || os(tvOS)
                     clientId = DeviceHelper.shared.deviceId
-                    #elseif os(OSX)
+#elseif os(OSX)
                     clientId = DeviceHelper.shared.deviceId
-                    #endif
+#endif
                     
                     var connectParams = ["apiKey": Backendless.shared.getApiKey(), "clientId": clientId]
                     if let userToken = UserDefaultsHelper.shared.getUserToken() {
@@ -88,7 +88,7 @@ class RTClient {
                     let _ = Backendless.shared.rt.addConnectErrorEventListener(responseHandler: { _ in
                         self.tryToReconnectSocket()
                     })
-    
+                    
                     if self.socket != nil {
                         self.socketOnceCreated = true
                         self.socketCreated = true
@@ -119,16 +119,14 @@ class RTClient {
     }
     
     func subscribe(data: [String : Any], subscription: RTSubscription) {
-        if self.socketConnected {
-            self.socket?.emit("SUB_ON", data)
-        }
-        else {
-            self.connectSocket(connected: {
-                self.socket?.emit("SUB_ON", data)
-            })
-        }
         if !self.needResubscribe {
             self.subscriptions[subscription.subscriptionId!] = subscription
+        }
+        if !self.socketConnected {
+            self.connectSocket(connected: { })
+        }
+        else if !self.subscribedOnConnect.contains(subscription.subscriptionId!) {
+            self.socket?.emit("SUB_ON", data)
         }
     }
     
@@ -136,6 +134,7 @@ class RTClient {
         if self.subscriptions.keys.contains(subscriptionId) {
             self.socket?.emit("SUB_OFF", ["id": subscriptionId])
             self.subscriptions.removeValue(forKey: subscriptionId)
+            self.subscribedOnConnect.removeAll { $0 == subscriptionId }
         }
         else {
             for type in self.eventSubscriptions.keys {
@@ -180,15 +179,24 @@ class RTClient {
                            let type = subscription.type,
                            let options = subscription.options {
                             let data = ["id": subscriptionId, "name": type, "options": options] as [String : Any]
-                            self.subscribe(data: data, subscription: subscription)
+                            self.socket?.emit("SUB_ON", data)
                         }
                     }
                     self.needResubscribe = false
                 }
                 else if !self.needResubscribe {
                     connected()
+                    for subscriptionId in self.subscriptions.keys {
+                        if let subscription = self.subscriptions[subscriptionId],
+                           let type = subscription.type,
+                           let options = subscription.options {
+                            let data = ["id": subscriptionId, "name": type, "options": options] as [String : Any]
+                            self.socket?.emit("SUB_ON", data)
+                            self.subscribedOnConnect.append(subscriptionId)
+                        }
+                    }
                 }
-        
+                
                 self.onResult()
                 self.onMethodResult()
                 
@@ -201,7 +209,7 @@ class RTClient {
                 self.subscribeForObjectChangesWaiting()
             })
             
-            self.socket?.on("connect_error", callback: { data, ack in                
+            self.socket?.on("connect_error", callback: { data, ack in
                 if let reason = data.first as? String {
                     self.onConnectErrorOrDisconnect(reason: reason, type: ConnectEvents.connectError)
                 }
@@ -245,7 +253,7 @@ class RTClient {
             for subscription in reconnectAttemptSubscriptions {
                 let attempt = NSNumber(value: self.reconnectAttempt)
                 let timeout = NSNumber(value: maxTimeInterval * 1000)
-                let reconnectAttemptObject = ReconnectAttemptObject(attempt: attempt, timeout: timeout)                
+                let reconnectAttemptObject = ReconnectAttemptObject(attempt: attempt, timeout: timeout)
                 subscription.onResult!(reconnectAttemptObject)
             }
         }
@@ -274,12 +282,12 @@ class RTClient {
     func onResult() {
         if !self.onResultReady {
             self.socket?.on("SUB_RES", callback: { data, ack in
-                self.onResultReady = true                
+                self.onResultReady = true
                 if let resultData = data.first as? [String : Any],
                    let subscriptionId = resultData["id"] as? String,
                    let subscription = self.subscriptions[subscriptionId] {
                     
-                    if let result = resultData["data"] {                        
+                    if let result = resultData["data"] {
                         subscription.ready = true
                         if let result = result as? String, result == "connected", subscription.onConnect != nil {
                             subscription.onConnect!()
@@ -331,7 +339,7 @@ class RTClient {
                             self.methods.removeValue(forKey: methodId)
                         }
                     }
-                    else if resultData["id"] != nil, method.onResult != nil {                 
+                    else if resultData["id"] != nil, method.onResult != nil {
                         if let result = resultData["result"] {
                             method.onResult!(result)
                         }
@@ -361,7 +369,7 @@ class RTClient {
             subscriptions = [RTSubscription]()
         }
         subscriptions?.append(subscription)
-        eventSubscriptions[type] = subscriptions     
+        eventSubscriptions[type] = subscriptions
     }
     
     func getSimpleListeners(type: String) -> [RTSubscription]? {
@@ -391,7 +399,7 @@ class RTClient {
         
         subscriptions?.append(subscription)
         eventSubscriptions[type] = subscriptions
-        return subscription       
+        return subscription
     }
     
     func removeEventListeners(type: String) {
@@ -427,8 +435,8 @@ class RTClient {
         var indexesToRemove = [Int]() // waiting subscriptions will be removed after subscription is done
         for waitingSubscription in waitingSubscriptions {
             if let data = waitingSubscription.data,
-                let name = data["name"] as? String,
-                    (name == RtTypes.objectsChanges || name == RtTypes.relationsChanges) {
+               let name = data["name"] as? String,
+               (name == RtTypes.objectsChanges || name == RtTypes.relationsChanges) {
                 waitingSubscription.subscribe()
                 indexesToRemove.append(waitingSubscriptions.firstIndex(of: waitingSubscription)!)
             }

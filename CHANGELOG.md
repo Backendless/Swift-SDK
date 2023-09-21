@@ -1,5 +1,10 @@
 # RELEASE HISTORY
 
+### 7.0.1 / September 21, 2023
+* fixed RT issue when user was able to subscribe only for one messaging channel
+* some deprecated code was updated under the hood
+* minimal iOS and tvOS versions changed to 12.0
+
 ### 7.0.0 / July 25, 2023
 * added implementation for BackendlessExpression
 

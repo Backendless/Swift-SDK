@@ -36,7 +36,7 @@ import Foundation
     func subscribe() {
         if let data = self.data {
             RTClient.shared.subscribe(data: data, subscription: self)
-        }        
+        }
     }
     
     public func stop() {

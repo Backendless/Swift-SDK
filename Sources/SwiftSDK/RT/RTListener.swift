@@ -36,7 +36,8 @@ import Foundation
     
     func createSubscription(type: String, options: [String : Any], connectionHandler: (() -> Void)?, responseHandler: ((Any) -> Void)?, errorHandler: ((Fault) -> Void)!) -> RTSubscription {
         let subscriptionId = UUID().uuidString
-        let data = ["id": subscriptionId, "name": type, "options": options] as [String : Any]        
+        let data = ["id": subscriptionId, "name": type, "options": options] as [String : Any]
+        
         onStop = { subscription in
             var subscriptionStack = [RTSubscription]()
             if self.subscriptions[type] != nil {
@@ -76,7 +77,7 @@ import Foundation
             subscriptionStack = [RTSubscription]()
         }
         subscriptionStack?.append(subscription)
-        self.subscriptions[typeName] = subscriptionStack
+        self.subscriptions[typeName] = subscriptionStack        
         return subscription
     }
     
