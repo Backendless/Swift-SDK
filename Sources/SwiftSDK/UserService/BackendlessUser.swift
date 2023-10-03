@@ -21,6 +21,7 @@
 
 import Foundation
 
+@dynamicMemberLookup
 @objcMembers public class BackendlessUser: NSObject, Codable {
     
     public var objectId: String?
@@ -38,6 +39,16 @@ import Foundation
     }
     
     public private(set) var userToken: String?
+    
+    public subscript(dynamicMember property: String) -> Any? {
+        get {
+            properties[property]
+        }
+        
+        set {
+            properties[property] = newValue
+        }
+    }
     
     var userProperties = JSON()
     public var properties: [String : Any] {

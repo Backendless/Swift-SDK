@@ -89,6 +89,37 @@ class BackendlessUserTests: XCTestCase {
         XCTAssertTrue(user.properties["city"] is NSNull)
     }
     
+    func test10AddPropertyWithDynamicMemberLookup() {
+        let user = createBackendlessUser()
+        user.foo = "bar"
+        XCTAssertNotNil(user.properties["foo"])
+        XCTAssertFalse(user.properties["foo"] is NSNull)
+    }
+    
+    func test11AddPropertiesWithDynamicMemberLookup() {
+        let user = createBackendlessUser()
+        user.foo = "bar"
+        user.foo1 = "bar1"
+        XCTAssertNotNil(user.properties["foo"])
+        XCTAssertNotNil(user.properties["foo1"])
+        XCTAssertFalse(user.properties["foo"] is NSNull)
+        XCTAssertFalse(user.properties["foo1"] is NSNull)
+    }
+    
+    func test12UpdatePropertyWithDynamicMemberLookup() {
+        let user = createBackendlessUser()
+        user.age = 55
+        XCTAssertEqual(user.properties["age"] as? Int, 55)
+    }
+    
+    func test13UpdatePropertiesWithDynamicMemberLookup() {
+        let user = createBackendlessUser()
+        user.name = "Bob"
+        user.age = 55
+        XCTAssertEqual(user.properties["name"] as? String, "Bob")
+        XCTAssertEqual(user.properties["age"] as? Int, 55)
+    }
+    
     // ********************************************************************************
     
     private func createBackendlessUser() -> BackendlessUser {
