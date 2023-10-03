@@ -1,6 +1,6 @@
 # RELEASE HISTORY
 
-### 7.0.2 / October ?, 2023
+### 7.0.2 / October 4, 2023
 * fixed issue when publishing without PublishOptions
 * fixed issue with pushing broadcast
 * added @dynamicMemberLookup for the BackendlessUser
