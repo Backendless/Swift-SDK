@@ -245,10 +245,13 @@ import Foundation
             parameters["repeatExpiresAt"] = DataTypesUtils.shared.dateToInt(date: repeatExpiresAt)
         }
         if let publishPolicy = deliveryOptions?.publishPolicy {
-            parameters["publishPolicy"] = publishPolicy
+            parameters["publishPolicy"] = PublishPolicyEnum(rawValue: publishPolicy)?.getPublishPolicyName()
+        }
+        else {
+            parameters["publishPolicy"] = PublishPolicyEnum.PUBSUB.getPublishPolicyName()
         }
         if let pushBroadcast = deliveryOptions?.pushBroadcast {
-            parameters["pushBroadcast"] = pushBroadcast
+            parameters["pushBroadcast"] = PushBroadcastEnum(rawValue: pushBroadcast)?.getPushBroadcastName()
         }
         if let pushSinglecast = deliveryOptions?.pushSinglecast, pushSinglecast.count > 0 {
             parameters["pushSinglecast"] = pushSinglecast

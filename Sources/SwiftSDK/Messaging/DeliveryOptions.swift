@@ -41,9 +41,42 @@ import Foundation
     case FOR_NONE = 0
     case FOR_IOS = 1
     case FOR_ANDROID = 2
+    case FOR_IOS_ANDROID = 3
     case FOR_WP = 4
+    case FOR_IOS_WP = 5
+    case FOR_ANDROID_WP = 6
+    case FOR_IOS_ANDROID_WP = 7
     case FOR_OSX = 8
+    case FOR_IOS_OSX = 9
+    case FOR_ANDROID_OSX = 10
+    case FOR_IOS_ANDROID_OSX = 11
+    case FOR_WP_OSX = 12
+    case FOR_IOS_WP_OSX = 13
+    case FOR_ANDROID_WP_OSX = 14
     case FOR_ALL = 15
+    
+    static func from(intValue: Int) -> String {
+        if intValue == 1 { return "FOR_IOS" }
+        else if intValue == 2 { return "FOR_ANDROID" }
+        else if intValue == 3 { return "FOR_IOS|FOR_ANDROID" }
+        else if intValue == 4 { return "FOR_WP" }
+        else if intValue == 5 { return "FOR_IOS|FOR_WP" }
+        else if intValue == 6 { return "FOR_ANDROID|FOR_WP" }
+        else if intValue == 7 { return "FOR_IOS|FOR_ANDROID|FOR_WP" }
+        else if intValue == 8 { return "FOR_OSX" }
+        else if intValue == 9 { return "FOR_IOS|FOR_OSX" }
+        else if intValue == 10 { return "FOR_ANDROID|FOR_OSX" }
+        else if intValue == 11 { return "FOR_IOS|FOR_ANDROID|FOR_OSX" }
+        else if intValue == 12 { return "FOR_WP|FOR_OSX" }
+        else if intValue == 13 { return "FOR_IOS|FOR_WP|FOR_OSX" }
+        else if intValue == 14 { return "FOR_ANDROID|FOR_WP|FOR_OSX" }
+        else if intValue == 15 { return "FOR_ALL" }
+        return "FOR_NONE"
+    }
+    
+    public func getPushBroadcastName() -> String {
+        return PushBroadcastEnum.from(intValue: self.rawValue)
+    }
 }
 
 @objcMembers public class DeliveryOptions: NSObject, Codable {

@@ -1,5 +1,10 @@
 # RELEASE HISTORY
 
+### 7.0.2 / October 4, 2023
+* fixed issue when publishing without PublishOptions
+* fixed issue with pushing broadcast
+* added @dynamicMemberLookup for the BackendlessUser
+
 ### 7.0.1 / September 21, 2023
 * fixed RT issue when user was able to subscribe only for one messaging channel
 * some deprecated code was updated under the hood
