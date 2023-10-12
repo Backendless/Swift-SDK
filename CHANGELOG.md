@@ -1,6 +1,6 @@
 # RELEASE HISTORY
 
-### 7.0.3 / ?, 2023
+### 7.0.3 / October 12, 2023
 * Added an ability to exlude custom class fields from interacting with database:
 ```
 Backendless.shared.data.excludeProperties(forClass: AnyClass, fieldNames: [String])
