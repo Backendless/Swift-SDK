@@ -23,6 +23,20 @@ import Foundation
 
 @objcMembers public class PersistenceService: NSObject {
     
+    lazy var excludeProperties = [String : [String]]() // [ ["Person": ["p1", "p2"]] ]
+    
+    public func excludeProperties(forClass: AnyClass, fieldNames: [String]) {
+        let tableName = PersistenceHelper.shared.getTableNameFor(forClass)
+        if excludeProperties.keys.contains(tableName),
+        var values = excludeProperties[tableName] {
+            values.append(contentsOf: fieldNames)
+            excludeProperties[tableName] = values
+        }
+        else {
+            excludeProperties[tableName] = fieldNames
+        }
+    }
+    
     public func of(_ entityClass: AnyClass) -> DataStoreFactory {
         return DataStoreFactory(entityClass: entityClass)
     }

@@ -53,7 +53,7 @@ class BackendlessRequestManager {
         var request = URLRequest(url: URL(string: urlString + DataTypesUtils.shared.stringToUrlString(originalString: restMethod))!)
         request.httpMethod = httpMethod.rawValue
         if let headers = headers, headers.count > 0 {
-            for (key, value) in headers {             
+            for (key, value) in headers {
                 request.addValue(value, forHTTPHeaderField: key)
             }
         }
@@ -84,6 +84,7 @@ class BackendlessRequestManager {
                 }
                 else {
                     if var params = parameters as? [String : Any] {
+                        params = excludeProperties(properties: params)
                         for (key, value) in params {
                             if let dateValue = value as? Date {
                                 params[key] = DataTypesUtils.shared.dateToInt(date: dateValue)
@@ -103,7 +104,6 @@ class BackendlessRequestManager {
                 }
             }
         }
-        
         if Backendless.shared.useSharedUrlSession {
             session = BLUrlSessionShared.shared.session
         }
@@ -138,8 +138,8 @@ class BackendlessRequestManager {
         for (key, value) in Backendless.shared.getHeaders() {
             if key != "user-token" {
                 request.addValue(value, forHTTPHeaderField: key)
-            }            
-        }        
+            }
+        }
         request.httpBody = createBodyForMultipartForm(parameters: self.parameters, boundary: boundary, data: data, mimeType: data.mimeType, fileName: fileName)
         
         let dataTask = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -168,7 +168,7 @@ class BackendlessRequestManager {
                 body.appendString("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
                 body.appendString("\(value)\r\n")
             }
-        }       
+        }
         
         body.appendString(boundaryPrefix)
         body.appendString("Content-Disposition: form-data; name=\"file\"; filename=\"\(fileName)\"\r\n")
@@ -194,5 +194,82 @@ class BackendlessRequestManager {
             restMethod += component + "/"
         }
         restMethod.removeLast()
+    }
+    
+    private func excludeProperties(properties: [String : Any]) -> [String : Any] {
+        var resultProperties = properties
+        let restMethodComponents = restMethod.split(separator: "/").map { String($0) }
+        
+        for (tableName, fields) in Backendless.shared.data.excludeProperties {
+            var tableName = tableName
+            let propertyMappings = Mappings.shared.getColumnToPropertyMappings(className: tableName)
+            if let originalTableName =  Mappings.shared.tableToClassMappings.getKey(forValue: tableName) {
+                tableName = originalTableName
+            }
+            if restMethodComponents.contains(tableName) {
+                for field in fields {
+                    var field = field
+                    if !propertyMappings.isEmpty,
+                       let propertyName = propertyMappings.getKey(forValue: field) {
+                        field = propertyName
+                    }
+                    resultProperties[field] = nil
+                }
+            }
+        }
+        
+        // Transactions
+        if resultProperties.keys.contains("operations"),
+           resultProperties.keys.contains("isolationLevelEnum"),
+           let operations = properties["operations"] as? [[String : Any]] {
+            var resultOperations = [[String : Any]]()
+            
+            for operation in operations {
+                var operation = operation
+                if var payload = operation["payload"] as? [String : Any] {
+                    for (tableName, fields) in Backendless.shared.data.excludeProperties {
+                        let propertyMappings = Mappings.shared.getColumnToPropertyMappings(className: tableName)
+                        for field in fields {
+                            var field = field
+                            if !propertyMappings.isEmpty,
+                               let propertyName = propertyMappings.getKey(forValue: field) {
+                                field = propertyName
+                            }
+                            payload[field] = nil
+                        }
+                    }
+                    operation["payload"] = payload
+                }
+                // bulk operations
+                else if let payloads = operation["payload"] as? [[String : Any]] {
+                    var resultPayloads = [[String : Any]]()
+                    for payload in payloads {
+                        var payload = payload
+                        for (tableName, fields) in Backendless.shared.data.excludeProperties {
+                            let propertyMappings = Mappings.shared.getColumnToPropertyMappings(className: tableName)
+                            for field in fields {
+                                var field = field
+                                if !propertyMappings.isEmpty,
+                                   let propertyName = propertyMappings.getKey(forValue: field) {
+                                    field = propertyName
+                                }
+                                payload[field] = nil
+                            }
+                        }
+                        resultPayloads.append(payload)
+                    }
+                    operation["payload"] = resultPayloads
+                }
+                if var tableName = operation["table"] as? String,
+                   let originalTableName =  Mappings.shared.tableToClassMappings.getKey(forValue: tableName) {
+                    tableName = originalTableName
+                    operation["table"] = tableName
+                }
+                resultOperations.append(operation)
+            }
+            resultProperties["operations"] = resultOperations
+            
+        }
+        return resultProperties
     }
 }
