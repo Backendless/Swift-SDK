@@ -1,5 +1,8 @@
 # RELEASE HISTORY
 
+### 7.0.4 / October 17, 2023
+* Fixed an issue when excluding some properties of native types
+
 ### 7.0.3 / October 12, 2023
 * Added an ability to exlude custom class fields from interacting with database:
 ```
