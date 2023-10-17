@@ -84,7 +84,7 @@ class BackendlessRequestManager {
                 }
                 else {
                     if var params = parameters as? [String : Any] {
-                        params = excludeProperties(properties: params)
+                        params = prepareTransactionsWithMappings(properties: params)
                         for (key, value) in params {
                             if let dateValue = value as? Date {
                                 params[key] = DataTypesUtils.shared.dateToInt(date: dateValue)
@@ -196,29 +196,8 @@ class BackendlessRequestManager {
         restMethod.removeLast()
     }
     
-    private func excludeProperties(properties: [String : Any]) -> [String : Any] {
+    private func prepareTransactionsWithMappings(properties: [String : Any]) -> [String : Any] {
         var resultProperties = properties
-        let restMethodComponents = restMethod.split(separator: "/").map { String($0) }
-        
-        for (tableName, fields) in Backendless.shared.data.excludeProperties {
-            var tableName = tableName
-            let propertyMappings = Mappings.shared.getColumnToPropertyMappings(className: tableName)
-            if let originalTableName =  Mappings.shared.tableToClassMappings.getKey(forValue: tableName) {
-                tableName = originalTableName
-            }
-            if restMethodComponents.contains(tableName) {
-                for field in fields {
-                    var field = field
-                    if !propertyMappings.isEmpty,
-                       let propertyName = propertyMappings.getKey(forValue: field) {
-                        field = propertyName
-                    }
-                    resultProperties[field] = nil
-                }
-            }
-        }
-        
-        // Transactions
         if resultProperties.keys.contains("operations"),
            resultProperties.keys.contains("isolationLevelEnum"),
            let operations = properties["operations"] as? [[String : Any]] {
@@ -226,40 +205,6 @@ class BackendlessRequestManager {
             
             for operation in operations {
                 var operation = operation
-                if var payload = operation["payload"] as? [String : Any] {
-                    for (tableName, fields) in Backendless.shared.data.excludeProperties {
-                        let propertyMappings = Mappings.shared.getColumnToPropertyMappings(className: tableName)
-                        for field in fields {
-                            var field = field
-                            if !propertyMappings.isEmpty,
-                               let propertyName = propertyMappings.getKey(forValue: field) {
-                                field = propertyName
-                            }
-                            payload[field] = nil
-                        }
-                    }
-                    operation["payload"] = payload
-                }
-                // bulk operations
-                else if let payloads = operation["payload"] as? [[String : Any]] {
-                    var resultPayloads = [[String : Any]]()
-                    for payload in payloads {
-                        var payload = payload
-                        for (tableName, fields) in Backendless.shared.data.excludeProperties {
-                            let propertyMappings = Mappings.shared.getColumnToPropertyMappings(className: tableName)
-                            for field in fields {
-                                var field = field
-                                if !propertyMappings.isEmpty,
-                                   let propertyName = propertyMappings.getKey(forValue: field) {
-                                    field = propertyName
-                                }
-                                payload[field] = nil
-                            }
-                        }
-                        resultPayloads.append(payload)
-                    }
-                    operation["payload"] = resultPayloads
-                }
                 if var tableName = operation["table"] as? String,
                    let originalTableName =  Mappings.shared.tableToClassMappings.getKey(forValue: tableName) {
                     tableName = originalTableName
@@ -268,7 +213,6 @@ class BackendlessRequestManager {
                 resultOperations.append(operation)
             }
             resultProperties["operations"] = resultOperations
-            
         }
         return resultProperties
     }
