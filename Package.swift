@@ -18,7 +18,7 @@ let package = Package(
                 .product(name: "SocketIO", package: "socket.io-client-swift")
             ],
             resources: [
-                .process("Resources/PrivacyInfo.xcprivacy")
+                .process("../../Resources/PrivacyInfo.xcprivacy")
             ]
         ),
         .testTarget(name: "SwiftSDKTests", dependencies: ["SwiftSDK"]),
