@@ -359,6 +359,7 @@
 		5EFB60E822422F93004DFA2C /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		5EFBA8FD21C1011E007B3BB0 /* BackendlessUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendlessUser.swift; sourceTree = "<group>"; };
 		8C23A8A3096D1AE35832C678 /* Pods_SwiftSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9E4A9AA42BB2891F00AA096C /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		C93A606C5FDA8243A2775FCD /* Pods-SwiftSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSDK.debug.xcconfig"; path = "Target Support Files/Pods-SwiftSDK/Pods-SwiftSDK.debug.xcconfig"; sourceTree = "<group>"; };
 		E4D525417E11CC89EFC57858 /* Pods-SwiftSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSDK.release.xcconfig"; path = "Target Support Files/Pods-SwiftSDK/Pods-SwiftSDK.release.xcconfig"; sourceTree = "<group>"; };
 		E5D55024BA53159CA5811403 /* Pods-SwiftSDKTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftSDKTests.debug.xcconfig"; path = "Target Support Files/Pods-SwiftSDKTests/Pods-SwiftSDKTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -797,6 +798,7 @@
 		5EAA649A21AEDBEA006019EF = {
 			isa = PBXGroup;
 			children = (
+				9E4A9AA32BB288EC00AA096C /* Resources */,
 				5ED3E2A921B0267200A223C1 /* Sources */,
 				5E9C572A21AEEA0400877870 /* SwiftSDK */,
 				5ECE680C21B0248B00839120 /* SwiftSDKTests */,
@@ -883,6 +885,14 @@
 				5E91F492241A811E00E97260 /* OpResultValueReference.swift */,
 			);
 			path = OpResult;
+			sourceTree = "<group>";
+		};
+		9E4A9AA32BB288EC00AA096C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				9E4A9AA42BB2891F00AA096C /* PrivacyInfo.xcprivacy */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
