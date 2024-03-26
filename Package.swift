@@ -1,4 +1,4 @@
-// swift-tools-version:5.2
+// swift-tools-version:5.9
 
 import PackageDescription
 import Foundation
@@ -9,10 +9,18 @@ let package = Package(
         .library(name: "Backendless", targets: ["SwiftSDK"]),
     ],
     dependencies: [
-        .package(name: "SocketIO", url: "https://github.com/socketio/socket.io-client-swift", from: "16.1.0")
+        .package(url: "https://github.com/socketio/socket.io-client-swift", from: "16.1.0")
     ],
     targets: [
-        .target(name: "SwiftSDK", dependencies: ["SocketIO"]),
+        .target(
+            name: "SwiftSDK",
+            dependencies: [
+                .product(name: "SocketIO", package: "socket.io-client-swift")
+            ],
+            resources: [
+                .process("../../Resources/PrivacyInfo.xcprivacy")
+            ]
+        ),
         .testTarget(name: "SwiftSDKTests", dependencies: ["SwiftSDK"]),
     ]
 )
